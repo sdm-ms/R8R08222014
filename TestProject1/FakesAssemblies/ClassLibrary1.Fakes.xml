@@ -2002,6 +2002,18 @@
         <member name="M:ClassLibrary1.Misc.Fakes.StubInMemoryContext.InitializeStub">
             <summary>Initializes a new instance of type StubInMemoryContext</summary>
         </member>
+        <member name="M:ClassLibrary1.Misc.Fakes.StubInMemoryContext.SubmitChanges">
+            <summary>Sets the stub of InMemoryContext.SubmitChanges()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Misc.Fakes.StubInMemoryContext.SubmitChanges(System.Data.Linq.ConflictMode)">
+            <summary>Sets the stub of InMemoryContext.SubmitChanges(ConflictMode conflictMode)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Misc.Fakes.StubInMemoryContext.SubmitChanges01">
+            <summary>Sets the stub of InMemoryContext.SubmitChanges()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Misc.Fakes.StubInMemoryContext.SubmitChangesConflictMode">
+            <summary>Sets the stub of InMemoryContext.SubmitChanges(ConflictMode conflictMode)</summary>
+        </member>
         <member name="P:ClassLibrary1.Misc.Fakes.StubInMemoryContext.CallBase">
             <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
         </member>
@@ -6856,6 +6868,12 @@
         <member name="P:ClassLibrary1.Model.Fakes.ShimFieldDefinitionInfoConverter.Constructor">
             <summary>Sets the shim of FieldDefinitionInfoConverter.FieldDefinitionInfoConverter()</summary>
         </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimFieldDefinitionInfoConverter.ConvertFromITypeDescriptorContextCultureInfoObject">
+            <summary>Sets the shim of FieldDefinitionInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimFieldDefinitionInfoConverter.ConvertToITypeDescriptorContextCultureInfoObjectType">
+            <summary>Sets the shim of FieldDefinitionInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
+        </member>
         <member name="T:ClassLibrary1.Model.Fakes.ShimFieldDefinitionInfoConverter.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
@@ -6864,6 +6882,12 @@
         </member>
         <member name="P:ClassLibrary1.Model.Fakes.ShimFieldDefinitionInfoConverter.AllInstances.CanConvertToITypeDescriptorContextType">
             <summary>Sets the shim of FieldDefinitionInfoConverter.CanConvertTo(ITypeDescriptorContext context, Type destinationType)</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimFieldDefinitionInfoConverter.AllInstances.ConvertFromITypeDescriptorContextCultureInfoObject">
+            <summary>Sets the shim of FieldDefinitionInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimFieldDefinitionInfoConverter.AllInstances.ConvertToITypeDescriptorContextCultureInfoObjectType">
+            <summary>Sets the shim of FieldDefinitionInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
         </member>
         <member name="T:ClassLibrary1.Model.Fakes.ShimFieldDisplayHtml">
             <summary>Shim type of ClassLibrary1.Model.FieldDisplayHtml</summary>
@@ -29197,6 +29221,12 @@
         <member name="P:ClassLibrary1.Model.Fakes.ShimTblColumnInfoConverter.Constructor">
             <summary>Sets the shim of TblColumnInfoConverter.TblColumnInfoConverter()</summary>
         </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimTblColumnInfoConverter.ConvertFromITypeDescriptorContextCultureInfoObject">
+            <summary>Sets the shim of TblColumnInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimTblColumnInfoConverter.ConvertToITypeDescriptorContextCultureInfoObjectType">
+            <summary>Sets the shim of TblColumnInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
+        </member>
         <member name="T:ClassLibrary1.Model.Fakes.ShimTblColumnInfoConverter.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
@@ -29205,6 +29235,12 @@
         </member>
         <member name="P:ClassLibrary1.Model.Fakes.ShimTblColumnInfoConverter.AllInstances.CanConvertToITypeDescriptorContextType">
             <summary>Sets the shim of TblColumnInfoConverter.CanConvertTo(ITypeDescriptorContext context, Type destinationType)</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimTblColumnInfoConverter.AllInstances.ConvertFromITypeDescriptorContextCultureInfoObject">
+            <summary>Sets the shim of TblColumnInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimTblColumnInfoConverter.AllInstances.ConvertToITypeDescriptorContextCultureInfoObjectType">
+            <summary>Sets the shim of TblColumnInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
         </member>
         <member name="T:ClassLibrary1.Model.Fakes.ShimTblColumnsForTabCache">
             <summary>Shim type of ClassLibrary1.Model.TblColumnsForTabCache</summary>
@@ -32146,14 +32182,14 @@
         <member name="M:ClassLibrary1.Model.Fakes.ShimTrustTrackerTrustEveryone.BehaveAsNotImplemented">
             <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
         </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimTrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposesGet">
+            <summary>Sets the shim of TrustTrackerTrustEveryone.get_AllAdjustmentFactorsAre1ForTestingPurposes()</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.ShimTrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposesSetBoolean">
+            <summary>Sets the shim of TrustTrackerTrustEveryone.set_AllAdjustmentFactorsAre1ForTestingPurposes(Boolean value)</summary>
+        </member>
         <member name="P:ClassLibrary1.Model.Fakes.ShimTrustTrackerTrustEveryone.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:ClassLibrary1.Model.Fakes.ShimTrustTrackerTrustEveryone.ShouldTrustEveryoneForTestingPurposesGet">
-            <summary>Sets the shim of TrustTrackerTrustEveryone.get_ShouldTrustEveryoneForTestingPurposes()</summary>
-        </member>
-        <member name="P:ClassLibrary1.Model.Fakes.ShimTrustTrackerTrustEveryone.ShouldTrustEveryoneForTestingPurposesSetBoolean">
-            <summary>Sets the shim of TrustTrackerTrustEveryone.set_ShouldTrustEveryoneForTestingPurposes(Boolean value)</summary>
         </member>
         <member name="P:ClassLibrary1.Model.Fakes.ShimTrustTrackerTrustEveryone.StaticConstructor">
             <summary>Sets the shim of TrustTrackerTrustEveryone.TrustTrackerTrustEveryone()</summary>
@@ -39706,6 +39742,18 @@
         <member name="F:ClassLibrary1.Model.Fakes.StubFieldDefinitionInfoConverter.CanConvertToITypeDescriptorContextType">
             <summary>Sets the stub of FieldDefinitionInfoConverter.CanConvertTo(ITypeDescriptorContext context, Type destinationType)</summary>
         </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubFieldDefinitionInfoConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>Sets the stub of FieldDefinitionInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubFieldDefinitionInfoConverter.ConvertFromITypeDescriptorContextCultureInfoObject">
+            <summary>Sets the stub of FieldDefinitionInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubFieldDefinitionInfoConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>Sets the stub of FieldDefinitionInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubFieldDefinitionInfoConverter.ConvertToITypeDescriptorContextCultureInfoObjectType">
+            <summary>Sets the stub of FieldDefinitionInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
+        </member>
         <member name="M:ClassLibrary1.Model.Fakes.StubFieldDefinitionInfoConverter.CreateInstance(System.ComponentModel.ITypeDescriptorContext,System.Collections.IDictionary)">
             <summary>Sets the stub of TypeConverter.CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)</summary>
         </member>
@@ -40647,6 +40695,144 @@
         </member>
         <member name="P:ClassLibrary1.Model.Fakes.StubIFilterField.cl1::ClassLibrary1#Model#IFilterField#TblRowID">
             <summary>Sets the stub of IFilterField.get_TblRowID()</summary>
+        </member>
+        <member name="T:ClassLibrary1.Model.Fakes.StubIRaterooDataContext">
+            <summary>Stub type of ClassLibrary1.Model.IRaterooDataContext</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.#ctor">
+            <summary>Initializes a new instance of type StubIRaterooDataContext</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.AttachBackingFieldToLog">
+            <summary>Attaches delegates to emulate StubIRaterooDataContext.Log as a property with a backing field.</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.AttachBackingFieldToRegisteredToBeInserted">
+            <summary>Attaches delegates to emulate StubIRaterooDataContext.RegisteredToBeInserted as a property with a backing field.</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.AttachBackingFieldToTempCache">
+            <summary>Attaches delegates to emulate StubIRaterooDataContext.TempCache as a property with a backing field.</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.BaseClassSubmitChangesConflictMode">
+            <summary>Sets the stub of IRaterooDataContext.BaseClassSubmitChanges(ConflictMode conflictMode)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Misc#IDataContext#GetTable``1">
+            <summary>Sets the stub of IDataContext.GetTable()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Misc#IDataContext#Reset">
+            <summary>Sets the stub of IDataContext.Reset()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Misc#IDataContext#SubmitChanges">
+            <summary>Sets the stub of IDataContext.SubmitChanges()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Misc#IDataContext#SubmitChanges(System.Data.Linq.ConflictMode)">
+            <summary>Sets the stub of IDataContext.SubmitChanges(ConflictMode conflictMode)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#BaseClassSubmitChanges(System.Data.Linq.ConflictMode)">
+            <summary>Sets the stub of IRaterooDataContext.BaseClassSubmitChanges(ConflictMode conflictMode)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#GetCommand(System.Linq.IQueryable)">
+            <summary>Sets the stub of IRaterooDataContext.GetCommand(IQueryable query)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#GetRealDatabaseIfExists">
+            <summary>Sets the stub of IRaterooDataContext.GetRealDatabaseIfExists()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#IsRealDatabase">
+            <summary>Sets the stub of IRaterooDataContext.IsRealDatabase()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#LoadStatsWithTrustTrackersAndUserInteractions">
+            <summary>Sets the stub of IRaterooDataContext.LoadStatsWithTrustTrackersAndUserInteractions()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#ResolveConflictsIfPossible">
+            <summary>Sets the stub of IRaterooDataContext.ResolveConflictsIfPossible()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#SetPageLoadOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetPageLoadOptions()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#SetUserRatingAddOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetUserRatingAddOptions()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#SetUserRatingAddingLoadOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetUserRatingAddingLoadOptions()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#SetUserRatingUpdatingLoadOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetUserRatingUpdatingLoadOptions()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#UDFDistanceWithin(System.Nullable{System.Single},System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary>Sets the stub of IRaterooDataContext.UDFDistanceWithin(Nullable`1&lt;Single&gt; latitude, Nullable`1&lt;Single&gt; longitude, Nullable`1&lt;Single&gt; distance)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#UDFNearestNeighborsForTbl(System.Nullable{System.Single},System.Nullable{System.Single},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>Sets the stub of IRaterooDataContext.UDFNearestNeighborsForTbl(Nullable`1&lt;Single&gt; latitude, Nullable`1&lt;Single&gt; longitude, Nullable`1&lt;Int32&gt; maxNumResults, Nullable`1&lt;Int32&gt; tblID)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.GetCommandIQueryable">
+            <summary>Sets the stub of IRaterooDataContext.GetCommand(IQueryable query)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.GetRealDatabaseIfExists">
+            <summary>Sets the stub of IRaterooDataContext.GetRealDatabaseIfExists()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.GetTableOf1``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{ClassLibrary1.Misc.IRepository{``0}})">
+            <summary>Sets stubs of GetTable()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.IsRealDatabase">
+            <summary>Sets the stub of IRaterooDataContext.IsRealDatabase()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.LoadStatsWithTrustTrackersAndUserInteractions">
+            <summary>Sets the stub of IRaterooDataContext.LoadStatsWithTrustTrackersAndUserInteractions()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.LogGet">
+            <summary>Sets the stub of IRaterooDataContext.get_Log()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.LogSetTextWriter">
+            <summary>Sets the stub of IRaterooDataContext.set_Log(TextWriter value)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.RegisteredToBeInsertedGet">
+            <summary>Sets the stub of IDataContextExtended.get_RegisteredToBeInserted()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.RegisteredToBeInsertedSetListOfObject">
+            <summary>Sets the stub of IDataContextExtended.set_RegisteredToBeInserted(List`1&lt;Object&gt; value)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.Reset">
+            <summary>Sets the stub of IDataContext.Reset()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.ResolveConflictsIfPossible">
+            <summary>Sets the stub of IRaterooDataContext.ResolveConflictsIfPossible()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.SetPageLoadOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetPageLoadOptions()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.SetUserRatingAddOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetUserRatingAddOptions()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.SetUserRatingAddingLoadOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetUserRatingAddingLoadOptions()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.SetUserRatingUpdatingLoadOptions">
+            <summary>Sets the stub of IRaterooDataContext.SetUserRatingUpdatingLoadOptions()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.SubmitChanges">
+            <summary>Sets the stub of IDataContext.SubmitChanges()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.SubmitChangesConflictMode">
+            <summary>Sets the stub of IDataContext.SubmitChanges(ConflictMode conflictMode)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.TempCacheGet">
+            <summary>Sets the stub of IDataContextExtended.get_TempCache()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.TempCacheSetDictionaryOfStringObject">
+            <summary>Sets the stub of IDataContextExtended.set_TempCache(Dictionary`2&lt;String,Object&gt; value)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.UDFDistanceWithinNullableOfSingleNullableOfSingleNullableOfSingle">
+            <summary>Sets the stub of IRaterooDataContext.UDFDistanceWithin(Nullable`1&lt;Single&gt; latitude, Nullable`1&lt;Single&gt; longitude, Nullable`1&lt;Single&gt; distance)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.UDFNearestNeighborsForTblNullableOfSingleNullableOfSingleNullableOfInt32NullableOfInt32">
+            <summary>Sets the stub of IRaterooDataContext.UDFNearestNeighborsForTbl(Nullable`1&lt;Single&gt; latitude, Nullable`1&lt;Single&gt; longitude, Nullable`1&lt;Int32&gt; maxNumResults, Nullable`1&lt;Int32&gt; tblID)</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Model#IRaterooDataContext#Log">
+            <summary>Sets the stub of IRaterooDataContext.get_Log()</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Misc#IDataContextExtended#RegisteredToBeInserted">
+            <summary>Sets the stub of IDataContextExtended.get_RegisteredToBeInserted()</summary>
+        </member>
+        <member name="P:ClassLibrary1.Model.Fakes.StubIRaterooDataContext.cl1::ClassLibrary1#Misc#IDataContextExtended#TempCache">
+            <summary>Sets the stub of IDataContextExtended.get_TempCache()</summary>
         </member>
         <member name="T:ClassLibrary1.Model.Fakes.StubImportExport">
             <summary>Stub type of ClassLibrary1.Model.ImportExport</summary>
@@ -41769,6 +41955,18 @@
         </member>
         <member name="M:ClassLibrary1.Model.Fakes.StubRaterooInMemoryDataContext.InitializeStub">
             <summary>Initializes a new instance of type StubRaterooInMemoryDataContext</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubRaterooInMemoryDataContext.SubmitChanges">
+            <summary>Sets the stub of RaterooInMemoryDataContext.SubmitChanges()</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubRaterooInMemoryDataContext.SubmitChanges(System.Data.Linq.ConflictMode)">
+            <summary>Sets the stub of RaterooInMemoryDataContext.SubmitChanges(ConflictMode conflictMode)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubRaterooInMemoryDataContext.SubmitChanges01">
+            <summary>Sets the stub of RaterooInMemoryDataContext.SubmitChanges()</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubRaterooInMemoryDataContext.SubmitChangesConflictMode">
+            <summary>Sets the stub of RaterooInMemoryDataContext.SubmitChanges(ConflictMode conflictMode)</summary>
         </member>
         <member name="P:ClassLibrary1.Model.Fakes.StubRaterooInMemoryDataContext.CallBase">
             <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
@@ -43221,6 +43419,18 @@
         </member>
         <member name="F:ClassLibrary1.Model.Fakes.StubTblColumnInfoConverter.CanConvertToITypeDescriptorContextType">
             <summary>Sets the stub of TblColumnInfoConverter.CanConvertTo(ITypeDescriptorContext context, Type destinationType)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubTblColumnInfoConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>Sets the stub of TblColumnInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubTblColumnInfoConverter.ConvertFromITypeDescriptorContextCultureInfoObject">
+            <summary>Sets the stub of TblColumnInfoConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)</summary>
+        </member>
+        <member name="M:ClassLibrary1.Model.Fakes.StubTblColumnInfoConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>Sets the stub of TblColumnInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
+        </member>
+        <member name="F:ClassLibrary1.Model.Fakes.StubTblColumnInfoConverter.ConvertToITypeDescriptorContextCultureInfoObjectType">
+            <summary>Sets the stub of TblColumnInfoConverter.ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)</summary>
         </member>
         <member name="M:ClassLibrary1.Model.Fakes.StubTblColumnInfoConverter.CreateInstance(System.ComponentModel.ITypeDescriptorContext,System.Collections.IDictionary)">
             <summary>Sets the stub of TypeConverter.CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)</summary>
@@ -46996,6 +47206,12 @@
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AccessKeySetString">
             <summary>Sets the stub of WebControl.set_AccessKey(String value)</summary>
         </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of DropDownList.AddAttributesToRender(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AddAttributesToRenderHtmlTextWriter">
+            <summary>Sets the stub of DropDownList.AddAttributesToRender(HtmlTextWriter writer)</summary>
+        </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AddParsedSubObject(System.Object)">
             <summary>Sets the stub of Control.AddParsedSubObject(Object obj)</summary>
         </member>
@@ -47086,11 +47302,17 @@
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToID">
             <summary>Attaches delegates to emulate StubButtonDropDownList.ID as a property with a backing field.</summary>
         </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToItemType">
+            <summary>Attaches delegates to emulate StubButtonDropDownList.ItemType as a property with a backing field.</summary>
+        </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToPage">
             <summary>Attaches delegates to emulate StubButtonDropDownList.Page as a property with a backing field.</summary>
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToRenderingCompatibility">
             <summary>Attaches delegates to emulate StubButtonDropDownList.RenderingCompatibility as a property with a backing field.</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToSelectMethod">
+            <summary>Attaches delegates to emulate StubButtonDropDownList.SelectMethod as a property with a backing field.</summary>
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToSelectedIndex">
             <summary>Attaches delegates to emulate StubButtonDropDownList.SelectedIndex as a property with a backing field.</summary>
@@ -47109,6 +47331,9 @@
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToToolTip">
             <summary>Attaches delegates to emulate StubButtonDropDownList.ToolTip as a property with a backing field.</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToValidateRequestMode">
+            <summary>Attaches delegates to emulate StubButtonDropDownList.ValidateRequestMode as a property with a backing field.</summary>
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.AttachBackingFieldToValidationGroup">
             <summary>Attaches delegates to emulate StubButtonDropDownList.ValidationGroup as a property with a backing field.</summary>
@@ -47365,6 +47590,15 @@
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.InitializeStub">
             <summary>Initializes a new instance of type StubButtonDropDownList</summary>
         </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.IsUsingModelBindersGet">
+            <summary>Sets the stub of DataBoundControl.get_IsUsingModelBinders()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ItemTypeGet">
+            <summary>Sets the stub of DataBoundControl.get_ItemType()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ItemTypeSetString">
+            <summary>Sets the stub of DataBoundControl.set_ItemType(String value)</summary>
+        </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ItemsGet">
             <summary>Sets the stub of ListControl.get_Items()</summary>
         </member>
@@ -47400,6 +47634,12 @@
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.OnCommandCommandEventArgs">
             <summary>Sets the stub of ButtonDropDownList.OnCommand(CommandEventArgs e)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.OnCreatingModelDataSource(System.Web.UI.WebControls.CreatingModelDataSourceEventArgs)">
+            <summary>Sets the stub of DataBoundControl.OnCreatingModelDataSource(CreatingModelDataSourceEventArgs e)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.OnCreatingModelDataSourceCreatingModelDataSourceEventArgs">
+            <summary>Sets the stub of DataBoundControl.OnCreatingModelDataSource(CreatingModelDataSourceEventArgs e)</summary>
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.OnDataBinding(System.EventArgs)">
             <summary>Sets the stub of ListControl.OnDataBinding(EventArgs e)</summary>
@@ -47506,6 +47746,42 @@
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RemovedControlControl">
             <summary>Sets the stub of Control.RemovedControl(Control control)</summary>
         </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of WebControl.Render(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of WebControl.RenderBeginTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderBeginTagHtmlTextWriter">
+            <summary>Sets the stub of WebControl.RenderBeginTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderChildren(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of Control.RenderChildren(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderChildrenHtmlTextWriter">
+            <summary>Sets the stub of Control.RenderChildren(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of ListControl.RenderContents(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderContentsHtmlTextWriter">
+            <summary>Sets the stub of ListControl.RenderContents(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderControl(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of Control.RenderControl(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderControlHtmlTextWriter">
+            <summary>Sets the stub of Control.RenderControl(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of WebControl.RenderEndTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderEndTagHtmlTextWriter">
+            <summary>Sets the stub of WebControl.RenderEndTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderHtmlTextWriter">
+            <summary>Sets the stub of WebControl.Render(HtmlTextWriter writer)</summary>
+        </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderingCompatibilityGet">
             <summary>Sets the stub of Control.get_RenderingCompatibility()</summary>
         </member>
@@ -47529,6 +47805,12 @@
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.SaveViewState01">
             <summary>Sets the stub of ListControl.SaveViewState()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.SelectMethodGet">
+            <summary>Sets the stub of DataBoundControl.get_SelectMethod()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.SelectMethodSetString">
+            <summary>Sets the stub of DataBoundControl.set_SelectMethod(String value)</summary>
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.SelectedIndexGet">
             <summary>Sets the stub of DropDownList.get_SelectedIndex()</summary>
@@ -47601,6 +47883,12 @@
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ValidateDataSourceObject">
             <summary>Sets the stub of DataBoundControl.ValidateDataSource(Object dataSource)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ValidateRequestModeGet">
+            <summary>Sets the stub of Control.get_ValidateRequestMode()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ValidateRequestModeSetValidateRequestMode">
+            <summary>Sets the stub of Control.set_ValidateRequestMode(ValidateRequestMode value)</summary>
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ValidationGroupGet">
             <summary>Sets the stub of ListControl.get_ValidationGroup()</summary>
@@ -47725,6 +48013,12 @@
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.InstanceObserver">
             <summary>Gets or sets the instance observer.</summary>
         </member>
+        <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.IsUsingModelBinders">
+            <summary>Sets the stub of DataBoundControl.get_IsUsingModelBinders()</summary>
+        </member>
+        <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ItemType">
+            <summary>Sets the stub of DataBoundControl.get_ItemType()</summary>
+        </member>
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.Items">
             <summary>Sets the stub of ListControl.get_Items()</summary>
         </member>
@@ -47739,6 +48033,9 @@
         </member>
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.RenderingCompatibility">
             <summary>Sets the stub of Control.get_RenderingCompatibility()</summary>
+        </member>
+        <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.SelectMethod">
+            <summary>Sets the stub of DataBoundControl.get_SelectMethod()</summary>
         </member>
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.SelectedIndex">
             <summary>Sets the stub of DropDownList.get_SelectedIndex()</summary>
@@ -47776,6 +48073,9 @@
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.UniqueID">
             <summary>Sets the stub of Control.get_UniqueID()</summary>
         </member>
+        <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ValidateRequestMode">
+            <summary>Sets the stub of Control.get_ValidateRequestMode()</summary>
+        </member>
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonDropDownList.ValidationGroup">
             <summary>Sets the stub of ListControl.get_ValidationGroup()</summary>
         </member>
@@ -47805,6 +48105,12 @@
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.AccessKeySetString">
             <summary>Sets the stub of WebControl.set_AccessKey(String value)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of TextBox.AddAttributesToRender(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.AddAttributesToRenderHtmlTextWriter">
+            <summary>Sets the stub of TextBox.AddAttributesToRender(HtmlTextWriter writer)</summary>
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.AddParsedSubObject(System.Object)">
             <summary>Sets the stub of TextBox.AddParsedSubObject(Object obj)</summary>
@@ -47904,6 +48210,9 @@
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.AttachBackingFieldToToolTip">
             <summary>Attaches delegates to emulate StubButtonTextBox.ToolTip as a property with a backing field.</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.AttachBackingFieldToValidateRequestMode">
+            <summary>Attaches delegates to emulate StubButtonTextBox.ValidateRequestMode as a property with a backing field.</summary>
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.AttachBackingFieldToValidationGroup">
             <summary>Attaches delegates to emulate StubButtonTextBox.ValidationGroup as a property with a backing field.</summary>
@@ -48217,6 +48526,42 @@
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RemovedControlControl">
             <summary>Sets the stub of Control.RemovedControl(Control control)</summary>
         </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of TextBox.Render(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of WebControl.RenderBeginTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderBeginTagHtmlTextWriter">
+            <summary>Sets the stub of WebControl.RenderBeginTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderChildren(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of Control.RenderChildren(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderChildrenHtmlTextWriter">
+            <summary>Sets the stub of Control.RenderChildren(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of WebControl.RenderContents(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderContentsHtmlTextWriter">
+            <summary>Sets the stub of WebControl.RenderContents(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderControl(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of Control.RenderControl(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderControlHtmlTextWriter">
+            <summary>Sets the stub of Control.RenderControl(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of WebControl.RenderEndTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderEndTagHtmlTextWriter">
+            <summary>Sets the stub of WebControl.RenderEndTag(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderHtmlTextWriter">
+            <summary>Sets the stub of TextBox.Render(HtmlTextWriter writer)</summary>
+        </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.RenderingCompatibilityGet">
             <summary>Sets the stub of Control.get_RenderingCompatibility()</summary>
         </member>
@@ -48303,6 +48648,12 @@
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.UniqueIDGet">
             <summary>Sets the stub of Control.get_UniqueID()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.ValidateRequestModeGet">
+            <summary>Sets the stub of Control.get_ValidateRequestMode()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.ValidateRequestModeSetValidateRequestMode">
+            <summary>Sets the stub of Control.set_ValidateRequestMode(ValidateRequestMode value)</summary>
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.ValidationGroupGet">
             <summary>Sets the stub of TextBox.get_ValidationGroup()</summary>
@@ -48463,6 +48814,9 @@
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.UniqueID">
             <summary>Sets the stub of Control.get_UniqueID()</summary>
         </member>
+        <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.ValidateRequestMode">
+            <summary>Sets the stub of Control.get_ValidateRequestMode()</summary>
+        </member>
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubButtonTextBox.ValidationGroup">
             <summary>Sets the stub of TextBox.get_ValidationGroup()</summary>
         </member>
@@ -48528,6 +48882,9 @@
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.AttachBackingFieldToSkinID">
             <summary>Attaches delegates to emulate StubDataItemCounter.SkinID as a property with a backing field.</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.AttachBackingFieldToValidateRequestMode">
+            <summary>Attaches delegates to emulate StubDataItemCounter.ValidateRequestMode as a property with a backing field.</summary>
         </member>
         <member name="M:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.AttachBackingFieldToViewStateMode">
             <summary>Attaches delegates to emulate StubDataItemCounter.ViewStateMode as a property with a backing field.</summary>
@@ -48709,6 +49066,24 @@
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.RemovedControlControl">
             <summary>Sets the stub of Control.RemovedControl(Control control)</summary>
         </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of DataItemCounter.Render(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.RenderChildren(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of Control.RenderChildren(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.RenderChildrenHtmlTextWriter">
+            <summary>Sets the stub of Control.RenderChildren(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="M:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.RenderControl(System.Web.UI.HtmlTextWriter)">
+            <summary>Sets the stub of Control.RenderControl(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.RenderControlHtmlTextWriter">
+            <summary>Sets the stub of Control.RenderControl(HtmlTextWriter writer)</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.RenderHtmlTextWriter">
+            <summary>Sets the stub of DataItemCounter.Render(HtmlTextWriter writer)</summary>
+        </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.RenderingCompatibilityGet">
             <summary>Sets the stub of Control.get_RenderingCompatibility()</summary>
         </member>
@@ -48756,6 +49131,12 @@
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.UniqueIDGet">
             <summary>Sets the stub of Control.get_UniqueID()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.ValidateRequestModeGet">
+            <summary>Sets the stub of Control.get_ValidateRequestMode()</summary>
+        </member>
+        <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.ValidateRequestModeSetValidateRequestMode">
+            <summary>Sets the stub of Control.set_ValidateRequestMode(ValidateRequestMode value)</summary>
         </member>
         <member name="F:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.ViewStateGet">
             <summary>Sets the stub of Control.get_ViewState()</summary>
@@ -48825,6 +49206,9 @@
         </member>
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.UniqueID">
             <summary>Sets the stub of Control.get_UniqueID()</summary>
+        </member>
+        <member name="P:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.ValidateRequestMode">
+            <summary>Sets the stub of Control.get_ValidateRequestMode()</summary>
         </member>
         <member name="P:SqlNetFrameworkWebControls.Fakes.StubDataItemCounter.ViewState">
             <summary>Sets the stub of Control.get_ViewState()</summary>
