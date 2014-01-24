@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="Rateroo" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2013-10.2.2">
+  <WebRole name="WebRole1">
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="HttpIn" endpointName="HttpIn" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <ConfigurationSettings>
+      <Setting name="DiagnosticsConnectionString" />
+      <Setting name="BlobConnectionString" />
+      <Setting name="RaterooConnectionString" />
+      <Setting name="DataConnectionString" />
+    </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="raterooLocal" cleanOnRoleRecycle="true" sizeInMB="5000" />
+      <LocalStorage name="InstanceDriveCache" cleanOnRoleRecycle="false" sizeInMB="300" />
+    </LocalResources>
+    <Endpoints>
+      <InputEndpoint name="HttpIn" protocol="http" port="80" />
+    </Endpoints>
+  </WebRole>
+  <!--<WorkerRole name="WorkerRole1">
+    <Endpoints>
+      <InputEndpoint name="Email" protocol="tcp" port="80" />
+    </Endpoints>
+    <ConfigurationSettings>
+      <Setting name="DiagnosticsConnectionString" />
+      <Setting name="BlobConnectionString"/>
+      <Setting name="RaterooConnectionString" />
+      <Setting name="DataConnectionString"/>
+    </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="raterooLocal"
+        cleanOnRoleRecycle="true"
+        sizeInMB="5000" />
+        <LocalStorage name="InstanceDriveCache"
+                      cleanOnRoleRecycle="false"
+                      sizeInMB="300" />
+    </LocalResources>
+  </WorkerRole>-->
+</ServiceDefinition>

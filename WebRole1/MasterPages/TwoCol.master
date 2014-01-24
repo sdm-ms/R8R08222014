@@ -1,0 +1,68 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/MasterPages/PageFrameAndTop.master" AutoEventWireup="false" Inherits="TwoCol" Codebehind="MasterPages/TwoCol.master.cs" %>
+<%@ Register TagPrefix="Uc" TagName="InsertableContent" Src="~/CommonControl/PMInsertableContent.ascx" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head1" Runat="Server">
+    <asp:ContentPlaceHolder ID="head2" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="AllContentBelowHeader" Runat="Server">
+    <div id="mainPartOfPage" style="position: relative; width: 941px; height: 550px;
+        background-color: White; border-width: 1px; border-style: solid; border-color: Gray; ">
+        <div id="leftPageColumn" class="possibleBottom" style="float: left; overflow: hidden;
+            display: inline; position: relative; width: 268px; margin: 10px 5px 10px 10px;
+            padding: 0px 0px 0px 0px;">
+            <div id="withinLeftPageColumn" style="padding: 0px 0px 0px 0px;">
+                <asp:ContentPlaceHolder ID="BoxLeftColumnPlaceHolder" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            <div id="belowTopics">
+                <table>
+                    <tr>
+                        <td id="whiteSpaceAdjustment" <%--style="height: 1200px;"--%>>
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <%--end leftPageColumn--%>
+        <div id="rightPageColumn" class="possibleBottom" style="float: left; position: relative;
+            width: 642px; margin: 10px 10px 10px 5px; padding: 0px 0px 0px 0px;">
+            <asp:ContentPlaceHolder ID="SupplementalScripts1" runat="server">
+            </asp:ContentPlaceHolder>
+            <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:ContentPlaceHolder ID="MainPageContentPlaceHolder" runat="server">
+                    </asp:ContentPlaceHolder>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Always">
+                <ContentTemplate>
+                    <asp:ContentPlaceHolder ID="ContentUpdatingEachPostBack1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:ContentPlaceHolder ID="ContentOutsideOfUpdatePanel" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <%--end rightPageColumn--%>
+        <div id="belowBothColumns" style="clear: both;">
+            <table>
+                <tr>
+                    <td id="Td1" style="height: 5px;">
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <%--end belowBothColumns--%>
+    </div>
+    <%--end mainPartOfPage--%>
+    <div id="belowMainPartOfPage" class="corporateInfo" style="position: relative;">
+        Rateroo™ is a product of Rateroo LLC, a Virginia company. All ratings are opinions, not facts. Please see our <a id="terms" runat="server" href="~/TermsOfService">Terms of Service</a> and <a id="A1" runat="server" href="~/Privacy">Privacy Policy</a>.
+        <uc:insertablecontent runat="server" id="CorporateInfo" />
+    </div>
+    <%--end belowMainPartOfPage--%>
+    <div id="spaceAtVeryBottomOfPage" style="position: relative; height: 25px;">
+    </div>
+    <%--end spaceAtVeryBottomOfPage--%>
+</asp:Content>

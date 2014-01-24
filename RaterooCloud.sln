@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{072B1518-0907-49EF-B38C-EAC0ECF91E22}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "RaterooCloud", "RaterooCloud\RaterooCloud.ccproj", "{E18DAAAF-F9FC-4E9C-8D46-73264D04E718}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRole1", "WebRole1\WebRole1.csproj", "{BCC42AF5-E05C-41C9-88E1-2A59BC11C6E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerRole1", "WorkerRole1\WorkerRole1.csproj", "{373FDD69-8762-4D77-BD76-46E2C66AEDA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{6E1099E4-F5C9-4B8B-BBCA-A18596D6BCEF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{81F4BA7C-3E60-454B-87CF-A4032FE82939}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		RaterooCloud.vsmdi = RaterooCloud.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = RaterooCloud.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{072B1518-0907-49EF-B38C-EAC0ECF91E22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{072B1518-0907-49EF-B38C-EAC0ECF91E22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{072B1518-0907-49EF-B38C-EAC0ECF91E22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{072B1518-0907-49EF-B38C-EAC0ECF91E22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E18DAAAF-F9FC-4E9C-8D46-73264D04E718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E18DAAAF-F9FC-4E9C-8D46-73264D04E718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E18DAAAF-F9FC-4E9C-8D46-73264D04E718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E18DAAAF-F9FC-4E9C-8D46-73264D04E718}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC42AF5-E05C-41C9-88E1-2A59BC11C6E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC42AF5-E05C-41C9-88E1-2A59BC11C6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC42AF5-E05C-41C9-88E1-2A59BC11C6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC42AF5-E05C-41C9-88E1-2A59BC11C6E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{373FDD69-8762-4D77-BD76-46E2C66AEDA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{373FDD69-8762-4D77-BD76-46E2C66AEDA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{373FDD69-8762-4D77-BD76-46E2C66AEDA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{373FDD69-8762-4D77-BD76-46E2C66AEDA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E1099E4-F5C9-4B8B-BBCA-A18596D6BCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E1099E4-F5C9-4B8B-BBCA-A18596D6BCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E1099E4-F5C9-4B8B-BBCA-A18596D6BCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E1099E4-F5C9-4B8B-BBCA-A18596D6BCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

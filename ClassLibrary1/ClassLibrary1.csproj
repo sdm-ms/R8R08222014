@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{072B1518-0907-49EF-B38C-EAC0ECF91E22}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClassLibrary1</RootNamespace>
+    <AssemblyName>ClassLibrary1</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GMapGeocoder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>Dependencies\GMapGeocoder.dll</HintPath>
+    </Reference>
+    <Reference Include="GMaps, Version=3.2.0.1, Culture=neutral, PublicKeyToken=f43a93ab972291b8, processorArchitecture=MSIL">
+      <HintPath>Dependencies\GMaps.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit">
+      <HintPath>Dependencies\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="mapquest20, Version=5.3.0.0, Culture=neutral, PublicKeyToken=c869873a4fab3ddd, processorArchitecture=MSIL">
+      <HintPath>Dependencies\mapquest20.dll</HintPath>
+    </Reference>
+    <Reference Include="MB.KyneticORM.Direct">
+      <HintPath>Dependencies\MB.KyneticORM.Direct.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceHosting.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>Dependencies\Microsoft.ServiceHosting.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceHosting.Tools.DevelopmentFabric, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>Dependencies\Microsoft.ServiceHosting.Tools.DevelopmentFabric.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>Dependencies\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.CloudDrive, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.CloudDrive.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics.StorageUtility, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.Diagnostics.StorageUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.Services" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Data.SqlXml" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DataVisualization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DataVisualization.Design">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.DynamicData.Design" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Entity.Design" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Web.RegularExpressions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms.DataVisualization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization.Design">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Misc\AzureChartControlBlobHandler.cs" />
+    <Compile Include="Misc\AzureCloudDrive.cs" />
+    <Compile Include="Misc\AzureNotifications.cs" />
+    <Compile Include="Misc\AzureQueue.cs" />
+    <Compile Include="Misc\AzureSetup.cs" />
+    <Compile Include="Misc\AzureStartupDiagnostic.cs" />
+    <Compile Include="Misc\AzureTables.cs" />
+    <Compile Include="Misc\ButtonDropDownList.cs" />
+    <Compile Include="Misc\ButtonTextBox.cs" />
+    <Compile Include="Misc\CheckJavaScriptHelper.cs" />
+    <Compile Include="Misc\ControlFinder.cs" />
+    <Compile Include="Misc\DataContextExtensions.cs" />
+    <Compile Include="Misc\DataContextRepositories.cs" />
+    <Compile Include="Misc\DataContextRepositoriesInMemory.cs" />
+    <Compile Include="Misc\DataContextRepositoriesSQL.cs" />
+    <Compile Include="Misc\DataContextRepositoryExtensions.cs" />
+    <Compile Include="Misc\GeoCalc.cs" />
+    <Compile Include="Misc\GoogleGeocode.cs" />
+    <Compile Include="Misc\GooglePagerField.cs" />
+    <Compile Include="Misc\IUserProfileInfo.cs" />
+    <Compile Include="Misc\LinqExcelProvider.cs" />
+    <Compile Include="Misc\MapquestGeocode.cs" />
+    <Compile Include="Misc\MD5HashGenerator.cs" />
+    <Compile Include="Misc\MoreStrings.cs" />
+    <Compile Include="Misc\PredicateBuilder.cs" />
+    <Compile Include="Misc\ProfielBase.cs" />
+    <Compile Include="Misc\ProfileSimple.cs" />
+    <Compile Include="Misc\Serialization.cs" />
+    <Compile Include="Misc\SQLDirectManipulate.cs" />
+    <Compile Include="Misc\StringEnum.cs" />
+    <Compile Include="Misc\TestableDateTime.cs" />
+    <Compile Include="Misc\UserProfileInfo.cs" />
+    <Compile Include="Model\IEnumerableExtensions.cs" />
+    <Compile Include="Model\PMDataContextAbstract.cs" />
+    <Compile Include="Model\PMActionProcessor.cs" />
+    <Compile Include="Model\PMAddObjects.cs" />
+    <Compile Include="Model\PMAdjustmentFactor.cs" />
+    <Compile Include="Model\PMBackgroundThread.cs" />
+    <Compile Include="Model\PMBlobFiles.cs" />
+    <Compile Include="Model\PMCacheManagement.cs" />
+    <Compile Include="Model\PMCacheSubstitution.cs" />
+    <Compile Include="Model\PMCategories.cs" />
+    <Compile Include="Model\PMChoiceGroups.cs" />
+    <Compile Include="Model\PMClassesAndTypes.cs" />
+    <Compile Include="Model\PMConditionalRatings.cs" />
+    <Compile Include="Model\PMCreateStandard.cs" />
+    <Compile Include="Model\PMDataAccess.cs" />
+    <Compile Include="Model\PMDatabaseAndRoleStatus.cs" />
+    <Compile Include="Model\PMDatabaseTransitions.cs" />
+    <Compile Include="Model\PMDataContextInMemory.cs" />
+    <Compile Include="Model\PMDataContextManagement.cs" />
+    <Compile Include="Model\PMDataContextSQL.cs" />
+    <Compile Include="Model\PMDeleteObjects.cs" />
+    <Compile Include="Model\PMEmail.cs" />
+    <Compile Include="Model\PMExecutingChanges.cs" />
+    <Compile Include="Model\PMFields.cs" />
+    <Compile Include="Model\PMFieldsDisplayCreator.cs" />
+    <Compile Include="Model\PMFilterRules.cs" />
+    <Compile Include="Model\PMGeocodeUpdate.cs" />
+    <Compile Include="Model\PMHierarchyItems.cs" />
+    <Compile Include="Model\PMHighStakes.cs" />
+    <Compile Include="Model\PMImportExportTblRows.cs" />
+    <Compile Include="Model\PMInitialBuild.cs" />
+    <Compile Include="Model\PMInsertableContentManage.cs" />
+    <Compile Include="Model\PMItemPath.cs" />
+    <Compile Include="Model\PMLongProcess.cs" />
+    <Compile Include="Model\PMMisc.cs" />
+    <Compile Include="Model\PMNeedsRatingScore.cs" />
+    <Compile Include="Model\PMObjectManagement.cs" />
+    <Compile Include="Model\PMPaymentGuarantees.cs" />
+    <Compile Include="Model\PMPickTblRows.cs" />
+    <Compile Include="Model\PMPointsCalculating.cs" />
+    <Compile Include="Model\PMPointsTracking.cs" />
+    <Compile Include="Model\PMRaterTime.cs" />
+    <Compile Include="Model\PMRatingAndUserRatingStatus.cs" />
+    <Compile Include="Model\PMRatingsAndGroups.cs" />
+    <Compile Include="Model\PMResolveRatings.cs" />
+    <Compile Include="Model\PMRewards.cs" />
+    <Compile Include="Model\PMRouting.cs" />
+    <Compile Include="Model\PMSearchWords.cs" />
+    <Compile Include="Model\PMFastAccessTables.cs" />
+    <Compile Include="Model\PMStatusRecords.cs" />
+    <Compile Include="Model\PMStringConstants.cs" />
+    <Compile Include="Model\PMSupportBase.cs" />
+    <Compile Include="Model\PMTableInfo.cs" />
+    <Compile Include="Model\PMTableLoading.cs" />
+    <Compile Include="Model\PMTableSortMenu.cs" />
+    <Compile Include="Model\PMTblColumnFormatting.cs" />
+    <Compile Include="Model\PMTblDimension.cs" />
+    <Compile Include="Model\PMTblRowsAndFields.cs" />
+    <Compile Include="Model\PMTest.cs" />
+    <Compile Include="Model\PMTrustCalculations.cs" />
+    <Compile Include="Model\PMTrustStat.cs" />
+    <Compile Include="Model\PMTrustTrackerStatManager.cs" />
+    <Compile Include="Model\PMTrustTrackingBackgroundTasks.cs" />
+    <Compile Include="Model\PMUntrustedRatings.cs" />
+    <Compile Include="Model\PMUserManagement.cs" />
+    <Compile Include="Model\PMUserRatingEntryProcessing.cs" />
+    <Compile Include="Model\PMUserRatingHierarchy.cs" />
+    <Compile Include="Model\PMUserSelectedRatingOverrides.cs" />
+    <Compile Include="Model\PMVolatilityTracking.cs" />
+    <Compile Include="Model\Rateroo.cs">
+      <DependentUpon>Rateroo.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Rateroo1.designer.cs">
+      <DependentUpon>Rateroo.dbml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Model\Partials\Rating.cs" />
+    <Compile Include="Model\Partials\TrustTracker.cs" />
+    <Compile Include="Model\Partials\TrustTrackerUnit.cs" />
+    <Compile Include="Model\TimeSpanExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Model\Rateroo.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>Rateroo1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Model\Rateroo.dbml.views">
+      <DependentUpon>Rateroo.dbml</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Model\Rateroo.dbml.layout">
+      <DependentUpon>Rateroo.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Rateroo.dbml.views_def.layout">
+      <DependentUpon>Rateroo.dbml</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
