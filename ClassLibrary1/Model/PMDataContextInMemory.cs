@@ -82,12 +82,12 @@ namespace ClassLibrary1.Model
         }
 
 
-        public override void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
+        public void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
         {
             BaseClassSubmitChanges(conflictMode);
         }
 
-        public override void SubmitChanges()
+        public void SubmitChanges()
         {
             BaseClassSubmitChanges(ConflictMode.ContinueOnConflict);
         }

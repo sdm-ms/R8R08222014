@@ -654,12 +654,12 @@ namespace ClassLibrary1.Misc
             return inMemoryRepositories.GetRepository<T>();
         }
 
-        public virtual void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
+        public void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
         {
             SubmitChanges();
         }
 
-        public virtual void SubmitChanges()
+        public void SubmitChanges()
         {
             inMemoryRepositories.CleanUpBeforeSubmittingChanges();
             if (inMemoryRepositories != null && UseFasterSubmitChanges.setting)
