@@ -81,13 +81,13 @@ namespace ClassLibrary1.Model
             base.SubmitChanges(conflictMode);
         }
 
-
-        public void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
+        // hiding inherited
+        public new void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
         {
             BaseClassSubmitChanges(conflictMode);
         }
 
-        public void SubmitChanges()
+        public new void SubmitChanges()
         {
             BaseClassSubmitChanges(ConflictMode.ContinueOnConflict);
         }

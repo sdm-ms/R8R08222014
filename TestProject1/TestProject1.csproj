@@ -58,9 +58,6 @@
     <Reference Include="Accessibility">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="ClassLibrary1.Fakes">
-      <HintPath>FakesAssemblies\ClassLibrary1.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>Dependencies\FluentAssertions.dll</HintPath>
     </Reference>
@@ -128,7 +125,6 @@
     <Compile Include="Test_UseRealDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Fakes Include="Fakes\ClassLibrary1.fakes" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
