@@ -31,8 +31,6 @@ namespace ClassLibrary1.Model
 
         RaterooDataContext GetRealDatabaseIfExists();
 
-        void BaseClassSubmitChanges(ConflictMode conflictMode);
-
         System.IO.TextWriter Log { get; set; }
 
         System.Data.Common.DbCommand GetCommand(IQueryable query);
@@ -78,7 +76,7 @@ namespace ClassLibrary1.Model
             try
             {
                 numTries++;
-                theDataContext.BaseClassSubmitChanges(failureMode);
+                theDataContext.CompleteSubmitChanges(failureMode);
             }
             catch (ChangeConflictException)
             {

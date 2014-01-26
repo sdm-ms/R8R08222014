@@ -76,12 +76,22 @@ namespace ClassLibrary1.Misc
             return new SQLRepository<T>(UnderlyingDataContext.GetTable<T>());
         }
 
-        public void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
+        public virtual void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
         {
-            UnderlyingDataContext.SubmitChanges(conflictMode);
+            SubmitChanges();
         }
 
-        public void SubmitChanges()
+        public virtual void SubmitChanges()
+        {
+            BeforeSubmitChanges();
+            CompleteSubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+        }
+
+        public virtual void BeforeSubmitChanges()
+        {
+        }
+
+        public virtual void CompleteSubmitChanges(System.Data.Linq.ConflictMode conflictMode)
         {
             UnderlyingDataContext.SubmitChanges();
         }

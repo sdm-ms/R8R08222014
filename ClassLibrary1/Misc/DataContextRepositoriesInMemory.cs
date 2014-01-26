@@ -661,6 +661,16 @@ namespace ClassLibrary1.Misc
 
         public void SubmitChanges()
         {
+            BeforeSubmitChanges();
+            CompleteSubmitChanges(ConflictMode.ContinueOnConflict);
+        }
+
+        public virtual void BeforeSubmitChanges()
+        {
+        }
+
+        public void CompleteSubmitChanges(System.Data.Linq.ConflictMode conflictMode)
+        {
             inMemoryRepositories.CleanUpBeforeSubmittingChanges();
             if (inMemoryRepositories != null && UseFasterSubmitChanges.setting)
                 SimulatedPermanentStorage.SetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext, inMemoryRepositories);

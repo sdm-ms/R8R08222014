@@ -75,21 +75,10 @@ namespace ClassLibrary1.Model
             return true;
         }
 
-        public void BaseClassSubmitChanges(ConflictMode conflictMode)
+        public override void BeforeSubmitChanges()
         {
             this.InsertOnSubmitObjectsToBeInserted<SearchWord>();
-            base.SubmitChanges(conflictMode);
-        }
-
-        // hiding inherited
-        public new void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
-        {
-            BaseClassSubmitChanges(conflictMode);
-        }
-
-        public new void SubmitChanges()
-        {
-            BaseClassSubmitChanges(ConflictMode.ContinueOnConflict);
+            base.BeforeSubmitChanges();
         }
 
         RaterooDataContext underlyingRaterooDataContext;

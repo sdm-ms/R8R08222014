@@ -95,21 +95,15 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public new void SubmitChanges()
+        public override void SubmitChanges(ConflictMode conflictMode)
         {
-            this.InsertOnSubmitObjectsToBeInserted<SearchWord>();
+            BeforeSubmitChanges();
             this.RepeatedlyAttemptToSubmitChanges(ConflictMode.ContinueOnConflict);
         }
 
-        public new void SubmitChanges(ConflictMode conflictMode)
+        public override void BeforeSubmitChanges()
         {
             this.InsertOnSubmitObjectsToBeInserted<SearchWord>();
-            this.RepeatedlyAttemptToSubmitChanges(conflictMode);
-        }
-
-        public void BaseClassSubmitChanges(ConflictMode conflictMode)
-        {
-            base.SubmitChanges(conflictMode);
         }
 
         RaterooDataContext _underlyingRaterooDataContext;

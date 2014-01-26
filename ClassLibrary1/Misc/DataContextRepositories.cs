@@ -19,6 +19,7 @@ namespace ClassLibrary1.Misc
         IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged;
         void SubmitChanges();
         void SubmitChanges(System.Data.Linq.ConflictMode conflictMode);
+        void CompleteSubmitChanges(System.Data.Linq.ConflictMode conflictMode);
         void Reset();
     }
 
