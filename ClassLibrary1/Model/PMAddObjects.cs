@@ -2321,7 +2321,10 @@ namespace ClassLibrary1.Model
             {
                 User = theUser,
                 ChoiceInGroup = theChoiceInGroup,
-                Tbl = theTbl
+                Tbl = theTbl,
+                SumAdjustmentPctTimesRatingMagnitude = 0,
+                SumRatingMagnitudes = 0,
+                TrustLevelForChoice = 1.0F
             };
 
             DataContext.GetTable<TrustTrackerForChoiceInGroup>().InsertOnSubmit(theTracker);

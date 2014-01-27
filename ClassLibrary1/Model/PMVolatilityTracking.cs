@@ -177,12 +177,12 @@ namespace ClassLibrary1.Model
                                             .Where(pg => pg.WhenMade >= t.StartTime && pg.WhenMade < t.EndTime && pg.WhenMade < newStartTime)
                                             .SelectMany(pg => pg.UserRatings)
                                             .Where(p => p.NewUserRating != null && p.PreviousDisplayedRating != null)
-                                            .Sum(p => Math.Abs((p.NewUserRating - p.PreviousRatingOrVirtualRating) ?? 0) ) ,
+                                            .Sum(p => Math.Abs(((decimal?)p.NewUserRating - p.PreviousRatingOrVirtualRating) ?? 0)),
                         NewVolatility =     t.RatingGroup.UserRatingGroups
                                             .Where(pg => pg.WhenMade >= t.EndTime && pg.WhenMade >= newStartTime && pg.WhenMade < newEndTime)
                                             .SelectMany(pg => pg.UserRatings)
                                             .Where(p => p.NewUserRating != null && p.PreviousDisplayedRating != null)
-                                            .Sum(p => Math.Abs((p.NewUserRating - p.PreviousRatingOrVirtualRating) ?? 0)),
+                                            .Sum(p => Math.Abs(((decimal?)p.NewUserRating - p.PreviousRatingOrVirtualRating) ?? 0)),
                         MaximumVolatility = t.RatingGroup.Ratings.First().RatingCharacteristic.MaximumUserRating - t.RatingGroup.Ratings.First().RatingCharacteristic.MinimumUserRating
                     });
             if (!theTrackersWithInfo.Any())

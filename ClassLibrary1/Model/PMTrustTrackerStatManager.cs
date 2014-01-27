@@ -10,10 +10,9 @@ namespace ClassLibrary1.Model
     public class TrustTrackerChoiceSummary
     {
         public int ChoiceInGroupID;
-        public float SumAdjustmentPcts;
-        public int NumReratedUserRatings;
-
-        public float TrustValue { get { if (NumReratedUserRatings == 0) return 0; return SumAdjustmentPcts / NumReratedUserRatings; } } 
+        public float SumAdjustmentPctTimesRatingMagnitude;
+        public float SumRatingMagnitudes;
+        public float TrustValueForChoice;
     }
 
     public static class TrustTrackerTrustEveryone
@@ -111,7 +110,7 @@ namespace ClassLibrary1.Model
         /// <param name="trustTrackerStats"></param>
         public TrustTrackerStatManager(UserRating theUserRating, RatingCharacteristic theRatingCharacteristic,  TrustTrackerStat[] trustTrackerStats)
         {
-            TrustTrackerChoiceSummary = theUserRating.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(x => new TrustTrackerChoiceSummary { ChoiceInGroupID = x.TrustTrackerForChoiceInGroup.ChoiceInGroupID, NumReratedUserRatings = x.TrustTrackerForChoiceInGroup.NumReratedUserRatings, SumAdjustmentPcts = x.TrustTrackerForChoiceInGroup.SumAdjustmentPcts }).ToList();
+            TrustTrackerChoiceSummary = theUserRating.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(x => new TrustTrackerChoiceSummary { ChoiceInGroupID = x.TrustTrackerForChoiceInGroup.ChoiceInGroupID, SumAdjustmentPctTimesRatingMagnitude = x.TrustTrackerForChoiceInGroup.SumAdjustmentPctTimesRatingMagnitude, SumRatingMagnitudes = x.TrustTrackerForChoiceInGroup.SumRatingMagnitudes }).ToList();
             SetStatsAndAdjustmentFactor(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.OneDayVolatility ?? 0, theUserRating.OneHourVolatility ?? 0, theRatingCharacteristic, theUserRating.LogarithmicBase, (float) theUserRating.PercentPreviousRatings, trustTrackerStats);
         }
 
@@ -198,7 +197,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         internal TrustTrackerStat[] ConvertTrustTrackerChoiceSummaryToTrustTrackerStats()
         {
-            return TrustTrackerChoiceSummary.Select(x => new TrustTrackerStat { StatNum = -1, Trust_Numer = x.SumAdjustmentPcts, Trust_Denom = x.NumReratedUserRatings, TrustValue = (x.NumReratedUserRatings == 0) ? 1 : (x.SumAdjustmentPcts / x.NumReratedUserRatings) }).ToArray();
+            return TrustTrackerChoiceSummary.Select(x => new TrustTrackerStat { StatNum = -1, Trust_Numer = x.SumAdjustmentPctTimesRatingMagnitude, Trust_Denom = x.SumRatingMagnitudes, TrustValue = x.TrustValueForChoice }).ToArray();
         }
 
         /// <summary>
@@ -347,10 +346,10 @@ namespace ClassLibrary1.Model
             }
             for (int i = NumStats; i < NumStats + trustTrackerChoiceSummariesToUse; i++)
             {
-                if (TrustTrackerChoiceSummary[i].NumReratedUserRatings == 0)
+                if (TrustTrackerChoiceSummary[i].SumRatingMagnitudes == 0)
                     weighingFactors[i] = 0;
                 else
-                    weighingFactors[i] = Math.Min(0.1F, 1 / TrustTrackerChoiceSummary[i].NumReratedUserRatings);
+                    weighingFactors[i] = Math.Min(0.1F, 1 / TrustTrackerChoiceSummary[i].SumRatingMagnitudes);
                 sumWeighingFactors += weighingFactors[i];
             }
             if (sumWeighingFactors == 0)
@@ -361,7 +360,7 @@ namespace ClassLibrary1.Model
             for (int i = 0; i < numStatsToUse + trustTrackerChoiceSummariesToUse; i++)
             {
                 normalizedWeighingFactors[i] = weighingFactors[i] / sumWeighingFactors;
-                AdjustmentFactor += normalizedWeighingFactors[i] * ((i < numStatsToUse) ? trustTrackerStats[i].TrustValue : TrustTrackerChoiceSummary[i].TrustValue) ;
+                AdjustmentFactor += normalizedWeighingFactors[i] * ((i < numStatsToUse) ? trustTrackerStats[i].TrustValue : TrustTrackerChoiceSummary[i].TrustValueForChoice) ;
             }
         }
 

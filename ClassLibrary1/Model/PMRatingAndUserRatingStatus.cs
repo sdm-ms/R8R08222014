@@ -231,7 +231,7 @@ namespace ClassLibrary1.Model
                 });
                 foreach (var z in ratingsWithlastUserRatings)
                 {
-                    z.Rating.CurrentValue = (resolution.RatingResolution.ResolveByUnwinding || z.ReferenceUserRating == null) ? null : z.ReferenceUserRating.NewUserRating;
+                    z.Rating.CurrentValue = (resolution.RatingResolution.ResolveByUnwinding || z.ReferenceUserRating == null) ? (decimal?) null : z.ReferenceUserRating.NewUserRating;
                     //Trace.TraceInformation("3Setting rating to " + z.Rating.CurrentValue);
                     if (resolution.RatingResolution.CancelPreviousResolutions)
                     {
@@ -278,10 +278,10 @@ namespace ClassLibrary1.Model
 
             var userRatingInfoQuery = from x in DataContext.GetTable<UserRating>()
                                       where
-                                          (!x.PointsHaveBecomePending && x.WhenPointsBecomePending < currentTime)
-                                          || (!x.ShortTermResolutionReflected && x.RatingPhaseStatus.ShortTermResolutionValue != null)
-                                          || (x.LastModifiedTime < x.Rating.LastModifiedResolutionTimeOrCurrentValue)
-                                          || (x.ForceRecalculate)
+                                          (!x.PointsHaveBecomePending && x.WhenPointsBecomePending < currentTime) // triggered when time for points to become pending arrives
+                                          || (!x.ShortTermResolutionReflected && x.RatingPhaseStatus.ShortTermResolutionValue != null) // triggered when there has been a short term resolution
+                                          || (x.LastModifiedTime < x.Rating.LastModifiedResolutionTimeOrCurrentValue) // triggered when another UserRating has been added
+                                          || (x.ForceRecalculate) // triggered in unusual circumstances
                                         let trustTrackerUnit = x.TrustTrackerUnit
                                         let mostRecentUserRatingRecordedInUserRating = x.UserRating1 // this previously was the latest user rating
                                         let mostRecentUserRatingRecordedInRating = x.Rating.UserRating // this now is the latest user rating
@@ -304,41 +304,10 @@ namespace ClassLibrary1.Model
                                           OriginalUserTrustTracker = originalUserTrustTracker,
                                           MostRecentUserTrustTracker = mostRecentUserTrustTracker,
                                           CurrentlyRecordedUserInteraction = currentlyRecordedUserInteraction,
-                                          ReplacementUserInteraction = replacementUserInteraction
+                                          ReplacementUserInteraction = replacementUserInteraction,
+                                          TrustTrackerForChoiceInGroups = x.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(y => y.TrustTrackerForChoiceInGroup).ToList()
                                       }
                    ;
-            //var userRatingInfoQueryOLD = from x in RaterooDB.GetTable<UserRating>()
-            //    where
-            //        (!x.PointsHaveBecomePending && x.WhenPointsBecomePending < currentTime)
-            //        || (!x.ShortTermResolutionReflected && x.RatingPhaseStatus.ShortTermResolutionValue != null)
-            //        || (x.LastModifiedTime < x.Rating.LastModifiedResolutionTimeOrCurrentValue)
-            //        || (x.ForceRecalculate)
-            //    let currentlyRecordedUserInteraction = x.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == x.TrustTrackerUnit && x.UserRating1 != null && y.User == x.User && y.User1 == x.UserRating1.User)
-            //    let replacementUserInteraction = x.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == x.TrustTrackerUnit && y.User == x.User && y.User1 == x.Rating.UserRating.User)
-            //    let originalUserTrustTracker = x.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == x.TrustTrackerUnit)
-            //    select new 
-            //        { 
-            //            UserRating = x, 
-            //            UserRatingGroup = x.UserRatingGroup,
-            //            Rating = x.Rating,
-            //            MostRecentUserRatingInUserRating = x.UserRating1,
-            //            MostRecentUserRatingInRating = x.Rating.UserRating,
-            //            RatingGroup = x.UserRatingGroup.RatingGroup,
-            //            //MostRecentResolution = x.UserRatingGroup.RatingGroup.RatingGroupResolutions.Where(rgr => rgr.Status == (int) StatusOfObject.Active).OrderByDescending(rgr => rgr.ExecutionTime).FirstOrDefault(),
-            //            RatingGroupAttribute = x.UserRatingGroup.RatingGroup.RatingGroupAttribute,
-            //            RatingCharacteristic = x.UserRatingGroup.RatingGroup.RatingGroupAttribute.RatingCharacteristic,
-            //            PointsTotal = x.User.PointsTotals.SingleOrDefault(y => y.PointsManager == x.Rating.RatingGroup.TblRow.Tbl.PointsManager),
-            //            OriginalUserTrustTrackingStats = originalUserTrustTracker == null ? null : originalUserTrustTracker.TrustTrackerStats,
-            //            CurrentlyRecordedUserInteraction = 
-            //                currentlyRecordedUserInteraction,
-            //            ReplacementUserInteraction = 
-            //                replacementUserInteraction,
-            //            CurrentlyRecordedUserInteractionStats = currentlyRecordedUserInteraction == null ? null : currentlyRecordedUserInteraction.UserInteractionStats.ToArray(), // to ensure that it loads
-            //            ReplacementUserInteractionStats =
-            //                replacementUserInteraction == null ? null : replacementUserInteraction.UserInteractionStats.ToArray() // to ensure that it loads
-
-            //        }
-            //       ;
             var userRatingInfos = userRatingInfoQuery.Take(maxToTake).ToList();
             bool moreWorkToDo = userRatingInfos.Count() == maxToTake;
 
@@ -363,6 +332,24 @@ namespace ClassLibrary1.Model
                     userRatingInfo.RatingGroupAttribute, userRatingInfo.RatingCharacteristic, userRatingInfo.MostRecentUserTrustTracker);
             }
             return moreWorkToDo;
+        }
+
+        protected void UpdateTrustTrackersForChoiceInGroups(UserRating userRating, RatingCharacteristic theRatingCharacteristic, UserRating previousLatestUserRating, UserRating newLatestUserRating, IEnumerable<TrustTrackerForChoiceInGroup> choiceInGroupTrustTrackers)
+        {
+            float? previousAdjustmentPct = null;
+            if (previousLatestUserRating != null && previousLatestUserRating != userRating)
+                previousAdjustmentPct = PMAdjustmentFactor.CalculateAdjustmentFactor(previousLatestUserRating.NewUserRating, userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating, userRating.LogarithmicBase, true);
+            float newAdjustmentPct = PMAdjustmentFactor.CalculateAdjustmentFactor(newLatestUserRating.NewUserRating, userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating, userRating.LogarithmicBase, true);
+            float ratingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating,
+                    theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, userRating.LogarithmicBase);
+            float deltaNumerator = newAdjustmentPct * ratingMagnitude - (previousAdjustmentPct ?? 0) * ratingMagnitude;
+            float deltaDenominator = previousAdjustmentPct == null ? ratingMagnitude : 0; // no change in denominator when there was already a previous user rating recorded.
+            foreach (TrustTrackerForChoiceInGroup ttcing in choiceInGroupTrustTrackers)
+            {
+                ttcing.SumAdjustmentPctTimesRatingMagnitude += deltaNumerator;
+                ttcing.SumRatingMagnitudes += deltaDenominator;
+                ttcing.TrustLevelForChoice = deltaNumerator / deltaDenominator;
+            }
         }
 
         protected void UpdatePointsForUserRating(UserRating theUserRating, PointsTotal thePointsTotal, DateTime currentTime)

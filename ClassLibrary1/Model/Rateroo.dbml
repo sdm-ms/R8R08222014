@@ -991,13 +991,13 @@
       <Association Name="User_UserCheckIn" Member="UserCheckIns" ThisKey="UserID" OtherKey="UserID" Type="UserCheckIn" />
       <Association Name="User_PointsTotal" Member="PointsTotals" ThisKey="UserID" OtherKey="UserID" Type="PointsTotal" />
       <Association Name="User_UserRatingsToAdd" Member="UserRatingsToAdds" ThisKey="UserID" OtherKey="UserID" Type="UserRatingsToAdd" />
-      <Association Name="User_UserRating" Member="UserRatings" ThisKey="UserID" OtherKey="UserID" Type="UserRating" />
       <Association Name="User_Rating" Member="Ratings" ThisKey="UserID" OtherKey="Creator" Type="Rating" />
       <Association Name="User_UserInfo" Member="UserInfo" Storage="_UserInfos" ThisKey="UserID" OtherKey="UserID" Type="UserInfo" Cardinality="One" />
       <Association Name="User_UserInteraction" Member="UserInteractions" ThisKey="UserID" OtherKey="OrigRatingUserID" Type="UserInteraction" />
       <Association Name="User_UserInteraction1" Member="UserInteractions1" ThisKey="UserID" OtherKey="LatestRatingUserID" Type="UserInteraction" />
       <Association Name="User_TrustTracker" Member="TrustTrackers" ThisKey="UserID" OtherKey="UserID" Type="TrustTracker" />
       <Association Name="User_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="UserID" OtherKey="UserID" Type="TrustTrackerForChoiceInGroup" />
+      <Association Name="User_UserRating" Member="UserRatings" ThisKey="UserID" OtherKey="UserID" Type="UserRating" />
     </Type>
   </Table>
   <Table Name="dbo.UsersAdministrationRightsGroups" Member="UsersAdministrationRightsGroups">
@@ -1344,54 +1344,6 @@
       <Association Name="User_UserRatingsToAdd" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.UserRatings" Member="UserRatings">
-    <Type Name="UserRating">
-      <Column Name="UserRatingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserRatingGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RatingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RatingPhaseStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="RewardPendingPointsTrackerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="MostRecentUserRatingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PreviousRatingOrVirtualRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="PreviousDisplayedRating" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="EnteredUserRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="NewUserRating" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="MaxLoss" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="PotentialPointsShortTerm" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="PotentialPointsLongTerm" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="PotentialPointsLongTermUnweighted" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="LongTermPointsWeight" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="PercentPreviousRatings" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="IsTrusted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MadeDirectly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="LongTermResolutionReflected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ShortTermResolutionReflected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="PointsHaveBecomePending" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ForceRecalculate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="HighStakesPreviouslySecret" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="HighStakesKnown" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="SubsequentlyRated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="LogarithmicBase" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="HighStakesMultiplierOverride" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="WhenPointsBecomePending" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="LastModifiedTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="VolatilityTrackingNextTimeFrameToRemove" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="OneHourVolatility" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="OneDayVolatility" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Association Name="UserRating_UserRating" Member="UserRatings" ThisKey="UserRatingID" OtherKey="MostRecentUserRatingID" Type="UserRating" />
-      <Association Name="UserRating_Rating" Member="Ratings" ThisKey="UserRatingID" OtherKey="MostRecentUserRatingID" Type="Rating" />
-      <Association Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroupsUserRatingLinks" ThisKey="UserRatingID" OtherKey="UserRatingID" Type="TrustTrackerForChoiceInGroupsUserRatingLink" />
-      <Association Name="RatingPhaseStatus_UserRating" Member="RatingPhaseStatus" ThisKey="RatingPhaseStatusID" OtherKey="RatingPhaseStatusID" Type="RatingPhaseStatus" IsForeignKey="true" />
-      <Association Name="RewardPendingPointsTracker_UserRating" Member="RewardPendingPointsTracker" ThisKey="RewardPendingPointsTrackerID" OtherKey="RewardPendingPointsTrackerID" Type="RewardPendingPointsTracker" IsForeignKey="true" />
-      <Association Name="UserRatingGroup_UserRating" Member="UserRatingGroup" ThisKey="UserRatingGroupID" OtherKey="UserRatingGroupID" Type="UserRatingGroup" IsForeignKey="true" />
-      <Association Name="UserRating_UserRating" Member="UserRating1" ThisKey="MostRecentUserRatingID" OtherKey="UserRatingID" Type="UserRating" IsForeignKey="true" />
-      <Association Name="User_UserRating" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
-      <Association Name="Rating_UserRating" Member="Rating" ThisKey="RatingID" OtherKey="RatingID" Type="Rating" IsForeignKey="true" />
-      <Association Name="TrustTrackerUnit_UserRating" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Ratings" Member="Ratings">
     <Type Name="Rating">
       <Column Name="RatingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1411,12 +1363,12 @@
       <Association Name="Rating_RatingPhaseStatus" Member="RatingPhaseStatus" ThisKey="RatingID" OtherKey="RatingID" Type="RatingPhaseStatus" />
       <Association Name="Rating_RatingCondition" Member="RatingConditions" ThisKey="RatingID" OtherKey="ConditionRatingID" Type="RatingCondition" />
       <Association Name="Rating_UserRating" Member="UserRatings" ThisKey="RatingID" OtherKey="RatingID" Type="UserRating" />
-      <Association Name="UserRating_Rating" Member="UserRating" ThisKey="MostRecentUserRatingID" OtherKey="UserRatingID" Type="UserRating" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="RatingCharacteristic_Rating" Member="RatingCharacteristic" ThisKey="RatingCharacteristicsID" OtherKey="RatingCharacteristicsID" Type="RatingCharacteristic" IsForeignKey="true" />
       <Association Name="RatingGroup_Rating" Member="RatingGroup" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroup" IsForeignKey="true" />
       <Association Name="RatingGroup_Rating1" Member="RatingGroup1" ThisKey="OwnedRatingGroupID" OtherKey="RatingGroupID" Type="RatingGroup" IsForeignKey="true" />
       <Association Name="RatingGroup_Rating2" Member="RatingGroup2" ThisKey="TopmostRatingGroupID" OtherKey="RatingGroupID" Type="RatingGroup" IsForeignKey="true" />
       <Association Name="User_Rating" Member="User" ThisKey="Creator" OtherKey="UserID" Type="User" IsForeignKey="true" />
+      <Association Name="UserRating_Rating" Member="UserRating" ThisKey="MostRecentUserRatingID" OtherKey="UserRatingID" Type="UserRating" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
   <Table Name="dbo.TblTabs" Member="TblTabs">
@@ -1540,10 +1492,10 @@
       <Column Name="ExtendIntervalWhenChangeIsLessThanThis" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="ExtendIntervalMultiplier" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Association Name="TrustTrackerUnit_PointsManager" Member="PointsManagers" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="PointsManager" />
-      <Association Name="TrustTrackerUnit_UserRating" Member="UserRatings" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserRating" />
       <Association Name="TrustTrackerUnit_TblColumn" Member="TblColumns" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TblColumn" />
       <Association Name="TrustTrackerUnit_UserInteraction" Member="UserInteractions" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserInteraction" />
       <Association Name="TrustTrackerUnit_TrustTracker" Member="TrustTrackers" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTracker" />
+      <Association Name="TrustTrackerUnit_UserRating" Member="UserRatings" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserRating" />
     </Type>
   </Table>
   <Table Name="dbo.UserInteractions" Member="UserInteractions">
@@ -1608,20 +1560,6 @@
       <Association Name="User_TrustTracker" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TrustTrackerForChoiceInGroups" Member="TrustTrackerForChoiceInGroups">
-    <Type Name="TrustTrackerForChoiceInGroup">
-      <Column Name="TrustTrackerForChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SumAdjustmentPcts" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="NumReratedUserRatings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroupsUserRatingLinks" ThisKey="TrustTrackerForChoiceInGroupID" OtherKey="TrustTrackerForChoiceInGroupID" Type="TrustTrackerForChoiceInGroupsUserRatingLink" />
-      <Association Name="ChoiceInGroup_TrustTrackerForChoiceInGroup" Member="ChoiceInGroup" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInGroup" IsForeignKey="true" />
-      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
-      <Association Name="User_TrustTrackerForChoiceInGroup" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.TrustTrackerForChoiceInGroupsUserRatingLinks" Member="TrustTrackerForChoiceInGroupsUserRatingLinks">
     <Type Name="TrustTrackerForChoiceInGroupsUserRatingLink">
       <Column Name="TrustTrackerForChoiceInGroupsUserRatingLinkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1629,6 +1567,69 @@
       <Column Name="TrustTrackerForChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroup" ThisKey="TrustTrackerForChoiceInGroupID" OtherKey="TrustTrackerForChoiceInGroupID" Type="TrustTrackerForChoiceInGroup" IsForeignKey="true" />
       <Association Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink" Member="UserRating" ThisKey="UserRatingID" OtherKey="UserRatingID" Type="UserRating" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrustTrackerForChoiceInGroups" Member="TrustTrackerForChoiceInGroups">
+    <Type Name="TrustTrackerForChoiceInGroup">
+      <Column Name="TrustTrackerForChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SumAdjustmentPctTimesRatingMagnitude" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Column Name="SumRatingMagnitudes" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Column Name="TrustLevelForChoice" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Association Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroupsUserRatingLinks" ThisKey="TrustTrackerForChoiceInGroupID" OtherKey="TrustTrackerForChoiceInGroupID" Type="TrustTrackerForChoiceInGroupsUserRatingLink" />
+      <Association Name="ChoiceInGroup_TrustTrackerForChoiceInGroup" Member="ChoiceInGroup" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInGroup" IsForeignKey="true" />
+      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
+      <Association Name="User_TrustTrackerForChoiceInGroup" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserRatings" Member="UserRatings">
+    <Type Name="UserRating">
+      <Column Name="UserRatingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserRatingGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RatingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RatingPhaseStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RewardPendingPointsTrackerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MostRecentUserRatingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PreviousRatingOrVirtualRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PreviousDisplayedRating" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="EnteredUserRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="NewUserRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="MaxLoss" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PotentialPointsShortTerm" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PotentialPointsLongTerm" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PotentialPointsLongTermUnweighted" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="LongTermPointsWeight" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PercentPreviousRatings" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="IsTrusted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MadeDirectly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LongTermResolutionReflected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShortTermResolutionReflected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PointsHaveBecomePending" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ForceRecalculate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HighStakesPreviouslySecret" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HighStakesKnown" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SubsequentlyRated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LogarithmicBase" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="HighStakesMultiplierOverride" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="WhenPointsBecomePending" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastModifiedTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="VolatilityTrackingNextTimeFrameToRemove" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="OneHourVolatility" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="OneDayVolatility" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Association Name="UserRating_Rating" Member="Ratings" ThisKey="UserRatingID" OtherKey="MostRecentUserRatingID" Type="Rating" />
+      <Association Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroupsUserRatingLinks" ThisKey="UserRatingID" OtherKey="UserRatingID" Type="TrustTrackerForChoiceInGroupsUserRatingLink" />
+      <Association Name="UserRating_UserRating" Member="UserRatings" ThisKey="UserRatingID" OtherKey="MostRecentUserRatingID" Type="UserRating" />
+      <Association Name="RatingPhaseStatus_UserRating" Member="RatingPhaseStatus" ThisKey="RatingPhaseStatusID" OtherKey="RatingPhaseStatusID" Type="RatingPhaseStatus" IsForeignKey="true" />
+      <Association Name="Rating_UserRating" Member="Rating" ThisKey="RatingID" OtherKey="RatingID" Type="Rating" IsForeignKey="true" />
+      <Association Name="RewardPendingPointsTracker_UserRating" Member="RewardPendingPointsTracker" ThisKey="RewardPendingPointsTrackerID" OtherKey="RewardPendingPointsTrackerID" Type="RewardPendingPointsTracker" IsForeignKey="true" />
+      <Association Name="TrustTrackerUnit_UserRating" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
+      <Association Name="UserRatingGroup_UserRating" Member="UserRatingGroup" ThisKey="UserRatingGroupID" OtherKey="UserRatingGroupID" Type="UserRatingGroup" IsForeignKey="true" />
+      <Association Name="UserRating_UserRating" Member="UserRating1" ThisKey="MostRecentUserRatingID" OtherKey="UserRatingID" Type="UserRating" IsForeignKey="true" />
+      <Association Name="User_UserRating" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">

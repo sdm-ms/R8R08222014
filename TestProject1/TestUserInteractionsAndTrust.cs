@@ -1276,7 +1276,7 @@ namespace TestProject1
             ratingIndexToUse = 1;
             rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
             userRating = rating.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
-            userRating.EnteredUserRating.Should().Be(userRating.NewUserRating.Value);
+            userRating.EnteredUserRating.Should().Be(userRating.NewUserRating);
         }
 
 

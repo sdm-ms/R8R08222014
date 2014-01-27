@@ -845,8 +845,9 @@ namespace ClassLibrary1.Model
                         .Select(x => new TrustTrackerChoiceSummary
                         {
                             ChoiceInGroupID = x.ChoiceInGroupID,
-                            NumReratedUserRatings = x.NumReratedUserRatings,
-                            SumAdjustmentPcts = x.SumAdjustmentPcts
+                            SumAdjustmentPctTimesRatingMagnitude = x.SumAdjustmentPctTimesRatingMagnitude,
+                            SumRatingMagnitudes = x.SumRatingMagnitudes,
+                            TrustValueForChoice = x.TrustLevelForChoice
                         }).ToList();
                 var otherChoiceInFieldIDs = choiceInGroupIDs.Where(x => !choiceTrustTrackers.Any(y => y.ChoiceInGroupID == x)).ToList();
                 TrustTrackerStatManager theManager = new TrustTrackerStatManager(

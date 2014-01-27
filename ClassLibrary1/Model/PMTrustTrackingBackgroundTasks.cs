@@ -225,7 +225,7 @@ namespace ClassLibrary1.Model
 
             // We don't want any one instance to have a huge effect on the adjustment percentage, so we need to constrain the adjustment factor to a range of -1.25, 1.25
             float adjustFactor = PMAdjustmentFactor.CalculateAdjustmentFactor(
-                laterValue: latestUserRating.NewUserRating.Value, 
+                laterValue: latestUserRating.NewUserRating, 
                 enteredValue: originalUserRating.EnteredUserRating, 
                 basisValue: originalUserRating.PreviousRatingOrVirtualRating, 
                 logBase: latestUserRating.LogarithmicBase,
