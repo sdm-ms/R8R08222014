@@ -116,30 +116,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("Insufficient privileges");
         }
 
-        public int PointsTrustRuleCreate(decimal ultimatePointsToCount, decimal countMaxLossAgainstAt, decimal countPendingAt, int minimumUsersCounting, string name, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID)
-        {
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.AddTblsAndChangePointsManagers, !makeActiveNow, null, null, true))
-            {
-                int? theUser = userID;
-                if (DataAccess.GetUser(userID).SuperUser)
-                    theUser = null;
-                int newObjectID = DataManipulation.AddPointsTrustRule(ultimatePointsToCount, countMaxLossAgainstAt, countPendingAt, minimumUsersCounting, name, userID);
-
-                if (makeActive)
-                {
-                    int theChange = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.PointsTrustRules, true, false, false, false, false, false, false, false, "", newObjectID, null, null, null, null, "", null);
-                    if (makeActiveNow)
-                        DataManipulation.ImplementChangesGroup((int)changesGroupID);
-                }
-
-                return newObjectID;
-            }
-
-            throw new Exception("Insufficient privileges.");
-
-        }
-
-        public int PointsManagerCreate(int domainID, int? defaultRatingGroupAttributesID,int PointsTrustRulesID, int? specializedSiteNum, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, String name)
+        public int PointsManagerCreate(int domainID, int? defaultRatingGroupAttributesID, int? specializedSiteNum, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, String name)
         {
             
             int? newObjectID = null;
@@ -148,7 +125,7 @@ namespace ClassLibrary1.Model
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
-                newObjectID = DataManipulation.AddPointsManager(domainID, PointsTrustRulesID, name, theUser);
+                newObjectID = DataManipulation.AddPointsManager(domainID, name, theUser);
 
                 if (makeActive)
                 {
@@ -266,7 +243,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void PointsManagerChangeSettings(int pointsManagerID, int? PointsTrustRulesID, decimal? currentPeriodDollarSubsidy, DateTime? endOfDollarSubsidyPeriod, decimal? nextPeriodDollarSubsidy, int? nextPeriodLength, short? numPrizes, decimal? minimumPayment, bool doItNow, int userID, int? changesGroupID)
+        public void PointsManagerChangeSettings(int pointsManagerID, decimal? currentPeriodDollarSubsidy, DateTime? endOfDollarSubsidyPeriod, decimal? nextPeriodDollarSubsidy, int? nextPeriodLength, short? numPrizes, decimal? minimumPayment, bool doItNow, int userID, int? changesGroupID)
         {
 
             DataManipulation.ConfirmObjectExists(pointsManagerID, TypeOfObject.PointsManager);
@@ -274,7 +251,7 @@ namespace ClassLibrary1.Model
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.AddTblsAndChangePointsManagers, !doItNow, pointsManagerID, null, true))
             {
 
-                int newPointsManagerID = DataManipulation.AddPointsManagerNewSettings(pointsManagerID, PointsTrustRulesID, currentPeriodDollarSubsidy, endOfDollarSubsidyPeriod, nextPeriodDollarSubsidy, nextPeriodLength, numPrizes, minimumPayment);
+                int newPointsManagerID = DataManipulation.AddPointsManagerNewSettings(pointsManagerID, currentPeriodDollarSubsidy, endOfDollarSubsidyPeriod, nextPeriodDollarSubsidy, nextPeriodLength, numPrizes, minimumPayment);
 
                 int changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.PointsManager, false, false, true, false, false, false, false, false, "", newPointsManagerID, pointsManagerID, null, null, null, "", null);
                 if (doItNow)
@@ -1709,24 +1686,6 @@ namespace ClassLibrary1.Model
             return (int)newObjectID;
         }
 
-        public int PointsTrustRulesChange(int pointsManagerID, decimal ultimatePointsToCount, decimal countMaxLossAgainstAt, decimal countPendingAt, int minimumUsersCounting, bool doItNow, String name, int userID, int? changesGroupID)
-        {
-            int? newObjectID = null;
-            DataManipulation.ConfirmObjectExists(pointsManagerID, TypeOfObject.PointsManager);
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.AddTblsAndChangePointsManagers, !doItNow, pointsManagerID, null, true))
-            {
-                int? theUser = userID;
-                if (DataAccess.GetUser(userID).SuperUser)
-                    theUser = null;
-                newObjectID = DataManipulation.AddPointsTrustRule(ultimatePointsToCount, countMaxLossAgainstAt, countPendingAt, minimumUsersCounting, name, theUser);
-                int theChange = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.PointsTrustRules, true, false, false, false, false, false, false, false, "", newObjectID, null, null, null, null, "", null);
-                PointsManagerChangeSettings(pointsManagerID, newObjectID, null, null, null, null, null, null, doItNow, userID, changesGroupID);
-            }
-            else
-                throw new Exception("Insufficient privileges");
-            return (int)newObjectID;
-        }
-
         public int UsersRightsCreate(int? userToAffectID, int? pointsManagerID, bool mayView, bool mayPredict, bool mayAddTbls,
             bool mayResolveRatings, bool mayChangeTblRows, bool mayChangeChoiceGroups, bool mayChangeCharacteristics,
             bool mayChangeCategories, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings,
@@ -2582,7 +2541,7 @@ namespace ClassLibrary1.Model
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.AddTblsAndChangePointsManagers, !doItNow, pointsManagerID, null, true))
             {
 
-                PointsManagerChangeSettings(pointsManagerID, null, null, null, null, null, null, null, doItNow, userID, changesGroupID);
+                PointsManagerChangeSettings(pointsManagerID, null, null, null, null, null, null, doItNow, userID, changesGroupID);
 
 
             }

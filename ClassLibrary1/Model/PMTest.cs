@@ -758,11 +758,6 @@ namespace ClassLibrary1.Model
             return myRatingGroupAttributes;
         }
 
-        protected int CreatePointsTrustRule()
-        {
-            return theTestHelper.ActionProcessor.PointsTrustRuleCreate((decimal)10, (decimal)0.01, (decimal)0.50, 4, "", true, false, theTestHelper.SuperUserId, null);
-        }
-
         public void CreateChoiceGroups(int pointsManagerID)
         {
             bool alreadyExist = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Where(x => x.PointsManagerID == pointsManagerID && !x.Name.Contains("Change choices") ).Any();
@@ -1114,14 +1109,14 @@ namespace ClassLibrary1.Model
             short numPrizes = 4;
             decimal minimumPayment = 5;
             PointsManager thePointsManager = theTestHelper.ActionProcessor.DataContext.GetTable<PointsManager>().Single(u => u.PointsManagerID == pointsManagerID);
-            theTestHelper.ActionProcessor.PointsManagerChangeSettings(thePointsManager.PointsManagerID, thePointsManager.PointsTrustRulesID, currentPeriodDollarSubsidy, endOfDollarSubsidyPeriod, nextPeriodDollarSubsidy, nextPeriodLength, numPrizes, minimumPayment, true, theTestHelper.SuperUserId, myChangesGroup);
+            theTestHelper.ActionProcessor.PointsManagerChangeSettings(thePointsManager.PointsManagerID, currentPeriodDollarSubsidy, endOfDollarSubsidyPeriod, nextPeriodDollarSubsidy, nextPeriodLength, numPrizes, minimumPayment, true, theTestHelper.SuperUserId, myChangesGroup);
         }
 
-        protected int CreatePointsManager(string name, TestRatingGroupAttributesTypes myType, int PointsTrustRules, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID)
+        protected int CreatePointsManager(string name, TestRatingGroupAttributesTypes myType, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID)
         {
             int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
             int? myRatingGroupAttributes = CreateRatingGroupAttributes(myType, theRatingPhase, theSubsidyDensityRange, theRatingCondition, null, myChangesGroup);
-            int pointsManagerID = theTestHelper.ActionProcessor.PointsManagerCreate(theDomainID, myRatingGroupAttributes, PointsTrustRules,null,true,true,theTestHelper.SuperUserId,myChangesGroup,name);
+            int pointsManagerID = theTestHelper.ActionProcessor.PointsManagerCreate(theDomainID, myRatingGroupAttributes,null,true,true,theTestHelper.SuperUserId,myChangesGroup,name);
             PointsManagerChangeDollarSubsidySettings(pointsManagerID);
             CreateChoiceGroups(pointsManagerID); 
             myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
@@ -1146,7 +1141,6 @@ namespace ClassLibrary1.Model
             var myPhaseType = TestPhasesTypes.singleIndefinitePhase;
             int theRatingPhaseID = CreateRatingPhaseGroup(myPhaseType, myChangesGroup);
             var myType = TestRatingGroupAttributesTypes.predictEvent;
-            int thePointsTrustRule = CreatePointsTrustRule();
             int numDomains = 3;
             for (int domain = 1; domain <= numDomains; domain++)
             {
@@ -1169,7 +1163,7 @@ namespace ClassLibrary1.Model
                         numTbls = 1;
                     //else
                     //    numTbls = RandomGenerator.GetRandom(2, 5);
-                    int thePointsManagerID = CreatePointsManager("PointsManager " + domain + " " + universe, myType, thePointsTrustRule, theRatingPhaseID, null, null, theDomainID);
+                    int thePointsManagerID = CreatePointsManager("PointsManager " + domain + " " + universe, myType, theRatingPhaseID, null, null, theDomainID);
                     for (int Tbl = 1; Tbl <= numTbls; Tbl++)
                     {
                         int theTblID = CreateTbl("Tbl " + domain + " " + universe + " " + Tbl, TestRatingGroupAttributesTypes.rating, theRatingPhaseID, null, null, thePointsManagerID);
@@ -1184,8 +1178,7 @@ namespace ClassLibrary1.Model
             int theRatingPhaseID = CreateRatingPhaseGroup(myPhaseType, myChangesGroup);
             int theDomainID = CreateDomain(name, myType, theRatingPhaseID, null, null);
             myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
-            int thePointsTrustRule = CreatePointsTrustRule();
-            int thePointsManagerID = CreatePointsManager(name + " universe",myType,thePointsTrustRule,theRatingPhaseID,null,null,theDomainID);
+            int thePointsManagerID = CreatePointsManager(name + " universe",myType,theRatingPhaseID,null,null,theDomainID);
             int theTblID = CreateTbl(name + " Tbl", myType, theRatingPhaseID, null, null, thePointsManagerID);
             theTestHelper.ActionProcessor.HierarchyItemCreate(null, null, theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Single(x => x.TblID == theTblID), true, name + " Tbl", theTestHelper.SuperUserId, null);
 /*            theTestHelper.Action.InsertableContentCreate(theDomainID, null, null, "domainTest", "This is non-overridable domain content.", true, false, (short)InsertableLocation.TopOfViewTblContent, true, theTestHelper.superUser, null);

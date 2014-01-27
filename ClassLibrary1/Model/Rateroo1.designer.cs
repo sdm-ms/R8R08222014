@@ -183,9 +183,6 @@ namespace ClassLibrary1.Model
     partial void InsertPointsAdjustment(PointsAdjustment instance);
     partial void UpdatePointsAdjustment(PointsAdjustment instance);
     partial void DeletePointsAdjustment(PointsAdjustment instance);
-    partial void InsertPointsTrustRule(PointsTrustRule instance);
-    partial void UpdatePointsTrustRule(PointsTrustRule instance);
-    partial void DeletePointsTrustRule(PointsTrustRule instance);
     partial void InsertProposalEvaluationRatingSetting(ProposalEvaluationRatingSetting instance);
     partial void UpdateProposalEvaluationRatingSetting(ProposalEvaluationRatingSetting instance);
     partial void DeleteProposalEvaluationRatingSetting(ProposalEvaluationRatingSetting instance);
@@ -306,9 +303,6 @@ namespace ClassLibrary1.Model
     partial void InsertPointsTotal(PointsTotal instance);
     partial void UpdatePointsTotal(PointsTotal instance);
     partial void DeletePointsTotal(PointsTotal instance);
-    partial void InsertPointsManager(PointsManager instance);
-    partial void UpdatePointsManager(PointsManager instance);
-    partial void DeletePointsManager(PointsManager instance);
     partial void InsertRatingCondition(RatingCondition instance);
     partial void UpdateRatingCondition(RatingCondition instance);
     partial void DeleteRatingCondition(RatingCondition instance);
@@ -363,6 +357,9 @@ namespace ClassLibrary1.Model
     partial void InsertUserRating(UserRating instance);
     partial void UpdateUserRating(UserRating instance);
     partial void DeleteUserRating(UserRating instance);
+    partial void InsertPointsManager(PointsManager instance);
+    partial void UpdatePointsManager(PointsManager instance);
+    partial void DeletePointsManager(PointsManager instance);
     #endregion
 		
 		public RaterooDataContext() : 
@@ -811,14 +808,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<PointsTrustRule> PointsTrustRules
-		{
-			get
-			{
-				return this.GetTable<PointsTrustRule>();
-			}
-		}
-		
 		public System.Data.Linq.Table<ProposalEvaluationRatingSetting> ProposalEvaluationRatingSettings
 		{
 			get
@@ -1139,14 +1128,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<PointsManager> PointsManagers
-		{
-			get
-			{
-				return this.GetTable<PointsManager>();
-			}
-		}
-		
 		public System.Data.Linq.Table<RatingCondition> RatingConditions
 		{
 			get
@@ -1288,6 +1269,14 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<UserRating>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PointsManager> PointsManagers
+		{
+			get
+			{
+				return this.GetTable<PointsManager>();
 			}
 		}
 		
@@ -4852,9 +4841,9 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<Tbl> _Tbl;
 		
-		private EntityRef<PointsManager> _PointsManager;
-		
 		private EntityRef<Rating> _Rating;
+		
+		private EntityRef<PointsManager> _PointsManager;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -4885,8 +4874,8 @@ namespace ClassLibrary1.Model
 			this._ChangesStatusOfObjects = new EntitySet<ChangesStatusOfObject>(new Action<ChangesStatusOfObject>(this.attach_ChangesStatusOfObjects), new Action<ChangesStatusOfObject>(this.detach_ChangesStatusOfObjects));
 			this._User = default(EntityRef<User>);
 			this._Tbl = default(EntityRef<Tbl>);
-			this._PointsManager = default(EntityRef<PointsManager>);
 			this._Rating = default(EntityRef<Rating>);
+			this._PointsManager = default(EntityRef<PointsManager>);
 			OnCreated();
 		}
 		
@@ -5167,40 +5156,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ChangesGroup", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
-		public PointsManager PointsManager
-		{
-			get
-			{
-				return this._PointsManager.Entity;
-			}
-			set
-			{
-				PointsManager previousValue = this._PointsManager.Entity;
-				if (((previousValue != value) 
-							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PointsManager.Entity = null;
-						previousValue.ChangesGroups.Remove(this);
-					}
-					this._PointsManager.Entity = value;
-					if ((value != null))
-					{
-						value.ChangesGroups.Add(this);
-						this._PointsManagerID = value.PointsManagerID;
-					}
-					else
-					{
-						this._PointsManagerID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("PointsManager");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_ChangesGroup", Storage="_Rating", ThisKey="RewardRatingID", OtherKey="RatingID", IsForeignKey=true)]
 		public Rating Rating
 		{
@@ -5231,6 +5186,40 @@ namespace ClassLibrary1.Model
 						this._RewardRatingID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Rating");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ChangesGroup", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
+		public PointsManager PointsManager
+		{
+			get
+			{
+				return this._PointsManager.Entity;
+			}
+			set
+			{
+				PointsManager previousValue = this._PointsManager.Entity;
+				if (((previousValue != value) 
+							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PointsManager.Entity = null;
+						previousValue.ChangesGroups.Remove(this);
+					}
+					this._PointsManager.Entity = value;
+					if ((value != null))
+					{
+						value.ChangesGroups.Add(this);
+						this._PointsManagerID = value.PointsManagerID;
+					}
+					else
+					{
+						this._PointsManagerID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("PointsManager");
 				}
 			}
 		}
@@ -13953,288 +13942,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PointsTrustRules")]
-	public partial class PointsTrustRule : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PointsTrustRulesID;
-		
-		private decimal _UltimatePointsToCount;
-		
-		private decimal _CountPotentialMaxLossAgainstAt;
-		
-		private decimal _CountPendingAt;
-		
-		private System.Nullable<decimal> _TrustPointsRatioTotalsMinForAutoTrust;
-		
-		private int _MinimumUsersCounting;
-		
-		private string _Name;
-		
-		private System.Nullable<int> _Creator;
-		
-		private byte _Status;
-		
-		private EntitySet<PointsManager> _PointsManagers;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPointsTrustRulesIDChanging(int value);
-    partial void OnPointsTrustRulesIDChanged();
-    partial void OnUltimatePointsToCountChanging(decimal value);
-    partial void OnUltimatePointsToCountChanged();
-    partial void OnCountPotentialMaxLossAgainstAtChanging(decimal value);
-    partial void OnCountPotentialMaxLossAgainstAtChanged();
-    partial void OnCountPendingAtChanging(decimal value);
-    partial void OnCountPendingAtChanged();
-    partial void OnTrustPointsRatioTotalsMinForAutoTrustChanging(System.Nullable<decimal> value);
-    partial void OnTrustPointsRatioTotalsMinForAutoTrustChanged();
-    partial void OnMinimumUsersCountingChanging(int value);
-    partial void OnMinimumUsersCountingChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnCreatorChanging(System.Nullable<int> value);
-    partial void OnCreatorChanged();
-    partial void OnStatusChanging(byte value);
-    partial void OnStatusChanged();
-    #endregion
-		
-		public PointsTrustRule()
-		{
-			this._PointsManagers = new EntitySet<PointsManager>(new Action<PointsManager>(this.attach_PointsManagers), new Action<PointsManager>(this.detach_PointsManagers));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsTrustRulesID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int PointsTrustRulesID
-		{
-			get
-			{
-				return this._PointsTrustRulesID;
-			}
-			set
-			{
-				if ((this._PointsTrustRulesID != value))
-				{
-					this.OnPointsTrustRulesIDChanging(value);
-					this.SendPropertyChanging();
-					this._PointsTrustRulesID = value;
-					this.SendPropertyChanged("PointsTrustRulesID");
-					this.OnPointsTrustRulesIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UltimatePointsToCount", DbType="Decimal(18,4) NOT NULL")]
-		public decimal UltimatePointsToCount
-		{
-			get
-			{
-				return this._UltimatePointsToCount;
-			}
-			set
-			{
-				if ((this._UltimatePointsToCount != value))
-				{
-					this.OnUltimatePointsToCountChanging(value);
-					this.SendPropertyChanging();
-					this._UltimatePointsToCount = value;
-					this.SendPropertyChanged("UltimatePointsToCount");
-					this.OnUltimatePointsToCountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountPotentialMaxLossAgainstAt", DbType="Decimal(18,4) NOT NULL")]
-		public decimal CountPotentialMaxLossAgainstAt
-		{
-			get
-			{
-				return this._CountPotentialMaxLossAgainstAt;
-			}
-			set
-			{
-				if ((this._CountPotentialMaxLossAgainstAt != value))
-				{
-					this.OnCountPotentialMaxLossAgainstAtChanging(value);
-					this.SendPropertyChanging();
-					this._CountPotentialMaxLossAgainstAt = value;
-					this.SendPropertyChanged("CountPotentialMaxLossAgainstAt");
-					this.OnCountPotentialMaxLossAgainstAtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountPendingAt", DbType="Decimal(18,4) NOT NULL")]
-		public decimal CountPendingAt
-		{
-			get
-			{
-				return this._CountPendingAt;
-			}
-			set
-			{
-				if ((this._CountPendingAt != value))
-				{
-					this.OnCountPendingAtChanging(value);
-					this.SendPropertyChanging();
-					this._CountPendingAt = value;
-					this.SendPropertyChanged("CountPendingAt");
-					this.OnCountPendingAtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustPointsRatioTotalsMinForAutoTrust", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> TrustPointsRatioTotalsMinForAutoTrust
-		{
-			get
-			{
-				return this._TrustPointsRatioTotalsMinForAutoTrust;
-			}
-			set
-			{
-				if ((this._TrustPointsRatioTotalsMinForAutoTrust != value))
-				{
-					this.OnTrustPointsRatioTotalsMinForAutoTrustChanging(value);
-					this.SendPropertyChanging();
-					this._TrustPointsRatioTotalsMinForAutoTrust = value;
-					this.SendPropertyChanged("TrustPointsRatioTotalsMinForAutoTrust");
-					this.OnTrustPointsRatioTotalsMinForAutoTrustChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinimumUsersCounting", DbType="Int NOT NULL")]
-		public int MinimumUsersCounting
-		{
-			get
-			{
-				return this._MinimumUsersCounting;
-			}
-			set
-			{
-				if ((this._MinimumUsersCounting != value))
-				{
-					this.OnMinimumUsersCountingChanging(value);
-					this.SendPropertyChanging();
-					this._MinimumUsersCounting = value;
-					this.SendPropertyChanged("MinimumUsersCounting");
-					this.OnMinimumUsersCountingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
-		public System.Nullable<int> Creator
-		{
-			get
-			{
-				return this._Creator;
-			}
-			set
-			{
-				if ((this._Creator != value))
-				{
-					this.OnCreatorChanging(value);
-					this.SendPropertyChanging();
-					this._Creator = value;
-					this.SendPropertyChanged("Creator");
-					this.OnCreatorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
-		public byte Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsTrustRule_PointsManager", Storage="_PointsManagers", ThisKey="PointsTrustRulesID", OtherKey="PointsTrustRulesID")]
-		public EntitySet<PointsManager> PointsManagers
-		{
-			get
-			{
-				return this._PointsManagers;
-			}
-			set
-			{
-				this._PointsManagers.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_PointsManagers(PointsManager entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsTrustRule = this;
-		}
-		
-		private void detach_PointsManagers(PointsManager entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsTrustRule = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProposalEvaluationRatingSettings")]
 	public partial class ProposalEvaluationRatingSetting : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -14267,9 +13974,9 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
 		
-		private EntityRef<PointsManager> _PointsManager;
-		
 		private EntityRef<UserAction> _UserAction;
+		
+		private EntityRef<PointsManager> _PointsManager;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -14304,8 +14011,8 @@ namespace ClassLibrary1.Model
 		public ProposalEvaluationRatingSetting()
 		{
 			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
-			this._PointsManager = default(EntityRef<PointsManager>);
 			this._UserAction = default(EntityRef<UserAction>);
+			this._PointsManager = default(EntityRef<PointsManager>);
 			OnCreated();
 		}
 		
@@ -14595,40 +14302,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalEvaluationRatingSetting", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
-		public PointsManager PointsManager
-		{
-			get
-			{
-				return this._PointsManager.Entity;
-			}
-			set
-			{
-				PointsManager previousValue = this._PointsManager.Entity;
-				if (((previousValue != value) 
-							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PointsManager.Entity = null;
-						previousValue.ProposalEvaluationRatingSettings.Remove(this);
-					}
-					this._PointsManager.Entity = value;
-					if ((value != null))
-					{
-						value.ProposalEvaluationRatingSettings.Add(this);
-						this._PointsManagerID = value.PointsManagerID;
-					}
-					else
-					{
-						this._PointsManagerID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("PointsManager");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserAction_ProposalEvaluationRatingSetting", Storage="_UserAction", ThisKey="UserActionID", OtherKey="UserActionID", IsForeignKey=true)]
 		public UserAction UserAction
 		{
@@ -14659,6 +14332,40 @@ namespace ClassLibrary1.Model
 						this._UserActionID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("UserAction");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalEvaluationRatingSetting", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
+		public PointsManager PointsManager
+		{
+			get
+			{
+				return this._PointsManager.Entity;
+			}
+			set
+			{
+				PointsManager previousValue = this._PointsManager.Entity;
+				if (((previousValue != value) 
+							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PointsManager.Entity = null;
+						previousValue.ProposalEvaluationRatingSettings.Remove(this);
+					}
+					this._PointsManager.Entity = value;
+					if ((value != null))
+					{
+						value.ProposalEvaluationRatingSettings.Add(this);
+						this._PointsManagerID = value.PointsManagerID;
+					}
+					else
+					{
+						this._PointsManagerID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("PointsManager");
 				}
 			}
 		}
@@ -17989,9 +17696,9 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
 		
-		private EntityRef<PointsManager> _PointsManager;
-		
 		private EntityRef<UserAction> _UserAction;
+		
+		private EntityRef<PointsManager> _PointsManager;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -18020,8 +17727,8 @@ namespace ClassLibrary1.Model
 		public RewardRatingSetting()
 		{
 			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
-			this._PointsManager = default(EntityRef<PointsManager>);
 			this._UserAction = default(EntityRef<UserAction>);
+			this._PointsManager = default(EntityRef<PointsManager>);
 			OnCreated();
 		}
 		
@@ -18251,40 +17958,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_RewardRatingSetting", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
-		public PointsManager PointsManager
-		{
-			get
-			{
-				return this._PointsManager.Entity;
-			}
-			set
-			{
-				PointsManager previousValue = this._PointsManager.Entity;
-				if (((previousValue != value) 
-							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PointsManager.Entity = null;
-						previousValue.RewardRatingSettings.Remove(this);
-					}
-					this._PointsManager.Entity = value;
-					if ((value != null))
-					{
-						value.RewardRatingSettings.Add(this);
-						this._PointsManagerID = value.PointsManagerID;
-					}
-					else
-					{
-						this._PointsManagerID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("PointsManager");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserAction_RewardRatingSetting", Storage="_UserAction", ThisKey="UserActionID", OtherKey="UserActionID", IsForeignKey=true)]
 		public UserAction UserAction
 		{
@@ -18315,6 +17988,40 @@ namespace ClassLibrary1.Model
 						this._UserActionID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("UserAction");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_RewardRatingSetting", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
+		public PointsManager PointsManager
+		{
+			get
+			{
+				return this._PointsManager.Entity;
+			}
+			set
+			{
+				PointsManager previousValue = this._PointsManager.Entity;
+				if (((previousValue != value) 
+							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PointsManager.Entity = null;
+						previousValue.RewardRatingSettings.Remove(this);
+					}
+					this._PointsManager.Entity = value;
+					if ((value != null))
+					{
+						value.RewardRatingSettings.Add(this);
+						this._PointsManagerID = value.PointsManagerID;
+					}
+					else
+					{
+						this._PointsManagerID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("PointsManager");
 				}
 			}
 		}
@@ -22467,9 +22174,9 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<User> _User;
 		
-		private EntityRef<PointsManager> _PointsManager;
-		
 		private EntityRef<AdministrationRightsGroup> _AdministrationRightsGroup;
+		
+		private EntityRef<PointsManager> _PointsManager;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -22490,8 +22197,8 @@ namespace ClassLibrary1.Model
 		public UsersAdministrationRightsGroup()
 		{
 			this._User = default(EntityRef<User>);
-			this._PointsManager = default(EntityRef<PointsManager>);
 			this._AdministrationRightsGroup = default(EntityRef<AdministrationRightsGroup>);
+			this._PointsManager = default(EntityRef<PointsManager>);
 			OnCreated();
 		}
 		
@@ -22641,40 +22348,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_UsersAdministrationRightsGroup", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
-		public PointsManager PointsManager
-		{
-			get
-			{
-				return this._PointsManager.Entity;
-			}
-			set
-			{
-				PointsManager previousValue = this._PointsManager.Entity;
-				if (((previousValue != value) 
-							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PointsManager.Entity = null;
-						previousValue.UsersAdministrationRightsGroups.Remove(this);
-					}
-					this._PointsManager.Entity = value;
-					if ((value != null))
-					{
-						value.UsersAdministrationRightsGroups.Add(this);
-						this._PointsManagerID = value.PointsManagerID;
-					}
-					else
-					{
-						this._PointsManagerID = default(int);
-					}
-					this.SendPropertyChanged("PointsManager");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AdministrationRightsGroup_UsersAdministrationRightsGroup", Storage="_AdministrationRightsGroup", ThisKey="AdministrationRightsGroupID", OtherKey="AdministrationRightsGroupID", IsForeignKey=true)]
 		public AdministrationRightsGroup AdministrationRightsGroup
 		{
@@ -22705,6 +22378,40 @@ namespace ClassLibrary1.Model
 						this._AdministrationRightsGroupID = default(int);
 					}
 					this.SendPropertyChanged("AdministrationRightsGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_UsersAdministrationRightsGroup", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
+		public PointsManager PointsManager
+		{
+			get
+			{
+				return this._PointsManager.Entity;
+			}
+			set
+			{
+				PointsManager previousValue = this._PointsManager.Entity;
+				if (((previousValue != value) 
+							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PointsManager.Entity = null;
+						previousValue.UsersAdministrationRightsGroups.Remove(this);
+					}
+					this._PointsManager.Entity = value;
+					if ((value != null))
+					{
+						value.UsersAdministrationRightsGroups.Add(this);
+						this._PointsManagerID = value.PointsManagerID;
+					}
+					else
+					{
+						this._PointsManagerID = default(int);
+					}
+					this.SendPropertyChanged("PointsManager");
 				}
 			}
 		}
@@ -28511,1511 +28218,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PointsManagers")]
-	public partial class PointsManager : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PointsManagerID;
-		
-		private int _DomainID;
-		
-		private System.Nullable<int> _PointsTrustRulesID;
-		
-		private System.Nullable<int> _TrustTrackerUnitID;
-		
-		private decimal _CurrentPeriodDollarSubsidy;
-		
-		private System.Nullable<System.DateTime> _EndOfDollarSubsidyPeriod;
-		
-		private System.Nullable<decimal> _NextPeriodDollarSubsidy;
-		
-		private System.Nullable<int> _NextPeriodLength;
-		
-		private short _NumPrizes;
-		
-		private System.Nullable<decimal> _MinimumPayment;
-		
-		private decimal _TotalUserPoints;
-		
-		private decimal _CurrentUserPoints;
-		
-		private decimal _CurrentUserPendingPoints;
-		
-		private decimal _CurrentUserNotYetPendingPoints;
-		
-		private decimal _CurrentPointsToCount;
-		
-		private int _NumUsersMeetingUltimateStandard;
-		
-		private int _NumUsersMeetingCurrentStandard;
-		
-		private decimal _HighStakesProbability;
-		
-		private decimal _HighStakesSecretMultiplier;
-		
-		private System.Nullable<decimal> _HighStakesKnownMultiplier;
-		
-		private bool _HighStakesNoviceOn;
-		
-		private int _HighStakesNoviceNumAutomatic;
-		
-		private int _HighStakesNoviceNumOneThird;
-		
-		private int _HighStakesNoviceNumOneTenth;
-		
-		private decimal _DatabaseChangeSelectHighStakesNoviceNumPct;
-		
-		private int _HighStakesNoviceNumActive;
-		
-		private int _HighStakesNoviceTargetNum;
-		
-		private decimal _DollarValuePerPoint;
-		
-		private decimal _DiscountForGuarantees;
-		
-		private decimal _MaximumTotalGuarantees;
-		
-		private decimal _MaximumGuaranteePaymentPerHour;
-		
-		private decimal _TotalUnconditionalGuaranteesEarnedEver;
-		
-		private decimal _TotalConditionalGuaranteesEarnedEver;
-		
-		private decimal _TotalConditionalGuaranteesPending;
-		
-		private bool _AllowApplicationsWhenNoConditionalGuaranteesAvailable;
-		
-		private bool _ConditionalGuaranteesAvailableForNewUsers;
-		
-		private bool _ConditionalGuaranteesAvailableForExistingUsers;
-		
-		private int _ConditionalGuaranteeTimeBlockInHours;
-		
-		private int _ConditionalGuaranteeApplicationsReceived;
-		
-		private string _Name;
-		
-		private System.Nullable<int> _Creator;
-		
-		private byte _Status;
-		
-		private EntitySet<ChangesGroup> _ChangesGroups;
-		
-		private EntitySet<ChoiceGroup> _ChoiceGroups;
-		
-		private EntitySet<InsertableContent> _InsertableContents;
-		
-		private EntitySet<PointsAdjustment> _PointsAdjustments;
-		
-		private EntitySet<ProposalEvaluationRatingSetting> _ProposalEvaluationRatingSettings;
-		
-		private EntitySet<ProposalSetting> _ProposalSettings;
-		
-		private EntitySet<RewardRatingSetting> _RewardRatingSettings;
-		
-		private EntitySet<UsersAdministrationRightsGroup> _UsersAdministrationRightsGroups;
-		
-		private EntitySet<UsersRight> _UsersRights;
-		
-		private EntitySet<Tbl> _Tbls;
-		
-		private EntitySet<PointsTotal> _PointsTotals;
-		
-		private EntitySet<AdministrationRightsGroup> _AdministrationRightsGroups;
-		
-		private EntityRef<Domain> _Domain;
-		
-		private EntityRef<PointsTrustRule> _PointsTrustRule;
-		
-		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPointsManagerIDChanging(int value);
-    partial void OnPointsManagerIDChanged();
-    partial void OnDomainIDChanging(int value);
-    partial void OnDomainIDChanged();
-    partial void OnPointsTrustRulesIDChanging(System.Nullable<int> value);
-    partial void OnPointsTrustRulesIDChanged();
-    partial void OnTrustTrackerUnitIDChanging(System.Nullable<int> value);
-    partial void OnTrustTrackerUnitIDChanged();
-    partial void OnCurrentPeriodDollarSubsidyChanging(decimal value);
-    partial void OnCurrentPeriodDollarSubsidyChanged();
-    partial void OnEndOfDollarSubsidyPeriodChanging(System.Nullable<System.DateTime> value);
-    partial void OnEndOfDollarSubsidyPeriodChanged();
-    partial void OnNextPeriodDollarSubsidyChanging(System.Nullable<decimal> value);
-    partial void OnNextPeriodDollarSubsidyChanged();
-    partial void OnNextPeriodLengthChanging(System.Nullable<int> value);
-    partial void OnNextPeriodLengthChanged();
-    partial void OnNumPrizesChanging(short value);
-    partial void OnNumPrizesChanged();
-    partial void OnMinimumPaymentChanging(System.Nullable<decimal> value);
-    partial void OnMinimumPaymentChanged();
-    partial void OnTotalUserPointsChanging(decimal value);
-    partial void OnTotalUserPointsChanged();
-    partial void OnCurrentUserPointsChanging(decimal value);
-    partial void OnCurrentUserPointsChanged();
-    partial void OnCurrentUserPendingPointsChanging(decimal value);
-    partial void OnCurrentUserPendingPointsChanged();
-    partial void OnCurrentUserNotYetPendingPointsChanging(decimal value);
-    partial void OnCurrentUserNotYetPendingPointsChanged();
-    partial void OnCurrentPointsToCountChanging(decimal value);
-    partial void OnCurrentPointsToCountChanged();
-    partial void OnNumUsersMeetingUltimateStandardChanging(int value);
-    partial void OnNumUsersMeetingUltimateStandardChanged();
-    partial void OnNumUsersMeetingCurrentStandardChanging(int value);
-    partial void OnNumUsersMeetingCurrentStandardChanged();
-    partial void OnHighStakesProbabilityChanging(decimal value);
-    partial void OnHighStakesProbabilityChanged();
-    partial void OnHighStakesSecretMultiplierChanging(decimal value);
-    partial void OnHighStakesSecretMultiplierChanged();
-    partial void OnHighStakesKnownMultiplierChanging(System.Nullable<decimal> value);
-    partial void OnHighStakesKnownMultiplierChanged();
-    partial void OnHighStakesNoviceOnChanging(bool value);
-    partial void OnHighStakesNoviceOnChanged();
-    partial void OnHighStakesNoviceNumAutomaticChanging(int value);
-    partial void OnHighStakesNoviceNumAutomaticChanged();
-    partial void OnHighStakesNoviceNumOneThirdChanging(int value);
-    partial void OnHighStakesNoviceNumOneThirdChanged();
-    partial void OnHighStakesNoviceNumOneTenthChanging(int value);
-    partial void OnHighStakesNoviceNumOneTenthChanged();
-    partial void OnDatabaseChangeSelectHighStakesNoviceNumPctChanging(decimal value);
-    partial void OnDatabaseChangeSelectHighStakesNoviceNumPctChanged();
-    partial void OnHighStakesNoviceNumActiveChanging(int value);
-    partial void OnHighStakesNoviceNumActiveChanged();
-    partial void OnHighStakesNoviceTargetNumChanging(int value);
-    partial void OnHighStakesNoviceTargetNumChanged();
-    partial void OnDollarValuePerPointChanging(decimal value);
-    partial void OnDollarValuePerPointChanged();
-    partial void OnDiscountForGuaranteesChanging(decimal value);
-    partial void OnDiscountForGuaranteesChanged();
-    partial void OnMaximumTotalGuaranteesChanging(decimal value);
-    partial void OnMaximumTotalGuaranteesChanged();
-    partial void OnMaximumGuaranteePaymentPerHourChanging(decimal value);
-    partial void OnMaximumGuaranteePaymentPerHourChanged();
-    partial void OnTotalUnconditionalGuaranteesEarnedEverChanging(decimal value);
-    partial void OnTotalUnconditionalGuaranteesEarnedEverChanged();
-    partial void OnTotalConditionalGuaranteesEarnedEverChanging(decimal value);
-    partial void OnTotalConditionalGuaranteesEarnedEverChanged();
-    partial void OnTotalConditionalGuaranteesPendingChanging(decimal value);
-    partial void OnTotalConditionalGuaranteesPendingChanged();
-    partial void OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanging(bool value);
-    partial void OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanged();
-    partial void OnConditionalGuaranteesAvailableForNewUsersChanging(bool value);
-    partial void OnConditionalGuaranteesAvailableForNewUsersChanged();
-    partial void OnConditionalGuaranteesAvailableForExistingUsersChanging(bool value);
-    partial void OnConditionalGuaranteesAvailableForExistingUsersChanged();
-    partial void OnConditionalGuaranteeTimeBlockInHoursChanging(int value);
-    partial void OnConditionalGuaranteeTimeBlockInHoursChanged();
-    partial void OnConditionalGuaranteeApplicationsReceivedChanging(int value);
-    partial void OnConditionalGuaranteeApplicationsReceivedChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnCreatorChanging(System.Nullable<int> value);
-    partial void OnCreatorChanged();
-    partial void OnStatusChanging(byte value);
-    partial void OnStatusChanged();
-    #endregion
-		
-		public PointsManager()
-		{
-			this._ChangesGroups = new EntitySet<ChangesGroup>(new Action<ChangesGroup>(this.attach_ChangesGroups), new Action<ChangesGroup>(this.detach_ChangesGroups));
-			this._ChoiceGroups = new EntitySet<ChoiceGroup>(new Action<ChoiceGroup>(this.attach_ChoiceGroups), new Action<ChoiceGroup>(this.detach_ChoiceGroups));
-			this._InsertableContents = new EntitySet<InsertableContent>(new Action<InsertableContent>(this.attach_InsertableContents), new Action<InsertableContent>(this.detach_InsertableContents));
-			this._PointsAdjustments = new EntitySet<PointsAdjustment>(new Action<PointsAdjustment>(this.attach_PointsAdjustments), new Action<PointsAdjustment>(this.detach_PointsAdjustments));
-			this._ProposalEvaluationRatingSettings = new EntitySet<ProposalEvaluationRatingSetting>(new Action<ProposalEvaluationRatingSetting>(this.attach_ProposalEvaluationRatingSettings), new Action<ProposalEvaluationRatingSetting>(this.detach_ProposalEvaluationRatingSettings));
-			this._ProposalSettings = new EntitySet<ProposalSetting>(new Action<ProposalSetting>(this.attach_ProposalSettings), new Action<ProposalSetting>(this.detach_ProposalSettings));
-			this._RewardRatingSettings = new EntitySet<RewardRatingSetting>(new Action<RewardRatingSetting>(this.attach_RewardRatingSettings), new Action<RewardRatingSetting>(this.detach_RewardRatingSettings));
-			this._UsersAdministrationRightsGroups = new EntitySet<UsersAdministrationRightsGroup>(new Action<UsersAdministrationRightsGroup>(this.attach_UsersAdministrationRightsGroups), new Action<UsersAdministrationRightsGroup>(this.detach_UsersAdministrationRightsGroups));
-			this._UsersRights = new EntitySet<UsersRight>(new Action<UsersRight>(this.attach_UsersRights), new Action<UsersRight>(this.detach_UsersRights));
-			this._Tbls = new EntitySet<Tbl>(new Action<Tbl>(this.attach_Tbls), new Action<Tbl>(this.detach_Tbls));
-			this._PointsTotals = new EntitySet<PointsTotal>(new Action<PointsTotal>(this.attach_PointsTotals), new Action<PointsTotal>(this.detach_PointsTotals));
-			this._AdministrationRightsGroups = new EntitySet<AdministrationRightsGroup>(new Action<AdministrationRightsGroup>(this.attach_AdministrationRightsGroups), new Action<AdministrationRightsGroup>(this.detach_AdministrationRightsGroups));
-			this._Domain = default(EntityRef<Domain>);
-			this._PointsTrustRule = default(EntityRef<PointsTrustRule>);
-			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int PointsManagerID
-		{
-			get
-			{
-				return this._PointsManagerID;
-			}
-			set
-			{
-				if ((this._PointsManagerID != value))
-				{
-					this.OnPointsManagerIDChanging(value);
-					this.SendPropertyChanging();
-					this._PointsManagerID = value;
-					this.SendPropertyChanged("PointsManagerID");
-					this.OnPointsManagerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DomainID", DbType="Int NOT NULL")]
-		public int DomainID
-		{
-			get
-			{
-				return this._DomainID;
-			}
-			set
-			{
-				if ((this._DomainID != value))
-				{
-					if (this._Domain.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnDomainIDChanging(value);
-					this.SendPropertyChanging();
-					this._DomainID = value;
-					this.SendPropertyChanged("DomainID");
-					this.OnDomainIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsTrustRulesID", DbType="Int")]
-		public System.Nullable<int> PointsTrustRulesID
-		{
-			get
-			{
-				return this._PointsTrustRulesID;
-			}
-			set
-			{
-				if ((this._PointsTrustRulesID != value))
-				{
-					if (this._PointsTrustRule.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPointsTrustRulesIDChanging(value);
-					this.SendPropertyChanging();
-					this._PointsTrustRulesID = value;
-					this.SendPropertyChanged("PointsTrustRulesID");
-					this.OnPointsTrustRulesIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int")]
-		public System.Nullable<int> TrustTrackerUnitID
-		{
-			get
-			{
-				return this._TrustTrackerUnitID;
-			}
-			set
-			{
-				if ((this._TrustTrackerUnitID != value))
-				{
-					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTrustTrackerUnitIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerUnitID = value;
-					this.SendPropertyChanged("TrustTrackerUnitID");
-					this.OnTrustTrackerUnitIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentPeriodDollarSubsidy", DbType="Decimal(18,2) NOT NULL")]
-		public decimal CurrentPeriodDollarSubsidy
-		{
-			get
-			{
-				return this._CurrentPeriodDollarSubsidy;
-			}
-			set
-			{
-				if ((this._CurrentPeriodDollarSubsidy != value))
-				{
-					this.OnCurrentPeriodDollarSubsidyChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentPeriodDollarSubsidy = value;
-					this.SendPropertyChanged("CurrentPeriodDollarSubsidy");
-					this.OnCurrentPeriodDollarSubsidyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndOfDollarSubsidyPeriod", DbType="DateTime")]
-		public System.Nullable<System.DateTime> EndOfDollarSubsidyPeriod
-		{
-			get
-			{
-				return this._EndOfDollarSubsidyPeriod;
-			}
-			set
-			{
-				if ((this._EndOfDollarSubsidyPeriod != value))
-				{
-					this.OnEndOfDollarSubsidyPeriodChanging(value);
-					this.SendPropertyChanging();
-					this._EndOfDollarSubsidyPeriod = value;
-					this.SendPropertyChanged("EndOfDollarSubsidyPeriod");
-					this.OnEndOfDollarSubsidyPeriodChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NextPeriodDollarSubsidy", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> NextPeriodDollarSubsidy
-		{
-			get
-			{
-				return this._NextPeriodDollarSubsidy;
-			}
-			set
-			{
-				if ((this._NextPeriodDollarSubsidy != value))
-				{
-					this.OnNextPeriodDollarSubsidyChanging(value);
-					this.SendPropertyChanging();
-					this._NextPeriodDollarSubsidy = value;
-					this.SendPropertyChanged("NextPeriodDollarSubsidy");
-					this.OnNextPeriodDollarSubsidyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NextPeriodLength", DbType="Int")]
-		public System.Nullable<int> NextPeriodLength
-		{
-			get
-			{
-				return this._NextPeriodLength;
-			}
-			set
-			{
-				if ((this._NextPeriodLength != value))
-				{
-					this.OnNextPeriodLengthChanging(value);
-					this.SendPropertyChanging();
-					this._NextPeriodLength = value;
-					this.SendPropertyChanged("NextPeriodLength");
-					this.OnNextPeriodLengthChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumPrizes", DbType="SmallInt NOT NULL")]
-		public short NumPrizes
-		{
-			get
-			{
-				return this._NumPrizes;
-			}
-			set
-			{
-				if ((this._NumPrizes != value))
-				{
-					this.OnNumPrizesChanging(value);
-					this.SendPropertyChanging();
-					this._NumPrizes = value;
-					this.SendPropertyChanged("NumPrizes");
-					this.OnNumPrizesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinimumPayment", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> MinimumPayment
-		{
-			get
-			{
-				return this._MinimumPayment;
-			}
-			set
-			{
-				if ((this._MinimumPayment != value))
-				{
-					this.OnMinimumPaymentChanging(value);
-					this.SendPropertyChanging();
-					this._MinimumPayment = value;
-					this.SendPropertyChanged("MinimumPayment");
-					this.OnMinimumPaymentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalUserPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalUserPoints
-		{
-			get
-			{
-				return this._TotalUserPoints;
-			}
-			set
-			{
-				if ((this._TotalUserPoints != value))
-				{
-					this.OnTotalUserPointsChanging(value);
-					this.SendPropertyChanging();
-					this._TotalUserPoints = value;
-					this.SendPropertyChanged("TotalUserPoints");
-					this.OnTotalUserPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentUserPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal CurrentUserPoints
-		{
-			get
-			{
-				return this._CurrentUserPoints;
-			}
-			set
-			{
-				if ((this._CurrentUserPoints != value))
-				{
-					this.OnCurrentUserPointsChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentUserPoints = value;
-					this.SendPropertyChanged("CurrentUserPoints");
-					this.OnCurrentUserPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentUserPendingPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal CurrentUserPendingPoints
-		{
-			get
-			{
-				return this._CurrentUserPendingPoints;
-			}
-			set
-			{
-				if ((this._CurrentUserPendingPoints != value))
-				{
-					this.OnCurrentUserPendingPointsChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentUserPendingPoints = value;
-					this.SendPropertyChanged("CurrentUserPendingPoints");
-					this.OnCurrentUserPendingPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentUserNotYetPendingPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal CurrentUserNotYetPendingPoints
-		{
-			get
-			{
-				return this._CurrentUserNotYetPendingPoints;
-			}
-			set
-			{
-				if ((this._CurrentUserNotYetPendingPoints != value))
-				{
-					this.OnCurrentUserNotYetPendingPointsChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentUserNotYetPendingPoints = value;
-					this.SendPropertyChanged("CurrentUserNotYetPendingPoints");
-					this.OnCurrentUserNotYetPendingPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentPointsToCount", DbType="Decimal(18,4) NOT NULL")]
-		public decimal CurrentPointsToCount
-		{
-			get
-			{
-				return this._CurrentPointsToCount;
-			}
-			set
-			{
-				if ((this._CurrentPointsToCount != value))
-				{
-					this.OnCurrentPointsToCountChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentPointsToCount = value;
-					this.SendPropertyChanged("CurrentPointsToCount");
-					this.OnCurrentPointsToCountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumUsersMeetingUltimateStandard", DbType="Int NOT NULL")]
-		public int NumUsersMeetingUltimateStandard
-		{
-			get
-			{
-				return this._NumUsersMeetingUltimateStandard;
-			}
-			set
-			{
-				if ((this._NumUsersMeetingUltimateStandard != value))
-				{
-					this.OnNumUsersMeetingUltimateStandardChanging(value);
-					this.SendPropertyChanging();
-					this._NumUsersMeetingUltimateStandard = value;
-					this.SendPropertyChanged("NumUsersMeetingUltimateStandard");
-					this.OnNumUsersMeetingUltimateStandardChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumUsersMeetingCurrentStandard", DbType="Int NOT NULL")]
-		public int NumUsersMeetingCurrentStandard
-		{
-			get
-			{
-				return this._NumUsersMeetingCurrentStandard;
-			}
-			set
-			{
-				if ((this._NumUsersMeetingCurrentStandard != value))
-				{
-					this.OnNumUsersMeetingCurrentStandardChanging(value);
-					this.SendPropertyChanging();
-					this._NumUsersMeetingCurrentStandard = value;
-					this.SendPropertyChanged("NumUsersMeetingCurrentStandard");
-					this.OnNumUsersMeetingCurrentStandardChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesProbability", DbType="Decimal(18,4) NOT NULL")]
-		public decimal HighStakesProbability
-		{
-			get
-			{
-				return this._HighStakesProbability;
-			}
-			set
-			{
-				if ((this._HighStakesProbability != value))
-				{
-					this.OnHighStakesProbabilityChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesProbability = value;
-					this.SendPropertyChanged("HighStakesProbability");
-					this.OnHighStakesProbabilityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesSecretMultiplier", DbType="Decimal(18,4) NOT NULL")]
-		public decimal HighStakesSecretMultiplier
-		{
-			get
-			{
-				return this._HighStakesSecretMultiplier;
-			}
-			set
-			{
-				if ((this._HighStakesSecretMultiplier != value))
-				{
-					this.OnHighStakesSecretMultiplierChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesSecretMultiplier = value;
-					this.SendPropertyChanged("HighStakesSecretMultiplier");
-					this.OnHighStakesSecretMultiplierChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesKnownMultiplier", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> HighStakesKnownMultiplier
-		{
-			get
-			{
-				return this._HighStakesKnownMultiplier;
-			}
-			set
-			{
-				if ((this._HighStakesKnownMultiplier != value))
-				{
-					this.OnHighStakesKnownMultiplierChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesKnownMultiplier = value;
-					this.SendPropertyChanged("HighStakesKnownMultiplier");
-					this.OnHighStakesKnownMultiplierChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceOn", DbType="Bit NOT NULL")]
-		public bool HighStakesNoviceOn
-		{
-			get
-			{
-				return this._HighStakesNoviceOn;
-			}
-			set
-			{
-				if ((this._HighStakesNoviceOn != value))
-				{
-					this.OnHighStakesNoviceOnChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesNoviceOn = value;
-					this.SendPropertyChanged("HighStakesNoviceOn");
-					this.OnHighStakesNoviceOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumAutomatic", DbType="Int NOT NULL")]
-		public int HighStakesNoviceNumAutomatic
-		{
-			get
-			{
-				return this._HighStakesNoviceNumAutomatic;
-			}
-			set
-			{
-				if ((this._HighStakesNoviceNumAutomatic != value))
-				{
-					this.OnHighStakesNoviceNumAutomaticChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesNoviceNumAutomatic = value;
-					this.SendPropertyChanged("HighStakesNoviceNumAutomatic");
-					this.OnHighStakesNoviceNumAutomaticChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumOneThird", DbType="Int NOT NULL")]
-		public int HighStakesNoviceNumOneThird
-		{
-			get
-			{
-				return this._HighStakesNoviceNumOneThird;
-			}
-			set
-			{
-				if ((this._HighStakesNoviceNumOneThird != value))
-				{
-					this.OnHighStakesNoviceNumOneThirdChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesNoviceNumOneThird = value;
-					this.SendPropertyChanged("HighStakesNoviceNumOneThird");
-					this.OnHighStakesNoviceNumOneThirdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumOneTenth", DbType="Int NOT NULL")]
-		public int HighStakesNoviceNumOneTenth
-		{
-			get
-			{
-				return this._HighStakesNoviceNumOneTenth;
-			}
-			set
-			{
-				if ((this._HighStakesNoviceNumOneTenth != value))
-				{
-					this.OnHighStakesNoviceNumOneTenthChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesNoviceNumOneTenth = value;
-					this.SendPropertyChanged("HighStakesNoviceNumOneTenth");
-					this.OnHighStakesNoviceNumOneTenthChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatabaseChangeSelectHighStakesNoviceNumPct", DbType="Decimal(18,4) NOT NULL")]
-		public decimal DatabaseChangeSelectHighStakesNoviceNumPct
-		{
-			get
-			{
-				return this._DatabaseChangeSelectHighStakesNoviceNumPct;
-			}
-			set
-			{
-				if ((this._DatabaseChangeSelectHighStakesNoviceNumPct != value))
-				{
-					this.OnDatabaseChangeSelectHighStakesNoviceNumPctChanging(value);
-					this.SendPropertyChanging();
-					this._DatabaseChangeSelectHighStakesNoviceNumPct = value;
-					this.SendPropertyChanged("DatabaseChangeSelectHighStakesNoviceNumPct");
-					this.OnDatabaseChangeSelectHighStakesNoviceNumPctChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumActive", DbType="Int NOT NULL")]
-		public int HighStakesNoviceNumActive
-		{
-			get
-			{
-				return this._HighStakesNoviceNumActive;
-			}
-			set
-			{
-				if ((this._HighStakesNoviceNumActive != value))
-				{
-					this.OnHighStakesNoviceNumActiveChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesNoviceNumActive = value;
-					this.SendPropertyChanged("HighStakesNoviceNumActive");
-					this.OnHighStakesNoviceNumActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceTargetNum", DbType="Int NOT NULL")]
-		public int HighStakesNoviceTargetNum
-		{
-			get
-			{
-				return this._HighStakesNoviceTargetNum;
-			}
-			set
-			{
-				if ((this._HighStakesNoviceTargetNum != value))
-				{
-					this.OnHighStakesNoviceTargetNumChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesNoviceTargetNum = value;
-					this.SendPropertyChanged("HighStakesNoviceTargetNum");
-					this.OnHighStakesNoviceTargetNumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DollarValuePerPoint", DbType="Decimal(18,8) NOT NULL")]
-		public decimal DollarValuePerPoint
-		{
-			get
-			{
-				return this._DollarValuePerPoint;
-			}
-			set
-			{
-				if ((this._DollarValuePerPoint != value))
-				{
-					this.OnDollarValuePerPointChanging(value);
-					this.SendPropertyChanging();
-					this._DollarValuePerPoint = value;
-					this.SendPropertyChanged("DollarValuePerPoint");
-					this.OnDollarValuePerPointChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiscountForGuarantees", DbType="Decimal(18,4) NOT NULL")]
-		public decimal DiscountForGuarantees
-		{
-			get
-			{
-				return this._DiscountForGuarantees;
-			}
-			set
-			{
-				if ((this._DiscountForGuarantees != value))
-				{
-					this.OnDiscountForGuaranteesChanging(value);
-					this.SendPropertyChanging();
-					this._DiscountForGuarantees = value;
-					this.SendPropertyChanged("DiscountForGuarantees");
-					this.OnDiscountForGuaranteesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaximumTotalGuarantees", DbType="Decimal(18,4) NOT NULL")]
-		public decimal MaximumTotalGuarantees
-		{
-			get
-			{
-				return this._MaximumTotalGuarantees;
-			}
-			set
-			{
-				if ((this._MaximumTotalGuarantees != value))
-				{
-					this.OnMaximumTotalGuaranteesChanging(value);
-					this.SendPropertyChanging();
-					this._MaximumTotalGuarantees = value;
-					this.SendPropertyChanged("MaximumTotalGuarantees");
-					this.OnMaximumTotalGuaranteesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaximumGuaranteePaymentPerHour", DbType="Decimal(18,2) NOT NULL")]
-		public decimal MaximumGuaranteePaymentPerHour
-		{
-			get
-			{
-				return this._MaximumGuaranteePaymentPerHour;
-			}
-			set
-			{
-				if ((this._MaximumGuaranteePaymentPerHour != value))
-				{
-					this.OnMaximumGuaranteePaymentPerHourChanging(value);
-					this.SendPropertyChanging();
-					this._MaximumGuaranteePaymentPerHour = value;
-					this.SendPropertyChanged("MaximumGuaranteePaymentPerHour");
-					this.OnMaximumGuaranteePaymentPerHourChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalUnconditionalGuaranteesEarnedEver", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalUnconditionalGuaranteesEarnedEver
-		{
-			get
-			{
-				return this._TotalUnconditionalGuaranteesEarnedEver;
-			}
-			set
-			{
-				if ((this._TotalUnconditionalGuaranteesEarnedEver != value))
-				{
-					this.OnTotalUnconditionalGuaranteesEarnedEverChanging(value);
-					this.SendPropertyChanging();
-					this._TotalUnconditionalGuaranteesEarnedEver = value;
-					this.SendPropertyChanged("TotalUnconditionalGuaranteesEarnedEver");
-					this.OnTotalUnconditionalGuaranteesEarnedEverChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalConditionalGuaranteesEarnedEver", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalConditionalGuaranteesEarnedEver
-		{
-			get
-			{
-				return this._TotalConditionalGuaranteesEarnedEver;
-			}
-			set
-			{
-				if ((this._TotalConditionalGuaranteesEarnedEver != value))
-				{
-					this.OnTotalConditionalGuaranteesEarnedEverChanging(value);
-					this.SendPropertyChanging();
-					this._TotalConditionalGuaranteesEarnedEver = value;
-					this.SendPropertyChanged("TotalConditionalGuaranteesEarnedEver");
-					this.OnTotalConditionalGuaranteesEarnedEverChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalConditionalGuaranteesPending", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalConditionalGuaranteesPending
-		{
-			get
-			{
-				return this._TotalConditionalGuaranteesPending;
-			}
-			set
-			{
-				if ((this._TotalConditionalGuaranteesPending != value))
-				{
-					this.OnTotalConditionalGuaranteesPendingChanging(value);
-					this.SendPropertyChanging();
-					this._TotalConditionalGuaranteesPending = value;
-					this.SendPropertyChanged("TotalConditionalGuaranteesPending");
-					this.OnTotalConditionalGuaranteesPendingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowApplicationsWhenNoConditionalGuaranteesAvailable", DbType="Bit NOT NULL")]
-		public bool AllowApplicationsWhenNoConditionalGuaranteesAvailable
-		{
-			get
-			{
-				return this._AllowApplicationsWhenNoConditionalGuaranteesAvailable;
-			}
-			set
-			{
-				if ((this._AllowApplicationsWhenNoConditionalGuaranteesAvailable != value))
-				{
-					this.OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanging(value);
-					this.SendPropertyChanging();
-					this._AllowApplicationsWhenNoConditionalGuaranteesAvailable = value;
-					this.SendPropertyChanged("AllowApplicationsWhenNoConditionalGuaranteesAvailable");
-					this.OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteesAvailableForNewUsers", DbType="Bit NOT NULL")]
-		public bool ConditionalGuaranteesAvailableForNewUsers
-		{
-			get
-			{
-				return this._ConditionalGuaranteesAvailableForNewUsers;
-			}
-			set
-			{
-				if ((this._ConditionalGuaranteesAvailableForNewUsers != value))
-				{
-					this.OnConditionalGuaranteesAvailableForNewUsersChanging(value);
-					this.SendPropertyChanging();
-					this._ConditionalGuaranteesAvailableForNewUsers = value;
-					this.SendPropertyChanged("ConditionalGuaranteesAvailableForNewUsers");
-					this.OnConditionalGuaranteesAvailableForNewUsersChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteesAvailableForExistingUsers", DbType="Bit NOT NULL")]
-		public bool ConditionalGuaranteesAvailableForExistingUsers
-		{
-			get
-			{
-				return this._ConditionalGuaranteesAvailableForExistingUsers;
-			}
-			set
-			{
-				if ((this._ConditionalGuaranteesAvailableForExistingUsers != value))
-				{
-					this.OnConditionalGuaranteesAvailableForExistingUsersChanging(value);
-					this.SendPropertyChanging();
-					this._ConditionalGuaranteesAvailableForExistingUsers = value;
-					this.SendPropertyChanged("ConditionalGuaranteesAvailableForExistingUsers");
-					this.OnConditionalGuaranteesAvailableForExistingUsersChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteeTimeBlockInHours", DbType="Int NOT NULL")]
-		public int ConditionalGuaranteeTimeBlockInHours
-		{
-			get
-			{
-				return this._ConditionalGuaranteeTimeBlockInHours;
-			}
-			set
-			{
-				if ((this._ConditionalGuaranteeTimeBlockInHours != value))
-				{
-					this.OnConditionalGuaranteeTimeBlockInHoursChanging(value);
-					this.SendPropertyChanging();
-					this._ConditionalGuaranteeTimeBlockInHours = value;
-					this.SendPropertyChanged("ConditionalGuaranteeTimeBlockInHours");
-					this.OnConditionalGuaranteeTimeBlockInHoursChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteeApplicationsReceived", DbType="Int NOT NULL")]
-		public int ConditionalGuaranteeApplicationsReceived
-		{
-			get
-			{
-				return this._ConditionalGuaranteeApplicationsReceived;
-			}
-			set
-			{
-				if ((this._ConditionalGuaranteeApplicationsReceived != value))
-				{
-					this.OnConditionalGuaranteeApplicationsReceivedChanging(value);
-					this.SendPropertyChanging();
-					this._ConditionalGuaranteeApplicationsReceived = value;
-					this.SendPropertyChanged("ConditionalGuaranteeApplicationsReceived");
-					this.OnConditionalGuaranteeApplicationsReceivedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
-		public System.Nullable<int> Creator
-		{
-			get
-			{
-				return this._Creator;
-			}
-			set
-			{
-				if ((this._Creator != value))
-				{
-					this.OnCreatorChanging(value);
-					this.SendPropertyChanging();
-					this._Creator = value;
-					this.SendPropertyChanged("Creator");
-					this.OnCreatorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
-		public byte Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ChangesGroup", Storage="_ChangesGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<ChangesGroup> ChangesGroups
-		{
-			get
-			{
-				return this._ChangesGroups;
-			}
-			set
-			{
-				this._ChangesGroups.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ChoiceGroup", Storage="_ChoiceGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<ChoiceGroup> ChoiceGroups
-		{
-			get
-			{
-				return this._ChoiceGroups;
-			}
-			set
-			{
-				this._ChoiceGroups.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_InsertableContent", Storage="_InsertableContents", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<InsertableContent> InsertableContents
-		{
-			get
-			{
-				return this._InsertableContents;
-			}
-			set
-			{
-				this._InsertableContents.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_PointsAdjustment", Storage="_PointsAdjustments", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<PointsAdjustment> PointsAdjustments
-		{
-			get
-			{
-				return this._PointsAdjustments;
-			}
-			set
-			{
-				this._PointsAdjustments.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalEvaluationRatingSetting", Storage="_ProposalEvaluationRatingSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<ProposalEvaluationRatingSetting> ProposalEvaluationRatingSettings
-		{
-			get
-			{
-				return this._ProposalEvaluationRatingSettings;
-			}
-			set
-			{
-				this._ProposalEvaluationRatingSettings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalSetting", Storage="_ProposalSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<ProposalSetting> ProposalSettings
-		{
-			get
-			{
-				return this._ProposalSettings;
-			}
-			set
-			{
-				this._ProposalSettings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_RewardRatingSetting", Storage="_RewardRatingSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<RewardRatingSetting> RewardRatingSettings
-		{
-			get
-			{
-				return this._RewardRatingSettings;
-			}
-			set
-			{
-				this._RewardRatingSettings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_UsersAdministrationRightsGroup", Storage="_UsersAdministrationRightsGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<UsersAdministrationRightsGroup> UsersAdministrationRightsGroups
-		{
-			get
-			{
-				return this._UsersAdministrationRightsGroups;
-			}
-			set
-			{
-				this._UsersAdministrationRightsGroups.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_UsersRight", Storage="_UsersRights", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<UsersRight> UsersRights
-		{
-			get
-			{
-				return this._UsersRights;
-			}
-			set
-			{
-				this._UsersRights.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_Tbl", Storage="_Tbls", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<Tbl> Tbls
-		{
-			get
-			{
-				return this._Tbls;
-			}
-			set
-			{
-				this._Tbls.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_PointsTotal", Storage="_PointsTotals", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<PointsTotal> PointsTotals
-		{
-			get
-			{
-				return this._PointsTotals;
-			}
-			set
-			{
-				this._PointsTotals.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_AdministrationRightsGroup", Storage="_AdministrationRightsGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<AdministrationRightsGroup> AdministrationRightsGroups
-		{
-			get
-			{
-				return this._AdministrationRightsGroups;
-			}
-			set
-			{
-				this._AdministrationRightsGroups.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Domain_PointsManager", Storage="_Domain", ThisKey="DomainID", OtherKey="DomainID", IsForeignKey=true)]
-		public Domain Domain
-		{
-			get
-			{
-				return this._Domain.Entity;
-			}
-			set
-			{
-				Domain previousValue = this._Domain.Entity;
-				if (((previousValue != value) 
-							|| (this._Domain.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Domain.Entity = null;
-						previousValue.PointsManagers.Remove(this);
-					}
-					this._Domain.Entity = value;
-					if ((value != null))
-					{
-						value.PointsManagers.Add(this);
-						this._DomainID = value.DomainID;
-					}
-					else
-					{
-						this._DomainID = default(int);
-					}
-					this.SendPropertyChanged("Domain");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsTrustRule_PointsManager", Storage="_PointsTrustRule", ThisKey="PointsTrustRulesID", OtherKey="PointsTrustRulesID", IsForeignKey=true)]
-		public PointsTrustRule PointsTrustRule
-		{
-			get
-			{
-				return this._PointsTrustRule.Entity;
-			}
-			set
-			{
-				PointsTrustRule previousValue = this._PointsTrustRule.Entity;
-				if (((previousValue != value) 
-							|| (this._PointsTrustRule.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PointsTrustRule.Entity = null;
-						previousValue.PointsManagers.Remove(this);
-					}
-					this._PointsTrustRule.Entity = value;
-					if ((value != null))
-					{
-						value.PointsManagers.Add(this);
-						this._PointsTrustRulesID = value.PointsTrustRulesID;
-					}
-					else
-					{
-						this._PointsTrustRulesID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("PointsTrustRule");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_PointsManager", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
-		public TrustTrackerUnit TrustTrackerUnit
-		{
-			get
-			{
-				return this._TrustTrackerUnit.Entity;
-			}
-			set
-			{
-				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
-				if (((previousValue != value) 
-							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TrustTrackerUnit.Entity = null;
-						previousValue.PointsManagers.Remove(this);
-					}
-					this._TrustTrackerUnit.Entity = value;
-					if ((value != null))
-					{
-						value.PointsManagers.Add(this);
-						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
-					}
-					else
-					{
-						this._TrustTrackerUnitID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TrustTrackerUnit");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_ChangesGroups(ChangesGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_ChangesGroups(ChangesGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_ChoiceGroups(ChoiceGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_ChoiceGroups(ChoiceGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_InsertableContents(InsertableContent entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_InsertableContents(InsertableContent entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_PointsAdjustments(PointsAdjustment entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_PointsAdjustments(PointsAdjustment entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_ProposalSettings(ProposalSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_ProposalSettings(ProposalSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_RewardRatingSettings(RewardRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_RewardRatingSettings(RewardRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_UsersAdministrationRightsGroups(UsersAdministrationRightsGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_UsersAdministrationRightsGroups(UsersAdministrationRightsGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_UsersRights(UsersRight entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_UsersRights(UsersRight entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_Tbls(Tbl entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_Tbls(Tbl entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_PointsTotals(PointsTotal entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_PointsTotals(PointsTotal entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
-		private void attach_AdministrationRightsGroups(AdministrationRightsGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_AdministrationRightsGroups(AdministrationRightsGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RatingConditions")]
 	public partial class RatingCondition : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -33697,8 +31899,6 @@ namespace ClassLibrary1.Model
 		
 		private decimal _ExtendIntervalMultiplier;
 		
-		private EntitySet<PointsManager> _PointsManagers;
-		
 		private EntitySet<TblColumn> _TblColumns;
 		
 		private EntitySet<UserInteraction> _UserInteractions;
@@ -33706,6 +31906,8 @@ namespace ClassLibrary1.Model
 		private EntitySet<TrustTracker> _TrustTrackers;
 		
 		private EntitySet<UserRating> _UserRatings;
+		
+		private EntitySet<PointsManager> _PointsManagers;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -33729,11 +31931,11 @@ namespace ClassLibrary1.Model
 		
 		public TrustTrackerUnit()
 		{
-			this._PointsManagers = new EntitySet<PointsManager>(new Action<PointsManager>(this.attach_PointsManagers), new Action<PointsManager>(this.detach_PointsManagers));
 			this._TblColumns = new EntitySet<TblColumn>(new Action<TblColumn>(this.attach_TblColumns), new Action<TblColumn>(this.detach_TblColumns));
 			this._UserInteractions = new EntitySet<UserInteraction>(new Action<UserInteraction>(this.attach_UserInteractions), new Action<UserInteraction>(this.detach_UserInteractions));
 			this._TrustTrackers = new EntitySet<TrustTracker>(new Action<TrustTracker>(this.attach_TrustTrackers), new Action<TrustTracker>(this.detach_TrustTrackers));
 			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
+			this._PointsManagers = new EntitySet<PointsManager>(new Action<PointsManager>(this.attach_PointsManagers), new Action<PointsManager>(this.detach_PointsManagers));
 			OnCreated();
 		}
 		
@@ -33877,19 +32079,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_PointsManager", Storage="_PointsManagers", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID")]
-		public EntitySet<PointsManager> PointsManagers
-		{
-			get
-			{
-				return this._PointsManagers;
-			}
-			set
-			{
-				this._PointsManagers.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_TblColumn", Storage="_TblColumns", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID")]
 		public EntitySet<TblColumn> TblColumns
 		{
@@ -33942,6 +32131,19 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_PointsManager", Storage="_PointsManagers", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID")]
+		public EntitySet<PointsManager> PointsManagers
+		{
+			get
+			{
+				return this._PointsManagers;
+			}
+			set
+			{
+				this._PointsManagers.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -33960,18 +32162,6 @@ namespace ClassLibrary1.Model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_PointsManagers(PointsManager entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTrackerUnit = this;
-		}
-		
-		private void detach_PointsManagers(PointsManager entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTrackerUnit = null;
 		}
 		
 		private void attach_TblColumns(TblColumn entity)
@@ -34017,6 +32207,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTrackerUnit = null;
+		}
+		
+		private void attach_PointsManagers(PointsManager entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTrackerUnit = this;
+		}
+		
+		private void detach_PointsManagers(PointsManager entity)
 		{
 			this.SendPropertyChanging();
 			entity.TrustTrackerUnit = null;
@@ -37198,6 +35400,1446 @@ namespace ClassLibrary1.Model
 		{
 			this.SendPropertyChanging();
 			entity.UserRating1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PointsManagers")]
+	public partial class PointsManager : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PointsManagerID;
+		
+		private int _DomainID;
+		
+		private System.Nullable<int> _TrustTrackerUnitID;
+		
+		private decimal _CurrentPeriodDollarSubsidy;
+		
+		private System.Nullable<System.DateTime> _EndOfDollarSubsidyPeriod;
+		
+		private System.Nullable<decimal> _NextPeriodDollarSubsidy;
+		
+		private System.Nullable<int> _NextPeriodLength;
+		
+		private short _NumPrizes;
+		
+		private System.Nullable<decimal> _MinimumPayment;
+		
+		private decimal _TotalUserPoints;
+		
+		private decimal _CurrentUserPoints;
+		
+		private decimal _CurrentUserPendingPoints;
+		
+		private decimal _CurrentUserNotYetPendingPoints;
+		
+		private decimal _CurrentPointsToCount;
+		
+		private int _NumUsersMeetingUltimateStandard;
+		
+		private int _NumUsersMeetingCurrentStandard;
+		
+		private decimal _HighStakesProbability;
+		
+		private decimal _HighStakesSecretMultiplier;
+		
+		private System.Nullable<decimal> _HighStakesKnownMultiplier;
+		
+		private bool _HighStakesNoviceOn;
+		
+		private int _HighStakesNoviceNumAutomatic;
+		
+		private int _HighStakesNoviceNumOneThird;
+		
+		private int _HighStakesNoviceNumOneTenth;
+		
+		private decimal _DatabaseChangeSelectHighStakesNoviceNumPct;
+		
+		private int _HighStakesNoviceNumActive;
+		
+		private int _HighStakesNoviceTargetNum;
+		
+		private decimal _DollarValuePerPoint;
+		
+		private decimal _DiscountForGuarantees;
+		
+		private decimal _MaximumTotalGuarantees;
+		
+		private decimal _MaximumGuaranteePaymentPerHour;
+		
+		private decimal _TotalUnconditionalGuaranteesEarnedEver;
+		
+		private decimal _TotalConditionalGuaranteesEarnedEver;
+		
+		private decimal _TotalConditionalGuaranteesPending;
+		
+		private bool _AllowApplicationsWhenNoConditionalGuaranteesAvailable;
+		
+		private bool _ConditionalGuaranteesAvailableForNewUsers;
+		
+		private bool _ConditionalGuaranteesAvailableForExistingUsers;
+		
+		private int _ConditionalGuaranteeTimeBlockInHours;
+		
+		private int _ConditionalGuaranteeApplicationsReceived;
+		
+		private string _Name;
+		
+		private System.Nullable<int> _Creator;
+		
+		private byte _Status;
+		
+		private EntitySet<ChangesGroup> _ChangesGroups;
+		
+		private EntitySet<ChoiceGroup> _ChoiceGroups;
+		
+		private EntitySet<InsertableContent> _InsertableContents;
+		
+		private EntitySet<PointsAdjustment> _PointsAdjustments;
+		
+		private EntitySet<ProposalEvaluationRatingSetting> _ProposalEvaluationRatingSettings;
+		
+		private EntitySet<ProposalSetting> _ProposalSettings;
+		
+		private EntitySet<RewardRatingSetting> _RewardRatingSettings;
+		
+		private EntitySet<UsersAdministrationRightsGroup> _UsersAdministrationRightsGroups;
+		
+		private EntitySet<UsersRight> _UsersRights;
+		
+		private EntitySet<Tbl> _Tbls;
+		
+		private EntitySet<PointsTotal> _PointsTotals;
+		
+		private EntitySet<AdministrationRightsGroup> _AdministrationRightsGroups;
+		
+		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
+		
+		private EntityRef<Domain> _Domain;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPointsManagerIDChanging(int value);
+    partial void OnPointsManagerIDChanged();
+    partial void OnDomainIDChanging(int value);
+    partial void OnDomainIDChanged();
+    partial void OnTrustTrackerUnitIDChanging(System.Nullable<int> value);
+    partial void OnTrustTrackerUnitIDChanged();
+    partial void OnCurrentPeriodDollarSubsidyChanging(decimal value);
+    partial void OnCurrentPeriodDollarSubsidyChanged();
+    partial void OnEndOfDollarSubsidyPeriodChanging(System.Nullable<System.DateTime> value);
+    partial void OnEndOfDollarSubsidyPeriodChanged();
+    partial void OnNextPeriodDollarSubsidyChanging(System.Nullable<decimal> value);
+    partial void OnNextPeriodDollarSubsidyChanged();
+    partial void OnNextPeriodLengthChanging(System.Nullable<int> value);
+    partial void OnNextPeriodLengthChanged();
+    partial void OnNumPrizesChanging(short value);
+    partial void OnNumPrizesChanged();
+    partial void OnMinimumPaymentChanging(System.Nullable<decimal> value);
+    partial void OnMinimumPaymentChanged();
+    partial void OnTotalUserPointsChanging(decimal value);
+    partial void OnTotalUserPointsChanged();
+    partial void OnCurrentUserPointsChanging(decimal value);
+    partial void OnCurrentUserPointsChanged();
+    partial void OnCurrentUserPendingPointsChanging(decimal value);
+    partial void OnCurrentUserPendingPointsChanged();
+    partial void OnCurrentUserNotYetPendingPointsChanging(decimal value);
+    partial void OnCurrentUserNotYetPendingPointsChanged();
+    partial void OnCurrentPointsToCountChanging(decimal value);
+    partial void OnCurrentPointsToCountChanged();
+    partial void OnNumUsersMeetingUltimateStandardChanging(int value);
+    partial void OnNumUsersMeetingUltimateStandardChanged();
+    partial void OnNumUsersMeetingCurrentStandardChanging(int value);
+    partial void OnNumUsersMeetingCurrentStandardChanged();
+    partial void OnHighStakesProbabilityChanging(decimal value);
+    partial void OnHighStakesProbabilityChanged();
+    partial void OnHighStakesSecretMultiplierChanging(decimal value);
+    partial void OnHighStakesSecretMultiplierChanged();
+    partial void OnHighStakesKnownMultiplierChanging(System.Nullable<decimal> value);
+    partial void OnHighStakesKnownMultiplierChanged();
+    partial void OnHighStakesNoviceOnChanging(bool value);
+    partial void OnHighStakesNoviceOnChanged();
+    partial void OnHighStakesNoviceNumAutomaticChanging(int value);
+    partial void OnHighStakesNoviceNumAutomaticChanged();
+    partial void OnHighStakesNoviceNumOneThirdChanging(int value);
+    partial void OnHighStakesNoviceNumOneThirdChanged();
+    partial void OnHighStakesNoviceNumOneTenthChanging(int value);
+    partial void OnHighStakesNoviceNumOneTenthChanged();
+    partial void OnDatabaseChangeSelectHighStakesNoviceNumPctChanging(decimal value);
+    partial void OnDatabaseChangeSelectHighStakesNoviceNumPctChanged();
+    partial void OnHighStakesNoviceNumActiveChanging(int value);
+    partial void OnHighStakesNoviceNumActiveChanged();
+    partial void OnHighStakesNoviceTargetNumChanging(int value);
+    partial void OnHighStakesNoviceTargetNumChanged();
+    partial void OnDollarValuePerPointChanging(decimal value);
+    partial void OnDollarValuePerPointChanged();
+    partial void OnDiscountForGuaranteesChanging(decimal value);
+    partial void OnDiscountForGuaranteesChanged();
+    partial void OnMaximumTotalGuaranteesChanging(decimal value);
+    partial void OnMaximumTotalGuaranteesChanged();
+    partial void OnMaximumGuaranteePaymentPerHourChanging(decimal value);
+    partial void OnMaximumGuaranteePaymentPerHourChanged();
+    partial void OnTotalUnconditionalGuaranteesEarnedEverChanging(decimal value);
+    partial void OnTotalUnconditionalGuaranteesEarnedEverChanged();
+    partial void OnTotalConditionalGuaranteesEarnedEverChanging(decimal value);
+    partial void OnTotalConditionalGuaranteesEarnedEverChanged();
+    partial void OnTotalConditionalGuaranteesPendingChanging(decimal value);
+    partial void OnTotalConditionalGuaranteesPendingChanged();
+    partial void OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanging(bool value);
+    partial void OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanged();
+    partial void OnConditionalGuaranteesAvailableForNewUsersChanging(bool value);
+    partial void OnConditionalGuaranteesAvailableForNewUsersChanged();
+    partial void OnConditionalGuaranteesAvailableForExistingUsersChanging(bool value);
+    partial void OnConditionalGuaranteesAvailableForExistingUsersChanged();
+    partial void OnConditionalGuaranteeTimeBlockInHoursChanging(int value);
+    partial void OnConditionalGuaranteeTimeBlockInHoursChanged();
+    partial void OnConditionalGuaranteeApplicationsReceivedChanging(int value);
+    partial void OnConditionalGuaranteeApplicationsReceivedChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnCreatorChanging(System.Nullable<int> value);
+    partial void OnCreatorChanged();
+    partial void OnStatusChanging(byte value);
+    partial void OnStatusChanged();
+    #endregion
+		
+		public PointsManager()
+		{
+			this._ChangesGroups = new EntitySet<ChangesGroup>(new Action<ChangesGroup>(this.attach_ChangesGroups), new Action<ChangesGroup>(this.detach_ChangesGroups));
+			this._ChoiceGroups = new EntitySet<ChoiceGroup>(new Action<ChoiceGroup>(this.attach_ChoiceGroups), new Action<ChoiceGroup>(this.detach_ChoiceGroups));
+			this._InsertableContents = new EntitySet<InsertableContent>(new Action<InsertableContent>(this.attach_InsertableContents), new Action<InsertableContent>(this.detach_InsertableContents));
+			this._PointsAdjustments = new EntitySet<PointsAdjustment>(new Action<PointsAdjustment>(this.attach_PointsAdjustments), new Action<PointsAdjustment>(this.detach_PointsAdjustments));
+			this._ProposalEvaluationRatingSettings = new EntitySet<ProposalEvaluationRatingSetting>(new Action<ProposalEvaluationRatingSetting>(this.attach_ProposalEvaluationRatingSettings), new Action<ProposalEvaluationRatingSetting>(this.detach_ProposalEvaluationRatingSettings));
+			this._ProposalSettings = new EntitySet<ProposalSetting>(new Action<ProposalSetting>(this.attach_ProposalSettings), new Action<ProposalSetting>(this.detach_ProposalSettings));
+			this._RewardRatingSettings = new EntitySet<RewardRatingSetting>(new Action<RewardRatingSetting>(this.attach_RewardRatingSettings), new Action<RewardRatingSetting>(this.detach_RewardRatingSettings));
+			this._UsersAdministrationRightsGroups = new EntitySet<UsersAdministrationRightsGroup>(new Action<UsersAdministrationRightsGroup>(this.attach_UsersAdministrationRightsGroups), new Action<UsersAdministrationRightsGroup>(this.detach_UsersAdministrationRightsGroups));
+			this._UsersRights = new EntitySet<UsersRight>(new Action<UsersRight>(this.attach_UsersRights), new Action<UsersRight>(this.detach_UsersRights));
+			this._Tbls = new EntitySet<Tbl>(new Action<Tbl>(this.attach_Tbls), new Action<Tbl>(this.detach_Tbls));
+			this._PointsTotals = new EntitySet<PointsTotal>(new Action<PointsTotal>(this.attach_PointsTotals), new Action<PointsTotal>(this.detach_PointsTotals));
+			this._AdministrationRightsGroups = new EntitySet<AdministrationRightsGroup>(new Action<AdministrationRightsGroup>(this.attach_AdministrationRightsGroups), new Action<AdministrationRightsGroup>(this.detach_AdministrationRightsGroups));
+			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
+			this._Domain = default(EntityRef<Domain>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int PointsManagerID
+		{
+			get
+			{
+				return this._PointsManagerID;
+			}
+			set
+			{
+				if ((this._PointsManagerID != value))
+				{
+					this.OnPointsManagerIDChanging(value);
+					this.SendPropertyChanging();
+					this._PointsManagerID = value;
+					this.SendPropertyChanged("PointsManagerID");
+					this.OnPointsManagerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DomainID", DbType="Int NOT NULL")]
+		public int DomainID
+		{
+			get
+			{
+				return this._DomainID;
+			}
+			set
+			{
+				if ((this._DomainID != value))
+				{
+					if (this._Domain.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDomainIDChanging(value);
+					this.SendPropertyChanging();
+					this._DomainID = value;
+					this.SendPropertyChanged("DomainID");
+					this.OnDomainIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int")]
+		public System.Nullable<int> TrustTrackerUnitID
+		{
+			get
+			{
+				return this._TrustTrackerUnitID;
+			}
+			set
+			{
+				if ((this._TrustTrackerUnitID != value))
+				{
+					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTrustTrackerUnitIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerUnitID = value;
+					this.SendPropertyChanged("TrustTrackerUnitID");
+					this.OnTrustTrackerUnitIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentPeriodDollarSubsidy", DbType="Decimal(18,2) NOT NULL")]
+		public decimal CurrentPeriodDollarSubsidy
+		{
+			get
+			{
+				return this._CurrentPeriodDollarSubsidy;
+			}
+			set
+			{
+				if ((this._CurrentPeriodDollarSubsidy != value))
+				{
+					this.OnCurrentPeriodDollarSubsidyChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentPeriodDollarSubsidy = value;
+					this.SendPropertyChanged("CurrentPeriodDollarSubsidy");
+					this.OnCurrentPeriodDollarSubsidyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndOfDollarSubsidyPeriod", DbType="DateTime")]
+		public System.Nullable<System.DateTime> EndOfDollarSubsidyPeriod
+		{
+			get
+			{
+				return this._EndOfDollarSubsidyPeriod;
+			}
+			set
+			{
+				if ((this._EndOfDollarSubsidyPeriod != value))
+				{
+					this.OnEndOfDollarSubsidyPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._EndOfDollarSubsidyPeriod = value;
+					this.SendPropertyChanged("EndOfDollarSubsidyPeriod");
+					this.OnEndOfDollarSubsidyPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NextPeriodDollarSubsidy", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> NextPeriodDollarSubsidy
+		{
+			get
+			{
+				return this._NextPeriodDollarSubsidy;
+			}
+			set
+			{
+				if ((this._NextPeriodDollarSubsidy != value))
+				{
+					this.OnNextPeriodDollarSubsidyChanging(value);
+					this.SendPropertyChanging();
+					this._NextPeriodDollarSubsidy = value;
+					this.SendPropertyChanged("NextPeriodDollarSubsidy");
+					this.OnNextPeriodDollarSubsidyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NextPeriodLength", DbType="Int")]
+		public System.Nullable<int> NextPeriodLength
+		{
+			get
+			{
+				return this._NextPeriodLength;
+			}
+			set
+			{
+				if ((this._NextPeriodLength != value))
+				{
+					this.OnNextPeriodLengthChanging(value);
+					this.SendPropertyChanging();
+					this._NextPeriodLength = value;
+					this.SendPropertyChanged("NextPeriodLength");
+					this.OnNextPeriodLengthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumPrizes", DbType="SmallInt NOT NULL")]
+		public short NumPrizes
+		{
+			get
+			{
+				return this._NumPrizes;
+			}
+			set
+			{
+				if ((this._NumPrizes != value))
+				{
+					this.OnNumPrizesChanging(value);
+					this.SendPropertyChanging();
+					this._NumPrizes = value;
+					this.SendPropertyChanged("NumPrizes");
+					this.OnNumPrizesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinimumPayment", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> MinimumPayment
+		{
+			get
+			{
+				return this._MinimumPayment;
+			}
+			set
+			{
+				if ((this._MinimumPayment != value))
+				{
+					this.OnMinimumPaymentChanging(value);
+					this.SendPropertyChanging();
+					this._MinimumPayment = value;
+					this.SendPropertyChanged("MinimumPayment");
+					this.OnMinimumPaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalUserPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalUserPoints
+		{
+			get
+			{
+				return this._TotalUserPoints;
+			}
+			set
+			{
+				if ((this._TotalUserPoints != value))
+				{
+					this.OnTotalUserPointsChanging(value);
+					this.SendPropertyChanging();
+					this._TotalUserPoints = value;
+					this.SendPropertyChanged("TotalUserPoints");
+					this.OnTotalUserPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentUserPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal CurrentUserPoints
+		{
+			get
+			{
+				return this._CurrentUserPoints;
+			}
+			set
+			{
+				if ((this._CurrentUserPoints != value))
+				{
+					this.OnCurrentUserPointsChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentUserPoints = value;
+					this.SendPropertyChanged("CurrentUserPoints");
+					this.OnCurrentUserPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentUserPendingPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal CurrentUserPendingPoints
+		{
+			get
+			{
+				return this._CurrentUserPendingPoints;
+			}
+			set
+			{
+				if ((this._CurrentUserPendingPoints != value))
+				{
+					this.OnCurrentUserPendingPointsChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentUserPendingPoints = value;
+					this.SendPropertyChanged("CurrentUserPendingPoints");
+					this.OnCurrentUserPendingPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentUserNotYetPendingPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal CurrentUserNotYetPendingPoints
+		{
+			get
+			{
+				return this._CurrentUserNotYetPendingPoints;
+			}
+			set
+			{
+				if ((this._CurrentUserNotYetPendingPoints != value))
+				{
+					this.OnCurrentUserNotYetPendingPointsChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentUserNotYetPendingPoints = value;
+					this.SendPropertyChanged("CurrentUserNotYetPendingPoints");
+					this.OnCurrentUserNotYetPendingPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentPointsToCount", DbType="Decimal(18,4) NOT NULL")]
+		public decimal CurrentPointsToCount
+		{
+			get
+			{
+				return this._CurrentPointsToCount;
+			}
+			set
+			{
+				if ((this._CurrentPointsToCount != value))
+				{
+					this.OnCurrentPointsToCountChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentPointsToCount = value;
+					this.SendPropertyChanged("CurrentPointsToCount");
+					this.OnCurrentPointsToCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumUsersMeetingUltimateStandard", DbType="Int NOT NULL")]
+		public int NumUsersMeetingUltimateStandard
+		{
+			get
+			{
+				return this._NumUsersMeetingUltimateStandard;
+			}
+			set
+			{
+				if ((this._NumUsersMeetingUltimateStandard != value))
+				{
+					this.OnNumUsersMeetingUltimateStandardChanging(value);
+					this.SendPropertyChanging();
+					this._NumUsersMeetingUltimateStandard = value;
+					this.SendPropertyChanged("NumUsersMeetingUltimateStandard");
+					this.OnNumUsersMeetingUltimateStandardChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumUsersMeetingCurrentStandard", DbType="Int NOT NULL")]
+		public int NumUsersMeetingCurrentStandard
+		{
+			get
+			{
+				return this._NumUsersMeetingCurrentStandard;
+			}
+			set
+			{
+				if ((this._NumUsersMeetingCurrentStandard != value))
+				{
+					this.OnNumUsersMeetingCurrentStandardChanging(value);
+					this.SendPropertyChanging();
+					this._NumUsersMeetingCurrentStandard = value;
+					this.SendPropertyChanged("NumUsersMeetingCurrentStandard");
+					this.OnNumUsersMeetingCurrentStandardChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesProbability", DbType="Decimal(18,4) NOT NULL")]
+		public decimal HighStakesProbability
+		{
+			get
+			{
+				return this._HighStakesProbability;
+			}
+			set
+			{
+				if ((this._HighStakesProbability != value))
+				{
+					this.OnHighStakesProbabilityChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesProbability = value;
+					this.SendPropertyChanged("HighStakesProbability");
+					this.OnHighStakesProbabilityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesSecretMultiplier", DbType="Decimal(18,4) NOT NULL")]
+		public decimal HighStakesSecretMultiplier
+		{
+			get
+			{
+				return this._HighStakesSecretMultiplier;
+			}
+			set
+			{
+				if ((this._HighStakesSecretMultiplier != value))
+				{
+					this.OnHighStakesSecretMultiplierChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesSecretMultiplier = value;
+					this.SendPropertyChanged("HighStakesSecretMultiplier");
+					this.OnHighStakesSecretMultiplierChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesKnownMultiplier", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> HighStakesKnownMultiplier
+		{
+			get
+			{
+				return this._HighStakesKnownMultiplier;
+			}
+			set
+			{
+				if ((this._HighStakesKnownMultiplier != value))
+				{
+					this.OnHighStakesKnownMultiplierChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesKnownMultiplier = value;
+					this.SendPropertyChanged("HighStakesKnownMultiplier");
+					this.OnHighStakesKnownMultiplierChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceOn", DbType="Bit NOT NULL")]
+		public bool HighStakesNoviceOn
+		{
+			get
+			{
+				return this._HighStakesNoviceOn;
+			}
+			set
+			{
+				if ((this._HighStakesNoviceOn != value))
+				{
+					this.OnHighStakesNoviceOnChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesNoviceOn = value;
+					this.SendPropertyChanged("HighStakesNoviceOn");
+					this.OnHighStakesNoviceOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumAutomatic", DbType="Int NOT NULL")]
+		public int HighStakesNoviceNumAutomatic
+		{
+			get
+			{
+				return this._HighStakesNoviceNumAutomatic;
+			}
+			set
+			{
+				if ((this._HighStakesNoviceNumAutomatic != value))
+				{
+					this.OnHighStakesNoviceNumAutomaticChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesNoviceNumAutomatic = value;
+					this.SendPropertyChanged("HighStakesNoviceNumAutomatic");
+					this.OnHighStakesNoviceNumAutomaticChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumOneThird", DbType="Int NOT NULL")]
+		public int HighStakesNoviceNumOneThird
+		{
+			get
+			{
+				return this._HighStakesNoviceNumOneThird;
+			}
+			set
+			{
+				if ((this._HighStakesNoviceNumOneThird != value))
+				{
+					this.OnHighStakesNoviceNumOneThirdChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesNoviceNumOneThird = value;
+					this.SendPropertyChanged("HighStakesNoviceNumOneThird");
+					this.OnHighStakesNoviceNumOneThirdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumOneTenth", DbType="Int NOT NULL")]
+		public int HighStakesNoviceNumOneTenth
+		{
+			get
+			{
+				return this._HighStakesNoviceNumOneTenth;
+			}
+			set
+			{
+				if ((this._HighStakesNoviceNumOneTenth != value))
+				{
+					this.OnHighStakesNoviceNumOneTenthChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesNoviceNumOneTenth = value;
+					this.SendPropertyChanged("HighStakesNoviceNumOneTenth");
+					this.OnHighStakesNoviceNumOneTenthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatabaseChangeSelectHighStakesNoviceNumPct", DbType="Decimal(18,4) NOT NULL")]
+		public decimal DatabaseChangeSelectHighStakesNoviceNumPct
+		{
+			get
+			{
+				return this._DatabaseChangeSelectHighStakesNoviceNumPct;
+			}
+			set
+			{
+				if ((this._DatabaseChangeSelectHighStakesNoviceNumPct != value))
+				{
+					this.OnDatabaseChangeSelectHighStakesNoviceNumPctChanging(value);
+					this.SendPropertyChanging();
+					this._DatabaseChangeSelectHighStakesNoviceNumPct = value;
+					this.SendPropertyChanged("DatabaseChangeSelectHighStakesNoviceNumPct");
+					this.OnDatabaseChangeSelectHighStakesNoviceNumPctChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceNumActive", DbType="Int NOT NULL")]
+		public int HighStakesNoviceNumActive
+		{
+			get
+			{
+				return this._HighStakesNoviceNumActive;
+			}
+			set
+			{
+				if ((this._HighStakesNoviceNumActive != value))
+				{
+					this.OnHighStakesNoviceNumActiveChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesNoviceNumActive = value;
+					this.SendPropertyChanged("HighStakesNoviceNumActive");
+					this.OnHighStakesNoviceNumActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesNoviceTargetNum", DbType="Int NOT NULL")]
+		public int HighStakesNoviceTargetNum
+		{
+			get
+			{
+				return this._HighStakesNoviceTargetNum;
+			}
+			set
+			{
+				if ((this._HighStakesNoviceTargetNum != value))
+				{
+					this.OnHighStakesNoviceTargetNumChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesNoviceTargetNum = value;
+					this.SendPropertyChanged("HighStakesNoviceTargetNum");
+					this.OnHighStakesNoviceTargetNumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DollarValuePerPoint", DbType="Decimal(18,8) NOT NULL")]
+		public decimal DollarValuePerPoint
+		{
+			get
+			{
+				return this._DollarValuePerPoint;
+			}
+			set
+			{
+				if ((this._DollarValuePerPoint != value))
+				{
+					this.OnDollarValuePerPointChanging(value);
+					this.SendPropertyChanging();
+					this._DollarValuePerPoint = value;
+					this.SendPropertyChanged("DollarValuePerPoint");
+					this.OnDollarValuePerPointChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiscountForGuarantees", DbType="Decimal(18,4) NOT NULL")]
+		public decimal DiscountForGuarantees
+		{
+			get
+			{
+				return this._DiscountForGuarantees;
+			}
+			set
+			{
+				if ((this._DiscountForGuarantees != value))
+				{
+					this.OnDiscountForGuaranteesChanging(value);
+					this.SendPropertyChanging();
+					this._DiscountForGuarantees = value;
+					this.SendPropertyChanged("DiscountForGuarantees");
+					this.OnDiscountForGuaranteesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaximumTotalGuarantees", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MaximumTotalGuarantees
+		{
+			get
+			{
+				return this._MaximumTotalGuarantees;
+			}
+			set
+			{
+				if ((this._MaximumTotalGuarantees != value))
+				{
+					this.OnMaximumTotalGuaranteesChanging(value);
+					this.SendPropertyChanging();
+					this._MaximumTotalGuarantees = value;
+					this.SendPropertyChanged("MaximumTotalGuarantees");
+					this.OnMaximumTotalGuaranteesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaximumGuaranteePaymentPerHour", DbType="Decimal(18,2) NOT NULL")]
+		public decimal MaximumGuaranteePaymentPerHour
+		{
+			get
+			{
+				return this._MaximumGuaranteePaymentPerHour;
+			}
+			set
+			{
+				if ((this._MaximumGuaranteePaymentPerHour != value))
+				{
+					this.OnMaximumGuaranteePaymentPerHourChanging(value);
+					this.SendPropertyChanging();
+					this._MaximumGuaranteePaymentPerHour = value;
+					this.SendPropertyChanged("MaximumGuaranteePaymentPerHour");
+					this.OnMaximumGuaranteePaymentPerHourChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalUnconditionalGuaranteesEarnedEver", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalUnconditionalGuaranteesEarnedEver
+		{
+			get
+			{
+				return this._TotalUnconditionalGuaranteesEarnedEver;
+			}
+			set
+			{
+				if ((this._TotalUnconditionalGuaranteesEarnedEver != value))
+				{
+					this.OnTotalUnconditionalGuaranteesEarnedEverChanging(value);
+					this.SendPropertyChanging();
+					this._TotalUnconditionalGuaranteesEarnedEver = value;
+					this.SendPropertyChanged("TotalUnconditionalGuaranteesEarnedEver");
+					this.OnTotalUnconditionalGuaranteesEarnedEverChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalConditionalGuaranteesEarnedEver", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalConditionalGuaranteesEarnedEver
+		{
+			get
+			{
+				return this._TotalConditionalGuaranteesEarnedEver;
+			}
+			set
+			{
+				if ((this._TotalConditionalGuaranteesEarnedEver != value))
+				{
+					this.OnTotalConditionalGuaranteesEarnedEverChanging(value);
+					this.SendPropertyChanging();
+					this._TotalConditionalGuaranteesEarnedEver = value;
+					this.SendPropertyChanged("TotalConditionalGuaranteesEarnedEver");
+					this.OnTotalConditionalGuaranteesEarnedEverChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalConditionalGuaranteesPending", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalConditionalGuaranteesPending
+		{
+			get
+			{
+				return this._TotalConditionalGuaranteesPending;
+			}
+			set
+			{
+				if ((this._TotalConditionalGuaranteesPending != value))
+				{
+					this.OnTotalConditionalGuaranteesPendingChanging(value);
+					this.SendPropertyChanging();
+					this._TotalConditionalGuaranteesPending = value;
+					this.SendPropertyChanged("TotalConditionalGuaranteesPending");
+					this.OnTotalConditionalGuaranteesPendingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowApplicationsWhenNoConditionalGuaranteesAvailable", DbType="Bit NOT NULL")]
+		public bool AllowApplicationsWhenNoConditionalGuaranteesAvailable
+		{
+			get
+			{
+				return this._AllowApplicationsWhenNoConditionalGuaranteesAvailable;
+			}
+			set
+			{
+				if ((this._AllowApplicationsWhenNoConditionalGuaranteesAvailable != value))
+				{
+					this.OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanging(value);
+					this.SendPropertyChanging();
+					this._AllowApplicationsWhenNoConditionalGuaranteesAvailable = value;
+					this.SendPropertyChanged("AllowApplicationsWhenNoConditionalGuaranteesAvailable");
+					this.OnAllowApplicationsWhenNoConditionalGuaranteesAvailableChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteesAvailableForNewUsers", DbType="Bit NOT NULL")]
+		public bool ConditionalGuaranteesAvailableForNewUsers
+		{
+			get
+			{
+				return this._ConditionalGuaranteesAvailableForNewUsers;
+			}
+			set
+			{
+				if ((this._ConditionalGuaranteesAvailableForNewUsers != value))
+				{
+					this.OnConditionalGuaranteesAvailableForNewUsersChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionalGuaranteesAvailableForNewUsers = value;
+					this.SendPropertyChanged("ConditionalGuaranteesAvailableForNewUsers");
+					this.OnConditionalGuaranteesAvailableForNewUsersChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteesAvailableForExistingUsers", DbType="Bit NOT NULL")]
+		public bool ConditionalGuaranteesAvailableForExistingUsers
+		{
+			get
+			{
+				return this._ConditionalGuaranteesAvailableForExistingUsers;
+			}
+			set
+			{
+				if ((this._ConditionalGuaranteesAvailableForExistingUsers != value))
+				{
+					this.OnConditionalGuaranteesAvailableForExistingUsersChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionalGuaranteesAvailableForExistingUsers = value;
+					this.SendPropertyChanged("ConditionalGuaranteesAvailableForExistingUsers");
+					this.OnConditionalGuaranteesAvailableForExistingUsersChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteeTimeBlockInHours", DbType="Int NOT NULL")]
+		public int ConditionalGuaranteeTimeBlockInHours
+		{
+			get
+			{
+				return this._ConditionalGuaranteeTimeBlockInHours;
+			}
+			set
+			{
+				if ((this._ConditionalGuaranteeTimeBlockInHours != value))
+				{
+					this.OnConditionalGuaranteeTimeBlockInHoursChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionalGuaranteeTimeBlockInHours = value;
+					this.SendPropertyChanged("ConditionalGuaranteeTimeBlockInHours");
+					this.OnConditionalGuaranteeTimeBlockInHoursChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionalGuaranteeApplicationsReceived", DbType="Int NOT NULL")]
+		public int ConditionalGuaranteeApplicationsReceived
+		{
+			get
+			{
+				return this._ConditionalGuaranteeApplicationsReceived;
+			}
+			set
+			{
+				if ((this._ConditionalGuaranteeApplicationsReceived != value))
+				{
+					this.OnConditionalGuaranteeApplicationsReceivedChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionalGuaranteeApplicationsReceived = value;
+					this.SendPropertyChanged("ConditionalGuaranteeApplicationsReceived");
+					this.OnConditionalGuaranteeApplicationsReceivedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
+		public System.Nullable<int> Creator
+		{
+			get
+			{
+				return this._Creator;
+			}
+			set
+			{
+				if ((this._Creator != value))
+				{
+					this.OnCreatorChanging(value);
+					this.SendPropertyChanging();
+					this._Creator = value;
+					this.SendPropertyChanged("Creator");
+					this.OnCreatorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
+		public byte Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ChangesGroup", Storage="_ChangesGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<ChangesGroup> ChangesGroups
+		{
+			get
+			{
+				return this._ChangesGroups;
+			}
+			set
+			{
+				this._ChangesGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ChoiceGroup", Storage="_ChoiceGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<ChoiceGroup> ChoiceGroups
+		{
+			get
+			{
+				return this._ChoiceGroups;
+			}
+			set
+			{
+				this._ChoiceGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_InsertableContent", Storage="_InsertableContents", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<InsertableContent> InsertableContents
+		{
+			get
+			{
+				return this._InsertableContents;
+			}
+			set
+			{
+				this._InsertableContents.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_PointsAdjustment", Storage="_PointsAdjustments", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<PointsAdjustment> PointsAdjustments
+		{
+			get
+			{
+				return this._PointsAdjustments;
+			}
+			set
+			{
+				this._PointsAdjustments.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalEvaluationRatingSetting", Storage="_ProposalEvaluationRatingSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<ProposalEvaluationRatingSetting> ProposalEvaluationRatingSettings
+		{
+			get
+			{
+				return this._ProposalEvaluationRatingSettings;
+			}
+			set
+			{
+				this._ProposalEvaluationRatingSettings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalSetting", Storage="_ProposalSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<ProposalSetting> ProposalSettings
+		{
+			get
+			{
+				return this._ProposalSettings;
+			}
+			set
+			{
+				this._ProposalSettings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_RewardRatingSetting", Storage="_RewardRatingSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<RewardRatingSetting> RewardRatingSettings
+		{
+			get
+			{
+				return this._RewardRatingSettings;
+			}
+			set
+			{
+				this._RewardRatingSettings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_UsersAdministrationRightsGroup", Storage="_UsersAdministrationRightsGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<UsersAdministrationRightsGroup> UsersAdministrationRightsGroups
+		{
+			get
+			{
+				return this._UsersAdministrationRightsGroups;
+			}
+			set
+			{
+				this._UsersAdministrationRightsGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_UsersRight", Storage="_UsersRights", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<UsersRight> UsersRights
+		{
+			get
+			{
+				return this._UsersRights;
+			}
+			set
+			{
+				this._UsersRights.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_Tbl", Storage="_Tbls", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<Tbl> Tbls
+		{
+			get
+			{
+				return this._Tbls;
+			}
+			set
+			{
+				this._Tbls.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_PointsTotal", Storage="_PointsTotals", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<PointsTotal> PointsTotals
+		{
+			get
+			{
+				return this._PointsTotals;
+			}
+			set
+			{
+				this._PointsTotals.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_AdministrationRightsGroup", Storage="_AdministrationRightsGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<AdministrationRightsGroup> AdministrationRightsGroups
+		{
+			get
+			{
+				return this._AdministrationRightsGroups;
+			}
+			set
+			{
+				this._AdministrationRightsGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_PointsManager", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
+		public TrustTrackerUnit TrustTrackerUnit
+		{
+			get
+			{
+				return this._TrustTrackerUnit.Entity;
+			}
+			set
+			{
+				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrustTrackerUnit.Entity = null;
+						previousValue.PointsManagers.Remove(this);
+					}
+					this._TrustTrackerUnit.Entity = value;
+					if ((value != null))
+					{
+						value.PointsManagers.Add(this);
+						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
+					}
+					else
+					{
+						this._TrustTrackerUnitID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("TrustTrackerUnit");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Domain_PointsManager", Storage="_Domain", ThisKey="DomainID", OtherKey="DomainID", IsForeignKey=true)]
+		public Domain Domain
+		{
+			get
+			{
+				return this._Domain.Entity;
+			}
+			set
+			{
+				Domain previousValue = this._Domain.Entity;
+				if (((previousValue != value) 
+							|| (this._Domain.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Domain.Entity = null;
+						previousValue.PointsManagers.Remove(this);
+					}
+					this._Domain.Entity = value;
+					if ((value != null))
+					{
+						value.PointsManagers.Add(this);
+						this._DomainID = value.DomainID;
+					}
+					else
+					{
+						this._DomainID = default(int);
+					}
+					this.SendPropertyChanged("Domain");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ChangesGroups(ChangesGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_ChangesGroups(ChangesGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_ChoiceGroups(ChoiceGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_ChoiceGroups(ChoiceGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_InsertableContents(InsertableContent entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_InsertableContents(InsertableContent entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_PointsAdjustments(PointsAdjustment entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_PointsAdjustments(PointsAdjustment entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_ProposalSettings(ProposalSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_ProposalSettings(ProposalSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_RewardRatingSettings(RewardRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_RewardRatingSettings(RewardRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_UsersAdministrationRightsGroups(UsersAdministrationRightsGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_UsersAdministrationRightsGroups(UsersAdministrationRightsGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_UsersRights(UsersRight entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_UsersRights(UsersRight entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_Tbls(Tbl entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_Tbls(Tbl entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_PointsTotals(PointsTotal entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_PointsTotals(PointsTotal entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_AdministrationRightsGroups(AdministrationRightsGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_AdministrationRightsGroups(AdministrationRightsGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
 		}
 	}
 	

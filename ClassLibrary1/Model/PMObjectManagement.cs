@@ -98,9 +98,6 @@ namespace ClassLibrary1.Model
                     case TypeOfObject.Comment:
                         ObjDataAccess.GetComment(objectID2);
                         break;
-                    case TypeOfObject.PointsTrustRules:
-                        ObjDataAccess.GetPointsTrustRule(objectID2);
-                        break;
                     case TypeOfObject.DateTimeField:
                         ObjDataAccess.GetDateTimeField(objectID2);
                         break;
@@ -263,11 +260,6 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.Tbl:
                     TblID = ObjDataAccess.GetTbl(objectID2).TblID;
                     break;
-                case TypeOfObject.PointsTrustRules:
-                    //var thePointsManagers = GetPointsTrustRule(objectID2).PointsManagers.Select(u => u.PointsManagerID).Distinct();
-                    //if (thePointsManagers.Count() == 1)
-                    //    pointsManagerID = thePointsManagers.First();
-                    break;
                 case TypeOfObject.DateTimeField:
                     TblID = ObjDataAccess.GetDateTimeField(objectID2).Field.TblRow.TblID;
                     break;
@@ -424,9 +416,6 @@ namespace ClassLibrary1.Model
                         theComment.LastDeletedDate = TestableDateTime.Now;
                     else
                         theComment.LastDeletedDate = null;
-                    break;
-                case TypeOfObject.PointsTrustRules:
-                    DataContext.GetTable<PointsTrustRule>().Single(x => x.PointsTrustRulesID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.DateTimeField:
                     DateTimeField theField = DataContext.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID== objectID);

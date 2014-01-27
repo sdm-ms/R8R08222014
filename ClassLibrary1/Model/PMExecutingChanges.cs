@@ -38,16 +38,14 @@ namespace ClassLibrary1.Model
 
 
 
-        public int AddPointsManagerNewSettings(int pointsManagerID, int? PointsTrustRulesID, decimal? currentPeriodDollarSubsidy, DateTime? endOfDollarSubsidyPeriod, decimal? nextPeriodDollarSubsidy, int? nextPeriodLength, short? numPrizes, decimal? minimumPayment)
+        public int AddPointsManagerNewSettings(int pointsManagerID, decimal? currentPeriodDollarSubsidy, DateTime? endOfDollarSubsidyPeriod, decimal? nextPeriodDollarSubsidy, int? nextPeriodLength, short? numPrizes, decimal? minimumPayment)
         {
             // Duplicate the original universe object, making changes as necessary.
             PointsManager originalPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == pointsManagerID);
-            int newPointsManagerID = AddPointsManager(originalPointsManager.DomainID, originalPointsManager.PointsTrustRulesID, originalPointsManager.Name, originalPointsManager.Creator);
+            int newPointsManagerID = AddPointsManager(originalPointsManager.DomainID, originalPointsManager.Name, originalPointsManager.Creator);
             PointsManager newPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == newPointsManagerID);
 
 
-            if (PointsTrustRulesID != null)
-                newPointsManager.PointsTrustRulesID = (int)PointsTrustRulesID;
             if (currentPeriodDollarSubsidy != null)
                 newPointsManager.CurrentPeriodDollarSubsidy = (decimal)currentPeriodDollarSubsidy;
             if (endOfDollarSubsidyPeriod != null)
@@ -1102,15 +1100,6 @@ namespace ClassLibrary1.Model
                     }
                     switch ((TypeOfObject)theChange.ObjectType)
                     {
-                        case TypeOfObject.PointsTrustRules:
-                            PointsTrustRule thePointsTrustRules = DataContext.GetTable<PointsTrustRule>().Single(x=>x.PointsTrustRulesID ==(int)theChange.ExistingObject);
-                            var referringPointsManagers = DataContext.GetTable<PointsManager>().Where(u => u.PointsTrustRulesID == (int)theChange.ExistingObject).Select(u => u.PointsManagerID);
-                            foreach (int referringPointsManager in referringPointsManagers)
-                                DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID ==referringPointsManager).PointsTrustRulesID = (int)theChange.NewObject;
-                            if (theChange.ChangesGroup.PointsManagerID == null)
-                                throw new Exception("Error -- counting rules can't be changed for null universe.");
-                            UpdatePointsTrustRules(DataContext.GetTable<PointsTrustRule>().Single(x => x.PointsTrustRulesID == (int)theChange.NewObject), theChange.ChangesGroup.PointsManager);
-                            break;
                         case TypeOfObject.PointsManager:
                             PointsManager originalPointsManager = DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID ==(int)theChange.ExistingObject);
                             PointsManager newPointsManager = DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID==(int)theChange.NewObject);
@@ -1118,7 +1107,6 @@ namespace ClassLibrary1.Model
                                 throw new Exception("An end time to the prize period must be specified.");
 
                             originalPointsManager.DomainID = newPointsManager.DomainID;
-                            originalPointsManager.PointsTrustRulesID = newPointsManager.PointsTrustRulesID;
                             originalPointsManager.CurrentPeriodDollarSubsidy = newPointsManager.CurrentPeriodDollarSubsidy;
                             originalPointsManager.EndOfDollarSubsidyPeriod = newPointsManager.EndOfDollarSubsidyPeriod;
                             originalPointsManager.NextPeriodDollarSubsidy = newPointsManager.NextPeriodDollarSubsidy;

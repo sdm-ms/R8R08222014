@@ -355,19 +355,6 @@ namespace ClassLibrary1.Model
             SetStatusOfObjectInitialBuild(ratingPlan, TypeOfObject.RatingPlan, StatusOfObject.Active);
         }
 
-        public void CreateMiscellaneousUserRatingsTbl()
-        {
-            int thePointsTrustRuleID = Supporter.AddPointsTrustRule((decimal)100, (decimal)0.002, (decimal)0.2, 150, "Default rules", null);
-            SetStatusOfObjectInitialBuild(thePointsTrustRuleID, TypeOfObject.PointsTrustRules, StatusOfObject.Active);
-            //RatingGroupAttribute defaultRatingGroupAttributes = RaterooDB.GetTable<RatingGroupAttribute>().Single(mg => mg.Name == "Single probability prediction");
-            //int miscDomainID = Supporter.AddDomain(true, false, false, "Miscellany", null);
-            //SetStatusOfObjectInitialBuild(miscDomainID, TypeOfObject.Domain, StatusOfObject.Active);
-            //int miscPointsManagerID = Supporter.AddPointsManager(miscDomainID, defaultRatingGroupAttributes.RatingGroupAttributesID, thePointsTrustRuleID, null, "Miscellaneous predictions", null);
-            //SetStatusOfObjectInitialBuild(miscPointsManagerID, TypeOfObject.PointsManager, StatusOfObject.Active);
-            //int mainTblID = Supporter.AddTbl(miscPointsManagerID, defaultRatingGroupAttributes.RatingGroupAttributesID, "UserRating", "UserRatings", null,false,"Misc",true,false);//modification
-            //SetStatusOfObjectInitialBuild(mainTblID, TypeOfObject.Tbl, StatusOfObject.Active);
-        }
-
         public void CreateEstablishedUsers()
         {
             int theUserID2 = Supporter.AddUserReturnId("admin", true, "mbabramo@yahoo.com", "finch2127248474", false);
@@ -570,9 +557,6 @@ namespace ClassLibrary1.Model
                     break;
                 case TypeOfObject.Tbl:
                     RaterooDB.GetTable<Tbl>().Single(x => x.TblID == objectID).Status = newValue;
-                    break;
-                case TypeOfObject.PointsTrustRules:
-                    RaterooDB.GetTable<PointsTrustRule>().Single(x => x.PointsTrustRulesID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.DateTimeField:
                     RaterooDB.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID == objectID).Status = newValue;

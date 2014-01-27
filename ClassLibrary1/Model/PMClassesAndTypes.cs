@@ -126,7 +126,6 @@ namespace ClassLibrary1.Model
         ChoiceInField,
         Tbl,
         Comment,
-        PointsTrustRules,
         CSSClasses,
         CSSTbls,
         CSSPlaces,

@@ -461,35 +461,7 @@ namespace ClassLibrary1.Model
             return theComment.CommentsID;
 
         }
-        /// <summary>
-        /// Adds a counting rule to the database
-        /// </summary>
-        /// <param name="ultimatePointsToCount">The ultimate threshold a user must reach for points to always count</param>
-        /// <param name="countMaxLossAgainstAt">A proportion (typically between 0 and 1) to multiply a user's max loss by
-        /// in determining the number of points for eligibility purposes</param>
-        /// <param name="countPendingAt">A proportion (typically between 0 and 1) to multiply a user's pending loss by
-        /// in determining the number of points for eligibility purposes</param>
-        /// <param name="minimumUsersCounting">The minimum number of users who must be eligible at any given time</param>
-        /// <param name="status">The status of the object and table</param>
-        /// <returns>The id of the added object</returns>
-        public int AddPointsTrustRule(decimal ultimatePointsToCount, decimal countMaxLossAgainstAt, decimal countPendingAt, int minimumUsersCounting, String name, int? creator)
-        {
-            PointsTrustRule thePointsTrustRules = new PointsTrustRule
-            {
-                UltimatePointsToCount = ultimatePointsToCount,
-                CountPotentialMaxLossAgainstAt = countMaxLossAgainstAt,
-                CountPendingAt = countPendingAt,
-                MinimumUsersCounting = minimumUsersCounting,
-                Name = name,
-                Creator = creator,
-                Status = (Byte)StatusOfObject.Proposed
-            };
-            DataContext.GetTable<PointsTrustRule>().InsertOnSubmit(thePointsTrustRules);
-            DataContext.SubmitChanges();
 
-            return thePointsTrustRules.PointsTrustRulesID;
-
-        }
         /// <summary>
         /// Adds an object representing a numeric field for a particular entity
         /// </summary>
@@ -1534,10 +1506,6 @@ namespace ClassLibrary1.Model
             };
             DataContext.GetTable<PointsTotal>().InsertOnSubmit(theTotal);
             DataContext.RegisterObjectToBeInserted(theTotal);
-            if (pointsManager.CurrentPointsToCount < pointsManager.PointsTrustRule.UltimatePointsToCount)
-            { // we need to update the counting rules
-                UpdatePointsTrustRules(pointsManager.PointsTrustRule, pointsManager);
-            }
             return theTotal;
         }
 
@@ -2283,13 +2251,12 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The user who created the universe</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddPointsManager(int domainID, int? PointsTrustRulesID, String name, int? creator)
+        public int AddPointsManager(int domainID, String name, int? creator)
         {
 
             PointsManager thePointsManagers = new PointsManager
             {
                 DomainID = domainID,
-                PointsTrustRulesID = PointsTrustRulesID,
                 TrustTrackerUnit = AddTrustTrackerUnit(),
                 CurrentPeriodDollarSubsidy = 0,
                 EndOfDollarSubsidyPeriod = null,

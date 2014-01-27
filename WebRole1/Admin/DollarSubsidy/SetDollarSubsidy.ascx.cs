@@ -102,7 +102,6 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
     public void ImplementSetDollarSubsidy()
     {
         // This Code sets new Setting for Dollar subsidy of a universe
-        int? PointsTrustRuleId = null;
         decimal? CurrentPeriodDollerSubsidy;
         if (TxtCurrentPeriodDollersubsidy.Text == "")
         {
@@ -181,7 +180,7 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
         int? ChangeGroupId = null;
         int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         // Calling the routines
-        Obj.PointsManagerChangeSettings((int)SubtopicId, PointsTrustRuleId, CurrentPeriodDollerSubsidy, EndofDollerSubsidyPeriod, NextPeriodDollerSubsidy, NextPeriodLength, NumPrizes, MinPayment, DoItNow, UserId, ChangeGroupId);
+        Obj.PointsManagerChangeSettings((int)SubtopicId, CurrentPeriodDollerSubsidy, EndofDollerSubsidyPeriod, NextPeriodDollerSubsidy, NextPeriodLength, NumPrizes, MinPayment, DoItNow, UserId, ChangeGroupId);
         User_Control_ModalPopUp PopUp = (User_Control_ModalPopUp)Buttons.FindControl("PopUp");
         PopUp.MsgString = StringConstants.StringDollarSubsidyChanged;
         PopUp.Show();

@@ -38,75 +38,6 @@ namespace ClassLibrary1.Model
         //  Methods related to user points and to counting rules
 
         /// <summary>
-        /// Update the counting rules to reflect that a user has met the ultimate standard
-        /// or fallen beneath the threshold. If we're below the threshold of the minimum
-        /// number of users qualifying, we'll do a check to see what the points threshold
-        /// for users' predictions to count should be.
-        /// </summary>
-        /// <param name="theRules">The counting rules object</param>
-        /// <param name="userAdded">True if a user now meets the standard, false if a user who
-        /// previously met the standard no longer does</param>
-        /// <param name="pointsManagerID">The universe to which these rules apply</param>
-        public void UpdatePointsTrustRules(PointsTrustRule theRules, PointsManager thePointsManager, bool newUserMeetsUltimateStandard, bool userFallsOutOfUltimateStandard, bool newUserMeetsCurrentStandard, bool userFallsOutOfCurrentStandard)
-        {
-          
-            int? previousUsersMeetingUltimateStandard = thePointsManager.NumUsersMeetingUltimateStandard;
-            int? previousUsersMeetingCurrentStandard = thePointsManager.NumUsersMeetingCurrentStandard;
-            if (newUserMeetsUltimateStandard)
-                thePointsManager.NumUsersMeetingUltimateStandard++;
-            if (userFallsOutOfUltimateStandard)
-                thePointsManager.NumUsersMeetingUltimateStandard--;
-
-            if (thePointsManager.NumUsersMeetingUltimateStandard >= theRules.MinimumUsersCounting)
-            { // Make sure our current standard is our ultimate standard
-                if (thePointsManager.NumUsersMeetingCurrentStandard != thePointsManager.NumUsersMeetingUltimateStandard || thePointsManager.CurrentPointsToCount != theRules.UltimatePointsToCount)
-                {
-                    thePointsManager.NumUsersMeetingCurrentStandard = thePointsManager.NumUsersMeetingUltimateStandard;
-                    thePointsManager.CurrentPointsToCount = theRules.UltimatePointsToCount;
-                    DataContext.SubmitChanges();
-                }
-            }
-            else
-            { // See if we need to adjust our current standard because a user has crossed the boundary
-                if (newUserMeetsCurrentStandard || userFallsOutOfCurrentStandard)
-                    UpdatePointsTrustRules(theRules, thePointsManager);
-            }
-        }
-
-        /// <summary>
-        /// Update the counting rules by making sure that at least the specified number
-        /// of users meets the standard if we're short of the ultimate standard.
-        /// </summary>
-        /// <param name="theRules">The counting rules</param>
-        /// <param name="pointsManagerID">The universe to which these rules apply</param>
-        public void UpdatePointsTrustRules(PointsTrustRule theRules, PointsManager thePointsManager)
-        {
-            var thePointsTotals = DataContext.WhereFromNewAndDatabase<PointsTotal>(pt => pt.PointsManager == thePointsManager).Select(pt => pt.TrustPoints); // pt.TotalPoints - theRules.CountPotentialMaxLossAgainstAt * pt.PotentialMaxLossOnNotYetPending + theRules.CountPendingAt * pt.PendingPoints);
-            thePointsManager.NumUsersMeetingUltimateStandard = thePointsTotals.Count(thePointsTotal => thePointsTotal >= theRules.UltimatePointsToCount);
-            if (thePointsManager.NumUsersMeetingUltimateStandard >= theRules.MinimumUsersCounting)
-                thePointsManager.CurrentPointsToCount = theRules.UltimatePointsToCount;
-            else
-            { // We're not yet at the ultimate standard, so we need to set the current points to count so at least the minimum number of users are included
-                var thePts = thePointsTotals.OrderByDescending(u => u);
-                if (thePts.Any())
-                {
-                    int numUsersToCount = theRules.MinimumUsersCounting; // We need to set at the minimum number of users, unless there are fewer users than that
-                    if (numUsersToCount > thePts.Count())
-                        numUsersToCount = thePts.Count();
-                    thePointsManager.NumUsersMeetingCurrentStandard = numUsersToCount;
-                    int totalNumberUsers = thePts.Count();
-                    if (totalNumberUsers <= theRules.MinimumUsersCounting)
-                        thePointsManager.CurrentPointsToCount = -999999; // everyone counts for now
-                    else
-                        thePointsManager.CurrentPointsToCount = thePts.Skip(totalNumberUsers - 1).First(); // accept the lowest score
-                }
-                else
-                    thePointsManager.CurrentPointsToCount = -999999; // everyone counts for now
-            }
-            //RaterooDB.SubmitChanges();
-        }
-
-        /// <summary>
         /// Updates a user's point total in a universe. This does not update a user's counting rules status,
         /// and so if that might be affected, then UpdateUserPointsAndStatus should be called instead.
         /// </summary>
@@ -177,8 +108,6 @@ namespace ClassLibrary1.Model
             thePointsManager.CurrentUserPendingPoints += CalculateDeltaCountingNegativesAsZero(originalPendingPoints, pendingPointsAdjustment);
             thePointsManager.CurrentUserNotYetPendingPoints += CalculateDeltaCountingNegativesAsZero(originalNotYetPendingPoints, notYetPendingAdjustment);
 
-            UpdateTrustPoints(ref theTotals, ref theUser, thePointsManager, thePointsManager.PointsTrustRule);
-
             if (submitChanges)
                 DataContext.SubmitChanges();
         }
@@ -200,14 +129,6 @@ namespace ClassLibrary1.Model
                 return newAdjustment;
             else
                 return 0;
-        }
-
-        public void UpdateTrustPoints(ref PointsTotal thePointsTotal, ref User theUser, PointsManager thePointsManager, PointsTrustRule theRules)
-        {
-            decimal originalTrustPointsRatio = thePointsTotal.TrustPointsRatio;
-            thePointsTotal.TrustPoints = (thePointsTotal.TotalPoints - theRules.CountPotentialMaxLossAgainstAt * thePointsTotal.PotentialMaxLossOnNotYetPending + theRules.CountPendingAt * thePointsTotal.PendingPoints + (decimal)0.0001) / Math.Max(theRules.UltimatePointsToCount, (decimal)0.1); // Note that not yet pending points are irrelevant.
-            thePointsTotal.TrustPointsRatio = Math.Min(thePointsTotal.TrustPoints, (decimal)3); // We cap trust ratios at 3, so that no one universe can have too much influence on it
-            theUser.TrustPointsRatioTotals += thePointsTotal.TrustPointsRatio - originalTrustPointsRatio;
         }
 
         /// <summary>
@@ -234,30 +155,11 @@ namespace ClassLibrary1.Model
             if (totalPointsAdjustment == 0 && currentPointsAdjustment == 0 && pendingPointsAdjustment == 0 && notYetPendingPointsAdjustment == 0 && notYetPendingMaxLossAdjustment == 0)
                 return;
 
-            bool userPreviouslyMeetsUltimateStandard = UserMeetsUltimateCountingStandard(thePointsManager, theUser, thePointsTotal);
-            bool userPreviouslyMeetsCurrentStandard = userPreviouslyMeetsUltimateStandard;
-            if (!userPreviouslyMeetsCurrentStandard)
-                userPreviouslyMeetsCurrentStandard = UserIsTrustedOldSystem(thePointsManager, theUser, thePointsTotal); // maybe the user meets the current standard
-
+            
             UpdateUserPoints(theUser, thePointsManager, theReason, totalPointsAdjustment, currentPointsAdjustment, pendingPointsAdjustment, notYetPendingPointsAdjustment, notYetPendingMaxLossAdjustment, longTermUnweightedAdjustment, null, submitChanges, thePointsTotal);
 
             PMPaymentGuarantees.CalculateGuaranteedPaymentsEarnedThisRewardPeriod(thePointsTotal);
 
-            bool userNowMeetsUltimateStandard = UserMeetsUltimateCountingStandard(thePointsManager, theUser, thePointsTotal);
-            bool userNowMeetsCurrentStandard = userNowMeetsUltimateStandard;
-            if (!userNowMeetsCurrentStandard)
-                userNowMeetsCurrentStandard = UserIsTrustedOldSystem(thePointsManager, theUser, thePointsTotal); // maybe the user meets the current standard
-            if (userPreviouslyMeetsCurrentStandard != userNowMeetsCurrentStandard || userNowMeetsUltimateStandard != userPreviouslyMeetsUltimateStandard)
-            {
-                PointsTrustRule theRules = thePointsManager.PointsTrustRule;
-                bool newUserMeetsUltimateStandard = (!userPreviouslyMeetsUltimateStandard && userNowMeetsUltimateStandard);
-                bool userFallsOutOfUltimateStandard = (userPreviouslyMeetsUltimateStandard && !userNowMeetsUltimateStandard);
-                bool newUserMeetsCurrentStandard = (!userPreviouslyMeetsCurrentStandard && userNowMeetsCurrentStandard);
-                bool userFallsOutOfCurrentStandard = (userPreviouslyMeetsCurrentStandard && !userNowMeetsCurrentStandard);
-                UpdatePointsTrustRules(theRules, thePointsManager, newUserMeetsUltimateStandard, userFallsOutOfUltimateStandard, newUserMeetsCurrentStandard, userFallsOutOfCurrentStandard);
-                if (submitChanges)
-                    DataContext.SubmitChanges();
-            }
 
         }
 
@@ -414,51 +316,6 @@ namespace ClassLibrary1.Model
         public bool UserIsTrustedOldSystem(PointsManager thePointsManager, User theUser, PointsTotal thePointsTotal = null)
         {
             return ObjDataAccess.UserIsTrustedToMakeDatabaseChanges(thePointsManager, theUser, thePointsTotal);
-        }
-
-        /// <summary>
-        /// Returns true if a user's predictions meet the ultimate standard for the universe (in which case, the user's 
-        /// predictions will definitely count).
-        /// </summary>
-        /// <param name="pointsManagerID">The universe</param>
-        /// <param name="userID">The user</param>
-        /// <returns>True if and only if the user can change the predictions in the univese</returns>
-        public bool UserMeetsUltimateCountingStandard(int pointsManagerID, int userID)
-        {
-            PointsManager thePointsManager = ObjDataAccess.GetPointsManager(pointsManagerID);
-            User theUser = ObjDataAccess.GetUser(userID);
-            return UserMeetsUltimateCountingStandard(thePointsManager, theUser);
-        }
-        public bool UserMeetsUltimateCountingStandard(PointsManager pointsManager, User user, PointsTotal thePointsTotal = null)
-        {
-            PointsTrustRule theRules = pointsManager.PointsTrustRule;
-            if (thePointsTotal == null)
-                thePointsTotal = DataContext.NewOrSingleOrDefault<PointsTotal>(pt => pt.PointsManager == pointsManager && pt.User == user);
-            if (thePointsTotal == null)
-            {
-                thePointsTotal = AddPointsTotal(user, pointsManager);
-            }
-
-            bool userCounts = (thePointsTotal.TotalPoints - theRules.CountPotentialMaxLossAgainstAt * thePointsTotal.PotentialMaxLossOnNotYetPending + theRules.CountPendingAt * thePointsTotal.PendingPoints >= theRules.UltimatePointsToCount);
-            return userCounts;
-        }
-
-        static int lastPointsManagerPointsUpdated = 0;
-        static DateTime? stopUpdatingPointsToCountUntil = null;
-        public bool UpdatePointsTrustRulesBackgroundTask()
-        {
-            if (stopUpdatingPointsToCountUntil != null && TestableDateTime.Now < (DateTime) stopUpdatingPointsToCountUntil)
-                return false; // no more work to do.
-            PointsManager thePointsManager = DataContext.GetTable<PointsManager>().OrderBy(x => x.PointsManagerID).FirstOrDefault(x => x.NumUsersMeetingUltimateStandard < x.PointsTrustRule.MinimumUsersCounting && x.PointsManagerID > lastPointsManagerPointsUpdated);
-            if (thePointsManager == null)
-            {
-                lastPointsManagerPointsUpdated = 0;
-                stopUpdatingPointsToCountUntil = TestableDateTime.Now + new TimeSpan(3, 0, 0); // check again in three hours
-                return false;
-            }
-            UpdatePointsTrustRules(thePointsManager.PointsTrustRule, thePointsManager);
-            lastPointsManagerPointsUpdated = thePointsManager.PointsManagerID;
-            return true;
         }
 
     }

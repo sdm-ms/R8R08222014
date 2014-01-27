@@ -231,7 +231,6 @@ namespace ClassLibrary1.Model
             dl.LoadWith<RatingGroup>(x => x.TblRow);
             dl.LoadWith<TblRow>(x => x.Tbl);
             dl.LoadWith<Tbl>(x => x.PointsManager);
-            dl.LoadWith<PointsManager>(x => x.PointsTrustRule);
 
             _underlyingRaterooDataContext.LoadOptions = dl;
         }

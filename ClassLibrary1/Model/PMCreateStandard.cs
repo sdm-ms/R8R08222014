@@ -57,7 +57,6 @@ namespace ClassLibrary1.Model
         protected int theRatingPhaseVeryShortID;
         protected int theRatingPhaseLongID;
         protected int theRatingPhaseVeryLongID;
-        protected int thePointsTrustRule;
         protected int? myChangesGroup;
 
         protected int visibleWithNameFieldDisplay;
@@ -279,11 +278,6 @@ namespace ClassLibrary1.Model
             return theCD;
         }
 
-        protected int CreatePointsTrustRule()
-        {
-            return Action.PointsTrustRuleCreate((decimal)10, (decimal)0.01, (decimal)0.45, 50, "", true, true, superUser, null);
-        }
-
         protected int CreateEvent(string abbrevName, string fullName, string explanation, int TblTab, int myRatingPhase, bool useAsFilter, bool sortable, bool sortAsc)
         {
             int thePointsManagerID = Action.DataContext.GetTable<TblTab>().Single(c => c.TblTabID == TblTab).Tbl.PointsManagerID;
@@ -377,10 +371,10 @@ namespace ClassLibrary1.Model
 
 
 
-        protected int CreatePointsManager(string name, int defaultRGA, int PointsTrustRules, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID, bool createRewardTbl, bool visibleToPublic = true, decimal probabilityHighStakes = 0.01M, decimal highStakesMultiplierSecret = 100M, decimal highStakesMultiplierKnown = 10M)
+        protected int CreatePointsManager(string name, int defaultRGA, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID, bool createRewardTbl, bool visibleToPublic = true, decimal probabilityHighStakes = 0.01M, decimal highStakesMultiplierSecret = 100M, decimal highStakesMultiplierKnown = 10M)
         {
             int myChangesGroup = Action.ChangesGroupCreate(null, null, superUser, null, null, null, null);
-            int pointsManagerID = Action.PointsManagerCreate(theDomainID, defaultRGA, PointsTrustRules, null, true, true, superUser, null, name);
+            int pointsManagerID = Action.PointsManagerCreate(theDomainID, defaultRGA, null, true, true, superUser, null, name);
             if (createRewardTbl)
             {
                 Action.RewardTblCreate(pointsManagerID, -10M, 10M, 60 * 60 * 24 * 2, 60 * 60 * 24 * 1, 0.05M, 20M, 1000, true, superUser, null);
@@ -428,8 +422,6 @@ namespace ClassLibrary1.Model
                 consumerHierarchy = Action.DataContext.GetTable<HierarchyItem>().Single(h => h.HierarchyItemName == "Consumer");
                 newsHierarchy = Action.DataContext.GetTable<HierarchyItem>().Single(h => h.HierarchyItemName == "News");
             }
-
-            thePointsTrustRule = CreatePointsTrustRule();
 
             theRatingPhaseStandardID = CreateRatingPhaseGroupStandard();
             int eventRating = Action.RatingCharacteristicsCreate(theRatingPhaseStandardID, null, 0, 100, 1, "Event", true, true, superUser, null);
@@ -668,7 +660,7 @@ namespace ClassLibrary1.Model
             HierarchyItem baseballItem = CreateHierarchyItem(sportsHierarchy, null, null, true, "Baseball");
             int thePointsManagerID;
 
-            thePointsManagerID = CreatePointsManager("BaseballHitters", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("BaseballHitters", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateBaseballChoiceGroups(thePointsManagerID);
             int hittersTblID = CreateTbl("Hitters", "Hitter", "Any non-pitcher who at any time this year has been on a 25- or 40-man roster is eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem hitters = CreateHierarchyItem(baseballItem, baseballItem, hittersTblID, true, "Hitters");
@@ -678,7 +670,7 @@ namespace ClassLibrary1.Model
             CreateHittingStats(hittersBasicStatsGroup, hittersMoreStatsGroup, theRatingPhaseStandardID);
             BeginImport("hitters.xml", hittersTblID);
 
-            thePointsManagerID = CreatePointsManager("BaseballPitchers", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("BaseballPitchers", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateBaseballChoiceGroups(thePointsManagerID);
             int pitchersTblID = CreateTbl("Pitchers", "Pitcher", "Any pitcher who at any time this year has been on a 25- or 40-man roster is eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem pitchers = CreateHierarchyItem(baseballItem, baseballItem, pitchersTblID, true, "Pitchers");
@@ -688,7 +680,7 @@ namespace ClassLibrary1.Model
             CreatePitchingStats(pitchersBasicStatsGroup, pitchersMoreStatsGroup, theRatingPhaseStandardID);
             BeginImport("pitchers.xml", pitchersTblID);
 
-            thePointsManagerID = CreatePointsManager("BaseballStandings", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("BaseballStandings", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateBaseballChoiceGroups(thePointsManagerID); 
             int standingsTblID = CreateTbl("Standings", "Team", "Only new major league ballclubs playing in the current year are eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem baseballStandings = CreateHierarchyItem(baseballItem, baseballItem, standingsTblID, true, "Standings");
@@ -898,7 +890,7 @@ namespace ClassLibrary1.Model
 
             HierarchyItem hockeyItem = CreateHierarchyItem(sportsHierarchy, null, null, true, "Hockey");
 
-            thePointsManagerID = CreatePointsManager("HockeyPlayers", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("HockeyPlayers", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateHockeyChoiceGroups(thePointsManagerID);
             int playersTblID = CreateTbl("Players", "Player", "Any non-goalie who has been on an NHL roster is eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem theHierarchyItem = CreateHierarchyItem(hockeyItem, hockeyItem, playersTblID, true, "Players");
@@ -908,7 +900,7 @@ namespace ClassLibrary1.Model
             CreatePlayerStats(playersBasicStatsGroup, playersMoreStatsGroup, theRatingPhaseStandardID);
             BeginImport("hockeyplayers.xml", playersTblID);
 
-            thePointsManagerID = CreatePointsManager("HockeyGoalies", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("HockeyGoalies", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateHockeyChoiceGroups(thePointsManagerID);
             int goaliesTblID = CreateTbl("Goalies", "Goalie", "Any goalie who at any time this year has been on an NHL roster is eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             theHierarchyItem = CreateHierarchyItem(hockeyItem, hockeyItem, goaliesTblID, true, "Goalies");
@@ -918,7 +910,7 @@ namespace ClassLibrary1.Model
             CreateGoalieStats(goaliesBasicStatsGroup, theRatingPhaseStandardID);
             BeginImport("hockeygoalies.xml", goaliesTblID);
 
-            thePointsManagerID = CreatePointsManager("HockeyStandings", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("HockeyStandings", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateHockeyChoiceGroups(thePointsManagerID);
             int standingsTblID = CreateTbl("Standings", "Team", "Only NHL teams playing in the current year are eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             theHierarchyItem = CreateHierarchyItem(hockeyItem, hockeyItem, standingsTblID, true, "Standings");
@@ -999,7 +991,7 @@ namespace ClassLibrary1.Model
 
             HierarchyItem realEstateHierarchy = CreateHierarchyItem(consumerHierarchy, null, null, true, "Real Estate");
 
-            int thePointsManagerID = CreatePointsManager("Real Estate For Sale", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int thePointsManagerID = CreatePointsManager("Real Estate For Sale", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateRealEstateChoiceGroups(thePointsManagerID);
             int forSaleTblID = CreateTbl("For Sale", "Property", "Any property that is on the rating in the regions covered by Rateroo is eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem hierarchy = CreateHierarchyItem(realEstateHierarchy, realEstateHierarchy, forSaleTblID, true, "For Sale");
@@ -1009,7 +1001,7 @@ namespace ClassLibrary1.Model
             int salesGroup = CreateTblTab("Sales Forecasts", forSaleTblID);
             CreateMain(ratingGroup, salesGroup, theRatingPhaseStandardID);
 
-            thePointsManagerID = CreatePointsManager("Real Estate For Rent", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("Real Estate For Rent", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateRealEstateChoiceGroups(thePointsManagerID);
             int forRentTblID = CreateTbl("For Rent", "Property", "Any property that is available for rent in the regions covered by Rateroo is eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             hierarchy = CreateHierarchyItem(realEstateHierarchy, realEstateHierarchy, forRentTblID, true, "For Rent");
@@ -1059,7 +1051,7 @@ namespace ClassLibrary1.Model
         public void CreateNewsTableAndHierarchy(string tableName)
         {
             int defaultType = eventRGA;
-            int thePointsManagerID = CreatePointsManager(tableName, defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int thePointsManagerID = CreatePointsManager(tableName, defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             int TblID = CreateNewsTable(defaultType, thePointsManagerID);
             HierarchyItem hierarchyItem = CreateHierarchyItem(newsHierarchy, newsHierarchy, TblID, true, tableName);
         }
@@ -1111,7 +1103,7 @@ namespace ClassLibrary1.Model
         public void CreatePrivatePagesTableAndHierarchy(string tableName)
         {
             int defaultType = eventRGA;
-            int thePointsManagerID = CreatePointsManager(tableName, defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true, false, 0.0M);
+            int thePointsManagerID = CreatePointsManager(tableName, defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true, false, 0.0M);
             int TblID = CreatePrivatePagesTable(tableName, defaultType, thePointsManagerID);
             HierarchyItem hierarchyItem = CreateHierarchyItem(null,null, TblID, false, tableName);
         }
@@ -1261,14 +1253,14 @@ namespace ClassLibrary1.Model
             base.Create();
             int defaultType = ratingRGA;
 
-            int thePointsManagerID = CreatePointsManager("Actors", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int thePointsManagerID = CreatePointsManager("Actors", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             int TblID = CreateActors(defaultType, thePointsManagerID);
             HierarchyItem actorsItem = CreateHierarchyItem(entertainmentHierarchy, null, TblID, true, "Actors");
-            thePointsManagerID = CreatePointsManager("RealityStars", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("RealityStars", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             TblID = CreateRealityStars(defaultType, thePointsManagerID);
             HierarchyItem realityStarsItem = CreateHierarchyItem(entertainmentHierarchy, null, TblID, true, "Reality Stars");
 
-            thePointsManagerID = CreatePointsManager("Movies", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("Movies", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             TblID = CreateMovies(defaultType, thePointsManagerID);
             HierarchyItem moviesItem = CreateHierarchyItem(entertainmentHierarchy, null, TblID, true, "Movies");
         }
@@ -1312,7 +1304,7 @@ namespace ClassLibrary1.Model
             base.Create();
             int defaultType = useExtraLongRatingPhaseGroup ? ratingVeryLongRGA : ratingRGA;
 
-            int thePointsManagerID = CreatePointsManager("SimpleTest", defaultType, thePointsTrustRule, useExtraLongRatingPhaseGroup ? theRatingPhaseVeryLongID : theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int thePointsManagerID = CreatePointsManager("SimpleTest", defaultType, useExtraLongRatingPhaseGroup ? theRatingPhaseVeryLongID : theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             int TblID = CreateSimpleTest(defaultType, thePointsManagerID);
 
             HierarchyItem testHierarchy = CreateHierarchyItem(null, null, null, true, "Test Hierarchy");
@@ -1351,7 +1343,7 @@ namespace ClassLibrary1.Model
             base.Create();
             int defaultType = ratingRGA;
 
-            int thePointsManagerID = CreatePointsManager("SimpleEventTest", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int thePointsManagerID = CreatePointsManager("SimpleEventTest", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             int TblID = CreateSimpleTest(defaultType, thePointsManagerID);
 
             HierarchyItem testHierarchy = CreateHierarchyItem(null, null, null, true, "Test Event Hierarchy");
@@ -1621,17 +1613,17 @@ namespace ClassLibrary1.Model
         {
             base.Create();
             int defaultType = ratingRGA;
-            int pointsManagerID = CreatePointsManager("Politicians", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int pointsManagerID = CreatePointsManager("Politicians", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateSharedChoiceGroupsForPeople(pointsManagerID);
             CreatePoliticianChoiceGroups(pointsManagerID);
             CreatePoliticianTbl(defaultType, pointsManagerID);
             HierarchyItem hierarchyItem = CreateHierarchyItem(governmentHierarchy, null, politiciansTblID, true, "Politicians");
-            pointsManagerID = CreatePointsManager("Judges", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            pointsManagerID = CreatePointsManager("Judges", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateSharedChoiceGroupsForPeople(pointsManagerID);
             CreateJudgeChoiceGroups(pointsManagerID);
             CreateJudgeTbl(defaultType, pointsManagerID);
             hierarchyItem = CreateHierarchyItem(governmentHierarchy, null, judgesTblID, true, "Judges");
-            pointsManagerID = CreatePointsManager("Supreme Court", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            pointsManagerID = CreatePointsManager("Supreme Court", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateSupremeCourtTbl(pointsManagerID);
             hierarchyItem = CreateHierarchyItem(governmentHierarchy, null, supremeCourtTblID, true, "Supreme Court");
         }
@@ -1701,12 +1693,12 @@ namespace ClassLibrary1.Model
         {
             base.Create();
             int defaultType = ratingRGA;
-            int thePointsManagerID = CreatePointsManager("Blogs", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int thePointsManagerID = CreatePointsManager("Blogs", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateBlogChoiceGroups(thePointsManagerID);
             int blogsTblID = CreateTbl("Blogs", "Blog", "Any blog that is as prominent as the average blog already included may be added. Blogs of somewhat lower prominence, even though they may end up being higher rated than more prominent blogs, should be added only once the existing blogs listed have almost all received careful ratings.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem blogsItem = CreateHierarchyItem(internetHierarchy, null, blogsTblID, true, "Blogs");
 
-            thePointsManagerID = CreatePointsManager("Blog posts", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            thePointsManagerID = CreatePointsManager("Blog posts", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateBlogChoiceGroups(thePointsManagerID);
             int blogPostsTblID = CreateTbl("Blog posts", "Blog post", "Any blog post or similar item of potentially general interest may be added. The number of posts that qualify as being of sufficiently general interest should grow only once there are enough users so that existing posts are receiving sufficiently careful ratings.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem blogPostsItem = CreateHierarchyItem(internetHierarchy, null, blogPostsTblID, true, "Blog Posts");
@@ -1819,7 +1811,7 @@ namespace ClassLibrary1.Model
         {
             base.Create();
             int defaultType = ratingRGA;
-            int thePointsManagerID = CreatePointsManager("Restaurants", defaultType, thePointsTrustRule, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
+            int thePointsManagerID = CreatePointsManager("Restaurants", defaultType, theRatingPhaseStandardID, null, null, standardDomain.DomainID, true);
             CreateRestaurantChoiceGroups(thePointsManagerID);
             int restaurantsTblID = CreateTbl("Restaurants", "Restaurant", "Any restaurant in the region covered by Rateroo is eligible to be added.", defaultType, theRatingPhaseStandardID, null, null, thePointsManagerID);
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);

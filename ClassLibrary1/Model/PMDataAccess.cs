@@ -292,34 +292,6 @@ namespace ClassLibrary1.Model
 
         }
 
-        /// <summary>
-        /// Returns a PointsTrustRules object. This object helps determine whether particular users' predictions will affect
-        /// the main predictions. Sometimes, a user must earn the right to affect the main predictions by proving that the user
-        /// makes accurate predictions. Even where a user's predictions don't count, the user can still earn points with accurate predictions.
-        /// Counting rules are the same for an entire prediction rating universe. Note that what matters is a user's
-        /// total points not current points (that is, points that have been cashed in still count).
-        /// A complication here is that we need to allow some users points to count when the universe first opens, so
-        /// the number of points that is needed rises (CurrentPointsToCount will rise until it is at least UltimatePointsToCount).
-        /// PointsTrustRulesID: The id of this object.
-        /// UltimatePointsToCount: The number of total points that users ultimately will need to receive before the user's 
-        /// predictions can change the consensus prediction.
-        /// CountPotentialMaxLossAgainstAt: A number representing how the maximum loss that a user faces from already pending
-        /// predictions should be counted against the user's points. For example, if a user has 100 points and a potential loss of 
-        /// 1000 points, then if this is set at 0.01, the user will effectively have 90 points for the purpose of determining
-        /// whether the user's predictions count.
-        /// CountPendingAt: A number representing how any loss that is pending will count against the user. Generally,
-        /// this will be higher than the above number, because a pending loss in points means the rating has already
-        /// moved against the user.
-        /// MinimumUsersCounting: The minimum number of users that we want to count at any given time. The CurrentPointsToCount
-        /// will be set at a level such that at least this many users will count (or all users if fewer than the 
-        /// minimum are signed up).
-        /// </summary>
-        /// <param name="theID"></param>
-        /// <returns></returns>
-        public PointsTrustRule GetPointsTrustRule(int theID)
-        {
-            return RaterooDB.GetTable<PointsTrustRule>().Single(x => x.PointsTrustRulesID == theID);
-        }
 
         /// <summary>
         /// A field containing a date and/or time
@@ -1148,13 +1120,12 @@ namespace ClassLibrary1.Model
                 return true;
             if (theUser.Username == "badrater")
                 return false; // useful for testing purposes -- password is "badrater"
-            PointsTrustRule theRules = thePointsManager.PointsTrustRule;
             if (thePointsTotal == null)
                 thePointsTotal = theUser.PointsTotals.SingleOrDefault(pt => pt.PointsManager == thePointsManager && pt.User == theUser); 
             if (thePointsTotal == null)
                 thePointsTotal = new PointsTotal(); // all points are zero
 
-            bool userIsTrusted = (theRules.TrustPointsRatioTotalsMinForAutoTrust != null && theUser.TrustPointsRatioTotals >= theRules.TrustPointsRatioTotalsMinForAutoTrust) || thePointsTotal.TrustPointsRatio >= 1 || (thePointsTotal.TrustPointsRatio * Math.Max(thePointsManager.CurrentPointsToCount, (decimal)0.0001) / Math.Max(theRules.UltimatePointsToCount, (decimal)0.0001) >= 1) || (thePointsTotal.TrustPoints >= thePointsManager.CurrentPointsToCount);
+            bool userIsTrusted = true; // we are now making it so that all users are trusted to make database changes, but some might automatically be rolled back (theRules.TrustPointsRatioTotalsMinForAutoTrust != null && theUser.TrustPointsRatioTotals >= theRules.TrustPointsRatioTotalsMinForAutoTrust) || thePointsTotal.TrustPointsRatio >= 1 || (thePointsTotal.TrustPointsRatio * Math.Max(thePointsManager.CurrentPointsToCount, (decimal)0.0001) / Math.Max(theRules.UltimatePointsToCount, (decimal)0.0001) >= 1) || (thePointsTotal.TrustPoints >= thePointsManager.CurrentPointsToCount);
             return userIsTrusted;
         }
 

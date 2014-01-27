@@ -129,12 +129,6 @@ namespace ClassLibrary1.Model
             {
                 rating.LastTrustedValue = rating.CurrentValue;
             }
-            var pointsTrustRules = DataContext.GetTable<PointsTrustRule>();
-            foreach (var ptr in pointsTrustRules)
-            {
-                ptr.MinimumUsersCounting = 150;
-                ptr.CountPotentialMaxLossAgainstAt = (decimal) 0.002;
-            }
             DataContext.SubmitChanges();
         }
 
