@@ -9,7 +9,7 @@ namespace ClassLibrary1.Model
     [Serializable()]
     public class TrustTrackerChoiceSummary
     {
-        public int ChoiceInFieldID;
+        public int ChoiceInGroupID;
         public float SumAdjustmentPcts;
         public int NumReratedUserRatings;
 
@@ -95,10 +95,10 @@ namespace ClassLibrary1.Model
                 theTrustTracker = PMTrustTrackingBackgroundTasks.AddTrustTracker(RaterooDB, theUser, theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit);
             TrustTrackerStat[] theTrustTrackerStats = theTrustTracker.TrustTrackerStats.ToArray();
             SetStatsAndAdjustmentFactor(theRating.LastTrustedValue ?? currentRatingOrBasisOfCalc, theRating.CurrentValue, currentRatingOrBasisOfCalc, enteredRating, oneDayVolatilityDecimal, oneHourVolatilityDecimal, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null ? null : theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase, (float) pctPreviousRatings, theTrustTrackerStats);
-            bool isTrusted = 
-                (theRating.CurrentValue != null && theTrustTracker.SkepticalTrustLevel > 0) ||
-                (theRating.CurrentValue == null && theTrustTracker.SkepticalTrustLevel > PMTrustTrackingBackgroundTasks.MinSkepticalTrustNeededForTrustedOnInitialRating) || 
-                TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes; 
+            bool isTrusted = true; // we are disabling the approach of trusting only some users
+                //(theRating.CurrentValue != null && theTrustTracker.SkepticalTrustLevel > 0) ||
+                //(theRating.CurrentValue == null && theTrustTracker.SkepticalTrustLevel > PMTrustTrackingBackgroundTasks.MinSkepticalTrustNeededForTrustedOnInitialRating) || 
+                //TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes; 
             additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactor, isTrusted, pctPreviousRatings, oneHourVolatilityDecimal, oneDayVolatilityDecimal, 
                 trustTrackerForChoiceFieldsSummary, otherChoiceInFieldIDs);
         }
@@ -111,7 +111,7 @@ namespace ClassLibrary1.Model
         /// <param name="trustTrackerStats"></param>
         public TrustTrackerStatManager(UserRating theUserRating, RatingCharacteristic theRatingCharacteristic,  TrustTrackerStat[] trustTrackerStats)
         {
-            TrustTrackerChoiceSummary = theUserRating.TrustTrackerForChoiceInFieldsUserRatingLinks.Select(x => new TrustTrackerChoiceSummary { ChoiceInFieldID = x.TrustTrackerForChoiceInField.ChoiceInFieldID, NumReratedUserRatings = x.TrustTrackerForChoiceInField.NumReratedUserRatings, SumAdjustmentPcts = x.TrustTrackerForChoiceInField.SumAdjustmentPcts }).ToList();
+            TrustTrackerChoiceSummary = theUserRating.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(x => new TrustTrackerChoiceSummary { ChoiceInGroupID = x.TrustTrackerForChoiceInGroup.ChoiceInGroupID, NumReratedUserRatings = x.TrustTrackerForChoiceInGroup.NumReratedUserRatings, SumAdjustmentPcts = x.TrustTrackerForChoiceInGroup.SumAdjustmentPcts }).ToList();
             SetStatsAndAdjustmentFactor(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.OneDayVolatility ?? 0, theUserRating.OneHourVolatility ?? 0, theRatingCharacteristic, theUserRating.LogarithmicBase, (float) theUserRating.PercentPreviousRatings, trustTrackerStats);
         }
 

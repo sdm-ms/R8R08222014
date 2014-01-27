@@ -1726,19 +1726,19 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<UserRating>().InsertOnSubmit(theUserRating);
             DataContext.RegisterObjectToBeInserted(theUserRating);
 
-            List<int> allChoiceInFieldIDsToBeTrustTracked = additionalInfo.ChoiceInFieldIDsNotTrackedYet.Union(additionalInfo.TrustTrackerChoiceSummaries.Select(x => x.ChoiceInFieldID)).ToList();
-            List<TrustTrackerForChoiceInField> choiceInFieldsInDatabaseAlready = DataContext.GetTable<TrustTrackerForChoiceInField>().Where(x => allChoiceInFieldIDsToBeTrustTracked.Contains(x.ChoiceInFieldID) && x.User == user).ToList();
-            List<int> notYetInsertedInt = allChoiceInFieldIDsToBeTrustTracked.Except(choiceInFieldsInDatabaseAlready.Select(x => x.ChoiceInFieldID)).ToList();
-            List<ChoiceInField> notYetInserted = DataContext.GetTable<ChoiceInField>().Where(x => additionalInfo.ChoiceInFieldIDsNotTrackedYet.Contains(x.ChoiceInFieldID)).ToList();
-            List<TrustTrackerForChoiceInField> allTrustTrackersForChoiceInFields = new List<TrustTrackerForChoiceInField>();
-            allTrustTrackersForChoiceInFields.AddRange(choiceInFieldsInDatabaseAlready);
-            foreach (var mustInsertChoiceInField in notYetInserted)
+            List<int> allChoiceInGroupIDsToBeTrustTracked = additionalInfo.ChoiceInGroupIDsNotTrackedYet.Union(additionalInfo.TrustTrackerChoiceSummaries.Select(x => x.ChoiceInGroupID)).ToList();
+            List<TrustTrackerForChoiceInGroup> choiceInGroupsInDatabaseAlready = DataContext.GetTable<TrustTrackerForChoiceInGroup>().Where(x => allChoiceInGroupIDsToBeTrustTracked.Contains(x.ChoiceInGroupID) && x.User == user).ToList();
+            List<int> notYetInsertedInt = allChoiceInGroupIDsToBeTrustTracked.Except(choiceInGroupsInDatabaseAlready.Select(x => x.ChoiceInGroupID)).ToList();
+            List<ChoiceInGroup> notYetInserted = DataContext.GetTable<ChoiceInGroup>().Where(x => additionalInfo.ChoiceInGroupIDsNotTrackedYet.Contains(x.ChoiceInGroupID)).ToList();
+            List<TrustTrackerForChoiceInGroup> allTrustTrackersForChoiceInGroups = new List<TrustTrackerForChoiceInGroup>();
+            allTrustTrackersForChoiceInGroups.AddRange(choiceInGroupsInDatabaseAlready);
+            foreach (var mustInsertChoiceInGroup in notYetInserted)
             {
-                TrustTrackerForChoiceInField theTrustTrackerForChoiceInFIeld = AddTrustTrackerForChoiceInField(user, mustInsertChoiceInField, tbl);
-                allTrustTrackersForChoiceInFields.Add(theTrustTrackerForChoiceInFIeld);
+                TrustTrackerForChoiceInGroup theTrustTrackerForChoiceInGroup = AddTrustTrackerForChoiceInGroup(user, mustInsertChoiceInGroup, tbl);
+                allTrustTrackersForChoiceInGroups.Add(theTrustTrackerForChoiceInGroup);
             }
-            foreach (var trustTrackerForChoiceInField in allTrustTrackersForChoiceInFields)
-                AddTrustTrackerForChoiceInFieldsUserRatingLink(theUserRating, trustTrackerForChoiceInField);
+            foreach (var trustTrackerForChoiceInGroup in allTrustTrackersForChoiceInGroups)
+                AddTrustTrackerForChoiceInGroupsUserRatingLink(theUserRating, trustTrackerForChoiceInGroup);
 
 
             int[] excludedRatingGroupTypes = { (int) RatingGroupTypes.hierarchyNumbersBelow, (int) RatingGroupTypes.probabilityHierarchyBelow, (int) RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy };
@@ -2315,30 +2315,30 @@ namespace ClassLibrary1.Model
             return thePointsManagers.PointsManagerID;
         }
 
-        public TrustTrackerForChoiceInField AddTrustTrackerForChoiceInField(User theUser, ChoiceInField theChoiceInField, Tbl theTbl)
+        public TrustTrackerForChoiceInGroup AddTrustTrackerForChoiceInGroup(User theUser, ChoiceInGroup theChoiceInGroup, Tbl theTbl)
         {
-            TrustTrackerForChoiceInField theTracker = new TrustTrackerForChoiceInField
+            TrustTrackerForChoiceInGroup theTracker = new TrustTrackerForChoiceInGroup
             {
                 User = theUser,
-                ChoiceInField = theChoiceInField,
+                ChoiceInGroup = theChoiceInGroup,
                 Tbl = theTbl
             };
 
-            DataContext.GetTable<TrustTrackerForChoiceInField>().InsertOnSubmit(theTracker);
+            DataContext.GetTable<TrustTrackerForChoiceInGroup>().InsertOnSubmit(theTracker);
             DataContext.RegisterObjectToBeInserted(theTracker);
 
             return theTracker;
         }
 
-        public TrustTrackerForChoiceInFieldsUserRatingLink AddTrustTrackerForChoiceInFieldsUserRatingLink(UserRating theUserRating, TrustTrackerForChoiceInField theTrustTrackerForChoiceInField)
+        public TrustTrackerForChoiceInGroupsUserRatingLink AddTrustTrackerForChoiceInGroupsUserRatingLink(UserRating theUserRating, TrustTrackerForChoiceInGroup theTrustTrackerForChoiceInGroup)
         {
-            TrustTrackerForChoiceInFieldsUserRatingLink theLink = new TrustTrackerForChoiceInFieldsUserRatingLink
+            TrustTrackerForChoiceInGroupsUserRatingLink theLink = new TrustTrackerForChoiceInGroupsUserRatingLink
             {
                 UserRating = theUserRating,
-                TrustTrackerForChoiceInField = theTrustTrackerForChoiceInField
+                TrustTrackerForChoiceInGroup = theTrustTrackerForChoiceInGroup
             };
 
-            DataContext.GetTable<TrustTrackerForChoiceInFieldsUserRatingLink>().InsertOnSubmit(theLink);
+            DataContext.GetTable<TrustTrackerForChoiceInGroupsUserRatingLink>().InsertOnSubmit(theLink);
             DataContext.RegisterObjectToBeInserted(theLink);
 
             return theLink;

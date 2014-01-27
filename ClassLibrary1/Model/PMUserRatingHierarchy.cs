@@ -273,7 +273,7 @@ namespace ClassLibrary1.Model
         public decimal OneHourVolatility;
         public decimal OneDayVolatility;
         public List<TrustTrackerChoiceSummary> TrustTrackerChoiceSummaries;
-        public List<int> ChoiceInFieldIDsNotTrackedYet;
+        public List<int> ChoiceInGroupIDsNotTrackedYet;
 
         public UserRatingHierarchyAdditionalInfo(
              float adjustPct,
@@ -291,7 +291,7 @@ namespace ClassLibrary1.Model
             OneHourVolatility = oneHourVolatility;
             OneDayVolatility = oneDayVolatility;
             TrustTrackerChoiceSummaries = theTrustTrackerChoiceSummaries;
-            ChoiceInFieldIDsNotTrackedYet = choiceInFieldIDsNotTrackedYet;
+            ChoiceInGroupIDsNotTrackedYet = choiceInFieldIDsNotTrackedYet;
         }
     }
 
@@ -833,22 +833,22 @@ namespace ClassLibrary1.Model
 
                 RatingIdAndUserRatingValue firstUserRating = ratingIdAndUserRatingValues.First();
                 UserRatingHierarchyAdditionalInfo additionalInfo;
-                List<int> choiceInFieldIDs = topRatingGroup.TblRow.Fields
+                List<int> choiceInGroupIDs = topRatingGroup.TblRow.Fields
                     .SelectMany(y => y.ChoiceFields)
                     .Where(y => y.Field.FieldDefinition.ChoiceGroupFieldDefinitions
                         .Any(z => z.TrackTrustBasedOnChoices)) // there really should be no more than 1
                     .SelectMany(y => y.ChoiceInFields)
-                    .Select(y => y.ChoiceInFieldID)
+                    .Select(y => y.ChoiceInGroupID)
                     .ToList();
-                var choiceTrustTrackers = topRatingGroup.TblRow.Tbl.TrustTrackerForChoiceInFields
-                        .Where(u => u.User == theUser && choiceInFieldIDs.Any(y => y == u.ChoiceInFieldID))
+                var choiceTrustTrackers = topRatingGroup.TblRow.Tbl.TrustTrackerForChoiceInGroups
+                        .Where(u => u.User == theUser && choiceInGroupIDs.Any(y => y == u.ChoiceInGroupID))
                         .Select(x => new TrustTrackerChoiceSummary
                         {
-                            ChoiceInFieldID = x.ChoiceInFieldID,
+                            ChoiceInGroupID = x.ChoiceInGroupID,
                             NumReratedUserRatings = x.NumReratedUserRatings,
                             SumAdjustmentPcts = x.SumAdjustmentPcts
                         }).ToList();
-                var otherChoiceInFieldIDs = choiceInFieldIDs.Where(x => !choiceTrustTrackers.Any(y => y.ChoiceInFieldID == x)).ToList();
+                var otherChoiceInFieldIDs = choiceInGroupIDs.Where(x => !choiceTrustTrackers.Any(y => y.ChoiceInGroupID == x)).ToList();
                 TrustTrackerStatManager theManager = new TrustTrackerStatManager(
                     DataContext, 
                     theRatings.Single(x => x.RatingID == firstUserRating.RatingID), 

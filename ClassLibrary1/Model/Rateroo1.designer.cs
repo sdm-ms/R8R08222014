@@ -333,9 +333,6 @@ namespace ClassLibrary1.Model
     partial void InsertChoiceGroupFieldDefinition(ChoiceGroupFieldDefinition instance);
     partial void UpdateChoiceGroupFieldDefinition(ChoiceGroupFieldDefinition instance);
     partial void DeleteChoiceGroupFieldDefinition(ChoiceGroupFieldDefinition instance);
-    partial void InsertTrustTrackerForChoiceInFieldsUserRatingLink(TrustTrackerForChoiceInFieldsUserRatingLink instance);
-    partial void UpdateTrustTrackerForChoiceInFieldsUserRatingLink(TrustTrackerForChoiceInFieldsUserRatingLink instance);
-    partial void DeleteTrustTrackerForChoiceInFieldsUserRatingLink(TrustTrackerForChoiceInFieldsUserRatingLink instance);
     partial void InsertAdministrationRight(AdministrationRight instance);
     partial void UpdateAdministrationRight(AdministrationRight instance);
     partial void DeleteAdministrationRight(AdministrationRight instance);
@@ -345,9 +342,6 @@ namespace ClassLibrary1.Model
     partial void InsertUserInfo(UserInfo instance);
     partial void UpdateUserInfo(UserInfo instance);
     partial void DeleteUserInfo(UserInfo instance);
-    partial void InsertTrustTrackerForChoiceInField(TrustTrackerForChoiceInField instance);
-    partial void UpdateTrustTrackerForChoiceInField(TrustTrackerForChoiceInField instance);
-    partial void DeleteTrustTrackerForChoiceInField(TrustTrackerForChoiceInField instance);
     partial void InsertTrustTrackerUnit(TrustTrackerUnit instance);
     partial void UpdateTrustTrackerUnit(TrustTrackerUnit instance);
     partial void DeleteTrustTrackerUnit(TrustTrackerUnit instance);
@@ -363,6 +357,12 @@ namespace ClassLibrary1.Model
     partial void InsertTrustTracker(TrustTracker instance);
     partial void UpdateTrustTracker(TrustTracker instance);
     partial void DeleteTrustTracker(TrustTracker instance);
+    partial void InsertTrustTrackerForChoiceInGroup(TrustTrackerForChoiceInGroup instance);
+    partial void UpdateTrustTrackerForChoiceInGroup(TrustTrackerForChoiceInGroup instance);
+    partial void DeleteTrustTrackerForChoiceInGroup(TrustTrackerForChoiceInGroup instance);
+    partial void InsertTrustTrackerForChoiceInGroupsUserRatingLink(TrustTrackerForChoiceInGroupsUserRatingLink instance);
+    partial void UpdateTrustTrackerForChoiceInGroupsUserRatingLink(TrustTrackerForChoiceInGroupsUserRatingLink instance);
+    partial void DeleteTrustTrackerForChoiceInGroupsUserRatingLink(TrustTrackerForChoiceInGroupsUserRatingLink instance);
     #endregion
 		
 		public RaterooDataContext() : 
@@ -1211,14 +1211,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<TrustTrackerForChoiceInFieldsUserRatingLink> TrustTrackerForChoiceInFieldsUserRatingLinks
-		{
-			get
-			{
-				return this.GetTable<TrustTrackerForChoiceInFieldsUserRatingLink>();
-			}
-		}
-		
 		public System.Data.Linq.Table<AdministrationRight> AdministrationRights
 		{
 			get
@@ -1240,14 +1232,6 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<UserInfo>();
-			}
-		}
-		
-		public System.Data.Linq.Table<TrustTrackerForChoiceInField> TrustTrackerForChoiceInFields
-		{
-			get
-			{
-				return this.GetTable<TrustTrackerForChoiceInField>();
 			}
 		}
 		
@@ -1288,6 +1272,22 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<TrustTracker>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrustTrackerForChoiceInGroup> TrustTrackerForChoiceInGroups
+		{
+			get
+			{
+				return this.GetTable<TrustTrackerForChoiceInGroup>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrustTrackerForChoiceInGroupsUserRatingLink> TrustTrackerForChoiceInGroupsUserRatingLinks
+		{
+			get
+			{
+				return this.GetTable<TrustTrackerForChoiceInGroupsUserRatingLink>();
 			}
 		}
 		
@@ -6601,8 +6601,6 @@ namespace ClassLibrary1.Model
 		
 		private byte _Status;
 		
-		private EntitySet<TrustTrackerForChoiceInField> _TrustTrackerForChoiceInFields;
-		
 		private EntityRef<ChoiceField> _ChoiceField;
 		
 		private EntityRef<ChoiceInGroup> _ChoiceInGroup;
@@ -6623,7 +6621,6 @@ namespace ClassLibrary1.Model
 		
 		public ChoiceInField()
 		{
-			this._TrustTrackerForChoiceInFields = new EntitySet<TrustTrackerForChoiceInField>(new Action<TrustTrackerForChoiceInField>(this.attach_TrustTrackerForChoiceInFields), new Action<TrustTrackerForChoiceInField>(this.detach_TrustTrackerForChoiceInFields));
 			this._ChoiceField = default(EntityRef<ChoiceField>);
 			this._ChoiceInGroup = default(EntityRef<ChoiceInGroup>);
 			OnCreated();
@@ -6717,19 +6714,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ChoiceInField_TrustTrackerForChoiceInField", Storage="_TrustTrackerForChoiceInFields", ThisKey="ChoiceInFieldID", OtherKey="ChoiceInFieldID")]
-		public EntitySet<TrustTrackerForChoiceInField> TrustTrackerForChoiceInFields
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInFields;
-			}
-			set
-			{
-				this._TrustTrackerForChoiceInFields.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ChoiceField_ChoiceInField", Storage="_ChoiceField", ThisKey="ChoiceFieldID", OtherKey="ChoiceFieldID", IsForeignKey=true)]
 		public ChoiceField ChoiceField
 		{
@@ -6817,18 +6801,6 @@ namespace ClassLibrary1.Model
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
-		
-		private void attach_TrustTrackerForChoiceInFields(TrustTrackerForChoiceInField entity)
-		{
-			this.SendPropertyChanging();
-			entity.ChoiceInField = this;
-		}
-		
-		private void detach_TrustTrackerForChoiceInFields(TrustTrackerForChoiceInField entity)
-		{
-			this.SendPropertyChanging();
-			entity.ChoiceInField = null;
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ChoiceInGroups")]
@@ -6854,6 +6826,8 @@ namespace ClassLibrary1.Model
 		private EntitySet<ChoiceInGroup> _ChoiceInGroups;
 		
 		private EntitySet<SearchWordChoice> _SearchWordChoices;
+		
+		private EntitySet<TrustTrackerForChoiceInGroup> _TrustTrackerForChoiceInGroups;
 		
 		private EntityRef<ChoiceGroup> _ChoiceGroup;
 		
@@ -6882,6 +6856,7 @@ namespace ClassLibrary1.Model
 			this._ChoiceInFields = new EntitySet<ChoiceInField>(new Action<ChoiceInField>(this.attach_ChoiceInFields), new Action<ChoiceInField>(this.detach_ChoiceInFields));
 			this._ChoiceInGroups = new EntitySet<ChoiceInGroup>(new Action<ChoiceInGroup>(this.attach_ChoiceInGroups), new Action<ChoiceInGroup>(this.detach_ChoiceInGroups));
 			this._SearchWordChoices = new EntitySet<SearchWordChoice>(new Action<SearchWordChoice>(this.attach_SearchWordChoices), new Action<SearchWordChoice>(this.detach_SearchWordChoices));
+			this._TrustTrackerForChoiceInGroups = new EntitySet<TrustTrackerForChoiceInGroup>(new Action<TrustTrackerForChoiceInGroup>(this.attach_TrustTrackerForChoiceInGroups), new Action<TrustTrackerForChoiceInGroup>(this.detach_TrustTrackerForChoiceInGroups));
 			this._ChoiceGroup = default(EntityRef<ChoiceGroup>);
 			this._ChoiceInGroup1 = default(EntityRef<ChoiceInGroup>);
 			OnCreated();
@@ -7054,6 +7029,19 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ChoiceInGroup_TrustTrackerForChoiceInGroup", Storage="_TrustTrackerForChoiceInGroups", ThisKey="ChoiceInGroupID", OtherKey="ChoiceInGroupID")]
+		public EntitySet<TrustTrackerForChoiceInGroup> TrustTrackerForChoiceInGroups
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroups;
+			}
+			set
+			{
+				this._TrustTrackerForChoiceInGroups.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ChoiceGroup_ChoiceInGroup", Storage="_ChoiceGroup", ThisKey="ChoiceGroupID", OtherKey="ChoiceGroupID", IsForeignKey=true)]
 		public ChoiceGroup ChoiceGroup
 		{
@@ -7173,6 +7161,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_SearchWordChoices(SearchWordChoice entity)
+		{
+			this.SendPropertyChanging();
+			entity.ChoiceInGroup = null;
+		}
+		
+		private void attach_TrustTrackerForChoiceInGroups(TrustTrackerForChoiceInGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ChoiceInGroup = this;
+		}
+		
+		private void detach_TrustTrackerForChoiceInGroups(TrustTrackerForChoiceInGroup entity)
 		{
 			this.SendPropertyChanging();
 			entity.ChoiceInGroup = null;
@@ -12777,7 +12777,7 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdditionalInfo", DbType="VarBinary(MAX)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdditionalInfo", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary AdditionalInfo
 		{
 			get
@@ -21697,13 +21697,13 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<UserInfo> _UserInfos;
 		
-		private EntitySet<TrustTrackerForChoiceInField> _TrustTrackerForChoiceInFields;
-		
 		private EntitySet<UserInteraction> _UserInteractions;
 		
 		private EntitySet<UserInteraction> _UserInteractions1;
 		
 		private EntitySet<TrustTracker> _TrustTrackers;
+		
+		private EntitySet<TrustTrackerForChoiceInGroup> _TrustTrackerForChoiceInGroups;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -21742,10 +21742,10 @@ namespace ClassLibrary1.Model
 			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
 			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
 			this._UserInfos = default(EntityRef<UserInfo>);
-			this._TrustTrackerForChoiceInFields = new EntitySet<TrustTrackerForChoiceInField>(new Action<TrustTrackerForChoiceInField>(this.attach_TrustTrackerForChoiceInFields), new Action<TrustTrackerForChoiceInField>(this.detach_TrustTrackerForChoiceInFields));
 			this._UserInteractions = new EntitySet<UserInteraction>(new Action<UserInteraction>(this.attach_UserInteractions), new Action<UserInteraction>(this.detach_UserInteractions));
 			this._UserInteractions1 = new EntitySet<UserInteraction>(new Action<UserInteraction>(this.attach_UserInteractions1), new Action<UserInteraction>(this.detach_UserInteractions1));
 			this._TrustTrackers = new EntitySet<TrustTracker>(new Action<TrustTracker>(this.attach_TrustTrackers), new Action<TrustTracker>(this.detach_TrustTrackers));
+			this._TrustTrackerForChoiceInGroups = new EntitySet<TrustTrackerForChoiceInGroup>(new Action<TrustTrackerForChoiceInGroup>(this.attach_TrustTrackerForChoiceInGroups), new Action<TrustTrackerForChoiceInGroup>(this.detach_TrustTrackerForChoiceInGroups));
 			OnCreated();
 		}
 		
@@ -22112,19 +22112,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTrackerForChoiceInField", Storage="_TrustTrackerForChoiceInFields", ThisKey="UserID", OtherKey="UserID")]
-		public EntitySet<TrustTrackerForChoiceInField> TrustTrackerForChoiceInFields
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInFields;
-			}
-			set
-			{
-				this._TrustTrackerForChoiceInFields.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserInteraction", Storage="_UserInteractions", ThisKey="UserID", OtherKey="OrigRatingUserID")]
 		public EntitySet<UserInteraction> UserInteractions
 		{
@@ -22161,6 +22148,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._TrustTrackers.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTrackerForChoiceInGroup", Storage="_TrustTrackerForChoiceInGroups", ThisKey="UserID", OtherKey="UserID")]
+		public EntitySet<TrustTrackerForChoiceInGroup> TrustTrackerForChoiceInGroups
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroups;
+			}
+			set
+			{
+				this._TrustTrackerForChoiceInGroups.Assign(value);
 			}
 		}
 		
@@ -22400,18 +22400,6 @@ namespace ClassLibrary1.Model
 			entity.User = null;
 		}
 		
-		private void attach_TrustTrackerForChoiceInFields(TrustTrackerForChoiceInField entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_TrustTrackerForChoiceInFields(TrustTrackerForChoiceInField entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
 		private void attach_UserInteractions(UserInteraction entity)
 		{
 			this.SendPropertyChanging();
@@ -22443,6 +22431,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_TrustTrackers(TrustTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_TrustTrackerForChoiceInGroups(TrustTrackerForChoiceInGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_TrustTrackerForChoiceInGroups(TrustTrackerForChoiceInGroup entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
@@ -24920,7 +24920,7 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<TblTab> _TblTabs;
 		
-		private EntitySet<TrustTrackerForChoiceInField> _TrustTrackerForChoiceInFields;
+		private EntitySet<TrustTrackerForChoiceInGroup> _TrustTrackerForChoiceInGroups;
 		
 		private EntityRef<TblDimension> _TblDimension;
 		
@@ -24981,7 +24981,7 @@ namespace ClassLibrary1.Model
 			this._ProposalSettings = new EntitySet<ProposalSetting>(new Action<ProposalSetting>(this.attach_ProposalSettings), new Action<ProposalSetting>(this.detach_ProposalSettings));
 			this._TblRows = new EntitySet<TblRow>(new Action<TblRow>(this.attach_TblRows), new Action<TblRow>(this.detach_TblRows));
 			this._TblTabs = new EntitySet<TblTab>(new Action<TblTab>(this.attach_TblTabs), new Action<TblTab>(this.detach_TblTabs));
-			this._TrustTrackerForChoiceInFields = new EntitySet<TrustTrackerForChoiceInField>(new Action<TrustTrackerForChoiceInField>(this.attach_TrustTrackerForChoiceInFields), new Action<TrustTrackerForChoiceInField>(this.detach_TrustTrackerForChoiceInFields));
+			this._TrustTrackerForChoiceInGroups = new EntitySet<TrustTrackerForChoiceInGroup>(new Action<TrustTrackerForChoiceInGroup>(this.attach_TrustTrackerForChoiceInGroups), new Action<TrustTrackerForChoiceInGroup>(this.detach_TrustTrackerForChoiceInGroups));
 			this._TblDimension = default(EntityRef<TblDimension>);
 			this._User = default(EntityRef<User>);
 			this._PointsManager = default(EntityRef<PointsManager>);
@@ -25471,16 +25471,16 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_TrustTrackerForChoiceInField", Storage="_TrustTrackerForChoiceInFields", ThisKey="TblID", OtherKey="TblID")]
-		public EntitySet<TrustTrackerForChoiceInField> TrustTrackerForChoiceInFields
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_TrustTrackerForChoiceInGroup", Storage="_TrustTrackerForChoiceInGroups", ThisKey="TblID", OtherKey="TblID")]
+		public EntitySet<TrustTrackerForChoiceInGroup> TrustTrackerForChoiceInGroups
 		{
 			get
 			{
-				return this._TrustTrackerForChoiceInFields;
+				return this._TrustTrackerForChoiceInGroups;
 			}
 			set
 			{
-				this._TrustTrackerForChoiceInFields.Assign(value);
+				this._TrustTrackerForChoiceInGroups.Assign(value);
 			}
 		}
 		
@@ -25690,13 +25690,13 @@ namespace ClassLibrary1.Model
 			entity.Tbl = null;
 		}
 		
-		private void attach_TrustTrackerForChoiceInFields(TrustTrackerForChoiceInField entity)
+		private void attach_TrustTrackerForChoiceInGroups(TrustTrackerForChoiceInGroup entity)
 		{
 			this.SendPropertyChanging();
 			entity.Tbl = this;
 		}
 		
-		private void detach_TrustTrackerForChoiceInFields(TrustTrackerForChoiceInField entity)
+		private void detach_TrustTrackerForChoiceInGroups(TrustTrackerForChoiceInGroup entity)
 		{
 			this.SendPropertyChanging();
 			entity.Tbl = null;
@@ -30537,7 +30537,7 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<Rating> _Ratings;
 		
-		private EntitySet<TrustTrackerForChoiceInFieldsUserRatingLink> _TrustTrackerForChoiceInFieldsUserRatingLinks;
+		private EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> _TrustTrackerForChoiceInGroupsUserRatingLinks;
 		
 		private EntityRef<RatingPhaseStatus> _RatingPhaseStatus;
 		
@@ -30631,7 +30631,7 @@ namespace ClassLibrary1.Model
 		{
 			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
 			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
-			this._TrustTrackerForChoiceInFieldsUserRatingLinks = new EntitySet<TrustTrackerForChoiceInFieldsUserRatingLink>(new Action<TrustTrackerForChoiceInFieldsUserRatingLink>(this.attach_TrustTrackerForChoiceInFieldsUserRatingLinks), new Action<TrustTrackerForChoiceInFieldsUserRatingLink>(this.detach_TrustTrackerForChoiceInFieldsUserRatingLinks));
+			this._TrustTrackerForChoiceInGroupsUserRatingLinks = new EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink>(new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.attach_TrustTrackerForChoiceInGroupsUserRatingLinks), new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.detach_TrustTrackerForChoiceInGroupsUserRatingLinks));
 			this._RatingPhaseStatus = default(EntityRef<RatingPhaseStatus>);
 			this._RewardPendingPointsTracker = default(EntityRef<RewardPendingPointsTracker>);
 			this._UserRatingGroup = default(EntityRef<UserRatingGroup>);
@@ -31376,16 +31376,16 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_TrustTrackerForChoiceInFieldsUserRatingLink", Storage="_TrustTrackerForChoiceInFieldsUserRatingLinks", ThisKey="UserRatingID", OtherKey="UserRatingID")]
-		public EntitySet<TrustTrackerForChoiceInFieldsUserRatingLink> TrustTrackerForChoiceInFieldsUserRatingLinks
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink", Storage="_TrustTrackerForChoiceInGroupsUserRatingLinks", ThisKey="UserRatingID", OtherKey="UserRatingID")]
+		public EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> TrustTrackerForChoiceInGroupsUserRatingLinks
 		{
 			get
 			{
-				return this._TrustTrackerForChoiceInFieldsUserRatingLinks;
+				return this._TrustTrackerForChoiceInGroupsUserRatingLinks;
 			}
 			set
 			{
-				this._TrustTrackerForChoiceInFieldsUserRatingLinks.Assign(value);
+				this._TrustTrackerForChoiceInGroupsUserRatingLinks.Assign(value);
 			}
 		}
 		
@@ -31671,13 +31671,13 @@ namespace ClassLibrary1.Model
 			entity.UserRating = null;
 		}
 		
-		private void attach_TrustTrackerForChoiceInFieldsUserRatingLinks(TrustTrackerForChoiceInFieldsUserRatingLink entity)
+		private void attach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
 		{
 			this.SendPropertyChanging();
 			entity.UserRating = this;
 		}
 		
-		private void detach_TrustTrackerForChoiceInFieldsUserRatingLinks(TrustTrackerForChoiceInFieldsUserRatingLink entity)
+		private void detach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
 		{
 			this.SendPropertyChanging();
 			entity.UserRating = null;
@@ -33872,198 +33872,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrustTrackerForChoiceInFieldsUserRatingLinks")]
-	public partial class TrustTrackerForChoiceInFieldsUserRatingLink : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TrustTrackerForChoiceInFieldsUserRatingLinkID;
-		
-		private int _UserRatingID;
-		
-		private int _TrustTrackerForChoiceInFieldID;
-		
-		private EntityRef<UserRating> _UserRating;
-		
-		private EntityRef<TrustTrackerForChoiceInField> _TrustTrackerForChoiceInField;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTrustTrackerForChoiceInFieldsUserRatingLinkIDChanging(int value);
-    partial void OnTrustTrackerForChoiceInFieldsUserRatingLinkIDChanged();
-    partial void OnUserRatingIDChanging(int value);
-    partial void OnUserRatingIDChanged();
-    partial void OnTrustTrackerForChoiceInFieldIDChanging(int value);
-    partial void OnTrustTrackerForChoiceInFieldIDChanged();
-    #endregion
-		
-		public TrustTrackerForChoiceInFieldsUserRatingLink()
-		{
-			this._UserRating = default(EntityRef<UserRating>);
-			this._TrustTrackerForChoiceInField = default(EntityRef<TrustTrackerForChoiceInField>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerForChoiceInFieldsUserRatingLinkID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int TrustTrackerForChoiceInFieldsUserRatingLinkID
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInFieldsUserRatingLinkID;
-			}
-			set
-			{
-				if ((this._TrustTrackerForChoiceInFieldsUserRatingLinkID != value))
-				{
-					this.OnTrustTrackerForChoiceInFieldsUserRatingLinkIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerForChoiceInFieldsUserRatingLinkID = value;
-					this.SendPropertyChanged("TrustTrackerForChoiceInFieldsUserRatingLinkID");
-					this.OnTrustTrackerForChoiceInFieldsUserRatingLinkIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserRatingID", DbType="Int NOT NULL")]
-		public int UserRatingID
-		{
-			get
-			{
-				return this._UserRatingID;
-			}
-			set
-			{
-				if ((this._UserRatingID != value))
-				{
-					if (this._UserRating.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserRatingIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserRatingID = value;
-					this.SendPropertyChanged("UserRatingID");
-					this.OnUserRatingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerForChoiceInFieldID", DbType="Int NOT NULL")]
-		public int TrustTrackerForChoiceInFieldID
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInFieldID;
-			}
-			set
-			{
-				if ((this._TrustTrackerForChoiceInFieldID != value))
-				{
-					if (this._TrustTrackerForChoiceInField.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTrustTrackerForChoiceInFieldIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerForChoiceInFieldID = value;
-					this.SendPropertyChanged("TrustTrackerForChoiceInFieldID");
-					this.OnTrustTrackerForChoiceInFieldIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_TrustTrackerForChoiceInFieldsUserRatingLink", Storage="_UserRating", ThisKey="UserRatingID", OtherKey="UserRatingID", IsForeignKey=true)]
-		public UserRating UserRating
-		{
-			get
-			{
-				return this._UserRating.Entity;
-			}
-			set
-			{
-				UserRating previousValue = this._UserRating.Entity;
-				if (((previousValue != value) 
-							|| (this._UserRating.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserRating.Entity = null;
-						previousValue.TrustTrackerForChoiceInFieldsUserRatingLinks.Remove(this);
-					}
-					this._UserRating.Entity = value;
-					if ((value != null))
-					{
-						value.TrustTrackerForChoiceInFieldsUserRatingLinks.Add(this);
-						this._UserRatingID = value.UserRatingID;
-					}
-					else
-					{
-						this._UserRatingID = default(int);
-					}
-					this.SendPropertyChanged("UserRating");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerForChoiceInField_TrustTrackerForChoiceInFieldsUserRatingLink", Storage="_TrustTrackerForChoiceInField", ThisKey="TrustTrackerForChoiceInFieldID", OtherKey="TrustTrackerForChoiceInFieldID", IsForeignKey=true)]
-		public TrustTrackerForChoiceInField TrustTrackerForChoiceInField
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInField.Entity;
-			}
-			set
-			{
-				TrustTrackerForChoiceInField previousValue = this._TrustTrackerForChoiceInField.Entity;
-				if (((previousValue != value) 
-							|| (this._TrustTrackerForChoiceInField.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TrustTrackerForChoiceInField.Entity = null;
-						previousValue.TrustTrackerForChoiceInFieldsUserRatingLinks.Remove(this);
-					}
-					this._TrustTrackerForChoiceInField.Entity = value;
-					if ((value != null))
-					{
-						value.TrustTrackerForChoiceInFieldsUserRatingLinks.Add(this);
-						this._TrustTrackerForChoiceInFieldID = value.TrustTrackerForChoiceInFieldID;
-					}
-					else
-					{
-						this._TrustTrackerForChoiceInFieldID = default(int);
-					}
-					this.SendPropertyChanged("TrustTrackerForChoiceInField");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AdministrationRights")]
 	public partial class AdministrationRight : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -35091,339 +34899,6 @@ namespace ClassLibrary1.Model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrustTrackerForChoiceInFields")]
-	public partial class TrustTrackerForChoiceInField : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TrustTrackerForChoiceInFieldID;
-		
-		private int _UserID;
-		
-		private int _ChoiceInFieldID;
-		
-		private int _TblID;
-		
-		private float _SumAdjustmentPcts;
-		
-		private int _NumReratedUserRatings;
-		
-		private EntitySet<TrustTrackerForChoiceInFieldsUserRatingLink> _TrustTrackerForChoiceInFieldsUserRatingLinks;
-		
-		private EntityRef<ChoiceInField> _ChoiceInField;
-		
-		private EntityRef<Tbl> _Tbl;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTrustTrackerForChoiceInFieldIDChanging(int value);
-    partial void OnTrustTrackerForChoiceInFieldIDChanged();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnChoiceInFieldIDChanging(int value);
-    partial void OnChoiceInFieldIDChanged();
-    partial void OnTblIDChanging(int value);
-    partial void OnTblIDChanged();
-    partial void OnSumAdjustmentPctsChanging(float value);
-    partial void OnSumAdjustmentPctsChanged();
-    partial void OnNumReratedUserRatingsChanging(int value);
-    partial void OnNumReratedUserRatingsChanged();
-    #endregion
-		
-		public TrustTrackerForChoiceInField()
-		{
-			this._TrustTrackerForChoiceInFieldsUserRatingLinks = new EntitySet<TrustTrackerForChoiceInFieldsUserRatingLink>(new Action<TrustTrackerForChoiceInFieldsUserRatingLink>(this.attach_TrustTrackerForChoiceInFieldsUserRatingLinks), new Action<TrustTrackerForChoiceInFieldsUserRatingLink>(this.detach_TrustTrackerForChoiceInFieldsUserRatingLinks));
-			this._ChoiceInField = default(EntityRef<ChoiceInField>);
-			this._Tbl = default(EntityRef<Tbl>);
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerForChoiceInFieldID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int TrustTrackerForChoiceInFieldID
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInFieldID;
-			}
-			set
-			{
-				if ((this._TrustTrackerForChoiceInFieldID != value))
-				{
-					this.OnTrustTrackerForChoiceInFieldIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerForChoiceInFieldID = value;
-					this.SendPropertyChanged("TrustTrackerForChoiceInFieldID");
-					this.OnTrustTrackerForChoiceInFieldIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChoiceInFieldID", DbType="Int NOT NULL")]
-		public int ChoiceInFieldID
-		{
-			get
-			{
-				return this._ChoiceInFieldID;
-			}
-			set
-			{
-				if ((this._ChoiceInFieldID != value))
-				{
-					if (this._ChoiceInField.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnChoiceInFieldIDChanging(value);
-					this.SendPropertyChanging();
-					this._ChoiceInFieldID = value;
-					this.SendPropertyChanged("ChoiceInFieldID");
-					this.OnChoiceInFieldIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblID", DbType="Int NOT NULL")]
-		public int TblID
-		{
-			get
-			{
-				return this._TblID;
-			}
-			set
-			{
-				if ((this._TblID != value))
-				{
-					if (this._Tbl.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTblIDChanging(value);
-					this.SendPropertyChanging();
-					this._TblID = value;
-					this.SendPropertyChanged("TblID");
-					this.OnTblIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumAdjustmentPcts", DbType="Real NOT NULL")]
-		public float SumAdjustmentPcts
-		{
-			get
-			{
-				return this._SumAdjustmentPcts;
-			}
-			set
-			{
-				if ((this._SumAdjustmentPcts != value))
-				{
-					this.OnSumAdjustmentPctsChanging(value);
-					this.SendPropertyChanging();
-					this._SumAdjustmentPcts = value;
-					this.SendPropertyChanged("SumAdjustmentPcts");
-					this.OnSumAdjustmentPctsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumReratedUserRatings", DbType="Int NOT NULL")]
-		public int NumReratedUserRatings
-		{
-			get
-			{
-				return this._NumReratedUserRatings;
-			}
-			set
-			{
-				if ((this._NumReratedUserRatings != value))
-				{
-					this.OnNumReratedUserRatingsChanging(value);
-					this.SendPropertyChanging();
-					this._NumReratedUserRatings = value;
-					this.SendPropertyChanged("NumReratedUserRatings");
-					this.OnNumReratedUserRatingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerForChoiceInField_TrustTrackerForChoiceInFieldsUserRatingLink", Storage="_TrustTrackerForChoiceInFieldsUserRatingLinks", ThisKey="TrustTrackerForChoiceInFieldID", OtherKey="TrustTrackerForChoiceInFieldID")]
-		public EntitySet<TrustTrackerForChoiceInFieldsUserRatingLink> TrustTrackerForChoiceInFieldsUserRatingLinks
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInFieldsUserRatingLinks;
-			}
-			set
-			{
-				this._TrustTrackerForChoiceInFieldsUserRatingLinks.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ChoiceInField_TrustTrackerForChoiceInField", Storage="_ChoiceInField", ThisKey="ChoiceInFieldID", OtherKey="ChoiceInFieldID", IsForeignKey=true)]
-		public ChoiceInField ChoiceInField
-		{
-			get
-			{
-				return this._ChoiceInField.Entity;
-			}
-			set
-			{
-				ChoiceInField previousValue = this._ChoiceInField.Entity;
-				if (((previousValue != value) 
-							|| (this._ChoiceInField.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ChoiceInField.Entity = null;
-						previousValue.TrustTrackerForChoiceInFields.Remove(this);
-					}
-					this._ChoiceInField.Entity = value;
-					if ((value != null))
-					{
-						value.TrustTrackerForChoiceInFields.Add(this);
-						this._ChoiceInFieldID = value.ChoiceInFieldID;
-					}
-					else
-					{
-						this._ChoiceInFieldID = default(int);
-					}
-					this.SendPropertyChanged("ChoiceInField");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_TrustTrackerForChoiceInField", Storage="_Tbl", ThisKey="TblID", OtherKey="TblID", IsForeignKey=true)]
-		public Tbl Tbl
-		{
-			get
-			{
-				return this._Tbl.Entity;
-			}
-			set
-			{
-				Tbl previousValue = this._Tbl.Entity;
-				if (((previousValue != value) 
-							|| (this._Tbl.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Tbl.Entity = null;
-						previousValue.TrustTrackerForChoiceInFields.Remove(this);
-					}
-					this._Tbl.Entity = value;
-					if ((value != null))
-					{
-						value.TrustTrackerForChoiceInFields.Add(this);
-						this._TblID = value.TblID;
-					}
-					else
-					{
-						this._TblID = default(int);
-					}
-					this.SendPropertyChanged("Tbl");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTrackerForChoiceInField", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.TrustTrackerForChoiceInFields.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.TrustTrackerForChoiceInFields.Add(this);
-						this._UserID = value.UserID;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_TrustTrackerForChoiceInFieldsUserRatingLinks(TrustTrackerForChoiceInFieldsUserRatingLink entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTrackerForChoiceInField = this;
-		}
-		
-		private void detach_TrustTrackerForChoiceInFieldsUserRatingLinks(TrustTrackerForChoiceInFieldsUserRatingLink entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTrackerForChoiceInField = null;
 		}
 	}
 	
@@ -36729,17 +36204,15 @@ namespace ClassLibrary1.Model
 		
 		private int _UserID;
 		
-		private float _SkepticalTrustLevel;
-		
 		private float _OverallTrustLevel;
 		
 		private float _LastOverallTrustLevel;
 		
 		private float _DeltaOverallTrustLevel;
 		
-		private float _SumUserInteractionWeights;
+		private float _SkepticalTrustLevel;
 		
-		private bool _MustUpdateIsTrustedOnNotSubsequentlyRated;
+		private float _SumUserInteractionWeights;
 		
 		private float _EgalitarianTrustLevel;
 		
@@ -36747,9 +36220,9 @@ namespace ClassLibrary1.Model
 		
 		private float _Egalitarian_Denom;
 		
-		private bool _MustUpdateUserInteractionEgalitarianTrustLevel;
-		
 		private System.Nullable<float> _EgalitarianTrustLevelOverride;
+		
+		private bool _MustUpdateUserInteractionEgalitarianTrustLevel;
 		
 		private EntitySet<TrustTrackerStat> _TrustTrackerStats;
 		
@@ -36767,28 +36240,26 @@ namespace ClassLibrary1.Model
     partial void OnTrustTrackerUnitIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
-    partial void OnSkepticalTrustLevelChanging(float value);
-    partial void OnSkepticalTrustLevelChanged();
     partial void OnOverallTrustLevelChanging(float value);
     partial void OnOverallTrustLevelChanged();
     partial void OnLastOverallTrustLevelChanging(float value);
     partial void OnLastOverallTrustLevelChanged();
     partial void OnDeltaOverallTrustLevelChanging(float value);
     partial void OnDeltaOverallTrustLevelChanged();
+    partial void OnSkepticalTrustLevelChanging(float value);
+    partial void OnSkepticalTrustLevelChanged();
     partial void OnSumUserInteractionWeightsChanging(float value);
     partial void OnSumUserInteractionWeightsChanged();
-    partial void OnMustUpdateIsTrustedOnNotSubsequentlyRatedChanging(bool value);
-    partial void OnMustUpdateIsTrustedOnNotSubsequentlyRatedChanged();
     partial void OnEgalitarianTrustLevelChanging(float value);
     partial void OnEgalitarianTrustLevelChanged();
     partial void OnEgalitarian_NumChanging(float value);
     partial void OnEgalitarian_NumChanged();
     partial void OnEgalitarian_DenomChanging(float value);
     partial void OnEgalitarian_DenomChanged();
-    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(bool value);
-    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
     partial void OnEgalitarianTrustLevelOverrideChanging(System.Nullable<float> value);
     partial void OnEgalitarianTrustLevelOverrideChanged();
+    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(bool value);
+    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
     #endregion
 		
 		public TrustTracker()
@@ -36867,26 +36338,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SkepticalTrustLevel", DbType="Real NOT NULL")]
-		public float SkepticalTrustLevel
-		{
-			get
-			{
-				return this._SkepticalTrustLevel;
-			}
-			set
-			{
-				if ((this._SkepticalTrustLevel != value))
-				{
-					this.OnSkepticalTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._SkepticalTrustLevel = value;
-					this.SendPropertyChanged("SkepticalTrustLevel");
-					this.OnSkepticalTrustLevelChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OverallTrustLevel", DbType="Real NOT NULL")]
 		public float OverallTrustLevel
 		{
@@ -36947,6 +36398,26 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SkepticalTrustLevel", DbType="Real NOT NULL")]
+		public float SkepticalTrustLevel
+		{
+			get
+			{
+				return this._SkepticalTrustLevel;
+			}
+			set
+			{
+				if ((this._SkepticalTrustLevel != value))
+				{
+					this.OnSkepticalTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._SkepticalTrustLevel = value;
+					this.SendPropertyChanged("SkepticalTrustLevel");
+					this.OnSkepticalTrustLevelChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumUserInteractionWeights", DbType="Real NOT NULL")]
 		public float SumUserInteractionWeights
 		{
@@ -36963,26 +36434,6 @@ namespace ClassLibrary1.Model
 					this._SumUserInteractionWeights = value;
 					this.SendPropertyChanged("SumUserInteractionWeights");
 					this.OnSumUserInteractionWeightsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MustUpdateIsTrustedOnNotSubsequentlyRated", DbType="Bit NOT NULL")]
-		public bool MustUpdateIsTrustedOnNotSubsequentlyRated
-		{
-			get
-			{
-				return this._MustUpdateIsTrustedOnNotSubsequentlyRated;
-			}
-			set
-			{
-				if ((this._MustUpdateIsTrustedOnNotSubsequentlyRated != value))
-				{
-					this.OnMustUpdateIsTrustedOnNotSubsequentlyRatedChanging(value);
-					this.SendPropertyChanging();
-					this._MustUpdateIsTrustedOnNotSubsequentlyRated = value;
-					this.SendPropertyChanged("MustUpdateIsTrustedOnNotSubsequentlyRated");
-					this.OnMustUpdateIsTrustedOnNotSubsequentlyRatedChanged();
 				}
 			}
 		}
@@ -37047,26 +36498,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MustUpdateUserInteractionEgalitarianTrustLevel", DbType="Bit NOT NULL")]
-		public bool MustUpdateUserInteractionEgalitarianTrustLevel
-		{
-			get
-			{
-				return this._MustUpdateUserInteractionEgalitarianTrustLevel;
-			}
-			set
-			{
-				if ((this._MustUpdateUserInteractionEgalitarianTrustLevel != value))
-				{
-					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._MustUpdateUserInteractionEgalitarianTrustLevel = value;
-					this.SendPropertyChanged("MustUpdateUserInteractionEgalitarianTrustLevel");
-					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EgalitarianTrustLevelOverride", DbType="Real")]
 		public System.Nullable<float> EgalitarianTrustLevelOverride
 		{
@@ -37083,6 +36514,26 @@ namespace ClassLibrary1.Model
 					this._EgalitarianTrustLevelOverride = value;
 					this.SendPropertyChanged("EgalitarianTrustLevelOverride");
 					this.OnEgalitarianTrustLevelOverrideChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MustUpdateUserInteractionEgalitarianTrustLevel", DbType="Bit NOT NULL")]
+		public bool MustUpdateUserInteractionEgalitarianTrustLevel
+		{
+			get
+			{
+				return this._MustUpdateUserInteractionEgalitarianTrustLevel;
+			}
+			set
+			{
+				if ((this._MustUpdateUserInteractionEgalitarianTrustLevel != value))
+				{
+					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._MustUpdateUserInteractionEgalitarianTrustLevel = value;
+					this.SendPropertyChanged("MustUpdateUserInteractionEgalitarianTrustLevel");
+					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
 				}
 			}
 		}
@@ -37198,6 +36649,531 @@ namespace ClassLibrary1.Model
 		{
 			this.SendPropertyChanging();
 			entity.TrustTracker = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrustTrackerForChoiceInGroups")]
+	public partial class TrustTrackerForChoiceInGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TrustTrackerForChoiceInGroupID;
+		
+		private int _UserID;
+		
+		private int _ChoiceInGroupID;
+		
+		private int _TblID;
+		
+		private float _SumAdjustmentPcts;
+		
+		private int _NumReratedUserRatings;
+		
+		private EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> _TrustTrackerForChoiceInGroupsUserRatingLinks;
+		
+		private EntityRef<ChoiceInGroup> _ChoiceInGroup;
+		
+		private EntityRef<Tbl> _Tbl;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTrustTrackerForChoiceInGroupIDChanging(int value);
+    partial void OnTrustTrackerForChoiceInGroupIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnChoiceInGroupIDChanging(int value);
+    partial void OnChoiceInGroupIDChanged();
+    partial void OnTblIDChanging(int value);
+    partial void OnTblIDChanged();
+    partial void OnSumAdjustmentPctsChanging(float value);
+    partial void OnSumAdjustmentPctsChanged();
+    partial void OnNumReratedUserRatingsChanging(int value);
+    partial void OnNumReratedUserRatingsChanged();
+    #endregion
+		
+		public TrustTrackerForChoiceInGroup()
+		{
+			this._TrustTrackerForChoiceInGroupsUserRatingLinks = new EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink>(new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.attach_TrustTrackerForChoiceInGroupsUserRatingLinks), new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.detach_TrustTrackerForChoiceInGroupsUserRatingLinks));
+			this._ChoiceInGroup = default(EntityRef<ChoiceInGroup>);
+			this._Tbl = default(EntityRef<Tbl>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerForChoiceInGroupID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TrustTrackerForChoiceInGroupID
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroupID;
+			}
+			set
+			{
+				if ((this._TrustTrackerForChoiceInGroupID != value))
+				{
+					this.OnTrustTrackerForChoiceInGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerForChoiceInGroupID = value;
+					this.SendPropertyChanged("TrustTrackerForChoiceInGroupID");
+					this.OnTrustTrackerForChoiceInGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChoiceInGroupID", DbType="Int NOT NULL")]
+		public int ChoiceInGroupID
+		{
+			get
+			{
+				return this._ChoiceInGroupID;
+			}
+			set
+			{
+				if ((this._ChoiceInGroupID != value))
+				{
+					if (this._ChoiceInGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnChoiceInGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._ChoiceInGroupID = value;
+					this.SendPropertyChanged("ChoiceInGroupID");
+					this.OnChoiceInGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblID", DbType="Int NOT NULL")]
+		public int TblID
+		{
+			get
+			{
+				return this._TblID;
+			}
+			set
+			{
+				if ((this._TblID != value))
+				{
+					if (this._Tbl.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTblIDChanging(value);
+					this.SendPropertyChanging();
+					this._TblID = value;
+					this.SendPropertyChanged("TblID");
+					this.OnTblIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumAdjustmentPcts", DbType="Real NOT NULL")]
+		public float SumAdjustmentPcts
+		{
+			get
+			{
+				return this._SumAdjustmentPcts;
+			}
+			set
+			{
+				if ((this._SumAdjustmentPcts != value))
+				{
+					this.OnSumAdjustmentPctsChanging(value);
+					this.SendPropertyChanging();
+					this._SumAdjustmentPcts = value;
+					this.SendPropertyChanged("SumAdjustmentPcts");
+					this.OnSumAdjustmentPctsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumReratedUserRatings", DbType="Int NOT NULL")]
+		public int NumReratedUserRatings
+		{
+			get
+			{
+				return this._NumReratedUserRatings;
+			}
+			set
+			{
+				if ((this._NumReratedUserRatings != value))
+				{
+					this.OnNumReratedUserRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._NumReratedUserRatings = value;
+					this.SendPropertyChanged("NumReratedUserRatings");
+					this.OnNumReratedUserRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink", Storage="_TrustTrackerForChoiceInGroupsUserRatingLinks", ThisKey="TrustTrackerForChoiceInGroupID", OtherKey="TrustTrackerForChoiceInGroupID")]
+		public EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> TrustTrackerForChoiceInGroupsUserRatingLinks
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroupsUserRatingLinks;
+			}
+			set
+			{
+				this._TrustTrackerForChoiceInGroupsUserRatingLinks.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ChoiceInGroup_TrustTrackerForChoiceInGroup", Storage="_ChoiceInGroup", ThisKey="ChoiceInGroupID", OtherKey="ChoiceInGroupID", IsForeignKey=true)]
+		public ChoiceInGroup ChoiceInGroup
+		{
+			get
+			{
+				return this._ChoiceInGroup.Entity;
+			}
+			set
+			{
+				ChoiceInGroup previousValue = this._ChoiceInGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._ChoiceInGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ChoiceInGroup.Entity = null;
+						previousValue.TrustTrackerForChoiceInGroups.Remove(this);
+					}
+					this._ChoiceInGroup.Entity = value;
+					if ((value != null))
+					{
+						value.TrustTrackerForChoiceInGroups.Add(this);
+						this._ChoiceInGroupID = value.ChoiceInGroupID;
+					}
+					else
+					{
+						this._ChoiceInGroupID = default(int);
+					}
+					this.SendPropertyChanged("ChoiceInGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_TrustTrackerForChoiceInGroup", Storage="_Tbl", ThisKey="TblID", OtherKey="TblID", IsForeignKey=true)]
+		public Tbl Tbl
+		{
+			get
+			{
+				return this._Tbl.Entity;
+			}
+			set
+			{
+				Tbl previousValue = this._Tbl.Entity;
+				if (((previousValue != value) 
+							|| (this._Tbl.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Tbl.Entity = null;
+						previousValue.TrustTrackerForChoiceInGroups.Remove(this);
+					}
+					this._Tbl.Entity = value;
+					if ((value != null))
+					{
+						value.TrustTrackerForChoiceInGroups.Add(this);
+						this._TblID = value.TblID;
+					}
+					else
+					{
+						this._TblID = default(int);
+					}
+					this.SendPropertyChanged("Tbl");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTrackerForChoiceInGroup", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.TrustTrackerForChoiceInGroups.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.TrustTrackerForChoiceInGroups.Add(this);
+						this._UserID = value.UserID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTrackerForChoiceInGroup = this;
+		}
+		
+		private void detach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTrackerForChoiceInGroup = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrustTrackerForChoiceInGroupsUserRatingLinks")]
+	public partial class TrustTrackerForChoiceInGroupsUserRatingLink : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TrustTrackerForChoiceInGroupsUserRatingLinkID;
+		
+		private int _UserRatingID;
+		
+		private int _TrustTrackerForChoiceInGroupID;
+		
+		private EntityRef<TrustTrackerForChoiceInGroup> _TrustTrackerForChoiceInGroup;
+		
+		private EntityRef<UserRating> _UserRating;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTrustTrackerForChoiceInGroupsUserRatingLinkIDChanging(int value);
+    partial void OnTrustTrackerForChoiceInGroupsUserRatingLinkIDChanged();
+    partial void OnUserRatingIDChanging(int value);
+    partial void OnUserRatingIDChanged();
+    partial void OnTrustTrackerForChoiceInGroupIDChanging(int value);
+    partial void OnTrustTrackerForChoiceInGroupIDChanged();
+    #endregion
+		
+		public TrustTrackerForChoiceInGroupsUserRatingLink()
+		{
+			this._TrustTrackerForChoiceInGroup = default(EntityRef<TrustTrackerForChoiceInGroup>);
+			this._UserRating = default(EntityRef<UserRating>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerForChoiceInGroupsUserRatingLinkID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TrustTrackerForChoiceInGroupsUserRatingLinkID
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroupsUserRatingLinkID;
+			}
+			set
+			{
+				if ((this._TrustTrackerForChoiceInGroupsUserRatingLinkID != value))
+				{
+					this.OnTrustTrackerForChoiceInGroupsUserRatingLinkIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerForChoiceInGroupsUserRatingLinkID = value;
+					this.SendPropertyChanged("TrustTrackerForChoiceInGroupsUserRatingLinkID");
+					this.OnTrustTrackerForChoiceInGroupsUserRatingLinkIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserRatingID", DbType="Int NOT NULL")]
+		public int UserRatingID
+		{
+			get
+			{
+				return this._UserRatingID;
+			}
+			set
+			{
+				if ((this._UserRatingID != value))
+				{
+					if (this._UserRating.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserRatingIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserRatingID = value;
+					this.SendPropertyChanged("UserRatingID");
+					this.OnUserRatingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerForChoiceInGroupID", DbType="Int NOT NULL")]
+		public int TrustTrackerForChoiceInGroupID
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroupID;
+			}
+			set
+			{
+				if ((this._TrustTrackerForChoiceInGroupID != value))
+				{
+					if (this._TrustTrackerForChoiceInGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTrustTrackerForChoiceInGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerForChoiceInGroupID = value;
+					this.SendPropertyChanged("TrustTrackerForChoiceInGroupID");
+					this.OnTrustTrackerForChoiceInGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink", Storage="_TrustTrackerForChoiceInGroup", ThisKey="TrustTrackerForChoiceInGroupID", OtherKey="TrustTrackerForChoiceInGroupID", IsForeignKey=true)]
+		public TrustTrackerForChoiceInGroup TrustTrackerForChoiceInGroup
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroup.Entity;
+			}
+			set
+			{
+				TrustTrackerForChoiceInGroup previousValue = this._TrustTrackerForChoiceInGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._TrustTrackerForChoiceInGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrustTrackerForChoiceInGroup.Entity = null;
+						previousValue.TrustTrackerForChoiceInGroupsUserRatingLinks.Remove(this);
+					}
+					this._TrustTrackerForChoiceInGroup.Entity = value;
+					if ((value != null))
+					{
+						value.TrustTrackerForChoiceInGroupsUserRatingLinks.Add(this);
+						this._TrustTrackerForChoiceInGroupID = value.TrustTrackerForChoiceInGroupID;
+					}
+					else
+					{
+						this._TrustTrackerForChoiceInGroupID = default(int);
+					}
+					this.SendPropertyChanged("TrustTrackerForChoiceInGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink", Storage="_UserRating", ThisKey="UserRatingID", OtherKey="UserRatingID", IsForeignKey=true)]
+		public UserRating UserRating
+		{
+			get
+			{
+				return this._UserRating.Entity;
+			}
+			set
+			{
+				UserRating previousValue = this._UserRating.Entity;
+				if (((previousValue != value) 
+							|| (this._UserRating.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserRating.Entity = null;
+						previousValue.TrustTrackerForChoiceInGroupsUserRatingLinks.Remove(this);
+					}
+					this._UserRating.Entity = value;
+					if ((value != null))
+					{
+						value.TrustTrackerForChoiceInGroupsUserRatingLinks.Add(this);
+						this._UserRatingID = value.UserRatingID;
+					}
+					else
+					{
+						this._UserRatingID = default(int);
+					}
+					this.SendPropertyChanged("UserRating");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

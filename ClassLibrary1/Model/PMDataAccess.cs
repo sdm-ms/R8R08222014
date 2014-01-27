@@ -1122,7 +1122,7 @@ namespace ClassLibrary1.Model
                 if (trustTrackerUnit == null || trustTrackerUnit.TrustTrackers == null)
                     return false;
                 TrustTracker theTrustTracker = trustTrackerUnit.TrustTrackers.SingleOrDefault(x => x.UserID == userID);
-                userIsTrustedAtLeastSomewhat = theTrustTracker != null && theTrustTracker.SkepticalTrustLevel > 0;
+                userIsTrustedAtLeastSomewhat = theTrustTracker != null; // We shouldn't need to check OverallTrustLevel; it is possible we won't move the rating, but a new userrating can still be entered && theTrustTracker.OverallTrustLevel > 0;
                 PMCacheManagement.AddItemToCache(cacheKey, new string[] { }, userIsTrustedAtLeastSomewhat, new TimeSpan(0, 10, 0));
             }
             return (bool)userIsTrustedAtLeastSomewhat;

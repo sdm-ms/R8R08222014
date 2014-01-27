@@ -247,7 +247,6 @@
       <Column Name="ChoiceFieldID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Association Name="ChoiceInField_TrustTrackerForChoiceInField" Member="TrustTrackerForChoiceInFields" ThisKey="ChoiceInFieldID" OtherKey="ChoiceInFieldID" Type="TrustTrackerForChoiceInField" />
       <Association Name="ChoiceField_ChoiceInField" Member="ChoiceField" ThisKey="ChoiceFieldID" OtherKey="ChoiceFieldID" Type="ChoiceField" IsForeignKey="true" />
       <Association Name="ChoiceInGroup_ChoiceInField" Member="ChoiceInGroup" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInGroup" IsForeignKey="true" />
     </Type>
@@ -263,6 +262,7 @@
       <Association Name="ChoiceInGroup_ChoiceInField" Member="ChoiceInFields" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInField" />
       <Association Name="ChoiceInGroup_ChoiceInGroup" Member="ChoiceInGroups" ThisKey="ChoiceInGroupID" OtherKey="ActiveOnDeterminingGroupChoiceInGroupID" Type="ChoiceInGroup" />
       <Association Name="ChoiceInGroup_SearchWordChoice" Member="SearchWordChoices" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="SearchWordChoice" />
+      <Association Name="ChoiceInGroup_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="TrustTrackerForChoiceInGroup" />
       <Association Name="ChoiceGroup_ChoiceInGroup" Member="ChoiceGroup" ThisKey="ChoiceGroupID" OtherKey="ChoiceGroupID" Type="ChoiceGroup" IsForeignKey="true" />
       <Association Name="ChoiceInGroup_ChoiceInGroup" Member="ChoiceInGroup1" ThisKey="ActiveOnDeterminingGroupChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInGroup" IsForeignKey="true" />
     </Type>
@@ -994,10 +994,10 @@
       <Association Name="User_UserRating" Member="UserRatings" ThisKey="UserID" OtherKey="UserID" Type="UserRating" />
       <Association Name="User_Rating" Member="Ratings" ThisKey="UserID" OtherKey="Creator" Type="Rating" />
       <Association Name="User_UserInfo" Member="UserInfo" Storage="_UserInfos" ThisKey="UserID" OtherKey="UserID" Type="UserInfo" Cardinality="One" />
-      <Association Name="User_TrustTrackerForChoiceInField" Member="TrustTrackerForChoiceInFields" ThisKey="UserID" OtherKey="UserID" Type="TrustTrackerForChoiceInField" />
       <Association Name="User_UserInteraction" Member="UserInteractions" ThisKey="UserID" OtherKey="OrigRatingUserID" Type="UserInteraction" />
       <Association Name="User_UserInteraction1" Member="UserInteractions1" ThisKey="UserID" OtherKey="LatestRatingUserID" Type="UserInteraction" />
       <Association Name="User_TrustTracker" Member="TrustTrackers" ThisKey="UserID" OtherKey="UserID" Type="TrustTracker" />
+      <Association Name="User_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="UserID" OtherKey="UserID" Type="TrustTrackerForChoiceInGroup" />
     </Type>
   </Table>
   <Table Name="dbo.UsersAdministrationRightsGroups" Member="UsersAdministrationRightsGroups">
@@ -1137,7 +1137,7 @@
       <Association Name="Tbl_ProposalSetting" Member="ProposalSettings" ThisKey="TblID" OtherKey="TblID" Type="ProposalSetting" />
       <Association Name="Tbl_TblRow" Member="TblRows" ThisKey="TblID" OtherKey="TblID" Type="TblRow" />
       <Association Name="Tbl_TblTab" Member="TblTabs" ThisKey="TblID" OtherKey="TblID" Type="TblTab" />
-      <Association Name="Tbl_TrustTrackerForChoiceInField" Member="TrustTrackerForChoiceInFields" ThisKey="TblID" OtherKey="TblID" Type="TrustTrackerForChoiceInField" />
+      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="TblID" OtherKey="TblID" Type="TrustTrackerForChoiceInGroup" />
       <Association Name="TblDimension_Tbl" Member="TblDimension" ThisKey="TblDimensionsID" OtherKey="TblDimensionsID" Type="TblDimension" IsForeignKey="true" />
       <Association Name="User_Tbl" Member="User" ThisKey="Creator" OtherKey="UserID" Type="User" IsForeignKey="true" />
       <Association Name="PointsManager_Tbl" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
@@ -1382,7 +1382,7 @@
       <Column Name="OneDayVolatility" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
       <Association Name="UserRating_UserRating" Member="UserRatings" ThisKey="UserRatingID" OtherKey="MostRecentUserRatingID" Type="UserRating" />
       <Association Name="UserRating_Rating" Member="Ratings" ThisKey="UserRatingID" OtherKey="MostRecentUserRatingID" Type="Rating" />
-      <Association Name="UserRating_TrustTrackerForChoiceInFieldsUserRatingLink" Member="TrustTrackerForChoiceInFieldsUserRatingLinks" ThisKey="UserRatingID" OtherKey="UserRatingID" Type="TrustTrackerForChoiceInFieldsUserRatingLink" />
+      <Association Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroupsUserRatingLinks" ThisKey="UserRatingID" OtherKey="UserRatingID" Type="TrustTrackerForChoiceInGroupsUserRatingLink" />
       <Association Name="RatingPhaseStatus_UserRating" Member="RatingPhaseStatus" ThisKey="RatingPhaseStatusID" OtherKey="RatingPhaseStatusID" Type="RatingPhaseStatus" IsForeignKey="true" />
       <Association Name="RewardPendingPointsTracker_UserRating" Member="RewardPendingPointsTracker" ThisKey="RewardPendingPointsTrackerID" OtherKey="RewardPendingPointsTrackerID" Type="RewardPendingPointsTracker" IsForeignKey="true" />
       <Association Name="UserRatingGroup_UserRating" Member="UserRatingGroup" ThisKey="UserRatingGroupID" OtherKey="UserRatingGroupID" Type="UserRatingGroup" IsForeignKey="true" />
@@ -1483,15 +1483,6 @@
       <Association Name="ChoiceGroupFieldDefinition_ChoiceGroupFieldDefinition" Member="ChoiceGroupFieldDefinition1" ThisKey="DependentOnChoiceGroupFieldDefinitionID" OtherKey="ChoiceGroupFieldDefinitionID" Type="ChoiceGroupFieldDefinition" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TrustTrackerForChoiceInFieldsUserRatingLinks" Member="TrustTrackerForChoiceInFieldsUserRatingLinks">
-    <Type Name="TrustTrackerForChoiceInFieldsUserRatingLink">
-      <Column Name="TrustTrackerForChoiceInFieldsUserRatingLinkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserRatingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TrustTrackerForChoiceInFieldID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="UserRating_TrustTrackerForChoiceInFieldsUserRatingLink" Member="UserRating" ThisKey="UserRatingID" OtherKey="UserRatingID" Type="UserRating" IsForeignKey="true" />
-      <Association Name="TrustTrackerForChoiceInField_TrustTrackerForChoiceInFieldsUserRatingLink" Member="TrustTrackerForChoiceInField" ThisKey="TrustTrackerForChoiceInFieldID" OtherKey="TrustTrackerForChoiceInFieldID" Type="TrustTrackerForChoiceInField" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.AdministrationRights" Member="AdministrationRights">
     <Type Name="AdministrationRight">
       <Column Name="AdministrationRightID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1537,20 +1528,6 @@
       <Column Name="Country" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="IsVerified" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="User_UserInfo" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrustTrackerForChoiceInFields" Member="TrustTrackerForChoiceInFields">
-    <Type Name="TrustTrackerForChoiceInField">
-      <Column Name="TrustTrackerForChoiceInFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ChoiceInFieldID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SumAdjustmentPcts" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="NumReratedUserRatings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="TrustTrackerForChoiceInField_TrustTrackerForChoiceInFieldsUserRatingLink" Member="TrustTrackerForChoiceInFieldsUserRatingLinks" ThisKey="TrustTrackerForChoiceInFieldID" OtherKey="TrustTrackerForChoiceInFieldID" Type="TrustTrackerForChoiceInFieldsUserRatingLink" />
-      <Association Name="ChoiceInField_TrustTrackerForChoiceInField" Member="ChoiceInField" ThisKey="ChoiceInFieldID" OtherKey="ChoiceInFieldID" Type="ChoiceInField" IsForeignKey="true" />
-      <Association Name="Tbl_TrustTrackerForChoiceInField" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
-      <Association Name="User_TrustTrackerForChoiceInField" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TrustTrackerUnits" Member="TrustTrackerUnits">
@@ -1616,20 +1593,42 @@
       <Column Name="TrustTrackerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SkepticalTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
       <Column Name="OverallTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
       <Column Name="LastOverallTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
       <Column Name="DeltaOverallTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Column Name="SkepticalTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
       <Column Name="SumUserInteractionWeights" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="MustUpdateIsTrustedOnNotSubsequentlyRated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="EgalitarianTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
       <Column Name="Egalitarian_Num" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
       <Column Name="Egalitarian_Denom" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="MustUpdateUserInteractionEgalitarianTrustLevel" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="EgalitarianTrustLevelOverride" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="MustUpdateUserInteractionEgalitarianTrustLevel" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="TrustTracker_TrustTrackerStat" Member="TrustTrackerStats" ThisKey="TrustTrackerID" OtherKey="TrustTrackerID" Type="TrustTrackerStat" />
       <Association Name="TrustTrackerUnit_TrustTracker" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
       <Association Name="User_TrustTracker" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrustTrackerForChoiceInGroups" Member="TrustTrackerForChoiceInGroups">
+    <Type Name="TrustTrackerForChoiceInGroup">
+      <Column Name="TrustTrackerForChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SumAdjustmentPcts" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Column Name="NumReratedUserRatings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroupsUserRatingLinks" ThisKey="TrustTrackerForChoiceInGroupID" OtherKey="TrustTrackerForChoiceInGroupID" Type="TrustTrackerForChoiceInGroupsUserRatingLink" />
+      <Association Name="ChoiceInGroup_TrustTrackerForChoiceInGroup" Member="ChoiceInGroup" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInGroup" IsForeignKey="true" />
+      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
+      <Association Name="User_TrustTrackerForChoiceInGroup" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrustTrackerForChoiceInGroupsUserRatingLinks" Member="TrustTrackerForChoiceInGroupsUserRatingLinks">
+    <Type Name="TrustTrackerForChoiceInGroupsUserRatingLink">
+      <Column Name="TrustTrackerForChoiceInGroupsUserRatingLinkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserRatingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TrustTrackerForChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroup" ThisKey="TrustTrackerForChoiceInGroupID" OtherKey="TrustTrackerForChoiceInGroupID" Type="TrustTrackerForChoiceInGroup" IsForeignKey="true" />
+      <Association Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink" Member="UserRating" ThisKey="UserRatingID" OtherKey="UserRatingID" Type="UserRating" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">

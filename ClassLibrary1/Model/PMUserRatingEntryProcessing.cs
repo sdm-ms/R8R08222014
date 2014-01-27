@@ -44,8 +44,8 @@ namespace ClassLibrary1.Model
                            let tbl = tblRow.Tbl
                           let subsidyDensityRangeGroup = ratingCharacteristic.SubsidyDensityRangeGroup
                           //let choiceGroupFieldDefinitions = tbl.FieldDefinitions.Where(y => y.Status == (int) StatusOfObject.Active).SelectMany(y => y.ChoiceGroupFieldDefinitions).Where(y => y.TrackTrustBasedOnChoices).Select(y => y.ChoiceGroupFieldDefinitionID)
-                          let choiceInFieldIDs = tblRow.Fields.SelectMany(y => y.ChoiceFields).Where(y => y.Field.FieldDefinition.ChoiceGroupFieldDefinitions.Any(z => z.TrackTrustBasedOnChoices)).SelectMany(y => y.ChoiceInFields)
-                          let trustTrackerForChoiceInFields = ratingGroup.TblRow.Tbl.TrustTrackerForChoiceInFields.Where(u => u.User == theUser && choiceInFieldIDs.Any(z => z.ChoiceInFieldID == u.ChoiceInFieldID))
+                          let choiceInGroupIDs = tblRow.Fields.SelectMany(y => y.ChoiceFields).Where(y => y.Field.FieldDefinition.ChoiceGroupFieldDefinitions.Any(z => z.TrackTrustBasedOnChoices)).SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceInGroup)
+                           let trustTrackerForChoiceInGroups = ratingGroup.TblRow.Tbl.TrustTrackerForChoiceInGroups.Where(u => u.User == theUser && choiceInGroupIDs.Any(z => z.ChoiceInGroupID == u.ChoiceInGroupID))
                           select new
                           {
                               Rating = x,
@@ -64,7 +64,7 @@ namespace ClassLibrary1.Model
                               TrustTracker = trustTracker,
                               TrustTrackerStats = trustTracker.TrustTrackerStats,
                               VolatilityTrackers = x.RatingGroup.VolatilityTrackers,
-                              TrustTrackerForChoiceInFields = trustTrackerForChoiceInFields
+                              TrustTrackerForChoiceInFields = trustTrackerForChoiceInGroups
                           }).ToList();
 
             return results.Select(x => x.Rating).ToList();
