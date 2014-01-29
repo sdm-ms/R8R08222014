@@ -59,8 +59,8 @@ namespace ClassLibrary1.Model
 
         public static float LogBase(decimal number, decimal theBase)
         {
-            if (number <= 0)
-                return 0; // avoid potential errors, math precision not needed here
+            if (number <= 0.0001M)
+                number = 0.0001M; // avoid potential errors, math precision not needed here
             return Math.Max((float)0, ((float)(Math.Log((double)number) / Math.Log((double)theBase))));
         }
 

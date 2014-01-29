@@ -1333,7 +1333,7 @@ namespace TestProject1
                 Debug.WriteLine(String.Format("Iteration {0}: User's Trust = {1} (Overall) {2} (Skeptical)",
                     i, trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
                 trustTracker.OverallTrustLevel
-                    .Should().BeGreaterOrEqualTo(trustTracker.LastOverallTrustLevel, 
+                    .Should().BeGreaterOrEqualTo(trustTracker.OverallTrustLevelAtLastReview, 
                         "because as other users perform ratings confirming a user's rating, the user's trust should increase.");
             }
         }
@@ -1398,7 +1398,7 @@ namespace TestProject1
                 // Fashion some test that checks that the user's trust is increasing, allowing for the fact that it may 
                 //   fluctuate a little since other users are not rating exactly equal to the user's rating.
                 (
-                    trustTracker.OverallTrustLevel > trustTracker.LastOverallTrustLevel
+                    trustTracker.OverallTrustLevel > trustTracker.OverallTrustLevelAtLastReview
                     )
                     .Should().BeTrue("because as other users perform ratings confirming a user's rating, the user's trust should increase.");
             }

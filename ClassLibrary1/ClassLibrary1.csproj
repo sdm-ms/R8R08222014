@@ -224,6 +224,7 @@
     <Compile Include="Model\PMRaterTime.cs" />
     <Compile Include="Model\PMRatingAndUserRatingStatus.cs" />
     <Compile Include="Model\PMRatingsAndGroups.cs" />
+    <Compile Include="Model\PMRatingsReview.cs" />
     <Compile Include="Model\PMResolveRatings.cs" />
     <Compile Include="Model\PMRewards.cs" />
     <Compile Include="Model\PMRouting.cs" />

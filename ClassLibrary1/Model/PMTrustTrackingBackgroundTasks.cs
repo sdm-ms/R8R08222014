@@ -108,26 +108,6 @@ namespace ClassLibrary1.Model
             theUserInteraction.WeightInCalculatingTrustTotal = PMTrustCalculations.GetUserInteractionWeightInCalculatingTrustTotal(ratingMagnitudeStat, theUserInteraction);
         }
 
-
-        internal class TrustTrackerAndUserRatings
-        {
-#pragma warning disable 0649
-            public TrustTracker TrustTracker;
-            public TrustTrackerStat[] TrustTrackerStats;
-            public UserRating[] UserRatings;
-            public IEnumerable<TrustTrackerForChoiceInGroup>[] TrustTrackerForChoiceInGroups;
-            public IEnumerable<ChoiceInField>[] ChoiceInFields;
-            public Rating[] Ratings;
-            public RatingCharacteristic[] RatingCharacteristics;
-            public TblRow[] TblRows;
-            public Tbl[] Tbls;
-#pragma warning restore 0649
-        }
-
-        
-
-
-
         internal static TrustTracker AddTrustTracker(IRaterooDataContext RaterooDB, User theUser, TrustTrackerUnit theTrustTrackerUnit)
         {
             TrustTracker theTrustTracker = new TrustTracker
@@ -138,7 +118,7 @@ namespace ClassLibrary1.Model
                 OverallTrustLevel = 1,
                 EgalitarianTrustLevel = 1,
                 EgalitarianTrustLevelOverride = null,
-                LastOverallTrustLevel = 1,
+                OverallTrustLevelAtLastReview = 1,
                 DeltaOverallTrustLevel = 0,
                 SumUserInteractionWeights = 0
             };
@@ -303,8 +283,7 @@ namespace ClassLibrary1.Model
                         tt.EgalitarianTrustLevel = tt.Egalitarian_Denom == 0 ? 1F : tt.Egalitarian_Num / tt.Egalitarian_Denom;
                         // Note: We don't calculate the EgalitarianTrustLevelOverride, but this will be used to determine other users' trusts if it is not null
                     }
-                    float originalTrustLevel = tt.OverallTrustLevel;
-                    tt.DeltaOverallTrustLevel = Math.Abs(originalTrustLevel - tt.OverallTrustLevel);
+                    tt.DeltaOverallTrustLevel = Math.Abs(tt.OverallTrustLevelAtLastReview - tt.OverallTrustLevel);
                     tt.OverallTrustLevel = PMTrustCalculations.GetOverallTrustLevelWithNewUserCredit(theStat.TrustTrackerStat, (int) Math.Round(tt.Egalitarian_Denom));
                     tt.SkepticalTrustLevel = theStat.TrustTrackerStat.TrustValue; // we keep track of the "real" skeptical trust value, but won't use it in deciding adjustment factors.
                     if (tt.EgalitarianTrustLevel != originalEgalitarianTrustLevel && tt.EgalitarianTrustLevelOverride == null)
@@ -331,6 +310,7 @@ namespace ClassLibrary1.Model
                 }
             }
         }
+
 
 
         internal class TrustTrackerUnitAndTrustTrackers

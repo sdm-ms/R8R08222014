@@ -98,7 +98,7 @@ namespace ClassLibrary1.Model
                 //(theRating.CurrentValue != null && theTrustTracker.SkepticalTrustLevel > 0) ||
                 //(theRating.CurrentValue == null && theTrustTracker.SkepticalTrustLevel > PMTrustTrackingBackgroundTasks.MinSkepticalTrustNeededForTrustedOnInitialRating) || 
                 //TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes; 
-            additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactor, isTrusted, pctPreviousRatings, oneHourVolatilityDecimal, oneDayVolatilityDecimal, 
+            additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactor, theTrustTracker.OverallTrustLevel, isTrusted, pctPreviousRatings, oneHourVolatilityDecimal, oneDayVolatilityDecimal, 
                 trustTrackerForChoiceFieldsSummary, otherChoiceInFieldIDs);
         }
 
@@ -321,48 +321,48 @@ namespace ClassLibrary1.Model
             }
         }
 
-        internal void CalculateAdjustmentPercentageForUserRatingOldMethod(TrustTrackerStat[] trustTrackerStats)
-        {
-            if (trustTrackerStats.Count() != NumStats)
-                throw new Exception("Internal error: Incorrect number of trust tracker stats.");
+        //internal void CalculateAdjustmentPercentageForUserRatingOldMethod(TrustTrackerStat[] trustTrackerStats)
+        //{
+        //    if (trustTrackerStats.Count() != NumStats)
+        //        throw new Exception("Internal error: Incorrect number of trust tracker stats.");
 
-            TrustTrackerStat[] pseudoTrustTrackerStats = ConvertTrustTrackerChoiceSummaryToTrustTrackerStats();
+        //    TrustTrackerStat[] pseudoTrustTrackerStats = ConvertTrustTrackerChoiceSummaryToTrustTrackerStats();
             
-            int trustTrackerChoiceSummariesToUse = TrustTrackerChoiceSummary == null ? 0 : TrustTrackerChoiceSummary.Count();
-            float[] weighingFactors = new float[NumStats + trustTrackerChoiceSummariesToUse];
-            float sumWeighingFactors = 0;
-            float[] normalizedWeighingFactors = new float[NumStats + trustTrackerChoiceSummariesToUse];
-            AdjustmentFactor = 0;
-            int numStatsToUse = NumStats;
-            if (!SingleNumberRating)
-                numStatsToUse = 1; // just use the basic aggregation -- we don't want to look at factors like rating magnitude, since that will vary from one rating in a rating group to another
-            for (int i = 0; i < numStatsToUse; i++)
-            {
-                if (trustTrackerStats[i].SumUserInteractionStatWeights == 0)
-                    weighingFactors[i] = 0;
-                else
-                    weighingFactors[i] = Math.Min((float)0.1, GetStat(i) / trustTrackerStats[i].SumUserInteractionStatWeights);
-                sumWeighingFactors += weighingFactors[i];
-            }
-            for (int i = NumStats; i < NumStats + trustTrackerChoiceSummariesToUse; i++)
-            {
-                if (TrustTrackerChoiceSummary[i].SumRatingMagnitudes == 0)
-                    weighingFactors[i] = 0;
-                else
-                    weighingFactors[i] = Math.Min(0.1F, 1 / TrustTrackerChoiceSummary[i].SumRatingMagnitudes);
-                sumWeighingFactors += weighingFactors[i];
-            }
-            if (sumWeighingFactors == 0)
-            {
-                AdjustmentFactor = 1F;
-                return;
-            }
-            for (int i = 0; i < numStatsToUse + trustTrackerChoiceSummariesToUse; i++)
-            {
-                normalizedWeighingFactors[i] = weighingFactors[i] / sumWeighingFactors;
-                AdjustmentFactor += normalizedWeighingFactors[i] * ((i < numStatsToUse) ? trustTrackerStats[i].TrustValue : TrustTrackerChoiceSummary[i].TrustValueForChoice) ;
-            }
-        }
+        //    int trustTrackerChoiceSummariesToUse = TrustTrackerChoiceSummary == null ? 0 : TrustTrackerChoiceSummary.Count();
+        //    float[] weighingFactors = new float[NumStats + trustTrackerChoiceSummariesToUse];
+        //    float sumWeighingFactors = 0;
+        //    float[] normalizedWeighingFactors = new float[NumStats + trustTrackerChoiceSummariesToUse];
+        //    AdjustmentFactor = 0;
+        //    int numStatsToUse = NumStats;
+        //    if (!SingleNumberRating)
+        //        numStatsToUse = 1; // just use the basic aggregation -- we don't want to look at factors like rating magnitude, since that will vary from one rating in a rating group to another
+        //    for (int i = 0; i < numStatsToUse; i++)
+        //    {
+        //        if (trustTrackerStats[i].SumUserInteractionStatWeights == 0)
+        //            weighingFactors[i] = 0;
+        //        else
+        //            weighingFactors[i] = Math.Min((float)0.1, GetStat(i) / trustTrackerStats[i].SumUserInteractionStatWeights);
+        //        sumWeighingFactors += weighingFactors[i];
+        //    }
+        //    for (int i = NumStats; i < NumStats + trustTrackerChoiceSummariesToUse; i++)
+        //    {
+        //        if (TrustTrackerChoiceSummary[i].SumRatingMagnitudes == 0)
+        //            weighingFactors[i] = 0;
+        //        else
+        //            weighingFactors[i] = Math.Min(0.1F, 1 / TrustTrackerChoiceSummary[i].SumRatingMagnitudes);
+        //        sumWeighingFactors += weighingFactors[i];
+        //    }
+        //    if (sumWeighingFactors == 0)
+        //    {
+        //        AdjustmentFactor = 1F;
+        //        return;
+        //    }
+        //    for (int i = 0; i < numStatsToUse + trustTrackerChoiceSummariesToUse; i++)
+        //    {
+        //        normalizedWeighingFactors[i] = weighingFactors[i] / sumWeighingFactors;
+        //        AdjustmentFactor += normalizedWeighingFactors[i] * ((i < numStatsToUse) ? trustTrackerStats[i].TrustValue : TrustTrackerChoiceSummary[i].TrustValueForChoice) ;
+        //    }
+        //}
 
         public decimal GetNewUserRatingValueToUse(UserRating theUserRating)
         {

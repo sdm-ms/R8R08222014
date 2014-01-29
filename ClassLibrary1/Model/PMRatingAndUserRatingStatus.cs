@@ -269,19 +269,94 @@ namespace ClassLibrary1.Model
             return shortTermExpireds.Count() == maxToTake;
         }
 
+        public bool IdleTaskRespondToUpdatePointsTriggers()
+        {
+            DateTime currentTime = TestableDateTime.Now;
+            const int maxToTake = 50;
+
+            DataContext.LoadStatsWithTrustTrackersAndUserInteractions(); // we can't seem to do this in a projection without getting a linq to sql unable to translate error, so we're going to use loading options.
+
+            var rpsInitialQuery = DataContext.GetTable<RatingPhaseStatus>()
+                .Where(rps => rps.TriggerUserRatingsUpdate)
+                .Take(maxToTake)
+                .SelectMany(x => x.UserRatings);
+
+            var userRatingInfoQuery =
+                                      from ur in rpsInitialQuery
+                                      let trustTrackerUnit = ur.TrustTrackerUnit
+                                      let mostRecentUserRatingRecordedInUserRating = ur.UserRating1 // this previously was the latest user rating
+                                      let mostRecentUserRatingRecordedInRating = ur.Rating.UserRating // this now is the latest user rating
+                                      let user = ur.User
+                                      let pointsTotal = user.PointsTotals.Single(pt => pt.PointsManagerID == ur.Rating.RatingGroup.RatingGroupAttribute.PointsManagerID)
+                                      let currentlyRecordedUserInteraction = ur.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
+                                      let replacementUserInteraction = ur.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.User == user && y.User1 == mostRecentUserRatingRecordedInRating.User)
+                                      let originalUserTrustTracker = ur.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
+                                      let mostRecentUserTrustTracker = mostRecentUserRatingRecordedInRating.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
+                                      select new
+                                      {
+                                          UserRating = ur,
+                                          UserRatingGroup = ur.UserRatingGroup,
+                                          Rating = ur.Rating,
+                                          RatingPhaseStatus = ur.RatingPhaseStatus,
+                                          MostRecentUserRatingInUserRating = ur.UserRating1,
+                                          MostRecentUserRatingInRating = ur.Rating.UserRating,
+                                          RatingGroup = ur.UserRatingGroup.RatingGroup,
+                                          RatingGroupAttribute = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute,
+                                          RatingCharacteristic = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute.RatingCharacteristic,
+                                          PointsTotal = ur.User.PointsTotals.SingleOrDefault(y => y.PointsManager == ur.Rating.RatingGroup.TblRow.Tbl.PointsManager),
+                                          OriginalUserTrustTracker = originalUserTrustTracker,
+                                          MostRecentUserTrustTracker = mostRecentUserTrustTracker,
+                                          CurrentlyRecordedUserInteraction = currentlyRecordedUserInteraction,
+                                          ReplacementUserInteraction = replacementUserInteraction,
+                                          TrustTrackerForChoiceInGroups = ur.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(y => y.TrustTrackerForChoiceInGroup).ToList()
+                                      }
+                   ;
+
+            var userRatingInfosGrouped = from ur in userRatingInfoQuery
+                                         group ur by ur.RatingPhaseStatus into grouped
+                                         select new { RatingPhaseStatus = grouped.Key, UserRatingInfos = grouped.OrderBy(x => x.UserRating.UserRatingGroup.WhenMade) };
+
+            var userRatingInfoGroups = userRatingInfosGrouped.ToList(); // remember, take is already done above
+            bool moreWorkToDo = userRatingInfoGroups.Count() == maxToTake;
+
+            foreach (var userRatingInfoGroup in userRatingInfoGroups)
+            {
+                SetPointsPumpingProportion(userRatingInfoGroup.UserRatingInfos.Select(x => x.UserRating).ToList(), userRatingInfoGroup.UserRatingInfos.Select(x => x.PointsTotal).ToList());
+                foreach (var userRatingInfo in userRatingInfoGroup.UserRatingInfos)
+                {
+                    //if (userRatingInfo.CurrentlyRecordedUserInteraction != null && 
+                    //    userRatingInfo.ReplacementUserInteraction != null && 
+                    //    userRatingInfo.CurrentlyRecordedUserInteraction != userRatingInfo.ReplacementUserInteraction)
+                    //    Trace.TraceInformation(
+                    //        "Updating currently recorded interaction " + userRatingInfo.CurrentlyRecordedUserInteraction.User.UserID + ", " + 
+                    //        userRatingInfo.CurrentlyRecordedUserInteraction.User1.UserID + " replacement user interaction " +
+                    //        userRatingInfo.ReplacementUserInteraction.User.UserID + "," + userRatingInfo.ReplacementUserInteraction.User1.UserID + 
+                    //        " Most recent user rating in user rating (older) " + userRatingInfo.MostRecentUserRatingInUserRating.EnteredUserRating + 
+                    //        " Most recent user rating in rating (newer) " + userRatingInfo.MostRecentUserRatingInRating.EnteredUserRating);
+
+                    UpdatePointsForUserRating(userRatingInfo.UserRating, userRatingInfo.PointsTotal, currentTime);
+                    TrustTrackerStat[] originalUserTrustTrackerStats = /* userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats == null ? new TrustTrackerStat[0] : */ userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats.ToArray();
+                    PMTrustTrackingBackgroundTasks.UpdateUserInteractionsAfterNewUserRatingIsEntered(DataContext,
+                        userRatingInfo.CurrentlyRecordedUserInteraction, userRatingInfo.ReplacementUserInteraction,
+                        userRatingInfo.UserRating, originalUserTrustTrackerStats, userRatingInfo.MostRecentUserRatingInUserRating,
+                        userRatingInfo.MostRecentUserRatingInRating, userRatingInfo.UserRatingGroup.WhenMade,
+                        userRatingInfo.RatingGroupAttribute, userRatingInfo.RatingCharacteristic, userRatingInfo.MostRecentUserTrustTracker);
+                }
+            }
+            return moreWorkToDo;
+        }
+
         public bool IdleTaskUpdatePoints()
         {
             DateTime currentTime = TestableDateTime.Now;
             const int maxToTake = 400;
 
-            DataContext.LoadStatsWithTrustTrackersAndUserInteractions(); // we can't seem to do this in a projection without getting a linq to sql unable to translate error, so we're going to use loading options.
-
             var userRatingInfoQuery = from x in DataContext.GetTable<UserRating>()
                                       where
                                           (!x.PointsHaveBecomePending && x.WhenPointsBecomePending < currentTime) // triggered when time for points to become pending arrives
                                           || (!x.ShortTermResolutionReflected && x.RatingPhaseStatus.ShortTermResolutionValue != null) // triggered when there has been a short term resolution
-                                          || (x.LastModifiedTime < x.Rating.LastModifiedResolutionTimeOrCurrentValue) // triggered when another UserRating has been added
-                                          || (x.ForceRecalculate) // triggered in unusual circumstances
+                                          // || (x.LastModifiedTime < x.Rating.LastModifiedResolutionTimeOrCurrentValue) // triggered when another UserRating has been added -- now we are doing that in IdleTaskRespondToUpdatePointsTriggers
+                                          || (x.ForceRecalculate) // triggered in unusual circumstances, primarily for high stakes ratings, database transitions, and testing purposes
                                         let trustTrackerUnit = x.TrustTrackerUnit
                                         let mostRecentUserRatingRecordedInUserRating = x.UserRating1 // this previously was the latest user rating
                                         let mostRecentUserRatingRecordedInRating = x.Rating.UserRating // this now is the latest user rating
@@ -300,12 +375,7 @@ namespace ClassLibrary1.Model
                                           RatingGroup = x.UserRatingGroup.RatingGroup,
                                           RatingGroupAttribute = x.UserRatingGroup.RatingGroup.RatingGroupAttribute,
                                           RatingCharacteristic = x.UserRatingGroup.RatingGroup.RatingGroupAttribute.RatingCharacteristic,
-                                          PointsTotal = x.User.PointsTotals.SingleOrDefault(y => y.PointsManager == x.Rating.RatingGroup.TblRow.Tbl.PointsManager),
-                                          OriginalUserTrustTracker = originalUserTrustTracker,
-                                          MostRecentUserTrustTracker = mostRecentUserTrustTracker,
-                                          CurrentlyRecordedUserInteraction = currentlyRecordedUserInteraction,
-                                          ReplacementUserInteraction = replacementUserInteraction,
-                                          TrustTrackerForChoiceInGroups = x.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(y => y.TrustTrackerForChoiceInGroup).ToList()
+                                          PointsTotal = x.User.PointsTotals.SingleOrDefault(y => y.PointsManager == x.Rating.RatingGroup.TblRow.Tbl.PointsManager)
                                       }
                    ;
             var userRatingInfos = userRatingInfoQuery.Take(maxToTake).ToList();
@@ -313,25 +383,64 @@ namespace ClassLibrary1.Model
 
             foreach (var userRatingInfo in userRatingInfos)
             {
-                //if (userRatingInfo.CurrentlyRecordedUserInteraction != null && 
-                //    userRatingInfo.ReplacementUserInteraction != null && 
-                //    userRatingInfo.CurrentlyRecordedUserInteraction != userRatingInfo.ReplacementUserInteraction)
-                //    Trace.TraceInformation(
-                //        "Updating currently recorded interaction " + userRatingInfo.CurrentlyRecordedUserInteraction.User.UserID + ", " + 
-                //        userRatingInfo.CurrentlyRecordedUserInteraction.User1.UserID + " replacement user interaction " +
-                //        userRatingInfo.ReplacementUserInteraction.User.UserID + "," + userRatingInfo.ReplacementUserInteraction.User1.UserID + 
-                //        " Most recent user rating in user rating (older) " + userRatingInfo.MostRecentUserRatingInUserRating.EnteredUserRating + 
-                //        " Most recent user rating in rating (newer) " + userRatingInfo.MostRecentUserRatingInRating.EnteredUserRating);
-
                 UpdatePointsForUserRating(userRatingInfo.UserRating, userRatingInfo.PointsTotal, currentTime);
-                TrustTrackerStat[] originalUserTrustTrackerStats = /* userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats == null ? new TrustTrackerStat[0] : */ userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats.ToArray();
-                PMTrustTrackingBackgroundTasks.UpdateUserInteractionsAfterNewUserRatingIsEntered(DataContext, 
-                    userRatingInfo.CurrentlyRecordedUserInteraction, userRatingInfo.ReplacementUserInteraction, 
-                    userRatingInfo.UserRating, originalUserTrustTrackerStats, userRatingInfo.MostRecentUserRatingInUserRating, 
-                    userRatingInfo.MostRecentUserRatingInRating, userRatingInfo.UserRatingGroup.WhenMade, 
-                    userRatingInfo.RatingGroupAttribute, userRatingInfo.RatingCharacteristic, userRatingInfo.MostRecentUserTrustTracker);
+                // we have not loaded userinteractions or trust, so we don't need to update those
             }
             return moreWorkToDo;
+        }
+
+        protected void SetPointsPumpingProportion(List<UserRating> userRatingsForRatingInChronologicalOrder, List<PointsTotal> correspondingPointsTotals)
+        {
+            int count = userRatingsForRatingInChronologicalOrder.Count();
+            for (int i = 0; i < count; i++)
+            {
+                UserRating laterUserRating = userRatingsForRatingInChronologicalOrder[i];
+                decimal previousRating = laterUserRating.PreviousRatingOrVirtualRating;
+                decimal newRating = laterUserRating.NewUserRating;
+                Tuple<decimal, decimal> laterUserRange = new Tuple<decimal,decimal>(Math.Min(previousRating, newRating), Math.Max(previousRating, newRating));
+                bool laterUserRaisedRating = newRating > previousRating;
+                decimal cumulativeOverlapProportion = 0;
+                bool usersMovingInOppositeDirectionExist = false; // if there are no such users, then there are no concerns about point-pumping schemes
+                for (int j = 0; j < i; j++)
+                {
+                    if (cumulativeOverlapProportion >= 1.0M)
+                        continue; // we already have enough points backing up this one that we don't need to worry about point-pumping schemes
+                    UserRating earlierUserRating = userRatingsForRatingInChronologicalOrder[j];
+                    decimal earlierPreviousRating = earlierUserRating.PreviousRatingOrVirtualRating;
+                    decimal earlierNewRating = earlierUserRating.NewUserRating;
+                    bool earlierUserRaisedRating = earlierNewRating > earlierPreviousRating;
+                    if (earlierUserRaisedRating == laterUserRaisedRating)
+                        continue; // this is not relevant to the points at stake -- we are looking to see whether users who were pushing the rating in the opposite direction had points at stake.
+                    usersMovingInOppositeDirectionExist = true;
+
+                    Tuple<decimal, decimal> earlierUserRange = new Tuple<decimal,decimal>(Math.Min(earlierPreviousRating, earlierNewRating), Math.Max(earlierPreviousRating, earlierNewRating));
+                    if (earlierUserRange.Item2 < laterUserRange.Item1 || earlierUserRange.Item1 > laterUserRange.Item2)
+                        continue; // not relevant given absence of overlap
+
+                    Tuple<decimal, decimal> overlapRange = new Tuple<decimal, decimal>(Math.Max(earlierUserRange.Item1, laterUserRange.Item1), Math.Min(earlierUserRange.Item2, laterUserRange.Item2));
+                    decimal overlapProportion;
+                    if (laterUserRating.LogarithmicBase == null)
+                        overlapProportion = (overlapRange.Item2 - overlapRange.Item1) / (laterUserRange.Item2 - laterUserRange.Item1);
+                    else
+                    {
+                        Func<decimal, decimal> lg = x => (decimal) Math.Log((double) x, (double) laterUserRating.LogarithmicBase);
+                        overlapProportion = (lg(overlapRange.Item2) - lg(overlapRange.Item1)) / (lg(laterUserRange.Item2) - lg(laterUserRange.Item1));
+                    }
+                    PointsTotal earlierPointsTotal = correspondingPointsTotals[j];
+                    bool earlierUserHasPlentyOfPoints = (earlierPointsTotal.PendingPoints + earlierPointsTotal.NotYetPendingPoints + earlierPointsTotal.TotalPoints) > laterUserRating.MaxGain * 10.0M;
+                    if (earlierUserHasPlentyOfPoints)
+                        cumulativeOverlapProportion += overlapProportion;
+                }
+                if (cumulativeOverlapProportion > 1.0M || !usersMovingInOppositeDirectionExist)
+                    cumulativeOverlapProportion = 1.0M;
+                decimal pointsPumpingProportion = 1.0M - cumulativeOverlapProportion;
+                decimal? oldValue = laterUserRating.PointsPumpingProportion;
+                laterUserRating.PointsPumpingProportion = pointsPumpingProportion;
+                PointsTotal laterPointsTotal = correspondingPointsTotals[i];
+                laterPointsTotal.PointsPumpingProportionAvg_Numer += (float)(laterUserRating.MaxGain * (pointsPumpingProportion - oldValue ?? 0));
+                laterPointsTotal.PointsPumpingProportionAvg_Denom += oldValue == null ? (float) laterUserRating.MaxGain : 0F;
+                laterPointsTotal.PointsPumpingProportionAvg = RaterooDataManipulation.CalculatePointsPumpingProportionAvg(laterPointsTotal.PointsPumpingProportionAvg_Numer, laterPointsTotal.PointsPumpingProportionAvg_Denom, laterPointsTotal.NumUserRatings); 
+            }
         }
 
         protected void UpdateTrustTrackersForChoiceInGroups(UserRating userRating, RatingCharacteristic theRatingCharacteristic, UserRating previousLatestUserRating, UserRating newLatestUserRating, IEnumerable<TrustTrackerForChoiceInGroup> choiceInGroupTrustTrackers)
@@ -399,9 +508,9 @@ namespace ClassLibrary1.Model
             //    basisForRating = theUserRating.EnteredUserRating;
 
             decimal profitShortTermUnweighted, profitLongTermUnweighted;
-            CalculatePointsInfo(theRating, theTopRatingGroup, theUserRating.RatingPhaseStatus.RatingGroupPhaseStatus, whenMade, basisForRating, (decimal) theUserRating.NewUserRating, theUserRating.ShortTermResolutionValueOrLastTrustedValueIfNotResolved, true, longTermPointsWeight, theUserRating.HighStakesMultiplierOverride, out maxLossShortTerm, out maxGainShortTerm, out profitShortTerm, out profitShortTermUnweighted);
+            CalculatePointsInfo(theRating, theTopRatingGroup, theUserRating.RatingPhaseStatus.RatingGroupPhaseStatus, whenMade, basisForRating, (decimal) theUserRating.NewUserRating, theUserRating.ShortTermResolutionValueOrLastTrustedValueIfNotResolved, true, longTermPointsWeight, theUserRating.HighStakesMultiplierOverride, theUserRating.PastPointsPumpingProportion, out maxLossShortTerm, out maxGainShortTerm, out profitShortTerm, out profitShortTermUnweighted);
 
-            CalculatePointsInfo(theRating, theTopRatingGroup, theUserRating.RatingPhaseStatus.RatingGroupPhaseStatus, whenMade, basisForRating, (decimal) theUserRating.NewUserRating, theUserRating.LongTermResolutionValueOrLastTrustedValueIfNotResolved, false, longTermPointsWeight, theUserRating.HighStakesMultiplierOverride, out maxLossLongTerm, out maxGainLongTerm, out profitLongTerm, out profitLongTermUnweighted);
+            CalculatePointsInfo(theRating, theTopRatingGroup, theUserRating.RatingPhaseStatus.RatingGroupPhaseStatus, whenMade, basisForRating, (decimal)theUserRating.NewUserRating, theUserRating.LongTermResolutionValueOrLastTrustedValueIfNotResolved, false, longTermPointsWeight, theUserRating.HighStakesMultiplierOverride, theUserRating.PastPointsPumpingProportion, out maxLossLongTerm, out maxGainLongTerm, out profitLongTerm, out profitLongTermUnweighted);
 
             theUserRating.PotentialPointsShortTerm = profitShortTerm;
             theUserRating.PotentialPointsLongTerm = profitLongTerm;

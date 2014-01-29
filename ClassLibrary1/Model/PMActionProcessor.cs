@@ -2546,6 +2546,7 @@ namespace ClassLibrary1.Model
 
             }
         }
+
         public void DomainChangeAppearance(int domainID, int? tableDimesionID, bool doItNow, int userID, int? changesGroupID)
         {
             DataManipulation.ConfirmObjectExists(domainID, TypeOfObject.Domain);

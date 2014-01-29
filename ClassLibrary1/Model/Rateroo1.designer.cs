@@ -204,9 +204,6 @@ namespace ClassLibrary1.Model
     partial void InsertRatingPhase(RatingPhase instance);
     partial void UpdateRatingPhase(RatingPhase instance);
     partial void DeleteRatingPhase(RatingPhase instance);
-    partial void InsertRatingPhaseStatus(RatingPhaseStatus instance);
-    partial void UpdateRatingPhaseStatus(RatingPhaseStatus instance);
-    partial void DeleteRatingPhaseStatus(RatingPhaseStatus instance);
     partial void InsertRatingPlan(RatingPlan instance);
     partial void UpdateRatingPlan(RatingPlan instance);
     partial void DeleteRatingPlan(RatingPlan instance);
@@ -297,21 +294,12 @@ namespace ClassLibrary1.Model
     partial void InsertRatingGroupPhaseStatus(RatingGroupPhaseStatus instance);
     partial void UpdateRatingGroupPhaseStatus(RatingGroupPhaseStatus instance);
     partial void DeleteRatingGroupPhaseStatus(RatingGroupPhaseStatus instance);
-    partial void InsertRatingGroupAttribute(RatingGroupAttribute instance);
-    partial void UpdateRatingGroupAttribute(RatingGroupAttribute instance);
-    partial void DeleteRatingGroupAttribute(RatingGroupAttribute instance);
-    partial void InsertPointsTotal(PointsTotal instance);
-    partial void UpdatePointsTotal(PointsTotal instance);
-    partial void DeletePointsTotal(PointsTotal instance);
     partial void InsertRatingCondition(RatingCondition instance);
     partial void UpdateRatingCondition(RatingCondition instance);
     partial void DeleteRatingCondition(RatingCondition instance);
     partial void InsertUserRatingsToAdd(UserRatingsToAdd instance);
     partial void UpdateUserRatingsToAdd(UserRatingsToAdd instance);
     partial void DeleteUserRatingsToAdd(UserRatingsToAdd instance);
-    partial void InsertRating(Rating instance);
-    partial void UpdateRating(Rating instance);
-    partial void DeleteRating(Rating instance);
     partial void InsertTblTab(TblTab instance);
     partial void UpdateTblTab(TblTab instance);
     partial void DeleteTblTab(TblTab instance);
@@ -345,21 +333,33 @@ namespace ClassLibrary1.Model
     partial void InsertTrustTrackerStat(TrustTrackerStat instance);
     partial void UpdateTrustTrackerStat(TrustTrackerStat instance);
     partial void DeleteTrustTrackerStat(TrustTrackerStat instance);
-    partial void InsertTrustTracker(TrustTracker instance);
-    partial void UpdateTrustTracker(TrustTracker instance);
-    partial void DeleteTrustTracker(TrustTracker instance);
     partial void InsertTrustTrackerForChoiceInGroupsUserRatingLink(TrustTrackerForChoiceInGroupsUserRatingLink instance);
     partial void UpdateTrustTrackerForChoiceInGroupsUserRatingLink(TrustTrackerForChoiceInGroupsUserRatingLink instance);
     partial void DeleteTrustTrackerForChoiceInGroupsUserRatingLink(TrustTrackerForChoiceInGroupsUserRatingLink instance);
     partial void InsertTrustTrackerForChoiceInGroup(TrustTrackerForChoiceInGroup instance);
     partial void UpdateTrustTrackerForChoiceInGroup(TrustTrackerForChoiceInGroup instance);
     partial void DeleteTrustTrackerForChoiceInGroup(TrustTrackerForChoiceInGroup instance);
-    partial void InsertUserRating(UserRating instance);
-    partial void UpdateUserRating(UserRating instance);
-    partial void DeleteUserRating(UserRating instance);
     partial void InsertPointsManager(PointsManager instance);
     partial void UpdatePointsManager(PointsManager instance);
     partial void DeletePointsManager(PointsManager instance);
+    partial void InsertRatingPhaseStatus(RatingPhaseStatus instance);
+    partial void UpdateRatingPhaseStatus(RatingPhaseStatus instance);
+    partial void DeleteRatingPhaseStatus(RatingPhaseStatus instance);
+    partial void InsertPointsTotal(PointsTotal instance);
+    partial void UpdatePointsTotal(PointsTotal instance);
+    partial void DeletePointsTotal(PointsTotal instance);
+    partial void InsertTrustTracker(TrustTracker instance);
+    partial void UpdateTrustTracker(TrustTracker instance);
+    partial void DeleteTrustTracker(TrustTracker instance);
+    partial void InsertUserRating(UserRating instance);
+    partial void UpdateUserRating(UserRating instance);
+    partial void DeleteUserRating(UserRating instance);
+    partial void InsertRating(Rating instance);
+    partial void UpdateRating(Rating instance);
+    partial void DeleteRating(Rating instance);
+    partial void InsertRatingGroupAttribute(RatingGroupAttribute instance);
+    partial void UpdateRatingGroupAttribute(RatingGroupAttribute instance);
+    partial void DeleteRatingGroupAttribute(RatingGroupAttribute instance);
     #endregion
 		
 		public RaterooDataContext() : 
@@ -864,14 +864,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<RatingPhaseStatus> RatingPhaseStatus
-		{
-			get
-			{
-				return this.GetTable<RatingPhaseStatus>();
-			}
-		}
-		
 		public System.Data.Linq.Table<RatingPlan> RatingPlans
 		{
 			get
@@ -1112,22 +1104,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<RatingGroupAttribute> RatingGroupAttributes
-		{
-			get
-			{
-				return this.GetTable<RatingGroupAttribute>();
-			}
-		}
-		
-		public System.Data.Linq.Table<PointsTotal> PointsTotals
-		{
-			get
-			{
-				return this.GetTable<PointsTotal>();
-			}
-		}
-		
 		public System.Data.Linq.Table<RatingCondition> RatingConditions
 		{
 			get
@@ -1141,14 +1117,6 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<UserRatingsToAdd>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Rating> Ratings
-		{
-			get
-			{
-				return this.GetTable<Rating>();
 			}
 		}
 		
@@ -1240,14 +1208,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<TrustTracker> TrustTrackers
-		{
-			get
-			{
-				return this.GetTable<TrustTracker>();
-			}
-		}
-		
 		public System.Data.Linq.Table<TrustTrackerForChoiceInGroupsUserRatingLink> TrustTrackerForChoiceInGroupsUserRatingLinks
 		{
 			get
@@ -1264,6 +1224,38 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		public System.Data.Linq.Table<PointsManager> PointsManagers
+		{
+			get
+			{
+				return this.GetTable<PointsManager>();
+			}
+		}
+		
+		public System.Data.Linq.Table<RatingPhaseStatus> RatingPhaseStatus
+		{
+			get
+			{
+				return this.GetTable<RatingPhaseStatus>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PointsTotal> PointsTotals
+		{
+			get
+			{
+				return this.GetTable<PointsTotal>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrustTracker> TrustTrackers
+		{
+			get
+			{
+				return this.GetTable<TrustTracker>();
+			}
+		}
+		
 		public System.Data.Linq.Table<UserRating> UserRatings
 		{
 			get
@@ -1272,11 +1264,19 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<PointsManager> PointsManagers
+		public System.Data.Linq.Table<Rating> Ratings
 		{
 			get
 			{
-				return this.GetTable<PointsManager>();
+				return this.GetTable<Rating>();
+			}
+		}
+		
+		public System.Data.Linq.Table<RatingGroupAttribute> RatingGroupAttributes
+		{
+			get
+			{
+				return this.GetTable<RatingGroupAttribute>();
 			}
 		}
 		
@@ -4841,9 +4841,9 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<Tbl> _Tbl;
 		
-		private EntityRef<Rating> _Rating;
-		
 		private EntityRef<PointsManager> _PointsManager;
+		
+		private EntityRef<Rating> _Rating;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -4874,8 +4874,8 @@ namespace ClassLibrary1.Model
 			this._ChangesStatusOfObjects = new EntitySet<ChangesStatusOfObject>(new Action<ChangesStatusOfObject>(this.attach_ChangesStatusOfObjects), new Action<ChangesStatusOfObject>(this.detach_ChangesStatusOfObjects));
 			this._User = default(EntityRef<User>);
 			this._Tbl = default(EntityRef<Tbl>);
-			this._Rating = default(EntityRef<Rating>);
 			this._PointsManager = default(EntityRef<PointsManager>);
+			this._Rating = default(EntityRef<Rating>);
 			OnCreated();
 		}
 		
@@ -5156,40 +5156,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_ChangesGroup", Storage="_Rating", ThisKey="RewardRatingID", OtherKey="RatingID", IsForeignKey=true)]
-		public Rating Rating
-		{
-			get
-			{
-				return this._Rating.Entity;
-			}
-			set
-			{
-				Rating previousValue = this._Rating.Entity;
-				if (((previousValue != value) 
-							|| (this._Rating.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Rating.Entity = null;
-						previousValue.ChangesGroups.Remove(this);
-					}
-					this._Rating.Entity = value;
-					if ((value != null))
-					{
-						value.ChangesGroups.Add(this);
-						this._RewardRatingID = value.RatingID;
-					}
-					else
-					{
-						this._RewardRatingID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Rating");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ChangesGroup", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
 		public PointsManager PointsManager
 		{
@@ -5220,6 +5186,40 @@ namespace ClassLibrary1.Model
 						this._PointsManagerID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("PointsManager");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_ChangesGroup", Storage="_Rating", ThisKey="RewardRatingID", OtherKey="RatingID", IsForeignKey=true)]
+		public Rating Rating
+		{
+			get
+			{
+				return this._Rating.Entity;
+			}
+			set
+			{
+				Rating previousValue = this._Rating.Entity;
+				if (((previousValue != value) 
+							|| (this._Rating.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Rating.Entity = null;
+						previousValue.ChangesGroups.Remove(this);
+					}
+					this._Rating.Entity = value;
+					if ((value != null))
+					{
+						value.ChangesGroups.Add(this);
+						this._RewardRatingID = value.RatingID;
+					}
+					else
+					{
+						this._RewardRatingID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Rating");
 				}
 			}
 		}
@@ -13343,9 +13343,9 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<TblRow> _TblRow;
 		
-		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
-		
 		private EntityRef<TblColumn> _TblColumn;
+		
+		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -13366,8 +13366,8 @@ namespace ClassLibrary1.Model
 		public OverrideCharacteristic()
 		{
 			this._TblRow = default(EntityRef<TblRow>);
-			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			this._TblColumn = default(EntityRef<TblColumn>);
+			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			OnCreated();
 		}
 		
@@ -13517,40 +13517,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_OverrideCharacteristic", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
-		public RatingGroupAttribute RatingGroupAttribute
-		{
-			get
-			{
-				return this._RatingGroupAttribute.Entity;
-			}
-			set
-			{
-				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroupAttribute.Entity = null;
-						previousValue.OverrideCharacteristics.Remove(this);
-					}
-					this._RatingGroupAttribute.Entity = value;
-					if ((value != null))
-					{
-						value.OverrideCharacteristics.Add(this);
-						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
-					}
-					else
-					{
-						this._RatingGroupAttributesID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroupAttribute");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_OverrideCharacteristic", Storage="_TblColumn", ThisKey="TblColumnID", OtherKey="TblColumnID", IsForeignKey=true)]
 		public TblColumn TblColumn
 		{
@@ -13581,6 +13547,40 @@ namespace ClassLibrary1.Model
 						this._TblColumnID = default(int);
 					}
 					this.SendPropertyChanged("TblColumn");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_OverrideCharacteristic", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
+		public RatingGroupAttribute RatingGroupAttribute
+		{
+			get
+			{
+				return this._RatingGroupAttribute.Entity;
+			}
+			set
+			{
+				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroupAttribute.Entity = null;
+						previousValue.OverrideCharacteristics.Remove(this);
+					}
+					this._RatingGroupAttribute.Entity = value;
+					if ((value != null))
+					{
+						value.OverrideCharacteristics.Add(this);
+						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
+					}
+					else
+					{
+						this._RatingGroupAttributesID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroupAttribute");
 				}
 			}
 		}
@@ -13972,11 +13972,11 @@ namespace ClassLibrary1.Model
 		
 		private byte _Status;
 		
-		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
-		
 		private EntityRef<UserAction> _UserAction;
 		
 		private EntityRef<PointsManager> _PointsManager;
+		
+		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -14010,9 +14010,9 @@ namespace ClassLibrary1.Model
 		
 		public ProposalEvaluationRatingSetting()
 		{
-			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			this._UserAction = default(EntityRef<UserAction>);
 			this._PointsManager = default(EntityRef<PointsManager>);
+			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			OnCreated();
 		}
 		
@@ -14268,40 +14268,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_ProposalEvaluationRatingSetting", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
-		public RatingGroupAttribute RatingGroupAttribute
-		{
-			get
-			{
-				return this._RatingGroupAttribute.Entity;
-			}
-			set
-			{
-				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroupAttribute.Entity = null;
-						previousValue.ProposalEvaluationRatingSettings.Remove(this);
-					}
-					this._RatingGroupAttribute.Entity = value;
-					if ((value != null))
-					{
-						value.ProposalEvaluationRatingSettings.Add(this);
-						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
-					}
-					else
-					{
-						this._RatingGroupAttributesID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroupAttribute");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserAction_ProposalEvaluationRatingSetting", Storage="_UserAction", ThisKey="UserActionID", OtherKey="UserActionID", IsForeignKey=true)]
 		public UserAction UserAction
 		{
@@ -14366,6 +14332,40 @@ namespace ClassLibrary1.Model
 						this._PointsManagerID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("PointsManager");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_ProposalEvaluationRatingSetting", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
+		public RatingGroupAttribute RatingGroupAttribute
+		{
+			get
+			{
+				return this._RatingGroupAttribute.Entity;
+			}
+			set
+			{
+				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroupAttribute.Entity = null;
+						previousValue.ProposalEvaluationRatingSettings.Remove(this);
+					}
+					this._RatingGroupAttribute.Entity = value;
+					if ((value != null))
+					{
+						value.ProposalEvaluationRatingSettings.Add(this);
+						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
+					}
+					else
+					{
+						this._RatingGroupAttributesID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroupAttribute");
 				}
 			}
 		}
@@ -15183,9 +15183,9 @@ namespace ClassLibrary1.Model
 		
 		private byte _Status;
 		
-		private EntitySet<RatingGroupAttribute> _RatingGroupAttributes;
-		
 		private EntitySet<Rating> _Ratings;
+		
+		private EntitySet<RatingGroupAttribute> _RatingGroupAttributes;
 		
 		private EntityRef<RatingPhaseGroup> _RatingPhaseGroup;
 		
@@ -15219,8 +15219,8 @@ namespace ClassLibrary1.Model
 		
 		public RatingCharacteristic()
 		{
-			this._RatingGroupAttributes = new EntitySet<RatingGroupAttribute>(new Action<RatingGroupAttribute>(this.attach_RatingGroupAttributes), new Action<RatingGroupAttribute>(this.detach_RatingGroupAttributes));
 			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
+			this._RatingGroupAttributes = new EntitySet<RatingGroupAttribute>(new Action<RatingGroupAttribute>(this.attach_RatingGroupAttributes), new Action<RatingGroupAttribute>(this.detach_RatingGroupAttributes));
 			this._RatingPhaseGroup = default(EntityRef<RatingPhaseGroup>);
 			this._SubsidyDensityRangeGroup = default(EntityRef<SubsidyDensityRangeGroup>);
 			this._User = default(EntityRef<User>);
@@ -15419,19 +15419,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCharacteristic_RatingGroupAttribute", Storage="_RatingGroupAttributes", ThisKey="RatingCharacteristicsID", OtherKey="RatingCharacteristicsID")]
-		public EntitySet<RatingGroupAttribute> RatingGroupAttributes
-		{
-			get
-			{
-				return this._RatingGroupAttributes;
-			}
-			set
-			{
-				this._RatingGroupAttributes.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCharacteristic_Rating", Storage="_Ratings", ThisKey="RatingCharacteristicsID", OtherKey="RatingCharacteristicsID")]
 		public EntitySet<Rating> Ratings
 		{
@@ -15442,6 +15429,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._Ratings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCharacteristic_RatingGroupAttribute", Storage="_RatingGroupAttributes", ThisKey="RatingCharacteristicsID", OtherKey="RatingCharacteristicsID")]
+		public EntitySet<RatingGroupAttribute> RatingGroupAttributes
+		{
+			get
+			{
+				return this._RatingGroupAttributes;
+			}
+			set
+			{
+				this._RatingGroupAttributes.Assign(value);
 			}
 		}
 		
@@ -15567,18 +15567,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		private void attach_RatingGroupAttributes(RatingGroupAttribute entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingCharacteristic = this;
-		}
-		
-		private void detach_RatingGroupAttributes(RatingGroupAttribute entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingCharacteristic = null;
-		}
-		
 		private void attach_Ratings(Rating entity)
 		{
 			this.SendPropertyChanging();
@@ -15586,6 +15574,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_Ratings(Rating entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingCharacteristic = null;
+		}
+		
+		private void attach_RatingGroupAttributes(RatingGroupAttribute entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingCharacteristic = this;
+		}
+		
+		private void detach_RatingGroupAttributes(RatingGroupAttribute entity)
 		{
 			this.SendPropertyChanging();
 			entity.RatingCharacteristic = null;
@@ -16781,250 +16781,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RatingPhaseStatus")]
-	public partial class RatingPhaseStatus : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _RatingPhaseStatusID;
-		
-		private int _RatingGroupPhaseStatusID;
-		
-		private int _RatingID;
-		
-		private System.Nullable<decimal> _ShortTermResolutionValue;
-		
-		private EntitySet<UserRating> _UserRatings;
-		
-		private EntityRef<RatingGroupPhaseStatus> _RatingGroupPhaseStatus;
-		
-		private EntityRef<Rating> _Rating;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnRatingPhaseStatusIDChanging(int value);
-    partial void OnRatingPhaseStatusIDChanged();
-    partial void OnRatingGroupPhaseStatusIDChanging(int value);
-    partial void OnRatingGroupPhaseStatusIDChanged();
-    partial void OnRatingIDChanging(int value);
-    partial void OnRatingIDChanged();
-    partial void OnShortTermResolutionValueChanging(System.Nullable<decimal> value);
-    partial void OnShortTermResolutionValueChanged();
-    #endregion
-		
-		public RatingPhaseStatus()
-		{
-			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
-			this._RatingGroupPhaseStatus = default(EntityRef<RatingGroupPhaseStatus>);
-			this._Rating = default(EntityRef<Rating>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingPhaseStatusID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int RatingPhaseStatusID
-		{
-			get
-			{
-				return this._RatingPhaseStatusID;
-			}
-			set
-			{
-				if ((this._RatingPhaseStatusID != value))
-				{
-					this.OnRatingPhaseStatusIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingPhaseStatusID = value;
-					this.SendPropertyChanged("RatingPhaseStatusID");
-					this.OnRatingPhaseStatusIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupPhaseStatusID", DbType="Int NOT NULL")]
-		public int RatingGroupPhaseStatusID
-		{
-			get
-			{
-				return this._RatingGroupPhaseStatusID;
-			}
-			set
-			{
-				if ((this._RatingGroupPhaseStatusID != value))
-				{
-					if (this._RatingGroupPhaseStatus.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingGroupPhaseStatusIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingGroupPhaseStatusID = value;
-					this.SendPropertyChanged("RatingGroupPhaseStatusID");
-					this.OnRatingGroupPhaseStatusIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingID", DbType="Int NOT NULL")]
-		public int RatingID
-		{
-			get
-			{
-				return this._RatingID;
-			}
-			set
-			{
-				if ((this._RatingID != value))
-				{
-					if (this._Rating.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingID = value;
-					this.SendPropertyChanged("RatingID");
-					this.OnRatingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShortTermResolutionValue", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> ShortTermResolutionValue
-		{
-			get
-			{
-				return this._ShortTermResolutionValue;
-			}
-			set
-			{
-				if ((this._ShortTermResolutionValue != value))
-				{
-					this.OnShortTermResolutionValueChanging(value);
-					this.SendPropertyChanging();
-					this._ShortTermResolutionValue = value;
-					this.SendPropertyChanged("ShortTermResolutionValue");
-					this.OnShortTermResolutionValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingPhaseStatus_UserRating", Storage="_UserRatings", ThisKey="RatingPhaseStatusID", OtherKey="RatingPhaseStatusID")]
-		public EntitySet<UserRating> UserRatings
-		{
-			get
-			{
-				return this._UserRatings;
-			}
-			set
-			{
-				this._UserRatings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupPhaseStatus_RatingPhaseStatus", Storage="_RatingGroupPhaseStatus", ThisKey="RatingGroupPhaseStatusID", OtherKey="RatingGroupPhaseStatusID", IsForeignKey=true)]
-		public RatingGroupPhaseStatus RatingGroupPhaseStatus
-		{
-			get
-			{
-				return this._RatingGroupPhaseStatus.Entity;
-			}
-			set
-			{
-				RatingGroupPhaseStatus previousValue = this._RatingGroupPhaseStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroupPhaseStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroupPhaseStatus.Entity = null;
-						previousValue.RatingPhaseStatus.Remove(this);
-					}
-					this._RatingGroupPhaseStatus.Entity = value;
-					if ((value != null))
-					{
-						value.RatingPhaseStatus.Add(this);
-						this._RatingGroupPhaseStatusID = value.RatingGroupPhaseStatusID;
-					}
-					else
-					{
-						this._RatingGroupPhaseStatusID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroupPhaseStatus");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_RatingPhaseStatus", Storage="_Rating", ThisKey="RatingID", OtherKey="RatingID", IsForeignKey=true)]
-		public Rating Rating
-		{
-			get
-			{
-				return this._Rating.Entity;
-			}
-			set
-			{
-				Rating previousValue = this._Rating.Entity;
-				if (((previousValue != value) 
-							|| (this._Rating.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Rating.Entity = null;
-						previousValue.RatingPhaseStatus.Remove(this);
-					}
-					this._Rating.Entity = value;
-					if ((value != null))
-					{
-						value.RatingPhaseStatus.Add(this);
-						this._RatingID = value.RatingID;
-					}
-					else
-					{
-						this._RatingID = default(int);
-					}
-					this.SendPropertyChanged("Rating");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_UserRatings(UserRating entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingPhaseStatus = this;
-		}
-		
-		private void detach_UserRatings(UserRating entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingPhaseStatus = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RatingPlans")]
 	public partial class RatingPlan : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -17694,11 +17450,11 @@ namespace ClassLibrary1.Model
 		
 		private byte _Status;
 		
-		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
-		
 		private EntityRef<UserAction> _UserAction;
 		
 		private EntityRef<PointsManager> _PointsManager;
+		
+		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -17726,9 +17482,9 @@ namespace ClassLibrary1.Model
 		
 		public RewardRatingSetting()
 		{
-			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			this._UserAction = default(EntityRef<UserAction>);
 			this._PointsManager = default(EntityRef<PointsManager>);
+			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			OnCreated();
 		}
 		
@@ -17924,40 +17680,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RewardRatingSetting", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
-		public RatingGroupAttribute RatingGroupAttribute
-		{
-			get
-			{
-				return this._RatingGroupAttribute.Entity;
-			}
-			set
-			{
-				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroupAttribute.Entity = null;
-						previousValue.RewardRatingSettings.Remove(this);
-					}
-					this._RatingGroupAttribute.Entity = value;
-					if ((value != null))
-					{
-						value.RewardRatingSettings.Add(this);
-						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
-					}
-					else
-					{
-						this._RatingGroupAttributesID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroupAttribute");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserAction_RewardRatingSetting", Storage="_UserAction", ThisKey="UserActionID", OtherKey="UserActionID", IsForeignKey=true)]
 		public UserAction UserAction
 		{
@@ -18022,6 +17744,40 @@ namespace ClassLibrary1.Model
 						this._PointsManagerID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("PointsManager");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RewardRatingSetting", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
+		public RatingGroupAttribute RatingGroupAttribute
+		{
+			get
+			{
+				return this._RatingGroupAttribute.Entity;
+			}
+			set
+			{
+				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroupAttribute.Entity = null;
+						previousValue.RewardRatingSettings.Remove(this);
+					}
+					this._RatingGroupAttribute.Entity = value;
+					if ((value != null))
+					{
+						value.RewardRatingSettings.Add(this);
+						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
+					}
+					else
+					{
+						this._RatingGroupAttributesID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroupAttribute");
 				}
 			}
 		}
@@ -21394,11 +21150,7 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<UserCheckIn> _UserCheckIns;
 		
-		private EntitySet<PointsTotal> _PointsTotals;
-		
 		private EntitySet<UserRatingsToAdd> _UserRatingsToAdds;
-		
-		private EntitySet<Rating> _Ratings;
 		
 		private EntityRef<UserInfo> _UserInfos;
 		
@@ -21406,11 +21158,15 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<UserInteraction> _UserInteractions1;
 		
-		private EntitySet<TrustTracker> _TrustTrackers;
-		
 		private EntitySet<TrustTrackerForChoiceInGroup> _TrustTrackerForChoiceInGroups;
 		
+		private EntitySet<PointsTotal> _PointsTotals;
+		
+		private EntitySet<TrustTracker> _TrustTrackers;
+		
 		private EntitySet<UserRating> _UserRatings;
+		
+		private EntitySet<Rating> _Ratings;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -21444,15 +21200,15 @@ namespace ClassLibrary1.Model
 			this._Comments = new EntitySet<Comment>(new Action<Comment>(this.attach_Comments), new Action<Comment>(this.detach_Comments));
 			this._Tbls = new EntitySet<Tbl>(new Action<Tbl>(this.attach_Tbls), new Action<Tbl>(this.detach_Tbls));
 			this._UserCheckIns = new EntitySet<UserCheckIn>(new Action<UserCheckIn>(this.attach_UserCheckIns), new Action<UserCheckIn>(this.detach_UserCheckIns));
-			this._PointsTotals = new EntitySet<PointsTotal>(new Action<PointsTotal>(this.attach_PointsTotals), new Action<PointsTotal>(this.detach_PointsTotals));
 			this._UserRatingsToAdds = new EntitySet<UserRatingsToAdd>(new Action<UserRatingsToAdd>(this.attach_UserRatingsToAdds), new Action<UserRatingsToAdd>(this.detach_UserRatingsToAdds));
-			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
 			this._UserInfos = default(EntityRef<UserInfo>);
 			this._UserInteractions = new EntitySet<UserInteraction>(new Action<UserInteraction>(this.attach_UserInteractions), new Action<UserInteraction>(this.detach_UserInteractions));
 			this._UserInteractions1 = new EntitySet<UserInteraction>(new Action<UserInteraction>(this.attach_UserInteractions1), new Action<UserInteraction>(this.detach_UserInteractions1));
-			this._TrustTrackers = new EntitySet<TrustTracker>(new Action<TrustTracker>(this.attach_TrustTrackers), new Action<TrustTracker>(this.detach_TrustTrackers));
 			this._TrustTrackerForChoiceInGroups = new EntitySet<TrustTrackerForChoiceInGroup>(new Action<TrustTrackerForChoiceInGroup>(this.attach_TrustTrackerForChoiceInGroups), new Action<TrustTrackerForChoiceInGroup>(this.detach_TrustTrackerForChoiceInGroups));
+			this._PointsTotals = new EntitySet<PointsTotal>(new Action<PointsTotal>(this.attach_PointsTotals), new Action<PointsTotal>(this.detach_PointsTotals));
+			this._TrustTrackers = new EntitySet<TrustTracker>(new Action<TrustTracker>(this.attach_TrustTrackers), new Action<TrustTracker>(this.detach_TrustTrackers));
 			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
+			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
 			OnCreated();
 		}
 		
@@ -21738,19 +21494,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_PointsTotal", Storage="_PointsTotals", ThisKey="UserID", OtherKey="UserID")]
-		public EntitySet<PointsTotal> PointsTotals
-		{
-			get
-			{
-				return this._PointsTotals;
-			}
-			set
-			{
-				this._PointsTotals.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserRatingsToAdd", Storage="_UserRatingsToAdds", ThisKey="UserID", OtherKey="UserID")]
 		public EntitySet<UserRatingsToAdd> UserRatingsToAdds
 		{
@@ -21761,19 +21504,6 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._UserRatingsToAdds.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Rating", Storage="_Ratings", ThisKey="UserID", OtherKey="Creator")]
-		public EntitySet<Rating> Ratings
-		{
-			get
-			{
-				return this._Ratings;
-			}
-			set
-			{
-				this._Ratings.Assign(value);
 			}
 		}
 		
@@ -21832,19 +21562,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTracker", Storage="_TrustTrackers", ThisKey="UserID", OtherKey="UserID")]
-		public EntitySet<TrustTracker> TrustTrackers
-		{
-			get
-			{
-				return this._TrustTrackers;
-			}
-			set
-			{
-				this._TrustTrackers.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTrackerForChoiceInGroup", Storage="_TrustTrackerForChoiceInGroups", ThisKey="UserID", OtherKey="UserID")]
 		public EntitySet<TrustTrackerForChoiceInGroup> TrustTrackerForChoiceInGroups
 		{
@@ -21858,6 +21575,32 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_PointsTotal", Storage="_PointsTotals", ThisKey="UserID", OtherKey="UserID")]
+		public EntitySet<PointsTotal> PointsTotals
+		{
+			get
+			{
+				return this._PointsTotals;
+			}
+			set
+			{
+				this._PointsTotals.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTracker", Storage="_TrustTrackers", ThisKey="UserID", OtherKey="UserID")]
+		public EntitySet<TrustTracker> TrustTrackers
+		{
+			get
+			{
+				return this._TrustTrackers;
+			}
+			set
+			{
+				this._TrustTrackers.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserRating", Storage="_UserRatings", ThisKey="UserID", OtherKey="UserID")]
 		public EntitySet<UserRating> UserRatings
 		{
@@ -21868,6 +21611,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._UserRatings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Rating", Storage="_Ratings", ThisKey="UserID", OtherKey="Creator")]
+		public EntitySet<Rating> Ratings
+		{
+			get
+			{
+				return this._Ratings;
+			}
+			set
+			{
+				this._Ratings.Assign(value);
 			}
 		}
 		
@@ -22059,18 +21815,6 @@ namespace ClassLibrary1.Model
 			entity.User = null;
 		}
 		
-		private void attach_PointsTotals(PointsTotal entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_PointsTotals(PointsTotal entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
 		private void attach_UserRatingsToAdds(UserRatingsToAdd entity)
 		{
 			this.SendPropertyChanging();
@@ -22078,18 +21822,6 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_UserRatingsToAdds(UserRatingsToAdd entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Ratings(Rating entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Ratings(Rating entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
@@ -22119,18 +21851,6 @@ namespace ClassLibrary1.Model
 			entity.User1 = null;
 		}
 		
-		private void attach_TrustTrackers(TrustTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_TrustTrackers(TrustTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
 		private void attach_TrustTrackerForChoiceInGroups(TrustTrackerForChoiceInGroup entity)
 		{
 			this.SendPropertyChanging();
@@ -22143,6 +21863,30 @@ namespace ClassLibrary1.Model
 			entity.User = null;
 		}
 		
+		private void attach_PointsTotals(PointsTotal entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_PointsTotals(PointsTotal entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_TrustTrackers(TrustTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_TrustTrackers(TrustTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
 		private void attach_UserRatings(UserRating entity)
 		{
 			this.SendPropertyChanging();
@@ -22150,6 +21894,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Ratings(Rating entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Ratings(Rating entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
@@ -23718,9 +23474,9 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<TblRow> _TblRow;
 		
-		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
-		
 		private EntityRef<TblColumn> _TblColumn;
+		
+		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -23760,8 +23516,8 @@ namespace ClassLibrary1.Model
 			this._Ratings1 = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings1), new Action<Rating>(this.detach_Ratings1));
 			this._Ratings2 = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings2), new Action<Rating>(this.detach_Ratings2));
 			this._TblRow = default(EntityRef<TblRow>);
-			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			this._TblColumn = default(EntityRef<TblColumn>);
+			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			OnCreated();
 		}
 		
@@ -24128,40 +23884,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingGroup", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
-		public RatingGroupAttribute RatingGroupAttribute
-		{
-			get
-			{
-				return this._RatingGroupAttribute.Entity;
-			}
-			set
-			{
-				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroupAttribute.Entity = null;
-						previousValue.RatingGroups.Remove(this);
-					}
-					this._RatingGroupAttribute.Entity = value;
-					if ((value != null))
-					{
-						value.RatingGroups.Add(this);
-						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
-					}
-					else
-					{
-						this._RatingGroupAttributesID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroupAttribute");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_RatingGroup", Storage="_TblColumn", ThisKey="TblColumnID", OtherKey="TblColumnID", IsForeignKey=true)]
 		public TblColumn TblColumn
 		{
@@ -24192,6 +23914,40 @@ namespace ClassLibrary1.Model
 						this._TblColumnID = default(int);
 					}
 					this.SendPropertyChanged("TblColumn");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingGroup", Storage="_RatingGroupAttribute", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
+		public RatingGroupAttribute RatingGroupAttribute
+		{
+			get
+			{
+				return this._RatingGroupAttribute.Entity;
+			}
+			set
+			{
+				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroupAttribute.Entity = null;
+						previousValue.RatingGroups.Remove(this);
+					}
+					this._RatingGroupAttribute.Entity = value;
+					if ((value != null))
+					{
+						value.RatingGroups.Add(this);
+						this._RatingGroupAttributesID = value.RatingGroupAttributesID;
+					}
+					else
+					{
+						this._RatingGroupAttributesID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroupAttribute");
 				}
 			}
 		}
@@ -26183,11 +25939,11 @@ namespace ClassLibrary1.Model
 		
 		private System.Nullable<System.DateTime> _HighStakesNoviceUserAfter;
 		
-		private EntitySet<RatingPhaseStatus> _RatingPhaseStatus;
-		
 		private EntitySet<SubsidyAdjustment> _SubsidyAdjustments;
 		
 		private EntitySet<UserRatingGroup> _UserRatingGroups;
+		
+		private EntitySet<RatingPhaseStatus> _RatingPhaseStatus;
 		
 		private EntityRef<RatingGroup> _RatingGroup;
 		
@@ -26235,9 +25991,9 @@ namespace ClassLibrary1.Model
 		
 		public RatingGroupPhaseStatus()
 		{
-			this._RatingPhaseStatus = new EntitySet<RatingPhaseStatus>(new Action<RatingPhaseStatus>(this.attach_RatingPhaseStatus), new Action<RatingPhaseStatus>(this.detach_RatingPhaseStatus));
 			this._SubsidyAdjustments = new EntitySet<SubsidyAdjustment>(new Action<SubsidyAdjustment>(this.attach_SubsidyAdjustments), new Action<SubsidyAdjustment>(this.detach_SubsidyAdjustments));
 			this._UserRatingGroups = new EntitySet<UserRatingGroup>(new Action<UserRatingGroup>(this.attach_UserRatingGroups), new Action<UserRatingGroup>(this.detach_UserRatingGroups));
+			this._RatingPhaseStatus = new EntitySet<RatingPhaseStatus>(new Action<RatingPhaseStatus>(this.attach_RatingPhaseStatus), new Action<RatingPhaseStatus>(this.detach_RatingPhaseStatus));
 			this._RatingGroup = default(EntityRef<RatingGroup>);
 			this._RatingPhase = default(EntityRef<RatingPhase>);
 			this._RatingPhaseGroup = default(EntityRef<RatingPhaseGroup>);
@@ -26576,19 +26332,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupPhaseStatus_RatingPhaseStatus", Storage="_RatingPhaseStatus", ThisKey="RatingGroupPhaseStatusID", OtherKey="RatingGroupPhaseStatusID")]
-		public EntitySet<RatingPhaseStatus> RatingPhaseStatus
-		{
-			get
-			{
-				return this._RatingPhaseStatus;
-			}
-			set
-			{
-				this._RatingPhaseStatus.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupPhaseStatus_SubsidyAdjustment", Storage="_SubsidyAdjustments", ThisKey="RatingGroupPhaseStatusID", OtherKey="RatingGroupPhaseStatusID")]
 		public EntitySet<SubsidyAdjustment> SubsidyAdjustments
 		{
@@ -26612,6 +26355,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._UserRatingGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupPhaseStatus_RatingPhaseStatus", Storage="_RatingPhaseStatus", ThisKey="RatingGroupPhaseStatusID", OtherKey="RatingGroupPhaseStatusID")]
+		public EntitySet<RatingPhaseStatus> RatingPhaseStatus
+		{
+			get
+			{
+				return this._RatingPhaseStatus;
+			}
+			set
+			{
+				this._RatingPhaseStatus.Assign(value);
 			}
 		}
 		
@@ -26737,18 +26493,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		private void attach_RatingPhaseStatus(RatingPhaseStatus entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupPhaseStatus = this;
-		}
-		
-		private void detach_RatingPhaseStatus(RatingPhaseStatus entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupPhaseStatus = null;
-		}
-		
 		private void attach_SubsidyAdjustments(SubsidyAdjustment entity)
 		{
 			this.SendPropertyChanging();
@@ -26772,1449 +26516,17 @@ namespace ClassLibrary1.Model
 			this.SendPropertyChanging();
 			entity.RatingGroupPhaseStatus = null;
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RatingGroupAttributes")]
-	public partial class RatingGroupAttribute : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _RatingGroupAttributesID;
-		
-		private int _RatingCharacteristicsID;
-		
-		private System.Nullable<int> _RatingConditionID;
-		
-		private System.Nullable<int> _PointsManagerID;
-		
-		private System.Nullable<decimal> _ConstrainedSum;
-		
-		private string _Name;
-		
-		private System.Nullable<byte> _TypeOfRatingGroup;
-		
-		private string _Description;
-		
-		private bool _RatingEndingTimeVaries;
-		
-		private bool _RatingsCanBeAutocalculated;
-		
-		private decimal _LongTermPointsWeight;
-		
-		private int _MinimumDaysToTrackLongTerm;
-		
-		private System.Nullable<int> _Creator;
-		
-		private byte _Status;
-		
-		private EntitySet<OverrideCharacteristic> _OverrideCharacteristics;
-		
-		private EntitySet<ProposalEvaluationRatingSetting> _ProposalEvaluationRatingSettings;
-		
-		private EntitySet<RatingPlan> _RatingPlans;
-		
-		private EntitySet<RatingPlan> _RatingPlans1;
-		
-		private EntitySet<RewardRatingSetting> _RewardRatingSettings;
-		
-		private EntitySet<RatingGroup> _RatingGroups;
-		
-		private EntitySet<TblColumn> _TblColumns;
-		
-		private EntityRef<RatingCharacteristic> _RatingCharacteristic;
-		
-		private EntityRef<RatingCondition> _RatingCondition;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnRatingGroupAttributesIDChanging(int value);
-    partial void OnRatingGroupAttributesIDChanged();
-    partial void OnRatingCharacteristicsIDChanging(int value);
-    partial void OnRatingCharacteristicsIDChanged();
-    partial void OnRatingConditionIDChanging(System.Nullable<int> value);
-    partial void OnRatingConditionIDChanged();
-    partial void OnPointsManagerIDChanging(System.Nullable<int> value);
-    partial void OnPointsManagerIDChanged();
-    partial void OnConstrainedSumChanging(System.Nullable<decimal> value);
-    partial void OnConstrainedSumChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnTypeOfRatingGroupChanging(System.Nullable<byte> value);
-    partial void OnTypeOfRatingGroupChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    partial void OnRatingEndingTimeVariesChanging(bool value);
-    partial void OnRatingEndingTimeVariesChanged();
-    partial void OnRatingsCanBeAutocalculatedChanging(bool value);
-    partial void OnRatingsCanBeAutocalculatedChanged();
-    partial void OnLongTermPointsWeightChanging(decimal value);
-    partial void OnLongTermPointsWeightChanged();
-    partial void OnMinimumDaysToTrackLongTermChanging(int value);
-    partial void OnMinimumDaysToTrackLongTermChanged();
-    partial void OnCreatorChanging(System.Nullable<int> value);
-    partial void OnCreatorChanged();
-    partial void OnStatusChanging(byte value);
-    partial void OnStatusChanged();
-    #endregion
-		
-		public RatingGroupAttribute()
-		{
-			this._OverrideCharacteristics = new EntitySet<OverrideCharacteristic>(new Action<OverrideCharacteristic>(this.attach_OverrideCharacteristics), new Action<OverrideCharacteristic>(this.detach_OverrideCharacteristics));
-			this._ProposalEvaluationRatingSettings = new EntitySet<ProposalEvaluationRatingSetting>(new Action<ProposalEvaluationRatingSetting>(this.attach_ProposalEvaluationRatingSettings), new Action<ProposalEvaluationRatingSetting>(this.detach_ProposalEvaluationRatingSettings));
-			this._RatingPlans = new EntitySet<RatingPlan>(new Action<RatingPlan>(this.attach_RatingPlans), new Action<RatingPlan>(this.detach_RatingPlans));
-			this._RatingPlans1 = new EntitySet<RatingPlan>(new Action<RatingPlan>(this.attach_RatingPlans1), new Action<RatingPlan>(this.detach_RatingPlans1));
-			this._RewardRatingSettings = new EntitySet<RewardRatingSetting>(new Action<RewardRatingSetting>(this.attach_RewardRatingSettings), new Action<RewardRatingSetting>(this.detach_RewardRatingSettings));
-			this._RatingGroups = new EntitySet<RatingGroup>(new Action<RatingGroup>(this.attach_RatingGroups), new Action<RatingGroup>(this.detach_RatingGroups));
-			this._TblColumns = new EntitySet<TblColumn>(new Action<TblColumn>(this.attach_TblColumns), new Action<TblColumn>(this.detach_TblColumns));
-			this._RatingCharacteristic = default(EntityRef<RatingCharacteristic>);
-			this._RatingCondition = default(EntityRef<RatingCondition>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupAttributesID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int RatingGroupAttributesID
-		{
-			get
-			{
-				return this._RatingGroupAttributesID;
-			}
-			set
-			{
-				if ((this._RatingGroupAttributesID != value))
-				{
-					this.OnRatingGroupAttributesIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingGroupAttributesID = value;
-					this.SendPropertyChanged("RatingGroupAttributesID");
-					this.OnRatingGroupAttributesIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingCharacteristicsID", DbType="Int NOT NULL")]
-		public int RatingCharacteristicsID
-		{
-			get
-			{
-				return this._RatingCharacteristicsID;
-			}
-			set
-			{
-				if ((this._RatingCharacteristicsID != value))
-				{
-					if (this._RatingCharacteristic.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingCharacteristicsIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingCharacteristicsID = value;
-					this.SendPropertyChanged("RatingCharacteristicsID");
-					this.OnRatingCharacteristicsIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingConditionID", DbType="Int")]
-		public System.Nullable<int> RatingConditionID
-		{
-			get
-			{
-				return this._RatingConditionID;
-			}
-			set
-			{
-				if ((this._RatingConditionID != value))
-				{
-					if (this._RatingCondition.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingConditionIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingConditionID = value;
-					this.SendPropertyChanged("RatingConditionID");
-					this.OnRatingConditionIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", DbType="Int")]
-		public System.Nullable<int> PointsManagerID
-		{
-			get
-			{
-				return this._PointsManagerID;
-			}
-			set
-			{
-				if ((this._PointsManagerID != value))
-				{
-					this.OnPointsManagerIDChanging(value);
-					this.SendPropertyChanging();
-					this._PointsManagerID = value;
-					this.SendPropertyChanged("PointsManagerID");
-					this.OnPointsManagerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConstrainedSum", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> ConstrainedSum
-		{
-			get
-			{
-				return this._ConstrainedSum;
-			}
-			set
-			{
-				if ((this._ConstrainedSum != value))
-				{
-					this.OnConstrainedSumChanging(value);
-					this.SendPropertyChanging();
-					this._ConstrainedSum = value;
-					this.SendPropertyChanged("ConstrainedSum");
-					this.OnConstrainedSumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeOfRatingGroup", DbType="TinyInt")]
-		public System.Nullable<byte> TypeOfRatingGroup
-		{
-			get
-			{
-				return this._TypeOfRatingGroup;
-			}
-			set
-			{
-				if ((this._TypeOfRatingGroup != value))
-				{
-					this.OnTypeOfRatingGroupChanging(value);
-					this.SendPropertyChanging();
-					this._TypeOfRatingGroup = value;
-					this.SendPropertyChanged("TypeOfRatingGroup");
-					this.OnTypeOfRatingGroupChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(MAX)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingEndingTimeVaries", DbType="Bit NOT NULL")]
-		public bool RatingEndingTimeVaries
-		{
-			get
-			{
-				return this._RatingEndingTimeVaries;
-			}
-			set
-			{
-				if ((this._RatingEndingTimeVaries != value))
-				{
-					this.OnRatingEndingTimeVariesChanging(value);
-					this.SendPropertyChanging();
-					this._RatingEndingTimeVaries = value;
-					this.SendPropertyChanged("RatingEndingTimeVaries");
-					this.OnRatingEndingTimeVariesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingsCanBeAutocalculated", DbType="Bit NOT NULL")]
-		public bool RatingsCanBeAutocalculated
-		{
-			get
-			{
-				return this._RatingsCanBeAutocalculated;
-			}
-			set
-			{
-				if ((this._RatingsCanBeAutocalculated != value))
-				{
-					this.OnRatingsCanBeAutocalculatedChanging(value);
-					this.SendPropertyChanging();
-					this._RatingsCanBeAutocalculated = value;
-					this.SendPropertyChanged("RatingsCanBeAutocalculated");
-					this.OnRatingsCanBeAutocalculatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LongTermPointsWeight", DbType="Decimal(18,4) NOT NULL")]
-		public decimal LongTermPointsWeight
-		{
-			get
-			{
-				return this._LongTermPointsWeight;
-			}
-			set
-			{
-				if ((this._LongTermPointsWeight != value))
-				{
-					this.OnLongTermPointsWeightChanging(value);
-					this.SendPropertyChanging();
-					this._LongTermPointsWeight = value;
-					this.SendPropertyChanged("LongTermPointsWeight");
-					this.OnLongTermPointsWeightChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinimumDaysToTrackLongTerm", DbType="Int NOT NULL")]
-		public int MinimumDaysToTrackLongTerm
-		{
-			get
-			{
-				return this._MinimumDaysToTrackLongTerm;
-			}
-			set
-			{
-				if ((this._MinimumDaysToTrackLongTerm != value))
-				{
-					this.OnMinimumDaysToTrackLongTermChanging(value);
-					this.SendPropertyChanging();
-					this._MinimumDaysToTrackLongTerm = value;
-					this.SendPropertyChanged("MinimumDaysToTrackLongTerm");
-					this.OnMinimumDaysToTrackLongTermChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
-		public System.Nullable<int> Creator
-		{
-			get
-			{
-				return this._Creator;
-			}
-			set
-			{
-				if ((this._Creator != value))
-				{
-					this.OnCreatorChanging(value);
-					this.SendPropertyChanging();
-					this._Creator = value;
-					this.SendPropertyChanged("Creator");
-					this.OnCreatorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
-		public byte Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_OverrideCharacteristic", Storage="_OverrideCharacteristics", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
-		public EntitySet<OverrideCharacteristic> OverrideCharacteristics
-		{
-			get
-			{
-				return this._OverrideCharacteristics;
-			}
-			set
-			{
-				this._OverrideCharacteristics.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_ProposalEvaluationRatingSetting", Storage="_ProposalEvaluationRatingSettings", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
-		public EntitySet<ProposalEvaluationRatingSetting> ProposalEvaluationRatingSettings
-		{
-			get
-			{
-				return this._ProposalEvaluationRatingSettings;
-			}
-			set
-			{
-				this._ProposalEvaluationRatingSettings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingPlan", Storage="_RatingPlans", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
-		public EntitySet<RatingPlan> RatingPlans
-		{
-			get
-			{
-				return this._RatingPlans;
-			}
-			set
-			{
-				this._RatingPlans.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingPlan1", Storage="_RatingPlans1", ThisKey="RatingGroupAttributesID", OtherKey="OwnedRatingGroupAttributesID")]
-		public EntitySet<RatingPlan> RatingPlans1
-		{
-			get
-			{
-				return this._RatingPlans1;
-			}
-			set
-			{
-				this._RatingPlans1.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RewardRatingSetting", Storage="_RewardRatingSettings", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
-		public EntitySet<RewardRatingSetting> RewardRatingSettings
-		{
-			get
-			{
-				return this._RewardRatingSettings;
-			}
-			set
-			{
-				this._RewardRatingSettings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingGroup", Storage="_RatingGroups", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
-		public EntitySet<RatingGroup> RatingGroups
-		{
-			get
-			{
-				return this._RatingGroups;
-			}
-			set
-			{
-				this._RatingGroups.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_TblColumn", Storage="_TblColumns", ThisKey="RatingGroupAttributesID", OtherKey="DefaultRatingGroupAttributesID")]
-		public EntitySet<TblColumn> TblColumns
-		{
-			get
-			{
-				return this._TblColumns;
-			}
-			set
-			{
-				this._TblColumns.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCharacteristic_RatingGroupAttribute", Storage="_RatingCharacteristic", ThisKey="RatingCharacteristicsID", OtherKey="RatingCharacteristicsID", IsForeignKey=true)]
-		public RatingCharacteristic RatingCharacteristic
-		{
-			get
-			{
-				return this._RatingCharacteristic.Entity;
-			}
-			set
-			{
-				RatingCharacteristic previousValue = this._RatingCharacteristic.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingCharacteristic.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingCharacteristic.Entity = null;
-						previousValue.RatingGroupAttributes.Remove(this);
-					}
-					this._RatingCharacteristic.Entity = value;
-					if ((value != null))
-					{
-						value.RatingGroupAttributes.Add(this);
-						this._RatingCharacteristicsID = value.RatingCharacteristicsID;
-					}
-					else
-					{
-						this._RatingCharacteristicsID = default(int);
-					}
-					this.SendPropertyChanged("RatingCharacteristic");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCondition_RatingGroupAttribute", Storage="_RatingCondition", ThisKey="RatingConditionID", OtherKey="RatingConditionID", IsForeignKey=true)]
-		public RatingCondition RatingCondition
-		{
-			get
-			{
-				return this._RatingCondition.Entity;
-			}
-			set
-			{
-				RatingCondition previousValue = this._RatingCondition.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingCondition.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingCondition.Entity = null;
-						previousValue.RatingGroupAttributes.Remove(this);
-					}
-					this._RatingCondition.Entity = value;
-					if ((value != null))
-					{
-						value.RatingGroupAttributes.Add(this);
-						this._RatingConditionID = value.RatingConditionID;
-					}
-					else
-					{
-						this._RatingConditionID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("RatingCondition");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_OverrideCharacteristics(OverrideCharacteristic entity)
+		private void attach_RatingPhaseStatus(RatingPhaseStatus entity)
 		{
 			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = this;
+			entity.RatingGroupPhaseStatus = this;
 		}
 		
-		private void detach_OverrideCharacteristics(OverrideCharacteristic entity)
+		private void detach_RatingPhaseStatus(RatingPhaseStatus entity)
 		{
 			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = null;
-		}
-		
-		private void attach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = this;
-		}
-		
-		private void detach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = null;
-		}
-		
-		private void attach_RatingPlans(RatingPlan entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = this;
-		}
-		
-		private void detach_RatingPlans(RatingPlan entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = null;
-		}
-		
-		private void attach_RatingPlans1(RatingPlan entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute1 = this;
-		}
-		
-		private void detach_RatingPlans1(RatingPlan entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute1 = null;
-		}
-		
-		private void attach_RewardRatingSettings(RewardRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = this;
-		}
-		
-		private void detach_RewardRatingSettings(RewardRatingSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = null;
-		}
-		
-		private void attach_RatingGroups(RatingGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = this;
-		}
-		
-		private void detach_RatingGroups(RatingGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = null;
-		}
-		
-		private void attach_TblColumns(TblColumn entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = this;
-		}
-		
-		private void detach_TblColumns(TblColumn entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroupAttribute = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PointsTotals")]
-	public partial class PointsTotal : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PointsTotalID;
-		
-		private int _UserID;
-		
-		private int _PointsManagerID;
-		
-		private decimal _CurrentPoints;
-		
-		private decimal _TotalPoints;
-		
-		private decimal _PotentialMaxLossOnNotYetPending;
-		
-		private decimal _PendingPoints;
-		
-		private decimal _NotYetPendingPoints;
-		
-		private decimal _TrustPoints;
-		
-		private decimal _TrustPointsRatio;
-		
-		private int _NumPendingOrFinalizedRatings;
-		
-		private decimal _PointsPerRating;
-		
-		private System.Nullable<System.DateTime> _LastCheckIn;
-		
-		private System.Nullable<System.DateTime> _CurrentCheckInPeriodStart;
-		
-		private decimal _TotalTimeThisCheckInPeriod;
-		
-		private decimal _TotalTimeThisRewardPeriod;
-		
-		private decimal _TotalTimeEver;
-		
-		private System.Nullable<decimal> _PointsPerHour;
-		
-		private System.Nullable<decimal> _ProjectedPointsPerHour;
-		
-		private decimal _GuaranteedPaymentsEarnedThisRewardPeriod;
-		
-		private string _PendingConditionalGuaranteeApplication;
-		
-		private System.Nullable<decimal> _PendingConditionalGuaranteePayment;
-		
-		private System.Nullable<decimal> _PendingConditionalGuaranteeTotalHoursAtStart;
-		
-		private System.Nullable<decimal> _PendingConditionalGuaranteeTotalHoursNeeded;
-		
-		private System.Nullable<decimal> _PendingConditionalGuaranteePaymentAlreadyMade;
-		
-		private System.Nullable<System.DateTime> _RequestConditionalGuaranteeWhenAvailableTimeRequestMade;
-		
-		private decimal _TotalPointsOrPendingPointsLongTermUnweighted;
-		
-		private decimal _PointsPerRatingLongTerm;
-		
-		private EntityRef<User> _User;
-		
-		private EntityRef<PointsManager> _PointsManager;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPointsTotalIDChanging(int value);
-    partial void OnPointsTotalIDChanged();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnPointsManagerIDChanging(int value);
-    partial void OnPointsManagerIDChanged();
-    partial void OnCurrentPointsChanging(decimal value);
-    partial void OnCurrentPointsChanged();
-    partial void OnTotalPointsChanging(decimal value);
-    partial void OnTotalPointsChanged();
-    partial void OnPotentialMaxLossOnNotYetPendingChanging(decimal value);
-    partial void OnPotentialMaxLossOnNotYetPendingChanged();
-    partial void OnPendingPointsChanging(decimal value);
-    partial void OnPendingPointsChanged();
-    partial void OnNotYetPendingPointsChanging(decimal value);
-    partial void OnNotYetPendingPointsChanged();
-    partial void OnTrustPointsChanging(decimal value);
-    partial void OnTrustPointsChanged();
-    partial void OnTrustPointsRatioChanging(decimal value);
-    partial void OnTrustPointsRatioChanged();
-    partial void OnNumPendingOrFinalizedRatingsChanging(int value);
-    partial void OnNumPendingOrFinalizedRatingsChanged();
-    partial void OnPointsPerRatingChanging(decimal value);
-    partial void OnPointsPerRatingChanged();
-    partial void OnLastCheckInChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastCheckInChanged();
-    partial void OnCurrentCheckInPeriodStartChanging(System.Nullable<System.DateTime> value);
-    partial void OnCurrentCheckInPeriodStartChanged();
-    partial void OnTotalTimeThisCheckInPeriodChanging(decimal value);
-    partial void OnTotalTimeThisCheckInPeriodChanged();
-    partial void OnTotalTimeThisRewardPeriodChanging(decimal value);
-    partial void OnTotalTimeThisRewardPeriodChanged();
-    partial void OnTotalTimeEverChanging(decimal value);
-    partial void OnTotalTimeEverChanged();
-    partial void OnPointsPerHourChanging(System.Nullable<decimal> value);
-    partial void OnPointsPerHourChanged();
-    partial void OnProjectedPointsPerHourChanging(System.Nullable<decimal> value);
-    partial void OnProjectedPointsPerHourChanged();
-    partial void OnGuaranteedPaymentsEarnedThisRewardPeriodChanging(decimal value);
-    partial void OnGuaranteedPaymentsEarnedThisRewardPeriodChanged();
-    partial void OnPendingConditionalGuaranteeApplicationChanging(string value);
-    partial void OnPendingConditionalGuaranteeApplicationChanged();
-    partial void OnPendingConditionalGuaranteePaymentChanging(System.Nullable<decimal> value);
-    partial void OnPendingConditionalGuaranteePaymentChanged();
-    partial void OnPendingConditionalGuaranteeTotalHoursAtStartChanging(System.Nullable<decimal> value);
-    partial void OnPendingConditionalGuaranteeTotalHoursAtStartChanged();
-    partial void OnPendingConditionalGuaranteeTotalHoursNeededChanging(System.Nullable<decimal> value);
-    partial void OnPendingConditionalGuaranteeTotalHoursNeededChanged();
-    partial void OnPendingConditionalGuaranteePaymentAlreadyMadeChanging(System.Nullable<decimal> value);
-    partial void OnPendingConditionalGuaranteePaymentAlreadyMadeChanged();
-    partial void OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanging(System.Nullable<System.DateTime> value);
-    partial void OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanged();
-    partial void OnTotalPointsOrPendingPointsLongTermUnweightedChanging(decimal value);
-    partial void OnTotalPointsOrPendingPointsLongTermUnweightedChanged();
-    partial void OnPointsPerRatingLongTermChanging(decimal value);
-    partial void OnPointsPerRatingLongTermChanged();
-    #endregion
-		
-		public PointsTotal()
-		{
-			this._User = default(EntityRef<User>);
-			this._PointsManager = default(EntityRef<PointsManager>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsTotalID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int PointsTotalID
-		{
-			get
-			{
-				return this._PointsTotalID;
-			}
-			set
-			{
-				if ((this._PointsTotalID != value))
-				{
-					this.OnPointsTotalIDChanging(value);
-					this.SendPropertyChanging();
-					this._PointsTotalID = value;
-					this.SendPropertyChanged("PointsTotalID");
-					this.OnPointsTotalIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", DbType="Int NOT NULL")]
-		public int PointsManagerID
-		{
-			get
-			{
-				return this._PointsManagerID;
-			}
-			set
-			{
-				if ((this._PointsManagerID != value))
-				{
-					if (this._PointsManager.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPointsManagerIDChanging(value);
-					this.SendPropertyChanging();
-					this._PointsManagerID = value;
-					this.SendPropertyChanged("PointsManagerID");
-					this.OnPointsManagerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal CurrentPoints
-		{
-			get
-			{
-				return this._CurrentPoints;
-			}
-			set
-			{
-				if ((this._CurrentPoints != value))
-				{
-					this.OnCurrentPointsChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentPoints = value;
-					this.SendPropertyChanged("CurrentPoints");
-					this.OnCurrentPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalPoints
-		{
-			get
-			{
-				return this._TotalPoints;
-			}
-			set
-			{
-				if ((this._TotalPoints != value))
-				{
-					this.OnTotalPointsChanging(value);
-					this.SendPropertyChanging();
-					this._TotalPoints = value;
-					this.SendPropertyChanged("TotalPoints");
-					this.OnTotalPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialMaxLossOnNotYetPending", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PotentialMaxLossOnNotYetPending
-		{
-			get
-			{
-				return this._PotentialMaxLossOnNotYetPending;
-			}
-			set
-			{
-				if ((this._PotentialMaxLossOnNotYetPending != value))
-				{
-					this.OnPotentialMaxLossOnNotYetPendingChanging(value);
-					this.SendPropertyChanging();
-					this._PotentialMaxLossOnNotYetPending = value;
-					this.SendPropertyChanged("PotentialMaxLossOnNotYetPending");
-					this.OnPotentialMaxLossOnNotYetPendingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PendingPoints
-		{
-			get
-			{
-				return this._PendingPoints;
-			}
-			set
-			{
-				if ((this._PendingPoints != value))
-				{
-					this.OnPendingPointsChanging(value);
-					this.SendPropertyChanging();
-					this._PendingPoints = value;
-					this.SendPropertyChanged("PendingPoints");
-					this.OnPendingPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotYetPendingPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal NotYetPendingPoints
-		{
-			get
-			{
-				return this._NotYetPendingPoints;
-			}
-			set
-			{
-				if ((this._NotYetPendingPoints != value))
-				{
-					this.OnNotYetPendingPointsChanging(value);
-					this.SendPropertyChanging();
-					this._NotYetPendingPoints = value;
-					this.SendPropertyChanged("NotYetPendingPoints");
-					this.OnNotYetPendingPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustPoints", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TrustPoints
-		{
-			get
-			{
-				return this._TrustPoints;
-			}
-			set
-			{
-				if ((this._TrustPoints != value))
-				{
-					this.OnTrustPointsChanging(value);
-					this.SendPropertyChanging();
-					this._TrustPoints = value;
-					this.SendPropertyChanged("TrustPoints");
-					this.OnTrustPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustPointsRatio", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TrustPointsRatio
-		{
-			get
-			{
-				return this._TrustPointsRatio;
-			}
-			set
-			{
-				if ((this._TrustPointsRatio != value))
-				{
-					this.OnTrustPointsRatioChanging(value);
-					this.SendPropertyChanging();
-					this._TrustPointsRatio = value;
-					this.SendPropertyChanged("TrustPointsRatio");
-					this.OnTrustPointsRatioChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumPendingOrFinalizedRatings", DbType="Int NOT NULL")]
-		public int NumPendingOrFinalizedRatings
-		{
-			get
-			{
-				return this._NumPendingOrFinalizedRatings;
-			}
-			set
-			{
-				if ((this._NumPendingOrFinalizedRatings != value))
-				{
-					this.OnNumPendingOrFinalizedRatingsChanging(value);
-					this.SendPropertyChanging();
-					this._NumPendingOrFinalizedRatings = value;
-					this.SendPropertyChanged("NumPendingOrFinalizedRatings");
-					this.OnNumPendingOrFinalizedRatingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPerRating", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PointsPerRating
-		{
-			get
-			{
-				return this._PointsPerRating;
-			}
-			set
-			{
-				if ((this._PointsPerRating != value))
-				{
-					this.OnPointsPerRatingChanging(value);
-					this.SendPropertyChanging();
-					this._PointsPerRating = value;
-					this.SendPropertyChanged("PointsPerRating");
-					this.OnPointsPerRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastCheckIn", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastCheckIn
-		{
-			get
-			{
-				return this._LastCheckIn;
-			}
-			set
-			{
-				if ((this._LastCheckIn != value))
-				{
-					this.OnLastCheckInChanging(value);
-					this.SendPropertyChanging();
-					this._LastCheckIn = value;
-					this.SendPropertyChanged("LastCheckIn");
-					this.OnLastCheckInChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentCheckInPeriodStart", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CurrentCheckInPeriodStart
-		{
-			get
-			{
-				return this._CurrentCheckInPeriodStart;
-			}
-			set
-			{
-				if ((this._CurrentCheckInPeriodStart != value))
-				{
-					this.OnCurrentCheckInPeriodStartChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentCheckInPeriodStart = value;
-					this.SendPropertyChanged("CurrentCheckInPeriodStart");
-					this.OnCurrentCheckInPeriodStartChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalTimeThisCheckInPeriod", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalTimeThisCheckInPeriod
-		{
-			get
-			{
-				return this._TotalTimeThisCheckInPeriod;
-			}
-			set
-			{
-				if ((this._TotalTimeThisCheckInPeriod != value))
-				{
-					this.OnTotalTimeThisCheckInPeriodChanging(value);
-					this.SendPropertyChanging();
-					this._TotalTimeThisCheckInPeriod = value;
-					this.SendPropertyChanged("TotalTimeThisCheckInPeriod");
-					this.OnTotalTimeThisCheckInPeriodChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalTimeThisRewardPeriod", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalTimeThisRewardPeriod
-		{
-			get
-			{
-				return this._TotalTimeThisRewardPeriod;
-			}
-			set
-			{
-				if ((this._TotalTimeThisRewardPeriod != value))
-				{
-					this.OnTotalTimeThisRewardPeriodChanging(value);
-					this.SendPropertyChanging();
-					this._TotalTimeThisRewardPeriod = value;
-					this.SendPropertyChanged("TotalTimeThisRewardPeriod");
-					this.OnTotalTimeThisRewardPeriodChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalTimeEver", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalTimeEver
-		{
-			get
-			{
-				return this._TotalTimeEver;
-			}
-			set
-			{
-				if ((this._TotalTimeEver != value))
-				{
-					this.OnTotalTimeEverChanging(value);
-					this.SendPropertyChanging();
-					this._TotalTimeEver = value;
-					this.SendPropertyChanged("TotalTimeEver");
-					this.OnTotalTimeEverChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPerHour", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> PointsPerHour
-		{
-			get
-			{
-				return this._PointsPerHour;
-			}
-			set
-			{
-				if ((this._PointsPerHour != value))
-				{
-					this.OnPointsPerHourChanging(value);
-					this.SendPropertyChanging();
-					this._PointsPerHour = value;
-					this.SendPropertyChanged("PointsPerHour");
-					this.OnPointsPerHourChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProjectedPointsPerHour", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> ProjectedPointsPerHour
-		{
-			get
-			{
-				return this._ProjectedPointsPerHour;
-			}
-			set
-			{
-				if ((this._ProjectedPointsPerHour != value))
-				{
-					this.OnProjectedPointsPerHourChanging(value);
-					this.SendPropertyChanging();
-					this._ProjectedPointsPerHour = value;
-					this.SendPropertyChanged("ProjectedPointsPerHour");
-					this.OnProjectedPointsPerHourChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GuaranteedPaymentsEarnedThisRewardPeriod", DbType="Decimal(18,2) NOT NULL")]
-		public decimal GuaranteedPaymentsEarnedThisRewardPeriod
-		{
-			get
-			{
-				return this._GuaranteedPaymentsEarnedThisRewardPeriod;
-			}
-			set
-			{
-				if ((this._GuaranteedPaymentsEarnedThisRewardPeriod != value))
-				{
-					this.OnGuaranteedPaymentsEarnedThisRewardPeriodChanging(value);
-					this.SendPropertyChanging();
-					this._GuaranteedPaymentsEarnedThisRewardPeriod = value;
-					this.SendPropertyChanged("GuaranteedPaymentsEarnedThisRewardPeriod");
-					this.OnGuaranteedPaymentsEarnedThisRewardPeriodChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteeApplication", DbType="NVarChar(50)")]
-		public string PendingConditionalGuaranteeApplication
-		{
-			get
-			{
-				return this._PendingConditionalGuaranteeApplication;
-			}
-			set
-			{
-				if ((this._PendingConditionalGuaranteeApplication != value))
-				{
-					this.OnPendingConditionalGuaranteeApplicationChanging(value);
-					this.SendPropertyChanging();
-					this._PendingConditionalGuaranteeApplication = value;
-					this.SendPropertyChanged("PendingConditionalGuaranteeApplication");
-					this.OnPendingConditionalGuaranteeApplicationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteePayment", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> PendingConditionalGuaranteePayment
-		{
-			get
-			{
-				return this._PendingConditionalGuaranteePayment;
-			}
-			set
-			{
-				if ((this._PendingConditionalGuaranteePayment != value))
-				{
-					this.OnPendingConditionalGuaranteePaymentChanging(value);
-					this.SendPropertyChanging();
-					this._PendingConditionalGuaranteePayment = value;
-					this.SendPropertyChanged("PendingConditionalGuaranteePayment");
-					this.OnPendingConditionalGuaranteePaymentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteeTotalHoursAtStart", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> PendingConditionalGuaranteeTotalHoursAtStart
-		{
-			get
-			{
-				return this._PendingConditionalGuaranteeTotalHoursAtStart;
-			}
-			set
-			{
-				if ((this._PendingConditionalGuaranteeTotalHoursAtStart != value))
-				{
-					this.OnPendingConditionalGuaranteeTotalHoursAtStartChanging(value);
-					this.SendPropertyChanging();
-					this._PendingConditionalGuaranteeTotalHoursAtStart = value;
-					this.SendPropertyChanged("PendingConditionalGuaranteeTotalHoursAtStart");
-					this.OnPendingConditionalGuaranteeTotalHoursAtStartChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteeTotalHoursNeeded", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> PendingConditionalGuaranteeTotalHoursNeeded
-		{
-			get
-			{
-				return this._PendingConditionalGuaranteeTotalHoursNeeded;
-			}
-			set
-			{
-				if ((this._PendingConditionalGuaranteeTotalHoursNeeded != value))
-				{
-					this.OnPendingConditionalGuaranteeTotalHoursNeededChanging(value);
-					this.SendPropertyChanging();
-					this._PendingConditionalGuaranteeTotalHoursNeeded = value;
-					this.SendPropertyChanged("PendingConditionalGuaranteeTotalHoursNeeded");
-					this.OnPendingConditionalGuaranteeTotalHoursNeededChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteePaymentAlreadyMade", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> PendingConditionalGuaranteePaymentAlreadyMade
-		{
-			get
-			{
-				return this._PendingConditionalGuaranteePaymentAlreadyMade;
-			}
-			set
-			{
-				if ((this._PendingConditionalGuaranteePaymentAlreadyMade != value))
-				{
-					this.OnPendingConditionalGuaranteePaymentAlreadyMadeChanging(value);
-					this.SendPropertyChanging();
-					this._PendingConditionalGuaranteePaymentAlreadyMade = value;
-					this.SendPropertyChanged("PendingConditionalGuaranteePaymentAlreadyMade");
-					this.OnPendingConditionalGuaranteePaymentAlreadyMadeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestConditionalGuaranteeWhenAvailableTimeRequestMade", DbType="DateTime")]
-		public System.Nullable<System.DateTime> RequestConditionalGuaranteeWhenAvailableTimeRequestMade
-		{
-			get
-			{
-				return this._RequestConditionalGuaranteeWhenAvailableTimeRequestMade;
-			}
-			set
-			{
-				if ((this._RequestConditionalGuaranteeWhenAvailableTimeRequestMade != value))
-				{
-					this.OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanging(value);
-					this.SendPropertyChanging();
-					this._RequestConditionalGuaranteeWhenAvailableTimeRequestMade = value;
-					this.SendPropertyChanged("RequestConditionalGuaranteeWhenAvailableTimeRequestMade");
-					this.OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPointsOrPendingPointsLongTermUnweighted", DbType="Decimal(18,4) NOT NULL")]
-		public decimal TotalPointsOrPendingPointsLongTermUnweighted
-		{
-			get
-			{
-				return this._TotalPointsOrPendingPointsLongTermUnweighted;
-			}
-			set
-			{
-				if ((this._TotalPointsOrPendingPointsLongTermUnweighted != value))
-				{
-					this.OnTotalPointsOrPendingPointsLongTermUnweightedChanging(value);
-					this.SendPropertyChanging();
-					this._TotalPointsOrPendingPointsLongTermUnweighted = value;
-					this.SendPropertyChanged("TotalPointsOrPendingPointsLongTermUnweighted");
-					this.OnTotalPointsOrPendingPointsLongTermUnweightedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPerRatingLongTerm", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PointsPerRatingLongTerm
-		{
-			get
-			{
-				return this._PointsPerRatingLongTerm;
-			}
-			set
-			{
-				if ((this._PointsPerRatingLongTerm != value))
-				{
-					this.OnPointsPerRatingLongTermChanging(value);
-					this.SendPropertyChanging();
-					this._PointsPerRatingLongTerm = value;
-					this.SendPropertyChanged("PointsPerRatingLongTerm");
-					this.OnPointsPerRatingLongTermChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_PointsTotal", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.PointsTotals.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.PointsTotals.Add(this);
-						this._UserID = value.UserID;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_PointsTotal", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
-		public PointsManager PointsManager
-		{
-			get
-			{
-				return this._PointsManager.Entity;
-			}
-			set
-			{
-				PointsManager previousValue = this._PointsManager.Entity;
-				if (((previousValue != value) 
-							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PointsManager.Entity = null;
-						previousValue.PointsTotals.Remove(this);
-					}
-					this._PointsManager.Entity = value;
-					if ((value != null))
-					{
-						value.PointsTotals.Add(this);
-						this._PointsManagerID = value.PointsManagerID;
-					}
-					else
-					{
-						this._PointsManagerID = default(int);
-					}
-					this.SendPropertyChanged("PointsManager");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
+			entity.RatingGroupPhaseStatus = null;
 		}
 	}
 	
@@ -28661,714 +26973,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Ratings")]
-	public partial class Rating : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _RatingID;
-		
-		private int _RatingGroupID;
-		
-		private int _RatingCharacteristicsID;
-		
-		private System.Nullable<int> _OwnedRatingGroupID;
-		
-		private int _TopmostRatingGroupID;
-		
-		private System.Nullable<int> _MostRecentUserRatingID;
-		
-		private int _NumInGroup;
-		
-		private int _TotalUserRatings;
-		
-		private string _Name;
-		
-		private System.Nullable<int> _Creator;
-		
-		private System.Nullable<decimal> _CurrentValue;
-		
-		private System.Nullable<decimal> _LastTrustedValue;
-		
-		private System.DateTime _LastModifiedResolutionTimeOrCurrentValue;
-		
-		private EntitySet<ChangesGroup> _ChangesGroups;
-		
-		private EntitySet<RatingPhaseStatus> _RatingPhaseStatus;
-		
-		private EntitySet<RatingCondition> _RatingConditions;
-		
-		private EntitySet<UserRating> _UserRatings;
-		
-		private EntityRef<RatingCharacteristic> _RatingCharacteristic;
-		
-		private EntityRef<RatingGroup> _RatingGroup;
-		
-		private EntityRef<RatingGroup> _RatingGroup1;
-		
-		private EntityRef<RatingGroup> _RatingGroup2;
-		
-		private EntityRef<User> _User;
-		
-		private EntityRef<UserRating> _UserRating;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnRatingIDChanging(int value);
-    partial void OnRatingIDChanged();
-    partial void OnRatingGroupIDChanging(int value);
-    partial void OnRatingGroupIDChanged();
-    partial void OnRatingCharacteristicsIDChanging(int value);
-    partial void OnRatingCharacteristicsIDChanged();
-    partial void OnOwnedRatingGroupIDChanging(System.Nullable<int> value);
-    partial void OnOwnedRatingGroupIDChanged();
-    partial void OnTopmostRatingGroupIDChanging(int value);
-    partial void OnTopmostRatingGroupIDChanged();
-    partial void OnMostRecentUserRatingIDChanging(System.Nullable<int> value);
-    partial void OnMostRecentUserRatingIDChanged();
-    partial void OnNumInGroupChanging(int value);
-    partial void OnNumInGroupChanged();
-    partial void OnTotalUserRatingsChanging(int value);
-    partial void OnTotalUserRatingsChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnCreatorChanging(System.Nullable<int> value);
-    partial void OnCreatorChanged();
-    partial void OnCurrentValueChanging(System.Nullable<decimal> value);
-    partial void OnCurrentValueChanged();
-    partial void OnLastTrustedValueChanging(System.Nullable<decimal> value);
-    partial void OnLastTrustedValueChanged();
-    partial void OnLastModifiedResolutionTimeOrCurrentValueChanging(System.DateTime value);
-    partial void OnLastModifiedResolutionTimeOrCurrentValueChanged();
-    #endregion
-		
-		public Rating()
-		{
-			this._ChangesGroups = new EntitySet<ChangesGroup>(new Action<ChangesGroup>(this.attach_ChangesGroups), new Action<ChangesGroup>(this.detach_ChangesGroups));
-			this._RatingPhaseStatus = new EntitySet<RatingPhaseStatus>(new Action<RatingPhaseStatus>(this.attach_RatingPhaseStatus), new Action<RatingPhaseStatus>(this.detach_RatingPhaseStatus));
-			this._RatingConditions = new EntitySet<RatingCondition>(new Action<RatingCondition>(this.attach_RatingConditions), new Action<RatingCondition>(this.detach_RatingConditions));
-			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
-			this._RatingCharacteristic = default(EntityRef<RatingCharacteristic>);
-			this._RatingGroup = default(EntityRef<RatingGroup>);
-			this._RatingGroup1 = default(EntityRef<RatingGroup>);
-			this._RatingGroup2 = default(EntityRef<RatingGroup>);
-			this._User = default(EntityRef<User>);
-			this._UserRating = default(EntityRef<UserRating>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int RatingID
-		{
-			get
-			{
-				return this._RatingID;
-			}
-			set
-			{
-				if ((this._RatingID != value))
-				{
-					this.OnRatingIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingID = value;
-					this.SendPropertyChanged("RatingID");
-					this.OnRatingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupID", DbType="Int NOT NULL")]
-		public int RatingGroupID
-		{
-			get
-			{
-				return this._RatingGroupID;
-			}
-			set
-			{
-				if ((this._RatingGroupID != value))
-				{
-					if (this._RatingGroup.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingGroupID = value;
-					this.SendPropertyChanged("RatingGroupID");
-					this.OnRatingGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingCharacteristicsID", DbType="Int NOT NULL")]
-		public int RatingCharacteristicsID
-		{
-			get
-			{
-				return this._RatingCharacteristicsID;
-			}
-			set
-			{
-				if ((this._RatingCharacteristicsID != value))
-				{
-					if (this._RatingCharacteristic.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingCharacteristicsIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingCharacteristicsID = value;
-					this.SendPropertyChanged("RatingCharacteristicsID");
-					this.OnRatingCharacteristicsIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OwnedRatingGroupID", DbType="Int")]
-		public System.Nullable<int> OwnedRatingGroupID
-		{
-			get
-			{
-				return this._OwnedRatingGroupID;
-			}
-			set
-			{
-				if ((this._OwnedRatingGroupID != value))
-				{
-					if (this._RatingGroup1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnOwnedRatingGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._OwnedRatingGroupID = value;
-					this.SendPropertyChanged("OwnedRatingGroupID");
-					this.OnOwnedRatingGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TopmostRatingGroupID", DbType="Int NOT NULL")]
-		public int TopmostRatingGroupID
-		{
-			get
-			{
-				return this._TopmostRatingGroupID;
-			}
-			set
-			{
-				if ((this._TopmostRatingGroupID != value))
-				{
-					if (this._RatingGroup2.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTopmostRatingGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._TopmostRatingGroupID = value;
-					this.SendPropertyChanged("TopmostRatingGroupID");
-					this.OnTopmostRatingGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MostRecentUserRatingID", DbType="Int")]
-		public System.Nullable<int> MostRecentUserRatingID
-		{
-			get
-			{
-				return this._MostRecentUserRatingID;
-			}
-			set
-			{
-				if ((this._MostRecentUserRatingID != value))
-				{
-					if (this._UserRating.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMostRecentUserRatingIDChanging(value);
-					this.SendPropertyChanging();
-					this._MostRecentUserRatingID = value;
-					this.SendPropertyChanged("MostRecentUserRatingID");
-					this.OnMostRecentUserRatingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumInGroup", DbType="Int NOT NULL")]
-		public int NumInGroup
-		{
-			get
-			{
-				return this._NumInGroup;
-			}
-			set
-			{
-				if ((this._NumInGroup != value))
-				{
-					this.OnNumInGroupChanging(value);
-					this.SendPropertyChanging();
-					this._NumInGroup = value;
-					this.SendPropertyChanged("NumInGroup");
-					this.OnNumInGroupChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalUserRatings", DbType="Int NOT NULL")]
-		public int TotalUserRatings
-		{
-			get
-			{
-				return this._TotalUserRatings;
-			}
-			set
-			{
-				if ((this._TotalUserRatings != value))
-				{
-					this.OnTotalUserRatingsChanging(value);
-					this.SendPropertyChanging();
-					this._TotalUserRatings = value;
-					this.SendPropertyChanged("TotalUserRatings");
-					this.OnTotalUserRatingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
-		public System.Nullable<int> Creator
-		{
-			get
-			{
-				return this._Creator;
-			}
-			set
-			{
-				if ((this._Creator != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCreatorChanging(value);
-					this.SendPropertyChanging();
-					this._Creator = value;
-					this.SendPropertyChanged("Creator");
-					this.OnCreatorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentValue", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> CurrentValue
-		{
-			get
-			{
-				return this._CurrentValue;
-			}
-			set
-			{
-				if ((this._CurrentValue != value))
-				{
-					this.OnCurrentValueChanging(value);
-					this.SendPropertyChanging();
-					this._CurrentValue = value;
-					this.SendPropertyChanged("CurrentValue");
-					this.OnCurrentValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastTrustedValue", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> LastTrustedValue
-		{
-			get
-			{
-				return this._LastTrustedValue;
-			}
-			set
-			{
-				if ((this._LastTrustedValue != value))
-				{
-					this.OnLastTrustedValueChanging(value);
-					this.SendPropertyChanging();
-					this._LastTrustedValue = value;
-					this.SendPropertyChanged("LastTrustedValue");
-					this.OnLastTrustedValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedResolutionTimeOrCurrentValue", DbType="DateTime NOT NULL")]
-		public System.DateTime LastModifiedResolutionTimeOrCurrentValue
-		{
-			get
-			{
-				return this._LastModifiedResolutionTimeOrCurrentValue;
-			}
-			set
-			{
-				if ((this._LastModifiedResolutionTimeOrCurrentValue != value))
-				{
-					this.OnLastModifiedResolutionTimeOrCurrentValueChanging(value);
-					this.SendPropertyChanging();
-					this._LastModifiedResolutionTimeOrCurrentValue = value;
-					this.SendPropertyChanged("LastModifiedResolutionTimeOrCurrentValue");
-					this.OnLastModifiedResolutionTimeOrCurrentValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_ChangesGroup", Storage="_ChangesGroups", ThisKey="RatingID", OtherKey="RewardRatingID")]
-		public EntitySet<ChangesGroup> ChangesGroups
-		{
-			get
-			{
-				return this._ChangesGroups;
-			}
-			set
-			{
-				this._ChangesGroups.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_RatingPhaseStatus", Storage="_RatingPhaseStatus", ThisKey="RatingID", OtherKey="RatingID")]
-		public EntitySet<RatingPhaseStatus> RatingPhaseStatus
-		{
-			get
-			{
-				return this._RatingPhaseStatus;
-			}
-			set
-			{
-				this._RatingPhaseStatus.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_RatingCondition", Storage="_RatingConditions", ThisKey="RatingID", OtherKey="ConditionRatingID")]
-		public EntitySet<RatingCondition> RatingConditions
-		{
-			get
-			{
-				return this._RatingConditions;
-			}
-			set
-			{
-				this._RatingConditions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_UserRating", Storage="_UserRatings", ThisKey="RatingID", OtherKey="RatingID")]
-		public EntitySet<UserRating> UserRatings
-		{
-			get
-			{
-				return this._UserRatings;
-			}
-			set
-			{
-				this._UserRatings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCharacteristic_Rating", Storage="_RatingCharacteristic", ThisKey="RatingCharacteristicsID", OtherKey="RatingCharacteristicsID", IsForeignKey=true)]
-		public RatingCharacteristic RatingCharacteristic
-		{
-			get
-			{
-				return this._RatingCharacteristic.Entity;
-			}
-			set
-			{
-				RatingCharacteristic previousValue = this._RatingCharacteristic.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingCharacteristic.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingCharacteristic.Entity = null;
-						previousValue.Ratings.Remove(this);
-					}
-					this._RatingCharacteristic.Entity = value;
-					if ((value != null))
-					{
-						value.Ratings.Add(this);
-						this._RatingCharacteristicsID = value.RatingCharacteristicsID;
-					}
-					else
-					{
-						this._RatingCharacteristicsID = default(int);
-					}
-					this.SendPropertyChanged("RatingCharacteristic");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_Rating", Storage="_RatingGroup", ThisKey="RatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
-		public RatingGroup RatingGroup
-		{
-			get
-			{
-				return this._RatingGroup.Entity;
-			}
-			set
-			{
-				RatingGroup previousValue = this._RatingGroup.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroup.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroup.Entity = null;
-						previousValue.Ratings.Remove(this);
-					}
-					this._RatingGroup.Entity = value;
-					if ((value != null))
-					{
-						value.Ratings.Add(this);
-						this._RatingGroupID = value.RatingGroupID;
-					}
-					else
-					{
-						this._RatingGroupID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroup");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_Rating1", Storage="_RatingGroup1", ThisKey="OwnedRatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
-		public RatingGroup RatingGroup1
-		{
-			get
-			{
-				return this._RatingGroup1.Entity;
-			}
-			set
-			{
-				RatingGroup previousValue = this._RatingGroup1.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroup1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroup1.Entity = null;
-						previousValue.Ratings1.Remove(this);
-					}
-					this._RatingGroup1.Entity = value;
-					if ((value != null))
-					{
-						value.Ratings1.Add(this);
-						this._OwnedRatingGroupID = value.RatingGroupID;
-					}
-					else
-					{
-						this._OwnedRatingGroupID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("RatingGroup1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_Rating2", Storage="_RatingGroup2", ThisKey="TopmostRatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
-		public RatingGroup RatingGroup2
-		{
-			get
-			{
-				return this._RatingGroup2.Entity;
-			}
-			set
-			{
-				RatingGroup previousValue = this._RatingGroup2.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroup2.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroup2.Entity = null;
-						previousValue.Ratings2.Remove(this);
-					}
-					this._RatingGroup2.Entity = value;
-					if ((value != null))
-					{
-						value.Ratings2.Add(this);
-						this._TopmostRatingGroupID = value.RatingGroupID;
-					}
-					else
-					{
-						this._TopmostRatingGroupID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroup2");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Rating", Storage="_User", ThisKey="Creator", OtherKey="UserID", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Ratings.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Ratings.Add(this);
-						this._Creator = value.UserID;
-					}
-					else
-					{
-						this._Creator = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_Rating", Storage="_UserRating", ThisKey="MostRecentUserRatingID", OtherKey="UserRatingID", IsForeignKey=true, DeleteRule="CASCADE")]
-		public UserRating UserRating
-		{
-			get
-			{
-				return this._UserRating.Entity;
-			}
-			set
-			{
-				UserRating previousValue = this._UserRating.Entity;
-				if (((previousValue != value) 
-							|| (this._UserRating.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserRating.Entity = null;
-						previousValue.Ratings.Remove(this);
-					}
-					this._UserRating.Entity = value;
-					if ((value != null))
-					{
-						value.Ratings.Add(this);
-						this._MostRecentUserRatingID = value.UserRatingID;
-					}
-					else
-					{
-						this._MostRecentUserRatingID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("UserRating");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_ChangesGroups(ChangesGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = this;
-		}
-		
-		private void detach_ChangesGroups(ChangesGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = null;
-		}
-		
-		private void attach_RatingPhaseStatus(RatingPhaseStatus entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = this;
-		}
-		
-		private void detach_RatingPhaseStatus(RatingPhaseStatus entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = null;
-		}
-		
-		private void attach_RatingConditions(RatingCondition entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = this;
-		}
-		
-		private void detach_RatingConditions(RatingCondition entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = null;
-		}
-		
-		private void attach_UserRatings(UserRating entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = this;
-		}
-		
-		private void detach_UserRatings(UserRating entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rating = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblTabs")]
 	public partial class TblTab : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -29668,11 +27272,11 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<TblColumn> _TblColumn1;
 		
-		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
-		
 		private EntityRef<TblTab> _TblTab;
 		
 		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
+		
+		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -29719,9 +27323,9 @@ namespace ClassLibrary1.Model
 			this._RatingGroups = new EntitySet<RatingGroup>(new Action<RatingGroup>(this.attach_RatingGroups), new Action<RatingGroup>(this.detach_RatingGroups));
 			this._TblColumn2 = default(EntityRef<TblColumn>);
 			this._TblColumn1 = default(EntityRef<TblColumn>);
-			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			this._TblTab = default(EntityRef<TblTab>);
 			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
+			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
 			OnCreated();
 		}
 		
@@ -30163,40 +27767,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_TblColumn", Storage="_RatingGroupAttribute", ThisKey="DefaultRatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
-		public RatingGroupAttribute RatingGroupAttribute
-		{
-			get
-			{
-				return this._RatingGroupAttribute.Entity;
-			}
-			set
-			{
-				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroupAttribute.Entity = null;
-						previousValue.TblColumns.Remove(this);
-					}
-					this._RatingGroupAttribute.Entity = value;
-					if ((value != null))
-					{
-						value.TblColumns.Add(this);
-						this._DefaultRatingGroupAttributesID = value.RatingGroupAttributesID;
-					}
-					else
-					{
-						this._DefaultRatingGroupAttributesID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroupAttribute");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblTab_TblColumn", Storage="_TblTab", ThisKey="TblTabID", OtherKey="TblTabID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public TblTab TblTab
 		{
@@ -30261,6 +27831,40 @@ namespace ClassLibrary1.Model
 						this._TrustTrackerUnitID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("TrustTrackerUnit");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_TblColumn", Storage="_RatingGroupAttribute", ThisKey="DefaultRatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
+		public RatingGroupAttribute RatingGroupAttribute
+		{
+			get
+			{
+				return this._RatingGroupAttribute.Entity;
+			}
+			set
+			{
+				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroupAttribute.Entity = null;
+						previousValue.TblColumns.Remove(this);
+					}
+					this._RatingGroupAttribute.Entity = value;
+					if ((value != null))
+					{
+						value.TblColumns.Add(this);
+						this._DefaultRatingGroupAttributesID = value.RatingGroupAttributesID;
+					}
+					else
+					{
+						this._DefaultRatingGroupAttributesID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroupAttribute");
 				}
 			}
 		}
@@ -31903,11 +29507,11 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<UserInteraction> _UserInteractions;
 		
+		private EntitySet<PointsManager> _PointsManagers;
+		
 		private EntitySet<TrustTracker> _TrustTrackers;
 		
 		private EntitySet<UserRating> _UserRatings;
-		
-		private EntitySet<PointsManager> _PointsManagers;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -31933,9 +29537,9 @@ namespace ClassLibrary1.Model
 		{
 			this._TblColumns = new EntitySet<TblColumn>(new Action<TblColumn>(this.attach_TblColumns), new Action<TblColumn>(this.detach_TblColumns));
 			this._UserInteractions = new EntitySet<UserInteraction>(new Action<UserInteraction>(this.attach_UserInteractions), new Action<UserInteraction>(this.detach_UserInteractions));
+			this._PointsManagers = new EntitySet<PointsManager>(new Action<PointsManager>(this.attach_PointsManagers), new Action<PointsManager>(this.detach_PointsManagers));
 			this._TrustTrackers = new EntitySet<TrustTracker>(new Action<TrustTracker>(this.attach_TrustTrackers), new Action<TrustTracker>(this.detach_TrustTrackers));
 			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
-			this._PointsManagers = new EntitySet<PointsManager>(new Action<PointsManager>(this.attach_PointsManagers), new Action<PointsManager>(this.detach_PointsManagers));
 			OnCreated();
 		}
 		
@@ -32105,6 +29709,19 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_PointsManager", Storage="_PointsManagers", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID")]
+		public EntitySet<PointsManager> PointsManagers
+		{
+			get
+			{
+				return this._PointsManagers;
+			}
+			set
+			{
+				this._PointsManagers.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_TrustTracker", Storage="_TrustTrackers", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID")]
 		public EntitySet<TrustTracker> TrustTrackers
 		{
@@ -32128,19 +29745,6 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._UserRatings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_PointsManager", Storage="_PointsManagers", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID")]
-		public EntitySet<PointsManager> PointsManagers
-		{
-			get
-			{
-				return this._PointsManagers;
-			}
-			set
-			{
-				this._PointsManagers.Assign(value);
 			}
 		}
 		
@@ -32188,6 +29792,18 @@ namespace ClassLibrary1.Model
 			entity.TrustTrackerUnit = null;
 		}
 		
+		private void attach_PointsManagers(PointsManager entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTrackerUnit = this;
+		}
+		
+		private void detach_PointsManagers(PointsManager entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTrackerUnit = null;
+		}
+		
 		private void attach_TrustTrackers(TrustTracker entity)
 		{
 			this.SendPropertyChanging();
@@ -32207,18 +29823,6 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_UserRatings(UserRating entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTrackerUnit = null;
-		}
-		
-		private void attach_PointsManagers(PointsManager entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTrackerUnit = this;
-		}
-		
-		private void detach_PointsManagers(PointsManager entity)
 		{
 			this.SendPropertyChanging();
 			entity.TrustTrackerUnit = null;
@@ -33169,466 +30773,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrustTrackers")]
-	public partial class TrustTracker : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TrustTrackerID;
-		
-		private int _TrustTrackerUnitID;
-		
-		private int _UserID;
-		
-		private float _OverallTrustLevel;
-		
-		private float _LastOverallTrustLevel;
-		
-		private float _DeltaOverallTrustLevel;
-		
-		private float _SkepticalTrustLevel;
-		
-		private float _SumUserInteractionWeights;
-		
-		private float _EgalitarianTrustLevel;
-		
-		private float _Egalitarian_Num;
-		
-		private float _Egalitarian_Denom;
-		
-		private System.Nullable<float> _EgalitarianTrustLevelOverride;
-		
-		private bool _MustUpdateUserInteractionEgalitarianTrustLevel;
-		
-		private EntitySet<TrustTrackerStat> _TrustTrackerStats;
-		
-		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTrustTrackerIDChanging(int value);
-    partial void OnTrustTrackerIDChanged();
-    partial void OnTrustTrackerUnitIDChanging(int value);
-    partial void OnTrustTrackerUnitIDChanged();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnOverallTrustLevelChanging(float value);
-    partial void OnOverallTrustLevelChanged();
-    partial void OnLastOverallTrustLevelChanging(float value);
-    partial void OnLastOverallTrustLevelChanged();
-    partial void OnDeltaOverallTrustLevelChanging(float value);
-    partial void OnDeltaOverallTrustLevelChanged();
-    partial void OnSkepticalTrustLevelChanging(float value);
-    partial void OnSkepticalTrustLevelChanged();
-    partial void OnSumUserInteractionWeightsChanging(float value);
-    partial void OnSumUserInteractionWeightsChanged();
-    partial void OnEgalitarianTrustLevelChanging(float value);
-    partial void OnEgalitarianTrustLevelChanged();
-    partial void OnEgalitarian_NumChanging(float value);
-    partial void OnEgalitarian_NumChanged();
-    partial void OnEgalitarian_DenomChanging(float value);
-    partial void OnEgalitarian_DenomChanged();
-    partial void OnEgalitarianTrustLevelOverrideChanging(System.Nullable<float> value);
-    partial void OnEgalitarianTrustLevelOverrideChanged();
-    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(bool value);
-    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
-    #endregion
-		
-		public TrustTracker()
-		{
-			this._TrustTrackerStats = new EntitySet<TrustTrackerStat>(new Action<TrustTrackerStat>(this.attach_TrustTrackerStats), new Action<TrustTrackerStat>(this.detach_TrustTrackerStats));
-			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int TrustTrackerID
-		{
-			get
-			{
-				return this._TrustTrackerID;
-			}
-			set
-			{
-				if ((this._TrustTrackerID != value))
-				{
-					this.OnTrustTrackerIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerID = value;
-					this.SendPropertyChanged("TrustTrackerID");
-					this.OnTrustTrackerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int NOT NULL")]
-		public int TrustTrackerUnitID
-		{
-			get
-			{
-				return this._TrustTrackerUnitID;
-			}
-			set
-			{
-				if ((this._TrustTrackerUnitID != value))
-				{
-					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTrustTrackerUnitIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerUnitID = value;
-					this.SendPropertyChanged("TrustTrackerUnitID");
-					this.OnTrustTrackerUnitIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OverallTrustLevel", DbType="Real NOT NULL")]
-		public float OverallTrustLevel
-		{
-			get
-			{
-				return this._OverallTrustLevel;
-			}
-			set
-			{
-				if ((this._OverallTrustLevel != value))
-				{
-					this.OnOverallTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._OverallTrustLevel = value;
-					this.SendPropertyChanged("OverallTrustLevel");
-					this.OnOverallTrustLevelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastOverallTrustLevel", DbType="Real NOT NULL")]
-		public float LastOverallTrustLevel
-		{
-			get
-			{
-				return this._LastOverallTrustLevel;
-			}
-			set
-			{
-				if ((this._LastOverallTrustLevel != value))
-				{
-					this.OnLastOverallTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._LastOverallTrustLevel = value;
-					this.SendPropertyChanged("LastOverallTrustLevel");
-					this.OnLastOverallTrustLevelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaOverallTrustLevel", DbType="Real NOT NULL")]
-		public float DeltaOverallTrustLevel
-		{
-			get
-			{
-				return this._DeltaOverallTrustLevel;
-			}
-			set
-			{
-				if ((this._DeltaOverallTrustLevel != value))
-				{
-					this.OnDeltaOverallTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._DeltaOverallTrustLevel = value;
-					this.SendPropertyChanged("DeltaOverallTrustLevel");
-					this.OnDeltaOverallTrustLevelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SkepticalTrustLevel", DbType="Real NOT NULL")]
-		public float SkepticalTrustLevel
-		{
-			get
-			{
-				return this._SkepticalTrustLevel;
-			}
-			set
-			{
-				if ((this._SkepticalTrustLevel != value))
-				{
-					this.OnSkepticalTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._SkepticalTrustLevel = value;
-					this.SendPropertyChanged("SkepticalTrustLevel");
-					this.OnSkepticalTrustLevelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumUserInteractionWeights", DbType="Real NOT NULL")]
-		public float SumUserInteractionWeights
-		{
-			get
-			{
-				return this._SumUserInteractionWeights;
-			}
-			set
-			{
-				if ((this._SumUserInteractionWeights != value))
-				{
-					this.OnSumUserInteractionWeightsChanging(value);
-					this.SendPropertyChanging();
-					this._SumUserInteractionWeights = value;
-					this.SendPropertyChanged("SumUserInteractionWeights");
-					this.OnSumUserInteractionWeightsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EgalitarianTrustLevel", DbType="Real NOT NULL")]
-		public float EgalitarianTrustLevel
-		{
-			get
-			{
-				return this._EgalitarianTrustLevel;
-			}
-			set
-			{
-				if ((this._EgalitarianTrustLevel != value))
-				{
-					this.OnEgalitarianTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._EgalitarianTrustLevel = value;
-					this.SendPropertyChanged("EgalitarianTrustLevel");
-					this.OnEgalitarianTrustLevelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Egalitarian_Num", DbType="Real NOT NULL")]
-		public float Egalitarian_Num
-		{
-			get
-			{
-				return this._Egalitarian_Num;
-			}
-			set
-			{
-				if ((this._Egalitarian_Num != value))
-				{
-					this.OnEgalitarian_NumChanging(value);
-					this.SendPropertyChanging();
-					this._Egalitarian_Num = value;
-					this.SendPropertyChanged("Egalitarian_Num");
-					this.OnEgalitarian_NumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Egalitarian_Denom", DbType="Real NOT NULL")]
-		public float Egalitarian_Denom
-		{
-			get
-			{
-				return this._Egalitarian_Denom;
-			}
-			set
-			{
-				if ((this._Egalitarian_Denom != value))
-				{
-					this.OnEgalitarian_DenomChanging(value);
-					this.SendPropertyChanging();
-					this._Egalitarian_Denom = value;
-					this.SendPropertyChanged("Egalitarian_Denom");
-					this.OnEgalitarian_DenomChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EgalitarianTrustLevelOverride", DbType="Real")]
-		public System.Nullable<float> EgalitarianTrustLevelOverride
-		{
-			get
-			{
-				return this._EgalitarianTrustLevelOverride;
-			}
-			set
-			{
-				if ((this._EgalitarianTrustLevelOverride != value))
-				{
-					this.OnEgalitarianTrustLevelOverrideChanging(value);
-					this.SendPropertyChanging();
-					this._EgalitarianTrustLevelOverride = value;
-					this.SendPropertyChanged("EgalitarianTrustLevelOverride");
-					this.OnEgalitarianTrustLevelOverrideChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MustUpdateUserInteractionEgalitarianTrustLevel", DbType="Bit NOT NULL")]
-		public bool MustUpdateUserInteractionEgalitarianTrustLevel
-		{
-			get
-			{
-				return this._MustUpdateUserInteractionEgalitarianTrustLevel;
-			}
-			set
-			{
-				if ((this._MustUpdateUserInteractionEgalitarianTrustLevel != value))
-				{
-					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(value);
-					this.SendPropertyChanging();
-					this._MustUpdateUserInteractionEgalitarianTrustLevel = value;
-					this.SendPropertyChanged("MustUpdateUserInteractionEgalitarianTrustLevel");
-					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTracker_TrustTrackerStat", Storage="_TrustTrackerStats", ThisKey="TrustTrackerID", OtherKey="TrustTrackerID")]
-		public EntitySet<TrustTrackerStat> TrustTrackerStats
-		{
-			get
-			{
-				return this._TrustTrackerStats;
-			}
-			set
-			{
-				this._TrustTrackerStats.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_TrustTracker", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
-		public TrustTrackerUnit TrustTrackerUnit
-		{
-			get
-			{
-				return this._TrustTrackerUnit.Entity;
-			}
-			set
-			{
-				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
-				if (((previousValue != value) 
-							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TrustTrackerUnit.Entity = null;
-						previousValue.TrustTrackers.Remove(this);
-					}
-					this._TrustTrackerUnit.Entity = value;
-					if ((value != null))
-					{
-						value.TrustTrackers.Add(this);
-						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
-					}
-					else
-					{
-						this._TrustTrackerUnitID = default(int);
-					}
-					this.SendPropertyChanged("TrustTrackerUnit");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTracker", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.TrustTrackers.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.TrustTrackers.Add(this);
-						this._UserID = value.UserID;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_TrustTrackerStats(TrustTrackerStat entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTracker = this;
-		}
-		
-		private void detach_TrustTrackerStats(TrustTrackerStat entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrustTracker = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrustTrackerForChoiceInGroupsUserRatingLinks")]
 	public partial class TrustTrackerForChoiceInGroupsUserRatingLink : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -34178,1231 +31322,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserRatings")]
-	public partial class UserRating : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _UserRatingID;
-		
-		private int _UserRatingGroupID;
-		
-		private int _RatingID;
-		
-		private int _RatingPhaseStatusID;
-		
-		private int _UserID;
-		
-		private System.Nullable<int> _TrustTrackerUnitID;
-		
-		private System.Nullable<int> _RewardPendingPointsTrackerID;
-		
-		private System.Nullable<int> _MostRecentUserRatingID;
-		
-		private decimal _PreviousRatingOrVirtualRating;
-		
-		private System.Nullable<decimal> _PreviousDisplayedRating;
-		
-		private decimal _EnteredUserRating;
-		
-		private decimal _NewUserRating;
-		
-		private decimal _MaxLoss;
-		
-		private decimal _PotentialPointsShortTerm;
-		
-		private decimal _PotentialPointsLongTerm;
-		
-		private decimal _PotentialPointsLongTermUnweighted;
-		
-		private decimal _LongTermPointsWeight;
-		
-		private decimal _PercentPreviousRatings;
-		
-		private bool _IsTrusted;
-		
-		private bool _MadeDirectly;
-		
-		private bool _LongTermResolutionReflected;
-		
-		private bool _ShortTermResolutionReflected;
-		
-		private bool _PointsHaveBecomePending;
-		
-		private bool _ForceRecalculate;
-		
-		private bool _HighStakesPreviouslySecret;
-		
-		private bool _HighStakesKnown;
-		
-		private bool _SubsequentlyRated;
-		
-		private System.Nullable<decimal> _LogarithmicBase;
-		
-		private System.Nullable<decimal> _HighStakesMultiplierOverride;
-		
-		private System.Nullable<System.DateTime> _WhenPointsBecomePending;
-		
-		private System.DateTime _LastModifiedTime;
-		
-		private byte _VolatilityTrackingNextTimeFrameToRemove;
-		
-		private System.Nullable<decimal> _OneHourVolatility;
-		
-		private System.Nullable<decimal> _OneDayVolatility;
-		
-		private EntitySet<Rating> _Ratings;
-		
-		private EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> _TrustTrackerForChoiceInGroupsUserRatingLinks;
-		
-		private EntitySet<UserRating> _UserRatings;
-		
-		private EntityRef<RatingPhaseStatus> _RatingPhaseStatus;
-		
-		private EntityRef<Rating> _Rating;
-		
-		private EntityRef<RewardPendingPointsTracker> _RewardPendingPointsTracker;
-		
-		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
-		
-		private EntityRef<UserRatingGroup> _UserRatingGroup;
-		
-		private EntityRef<UserRating> _UserRating1;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUserRatingIDChanging(int value);
-    partial void OnUserRatingIDChanged();
-    partial void OnUserRatingGroupIDChanging(int value);
-    partial void OnUserRatingGroupIDChanged();
-    partial void OnRatingIDChanging(int value);
-    partial void OnRatingIDChanged();
-    partial void OnRatingPhaseStatusIDChanging(int value);
-    partial void OnRatingPhaseStatusIDChanged();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnTrustTrackerUnitIDChanging(System.Nullable<int> value);
-    partial void OnTrustTrackerUnitIDChanged();
-    partial void OnRewardPendingPointsTrackerIDChanging(System.Nullable<int> value);
-    partial void OnRewardPendingPointsTrackerIDChanged();
-    partial void OnMostRecentUserRatingIDChanging(System.Nullable<int> value);
-    partial void OnMostRecentUserRatingIDChanged();
-    partial void OnPreviousRatingOrVirtualRatingChanging(decimal value);
-    partial void OnPreviousRatingOrVirtualRatingChanged();
-    partial void OnPreviousDisplayedRatingChanging(System.Nullable<decimal> value);
-    partial void OnPreviousDisplayedRatingChanged();
-    partial void OnEnteredUserRatingChanging(decimal value);
-    partial void OnEnteredUserRatingChanged();
-    partial void OnNewUserRatingChanging(decimal value);
-    partial void OnNewUserRatingChanged();
-    partial void OnMaxLossChanging(decimal value);
-    partial void OnMaxLossChanged();
-    partial void OnPotentialPointsShortTermChanging(decimal value);
-    partial void OnPotentialPointsShortTermChanged();
-    partial void OnPotentialPointsLongTermChanging(decimal value);
-    partial void OnPotentialPointsLongTermChanged();
-    partial void OnPotentialPointsLongTermUnweightedChanging(decimal value);
-    partial void OnPotentialPointsLongTermUnweightedChanged();
-    partial void OnLongTermPointsWeightChanging(decimal value);
-    partial void OnLongTermPointsWeightChanged();
-    partial void OnPercentPreviousRatingsChanging(decimal value);
-    partial void OnPercentPreviousRatingsChanged();
-    partial void OnIsTrustedChanging(bool value);
-    partial void OnIsTrustedChanged();
-    partial void OnMadeDirectlyChanging(bool value);
-    partial void OnMadeDirectlyChanged();
-    partial void OnLongTermResolutionReflectedChanging(bool value);
-    partial void OnLongTermResolutionReflectedChanged();
-    partial void OnShortTermResolutionReflectedChanging(bool value);
-    partial void OnShortTermResolutionReflectedChanged();
-    partial void OnPointsHaveBecomePendingChanging(bool value);
-    partial void OnPointsHaveBecomePendingChanged();
-    partial void OnForceRecalculateChanging(bool value);
-    partial void OnForceRecalculateChanged();
-    partial void OnHighStakesPreviouslySecretChanging(bool value);
-    partial void OnHighStakesPreviouslySecretChanged();
-    partial void OnHighStakesKnownChanging(bool value);
-    partial void OnHighStakesKnownChanged();
-    partial void OnSubsequentlyRatedChanging(bool value);
-    partial void OnSubsequentlyRatedChanged();
-    partial void OnLogarithmicBaseChanging(System.Nullable<decimal> value);
-    partial void OnLogarithmicBaseChanged();
-    partial void OnHighStakesMultiplierOverrideChanging(System.Nullable<decimal> value);
-    partial void OnHighStakesMultiplierOverrideChanged();
-    partial void OnWhenPointsBecomePendingChanging(System.Nullable<System.DateTime> value);
-    partial void OnWhenPointsBecomePendingChanged();
-    partial void OnLastModifiedTimeChanging(System.DateTime value);
-    partial void OnLastModifiedTimeChanged();
-    partial void OnVolatilityTrackingNextTimeFrameToRemoveChanging(byte value);
-    partial void OnVolatilityTrackingNextTimeFrameToRemoveChanged();
-    partial void OnOneHourVolatilityChanging(System.Nullable<decimal> value);
-    partial void OnOneHourVolatilityChanged();
-    partial void OnOneDayVolatilityChanging(System.Nullable<decimal> value);
-    partial void OnOneDayVolatilityChanged();
-    #endregion
-		
-		public UserRating()
-		{
-			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
-			this._TrustTrackerForChoiceInGroupsUserRatingLinks = new EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink>(new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.attach_TrustTrackerForChoiceInGroupsUserRatingLinks), new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.detach_TrustTrackerForChoiceInGroupsUserRatingLinks));
-			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
-			this._RatingPhaseStatus = default(EntityRef<RatingPhaseStatus>);
-			this._Rating = default(EntityRef<Rating>);
-			this._RewardPendingPointsTracker = default(EntityRef<RewardPendingPointsTracker>);
-			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
-			this._UserRatingGroup = default(EntityRef<UserRatingGroup>);
-			this._UserRating1 = default(EntityRef<UserRating>);
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserRatingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int UserRatingID
-		{
-			get
-			{
-				return this._UserRatingID;
-			}
-			set
-			{
-				if ((this._UserRatingID != value))
-				{
-					this.OnUserRatingIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserRatingID = value;
-					this.SendPropertyChanged("UserRatingID");
-					this.OnUserRatingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserRatingGroupID", DbType="Int NOT NULL")]
-		public int UserRatingGroupID
-		{
-			get
-			{
-				return this._UserRatingGroupID;
-			}
-			set
-			{
-				if ((this._UserRatingGroupID != value))
-				{
-					if (this._UserRatingGroup.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserRatingGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserRatingGroupID = value;
-					this.SendPropertyChanged("UserRatingGroupID");
-					this.OnUserRatingGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingID", DbType="Int NOT NULL")]
-		public int RatingID
-		{
-			get
-			{
-				return this._RatingID;
-			}
-			set
-			{
-				if ((this._RatingID != value))
-				{
-					if (this._Rating.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingID = value;
-					this.SendPropertyChanged("RatingID");
-					this.OnRatingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingPhaseStatusID", DbType="Int NOT NULL")]
-		public int RatingPhaseStatusID
-		{
-			get
-			{
-				return this._RatingPhaseStatusID;
-			}
-			set
-			{
-				if ((this._RatingPhaseStatusID != value))
-				{
-					if (this._RatingPhaseStatus.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingPhaseStatusIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingPhaseStatusID = value;
-					this.SendPropertyChanged("RatingPhaseStatusID");
-					this.OnRatingPhaseStatusIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int")]
-		public System.Nullable<int> TrustTrackerUnitID
-		{
-			get
-			{
-				return this._TrustTrackerUnitID;
-			}
-			set
-			{
-				if ((this._TrustTrackerUnitID != value))
-				{
-					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTrustTrackerUnitIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerUnitID = value;
-					this.SendPropertyChanged("TrustTrackerUnitID");
-					this.OnTrustTrackerUnitIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RewardPendingPointsTrackerID", DbType="Int")]
-		public System.Nullable<int> RewardPendingPointsTrackerID
-		{
-			get
-			{
-				return this._RewardPendingPointsTrackerID;
-			}
-			set
-			{
-				if ((this._RewardPendingPointsTrackerID != value))
-				{
-					if (this._RewardPendingPointsTracker.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRewardPendingPointsTrackerIDChanging(value);
-					this.SendPropertyChanging();
-					this._RewardPendingPointsTrackerID = value;
-					this.SendPropertyChanged("RewardPendingPointsTrackerID");
-					this.OnRewardPendingPointsTrackerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MostRecentUserRatingID", DbType="Int")]
-		public System.Nullable<int> MostRecentUserRatingID
-		{
-			get
-			{
-				return this._MostRecentUserRatingID;
-			}
-			set
-			{
-				if ((this._MostRecentUserRatingID != value))
-				{
-					if (this._UserRating1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMostRecentUserRatingIDChanging(value);
-					this.SendPropertyChanging();
-					this._MostRecentUserRatingID = value;
-					this.SendPropertyChanged("MostRecentUserRatingID");
-					this.OnMostRecentUserRatingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreviousRatingOrVirtualRating", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PreviousRatingOrVirtualRating
-		{
-			get
-			{
-				return this._PreviousRatingOrVirtualRating;
-			}
-			set
-			{
-				if ((this._PreviousRatingOrVirtualRating != value))
-				{
-					this.OnPreviousRatingOrVirtualRatingChanging(value);
-					this.SendPropertyChanging();
-					this._PreviousRatingOrVirtualRating = value;
-					this.SendPropertyChanged("PreviousRatingOrVirtualRating");
-					this.OnPreviousRatingOrVirtualRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreviousDisplayedRating", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> PreviousDisplayedRating
-		{
-			get
-			{
-				return this._PreviousDisplayedRating;
-			}
-			set
-			{
-				if ((this._PreviousDisplayedRating != value))
-				{
-					this.OnPreviousDisplayedRatingChanging(value);
-					this.SendPropertyChanging();
-					this._PreviousDisplayedRating = value;
-					this.SendPropertyChanged("PreviousDisplayedRating");
-					this.OnPreviousDisplayedRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnteredUserRating", DbType="Decimal(18,4) NOT NULL")]
-		public decimal EnteredUserRating
-		{
-			get
-			{
-				return this._EnteredUserRating;
-			}
-			set
-			{
-				if ((this._EnteredUserRating != value))
-				{
-					this.OnEnteredUserRatingChanging(value);
-					this.SendPropertyChanging();
-					this._EnteredUserRating = value;
-					this.SendPropertyChanged("EnteredUserRating");
-					this.OnEnteredUserRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewUserRating", DbType="Decimal(18,4) NOT NULL")]
-		public decimal NewUserRating
-		{
-			get
-			{
-				return this._NewUserRating;
-			}
-			set
-			{
-				if ((this._NewUserRating != value))
-				{
-					this.OnNewUserRatingChanging(value);
-					this.SendPropertyChanging();
-					this._NewUserRating = value;
-					this.SendPropertyChanged("NewUserRating");
-					this.OnNewUserRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxLoss", DbType="Decimal(18,4) NOT NULL")]
-		public decimal MaxLoss
-		{
-			get
-			{
-				return this._MaxLoss;
-			}
-			set
-			{
-				if ((this._MaxLoss != value))
-				{
-					this.OnMaxLossChanging(value);
-					this.SendPropertyChanging();
-					this._MaxLoss = value;
-					this.SendPropertyChanged("MaxLoss");
-					this.OnMaxLossChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialPointsShortTerm", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PotentialPointsShortTerm
-		{
-			get
-			{
-				return this._PotentialPointsShortTerm;
-			}
-			set
-			{
-				if ((this._PotentialPointsShortTerm != value))
-				{
-					this.OnPotentialPointsShortTermChanging(value);
-					this.SendPropertyChanging();
-					this._PotentialPointsShortTerm = value;
-					this.SendPropertyChanged("PotentialPointsShortTerm");
-					this.OnPotentialPointsShortTermChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialPointsLongTerm", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PotentialPointsLongTerm
-		{
-			get
-			{
-				return this._PotentialPointsLongTerm;
-			}
-			set
-			{
-				if ((this._PotentialPointsLongTerm != value))
-				{
-					this.OnPotentialPointsLongTermChanging(value);
-					this.SendPropertyChanging();
-					this._PotentialPointsLongTerm = value;
-					this.SendPropertyChanged("PotentialPointsLongTerm");
-					this.OnPotentialPointsLongTermChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialPointsLongTermUnweighted", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PotentialPointsLongTermUnweighted
-		{
-			get
-			{
-				return this._PotentialPointsLongTermUnweighted;
-			}
-			set
-			{
-				if ((this._PotentialPointsLongTermUnweighted != value))
-				{
-					this.OnPotentialPointsLongTermUnweightedChanging(value);
-					this.SendPropertyChanging();
-					this._PotentialPointsLongTermUnweighted = value;
-					this.SendPropertyChanged("PotentialPointsLongTermUnweighted");
-					this.OnPotentialPointsLongTermUnweightedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LongTermPointsWeight", DbType="Decimal(18,4) NOT NULL")]
-		public decimal LongTermPointsWeight
-		{
-			get
-			{
-				return this._LongTermPointsWeight;
-			}
-			set
-			{
-				if ((this._LongTermPointsWeight != value))
-				{
-					this.OnLongTermPointsWeightChanging(value);
-					this.SendPropertyChanging();
-					this._LongTermPointsWeight = value;
-					this.SendPropertyChanged("LongTermPointsWeight");
-					this.OnLongTermPointsWeightChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentPreviousRatings", DbType="Decimal(18,4) NOT NULL")]
-		public decimal PercentPreviousRatings
-		{
-			get
-			{
-				return this._PercentPreviousRatings;
-			}
-			set
-			{
-				if ((this._PercentPreviousRatings != value))
-				{
-					this.OnPercentPreviousRatingsChanging(value);
-					this.SendPropertyChanging();
-					this._PercentPreviousRatings = value;
-					this.SendPropertyChanged("PercentPreviousRatings");
-					this.OnPercentPreviousRatingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsTrusted", DbType="Bit NOT NULL")]
-		public bool IsTrusted
-		{
-			get
-			{
-				return this._IsTrusted;
-			}
-			set
-			{
-				if ((this._IsTrusted != value))
-				{
-					this.OnIsTrustedChanging(value);
-					this.SendPropertyChanging();
-					this._IsTrusted = value;
-					this.SendPropertyChanged("IsTrusted");
-					this.OnIsTrustedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MadeDirectly", DbType="Bit NOT NULL")]
-		public bool MadeDirectly
-		{
-			get
-			{
-				return this._MadeDirectly;
-			}
-			set
-			{
-				if ((this._MadeDirectly != value))
-				{
-					this.OnMadeDirectlyChanging(value);
-					this.SendPropertyChanging();
-					this._MadeDirectly = value;
-					this.SendPropertyChanged("MadeDirectly");
-					this.OnMadeDirectlyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LongTermResolutionReflected", DbType="Bit NOT NULL")]
-		public bool LongTermResolutionReflected
-		{
-			get
-			{
-				return this._LongTermResolutionReflected;
-			}
-			set
-			{
-				if ((this._LongTermResolutionReflected != value))
-				{
-					this.OnLongTermResolutionReflectedChanging(value);
-					this.SendPropertyChanging();
-					this._LongTermResolutionReflected = value;
-					this.SendPropertyChanged("LongTermResolutionReflected");
-					this.OnLongTermResolutionReflectedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShortTermResolutionReflected", DbType="Bit NOT NULL")]
-		public bool ShortTermResolutionReflected
-		{
-			get
-			{
-				return this._ShortTermResolutionReflected;
-			}
-			set
-			{
-				if ((this._ShortTermResolutionReflected != value))
-				{
-					this.OnShortTermResolutionReflectedChanging(value);
-					this.SendPropertyChanging();
-					this._ShortTermResolutionReflected = value;
-					this.SendPropertyChanged("ShortTermResolutionReflected");
-					this.OnShortTermResolutionReflectedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsHaveBecomePending", DbType="Bit NOT NULL")]
-		public bool PointsHaveBecomePending
-		{
-			get
-			{
-				return this._PointsHaveBecomePending;
-			}
-			set
-			{
-				if ((this._PointsHaveBecomePending != value))
-				{
-					this.OnPointsHaveBecomePendingChanging(value);
-					this.SendPropertyChanging();
-					this._PointsHaveBecomePending = value;
-					this.SendPropertyChanged("PointsHaveBecomePending");
-					this.OnPointsHaveBecomePendingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ForceRecalculate", DbType="Bit NOT NULL")]
-		public bool ForceRecalculate
-		{
-			get
-			{
-				return this._ForceRecalculate;
-			}
-			set
-			{
-				if ((this._ForceRecalculate != value))
-				{
-					this.OnForceRecalculateChanging(value);
-					this.SendPropertyChanging();
-					this._ForceRecalculate = value;
-					this.SendPropertyChanged("ForceRecalculate");
-					this.OnForceRecalculateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesPreviouslySecret", DbType="Bit NOT NULL")]
-		public bool HighStakesPreviouslySecret
-		{
-			get
-			{
-				return this._HighStakesPreviouslySecret;
-			}
-			set
-			{
-				if ((this._HighStakesPreviouslySecret != value))
-				{
-					this.OnHighStakesPreviouslySecretChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesPreviouslySecret = value;
-					this.SendPropertyChanged("HighStakesPreviouslySecret");
-					this.OnHighStakesPreviouslySecretChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesKnown", DbType="Bit NOT NULL")]
-		public bool HighStakesKnown
-		{
-			get
-			{
-				return this._HighStakesKnown;
-			}
-			set
-			{
-				if ((this._HighStakesKnown != value))
-				{
-					this.OnHighStakesKnownChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesKnown = value;
-					this.SendPropertyChanged("HighStakesKnown");
-					this.OnHighStakesKnownChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubsequentlyRated", DbType="Bit NOT NULL")]
-		public bool SubsequentlyRated
-		{
-			get
-			{
-				return this._SubsequentlyRated;
-			}
-			set
-			{
-				if ((this._SubsequentlyRated != value))
-				{
-					this.OnSubsequentlyRatedChanging(value);
-					this.SendPropertyChanging();
-					this._SubsequentlyRated = value;
-					this.SendPropertyChanged("SubsequentlyRated");
-					this.OnSubsequentlyRatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogarithmicBase", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> LogarithmicBase
-		{
-			get
-			{
-				return this._LogarithmicBase;
-			}
-			set
-			{
-				if ((this._LogarithmicBase != value))
-				{
-					this.OnLogarithmicBaseChanging(value);
-					this.SendPropertyChanging();
-					this._LogarithmicBase = value;
-					this.SendPropertyChanged("LogarithmicBase");
-					this.OnLogarithmicBaseChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesMultiplierOverride", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> HighStakesMultiplierOverride
-		{
-			get
-			{
-				return this._HighStakesMultiplierOverride;
-			}
-			set
-			{
-				if ((this._HighStakesMultiplierOverride != value))
-				{
-					this.OnHighStakesMultiplierOverrideChanging(value);
-					this.SendPropertyChanging();
-					this._HighStakesMultiplierOverride = value;
-					this.SendPropertyChanged("HighStakesMultiplierOverride");
-					this.OnHighStakesMultiplierOverrideChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WhenPointsBecomePending", DbType="DateTime")]
-		public System.Nullable<System.DateTime> WhenPointsBecomePending
-		{
-			get
-			{
-				return this._WhenPointsBecomePending;
-			}
-			set
-			{
-				if ((this._WhenPointsBecomePending != value))
-				{
-					this.OnWhenPointsBecomePendingChanging(value);
-					this.SendPropertyChanging();
-					this._WhenPointsBecomePending = value;
-					this.SendPropertyChanged("WhenPointsBecomePending");
-					this.OnWhenPointsBecomePendingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedTime", DbType="DateTime NOT NULL")]
-		public System.DateTime LastModifiedTime
-		{
-			get
-			{
-				return this._LastModifiedTime;
-			}
-			set
-			{
-				if ((this._LastModifiedTime != value))
-				{
-					this.OnLastModifiedTimeChanging(value);
-					this.SendPropertyChanging();
-					this._LastModifiedTime = value;
-					this.SendPropertyChanged("LastModifiedTime");
-					this.OnLastModifiedTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTrackingNextTimeFrameToRemove", DbType="TinyInt NOT NULL")]
-		public byte VolatilityTrackingNextTimeFrameToRemove
-		{
-			get
-			{
-				return this._VolatilityTrackingNextTimeFrameToRemove;
-			}
-			set
-			{
-				if ((this._VolatilityTrackingNextTimeFrameToRemove != value))
-				{
-					this.OnVolatilityTrackingNextTimeFrameToRemoveChanging(value);
-					this.SendPropertyChanging();
-					this._VolatilityTrackingNextTimeFrameToRemove = value;
-					this.SendPropertyChanged("VolatilityTrackingNextTimeFrameToRemove");
-					this.OnVolatilityTrackingNextTimeFrameToRemoveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OneHourVolatility", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> OneHourVolatility
-		{
-			get
-			{
-				return this._OneHourVolatility;
-			}
-			set
-			{
-				if ((this._OneHourVolatility != value))
-				{
-					this.OnOneHourVolatilityChanging(value);
-					this.SendPropertyChanging();
-					this._OneHourVolatility = value;
-					this.SendPropertyChanged("OneHourVolatility");
-					this.OnOneHourVolatilityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OneDayVolatility", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> OneDayVolatility
-		{
-			get
-			{
-				return this._OneDayVolatility;
-			}
-			set
-			{
-				if ((this._OneDayVolatility != value))
-				{
-					this.OnOneDayVolatilityChanging(value);
-					this.SendPropertyChanging();
-					this._OneDayVolatility = value;
-					this.SendPropertyChanged("OneDayVolatility");
-					this.OnOneDayVolatilityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_Rating", Storage="_Ratings", ThisKey="UserRatingID", OtherKey="MostRecentUserRatingID")]
-		public EntitySet<Rating> Ratings
-		{
-			get
-			{
-				return this._Ratings;
-			}
-			set
-			{
-				this._Ratings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink", Storage="_TrustTrackerForChoiceInGroupsUserRatingLinks", ThisKey="UserRatingID", OtherKey="UserRatingID")]
-		public EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> TrustTrackerForChoiceInGroupsUserRatingLinks
-		{
-			get
-			{
-				return this._TrustTrackerForChoiceInGroupsUserRatingLinks;
-			}
-			set
-			{
-				this._TrustTrackerForChoiceInGroupsUserRatingLinks.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_UserRating", Storage="_UserRatings", ThisKey="UserRatingID", OtherKey="MostRecentUserRatingID")]
-		public EntitySet<UserRating> UserRatings
-		{
-			get
-			{
-				return this._UserRatings;
-			}
-			set
-			{
-				this._UserRatings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingPhaseStatus_UserRating", Storage="_RatingPhaseStatus", ThisKey="RatingPhaseStatusID", OtherKey="RatingPhaseStatusID", IsForeignKey=true)]
-		public RatingPhaseStatus RatingPhaseStatus
-		{
-			get
-			{
-				return this._RatingPhaseStatus.Entity;
-			}
-			set
-			{
-				RatingPhaseStatus previousValue = this._RatingPhaseStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingPhaseStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingPhaseStatus.Entity = null;
-						previousValue.UserRatings.Remove(this);
-					}
-					this._RatingPhaseStatus.Entity = value;
-					if ((value != null))
-					{
-						value.UserRatings.Add(this);
-						this._RatingPhaseStatusID = value.RatingPhaseStatusID;
-					}
-					else
-					{
-						this._RatingPhaseStatusID = default(int);
-					}
-					this.SendPropertyChanged("RatingPhaseStatus");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_UserRating", Storage="_Rating", ThisKey="RatingID", OtherKey="RatingID", IsForeignKey=true)]
-		public Rating Rating
-		{
-			get
-			{
-				return this._Rating.Entity;
-			}
-			set
-			{
-				Rating previousValue = this._Rating.Entity;
-				if (((previousValue != value) 
-							|| (this._Rating.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Rating.Entity = null;
-						previousValue.UserRatings.Remove(this);
-					}
-					this._Rating.Entity = value;
-					if ((value != null))
-					{
-						value.UserRatings.Add(this);
-						this._RatingID = value.RatingID;
-					}
-					else
-					{
-						this._RatingID = default(int);
-					}
-					this.SendPropertyChanged("Rating");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RewardPendingPointsTracker_UserRating", Storage="_RewardPendingPointsTracker", ThisKey="RewardPendingPointsTrackerID", OtherKey="RewardPendingPointsTrackerID", IsForeignKey=true)]
-		public RewardPendingPointsTracker RewardPendingPointsTracker
-		{
-			get
-			{
-				return this._RewardPendingPointsTracker.Entity;
-			}
-			set
-			{
-				RewardPendingPointsTracker previousValue = this._RewardPendingPointsTracker.Entity;
-				if (((previousValue != value) 
-							|| (this._RewardPendingPointsTracker.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RewardPendingPointsTracker.Entity = null;
-						previousValue.UserRatings.Remove(this);
-					}
-					this._RewardPendingPointsTracker.Entity = value;
-					if ((value != null))
-					{
-						value.UserRatings.Add(this);
-						this._RewardPendingPointsTrackerID = value.RewardPendingPointsTrackerID;
-					}
-					else
-					{
-						this._RewardPendingPointsTrackerID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("RewardPendingPointsTracker");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_UserRating", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
-		public TrustTrackerUnit TrustTrackerUnit
-		{
-			get
-			{
-				return this._TrustTrackerUnit.Entity;
-			}
-			set
-			{
-				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
-				if (((previousValue != value) 
-							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TrustTrackerUnit.Entity = null;
-						previousValue.UserRatings.Remove(this);
-					}
-					this._TrustTrackerUnit.Entity = value;
-					if ((value != null))
-					{
-						value.UserRatings.Add(this);
-						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
-					}
-					else
-					{
-						this._TrustTrackerUnitID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TrustTrackerUnit");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRatingGroup_UserRating", Storage="_UserRatingGroup", ThisKey="UserRatingGroupID", OtherKey="UserRatingGroupID", IsForeignKey=true)]
-		public UserRatingGroup UserRatingGroup
-		{
-			get
-			{
-				return this._UserRatingGroup.Entity;
-			}
-			set
-			{
-				UserRatingGroup previousValue = this._UserRatingGroup.Entity;
-				if (((previousValue != value) 
-							|| (this._UserRatingGroup.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserRatingGroup.Entity = null;
-						previousValue.UserRatings.Remove(this);
-					}
-					this._UserRatingGroup.Entity = value;
-					if ((value != null))
-					{
-						value.UserRatings.Add(this);
-						this._UserRatingGroupID = value.UserRatingGroupID;
-					}
-					else
-					{
-						this._UserRatingGroupID = default(int);
-					}
-					this.SendPropertyChanged("UserRatingGroup");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_UserRating", Storage="_UserRating1", ThisKey="MostRecentUserRatingID", OtherKey="UserRatingID", IsForeignKey=true)]
-		public UserRating UserRating1
-		{
-			get
-			{
-				return this._UserRating1.Entity;
-			}
-			set
-			{
-				UserRating previousValue = this._UserRating1.Entity;
-				if (((previousValue != value) 
-							|| (this._UserRating1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserRating1.Entity = null;
-						previousValue.UserRatings.Remove(this);
-					}
-					this._UserRating1.Entity = value;
-					if ((value != null))
-					{
-						value.UserRatings.Add(this);
-						this._MostRecentUserRatingID = value.UserRatingID;
-					}
-					else
-					{
-						this._MostRecentUserRatingID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("UserRating1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserRating", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.UserRatings.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.UserRatings.Add(this);
-						this._UserID = value.UserID;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Ratings(Rating entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserRating = this;
-		}
-		
-		private void detach_Ratings(Rating entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserRating = null;
-		}
-		
-		private void attach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserRating = this;
-		}
-		
-		private void detach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserRating = null;
-		}
-		
-		private void attach_UserRatings(UserRating entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserRating1 = this;
-		}
-		
-		private void detach_UserRatings(UserRating entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserRating1 = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PointsManagers")]
 	public partial class PointsManager : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -35511,9 +31430,11 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<Tbl> _Tbls;
 		
+		private EntitySet<AdministrationRightsGroup> _AdministrationRightsGroups;
+		
 		private EntitySet<PointsTotal> _PointsTotals;
 		
-		private EntitySet<AdministrationRightsGroup> _AdministrationRightsGroups;
+		private EntitySet<RatingGroupAttribute> _RatingGroupAttributes;
 		
 		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
 		
@@ -35619,8 +31540,9 @@ namespace ClassLibrary1.Model
 			this._UsersAdministrationRightsGroups = new EntitySet<UsersAdministrationRightsGroup>(new Action<UsersAdministrationRightsGroup>(this.attach_UsersAdministrationRightsGroups), new Action<UsersAdministrationRightsGroup>(this.detach_UsersAdministrationRightsGroups));
 			this._UsersRights = new EntitySet<UsersRight>(new Action<UsersRight>(this.attach_UsersRights), new Action<UsersRight>(this.detach_UsersRights));
 			this._Tbls = new EntitySet<Tbl>(new Action<Tbl>(this.attach_Tbls), new Action<Tbl>(this.detach_Tbls));
-			this._PointsTotals = new EntitySet<PointsTotal>(new Action<PointsTotal>(this.attach_PointsTotals), new Action<PointsTotal>(this.detach_PointsTotals));
 			this._AdministrationRightsGroups = new EntitySet<AdministrationRightsGroup>(new Action<AdministrationRightsGroup>(this.attach_AdministrationRightsGroups), new Action<AdministrationRightsGroup>(this.detach_AdministrationRightsGroups));
+			this._PointsTotals = new EntitySet<PointsTotal>(new Action<PointsTotal>(this.attach_PointsTotals), new Action<PointsTotal>(this.detach_PointsTotals));
+			this._RatingGroupAttributes = new EntitySet<RatingGroupAttribute>(new Action<RatingGroupAttribute>(this.attach_RatingGroupAttributes), new Action<RatingGroupAttribute>(this.detach_RatingGroupAttributes));
 			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
 			this._Domain = default(EntityRef<Domain>);
 			OnCreated();
@@ -36584,6 +32506,19 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_AdministrationRightsGroup", Storage="_AdministrationRightsGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<AdministrationRightsGroup> AdministrationRightsGroups
+		{
+			get
+			{
+				return this._AdministrationRightsGroups;
+			}
+			set
+			{
+				this._AdministrationRightsGroups.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_PointsTotal", Storage="_PointsTotals", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
 		public EntitySet<PointsTotal> PointsTotals
 		{
@@ -36597,16 +32532,16 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_AdministrationRightsGroup", Storage="_AdministrationRightsGroups", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<AdministrationRightsGroup> AdministrationRightsGroups
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_RatingGroupAttribute", Storage="_RatingGroupAttributes", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<RatingGroupAttribute> RatingGroupAttributes
 		{
 			get
 			{
-				return this._AdministrationRightsGroups;
+				return this._RatingGroupAttributes;
 			}
 			set
 			{
-				this._AdministrationRightsGroups.Assign(value);
+				this._RatingGroupAttributes.Assign(value);
 			}
 		}
 		
@@ -36818,6 +32753,18 @@ namespace ClassLibrary1.Model
 			entity.PointsManager = null;
 		}
 		
+		private void attach_AdministrationRightsGroups(AdministrationRightsGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_AdministrationRightsGroups(AdministrationRightsGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
 		private void attach_PointsTotals(PointsTotal entity)
 		{
 			this.SendPropertyChanging();
@@ -36830,16 +32777,4426 @@ namespace ClassLibrary1.Model
 			entity.PointsManager = null;
 		}
 		
-		private void attach_AdministrationRightsGroups(AdministrationRightsGroup entity)
+		private void attach_RatingGroupAttributes(RatingGroupAttribute entity)
 		{
 			this.SendPropertyChanging();
 			entity.PointsManager = this;
 		}
 		
-		private void detach_AdministrationRightsGroups(AdministrationRightsGroup entity)
+		private void detach_RatingGroupAttributes(RatingGroupAttribute entity)
 		{
 			this.SendPropertyChanging();
 			entity.PointsManager = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RatingPhaseStatus")]
+	public partial class RatingPhaseStatus : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RatingPhaseStatusID;
+		
+		private int _RatingGroupPhaseStatusID;
+		
+		private int _RatingID;
+		
+		private System.Nullable<decimal> _ShortTermResolutionValue;
+		
+		private int _NumUserRatingsMadeDuringPhase;
+		
+		private bool _TriggerUserRatingsUpdate;
+		
+		private EntitySet<UserRating> _UserRatings;
+		
+		private EntityRef<RatingGroupPhaseStatus> _RatingGroupPhaseStatus;
+		
+		private EntityRef<Rating> _Rating;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRatingPhaseStatusIDChanging(int value);
+    partial void OnRatingPhaseStatusIDChanged();
+    partial void OnRatingGroupPhaseStatusIDChanging(int value);
+    partial void OnRatingGroupPhaseStatusIDChanged();
+    partial void OnRatingIDChanging(int value);
+    partial void OnRatingIDChanged();
+    partial void OnShortTermResolutionValueChanging(System.Nullable<decimal> value);
+    partial void OnShortTermResolutionValueChanged();
+    partial void OnNumUserRatingsMadeDuringPhaseChanging(int value);
+    partial void OnNumUserRatingsMadeDuringPhaseChanged();
+    partial void OnTriggerUserRatingsUpdateChanging(bool value);
+    partial void OnTriggerUserRatingsUpdateChanged();
+    #endregion
+		
+		public RatingPhaseStatus()
+		{
+			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
+			this._RatingGroupPhaseStatus = default(EntityRef<RatingGroupPhaseStatus>);
+			this._Rating = default(EntityRef<Rating>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingPhaseStatusID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RatingPhaseStatusID
+		{
+			get
+			{
+				return this._RatingPhaseStatusID;
+			}
+			set
+			{
+				if ((this._RatingPhaseStatusID != value))
+				{
+					this.OnRatingPhaseStatusIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingPhaseStatusID = value;
+					this.SendPropertyChanged("RatingPhaseStatusID");
+					this.OnRatingPhaseStatusIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupPhaseStatusID", DbType="Int NOT NULL")]
+		public int RatingGroupPhaseStatusID
+		{
+			get
+			{
+				return this._RatingGroupPhaseStatusID;
+			}
+			set
+			{
+				if ((this._RatingGroupPhaseStatusID != value))
+				{
+					if (this._RatingGroupPhaseStatus.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingGroupPhaseStatusIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingGroupPhaseStatusID = value;
+					this.SendPropertyChanged("RatingGroupPhaseStatusID");
+					this.OnRatingGroupPhaseStatusIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingID", DbType="Int NOT NULL")]
+		public int RatingID
+		{
+			get
+			{
+				return this._RatingID;
+			}
+			set
+			{
+				if ((this._RatingID != value))
+				{
+					if (this._Rating.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingID = value;
+					this.SendPropertyChanged("RatingID");
+					this.OnRatingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShortTermResolutionValue", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> ShortTermResolutionValue
+		{
+			get
+			{
+				return this._ShortTermResolutionValue;
+			}
+			set
+			{
+				if ((this._ShortTermResolutionValue != value))
+				{
+					this.OnShortTermResolutionValueChanging(value);
+					this.SendPropertyChanging();
+					this._ShortTermResolutionValue = value;
+					this.SendPropertyChanged("ShortTermResolutionValue");
+					this.OnShortTermResolutionValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumUserRatingsMadeDuringPhase", DbType="Int NOT NULL")]
+		public int NumUserRatingsMadeDuringPhase
+		{
+			get
+			{
+				return this._NumUserRatingsMadeDuringPhase;
+			}
+			set
+			{
+				if ((this._NumUserRatingsMadeDuringPhase != value))
+				{
+					this.OnNumUserRatingsMadeDuringPhaseChanging(value);
+					this.SendPropertyChanging();
+					this._NumUserRatingsMadeDuringPhase = value;
+					this.SendPropertyChanged("NumUserRatingsMadeDuringPhase");
+					this.OnNumUserRatingsMadeDuringPhaseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TriggerUserRatingsUpdate", DbType="Bit NOT NULL")]
+		public bool TriggerUserRatingsUpdate
+		{
+			get
+			{
+				return this._TriggerUserRatingsUpdate;
+			}
+			set
+			{
+				if ((this._TriggerUserRatingsUpdate != value))
+				{
+					this.OnTriggerUserRatingsUpdateChanging(value);
+					this.SendPropertyChanging();
+					this._TriggerUserRatingsUpdate = value;
+					this.SendPropertyChanged("TriggerUserRatingsUpdate");
+					this.OnTriggerUserRatingsUpdateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingPhaseStatus_UserRating", Storage="_UserRatings", ThisKey="RatingPhaseStatusID", OtherKey="RatingPhaseStatusID")]
+		public EntitySet<UserRating> UserRatings
+		{
+			get
+			{
+				return this._UserRatings;
+			}
+			set
+			{
+				this._UserRatings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupPhaseStatus_RatingPhaseStatus", Storage="_RatingGroupPhaseStatus", ThisKey="RatingGroupPhaseStatusID", OtherKey="RatingGroupPhaseStatusID", IsForeignKey=true)]
+		public RatingGroupPhaseStatus RatingGroupPhaseStatus
+		{
+			get
+			{
+				return this._RatingGroupPhaseStatus.Entity;
+			}
+			set
+			{
+				RatingGroupPhaseStatus previousValue = this._RatingGroupPhaseStatus.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroupPhaseStatus.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroupPhaseStatus.Entity = null;
+						previousValue.RatingPhaseStatus.Remove(this);
+					}
+					this._RatingGroupPhaseStatus.Entity = value;
+					if ((value != null))
+					{
+						value.RatingPhaseStatus.Add(this);
+						this._RatingGroupPhaseStatusID = value.RatingGroupPhaseStatusID;
+					}
+					else
+					{
+						this._RatingGroupPhaseStatusID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroupPhaseStatus");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_RatingPhaseStatus", Storage="_Rating", ThisKey="RatingID", OtherKey="RatingID", IsForeignKey=true)]
+		public Rating Rating
+		{
+			get
+			{
+				return this._Rating.Entity;
+			}
+			set
+			{
+				Rating previousValue = this._Rating.Entity;
+				if (((previousValue != value) 
+							|| (this._Rating.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Rating.Entity = null;
+						previousValue.RatingPhaseStatus.Remove(this);
+					}
+					this._Rating.Entity = value;
+					if ((value != null))
+					{
+						value.RatingPhaseStatus.Add(this);
+						this._RatingID = value.RatingID;
+					}
+					else
+					{
+						this._RatingID = default(int);
+					}
+					this.SendPropertyChanged("Rating");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingPhaseStatus = this;
+		}
+		
+		private void detach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingPhaseStatus = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PointsTotals")]
+	public partial class PointsTotal : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PointsTotalID;
+		
+		private int _UserID;
+		
+		private int _PointsManagerID;
+		
+		private decimal _CurrentPoints;
+		
+		private decimal _TotalPoints;
+		
+		private decimal _PotentialMaxLossOnNotYetPending;
+		
+		private decimal _PendingPoints;
+		
+		private decimal _NotYetPendingPoints;
+		
+		private decimal _TrustPoints;
+		
+		private decimal _TrustPointsRatio;
+		
+		private int _NumPendingOrFinalizedRatings;
+		
+		private decimal _PointsPerRating;
+		
+		private System.Nullable<System.DateTime> _LastCheckIn;
+		
+		private System.Nullable<System.DateTime> _CurrentCheckInPeriodStart;
+		
+		private decimal _TotalTimeThisCheckInPeriod;
+		
+		private decimal _TotalTimeThisRewardPeriod;
+		
+		private decimal _TotalTimeEver;
+		
+		private System.Nullable<decimal> _PointsPerHour;
+		
+		private System.Nullable<decimal> _ProjectedPointsPerHour;
+		
+		private decimal _GuaranteedPaymentsEarnedThisRewardPeriod;
+		
+		private string _PendingConditionalGuaranteeApplication;
+		
+		private System.Nullable<decimal> _PendingConditionalGuaranteePayment;
+		
+		private System.Nullable<decimal> _PendingConditionalGuaranteeTotalHoursAtStart;
+		
+		private System.Nullable<decimal> _PendingConditionalGuaranteeTotalHoursNeeded;
+		
+		private System.Nullable<decimal> _PendingConditionalGuaranteePaymentAlreadyMade;
+		
+		private System.Nullable<System.DateTime> _RequestConditionalGuaranteeWhenAvailableTimeRequestMade;
+		
+		private decimal _TotalPointsOrPendingPointsLongTermUnweighted;
+		
+		private decimal _PointsPerRatingLongTerm;
+		
+		private float _PointsPumpingProportionAvg_Numer;
+		
+		private float _PointsPumpingProportionAvg_Denom;
+		
+		private float _PointsPumpingProportionAvg;
+		
+		private int _NumUserRatings;
+		
+		private EntityRef<PointsManager> _PointsManager;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPointsTotalIDChanging(int value);
+    partial void OnPointsTotalIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnPointsManagerIDChanging(int value);
+    partial void OnPointsManagerIDChanged();
+    partial void OnCurrentPointsChanging(decimal value);
+    partial void OnCurrentPointsChanged();
+    partial void OnTotalPointsChanging(decimal value);
+    partial void OnTotalPointsChanged();
+    partial void OnPotentialMaxLossOnNotYetPendingChanging(decimal value);
+    partial void OnPotentialMaxLossOnNotYetPendingChanged();
+    partial void OnPendingPointsChanging(decimal value);
+    partial void OnPendingPointsChanged();
+    partial void OnNotYetPendingPointsChanging(decimal value);
+    partial void OnNotYetPendingPointsChanged();
+    partial void OnTrustPointsChanging(decimal value);
+    partial void OnTrustPointsChanged();
+    partial void OnTrustPointsRatioChanging(decimal value);
+    partial void OnTrustPointsRatioChanged();
+    partial void OnNumPendingOrFinalizedRatingsChanging(int value);
+    partial void OnNumPendingOrFinalizedRatingsChanged();
+    partial void OnPointsPerRatingChanging(decimal value);
+    partial void OnPointsPerRatingChanged();
+    partial void OnLastCheckInChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastCheckInChanged();
+    partial void OnCurrentCheckInPeriodStartChanging(System.Nullable<System.DateTime> value);
+    partial void OnCurrentCheckInPeriodStartChanged();
+    partial void OnTotalTimeThisCheckInPeriodChanging(decimal value);
+    partial void OnTotalTimeThisCheckInPeriodChanged();
+    partial void OnTotalTimeThisRewardPeriodChanging(decimal value);
+    partial void OnTotalTimeThisRewardPeriodChanged();
+    partial void OnTotalTimeEverChanging(decimal value);
+    partial void OnTotalTimeEverChanged();
+    partial void OnPointsPerHourChanging(System.Nullable<decimal> value);
+    partial void OnPointsPerHourChanged();
+    partial void OnProjectedPointsPerHourChanging(System.Nullable<decimal> value);
+    partial void OnProjectedPointsPerHourChanged();
+    partial void OnGuaranteedPaymentsEarnedThisRewardPeriodChanging(decimal value);
+    partial void OnGuaranteedPaymentsEarnedThisRewardPeriodChanged();
+    partial void OnPendingConditionalGuaranteeApplicationChanging(string value);
+    partial void OnPendingConditionalGuaranteeApplicationChanged();
+    partial void OnPendingConditionalGuaranteePaymentChanging(System.Nullable<decimal> value);
+    partial void OnPendingConditionalGuaranteePaymentChanged();
+    partial void OnPendingConditionalGuaranteeTotalHoursAtStartChanging(System.Nullable<decimal> value);
+    partial void OnPendingConditionalGuaranteeTotalHoursAtStartChanged();
+    partial void OnPendingConditionalGuaranteeTotalHoursNeededChanging(System.Nullable<decimal> value);
+    partial void OnPendingConditionalGuaranteeTotalHoursNeededChanged();
+    partial void OnPendingConditionalGuaranteePaymentAlreadyMadeChanging(System.Nullable<decimal> value);
+    partial void OnPendingConditionalGuaranteePaymentAlreadyMadeChanged();
+    partial void OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanging(System.Nullable<System.DateTime> value);
+    partial void OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanged();
+    partial void OnTotalPointsOrPendingPointsLongTermUnweightedChanging(decimal value);
+    partial void OnTotalPointsOrPendingPointsLongTermUnweightedChanged();
+    partial void OnPointsPerRatingLongTermChanging(decimal value);
+    partial void OnPointsPerRatingLongTermChanged();
+    partial void OnPointsPumpingProportionAvg_NumerChanging(float value);
+    partial void OnPointsPumpingProportionAvg_NumerChanged();
+    partial void OnPointsPumpingProportionAvg_DenomChanging(float value);
+    partial void OnPointsPumpingProportionAvg_DenomChanged();
+    partial void OnPointsPumpingProportionAvgChanging(float value);
+    partial void OnPointsPumpingProportionAvgChanged();
+    partial void OnNumUserRatingsChanging(int value);
+    partial void OnNumUserRatingsChanged();
+    #endregion
+		
+		public PointsTotal()
+		{
+			this._PointsManager = default(EntityRef<PointsManager>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsTotalID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int PointsTotalID
+		{
+			get
+			{
+				return this._PointsTotalID;
+			}
+			set
+			{
+				if ((this._PointsTotalID != value))
+				{
+					this.OnPointsTotalIDChanging(value);
+					this.SendPropertyChanging();
+					this._PointsTotalID = value;
+					this.SendPropertyChanged("PointsTotalID");
+					this.OnPointsTotalIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", DbType="Int NOT NULL")]
+		public int PointsManagerID
+		{
+			get
+			{
+				return this._PointsManagerID;
+			}
+			set
+			{
+				if ((this._PointsManagerID != value))
+				{
+					if (this._PointsManager.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPointsManagerIDChanging(value);
+					this.SendPropertyChanging();
+					this._PointsManagerID = value;
+					this.SendPropertyChanged("PointsManagerID");
+					this.OnPointsManagerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal CurrentPoints
+		{
+			get
+			{
+				return this._CurrentPoints;
+			}
+			set
+			{
+				if ((this._CurrentPoints != value))
+				{
+					this.OnCurrentPointsChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentPoints = value;
+					this.SendPropertyChanged("CurrentPoints");
+					this.OnCurrentPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalPoints
+		{
+			get
+			{
+				return this._TotalPoints;
+			}
+			set
+			{
+				if ((this._TotalPoints != value))
+				{
+					this.OnTotalPointsChanging(value);
+					this.SendPropertyChanging();
+					this._TotalPoints = value;
+					this.SendPropertyChanged("TotalPoints");
+					this.OnTotalPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialMaxLossOnNotYetPending", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PotentialMaxLossOnNotYetPending
+		{
+			get
+			{
+				return this._PotentialMaxLossOnNotYetPending;
+			}
+			set
+			{
+				if ((this._PotentialMaxLossOnNotYetPending != value))
+				{
+					this.OnPotentialMaxLossOnNotYetPendingChanging(value);
+					this.SendPropertyChanging();
+					this._PotentialMaxLossOnNotYetPending = value;
+					this.SendPropertyChanged("PotentialMaxLossOnNotYetPending");
+					this.OnPotentialMaxLossOnNotYetPendingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PendingPoints
+		{
+			get
+			{
+				return this._PendingPoints;
+			}
+			set
+			{
+				if ((this._PendingPoints != value))
+				{
+					this.OnPendingPointsChanging(value);
+					this.SendPropertyChanging();
+					this._PendingPoints = value;
+					this.SendPropertyChanged("PendingPoints");
+					this.OnPendingPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotYetPendingPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal NotYetPendingPoints
+		{
+			get
+			{
+				return this._NotYetPendingPoints;
+			}
+			set
+			{
+				if ((this._NotYetPendingPoints != value))
+				{
+					this.OnNotYetPendingPointsChanging(value);
+					this.SendPropertyChanging();
+					this._NotYetPendingPoints = value;
+					this.SendPropertyChanged("NotYetPendingPoints");
+					this.OnNotYetPendingPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustPoints", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TrustPoints
+		{
+			get
+			{
+				return this._TrustPoints;
+			}
+			set
+			{
+				if ((this._TrustPoints != value))
+				{
+					this.OnTrustPointsChanging(value);
+					this.SendPropertyChanging();
+					this._TrustPoints = value;
+					this.SendPropertyChanged("TrustPoints");
+					this.OnTrustPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustPointsRatio", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TrustPointsRatio
+		{
+			get
+			{
+				return this._TrustPointsRatio;
+			}
+			set
+			{
+				if ((this._TrustPointsRatio != value))
+				{
+					this.OnTrustPointsRatioChanging(value);
+					this.SendPropertyChanging();
+					this._TrustPointsRatio = value;
+					this.SendPropertyChanged("TrustPointsRatio");
+					this.OnTrustPointsRatioChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumPendingOrFinalizedRatings", DbType="Int NOT NULL")]
+		public int NumPendingOrFinalizedRatings
+		{
+			get
+			{
+				return this._NumPendingOrFinalizedRatings;
+			}
+			set
+			{
+				if ((this._NumPendingOrFinalizedRatings != value))
+				{
+					this.OnNumPendingOrFinalizedRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._NumPendingOrFinalizedRatings = value;
+					this.SendPropertyChanged("NumPendingOrFinalizedRatings");
+					this.OnNumPendingOrFinalizedRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPerRating", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PointsPerRating
+		{
+			get
+			{
+				return this._PointsPerRating;
+			}
+			set
+			{
+				if ((this._PointsPerRating != value))
+				{
+					this.OnPointsPerRatingChanging(value);
+					this.SendPropertyChanging();
+					this._PointsPerRating = value;
+					this.SendPropertyChanged("PointsPerRating");
+					this.OnPointsPerRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastCheckIn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastCheckIn
+		{
+			get
+			{
+				return this._LastCheckIn;
+			}
+			set
+			{
+				if ((this._LastCheckIn != value))
+				{
+					this.OnLastCheckInChanging(value);
+					this.SendPropertyChanging();
+					this._LastCheckIn = value;
+					this.SendPropertyChanged("LastCheckIn");
+					this.OnLastCheckInChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentCheckInPeriodStart", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CurrentCheckInPeriodStart
+		{
+			get
+			{
+				return this._CurrentCheckInPeriodStart;
+			}
+			set
+			{
+				if ((this._CurrentCheckInPeriodStart != value))
+				{
+					this.OnCurrentCheckInPeriodStartChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentCheckInPeriodStart = value;
+					this.SendPropertyChanged("CurrentCheckInPeriodStart");
+					this.OnCurrentCheckInPeriodStartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalTimeThisCheckInPeriod", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalTimeThisCheckInPeriod
+		{
+			get
+			{
+				return this._TotalTimeThisCheckInPeriod;
+			}
+			set
+			{
+				if ((this._TotalTimeThisCheckInPeriod != value))
+				{
+					this.OnTotalTimeThisCheckInPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._TotalTimeThisCheckInPeriod = value;
+					this.SendPropertyChanged("TotalTimeThisCheckInPeriod");
+					this.OnTotalTimeThisCheckInPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalTimeThisRewardPeriod", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalTimeThisRewardPeriod
+		{
+			get
+			{
+				return this._TotalTimeThisRewardPeriod;
+			}
+			set
+			{
+				if ((this._TotalTimeThisRewardPeriod != value))
+				{
+					this.OnTotalTimeThisRewardPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._TotalTimeThisRewardPeriod = value;
+					this.SendPropertyChanged("TotalTimeThisRewardPeriod");
+					this.OnTotalTimeThisRewardPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalTimeEver", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalTimeEver
+		{
+			get
+			{
+				return this._TotalTimeEver;
+			}
+			set
+			{
+				if ((this._TotalTimeEver != value))
+				{
+					this.OnTotalTimeEverChanging(value);
+					this.SendPropertyChanging();
+					this._TotalTimeEver = value;
+					this.SendPropertyChanged("TotalTimeEver");
+					this.OnTotalTimeEverChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPerHour", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> PointsPerHour
+		{
+			get
+			{
+				return this._PointsPerHour;
+			}
+			set
+			{
+				if ((this._PointsPerHour != value))
+				{
+					this.OnPointsPerHourChanging(value);
+					this.SendPropertyChanging();
+					this._PointsPerHour = value;
+					this.SendPropertyChanged("PointsPerHour");
+					this.OnPointsPerHourChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProjectedPointsPerHour", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> ProjectedPointsPerHour
+		{
+			get
+			{
+				return this._ProjectedPointsPerHour;
+			}
+			set
+			{
+				if ((this._ProjectedPointsPerHour != value))
+				{
+					this.OnProjectedPointsPerHourChanging(value);
+					this.SendPropertyChanging();
+					this._ProjectedPointsPerHour = value;
+					this.SendPropertyChanged("ProjectedPointsPerHour");
+					this.OnProjectedPointsPerHourChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GuaranteedPaymentsEarnedThisRewardPeriod", DbType="Decimal(18,2) NOT NULL")]
+		public decimal GuaranteedPaymentsEarnedThisRewardPeriod
+		{
+			get
+			{
+				return this._GuaranteedPaymentsEarnedThisRewardPeriod;
+			}
+			set
+			{
+				if ((this._GuaranteedPaymentsEarnedThisRewardPeriod != value))
+				{
+					this.OnGuaranteedPaymentsEarnedThisRewardPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._GuaranteedPaymentsEarnedThisRewardPeriod = value;
+					this.SendPropertyChanged("GuaranteedPaymentsEarnedThisRewardPeriod");
+					this.OnGuaranteedPaymentsEarnedThisRewardPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteeApplication", DbType="NVarChar(50)")]
+		public string PendingConditionalGuaranteeApplication
+		{
+			get
+			{
+				return this._PendingConditionalGuaranteeApplication;
+			}
+			set
+			{
+				if ((this._PendingConditionalGuaranteeApplication != value))
+				{
+					this.OnPendingConditionalGuaranteeApplicationChanging(value);
+					this.SendPropertyChanging();
+					this._PendingConditionalGuaranteeApplication = value;
+					this.SendPropertyChanged("PendingConditionalGuaranteeApplication");
+					this.OnPendingConditionalGuaranteeApplicationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteePayment", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> PendingConditionalGuaranteePayment
+		{
+			get
+			{
+				return this._PendingConditionalGuaranteePayment;
+			}
+			set
+			{
+				if ((this._PendingConditionalGuaranteePayment != value))
+				{
+					this.OnPendingConditionalGuaranteePaymentChanging(value);
+					this.SendPropertyChanging();
+					this._PendingConditionalGuaranteePayment = value;
+					this.SendPropertyChanged("PendingConditionalGuaranteePayment");
+					this.OnPendingConditionalGuaranteePaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteeTotalHoursAtStart", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> PendingConditionalGuaranteeTotalHoursAtStart
+		{
+			get
+			{
+				return this._PendingConditionalGuaranteeTotalHoursAtStart;
+			}
+			set
+			{
+				if ((this._PendingConditionalGuaranteeTotalHoursAtStart != value))
+				{
+					this.OnPendingConditionalGuaranteeTotalHoursAtStartChanging(value);
+					this.SendPropertyChanging();
+					this._PendingConditionalGuaranteeTotalHoursAtStart = value;
+					this.SendPropertyChanged("PendingConditionalGuaranteeTotalHoursAtStart");
+					this.OnPendingConditionalGuaranteeTotalHoursAtStartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteeTotalHoursNeeded", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> PendingConditionalGuaranteeTotalHoursNeeded
+		{
+			get
+			{
+				return this._PendingConditionalGuaranteeTotalHoursNeeded;
+			}
+			set
+			{
+				if ((this._PendingConditionalGuaranteeTotalHoursNeeded != value))
+				{
+					this.OnPendingConditionalGuaranteeTotalHoursNeededChanging(value);
+					this.SendPropertyChanging();
+					this._PendingConditionalGuaranteeTotalHoursNeeded = value;
+					this.SendPropertyChanged("PendingConditionalGuaranteeTotalHoursNeeded");
+					this.OnPendingConditionalGuaranteeTotalHoursNeededChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PendingConditionalGuaranteePaymentAlreadyMade", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> PendingConditionalGuaranteePaymentAlreadyMade
+		{
+			get
+			{
+				return this._PendingConditionalGuaranteePaymentAlreadyMade;
+			}
+			set
+			{
+				if ((this._PendingConditionalGuaranteePaymentAlreadyMade != value))
+				{
+					this.OnPendingConditionalGuaranteePaymentAlreadyMadeChanging(value);
+					this.SendPropertyChanging();
+					this._PendingConditionalGuaranteePaymentAlreadyMade = value;
+					this.SendPropertyChanged("PendingConditionalGuaranteePaymentAlreadyMade");
+					this.OnPendingConditionalGuaranteePaymentAlreadyMadeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestConditionalGuaranteeWhenAvailableTimeRequestMade", DbType="DateTime")]
+		public System.Nullable<System.DateTime> RequestConditionalGuaranteeWhenAvailableTimeRequestMade
+		{
+			get
+			{
+				return this._RequestConditionalGuaranteeWhenAvailableTimeRequestMade;
+			}
+			set
+			{
+				if ((this._RequestConditionalGuaranteeWhenAvailableTimeRequestMade != value))
+				{
+					this.OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanging(value);
+					this.SendPropertyChanging();
+					this._RequestConditionalGuaranteeWhenAvailableTimeRequestMade = value;
+					this.SendPropertyChanged("RequestConditionalGuaranteeWhenAvailableTimeRequestMade");
+					this.OnRequestConditionalGuaranteeWhenAvailableTimeRequestMadeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPointsOrPendingPointsLongTermUnweighted", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalPointsOrPendingPointsLongTermUnweighted
+		{
+			get
+			{
+				return this._TotalPointsOrPendingPointsLongTermUnweighted;
+			}
+			set
+			{
+				if ((this._TotalPointsOrPendingPointsLongTermUnweighted != value))
+				{
+					this.OnTotalPointsOrPendingPointsLongTermUnweightedChanging(value);
+					this.SendPropertyChanging();
+					this._TotalPointsOrPendingPointsLongTermUnweighted = value;
+					this.SendPropertyChanged("TotalPointsOrPendingPointsLongTermUnweighted");
+					this.OnTotalPointsOrPendingPointsLongTermUnweightedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPerRatingLongTerm", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PointsPerRatingLongTerm
+		{
+			get
+			{
+				return this._PointsPerRatingLongTerm;
+			}
+			set
+			{
+				if ((this._PointsPerRatingLongTerm != value))
+				{
+					this.OnPointsPerRatingLongTermChanging(value);
+					this.SendPropertyChanging();
+					this._PointsPerRatingLongTerm = value;
+					this.SendPropertyChanged("PointsPerRatingLongTerm");
+					this.OnPointsPerRatingLongTermChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPumpingProportionAvg_Numer", DbType="Real NOT NULL")]
+		public float PointsPumpingProportionAvg_Numer
+		{
+			get
+			{
+				return this._PointsPumpingProportionAvg_Numer;
+			}
+			set
+			{
+				if ((this._PointsPumpingProportionAvg_Numer != value))
+				{
+					this.OnPointsPumpingProportionAvg_NumerChanging(value);
+					this.SendPropertyChanging();
+					this._PointsPumpingProportionAvg_Numer = value;
+					this.SendPropertyChanged("PointsPumpingProportionAvg_Numer");
+					this.OnPointsPumpingProportionAvg_NumerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPumpingProportionAvg_Denom", DbType="Real NOT NULL")]
+		public float PointsPumpingProportionAvg_Denom
+		{
+			get
+			{
+				return this._PointsPumpingProportionAvg_Denom;
+			}
+			set
+			{
+				if ((this._PointsPumpingProportionAvg_Denom != value))
+				{
+					this.OnPointsPumpingProportionAvg_DenomChanging(value);
+					this.SendPropertyChanging();
+					this._PointsPumpingProportionAvg_Denom = value;
+					this.SendPropertyChanged("PointsPumpingProportionAvg_Denom");
+					this.OnPointsPumpingProportionAvg_DenomChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPumpingProportionAvg", DbType="Real NOT NULL")]
+		public float PointsPumpingProportionAvg
+		{
+			get
+			{
+				return this._PointsPumpingProportionAvg;
+			}
+			set
+			{
+				if ((this._PointsPumpingProportionAvg != value))
+				{
+					this.OnPointsPumpingProportionAvgChanging(value);
+					this.SendPropertyChanging();
+					this._PointsPumpingProportionAvg = value;
+					this.SendPropertyChanged("PointsPumpingProportionAvg");
+					this.OnPointsPumpingProportionAvgChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumUserRatings", DbType="Int NOT NULL")]
+		public int NumUserRatings
+		{
+			get
+			{
+				return this._NumUserRatings;
+			}
+			set
+			{
+				if ((this._NumUserRatings != value))
+				{
+					this.OnNumUserRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._NumUserRatings = value;
+					this.SendPropertyChanged("NumUserRatings");
+					this.OnNumUserRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_PointsTotal", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
+		public PointsManager PointsManager
+		{
+			get
+			{
+				return this._PointsManager.Entity;
+			}
+			set
+			{
+				PointsManager previousValue = this._PointsManager.Entity;
+				if (((previousValue != value) 
+							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PointsManager.Entity = null;
+						previousValue.PointsTotals.Remove(this);
+					}
+					this._PointsManager.Entity = value;
+					if ((value != null))
+					{
+						value.PointsTotals.Add(this);
+						this._PointsManagerID = value.PointsManagerID;
+					}
+					else
+					{
+						this._PointsManagerID = default(int);
+					}
+					this.SendPropertyChanged("PointsManager");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_PointsTotal", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.PointsTotals.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.PointsTotals.Add(this);
+						this._UserID = value.UserID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrustTrackers")]
+	public partial class TrustTracker : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TrustTrackerID;
+		
+		private int _TrustTrackerUnitID;
+		
+		private int _UserID;
+		
+		private float _OverallTrustLevel;
+		
+		private float _OverallTrustLevelAtLastReview;
+		
+		private float _DeltaOverallTrustLevel;
+		
+		private float _SkepticalTrustLevel;
+		
+		private float _SumUserInteractionWeights;
+		
+		private float _EgalitarianTrustLevel;
+		
+		private float _Egalitarian_Num;
+		
+		private float _Egalitarian_Denom;
+		
+		private System.Nullable<float> _EgalitarianTrustLevelOverride;
+		
+		private bool _MustUpdateUserInteractionEgalitarianTrustLevel;
+		
+		private EntitySet<TrustTrackerStat> _TrustTrackerStats;
+		
+		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTrustTrackerIDChanging(int value);
+    partial void OnTrustTrackerIDChanged();
+    partial void OnTrustTrackerUnitIDChanging(int value);
+    partial void OnTrustTrackerUnitIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnOverallTrustLevelChanging(float value);
+    partial void OnOverallTrustLevelChanged();
+    partial void OnOverallTrustLevelAtLastReviewChanging(float value);
+    partial void OnOverallTrustLevelAtLastReviewChanged();
+    partial void OnDeltaOverallTrustLevelChanging(float value);
+    partial void OnDeltaOverallTrustLevelChanged();
+    partial void OnSkepticalTrustLevelChanging(float value);
+    partial void OnSkepticalTrustLevelChanged();
+    partial void OnSumUserInteractionWeightsChanging(float value);
+    partial void OnSumUserInteractionWeightsChanged();
+    partial void OnEgalitarianTrustLevelChanging(float value);
+    partial void OnEgalitarianTrustLevelChanged();
+    partial void OnEgalitarian_NumChanging(float value);
+    partial void OnEgalitarian_NumChanged();
+    partial void OnEgalitarian_DenomChanging(float value);
+    partial void OnEgalitarian_DenomChanged();
+    partial void OnEgalitarianTrustLevelOverrideChanging(System.Nullable<float> value);
+    partial void OnEgalitarianTrustLevelOverrideChanged();
+    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(bool value);
+    partial void OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
+    #endregion
+		
+		public TrustTracker()
+		{
+			this._TrustTrackerStats = new EntitySet<TrustTrackerStat>(new Action<TrustTrackerStat>(this.attach_TrustTrackerStats), new Action<TrustTrackerStat>(this.detach_TrustTrackerStats));
+			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TrustTrackerID
+		{
+			get
+			{
+				return this._TrustTrackerID;
+			}
+			set
+			{
+				if ((this._TrustTrackerID != value))
+				{
+					this.OnTrustTrackerIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerID = value;
+					this.SendPropertyChanged("TrustTrackerID");
+					this.OnTrustTrackerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int NOT NULL")]
+		public int TrustTrackerUnitID
+		{
+			get
+			{
+				return this._TrustTrackerUnitID;
+			}
+			set
+			{
+				if ((this._TrustTrackerUnitID != value))
+				{
+					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTrustTrackerUnitIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerUnitID = value;
+					this.SendPropertyChanged("TrustTrackerUnitID");
+					this.OnTrustTrackerUnitIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OverallTrustLevel", DbType="Real NOT NULL")]
+		public float OverallTrustLevel
+		{
+			get
+			{
+				return this._OverallTrustLevel;
+			}
+			set
+			{
+				if ((this._OverallTrustLevel != value))
+				{
+					this.OnOverallTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._OverallTrustLevel = value;
+					this.SendPropertyChanged("OverallTrustLevel");
+					this.OnOverallTrustLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OverallTrustLevelAtLastReview", DbType="Real NOT NULL")]
+		public float OverallTrustLevelAtLastReview
+		{
+			get
+			{
+				return this._OverallTrustLevelAtLastReview;
+			}
+			set
+			{
+				if ((this._OverallTrustLevelAtLastReview != value))
+				{
+					this.OnOverallTrustLevelAtLastReviewChanging(value);
+					this.SendPropertyChanging();
+					this._OverallTrustLevelAtLastReview = value;
+					this.SendPropertyChanged("OverallTrustLevelAtLastReview");
+					this.OnOverallTrustLevelAtLastReviewChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaOverallTrustLevel", DbType="Real NOT NULL")]
+		public float DeltaOverallTrustLevel
+		{
+			get
+			{
+				return this._DeltaOverallTrustLevel;
+			}
+			set
+			{
+				if ((this._DeltaOverallTrustLevel != value))
+				{
+					this.OnDeltaOverallTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._DeltaOverallTrustLevel = value;
+					this.SendPropertyChanged("DeltaOverallTrustLevel");
+					this.OnDeltaOverallTrustLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SkepticalTrustLevel", DbType="Real NOT NULL")]
+		public float SkepticalTrustLevel
+		{
+			get
+			{
+				return this._SkepticalTrustLevel;
+			}
+			set
+			{
+				if ((this._SkepticalTrustLevel != value))
+				{
+					this.OnSkepticalTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._SkepticalTrustLevel = value;
+					this.SendPropertyChanged("SkepticalTrustLevel");
+					this.OnSkepticalTrustLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumUserInteractionWeights", DbType="Real NOT NULL")]
+		public float SumUserInteractionWeights
+		{
+			get
+			{
+				return this._SumUserInteractionWeights;
+			}
+			set
+			{
+				if ((this._SumUserInteractionWeights != value))
+				{
+					this.OnSumUserInteractionWeightsChanging(value);
+					this.SendPropertyChanging();
+					this._SumUserInteractionWeights = value;
+					this.SendPropertyChanged("SumUserInteractionWeights");
+					this.OnSumUserInteractionWeightsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EgalitarianTrustLevel", DbType="Real NOT NULL")]
+		public float EgalitarianTrustLevel
+		{
+			get
+			{
+				return this._EgalitarianTrustLevel;
+			}
+			set
+			{
+				if ((this._EgalitarianTrustLevel != value))
+				{
+					this.OnEgalitarianTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._EgalitarianTrustLevel = value;
+					this.SendPropertyChanged("EgalitarianTrustLevel");
+					this.OnEgalitarianTrustLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Egalitarian_Num", DbType="Real NOT NULL")]
+		public float Egalitarian_Num
+		{
+			get
+			{
+				return this._Egalitarian_Num;
+			}
+			set
+			{
+				if ((this._Egalitarian_Num != value))
+				{
+					this.OnEgalitarian_NumChanging(value);
+					this.SendPropertyChanging();
+					this._Egalitarian_Num = value;
+					this.SendPropertyChanged("Egalitarian_Num");
+					this.OnEgalitarian_NumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Egalitarian_Denom", DbType="Real NOT NULL")]
+		public float Egalitarian_Denom
+		{
+			get
+			{
+				return this._Egalitarian_Denom;
+			}
+			set
+			{
+				if ((this._Egalitarian_Denom != value))
+				{
+					this.OnEgalitarian_DenomChanging(value);
+					this.SendPropertyChanging();
+					this._Egalitarian_Denom = value;
+					this.SendPropertyChanged("Egalitarian_Denom");
+					this.OnEgalitarian_DenomChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EgalitarianTrustLevelOverride", DbType="Real")]
+		public System.Nullable<float> EgalitarianTrustLevelOverride
+		{
+			get
+			{
+				return this._EgalitarianTrustLevelOverride;
+			}
+			set
+			{
+				if ((this._EgalitarianTrustLevelOverride != value))
+				{
+					this.OnEgalitarianTrustLevelOverrideChanging(value);
+					this.SendPropertyChanging();
+					this._EgalitarianTrustLevelOverride = value;
+					this.SendPropertyChanged("EgalitarianTrustLevelOverride");
+					this.OnEgalitarianTrustLevelOverrideChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MustUpdateUserInteractionEgalitarianTrustLevel", DbType="Bit NOT NULL")]
+		public bool MustUpdateUserInteractionEgalitarianTrustLevel
+		{
+			get
+			{
+				return this._MustUpdateUserInteractionEgalitarianTrustLevel;
+			}
+			set
+			{
+				if ((this._MustUpdateUserInteractionEgalitarianTrustLevel != value))
+				{
+					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._MustUpdateUserInteractionEgalitarianTrustLevel = value;
+					this.SendPropertyChanged("MustUpdateUserInteractionEgalitarianTrustLevel");
+					this.OnMustUpdateUserInteractionEgalitarianTrustLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTracker_TrustTrackerStat", Storage="_TrustTrackerStats", ThisKey="TrustTrackerID", OtherKey="TrustTrackerID")]
+		public EntitySet<TrustTrackerStat> TrustTrackerStats
+		{
+			get
+			{
+				return this._TrustTrackerStats;
+			}
+			set
+			{
+				this._TrustTrackerStats.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_TrustTracker", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
+		public TrustTrackerUnit TrustTrackerUnit
+		{
+			get
+			{
+				return this._TrustTrackerUnit.Entity;
+			}
+			set
+			{
+				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrustTrackerUnit.Entity = null;
+						previousValue.TrustTrackers.Remove(this);
+					}
+					this._TrustTrackerUnit.Entity = value;
+					if ((value != null))
+					{
+						value.TrustTrackers.Add(this);
+						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
+					}
+					else
+					{
+						this._TrustTrackerUnitID = default(int);
+					}
+					this.SendPropertyChanged("TrustTrackerUnit");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrustTracker", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.TrustTrackers.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.TrustTrackers.Add(this);
+						this._UserID = value.UserID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrustTrackerStats(TrustTrackerStat entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTracker = this;
+		}
+		
+		private void detach_TrustTrackerStats(TrustTrackerStat entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrustTracker = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserRatings")]
+	public partial class UserRating : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UserRatingID;
+		
+		private int _UserRatingGroupID;
+		
+		private int _RatingID;
+		
+		private int _RatingPhaseStatusID;
+		
+		private int _UserID;
+		
+		private System.Nullable<int> _TrustTrackerUnitID;
+		
+		private System.Nullable<int> _RewardPendingPointsTrackerID;
+		
+		private System.Nullable<int> _MostRecentUserRatingID;
+		
+		private decimal _PreviousRatingOrVirtualRating;
+		
+		private System.Nullable<decimal> _PreviousDisplayedRating;
+		
+		private decimal _EnteredUserRating;
+		
+		private decimal _NewUserRating;
+		
+		private decimal _OriginalAdjustmentPct;
+		
+		private decimal _OriginalTrustLevel;
+		
+		private decimal _MaxGain;
+		
+		private decimal _MaxLoss;
+		
+		private decimal _PotentialPointsShortTerm;
+		
+		private decimal _PotentialPointsLongTerm;
+		
+		private decimal _PotentialPointsLongTermUnweighted;
+		
+		private decimal _LongTermPointsWeight;
+		
+		private System.Nullable<decimal> _PointsPumpingProportion;
+		
+		private decimal _PastPointsPumpingProportion;
+		
+		private decimal _PercentPreviousRatings;
+		
+		private bool _IsTrusted;
+		
+		private bool _MadeDirectly;
+		
+		private bool _LongTermResolutionReflected;
+		
+		private bool _ShortTermResolutionReflected;
+		
+		private bool _PointsHaveBecomePending;
+		
+		private bool _ForceRecalculate;
+		
+		private bool _HighStakesPreviouslySecret;
+		
+		private bool _HighStakesKnown;
+		
+		private bool _SubsequentlyRated;
+		
+		private System.Nullable<decimal> _LogarithmicBase;
+		
+		private System.Nullable<decimal> _HighStakesMultiplierOverride;
+		
+		private System.Nullable<System.DateTime> _WhenPointsBecomePending;
+		
+		private System.DateTime _LastModifiedTime;
+		
+		private byte _VolatilityTrackingNextTimeFrameToRemove;
+		
+		private System.Nullable<decimal> _OneHourVolatility;
+		
+		private System.Nullable<decimal> _OneDayVolatility;
+		
+		private EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> _TrustTrackerForChoiceInGroupsUserRatingLinks;
+		
+		private EntitySet<UserRating> _UserRatings;
+		
+		private EntitySet<Rating> _Ratings;
+		
+		private EntityRef<RatingPhaseStatus> _RatingPhaseStatus;
+		
+		private EntityRef<RewardPendingPointsTracker> _RewardPendingPointsTracker;
+		
+		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
+		
+		private EntityRef<UserRatingGroup> _UserRatingGroup;
+		
+		private EntityRef<UserRating> _UserRating1;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<Rating> _Rating;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserRatingIDChanging(int value);
+    partial void OnUserRatingIDChanged();
+    partial void OnUserRatingGroupIDChanging(int value);
+    partial void OnUserRatingGroupIDChanged();
+    partial void OnRatingIDChanging(int value);
+    partial void OnRatingIDChanged();
+    partial void OnRatingPhaseStatusIDChanging(int value);
+    partial void OnRatingPhaseStatusIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnTrustTrackerUnitIDChanging(System.Nullable<int> value);
+    partial void OnTrustTrackerUnitIDChanged();
+    partial void OnRewardPendingPointsTrackerIDChanging(System.Nullable<int> value);
+    partial void OnRewardPendingPointsTrackerIDChanged();
+    partial void OnMostRecentUserRatingIDChanging(System.Nullable<int> value);
+    partial void OnMostRecentUserRatingIDChanged();
+    partial void OnPreviousRatingOrVirtualRatingChanging(decimal value);
+    partial void OnPreviousRatingOrVirtualRatingChanged();
+    partial void OnPreviousDisplayedRatingChanging(System.Nullable<decimal> value);
+    partial void OnPreviousDisplayedRatingChanged();
+    partial void OnEnteredUserRatingChanging(decimal value);
+    partial void OnEnteredUserRatingChanged();
+    partial void OnNewUserRatingChanging(decimal value);
+    partial void OnNewUserRatingChanged();
+    partial void OnOriginalAdjustmentPctChanging(decimal value);
+    partial void OnOriginalAdjustmentPctChanged();
+    partial void OnOriginalTrustLevelChanging(decimal value);
+    partial void OnOriginalTrustLevelChanged();
+    partial void OnMaxGainChanging(decimal value);
+    partial void OnMaxGainChanged();
+    partial void OnMaxLossChanging(decimal value);
+    partial void OnMaxLossChanged();
+    partial void OnPotentialPointsShortTermChanging(decimal value);
+    partial void OnPotentialPointsShortTermChanged();
+    partial void OnPotentialPointsLongTermChanging(decimal value);
+    partial void OnPotentialPointsLongTermChanged();
+    partial void OnPotentialPointsLongTermUnweightedChanging(decimal value);
+    partial void OnPotentialPointsLongTermUnweightedChanged();
+    partial void OnLongTermPointsWeightChanging(decimal value);
+    partial void OnLongTermPointsWeightChanged();
+    partial void OnPointsPumpingProportionChanging(System.Nullable<decimal> value);
+    partial void OnPointsPumpingProportionChanged();
+    partial void OnPastPointsPumpingProportionChanging(decimal value);
+    partial void OnPastPointsPumpingProportionChanged();
+    partial void OnPercentPreviousRatingsChanging(decimal value);
+    partial void OnPercentPreviousRatingsChanged();
+    partial void OnIsTrustedChanging(bool value);
+    partial void OnIsTrustedChanged();
+    partial void OnMadeDirectlyChanging(bool value);
+    partial void OnMadeDirectlyChanged();
+    partial void OnLongTermResolutionReflectedChanging(bool value);
+    partial void OnLongTermResolutionReflectedChanged();
+    partial void OnShortTermResolutionReflectedChanging(bool value);
+    partial void OnShortTermResolutionReflectedChanged();
+    partial void OnPointsHaveBecomePendingChanging(bool value);
+    partial void OnPointsHaveBecomePendingChanged();
+    partial void OnForceRecalculateChanging(bool value);
+    partial void OnForceRecalculateChanged();
+    partial void OnHighStakesPreviouslySecretChanging(bool value);
+    partial void OnHighStakesPreviouslySecretChanged();
+    partial void OnHighStakesKnownChanging(bool value);
+    partial void OnHighStakesKnownChanged();
+    partial void OnSubsequentlyRatedChanging(bool value);
+    partial void OnSubsequentlyRatedChanged();
+    partial void OnLogarithmicBaseChanging(System.Nullable<decimal> value);
+    partial void OnLogarithmicBaseChanged();
+    partial void OnHighStakesMultiplierOverrideChanging(System.Nullable<decimal> value);
+    partial void OnHighStakesMultiplierOverrideChanged();
+    partial void OnWhenPointsBecomePendingChanging(System.Nullable<System.DateTime> value);
+    partial void OnWhenPointsBecomePendingChanged();
+    partial void OnLastModifiedTimeChanging(System.DateTime value);
+    partial void OnLastModifiedTimeChanged();
+    partial void OnVolatilityTrackingNextTimeFrameToRemoveChanging(byte value);
+    partial void OnVolatilityTrackingNextTimeFrameToRemoveChanged();
+    partial void OnOneHourVolatilityChanging(System.Nullable<decimal> value);
+    partial void OnOneHourVolatilityChanged();
+    partial void OnOneDayVolatilityChanging(System.Nullable<decimal> value);
+    partial void OnOneDayVolatilityChanged();
+    #endregion
+		
+		public UserRating()
+		{
+			this._TrustTrackerForChoiceInGroupsUserRatingLinks = new EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink>(new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.attach_TrustTrackerForChoiceInGroupsUserRatingLinks), new Action<TrustTrackerForChoiceInGroupsUserRatingLink>(this.detach_TrustTrackerForChoiceInGroupsUserRatingLinks));
+			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
+			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
+			this._RatingPhaseStatus = default(EntityRef<RatingPhaseStatus>);
+			this._RewardPendingPointsTracker = default(EntityRef<RewardPendingPointsTracker>);
+			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
+			this._UserRatingGroup = default(EntityRef<UserRatingGroup>);
+			this._UserRating1 = default(EntityRef<UserRating>);
+			this._User = default(EntityRef<User>);
+			this._Rating = default(EntityRef<Rating>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserRatingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int UserRatingID
+		{
+			get
+			{
+				return this._UserRatingID;
+			}
+			set
+			{
+				if ((this._UserRatingID != value))
+				{
+					this.OnUserRatingIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserRatingID = value;
+					this.SendPropertyChanged("UserRatingID");
+					this.OnUserRatingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserRatingGroupID", DbType="Int NOT NULL")]
+		public int UserRatingGroupID
+		{
+			get
+			{
+				return this._UserRatingGroupID;
+			}
+			set
+			{
+				if ((this._UserRatingGroupID != value))
+				{
+					if (this._UserRatingGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserRatingGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserRatingGroupID = value;
+					this.SendPropertyChanged("UserRatingGroupID");
+					this.OnUserRatingGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingID", DbType="Int NOT NULL")]
+		public int RatingID
+		{
+			get
+			{
+				return this._RatingID;
+			}
+			set
+			{
+				if ((this._RatingID != value))
+				{
+					if (this._Rating.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingID = value;
+					this.SendPropertyChanged("RatingID");
+					this.OnRatingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingPhaseStatusID", DbType="Int NOT NULL")]
+		public int RatingPhaseStatusID
+		{
+			get
+			{
+				return this._RatingPhaseStatusID;
+			}
+			set
+			{
+				if ((this._RatingPhaseStatusID != value))
+				{
+					if (this._RatingPhaseStatus.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingPhaseStatusIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingPhaseStatusID = value;
+					this.SendPropertyChanged("RatingPhaseStatusID");
+					this.OnRatingPhaseStatusIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int")]
+		public System.Nullable<int> TrustTrackerUnitID
+		{
+			get
+			{
+				return this._TrustTrackerUnitID;
+			}
+			set
+			{
+				if ((this._TrustTrackerUnitID != value))
+				{
+					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTrustTrackerUnitIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerUnitID = value;
+					this.SendPropertyChanged("TrustTrackerUnitID");
+					this.OnTrustTrackerUnitIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RewardPendingPointsTrackerID", DbType="Int")]
+		public System.Nullable<int> RewardPendingPointsTrackerID
+		{
+			get
+			{
+				return this._RewardPendingPointsTrackerID;
+			}
+			set
+			{
+				if ((this._RewardPendingPointsTrackerID != value))
+				{
+					if (this._RewardPendingPointsTracker.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRewardPendingPointsTrackerIDChanging(value);
+					this.SendPropertyChanging();
+					this._RewardPendingPointsTrackerID = value;
+					this.SendPropertyChanged("RewardPendingPointsTrackerID");
+					this.OnRewardPendingPointsTrackerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MostRecentUserRatingID", DbType="Int")]
+		public System.Nullable<int> MostRecentUserRatingID
+		{
+			get
+			{
+				return this._MostRecentUserRatingID;
+			}
+			set
+			{
+				if ((this._MostRecentUserRatingID != value))
+				{
+					if (this._UserRating1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMostRecentUserRatingIDChanging(value);
+					this.SendPropertyChanging();
+					this._MostRecentUserRatingID = value;
+					this.SendPropertyChanged("MostRecentUserRatingID");
+					this.OnMostRecentUserRatingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreviousRatingOrVirtualRating", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PreviousRatingOrVirtualRating
+		{
+			get
+			{
+				return this._PreviousRatingOrVirtualRating;
+			}
+			set
+			{
+				if ((this._PreviousRatingOrVirtualRating != value))
+				{
+					this.OnPreviousRatingOrVirtualRatingChanging(value);
+					this.SendPropertyChanging();
+					this._PreviousRatingOrVirtualRating = value;
+					this.SendPropertyChanged("PreviousRatingOrVirtualRating");
+					this.OnPreviousRatingOrVirtualRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreviousDisplayedRating", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> PreviousDisplayedRating
+		{
+			get
+			{
+				return this._PreviousDisplayedRating;
+			}
+			set
+			{
+				if ((this._PreviousDisplayedRating != value))
+				{
+					this.OnPreviousDisplayedRatingChanging(value);
+					this.SendPropertyChanging();
+					this._PreviousDisplayedRating = value;
+					this.SendPropertyChanged("PreviousDisplayedRating");
+					this.OnPreviousDisplayedRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnteredUserRating", DbType="Decimal(18,4) NOT NULL")]
+		public decimal EnteredUserRating
+		{
+			get
+			{
+				return this._EnteredUserRating;
+			}
+			set
+			{
+				if ((this._EnteredUserRating != value))
+				{
+					this.OnEnteredUserRatingChanging(value);
+					this.SendPropertyChanging();
+					this._EnteredUserRating = value;
+					this.SendPropertyChanged("EnteredUserRating");
+					this.OnEnteredUserRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewUserRating", DbType="Decimal(18,4) NOT NULL")]
+		public decimal NewUserRating
+		{
+			get
+			{
+				return this._NewUserRating;
+			}
+			set
+			{
+				if ((this._NewUserRating != value))
+				{
+					this.OnNewUserRatingChanging(value);
+					this.SendPropertyChanging();
+					this._NewUserRating = value;
+					this.SendPropertyChanged("NewUserRating");
+					this.OnNewUserRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OriginalAdjustmentPct", DbType="Decimal(7,4) NOT NULL")]
+		public decimal OriginalAdjustmentPct
+		{
+			get
+			{
+				return this._OriginalAdjustmentPct;
+			}
+			set
+			{
+				if ((this._OriginalAdjustmentPct != value))
+				{
+					this.OnOriginalAdjustmentPctChanging(value);
+					this.SendPropertyChanging();
+					this._OriginalAdjustmentPct = value;
+					this.SendPropertyChanged("OriginalAdjustmentPct");
+					this.OnOriginalAdjustmentPctChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OriginalTrustLevel", DbType="Decimal(7,4) NOT NULL")]
+		public decimal OriginalTrustLevel
+		{
+			get
+			{
+				return this._OriginalTrustLevel;
+			}
+			set
+			{
+				if ((this._OriginalTrustLevel != value))
+				{
+					this.OnOriginalTrustLevelChanging(value);
+					this.SendPropertyChanging();
+					this._OriginalTrustLevel = value;
+					this.SendPropertyChanged("OriginalTrustLevel");
+					this.OnOriginalTrustLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxGain", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MaxGain
+		{
+			get
+			{
+				return this._MaxGain;
+			}
+			set
+			{
+				if ((this._MaxGain != value))
+				{
+					this.OnMaxGainChanging(value);
+					this.SendPropertyChanging();
+					this._MaxGain = value;
+					this.SendPropertyChanged("MaxGain");
+					this.OnMaxGainChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxLoss", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MaxLoss
+		{
+			get
+			{
+				return this._MaxLoss;
+			}
+			set
+			{
+				if ((this._MaxLoss != value))
+				{
+					this.OnMaxLossChanging(value);
+					this.SendPropertyChanging();
+					this._MaxLoss = value;
+					this.SendPropertyChanged("MaxLoss");
+					this.OnMaxLossChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialPointsShortTerm", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PotentialPointsShortTerm
+		{
+			get
+			{
+				return this._PotentialPointsShortTerm;
+			}
+			set
+			{
+				if ((this._PotentialPointsShortTerm != value))
+				{
+					this.OnPotentialPointsShortTermChanging(value);
+					this.SendPropertyChanging();
+					this._PotentialPointsShortTerm = value;
+					this.SendPropertyChanged("PotentialPointsShortTerm");
+					this.OnPotentialPointsShortTermChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialPointsLongTerm", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PotentialPointsLongTerm
+		{
+			get
+			{
+				return this._PotentialPointsLongTerm;
+			}
+			set
+			{
+				if ((this._PotentialPointsLongTerm != value))
+				{
+					this.OnPotentialPointsLongTermChanging(value);
+					this.SendPropertyChanging();
+					this._PotentialPointsLongTerm = value;
+					this.SendPropertyChanged("PotentialPointsLongTerm");
+					this.OnPotentialPointsLongTermChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PotentialPointsLongTermUnweighted", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PotentialPointsLongTermUnweighted
+		{
+			get
+			{
+				return this._PotentialPointsLongTermUnweighted;
+			}
+			set
+			{
+				if ((this._PotentialPointsLongTermUnweighted != value))
+				{
+					this.OnPotentialPointsLongTermUnweightedChanging(value);
+					this.SendPropertyChanging();
+					this._PotentialPointsLongTermUnweighted = value;
+					this.SendPropertyChanged("PotentialPointsLongTermUnweighted");
+					this.OnPotentialPointsLongTermUnweightedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LongTermPointsWeight", DbType="Decimal(18,4) NOT NULL")]
+		public decimal LongTermPointsWeight
+		{
+			get
+			{
+				return this._LongTermPointsWeight;
+			}
+			set
+			{
+				if ((this._LongTermPointsWeight != value))
+				{
+					this.OnLongTermPointsWeightChanging(value);
+					this.SendPropertyChanging();
+					this._LongTermPointsWeight = value;
+					this.SendPropertyChanged("LongTermPointsWeight");
+					this.OnLongTermPointsWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsPumpingProportion", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> PointsPumpingProportion
+		{
+			get
+			{
+				return this._PointsPumpingProportion;
+			}
+			set
+			{
+				if ((this._PointsPumpingProportion != value))
+				{
+					this.OnPointsPumpingProportionChanging(value);
+					this.SendPropertyChanging();
+					this._PointsPumpingProportion = value;
+					this.SendPropertyChanged("PointsPumpingProportion");
+					this.OnPointsPumpingProportionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PastPointsPumpingProportion", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PastPointsPumpingProportion
+		{
+			get
+			{
+				return this._PastPointsPumpingProportion;
+			}
+			set
+			{
+				if ((this._PastPointsPumpingProportion != value))
+				{
+					this.OnPastPointsPumpingProportionChanging(value);
+					this.SendPropertyChanging();
+					this._PastPointsPumpingProportion = value;
+					this.SendPropertyChanged("PastPointsPumpingProportion");
+					this.OnPastPointsPumpingProportionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentPreviousRatings", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PercentPreviousRatings
+		{
+			get
+			{
+				return this._PercentPreviousRatings;
+			}
+			set
+			{
+				if ((this._PercentPreviousRatings != value))
+				{
+					this.OnPercentPreviousRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._PercentPreviousRatings = value;
+					this.SendPropertyChanged("PercentPreviousRatings");
+					this.OnPercentPreviousRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsTrusted", DbType="Bit NOT NULL")]
+		public bool IsTrusted
+		{
+			get
+			{
+				return this._IsTrusted;
+			}
+			set
+			{
+				if ((this._IsTrusted != value))
+				{
+					this.OnIsTrustedChanging(value);
+					this.SendPropertyChanging();
+					this._IsTrusted = value;
+					this.SendPropertyChanged("IsTrusted");
+					this.OnIsTrustedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MadeDirectly", DbType="Bit NOT NULL")]
+		public bool MadeDirectly
+		{
+			get
+			{
+				return this._MadeDirectly;
+			}
+			set
+			{
+				if ((this._MadeDirectly != value))
+				{
+					this.OnMadeDirectlyChanging(value);
+					this.SendPropertyChanging();
+					this._MadeDirectly = value;
+					this.SendPropertyChanged("MadeDirectly");
+					this.OnMadeDirectlyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LongTermResolutionReflected", DbType="Bit NOT NULL")]
+		public bool LongTermResolutionReflected
+		{
+			get
+			{
+				return this._LongTermResolutionReflected;
+			}
+			set
+			{
+				if ((this._LongTermResolutionReflected != value))
+				{
+					this.OnLongTermResolutionReflectedChanging(value);
+					this.SendPropertyChanging();
+					this._LongTermResolutionReflected = value;
+					this.SendPropertyChanged("LongTermResolutionReflected");
+					this.OnLongTermResolutionReflectedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShortTermResolutionReflected", DbType="Bit NOT NULL")]
+		public bool ShortTermResolutionReflected
+		{
+			get
+			{
+				return this._ShortTermResolutionReflected;
+			}
+			set
+			{
+				if ((this._ShortTermResolutionReflected != value))
+				{
+					this.OnShortTermResolutionReflectedChanging(value);
+					this.SendPropertyChanging();
+					this._ShortTermResolutionReflected = value;
+					this.SendPropertyChanged("ShortTermResolutionReflected");
+					this.OnShortTermResolutionReflectedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsHaveBecomePending", DbType="Bit NOT NULL")]
+		public bool PointsHaveBecomePending
+		{
+			get
+			{
+				return this._PointsHaveBecomePending;
+			}
+			set
+			{
+				if ((this._PointsHaveBecomePending != value))
+				{
+					this.OnPointsHaveBecomePendingChanging(value);
+					this.SendPropertyChanging();
+					this._PointsHaveBecomePending = value;
+					this.SendPropertyChanged("PointsHaveBecomePending");
+					this.OnPointsHaveBecomePendingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ForceRecalculate", DbType="Bit NOT NULL")]
+		public bool ForceRecalculate
+		{
+			get
+			{
+				return this._ForceRecalculate;
+			}
+			set
+			{
+				if ((this._ForceRecalculate != value))
+				{
+					this.OnForceRecalculateChanging(value);
+					this.SendPropertyChanging();
+					this._ForceRecalculate = value;
+					this.SendPropertyChanged("ForceRecalculate");
+					this.OnForceRecalculateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesPreviouslySecret", DbType="Bit NOT NULL")]
+		public bool HighStakesPreviouslySecret
+		{
+			get
+			{
+				return this._HighStakesPreviouslySecret;
+			}
+			set
+			{
+				if ((this._HighStakesPreviouslySecret != value))
+				{
+					this.OnHighStakesPreviouslySecretChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesPreviouslySecret = value;
+					this.SendPropertyChanged("HighStakesPreviouslySecret");
+					this.OnHighStakesPreviouslySecretChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesKnown", DbType="Bit NOT NULL")]
+		public bool HighStakesKnown
+		{
+			get
+			{
+				return this._HighStakesKnown;
+			}
+			set
+			{
+				if ((this._HighStakesKnown != value))
+				{
+					this.OnHighStakesKnownChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesKnown = value;
+					this.SendPropertyChanged("HighStakesKnown");
+					this.OnHighStakesKnownChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubsequentlyRated", DbType="Bit NOT NULL")]
+		public bool SubsequentlyRated
+		{
+			get
+			{
+				return this._SubsequentlyRated;
+			}
+			set
+			{
+				if ((this._SubsequentlyRated != value))
+				{
+					this.OnSubsequentlyRatedChanging(value);
+					this.SendPropertyChanging();
+					this._SubsequentlyRated = value;
+					this.SendPropertyChanged("SubsequentlyRated");
+					this.OnSubsequentlyRatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogarithmicBase", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> LogarithmicBase
+		{
+			get
+			{
+				return this._LogarithmicBase;
+			}
+			set
+			{
+				if ((this._LogarithmicBase != value))
+				{
+					this.OnLogarithmicBaseChanging(value);
+					this.SendPropertyChanging();
+					this._LogarithmicBase = value;
+					this.SendPropertyChanged("LogarithmicBase");
+					this.OnLogarithmicBaseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighStakesMultiplierOverride", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> HighStakesMultiplierOverride
+		{
+			get
+			{
+				return this._HighStakesMultiplierOverride;
+			}
+			set
+			{
+				if ((this._HighStakesMultiplierOverride != value))
+				{
+					this.OnHighStakesMultiplierOverrideChanging(value);
+					this.SendPropertyChanging();
+					this._HighStakesMultiplierOverride = value;
+					this.SendPropertyChanged("HighStakesMultiplierOverride");
+					this.OnHighStakesMultiplierOverrideChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WhenPointsBecomePending", DbType="DateTime")]
+		public System.Nullable<System.DateTime> WhenPointsBecomePending
+		{
+			get
+			{
+				return this._WhenPointsBecomePending;
+			}
+			set
+			{
+				if ((this._WhenPointsBecomePending != value))
+				{
+					this.OnWhenPointsBecomePendingChanging(value);
+					this.SendPropertyChanging();
+					this._WhenPointsBecomePending = value;
+					this.SendPropertyChanged("WhenPointsBecomePending");
+					this.OnWhenPointsBecomePendingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedTime", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedTime
+		{
+			get
+			{
+				return this._LastModifiedTime;
+			}
+			set
+			{
+				if ((this._LastModifiedTime != value))
+				{
+					this.OnLastModifiedTimeChanging(value);
+					this.SendPropertyChanging();
+					this._LastModifiedTime = value;
+					this.SendPropertyChanged("LastModifiedTime");
+					this.OnLastModifiedTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTrackingNextTimeFrameToRemove", DbType="TinyInt NOT NULL")]
+		public byte VolatilityTrackingNextTimeFrameToRemove
+		{
+			get
+			{
+				return this._VolatilityTrackingNextTimeFrameToRemove;
+			}
+			set
+			{
+				if ((this._VolatilityTrackingNextTimeFrameToRemove != value))
+				{
+					this.OnVolatilityTrackingNextTimeFrameToRemoveChanging(value);
+					this.SendPropertyChanging();
+					this._VolatilityTrackingNextTimeFrameToRemove = value;
+					this.SendPropertyChanged("VolatilityTrackingNextTimeFrameToRemove");
+					this.OnVolatilityTrackingNextTimeFrameToRemoveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OneHourVolatility", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> OneHourVolatility
+		{
+			get
+			{
+				return this._OneHourVolatility;
+			}
+			set
+			{
+				if ((this._OneHourVolatility != value))
+				{
+					this.OnOneHourVolatilityChanging(value);
+					this.SendPropertyChanging();
+					this._OneHourVolatility = value;
+					this.SendPropertyChanged("OneHourVolatility");
+					this.OnOneHourVolatilityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OneDayVolatility", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> OneDayVolatility
+		{
+			get
+			{
+				return this._OneDayVolatility;
+			}
+			set
+			{
+				if ((this._OneDayVolatility != value))
+				{
+					this.OnOneDayVolatilityChanging(value);
+					this.SendPropertyChanging();
+					this._OneDayVolatility = value;
+					this.SendPropertyChanged("OneDayVolatility");
+					this.OnOneDayVolatilityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_TrustTrackerForChoiceInGroupsUserRatingLink", Storage="_TrustTrackerForChoiceInGroupsUserRatingLinks", ThisKey="UserRatingID", OtherKey="UserRatingID")]
+		public EntitySet<TrustTrackerForChoiceInGroupsUserRatingLink> TrustTrackerForChoiceInGroupsUserRatingLinks
+		{
+			get
+			{
+				return this._TrustTrackerForChoiceInGroupsUserRatingLinks;
+			}
+			set
+			{
+				this._TrustTrackerForChoiceInGroupsUserRatingLinks.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_UserRating", Storage="_UserRatings", ThisKey="UserRatingID", OtherKey="MostRecentUserRatingID")]
+		public EntitySet<UserRating> UserRatings
+		{
+			get
+			{
+				return this._UserRatings;
+			}
+			set
+			{
+				this._UserRatings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_Rating", Storage="_Ratings", ThisKey="UserRatingID", OtherKey="MostRecentUserRatingID")]
+		public EntitySet<Rating> Ratings
+		{
+			get
+			{
+				return this._Ratings;
+			}
+			set
+			{
+				this._Ratings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingPhaseStatus_UserRating", Storage="_RatingPhaseStatus", ThisKey="RatingPhaseStatusID", OtherKey="RatingPhaseStatusID", IsForeignKey=true)]
+		public RatingPhaseStatus RatingPhaseStatus
+		{
+			get
+			{
+				return this._RatingPhaseStatus.Entity;
+			}
+			set
+			{
+				RatingPhaseStatus previousValue = this._RatingPhaseStatus.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingPhaseStatus.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingPhaseStatus.Entity = null;
+						previousValue.UserRatings.Remove(this);
+					}
+					this._RatingPhaseStatus.Entity = value;
+					if ((value != null))
+					{
+						value.UserRatings.Add(this);
+						this._RatingPhaseStatusID = value.RatingPhaseStatusID;
+					}
+					else
+					{
+						this._RatingPhaseStatusID = default(int);
+					}
+					this.SendPropertyChanged("RatingPhaseStatus");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RewardPendingPointsTracker_UserRating", Storage="_RewardPendingPointsTracker", ThisKey="RewardPendingPointsTrackerID", OtherKey="RewardPendingPointsTrackerID", IsForeignKey=true)]
+		public RewardPendingPointsTracker RewardPendingPointsTracker
+		{
+			get
+			{
+				return this._RewardPendingPointsTracker.Entity;
+			}
+			set
+			{
+				RewardPendingPointsTracker previousValue = this._RewardPendingPointsTracker.Entity;
+				if (((previousValue != value) 
+							|| (this._RewardPendingPointsTracker.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RewardPendingPointsTracker.Entity = null;
+						previousValue.UserRatings.Remove(this);
+					}
+					this._RewardPendingPointsTracker.Entity = value;
+					if ((value != null))
+					{
+						value.UserRatings.Add(this);
+						this._RewardPendingPointsTrackerID = value.RewardPendingPointsTrackerID;
+					}
+					else
+					{
+						this._RewardPendingPointsTrackerID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("RewardPendingPointsTracker");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_UserRating", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
+		public TrustTrackerUnit TrustTrackerUnit
+		{
+			get
+			{
+				return this._TrustTrackerUnit.Entity;
+			}
+			set
+			{
+				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrustTrackerUnit.Entity = null;
+						previousValue.UserRatings.Remove(this);
+					}
+					this._TrustTrackerUnit.Entity = value;
+					if ((value != null))
+					{
+						value.UserRatings.Add(this);
+						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
+					}
+					else
+					{
+						this._TrustTrackerUnitID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("TrustTrackerUnit");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRatingGroup_UserRating", Storage="_UserRatingGroup", ThisKey="UserRatingGroupID", OtherKey="UserRatingGroupID", IsForeignKey=true)]
+		public UserRatingGroup UserRatingGroup
+		{
+			get
+			{
+				return this._UserRatingGroup.Entity;
+			}
+			set
+			{
+				UserRatingGroup previousValue = this._UserRatingGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._UserRatingGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserRatingGroup.Entity = null;
+						previousValue.UserRatings.Remove(this);
+					}
+					this._UserRatingGroup.Entity = value;
+					if ((value != null))
+					{
+						value.UserRatings.Add(this);
+						this._UserRatingGroupID = value.UserRatingGroupID;
+					}
+					else
+					{
+						this._UserRatingGroupID = default(int);
+					}
+					this.SendPropertyChanged("UserRatingGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_UserRating", Storage="_UserRating1", ThisKey="MostRecentUserRatingID", OtherKey="UserRatingID", IsForeignKey=true)]
+		public UserRating UserRating1
+		{
+			get
+			{
+				return this._UserRating1.Entity;
+			}
+			set
+			{
+				UserRating previousValue = this._UserRating1.Entity;
+				if (((previousValue != value) 
+							|| (this._UserRating1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserRating1.Entity = null;
+						previousValue.UserRatings.Remove(this);
+					}
+					this._UserRating1.Entity = value;
+					if ((value != null))
+					{
+						value.UserRatings.Add(this);
+						this._MostRecentUserRatingID = value.UserRatingID;
+					}
+					else
+					{
+						this._MostRecentUserRatingID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("UserRating1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserRating", Storage="_User", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.UserRatings.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.UserRatings.Add(this);
+						this._UserID = value.UserID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_UserRating", Storage="_Rating", ThisKey="RatingID", OtherKey="RatingID", IsForeignKey=true)]
+		public Rating Rating
+		{
+			get
+			{
+				return this._Rating.Entity;
+			}
+			set
+			{
+				Rating previousValue = this._Rating.Entity;
+				if (((previousValue != value) 
+							|| (this._Rating.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Rating.Entity = null;
+						previousValue.UserRatings.Remove(this);
+					}
+					this._Rating.Entity = value;
+					if ((value != null))
+					{
+						value.UserRatings.Add(this);
+						this._RatingID = value.RatingID;
+					}
+					else
+					{
+						this._RatingID = default(int);
+					}
+					this.SendPropertyChanged("Rating");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserRating = this;
+		}
+		
+		private void detach_TrustTrackerForChoiceInGroupsUserRatingLinks(TrustTrackerForChoiceInGroupsUserRatingLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserRating = null;
+		}
+		
+		private void attach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserRating1 = this;
+		}
+		
+		private void detach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserRating1 = null;
+		}
+		
+		private void attach_Ratings(Rating entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserRating = this;
+		}
+		
+		private void detach_Ratings(Rating entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserRating = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Ratings")]
+	public partial class Rating : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RatingID;
+		
+		private int _RatingGroupID;
+		
+		private int _RatingCharacteristicsID;
+		
+		private System.Nullable<int> _OwnedRatingGroupID;
+		
+		private int _TopmostRatingGroupID;
+		
+		private System.Nullable<int> _MostRecentUserRatingID;
+		
+		private int _NumInGroup;
+		
+		private int _TotalUserRatings;
+		
+		private string _Name;
+		
+		private System.Nullable<int> _Creator;
+		
+		private System.Nullable<decimal> _CurrentValue;
+		
+		private System.Nullable<decimal> _LastTrustedValue;
+		
+		private System.DateTime _LastModifiedResolutionTimeOrCurrentValue;
+		
+		private System.Nullable<System.DateTime> _ReviewRecentUserRatingsAfter;
+		
+		private EntitySet<ChangesGroup> _ChangesGroups;
+		
+		private EntitySet<RatingCondition> _RatingConditions;
+		
+		private EntitySet<RatingPhaseStatus> _RatingPhaseStatus;
+		
+		private EntitySet<UserRating> _UserRatings;
+		
+		private EntityRef<UserRating> _UserRating;
+		
+		private EntityRef<RatingCharacteristic> _RatingCharacteristic;
+		
+		private EntityRef<RatingGroup> _RatingGroup;
+		
+		private EntityRef<RatingGroup> _RatingGroup1;
+		
+		private EntityRef<RatingGroup> _RatingGroup2;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRatingIDChanging(int value);
+    partial void OnRatingIDChanged();
+    partial void OnRatingGroupIDChanging(int value);
+    partial void OnRatingGroupIDChanged();
+    partial void OnRatingCharacteristicsIDChanging(int value);
+    partial void OnRatingCharacteristicsIDChanged();
+    partial void OnOwnedRatingGroupIDChanging(System.Nullable<int> value);
+    partial void OnOwnedRatingGroupIDChanged();
+    partial void OnTopmostRatingGroupIDChanging(int value);
+    partial void OnTopmostRatingGroupIDChanged();
+    partial void OnMostRecentUserRatingIDChanging(System.Nullable<int> value);
+    partial void OnMostRecentUserRatingIDChanged();
+    partial void OnNumInGroupChanging(int value);
+    partial void OnNumInGroupChanged();
+    partial void OnTotalUserRatingsChanging(int value);
+    partial void OnTotalUserRatingsChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnCreatorChanging(System.Nullable<int> value);
+    partial void OnCreatorChanged();
+    partial void OnCurrentValueChanging(System.Nullable<decimal> value);
+    partial void OnCurrentValueChanged();
+    partial void OnLastTrustedValueChanging(System.Nullable<decimal> value);
+    partial void OnLastTrustedValueChanged();
+    partial void OnLastModifiedResolutionTimeOrCurrentValueChanging(System.DateTime value);
+    partial void OnLastModifiedResolutionTimeOrCurrentValueChanged();
+    partial void OnReviewRecentUserRatingsAfterChanging(System.Nullable<System.DateTime> value);
+    partial void OnReviewRecentUserRatingsAfterChanged();
+    #endregion
+		
+		public Rating()
+		{
+			this._ChangesGroups = new EntitySet<ChangesGroup>(new Action<ChangesGroup>(this.attach_ChangesGroups), new Action<ChangesGroup>(this.detach_ChangesGroups));
+			this._RatingConditions = new EntitySet<RatingCondition>(new Action<RatingCondition>(this.attach_RatingConditions), new Action<RatingCondition>(this.detach_RatingConditions));
+			this._RatingPhaseStatus = new EntitySet<RatingPhaseStatus>(new Action<RatingPhaseStatus>(this.attach_RatingPhaseStatus), new Action<RatingPhaseStatus>(this.detach_RatingPhaseStatus));
+			this._UserRatings = new EntitySet<UserRating>(new Action<UserRating>(this.attach_UserRatings), new Action<UserRating>(this.detach_UserRatings));
+			this._UserRating = default(EntityRef<UserRating>);
+			this._RatingCharacteristic = default(EntityRef<RatingCharacteristic>);
+			this._RatingGroup = default(EntityRef<RatingGroup>);
+			this._RatingGroup1 = default(EntityRef<RatingGroup>);
+			this._RatingGroup2 = default(EntityRef<RatingGroup>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RatingID
+		{
+			get
+			{
+				return this._RatingID;
+			}
+			set
+			{
+				if ((this._RatingID != value))
+				{
+					this.OnRatingIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingID = value;
+					this.SendPropertyChanged("RatingID");
+					this.OnRatingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupID", DbType="Int NOT NULL")]
+		public int RatingGroupID
+		{
+			get
+			{
+				return this._RatingGroupID;
+			}
+			set
+			{
+				if ((this._RatingGroupID != value))
+				{
+					if (this._RatingGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingGroupID = value;
+					this.SendPropertyChanged("RatingGroupID");
+					this.OnRatingGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingCharacteristicsID", DbType="Int NOT NULL")]
+		public int RatingCharacteristicsID
+		{
+			get
+			{
+				return this._RatingCharacteristicsID;
+			}
+			set
+			{
+				if ((this._RatingCharacteristicsID != value))
+				{
+					if (this._RatingCharacteristic.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingCharacteristicsIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingCharacteristicsID = value;
+					this.SendPropertyChanged("RatingCharacteristicsID");
+					this.OnRatingCharacteristicsIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OwnedRatingGroupID", DbType="Int")]
+		public System.Nullable<int> OwnedRatingGroupID
+		{
+			get
+			{
+				return this._OwnedRatingGroupID;
+			}
+			set
+			{
+				if ((this._OwnedRatingGroupID != value))
+				{
+					if (this._RatingGroup1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOwnedRatingGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._OwnedRatingGroupID = value;
+					this.SendPropertyChanged("OwnedRatingGroupID");
+					this.OnOwnedRatingGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TopmostRatingGroupID", DbType="Int NOT NULL")]
+		public int TopmostRatingGroupID
+		{
+			get
+			{
+				return this._TopmostRatingGroupID;
+			}
+			set
+			{
+				if ((this._TopmostRatingGroupID != value))
+				{
+					if (this._RatingGroup2.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTopmostRatingGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._TopmostRatingGroupID = value;
+					this.SendPropertyChanged("TopmostRatingGroupID");
+					this.OnTopmostRatingGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MostRecentUserRatingID", DbType="Int")]
+		public System.Nullable<int> MostRecentUserRatingID
+		{
+			get
+			{
+				return this._MostRecentUserRatingID;
+			}
+			set
+			{
+				if ((this._MostRecentUserRatingID != value))
+				{
+					if (this._UserRating.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMostRecentUserRatingIDChanging(value);
+					this.SendPropertyChanging();
+					this._MostRecentUserRatingID = value;
+					this.SendPropertyChanged("MostRecentUserRatingID");
+					this.OnMostRecentUserRatingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumInGroup", DbType="Int NOT NULL")]
+		public int NumInGroup
+		{
+			get
+			{
+				return this._NumInGroup;
+			}
+			set
+			{
+				if ((this._NumInGroup != value))
+				{
+					this.OnNumInGroupChanging(value);
+					this.SendPropertyChanging();
+					this._NumInGroup = value;
+					this.SendPropertyChanged("NumInGroup");
+					this.OnNumInGroupChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalUserRatings", DbType="Int NOT NULL")]
+		public int TotalUserRatings
+		{
+			get
+			{
+				return this._TotalUserRatings;
+			}
+			set
+			{
+				if ((this._TotalUserRatings != value))
+				{
+					this.OnTotalUserRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._TotalUserRatings = value;
+					this.SendPropertyChanged("TotalUserRatings");
+					this.OnTotalUserRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
+		public System.Nullable<int> Creator
+		{
+			get
+			{
+				return this._Creator;
+			}
+			set
+			{
+				if ((this._Creator != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreatorChanging(value);
+					this.SendPropertyChanging();
+					this._Creator = value;
+					this.SendPropertyChanged("Creator");
+					this.OnCreatorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentValue", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> CurrentValue
+		{
+			get
+			{
+				return this._CurrentValue;
+			}
+			set
+			{
+				if ((this._CurrentValue != value))
+				{
+					this.OnCurrentValueChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentValue = value;
+					this.SendPropertyChanged("CurrentValue");
+					this.OnCurrentValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastTrustedValue", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> LastTrustedValue
+		{
+			get
+			{
+				return this._LastTrustedValue;
+			}
+			set
+			{
+				if ((this._LastTrustedValue != value))
+				{
+					this.OnLastTrustedValueChanging(value);
+					this.SendPropertyChanging();
+					this._LastTrustedValue = value;
+					this.SendPropertyChanged("LastTrustedValue");
+					this.OnLastTrustedValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedResolutionTimeOrCurrentValue", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedResolutionTimeOrCurrentValue
+		{
+			get
+			{
+				return this._LastModifiedResolutionTimeOrCurrentValue;
+			}
+			set
+			{
+				if ((this._LastModifiedResolutionTimeOrCurrentValue != value))
+				{
+					this.OnLastModifiedResolutionTimeOrCurrentValueChanging(value);
+					this.SendPropertyChanging();
+					this._LastModifiedResolutionTimeOrCurrentValue = value;
+					this.SendPropertyChanged("LastModifiedResolutionTimeOrCurrentValue");
+					this.OnLastModifiedResolutionTimeOrCurrentValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReviewRecentUserRatingsAfter", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ReviewRecentUserRatingsAfter
+		{
+			get
+			{
+				return this._ReviewRecentUserRatingsAfter;
+			}
+			set
+			{
+				if ((this._ReviewRecentUserRatingsAfter != value))
+				{
+					this.OnReviewRecentUserRatingsAfterChanging(value);
+					this.SendPropertyChanging();
+					this._ReviewRecentUserRatingsAfter = value;
+					this.SendPropertyChanged("ReviewRecentUserRatingsAfter");
+					this.OnReviewRecentUserRatingsAfterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_ChangesGroup", Storage="_ChangesGroups", ThisKey="RatingID", OtherKey="RewardRatingID")]
+		public EntitySet<ChangesGroup> ChangesGroups
+		{
+			get
+			{
+				return this._ChangesGroups;
+			}
+			set
+			{
+				this._ChangesGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_RatingCondition", Storage="_RatingConditions", ThisKey="RatingID", OtherKey="ConditionRatingID")]
+		public EntitySet<RatingCondition> RatingConditions
+		{
+			get
+			{
+				return this._RatingConditions;
+			}
+			set
+			{
+				this._RatingConditions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_RatingPhaseStatus", Storage="_RatingPhaseStatus", ThisKey="RatingID", OtherKey="RatingID")]
+		public EntitySet<RatingPhaseStatus> RatingPhaseStatus
+		{
+			get
+			{
+				return this._RatingPhaseStatus;
+			}
+			set
+			{
+				this._RatingPhaseStatus.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rating_UserRating", Storage="_UserRatings", ThisKey="RatingID", OtherKey="RatingID")]
+		public EntitySet<UserRating> UserRatings
+		{
+			get
+			{
+				return this._UserRatings;
+			}
+			set
+			{
+				this._UserRatings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserRating_Rating", Storage="_UserRating", ThisKey="MostRecentUserRatingID", OtherKey="UserRatingID", IsForeignKey=true, DeleteRule="CASCADE")]
+		public UserRating UserRating
+		{
+			get
+			{
+				return this._UserRating.Entity;
+			}
+			set
+			{
+				UserRating previousValue = this._UserRating.Entity;
+				if (((previousValue != value) 
+							|| (this._UserRating.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserRating.Entity = null;
+						previousValue.Ratings.Remove(this);
+					}
+					this._UserRating.Entity = value;
+					if ((value != null))
+					{
+						value.Ratings.Add(this);
+						this._MostRecentUserRatingID = value.UserRatingID;
+					}
+					else
+					{
+						this._MostRecentUserRatingID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("UserRating");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCharacteristic_Rating", Storage="_RatingCharacteristic", ThisKey="RatingCharacteristicsID", OtherKey="RatingCharacteristicsID", IsForeignKey=true)]
+		public RatingCharacteristic RatingCharacteristic
+		{
+			get
+			{
+				return this._RatingCharacteristic.Entity;
+			}
+			set
+			{
+				RatingCharacteristic previousValue = this._RatingCharacteristic.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingCharacteristic.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingCharacteristic.Entity = null;
+						previousValue.Ratings.Remove(this);
+					}
+					this._RatingCharacteristic.Entity = value;
+					if ((value != null))
+					{
+						value.Ratings.Add(this);
+						this._RatingCharacteristicsID = value.RatingCharacteristicsID;
+					}
+					else
+					{
+						this._RatingCharacteristicsID = default(int);
+					}
+					this.SendPropertyChanged("RatingCharacteristic");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_Rating", Storage="_RatingGroup", ThisKey="RatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
+		public RatingGroup RatingGroup
+		{
+			get
+			{
+				return this._RatingGroup.Entity;
+			}
+			set
+			{
+				RatingGroup previousValue = this._RatingGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroup.Entity = null;
+						previousValue.Ratings.Remove(this);
+					}
+					this._RatingGroup.Entity = value;
+					if ((value != null))
+					{
+						value.Ratings.Add(this);
+						this._RatingGroupID = value.RatingGroupID;
+					}
+					else
+					{
+						this._RatingGroupID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_Rating1", Storage="_RatingGroup1", ThisKey="OwnedRatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
+		public RatingGroup RatingGroup1
+		{
+			get
+			{
+				return this._RatingGroup1.Entity;
+			}
+			set
+			{
+				RatingGroup previousValue = this._RatingGroup1.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroup1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroup1.Entity = null;
+						previousValue.Ratings1.Remove(this);
+					}
+					this._RatingGroup1.Entity = value;
+					if ((value != null))
+					{
+						value.Ratings1.Add(this);
+						this._OwnedRatingGroupID = value.RatingGroupID;
+					}
+					else
+					{
+						this._OwnedRatingGroupID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("RatingGroup1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_Rating2", Storage="_RatingGroup2", ThisKey="TopmostRatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
+		public RatingGroup RatingGroup2
+		{
+			get
+			{
+				return this._RatingGroup2.Entity;
+			}
+			set
+			{
+				RatingGroup previousValue = this._RatingGroup2.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroup2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroup2.Entity = null;
+						previousValue.Ratings2.Remove(this);
+					}
+					this._RatingGroup2.Entity = value;
+					if ((value != null))
+					{
+						value.Ratings2.Add(this);
+						this._TopmostRatingGroupID = value.RatingGroupID;
+					}
+					else
+					{
+						this._TopmostRatingGroupID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroup2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Rating", Storage="_User", ThisKey="Creator", OtherKey="UserID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Ratings.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Ratings.Add(this);
+						this._Creator = value.UserID;
+					}
+					else
+					{
+						this._Creator = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ChangesGroups(ChangesGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = this;
+		}
+		
+		private void detach_ChangesGroups(ChangesGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = null;
+		}
+		
+		private void attach_RatingConditions(RatingCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = this;
+		}
+		
+		private void detach_RatingConditions(RatingCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = null;
+		}
+		
+		private void attach_RatingPhaseStatus(RatingPhaseStatus entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = this;
+		}
+		
+		private void detach_RatingPhaseStatus(RatingPhaseStatus entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = null;
+		}
+		
+		private void attach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = this;
+		}
+		
+		private void detach_UserRatings(UserRating entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rating = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RatingGroupAttributes")]
+	public partial class RatingGroupAttribute : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RatingGroupAttributesID;
+		
+		private int _RatingCharacteristicsID;
+		
+		private System.Nullable<int> _RatingConditionID;
+		
+		private System.Nullable<int> _PointsManagerID;
+		
+		private System.Nullable<decimal> _ConstrainedSum;
+		
+		private string _Name;
+		
+		private System.Nullable<byte> _TypeOfRatingGroup;
+		
+		private string _Description;
+		
+		private bool _RatingEndingTimeVaries;
+		
+		private bool _RatingsCanBeAutocalculated;
+		
+		private decimal _LongTermPointsWeight;
+		
+		private int _MinimumDaysToTrackLongTerm;
+		
+		private System.Nullable<int> _Creator;
+		
+		private byte _Status;
+		
+		private EntitySet<OverrideCharacteristic> _OverrideCharacteristics;
+		
+		private EntitySet<ProposalEvaluationRatingSetting> _ProposalEvaluationRatingSettings;
+		
+		private EntitySet<RatingPlan> _RatingPlans;
+		
+		private EntitySet<RatingPlan> _RatingPlans1;
+		
+		private EntitySet<RewardRatingSetting> _RewardRatingSettings;
+		
+		private EntitySet<RatingGroup> _RatingGroups;
+		
+		private EntitySet<TblColumn> _TblColumns;
+		
+		private EntityRef<PointsManager> _PointsManager;
+		
+		private EntityRef<RatingCharacteristic> _RatingCharacteristic;
+		
+		private EntityRef<RatingCondition> _RatingCondition;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRatingGroupAttributesIDChanging(int value);
+    partial void OnRatingGroupAttributesIDChanged();
+    partial void OnRatingCharacteristicsIDChanging(int value);
+    partial void OnRatingCharacteristicsIDChanged();
+    partial void OnRatingConditionIDChanging(System.Nullable<int> value);
+    partial void OnRatingConditionIDChanged();
+    partial void OnPointsManagerIDChanging(System.Nullable<int> value);
+    partial void OnPointsManagerIDChanged();
+    partial void OnConstrainedSumChanging(System.Nullable<decimal> value);
+    partial void OnConstrainedSumChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnTypeOfRatingGroupChanging(System.Nullable<byte> value);
+    partial void OnTypeOfRatingGroupChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnRatingEndingTimeVariesChanging(bool value);
+    partial void OnRatingEndingTimeVariesChanged();
+    partial void OnRatingsCanBeAutocalculatedChanging(bool value);
+    partial void OnRatingsCanBeAutocalculatedChanged();
+    partial void OnLongTermPointsWeightChanging(decimal value);
+    partial void OnLongTermPointsWeightChanged();
+    partial void OnMinimumDaysToTrackLongTermChanging(int value);
+    partial void OnMinimumDaysToTrackLongTermChanged();
+    partial void OnCreatorChanging(System.Nullable<int> value);
+    partial void OnCreatorChanged();
+    partial void OnStatusChanging(byte value);
+    partial void OnStatusChanged();
+    #endregion
+		
+		public RatingGroupAttribute()
+		{
+			this._OverrideCharacteristics = new EntitySet<OverrideCharacteristic>(new Action<OverrideCharacteristic>(this.attach_OverrideCharacteristics), new Action<OverrideCharacteristic>(this.detach_OverrideCharacteristics));
+			this._ProposalEvaluationRatingSettings = new EntitySet<ProposalEvaluationRatingSetting>(new Action<ProposalEvaluationRatingSetting>(this.attach_ProposalEvaluationRatingSettings), new Action<ProposalEvaluationRatingSetting>(this.detach_ProposalEvaluationRatingSettings));
+			this._RatingPlans = new EntitySet<RatingPlan>(new Action<RatingPlan>(this.attach_RatingPlans), new Action<RatingPlan>(this.detach_RatingPlans));
+			this._RatingPlans1 = new EntitySet<RatingPlan>(new Action<RatingPlan>(this.attach_RatingPlans1), new Action<RatingPlan>(this.detach_RatingPlans1));
+			this._RewardRatingSettings = new EntitySet<RewardRatingSetting>(new Action<RewardRatingSetting>(this.attach_RewardRatingSettings), new Action<RewardRatingSetting>(this.detach_RewardRatingSettings));
+			this._RatingGroups = new EntitySet<RatingGroup>(new Action<RatingGroup>(this.attach_RatingGroups), new Action<RatingGroup>(this.detach_RatingGroups));
+			this._TblColumns = new EntitySet<TblColumn>(new Action<TblColumn>(this.attach_TblColumns), new Action<TblColumn>(this.detach_TblColumns));
+			this._PointsManager = default(EntityRef<PointsManager>);
+			this._RatingCharacteristic = default(EntityRef<RatingCharacteristic>);
+			this._RatingCondition = default(EntityRef<RatingCondition>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupAttributesID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RatingGroupAttributesID
+		{
+			get
+			{
+				return this._RatingGroupAttributesID;
+			}
+			set
+			{
+				if ((this._RatingGroupAttributesID != value))
+				{
+					this.OnRatingGroupAttributesIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingGroupAttributesID = value;
+					this.SendPropertyChanged("RatingGroupAttributesID");
+					this.OnRatingGroupAttributesIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingCharacteristicsID", DbType="Int NOT NULL")]
+		public int RatingCharacteristicsID
+		{
+			get
+			{
+				return this._RatingCharacteristicsID;
+			}
+			set
+			{
+				if ((this._RatingCharacteristicsID != value))
+				{
+					if (this._RatingCharacteristic.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingCharacteristicsIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingCharacteristicsID = value;
+					this.SendPropertyChanged("RatingCharacteristicsID");
+					this.OnRatingCharacteristicsIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingConditionID", DbType="Int")]
+		public System.Nullable<int> RatingConditionID
+		{
+			get
+			{
+				return this._RatingConditionID;
+			}
+			set
+			{
+				if ((this._RatingConditionID != value))
+				{
+					if (this._RatingCondition.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingConditionIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingConditionID = value;
+					this.SendPropertyChanged("RatingConditionID");
+					this.OnRatingConditionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", DbType="Int")]
+		public System.Nullable<int> PointsManagerID
+		{
+			get
+			{
+				return this._PointsManagerID;
+			}
+			set
+			{
+				if ((this._PointsManagerID != value))
+				{
+					if (this._PointsManager.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPointsManagerIDChanging(value);
+					this.SendPropertyChanging();
+					this._PointsManagerID = value;
+					this.SendPropertyChanged("PointsManagerID");
+					this.OnPointsManagerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConstrainedSum", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> ConstrainedSum
+		{
+			get
+			{
+				return this._ConstrainedSum;
+			}
+			set
+			{
+				if ((this._ConstrainedSum != value))
+				{
+					this.OnConstrainedSumChanging(value);
+					this.SendPropertyChanging();
+					this._ConstrainedSum = value;
+					this.SendPropertyChanged("ConstrainedSum");
+					this.OnConstrainedSumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeOfRatingGroup", DbType="TinyInt")]
+		public System.Nullable<byte> TypeOfRatingGroup
+		{
+			get
+			{
+				return this._TypeOfRatingGroup;
+			}
+			set
+			{
+				if ((this._TypeOfRatingGroup != value))
+				{
+					this.OnTypeOfRatingGroupChanging(value);
+					this.SendPropertyChanging();
+					this._TypeOfRatingGroup = value;
+					this.SendPropertyChanged("TypeOfRatingGroup");
+					this.OnTypeOfRatingGroupChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingEndingTimeVaries", DbType="Bit NOT NULL")]
+		public bool RatingEndingTimeVaries
+		{
+			get
+			{
+				return this._RatingEndingTimeVaries;
+			}
+			set
+			{
+				if ((this._RatingEndingTimeVaries != value))
+				{
+					this.OnRatingEndingTimeVariesChanging(value);
+					this.SendPropertyChanging();
+					this._RatingEndingTimeVaries = value;
+					this.SendPropertyChanged("RatingEndingTimeVaries");
+					this.OnRatingEndingTimeVariesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingsCanBeAutocalculated", DbType="Bit NOT NULL")]
+		public bool RatingsCanBeAutocalculated
+		{
+			get
+			{
+				return this._RatingsCanBeAutocalculated;
+			}
+			set
+			{
+				if ((this._RatingsCanBeAutocalculated != value))
+				{
+					this.OnRatingsCanBeAutocalculatedChanging(value);
+					this.SendPropertyChanging();
+					this._RatingsCanBeAutocalculated = value;
+					this.SendPropertyChanged("RatingsCanBeAutocalculated");
+					this.OnRatingsCanBeAutocalculatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LongTermPointsWeight", DbType="Decimal(18,4) NOT NULL")]
+		public decimal LongTermPointsWeight
+		{
+			get
+			{
+				return this._LongTermPointsWeight;
+			}
+			set
+			{
+				if ((this._LongTermPointsWeight != value))
+				{
+					this.OnLongTermPointsWeightChanging(value);
+					this.SendPropertyChanging();
+					this._LongTermPointsWeight = value;
+					this.SendPropertyChanged("LongTermPointsWeight");
+					this.OnLongTermPointsWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinimumDaysToTrackLongTerm", DbType="Int NOT NULL")]
+		public int MinimumDaysToTrackLongTerm
+		{
+			get
+			{
+				return this._MinimumDaysToTrackLongTerm;
+			}
+			set
+			{
+				if ((this._MinimumDaysToTrackLongTerm != value))
+				{
+					this.OnMinimumDaysToTrackLongTermChanging(value);
+					this.SendPropertyChanging();
+					this._MinimumDaysToTrackLongTerm = value;
+					this.SendPropertyChanged("MinimumDaysToTrackLongTerm");
+					this.OnMinimumDaysToTrackLongTermChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
+		public System.Nullable<int> Creator
+		{
+			get
+			{
+				return this._Creator;
+			}
+			set
+			{
+				if ((this._Creator != value))
+				{
+					this.OnCreatorChanging(value);
+					this.SendPropertyChanging();
+					this._Creator = value;
+					this.SendPropertyChanged("Creator");
+					this.OnCreatorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
+		public byte Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_OverrideCharacteristic", Storage="_OverrideCharacteristics", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
+		public EntitySet<OverrideCharacteristic> OverrideCharacteristics
+		{
+			get
+			{
+				return this._OverrideCharacteristics;
+			}
+			set
+			{
+				this._OverrideCharacteristics.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_ProposalEvaluationRatingSetting", Storage="_ProposalEvaluationRatingSettings", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
+		public EntitySet<ProposalEvaluationRatingSetting> ProposalEvaluationRatingSettings
+		{
+			get
+			{
+				return this._ProposalEvaluationRatingSettings;
+			}
+			set
+			{
+				this._ProposalEvaluationRatingSettings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingPlan", Storage="_RatingPlans", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
+		public EntitySet<RatingPlan> RatingPlans
+		{
+			get
+			{
+				return this._RatingPlans;
+			}
+			set
+			{
+				this._RatingPlans.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingPlan1", Storage="_RatingPlans1", ThisKey="RatingGroupAttributesID", OtherKey="OwnedRatingGroupAttributesID")]
+		public EntitySet<RatingPlan> RatingPlans1
+		{
+			get
+			{
+				return this._RatingPlans1;
+			}
+			set
+			{
+				this._RatingPlans1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RewardRatingSetting", Storage="_RewardRatingSettings", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
+		public EntitySet<RewardRatingSetting> RewardRatingSettings
+		{
+			get
+			{
+				return this._RewardRatingSettings;
+			}
+			set
+			{
+				this._RewardRatingSettings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_RatingGroup", Storage="_RatingGroups", ThisKey="RatingGroupAttributesID", OtherKey="RatingGroupAttributesID")]
+		public EntitySet<RatingGroup> RatingGroups
+		{
+			get
+			{
+				return this._RatingGroups;
+			}
+			set
+			{
+				this._RatingGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_TblColumn", Storage="_TblColumns", ThisKey="RatingGroupAttributesID", OtherKey="DefaultRatingGroupAttributesID")]
+		public EntitySet<TblColumn> TblColumns
+		{
+			get
+			{
+				return this._TblColumns;
+			}
+			set
+			{
+				this._TblColumns.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_RatingGroupAttribute", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
+		public PointsManager PointsManager
+		{
+			get
+			{
+				return this._PointsManager.Entity;
+			}
+			set
+			{
+				PointsManager previousValue = this._PointsManager.Entity;
+				if (((previousValue != value) 
+							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PointsManager.Entity = null;
+						previousValue.RatingGroupAttributes.Remove(this);
+					}
+					this._PointsManager.Entity = value;
+					if ((value != null))
+					{
+						value.RatingGroupAttributes.Add(this);
+						this._PointsManagerID = value.PointsManagerID;
+					}
+					else
+					{
+						this._PointsManagerID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("PointsManager");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCharacteristic_RatingGroupAttribute", Storage="_RatingCharacteristic", ThisKey="RatingCharacteristicsID", OtherKey="RatingCharacteristicsID", IsForeignKey=true)]
+		public RatingCharacteristic RatingCharacteristic
+		{
+			get
+			{
+				return this._RatingCharacteristic.Entity;
+			}
+			set
+			{
+				RatingCharacteristic previousValue = this._RatingCharacteristic.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingCharacteristic.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingCharacteristic.Entity = null;
+						previousValue.RatingGroupAttributes.Remove(this);
+					}
+					this._RatingCharacteristic.Entity = value;
+					if ((value != null))
+					{
+						value.RatingGroupAttributes.Add(this);
+						this._RatingCharacteristicsID = value.RatingCharacteristicsID;
+					}
+					else
+					{
+						this._RatingCharacteristicsID = default(int);
+					}
+					this.SendPropertyChanged("RatingCharacteristic");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingCondition_RatingGroupAttribute", Storage="_RatingCondition", ThisKey="RatingConditionID", OtherKey="RatingConditionID", IsForeignKey=true)]
+		public RatingCondition RatingCondition
+		{
+			get
+			{
+				return this._RatingCondition.Entity;
+			}
+			set
+			{
+				RatingCondition previousValue = this._RatingCondition.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingCondition.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingCondition.Entity = null;
+						previousValue.RatingGroupAttributes.Remove(this);
+					}
+					this._RatingCondition.Entity = value;
+					if ((value != null))
+					{
+						value.RatingGroupAttributes.Add(this);
+						this._RatingConditionID = value.RatingConditionID;
+					}
+					else
+					{
+						this._RatingConditionID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("RatingCondition");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_OverrideCharacteristics(OverrideCharacteristic entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = this;
+		}
+		
+		private void detach_OverrideCharacteristics(OverrideCharacteristic entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = null;
+		}
+		
+		private void attach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = this;
+		}
+		
+		private void detach_ProposalEvaluationRatingSettings(ProposalEvaluationRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = null;
+		}
+		
+		private void attach_RatingPlans(RatingPlan entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = this;
+		}
+		
+		private void detach_RatingPlans(RatingPlan entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = null;
+		}
+		
+		private void attach_RatingPlans1(RatingPlan entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute1 = this;
+		}
+		
+		private void detach_RatingPlans1(RatingPlan entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute1 = null;
+		}
+		
+		private void attach_RewardRatingSettings(RewardRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = this;
+		}
+		
+		private void detach_RewardRatingSettings(RewardRatingSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = null;
+		}
+		
+		private void attach_RatingGroups(RatingGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = this;
+		}
+		
+		private void detach_RatingGroups(RatingGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = null;
+		}
+		
+		private void attach_TblColumns(TblColumn entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = this;
+		}
+		
+		private void detach_TblColumns(TblColumn entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroupAttribute = null;
 		}
 	}
 	

@@ -1311,7 +1311,8 @@ namespace ClassLibrary1.Model
             {
                 Rating = theRating,
                 RatingGroupPhaseStatus = theRatingGroupPhaseStatus,
-                ShortTermResolutionValue = null
+                ShortTermResolutionValue = null,
+                TriggerUserRatingsUpdate = false
             };
             DataContext.GetTable<RatingPhaseStatus>().InsertOnSubmit(theStatus);
             DataContext.RegisterObjectToBeInserted(theStatus);
@@ -1502,7 +1503,10 @@ namespace ClassLibrary1.Model
                 CurrentPoints = 0,
                 TotalPoints = 0,
                 PotentialMaxLossOnNotYetPending = 0,
-                PendingPoints = 0
+                PendingPoints = 0,
+                PointsPumpingProportionAvg_Numer = 0,
+                PointsPumpingProportionAvg_Denom = 0,
+                PointsPumpingProportionAvg = 0.0F
             };
             DataContext.GetTable<PointsTotal>().InsertOnSubmit(theTotal);
             DataContext.RegisterObjectToBeInserted(theTotal);
@@ -1536,12 +1540,6 @@ namespace ClassLibrary1.Model
         public UserRatingGroup AddUserRatingGroup(RatingGroup topRatingGroup)
         {
             DateTime currentTime = TestableDateTime.Now;
-
-            if (currentTime == topRatingGroup.Ratings.First().LastModifiedResolutionTimeOrCurrentValue)
-            { // this is a bit of a hack to avoid the situation in which two user ratings come in at the exact same millisecond. By doing this, we can rely on each user rating having a unique time span (and on LastModifiedTime being unique as well)
-                TestableDateTime.SleepOrSkipTime(2);
-                currentTime = TestableDateTime.Now;
-            }
 
             bool didAdvance;
             bool ratingExpired;
@@ -1587,12 +1585,16 @@ namespace ClassLibrary1.Model
         {
             //Trace.TraceInformation("AddUserRating " + enteredUserRating);
 
+            bool userRatingIsFromSuperUser = user.SuperUser;
+
             TblRow tblRow = rating.RatingGroup.TblRow;
             TblColumn tblCol = rating.RatingGroup.TblColumn;
             Tbl tbl = tblRow.Tbl;
             RatingGroup topmostRatingGroup = ratingGroups.Single(m => m.RatingGroupID == rating.TopmostRatingGroupID);
 
-            RewardPendingPointsTracker theRewardPendingPointsTracker = tblRow.RewardPendingPointsTrackers.SingleOrDefault();
+            RewardPendingPointsTracker theRewardPendingPointsTracker = null;
+            if (!userRatingIsFromSuperUser)
+                theRewardPendingPointsTracker = tblRow.RewardPendingPointsTrackers.SingleOrDefault();
             PointsManager pointsManager = tbl.PointsManager;
             TrustTrackerUnit trustTrackerUnit = tblCol.TrustTrackerUnit ?? pointsManager.TrustTrackerUnit;
             //decimal? origValue = theRating.CurrentValue;
@@ -1613,12 +1615,18 @@ namespace ClassLibrary1.Model
                 whenPending += new TimeSpan(0, 0, totalTime);
             }
 
-            NoviceHighStakesSettings noviceHighStakesSettings = UseNoviceHighStakes(pointsTotal, pointsManager, tblRow.TblRowID);
-            if (noviceHighStakesSettings.UseNoviceHighStakes)
+            NoviceHighStakesSettings noviceHighStakesSettings = null;
+            if (!userRatingIsFromSuperUser)
             {
-                ratingGroupPhaseStatus.HighStakesNoviceUser = true;
-                ratingGroupPhaseStatus.HighStakesNoviceUserAfter = TestableDateTime.Now + new TimeSpan(0, 10, 0);
+                noviceHighStakesSettings = UseNoviceHighStakes(pointsTotal, pointsManager, tblRow.TblRowID);
+                if (noviceHighStakesSettings.UseNoviceHighStakes)
+                {
+                    ratingGroupPhaseStatus.HighStakesNoviceUser = true;
+                    ratingGroupPhaseStatus.HighStakesNoviceUserAfter = TestableDateTime.Now + new TimeSpan(0, 10, 0);
+                }
             }
+            else
+                noviceHighStakesSettings = new NoviceHighStakesSettings() { UseNoviceHighStakes = false, HighStakesMultiplierOverride = 1.0M };
 
             decimal? previousUserRating = rating.CurrentValue;
 
@@ -1639,8 +1647,17 @@ namespace ClassLibrary1.Model
 
             decimal profitShortTermUnweighted, profitLongTermUnweighted;
 
-            CalculatePointsInfo(rating, topmostRatingGroup, ratingPhaseStatus.RatingGroupPhaseStatus, currentTime, lastTrustedRatingOrBasisOfCalc, newUserRatingValue, forecastFutureRating, false, rating.RatingGroup.RatingGroupAttribute.LongTermPointsWeight, noviceHighStakesSettings.HighStakesMultiplierOverride, out maxLossLongTerm, out maxGainLongTerm, out profitLongTerm, out profitLongTermUnweighted); 
-            CalculatePointsInfo(rating, topmostRatingGroup, ratingPhaseStatus.RatingGroupPhaseStatus, currentTime, lastTrustedRatingOrBasisOfCalc, newUserRatingValue, forecastFutureRating, true, rating.RatingGroup.RatingGroupAttribute.LongTermPointsWeight, noviceHighStakesSettings.HighStakesMultiplierOverride, out maxLossShortTerm, out maxGainShortTerm, out profitShortTerm, out profitShortTermUnweighted);
+            // We will multiply points by the past points pumping proportion. We record this so that
+            // the multiplier will stay the same for this UserRating, though later UserRatings may have
+            // a different multiplier, if there is a danger of a points-pumping scheme.
+            decimal pastPointsPumpingProportion;
+            if (pointsTotal == null)
+                pastPointsPumpingProportion = 0.0M;
+            else
+                pastPointsPumpingProportion = (decimal) pointsTotal.PointsPumpingProportionAvg;
+
+            CalculatePointsInfo(rating, topmostRatingGroup, ratingPhaseStatus.RatingGroupPhaseStatus, currentTime, lastTrustedRatingOrBasisOfCalc, newUserRatingValue, forecastFutureRating, false, rating.RatingGroup.RatingGroupAttribute.LongTermPointsWeight, noviceHighStakesSettings.HighStakesMultiplierOverride, pastPointsPumpingProportion, out maxLossLongTerm, out maxGainLongTerm, out profitLongTerm, out profitLongTermUnweighted); 
+            CalculatePointsInfo(rating, topmostRatingGroup, ratingPhaseStatus.RatingGroupPhaseStatus, currentTime, lastTrustedRatingOrBasisOfCalc, newUserRatingValue, forecastFutureRating, true, rating.RatingGroup.RatingGroupAttribute.LongTermPointsWeight, noviceHighStakesSettings.HighStakesMultiplierOverride, pastPointsPumpingProportion, out maxLossShortTerm, out maxGainShortTerm, out profitShortTerm, out profitShortTermUnweighted);
 
             // We shouldn't get to these two, but it's another check.
             if (newUserRatingValue < rating.RatingCharacteristic.MinimumUserRating)
@@ -1666,11 +1683,16 @@ namespace ClassLibrary1.Model
                 PreviousDisplayedRating = previousUserRating,
                 EnteredUserRating = enteredUserRatingValue,
                 NewUserRating = newUserRatingValue,
+                MaxGain = profitShortTerm + profitLongTerm,
                 MaxLoss = maxLossShortTerm + maxLossLongTerm,
                 PotentialPointsShortTerm = profitShortTerm,
                 PotentialPointsLongTerm = profitLongTerm,
                 PotentialPointsLongTermUnweighted = profitLongTermUnweighted,
                 LongTermPointsWeight = rating.RatingGroup.RatingGroupAttribute.LongTermPointsWeight,
+                PointsPumpingProportion = null,
+                PastPointsPumpingProportion = pastPointsPumpingProportion,
+                OriginalAdjustmentPct = (decimal) additionalInfo.AdjustPct,
+                OriginalTrustLevel = (decimal) additionalInfo.OverallTrustLevel,
                 PercentPreviousRatings = (decimal) additionalInfo.PercentPreviousRatings,
                 IsTrusted = additionalInfo.IsTrusted,
                 MadeDirectly = madeDirectly,
@@ -1716,7 +1738,8 @@ namespace ClassLibrary1.Model
             UpdateUserPointsAndStatus(user, tbl.PointsManager, PointsChangesReasons.RatingsUpdate, 0, 0, 0, profitShortTerm + profitLongTerm, maxLossLongTerm + maxLossShortTerm, profitLongTermUnweighted, false, pointsTotal);
             if (pointsTotal == null)
                 pointsTotal = AddPointsTotal(user, tbl.PointsManager);
-            PMRaterTime.UpdateTimeForUser(pointsTotal, currentTime);
+            if (!userRatingIsFromSuperUser)
+                PMRaterTime.UpdateTimeForUser(pointsTotal, currentTime);
 
             // Invalidate the cache for the individual table cell and for the row of table cells.
             PMCacheManagement.InvalidateCacheDependency("RatingGroupID" + rating.TopmostRatingGroupID.ToString());
@@ -1727,6 +1750,17 @@ namespace ClassLibrary1.Model
             rating.CurrentValue = newUserRatingValue;
             rating.LastTrustedValue = newLastTrustedUserRating;
             rating.LastModifiedResolutionTimeOrCurrentValue = currentTime;
+            ratingPhaseStatus.NumUserRatingsMadeDuringPhase++;
+            pointsTotal.NumUserRatings++;
+            if (ratingPhaseStatus.NumUserRatingsMadeDuringPhase > 1) // i.e., there are earlier UserRatings
+                ratingPhaseStatus.TriggerUserRatingsUpdate = true;
+            else
+            {
+                theUserRating.PointsPumpingProportion = 1.0M; // 100% of points that can be earned are real, because there are no prior users who might not have earned their points from whom these points will come
+                pointsTotal.PointsPumpingProportionAvg_Numer += (float) (theUserRating.MaxGain * 1.0M);
+                pointsTotal.PointsPumpingProportionAvg_Denom += (float) theUserRating.MaxGain;
+                pointsTotal.PointsPumpingProportionAvg = RaterooDataManipulation.CalculatePointsPumpingProportionAvg(pointsTotal.PointsPumpingProportionAvg_Numer, pointsTotal.PointsPumpingProportionAvg_Denom, pointsTotal.NumUserRatings);
+            }
             if (rating.UserRating != null)
                 rating.UserRating.SubsequentlyRated = true; // previous most recent user rating
             rating.UserRating = theUserRating; // now the new one is the most recent user rating

@@ -35,6 +35,15 @@ namespace ClassLibrary1.Model
     {
         //  Methods related to calculating points for predictions
 
+        const int NumWithNoPumpingToAverageIntoPointsPumpingProportion = 50;
+        public static float CalculatePointsPumpingProportionAvg(float numerator, float denominator, int numUserRatingsContributing)
+        {
+            float averageContributionToDenominator = denominator / (float)numUserRatingsContributing;
+            float newNumerator = numerator; // +(float)NumWithNoPumpingToAverageIntoPointsPumpingProportion * averageContributionToDenominator * 0.0F;
+            float newDenominator = denominator + (float)NumWithNoPumpingToAverageIntoPointsPumpingProportion * averageContributionToDenominator;
+            return newDenominator == 0 ? 0 : newNumerator / newDenominator;
+        }
+
         /// <summary>
         /// Returns the current subsidy level for a rating, taking into account any subsidy adjustment factor(s)
         /// for the rating, as well as any high stakes adjustments.
@@ -370,7 +379,7 @@ namespace ClassLibrary1.Model
         /// <param name="cost">This is the maximum loss associated with the prediction (can be cost if payment must be up front)</param>
         /// <param name="winnings">The amount that the prediction is now worth</param>
         /// <param name="profit">Winnings minus cost</param>
-        public void CalculatePointsInfo(Rating theRating, RatingGroup topmostRatingGroup, RatingGroupPhaseStatus theRatingGroupPhaseStatus, DateTime timeOfUserRating, decimal originalUserRatingOrAltBasisForCalc, decimal newUserRating, decimal? finalUserRating, bool shortTerm, decimal longTermPointsWeight, decimal? highStakesMultiplierOverride, out decimal maxLoss, out decimal maxGain, out decimal profit, out decimal profitIfAllWeightOnThisTerm)
+        public void CalculatePointsInfo(Rating theRating, RatingGroup topmostRatingGroup, RatingGroupPhaseStatus theRatingGroupPhaseStatus, DateTime timeOfUserRating, decimal originalUserRatingOrAltBasisForCalc, decimal newUserRating, decimal? finalUserRating, bool shortTerm, decimal longTermPointsWeight, decimal? highStakesMultiplierOverride, decimal pastPointsPumpingProportion, out decimal maxLoss, out decimal maxGain, out decimal profit, out decimal profitIfAllWeightOnThisTerm)
         {
             RatingCharacteristic theCharacteristics = theRating.RatingCharacteristic;
             SubsidyDensityRangeGroup theSubsidyDensityRangeGroup = theCharacteristics.SubsidyDensityRangeGroup;
@@ -382,6 +391,10 @@ namespace ClassLibrary1.Model
                 scoringRuleForExtremeResults = ScoringRules.Quadratic;
 
             decimal subsidyLevel = GetSubsidyLevelAtTime(theRating, topmostRatingGroup, theRatingGroupPhaseStatus, timeOfUserRating);
+            decimal pointsPumpingMultiplier = 1.0M - pastPointsPumpingProportion;
+            if (pointsPumpingMultiplier > 0.8M)
+                pointsPumpingMultiplier = 1.0M; // we apply the multiplier to reduce points only if there has been substantial points pumping, since some points pumping may be normal.
+            subsidyLevel *= pointsPumpingMultiplier;
             if (shortTerm)
             {
                 subsidyLevel *= highStakesMultiplierOverride ?? HighStakesMultiplier(theRatingGroupPhaseStatus, topmostRatingGroup, timeOfUserRating);

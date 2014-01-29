@@ -533,7 +533,7 @@ namespace ClassLibrary1.Model
                         // Note: To do short term scores, we would need to figure out what the rating was at the relevant time.
                         if (result.RGPS != null)
                         {
-                            CalculatePointsInfo(result.R, result.RG, result.RGPS, result.URG.WhenMade, result.UR.PreviousRatingOrVirtualRating, (decimal) result.UR.NewUserRating, result.R.CurrentValue, false, result.LTPW, result.UR.HighStakesMultiplierOverride, out maxLoss, out maxGain, out profit, out potentialPointsLongTermUnweighted);
+                            CalculatePointsInfo(result.R, result.RG, result.RGPS, result.URG.WhenMade, result.UR.PreviousRatingOrVirtualRating, (decimal) result.UR.NewUserRating, result.R.CurrentValue, false, result.LTPW, result.UR.HighStakesMultiplierOverride, result.UR.PastPointsPumpingProportion, out maxLoss, out maxGain, out profit, out potentialPointsLongTermUnweighted);
                             result.UR.MaxLoss = result.UR.MaxLossShortTerm + result.UR.MaxLossLongTerm;
                             result.UR.PotentialPointsLongTerm = profit;
                             result.UR.PotentialPointsLongTermUnweighted = potentialPointsLongTermUnweighted;

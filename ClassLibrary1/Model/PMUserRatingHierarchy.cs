@@ -268,6 +268,7 @@ namespace ClassLibrary1.Model
     public class UserRatingHierarchyAdditionalInfo
     {
         public float AdjustPct;
+        public float OverallTrustLevel;
         public bool IsTrusted;
         public float PercentPreviousRatings;
         public decimal OneHourVolatility;
@@ -277,6 +278,7 @@ namespace ClassLibrary1.Model
 
         public UserRatingHierarchyAdditionalInfo(
              float adjustPct,
+             float overallTrustLevel,
              bool isTrusted,
              float percentPreviousRatings,
              decimal oneHourVolatility,
@@ -286,6 +288,7 @@ namespace ClassLibrary1.Model
         )
         {
             AdjustPct = adjustPct;
+            OverallTrustLevel = overallTrustLevel;
             IsTrusted = isTrusted;
             PercentPreviousRatings = percentPreviousRatings;
             OneHourVolatility = oneHourVolatility;
