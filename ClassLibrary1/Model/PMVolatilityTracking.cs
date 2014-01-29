@@ -107,7 +107,7 @@ namespace ClassLibrary1.Model
 
         public static void ChangeVolatilityForUserRating(UserRating theUserRating, VolatilityTracker theTracker, bool addToVolatility)
         {
-            if (theUserRating.NewUserRating == null || theTracker == null)
+            if (theTracker == null)
                 return;
             decimal absoluteVolatility = Math.Abs((decimal) theUserRating.NewUserRating - (decimal) theUserRating.PreviousRatingOrVirtualRating);
             decimal maximumVolatility = theUserRating.Rating.RatingCharacteristic.MaximumUserRating - theUserRating.Rating.RatingCharacteristic.MinimumUserRating;

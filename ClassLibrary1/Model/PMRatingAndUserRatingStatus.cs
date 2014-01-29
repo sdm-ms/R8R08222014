@@ -308,13 +308,37 @@ namespace ClassLibrary1.Model
                                           MostRecentUserTrustTracker = mostRecentUserTrustTracker,
                                           CurrentlyRecordedUserInteraction = currentlyRecordedUserInteraction,
                                           ReplacementUserInteraction = replacementUserInteraction,
-                                          TrustTrackerForChoiceInGroups = ur.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(y => y.TrustTrackerForChoiceInGroup).ToList()
+                                          TrustTrackerForChoiceInGroups = ur.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(y => y.TrustTrackerForChoiceInGroup)
                                       }
                    ;
 
             var userRatingInfosGrouped = from ur in userRatingInfoQuery
                                          group ur by ur.RatingPhaseStatus into grouped
                                          select new { RatingPhaseStatus = grouped.Key, UserRatingInfos = grouped.OrderBy(x => x.UserRating.UserRatingGroup.WhenMade) };
+
+            var DEBUGA =
+                                      from ur in rpsInitialQuery
+                                      let trustTrackerUnit = ur.TrustTrackerUnit
+                                      let mostRecentUserRatingRecordedInUserRating = ur.UserRating1 // this previously was the latest user rating
+                                      let mostRecentUserRatingRecordedInRating = ur.Rating.UserRating // this now is the latest user rating
+                                      let user = ur.User
+                                      select new
+                                      {
+                                          UserRating = ur,
+                                          UserRatingGroup = ur.UserRatingGroup,
+                                          Rating = ur.Rating,
+                                          RatingPhaseStatus = ur.RatingPhaseStatus,
+                                          MostRecentUserRatingInUserRating = ur.UserRating1,
+                                          MostRecentUserRatingInRating = ur.Rating.UserRating,
+                                          RatingGroup = ur.UserRatingGroup.RatingGroup,
+                                          RatingGroupAttribute = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute,
+                                          RatingCharacteristic = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute.RatingCharacteristic,
+                                      }
+                   ;
+            var DEBUGC = DataContext.GetTable<PointsTotal>().Select(x => x.User.Username).ToList();
+            var DEBUGB = DEBUGA.ToList();
+            var DEBUG0 = rpsInitialQuery.ToList();
+            var DEBUG1 = userRatingInfoQuery.ToList();
 
             var userRatingInfoGroups = userRatingInfosGrouped.ToList(); // remember, take is already done above
             bool moreWorkToDo = userRatingInfoGroups.Count() == maxToTake;

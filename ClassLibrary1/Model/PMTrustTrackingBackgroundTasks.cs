@@ -178,7 +178,7 @@ namespace ClassLibrary1.Model
             bool subtractFromUserInteraction,
             TrustTracker mostRecentUserTrustTracker)
         {
-            if (originalUserRating == null || latestUserRating == null || latestUserRating.NewUserRating == null || ratingCharacteristic == null)
+            if (originalUserRating == null || latestUserRating == null || ratingCharacteristic == null)
                 return;
             if (originalUserRating.User == latestUserRating.User)
                 return;

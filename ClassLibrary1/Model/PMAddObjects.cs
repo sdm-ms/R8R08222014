@@ -1168,7 +1168,8 @@ namespace ClassLibrary1.Model
         /// <returns>The id of the attributes object</returns>
         public int AddRatingGroupAttributes(int ratingCharacteristicsID, int? ratingConditionID, decimal? constrainedSum, String name, RatingGroupTypes RatingType, String ratingGroupDescription, int? creator, int? pointsManagerID, bool ratingEndingTimeVaries, bool ratingsCanBeAutoCalculated, decimal longTermPointsWeight)
         {
-
+            if (pointsManagerID == null)
+                throw new Exception("DEBUG -- make this required");
             RatingGroupAttribute theRatingGroupAttributes = new RatingGroupAttribute
             {
                PointsManagerID=pointsManagerID,
