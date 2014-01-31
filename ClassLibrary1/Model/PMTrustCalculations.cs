@@ -9,13 +9,19 @@ namespace ClassLibrary1.Model
     public static class PMTrustCalculations
     {
 
-        public const int NumPerfectScoresToGiveNewUser = 10;
+        public static int NumPerfectScoresToGiveNewUser = 10;
 
         public static float GetOverallTrustLevelWithNewUserCredit(TrustTrackerStat noWeightingStat, int actualContributingUserInteractions)
         {
-            float averageContributionToDenominator = noWeightingStat.Trust_Denom / (float)actualContributingUserInteractions;
+            float averageContributionToDenominator;
+            if (actualContributingUserInteractions == 0)
+                averageContributionToDenominator = 0;
+            else
+                averageContributionToDenominator = noWeightingStat.Trust_Denom / (float)actualContributingUserInteractions;
             float newNumerator = noWeightingStat.Trust_Numer + (float)NumPerfectScoresToGiveNewUser * averageContributionToDenominator * 1.0F;
             float newDenominator = noWeightingStat.Trust_Denom + (float)NumPerfectScoresToGiveNewUser * averageContributionToDenominator;
+            if (newDenominator == 0)
+                return 1.0F;
             return newNumerator / newDenominator;
         }
 

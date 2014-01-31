@@ -26,6 +26,7 @@ namespace ClassLibrary1.Model
         public bool MoreWorkToDo { get; internal set; }
         public bool CurrentlyInBriefPause { get; internal set; }
         public DateTime? ThisWebServerLastUpdateTime;
+        public long LoopSetCompletedCount = 0;
 
         public MyBackgroundTask()
         {
@@ -60,7 +61,7 @@ namespace ClassLibrary1.Model
                     //if (BackgroundThread.IsPauseRequested())
                     //Trace.TraceInformation("Pause is requested.");
                     MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
-                    const int numTasks = 19;
+                    const int numTasks = 21;
                     const int numLoops = 20;
                     bool[] moreWorkToDoThisTask = new bool[numTasks];
                     for (int loop = 1; loop <= numLoops; loop++)
@@ -88,94 +89,102 @@ namespace ClassLibrary1.Model
                                 // Trace.TraceInformation("Task " + i);
                                // ProfileSimple.Start("TaskNum" + i);
                                 dataManipulation.ResetDataContexts();
-                                switch (i)
+                                try
                                 {
+                                    switch (i)
+                                    {
 
-                                    case 1:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings();
-                                        break;
+                                        case 1:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings();
+                                            break;
 
-                                    case 2:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskImplementResolutions();
-                                        break;
+                                        case 2:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskImplementResolutions();
+                                            break;
 
-                                    case 3:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.FixStatusInconsistencies();
-                                        break;
+                                        case 3:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.FixStatusInconsistencies();
+                                            break;
 
-                                    case 4:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskShortTermResolve();
-                                        break;
+                                        case 4:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskShortTermResolve();
+                                            break;
 
-                                    case 5:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskCheckPointsManagers();
-                                        break;
+                                        case 5:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskCheckPointsManagers();
+                                            break;
 
-                                    case 6:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.RespondToResetTblRowFieldDisplays();
-                                        break;
+                                        case 6:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.RespondToResetTblRowFieldDisplays();
+                                            break;
 
-                                    case 7:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess();
-                                        break;
+                                        case 7:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess();
+                                            break;
 
-                                    case 8:
-                                        moreWorkToDoThisTask[i - 1] = GeocodeUpdate.DoUpdate(dataManipulation.DataContext);
-                                        break;
+                                        case 8:
+                                            moreWorkToDoThisTask[i - 1] = GeocodeUpdate.DoUpdate(dataManipulation.DataContext);
+                                            break;
 
-                                    case 9:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePoints();
-                                        break;
+                                        case 9:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePoints();
+                                            break;
 
-                                    case 10:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskRespondToUpdatePointsTriggers();
-                                        break;
+                                        case 10:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskRespondToUpdatePointsTriggers();
+                                            break;
 
-                                    case 11:
-                                        moreWorkToDoThisTask[i - 1] = PMTrustTrackingBackgroundTasks.DoTrustTrackingBackgroundTasks(dataManipulation.DataContext);
-                                        break;
+                                        case 11:
+                                            moreWorkToDoThisTask[i - 1] = PMTrustTrackingBackgroundTasks.DoTrustTrackingBackgroundTasks(dataManipulation.DataContext);
+                                            break;
 
-                                    case 12:
-                                        moreWorkToDoThisTask[i - 1] = StatusRecords.DeleteOldStatusRecords(dataManipulation.DataContext);
-                                        break;
+                                        case 12:
+                                            moreWorkToDoThisTask[i - 1] = StatusRecords.DeleteOldStatusRecords(dataManipulation.DataContext);
+                                            break;
 
-                                    case 13:
-                                        moreWorkToDoThisTask[i - 1] = VolatilityTracking.UpdateTrackers(dataManipulation.DataContext);
-                                        break;
+                                        case 13:
+                                            moreWorkToDoThisTask[i - 1] = VolatilityTracking.UpdateTrackers(dataManipulation.DataContext);
+                                            break;
 
-                                    case 14:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskRevertLongUntrustedRatings();
-                                        break;
+                                        case 14:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskRevertLongUntrustedRatings();
+                                            break;
 
-                                    case 15:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskMakeHighStakesKnown();
-                                        break;
+                                        case 15:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskMakeHighStakesKnown();
+                                            break;
 
-                                    case 16:
-                                        CacheInvalidityNotification.DeleteOldNotifications();
-                                        moreWorkToDoThisTask[i - 1] = false;
-                                        break;
+                                        case 16:
+                                            CacheInvalidityNotification.DeleteOldNotifications();
+                                            moreWorkToDoThisTask[i - 1] = false;
+                                            break;
 
-                                    case 17:
-                                        moreWorkToDoThisTask[i - 1] = SQLFastAccess.ContinueFastAccessMaintenance(dataManipulation.DataContext);
-                                        break;
+                                        case 17:
+                                            moreWorkToDoThisTask[i - 1] = SQLFastAccess.ContinueFastAccessMaintenance(dataManipulation.DataContext);
+                                            break;
 
-                                    case 18:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskConsiderDemotingHighStakesPrematurely();
-                                        break;
+                                        case 18:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskConsiderDemotingHighStakesPrematurely();
+                                            break;
 
-                                    case 19:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.AdvanceRatingGroupsNeedingAdvancing();
-                                        break;
+                                        case 19:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.AdvanceRatingGroupsNeedingAdvancing();
+                                            break;
 
-                                    case 20:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskFlagRatingsNeedingReview();
-                                        break;
+                                        case 20:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskFlagRatingsNeedingReview();
+                                            break;
 
-                                    case 21:
-                                        moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskReviewRecentUserRatings();
-                                        break;
+                                        case 21:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskReviewRecentUserRatings();
+                                            break;
 
+                                    }
+                                }
+                                catch
+                                {
+                                    moreWorkToDoThisTask[i - 1] = false; // we don't want a single exception to stop all other background processing
+                                    // DEBUG -- log this
                                 }
                                 dataManipulation.DataContext.SubmitChanges();
                                 dataManipulation.ResetDataContexts();
@@ -184,16 +193,21 @@ namespace ClassLibrary1.Model
                                 //Trace.TraceInformation("TaskNum " + i);
                                // ProfileSimple.End("TaskNum" + i);
 
-                                MoreWorkToDo = i != numTasks || moreWorkToDoThisTask.Any(x => x == true);
+                                if (i != numTasks)
+                                    MoreWorkToDo = true;
+                                else
+                                    MoreWorkToDo = moreWorkToDoThisTask.Any(x => x == true);
                             }
                         }
                     }
+                    LoopSetCompletedCount++;
                     if (!MoreWorkToDo)
                     {
                         if (!RoleEnvironment.IsAvailable)
                             Thread.Sleep(100); // sleep only long enough for unit tests to realize that the idle tasks have completed.
                         else
                             Thread.Sleep(3000);
+
                     }
                 }
             }
@@ -341,6 +355,14 @@ namespace ClassLibrary1.Model
                 return false;
             else
                 return theTask.MoreWorkToDo;
+        }
+
+        public long? LoopSetsCompleted()
+        {
+            if (theTask == null)
+                return null;
+            else
+                return theTask.LoopSetCompletedCount;
         }
 
         public void EnsureBackgroundTaskIsRunning(bool repeatIndefinitely)

@@ -232,6 +232,7 @@ namespace ClassLibrary1.Model
         public void WaitIdleTasks()
         {
             ActionProcessor.DataContext.SubmitChanges();
+            long? initialLoopSetCompleted = null;
             bool hasBeenNotBusy = true; // now that we are requesting pauses at the end of this routine we don't have to wait for it not to have been busy.
             bool hasBeenBusyAfterBeingNotBusy = false; // we want it to be not busy, busy, and then not busy again
             bool hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = false;
@@ -240,6 +241,8 @@ namespace ClassLibrary1.Model
             {
                 //Trace.TraceInformation("WaitIdleTasks still more work to do.");
                 BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false);
+                if (initialLoopSetCompleted == null)
+                    initialLoopSetCompleted = BackgroundThread.Instance.LoopSetsCompleted();
                 bool moreWorkToDo = BackgroundThread.Instance.IsBackgroundTaskBusy();
                 if (hasBeenNotBusy == false && !moreWorkToDo)
                     hasBeenNotBusy = true;
@@ -251,7 +254,18 @@ namespace ClassLibrary1.Model
                     BackgroundThread.Instance.RequestPauseAndWaitForPauseToBegin();
                 }
                 else
+                {
                     Thread.Sleep(1); // so we don't eat up CPU
+                    const int maxLoopSets = 10;
+                    long? totalLoopSetsCompleted = BackgroundThread.Instance.LoopSetsCompleted();
+                    long? loopSetsCompletedThisWait = totalLoopSetsCompleted - initialLoopSetCompleted;
+                    if (loopSetsCompletedThisWait == 5)
+                    {
+                        Debug.WriteLine("5 Loop sets completed. Breakpoint here to figure out what is happening.");
+                    }
+                    if (loopSetsCompletedThisWait > maxLoopSets)
+                        throw new Exception("Idle tasks appear to be in an infinite loop."); // we can put a conditional breakpoint earlier if we want to more easily debut
+                }
             }
             //Trace.TraceInformation("WaitIdleTasks complete.");
             ActionProcessor.ResetDataContexts(); // Otherwise, we may have stale data in our data context.
@@ -610,7 +624,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        protected int? CreateRatingGroupAttributes(TestRatingGroupAttributesTypes myType, int theRatingPhase,  int? theSubsidyDensityRange, int? theRatingCondition, int? thePointsManagerID, int myChangesGroup)
+        protected int? CreateRatingGroupAttributes(TestRatingGroupAttributesTypes myType, int theRatingPhase,  int? theSubsidyDensityRange, int? theRatingCondition, int thePointsManagerID, int myChangesGroup)
         {
             if (myType == TestRatingGroupAttributesTypes.pickAtRandom)
             {
@@ -1115,8 +1129,8 @@ namespace ClassLibrary1.Model
         protected int CreatePointsManager(string name, TestRatingGroupAttributesTypes myType, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID)
         {
             int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
-            int? myRatingGroupAttributes = CreateRatingGroupAttributes(myType, theRatingPhase, theSubsidyDensityRange, theRatingCondition, null, myChangesGroup);
-            int pointsManagerID = theTestHelper.ActionProcessor.PointsManagerCreate(theDomainID, myRatingGroupAttributes,null,true,true,theTestHelper.SuperUserId,myChangesGroup,name);
+            int pointsManagerID = theTestHelper.ActionProcessor.PointsManagerCreate(theDomainID, null, true, true, theTestHelper.SuperUserId, myChangesGroup, name);
+            int? myRatingGroupAttributes = CreateRatingGroupAttributes(myType, theRatingPhase, theSubsidyDensityRange, theRatingCondition, pointsManagerID, myChangesGroup);
             PointsManagerChangeDollarSubsidySettings(pointsManagerID);
             CreateChoiceGroups(pointsManagerID); 
             myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);

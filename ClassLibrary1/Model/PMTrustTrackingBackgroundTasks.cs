@@ -108,7 +108,7 @@ namespace ClassLibrary1.Model
             theUserInteraction.WeightInCalculatingTrustTotal = PMTrustCalculations.GetUserInteractionWeightInCalculatingTrustTotal(ratingMagnitudeStat, theUserInteraction);
         }
 
-        internal static TrustTracker AddTrustTracker(IRaterooDataContext RaterooDB, User theUser, TrustTrackerUnit theTrustTrackerUnit)
+        public static TrustTracker AddTrustTracker(IRaterooDataContext RaterooDB, User theUser, TrustTrackerUnit theTrustTrackerUnit)
         {
             TrustTracker theTrustTracker = new TrustTracker
             {
@@ -190,6 +190,9 @@ namespace ClassLibrary1.Model
 
             if (theUserInteraction == null)
             {
+                if (mostRecentUserTrustTracker == null) // usually trust trackers are added before the userrating is added, but this might not happen in some circumstances, such as when the user is a superuser
+                    mostRecentUserTrustTracker = AddTrustTracker(RaterooDB, latestUserRating.User, latestUserRating.TrustTrackerUnit);
+
                 theUserInteraction = new UserInteraction 
                 { 
                     User = originalUserRating.User, 
@@ -285,6 +288,11 @@ namespace ClassLibrary1.Model
                     }
                     tt.DeltaOverallTrustLevel = Math.Abs(tt.OverallTrustLevelAtLastReview - tt.OverallTrustLevel);
                     tt.OverallTrustLevel = PMTrustCalculations.GetOverallTrustLevelWithNewUserCredit(theStat.TrustTrackerStat, (int) Math.Round(tt.Egalitarian_Denom));
+                    if (double.IsNaN(tt.OverallTrustLevel))
+                    {
+                        tt.OverallTrustLevel = PMTrustCalculations.GetOverallTrustLevelWithNewUserCredit(theStat.TrustTrackerStat, (int)Math.Round(tt.Egalitarian_Denom)); // DEBUG -- to repeat
+                        throw new Exception("DEBUG");
+                    }
                     tt.SkepticalTrustLevel = theStat.TrustTrackerStat.TrustValue; // we keep track of the "real" skeptical trust value, but won't use it in deciding adjustment factors.
                     if (tt.EgalitarianTrustLevel != originalEgalitarianTrustLevel && tt.EgalitarianTrustLevelOverride == null)
                         tt.MustUpdateUserInteractionEgalitarianTrustLevel = true;

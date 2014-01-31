@@ -116,7 +116,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("Insufficient privileges");
         }
 
-        public int PointsManagerCreate(int domainID, int? defaultRatingGroupAttributesID, int? specializedSiteNum, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, String name)
+        public int PointsManagerCreate(int domainID, int? specializedSiteNum, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, String name)
         {
             
             int? newObjectID = null;
@@ -143,7 +143,7 @@ namespace ClassLibrary1.Model
             return (int) newObjectID;
         }
 
-        public int RewardTblCreate(int? pointsManagerID, decimal worstCasePenalty, decimal bestCaseReward, int runTime, int halfLife, decimal probOfRewardEvaluation, decimal? multiplier, decimal subsidyLevel, bool doItNow, int userID, int? changesGroupID)
+        public int RewardTblCreate(int pointsManagerID, decimal worstCasePenalty, decimal bestCaseReward, int runTime, int halfLife, decimal probOfRewardEvaluation, decimal? multiplier, decimal subsidyLevel, bool doItNow, int userID, int? changesGroupID)
         {
             DataManipulation.ConfirmObjectExists(pointsManagerID, TypeOfObject.PointsManager);
 
@@ -1472,9 +1472,9 @@ namespace ClassLibrary1.Model
         // This version assumes that the rating ending time does not vary (i.e., the reference time varies),
         // that points are evenly split between short term and long term, and that ratings can be autocalculated
         // (i.e., where user rates one or more items in the group).
-        public int RatingGroupAttributesCreate(int ratingCharacteristicsID, int? RatingConditionID, decimal? constrainedSum, RatingHierarchyData theHierarchy, String name, RatingGroupTypes RatingType, String ratingGroupDescription, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, int? SubtopicId)
+        public int RatingGroupAttributesCreate(int ratingCharacteristicsID, int? RatingConditionID, decimal? constrainedSum, RatingHierarchyData theHierarchy, String name, RatingGroupTypes RatingType, String ratingGroupDescription, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, int pointsManagerID)
         {
-            return RatingGroupAttributesCreate(ratingCharacteristicsID, null, RatingConditionID, constrainedSum, theHierarchy, name, RatingType, ratingGroupDescription, false, true, null, (decimal)0.5, makeActive, makeActiveNow, userID, changesGroupID, SubtopicId);
+            return RatingGroupAttributesCreate(ratingCharacteristicsID, null, RatingConditionID, constrainedSum, theHierarchy, name, RatingType, ratingGroupDescription, false, true, null, (decimal)0.5, makeActive, makeActiveNow, userID, changesGroupID, pointsManagerID);
         }
 
         public class RatingCharacteristicsHierarchyOverride
@@ -1494,7 +1494,7 @@ namespace ClassLibrary1.Model
             return replacement.theReplacementCharacteristicsID;
         }
 
-        public int RatingGroupAttributesCreate(int ratingCharacteristicsID, List<RatingCharacteristicsHierarchyOverride> theReplacementCharacteristics, int? RatingConditionID, decimal? constrainedSum, RatingHierarchyData theHierarchy, String name, RatingGroupTypes RatingType, String ratingGroupDescription, bool ratingEndingTimeVaries, bool topGroupRatingsCanBeAutoCalculated, List<RatingHierarchyEntry> suppressAutoCalculationForGroupsBeneath, decimal longTermPointsWeight, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, int? SubtopicId)
+        public int RatingGroupAttributesCreate(int ratingCharacteristicsID, List<RatingCharacteristicsHierarchyOverride> theReplacementCharacteristics, int? RatingConditionID, decimal? constrainedSum, RatingHierarchyData theHierarchy, String name, RatingGroupTypes RatingType, String ratingGroupDescription, bool ratingEndingTimeVaries, bool topGroupRatingsCanBeAutoCalculated, List<RatingHierarchyEntry> suppressAutoCalculationForGroupsBeneath, decimal longTermPointsWeight, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, int pointsManagerID)
         {
             int? newObjectID = null;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.ChangeCharacteristics, !makeActiveNow, null, null, true))
@@ -1513,7 +1513,7 @@ namespace ClassLibrary1.Model
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
-                newObjectID = DataManipulation.AddRatingGroupAttributes(ratingCharacteristicsID, RatingConditionID, constrainedSum, name, RatingType, ratingGroupDescription, userID, SubtopicId, ratingEndingTimeVaries, topGroupRatingsCanBeAutoCalculated, longTermPointsWeight);
+                newObjectID = DataManipulation.AddRatingGroupAttributes(ratingCharacteristicsID, RatingConditionID, constrainedSum, name, RatingType, ratingGroupDescription, userID, pointsManagerID, ratingEndingTimeVaries, topGroupRatingsCanBeAutoCalculated, longTermPointsWeight);
                 if (makeActive)
                     DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.RatingGroupAttributes, true, false, false, false, false, false, false, false, "", newObjectID, null, null, null, null, "", null);
 
@@ -1555,18 +1555,15 @@ namespace ClassLibrary1.Model
 
                             // Add the rating plan.
                             int newRatingPlanID = DataManipulation.AddRatingPlan(ratingGroupAttributesID,numInGroup,theEntry.Value,theEntry.RatingName,theEntry.Description,userID);
-                            RatingPlan DEBUGplan2 = DataManipulation.DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID == newRatingPlanID);
                             if (makeActive)
                                 DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.RatingPlan, true, false, false, false, false, false, false, false, "", newRatingPlanID, null, null, null, null, "", null);
 
-                            RatingPlan DEBUGplan3 = DataManipulation.DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID == newRatingPlanID);
                             // Check to see if this has any descendants.
                             if (theHierarchy.RatingHierarchyEntries.Where(d => d.Superior == theEntry.EntryNum).Any())
                             { // We need to add a rating group attributes for this entry, and to relate the new rating group attributes to the rating plan we just created.
                                 // We will allow autocalculation of ratings within this rating group, unless the entry containing the rating group
                                 // is included in suppressAutoCalculationForGroupsBeneath
-                                RatingPlan DEBUGplan = DataManipulation.DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID == newRatingPlanID);
-                                int newRatingGroupID = DataManipulation.AddRatingGroupAttributes(GetRatingCharacteristicsForSpotInHierarchy(ratingCharacteristicsID,theEntry,theReplacementCharacteristics), null, null, theEntry.RatingName, subordinateRatingGroupTypes, theEntry.Description, userID, null, ratingEndingTimeVaries, suppressAutoCalculationForGroupsBeneath == null || !suppressAutoCalculationForGroupsBeneath.Contains(theEntry), longTermPointsWeight);
+                                int newRatingGroupID = DataManipulation.AddRatingGroupAttributes(GetRatingCharacteristicsForSpotInHierarchy(ratingCharacteristicsID,theEntry,theReplacementCharacteristics), null, null, theEntry.RatingName, subordinateRatingGroupTypes, theEntry.Description, userID, pointsManagerID, ratingEndingTimeVaries, suppressAutoCalculationForGroupsBeneath == null || !suppressAutoCalculationForGroupsBeneath.Contains(theEntry), longTermPointsWeight);
                                 if (makeActive)
                                     DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.RatingGroupAttributes, true, false, false, false, false, false, false, false, "", newRatingGroupID, null, null, null, null, "", null);
                                 DataManipulation.RelateRatingPlanAndGroupAttributes(newRatingGroupID,newRatingPlanID);
@@ -1587,22 +1584,22 @@ namespace ClassLibrary1.Model
         // This is for a rating group attributes with just a single rating.
         public int RatingGroupAttributesCreate(int ratingCharacteristicsID, int? RatingConditionID, String name, RatingGroupTypes RatingType, 
             decimal? defaultUserRating, String ratingGroupDescription, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, 
-            int? SubtopicId)
+            int pointsManagerID)
         {
             RatingHierarchyData ratingHierarchyData = new RatingHierarchyData();
             ratingHierarchyData.Add(name, defaultUserRating, 1, "");
             return RatingGroupAttributesCreate(ratingCharacteristicsID, RatingConditionID, null, ratingHierarchyData, name,
                                                RatingType, ratingGroupDescription, makeActive, makeActiveNow, userID,
-                                               changesGroupID, SubtopicId);
+                                               changesGroupID, pointsManagerID);
         }
 
         public int RatingGroupAttributesCreate(int ratingCharacteristicsID, int? RatingConditionID, String name, RatingGroupTypes RatingType, 
             decimal? defaultUserRating, String ratingGroupDescription, bool ratingEndingTimeVaries, decimal longTermPointsWeight, bool makeActive,
-            bool makeActiveNow, int userID, int? changesGroupID, int? SubtopicId)
+            bool makeActiveNow, int userID, int? changesGroupID, int pointsManagerID)
         {
             RatingHierarchyData theHierarchy = new RatingHierarchyData();
             theHierarchy.Add(name, defaultUserRating, 1, "");
-            return RatingGroupAttributesCreate(ratingCharacteristicsID, null, RatingConditionID, null, theHierarchy, name, RatingType, ratingGroupDescription, ratingEndingTimeVaries, true, null, longTermPointsWeight, makeActive, makeActiveNow, userID, changesGroupID, SubtopicId);
+            return RatingGroupAttributesCreate(ratingCharacteristicsID, null, RatingConditionID, null, theHierarchy, name, RatingType, ratingGroupDescription, ratingEndingTimeVaries, true, null, longTermPointsWeight, makeActive, makeActiveNow, userID, changesGroupID, pointsManagerID);
         }
 
 
@@ -2410,10 +2407,10 @@ namespace ClassLibrary1.Model
             DataManipulation.ConfirmObjectExists(insertableContentID, TypeOfObject.InsertableContent);
             InsertableContent theInsertableContent = DataAccess.GetInsertableContents(insertableContentID);
             int? TopicId = theInsertableContent.DomainID;
-            int? SubtopicId = theInsertableContent.PointsManagerID;
+            int? pointsManagerID = theInsertableContent.PointsManagerID;
             int? TableId = theInsertableContent.TblID;
            
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.AddTblsAndChangePointsManagers, false, SubtopicId, TableId, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.AddTblsAndChangePointsManagers, false, pointsManagerID, TableId, true))
             {
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)

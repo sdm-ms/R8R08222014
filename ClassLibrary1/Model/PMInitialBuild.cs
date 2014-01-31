@@ -346,15 +346,6 @@ namespace ClassLibrary1.Model
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
         }
 
-        public void CreateStandardRatingGroupAttributes()
-        {
-            RatingCharacteristic theRatingCharacteristics = RaterooDB.GetTable<RatingCharacteristic>().Single(c => c.Name == "Default characteristics");
-            int ratingGroupAttributesID = Supporter.AddRatingGroupAttributes(theRatingCharacteristics.RatingCharacteristicsID, null, null, "Single probability prediction", RatingGroupTypes.probabilitySingleOutcome, "", null, null, false, true, (decimal)0.5);
-            SetStatusOfObjectInitialBuild(ratingGroupAttributesID, TypeOfObject.RatingGroupAttributes, StatusOfObject.Active);
-            int ratingPlan = Supporter.AddRatingPlan(ratingGroupAttributesID, 1, null, "Single probability prediction", "", null);
-            SetStatusOfObjectInitialBuild(ratingPlan, TypeOfObject.RatingPlan, StatusOfObject.Active);
-        }
-
         public void CreateEstablishedUsers()
         {
             int theUserID2 = Supporter.AddUserReturnId("admin", true, "mbabramo@yahoo.com", "finch2127248474", false);

@@ -289,6 +289,7 @@ namespace ClassLibrary1.Model
         {
             AdjustPct = adjustPct;
             OverallTrustLevel = overallTrustLevel;
+            if (double.IsNaN(OverallTrustLevel)) throw new Exception("DEBUG Exception.");
             IsTrusted = isTrusted;
             PercentPreviousRatings = percentPreviousRatings;
             OneHourVolatility = oneHourVolatility;
@@ -864,8 +865,7 @@ namespace ClassLibrary1.Model
                     );
 
                 UserRatingHierarchyData theData = new UserRatingHierarchyData(additionalInfo);
-                GetUserRatingHierarchyBasedOnUserRatings(ratingIdAndUserRatingValues, theRatings, theRatingGroups, constrainedSum, 
-                    theManager.AdjustmentFactor, ref theData);
+                GetUserRatingHierarchyBasedOnUserRatings(ratingIdAndUserRatingValues, theRatings, theRatingGroups, constrainedSum, theManager.AdjustmentFactorConservative, ref theData);
 
                 if (RatingGroupIsResolved(topRatingGroup))
                     throw new UserRatingDataException("You cannot enter a rating, because this table cell is completed.");

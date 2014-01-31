@@ -316,30 +316,6 @@ namespace ClassLibrary1.Model
                                          group ur by ur.RatingPhaseStatus into grouped
                                          select new { RatingPhaseStatus = grouped.Key, UserRatingInfos = grouped.OrderBy(x => x.UserRating.UserRatingGroup.WhenMade) };
 
-            var DEBUGA =
-                                      from ur in rpsInitialQuery
-                                      let trustTrackerUnit = ur.TrustTrackerUnit
-                                      let mostRecentUserRatingRecordedInUserRating = ur.UserRating1 // this previously was the latest user rating
-                                      let mostRecentUserRatingRecordedInRating = ur.Rating.UserRating // this now is the latest user rating
-                                      let user = ur.User
-                                      select new
-                                      {
-                                          UserRating = ur,
-                                          UserRatingGroup = ur.UserRatingGroup,
-                                          Rating = ur.Rating,
-                                          RatingPhaseStatus = ur.RatingPhaseStatus,
-                                          MostRecentUserRatingInUserRating = ur.UserRating1,
-                                          MostRecentUserRatingInRating = ur.Rating.UserRating,
-                                          RatingGroup = ur.UserRatingGroup.RatingGroup,
-                                          RatingGroupAttribute = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute,
-                                          RatingCharacteristic = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute.RatingCharacteristic,
-                                      }
-                   ;
-            var DEBUGC = DataContext.GetTable<PointsTotal>().Select(x => x.User.Username).ToList();
-            var DEBUGB = DEBUGA.ToList();
-            var DEBUG0 = rpsInitialQuery.ToList();
-            var DEBUG1 = userRatingInfoQuery.ToList();
-
             var userRatingInfoGroups = userRatingInfosGrouped.ToList(); // remember, take is already done above
             bool moreWorkToDo = userRatingInfoGroups.Count() == maxToTake;
 
@@ -360,11 +336,14 @@ namespace ClassLibrary1.Model
 
                     UpdatePointsForUserRating(userRatingInfo.UserRating, userRatingInfo.PointsTotal, currentTime);
                     TrustTrackerStat[] originalUserTrustTrackerStats = /* userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats == null ? new TrustTrackerStat[0] : */ userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats.ToArray();
+                    var DEBUG = userRatingInfo.MostRecentUserRatingInRating.User.TrustTrackers.ToList();
+                    var DEBUG1 = userRatingInfo.MostRecentUserRatingInRating.User;
                     PMTrustTrackingBackgroundTasks.UpdateUserInteractionsAfterNewUserRatingIsEntered(DataContext,
                         userRatingInfo.CurrentlyRecordedUserInteraction, userRatingInfo.ReplacementUserInteraction,
                         userRatingInfo.UserRating, originalUserTrustTrackerStats, userRatingInfo.MostRecentUserRatingInUserRating,
                         userRatingInfo.MostRecentUserRatingInRating, userRatingInfo.UserRatingGroup.WhenMade,
                         userRatingInfo.RatingGroupAttribute, userRatingInfo.RatingCharacteristic, userRatingInfo.MostRecentUserTrustTracker);
+                    userRatingInfo.RatingPhaseStatus.TriggerUserRatingsUpdate = false;
                 }
             }
             return moreWorkToDo;
@@ -443,12 +422,17 @@ namespace ClassLibrary1.Model
 
                     Tuple<decimal, decimal> overlapRange = new Tuple<decimal, decimal>(Math.Max(earlierUserRange.Item1, laterUserRange.Item1), Math.Min(earlierUserRange.Item2, laterUserRange.Item2));
                     decimal overlapProportion;
-                    if (laterUserRating.LogarithmicBase == null)
-                        overlapProportion = (overlapRange.Item2 - overlapRange.Item1) / (laterUserRange.Item2 - laterUserRange.Item1);
+                    if (laterUserRange.Item1 == laterUserRange.Item2)
+                        overlapProportion = 0; // helps avoid divide-by-zero exception
                     else
                     {
-                        Func<decimal, decimal> lg = x => (decimal) Math.Log((double) x, (double) laterUserRating.LogarithmicBase);
-                        overlapProportion = (lg(overlapRange.Item2) - lg(overlapRange.Item1)) / (lg(laterUserRange.Item2) - lg(laterUserRange.Item1));
+                        if (laterUserRating.LogarithmicBase == null)
+                            overlapProportion = (overlapRange.Item2 - overlapRange.Item1) / (laterUserRange.Item2 - laterUserRange.Item1);
+                        else
+                        {
+                            Func<decimal, decimal> lg = x => (decimal)Math.Log((double)x, (double)laterUserRating.LogarithmicBase);
+                            overlapProportion = (lg(overlapRange.Item2) - lg(overlapRange.Item1)) / (lg(laterUserRange.Item2) - lg(laterUserRange.Item1));
+                        }
                     }
                     PointsTotal earlierPointsTotal = correspondingPointsTotals[j];
                     bool earlierUserHasPlentyOfPoints = (earlierPointsTotal.PendingPoints + earlierPointsTotal.NotYetPendingPoints + earlierPointsTotal.TotalPoints) > laterUserRating.MaxGain * 10.0M;

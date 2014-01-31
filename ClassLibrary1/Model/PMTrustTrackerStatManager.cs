@@ -39,6 +39,19 @@ namespace ClassLibrary1.Model
             }
 
         }
+
+        public static float MinAdjustmentFactorToCreditUserRating = 0.30F;
+        public float AdjustmentFactorConservative
+        {
+            get
+            {
+                if (AdjustmentFactor < MinAdjustmentFactorToCreditUserRating)
+                    return 0;
+                return (AdjustmentFactor - MinAdjustmentFactorToCreditUserRating) / (1.0F - MinAdjustmentFactorToCreditUserRating);
+
+            }
+        }
+
         internal bool SingleNumberRating;
         internal float RatingMagnitude;
 
@@ -98,8 +111,7 @@ namespace ClassLibrary1.Model
                 //(theRating.CurrentValue != null && theTrustTracker.SkepticalTrustLevel > 0) ||
                 //(theRating.CurrentValue == null && theTrustTracker.SkepticalTrustLevel > PMTrustTrackingBackgroundTasks.MinSkepticalTrustNeededForTrustedOnInitialRating) || 
                 //TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes; 
-            additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactor, theTrustTracker.OverallTrustLevel, isTrusted, pctPreviousRatings, oneHourVolatilityDecimal, oneDayVolatilityDecimal, 
-                trustTrackerForChoiceFieldsSummary, otherChoiceInFieldIDs);
+            additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactorConservative, theTrustTracker.OverallTrustLevel, isTrusted, pctPreviousRatings, oneHourVolatilityDecimal, oneDayVolatilityDecimal, trustTrackerForChoiceFieldsSummary, otherChoiceInFieldIDs);
         }
 
         /// <summary>
@@ -366,8 +378,7 @@ namespace ClassLibrary1.Model
 
         public decimal GetNewUserRatingValueToUse(UserRating theUserRating)
         {
-            return PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor(theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, 
-                AdjustmentFactor, theUserRating.LogarithmicBase);
+            return PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor(theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, AdjustmentFactorConservative, theUserRating.LogarithmicBase);
         }
 
     }

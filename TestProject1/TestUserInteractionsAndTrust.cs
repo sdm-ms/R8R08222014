@@ -314,6 +314,10 @@ namespace TestProject1
         [TestMethod]
         public void UserInteractionStatsForTwoUsersWhoEachRateTwoRatingsShouldEqualPredictedValues()
         {
+            TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true; // we're looking at user interaction stats, so it's easiest to test this way
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
+
             const decimal minRating = 0M;
             const decimal maxRating = 10M;
 
@@ -458,12 +462,10 @@ namespace TestProject1
             user2User4InteractionStats[1].AvgAdjustmentPctWeighted
                 .Should().BeApproximately(SumAdjustmentPercentageTimesWeightsLargeDeltaRatingStat2 / sumWeightLargeDeltaRatingStat2, Precision);
 
-
-            // TODO this should probably be a separate test
             float ratingMagnitudesSumWeights = ((10F - 1F) + (9.5F - 1F)) / (float)(maxRating - minRating);
             user2User4Interaction.WeightInCalculatingTrustTotal
                 .Should().BeApproximately(
-                    (ratingMagnitudesSumWeights / 2) * (float)Math.Log(2 + 2) * user2User4Interaction.LatestUserEgalitarianTrust,
+                    (ratingMagnitudesSumWeights / 2) * (float)Math.Log(1 + 2, 10.0) * user2User4Interaction.LatestUserEgalitarianTrust,
                     Precision,
                     "because the more transactions we have, the greater the weight, by we increase this only logarithmically.");
         }
@@ -570,7 +572,7 @@ namespace TestProject1
                     (maxRating - minRating));
             user2User4Interaction.WeightInCalculatingTrustTotal
                 .Should().BeApproximately(
-                    (ratingMagnitudesSumWeights / 2) * (float)Math.Log(2 + 2) * user2User4Interaction.LatestUserEgalitarianTrust,
+                    (ratingMagnitudesSumWeights / 2) * (float)Math.Log(2 + 1, 10.0) * user2User4Interaction.LatestUserEgalitarianTrust,
                     Precision,
                     "because the more transactions we have, the greater the weight, by we increase this only logarithmically.");
         }
@@ -593,6 +595,8 @@ namespace TestProject1
         [TestMethod]
         public void TestTrustTracker_CalculatesUserInteractionCorrectly_WhereAdjPctIsGreaterThan1()
         {
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0; // for purpose of this test, do not start user with extra trust
+
             const decimal minRating = 0M;
             const decimal maxRating = 10M;
 
@@ -754,7 +758,7 @@ namespace TestProject1
             float revisedOverallTrust1a = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1 == revisedOverallTrust1a).Should().BeFalse(); // because user 3's egalitarian trust has changed and user 3 is only one of users who rerated 1
             float revisedOverallTrust2a = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
-            (revisedOverallTrust2 == revisedOverallTrust2a).Should().BeTrue(); // because user 3 is still only rerater of user 2
+            revisedOverallTrust2.Should().BeApproximately(revisedOverallTrust2a, 0.01F); // because user 3 is still only rerater of user 2
 
             // now change the EgalitarianTrustOverride only slightly. That should change LatestUserEgalitarianTrust, but not the overall trust level of the earlier users
             user3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == _testHelper.UserIds[3]);
@@ -772,7 +776,7 @@ namespace TestProject1
             float revisedOverallTrust1b = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1a == revisedOverallTrust1b).Should().BeTrue(); // because the override value did not change by enough to change the weighting
             float revisedOverallTrust2b = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
-            (revisedOverallTrust2a == revisedOverallTrust2b).Should().BeTrue(); // for the same reason and because user 3 is still only rerater of user 2
+            revisedOverallTrust2a.Should().BeApproximately(revisedOverallTrust2b, 0.01F); // for the same reason and because user 3 is still only rerater of user 2
         }
 
         [TestMethod]
@@ -924,6 +928,8 @@ namespace TestProject1
         [TestMethod]
         public void Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess()
         {
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+
             int? randomSeed = null;
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, false, true, randomSeed);
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.8F, false, true, randomSeed);
@@ -939,6 +945,9 @@ namespace TestProject1
             bool applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue, 
             int? randomSeed = null)
         {
+            TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true; // we want all the userratings to have adjustment factors of 1 for testing purposes. That is, if a user enters a userrating, the rating will be set to that userrating. But we can still see what the trust levels (i.e., retrospective adjustment factors are).
+            TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0.0F; // this allows us to make calculations without adjusting for the fact that trust will be a little lower than it otherwise would be
+
             const decimal minRatingValue = 0M;
             const decimal maxRatingValue = 10M;
             const decimal otherUserRatingValueOffset = 0.001M;
@@ -949,10 +958,8 @@ namespace TestProject1
                 throw new Exception("Can't apply special case to high magnitude ratings and specified choice field value.");
 
             decimal initialValue = 4M;
-            // different even/odd values so that we have two classes of ratings?  Why have two classes?  WHy not have just two ratings?
-            //  what is gained by having classes of ratings that have identical correct values?
-            //  And why have two classes at all?  Why not just construct a test that correctly tests a single value and call it multiple
-            //   times?
+            // different even/odd values so that we have two classes of ratings
+            // The idea is that we might have ratings with different ChoiceInGroupIDs, and we want to make sure there is a difference.
             decimal correctValueEvens = 4.2M;
             decimal correctValueOdds = 3.5M;
             decimal correctValueHighMagnitude = 8M;
@@ -969,24 +976,19 @@ namespace TestProject1
             TblRow[] tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
             Rating[] ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
 
-            // Should this be in tested in a separate test?...what is justification for testing it here?
             ratings.Count().Should().Be(numTblRows, "because we started with one TblRow and added numTblRows-1 TblRows, so we should end up with numTblRows TblRows."); 
             tblRows.Count().Should().Be(numTblRows);
 
-            // What does the special case adjustment factor do?
-            // Which choicefieldvalue is the specific one?  How do we select it?  What significance does its selection have?
-            // Does it have somethign to do with the ChoiceGroup named "ChoiceGroup single"?  How did that ChoiceGroup even get
-            //  that name?
+            
             if (applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
             {
                 RaterooTestEnvironmentCreator testEnv = new RaterooTestEnvironmentCreator(_testHelper);
                 PointsManager pm = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
                 testEnv.CreateChoiceGroups(pm.PointsManagerID);
-                ChoiceGroup theChoiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
+                ChoiceGroup theChoiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single"); // this is just a test choice group that was added where one can only select a single choice from the group
                 var choiceInGroups = theChoiceGroup.ChoiceInGroups.ToList();
                 int choiceInGroupsCount = choiceInGroups.Count();
-                int fieldDefinitionID = _testHelper.ActionProcessor.FieldDefinitionCreate(_testHelper.Tbl.TblID, "SimpChoice", 
-                    FieldTypes.ChoiceField, true, theChoiceGroup.ChoiceGroupID, null, true, true, _testHelper.SuperUserId, null);
+                int fieldDefinitionID = _testHelper.ActionProcessor.FieldDefinitionCreate(_testHelper.Tbl.TblID, "SimpChoice", FieldTypes.ChoiceField, true, theChoiceGroup.ChoiceGroupID, null, true, true, _testHelper.SuperUserId, null);
                 for (int rowNum = 0; rowNum < numTblRows; rowNum++)
                 {
                     int? theChoiceId = null;
@@ -997,9 +999,8 @@ namespace TestProject1
                     else if (RandomGenerator.GetRandom() > 0.5)
                         theChoiceId = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
                     TblRow theTblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First();
-                    // What are we indicating if we leave theChoice == null?
-                    _testHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(theTblRow, fieldDefinitionID, theChoiceId, 
-                        _testHelper.SuperUserId, null);
+                    // If we leave theChoice == null, then this means that there is no choice for this field.
+                    _testHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(theTblRow, fieldDefinitionID, theChoiceId, _testHelper.SuperUserId, null);
                 }
             }
 
@@ -1021,7 +1022,7 @@ namespace TestProject1
             {
                 decimal correctValue = (rowNum % 2 == 0) ? correctValueEvens : correctValueOdds;
                 float adjustmentFactorToApply = baselineAdjustmentFactorToApply;
-                if (baselineAdjustmentFactorToApply != specialCaseAdjustmentFactorToApply && rowNum % 10 == 3)
+                if (baselineAdjustmentFactorToApply != specialCaseAdjustmentFactorToApply && rowNum % 10 == 3) // this is arbitrary, but we check for this below
                 {
                     if (applySpecialCaseAdjustmentFactorToHighMagnitudeRatings)
                         correctValue = correctValueHighMagnitude;
@@ -1034,6 +1035,7 @@ namespace TestProject1
                     maxRatingValue);
 
                 UserRatingResponse theResponse = new UserRatingResponse();
+                bool isLastEntry = rowNum == numTblRows - 1; // useful for setting conditional breakpoint
                 _testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, _testHelper.UserIds[1], ref theResponse);
 
                 int otherUser1Num = RandomGenerator.GetRandom(2, 10);
@@ -1054,9 +1056,8 @@ namespace TestProject1
             _testHelper.WaitIdleTasks();
 
             // Check the trust tracker
-            TrustTracker trustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => 
-                x.TrustTrackerUnit.TrustTrackerUnitID == _testHelper.Tbl.PointsManager.TrustTrackerUnit.TrustTrackerUnitID && 
-                x.UserID == _testHelper.UserIds[1]);
+            TrustTracker trustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.TrustTrackerUnit.TrustTrackerUnitID == _testHelper.Tbl.PointsManager.TrustTrackerUnit.TrustTrackerUnitID && 
+x.UserID == _testHelper.UserIds[1]);
             TrustTrackerStat noExtraWeightingTrustStat = trustTracker.TrustTrackerStats.Single(x => x.StatNum == 0);
             float tolerance = baselineAdjustmentFactorToApply == specialCaseAdjustmentFactorToApply ?
                 0.01F : 0.15F;
@@ -1076,7 +1077,7 @@ namespace TestProject1
             if (baselineAdjustmentFactorToApply != specialCaseAdjustmentFactorToApply && 
                 applySpecialCaseAdjustmentFactorToHighMagnitudeRatings)
             {
-                var highMagnitude = trustTracker.TrustTrackerStats.Single(x => x.StatNum == 2); 
+                var highMagnitude = trustTracker.TrustTrackerStats.Single(x => x.StatNum == 1); 
                 //var uis = DataAccess.RaterooDB.GetTable<UserInteractionStat>().Where(x => x.UserInteraction.User.UserID == theTestHelper.theUsers[1] && x.StatNum == 2).ToList();
                 //foreach (var debugui in uis.Where(x => x.SumWeights > 0))
                 //    Trace.TraceInformation("Adj pct " + debugui.SumAdjustPctTimesWeight / debugui.SumWeights + " weights: " + debugui.SumWeights);
@@ -1114,30 +1115,34 @@ namespace TestProject1
         /// applied after the idle tasks.
         /// </summary>
         [TestMethod]
-        public void TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel()
+        public void TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel()
         {
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(0.6F, true, false);
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(0.6F, true, true);
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(1.5F, true, false);
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(-0.2F, true, false);
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(0.6F, false, false);
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(0.6F, false, true);
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(1.5F, false, false);
-            TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(-0.2F, false, false);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, true, false);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, true, true);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(1.5F, true, false);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(-0.2F, true, false);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, false, false);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, false, true);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(1.5F, false, false);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(-0.2F, false, false);
         }
 
-        public void TestTrustTracking_NotSubsequentlyRatedRatingsAdjustBasedOnChangesInTrustLevel_Helper(
+        public void TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(
             float adjustmentFactorToApply, 
             bool initializeRowsToNonNullValue, 
-            bool allowShortTermToResolve)
+            bool allowMonthToPass)
         {
+
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
+
             if (adjustmentFactorToApply == 0)
                 throw new Exception("This test won't work with applying adjustment percentage of 0, because the initial user must apply some wrong number that will yield the correct number after the adjustment percentage is applied.");
                 
             Initialize();
 
             const int numTblRows = 10;
-            const decimal initialValue = 4M;
+            decimal initialValue = 4M;
             const decimal correctValue = 7M;
             const int numUsers = 15;
 
@@ -1160,6 +1165,8 @@ namespace TestProject1
                     ratings[rowNum].LastTrustedValue = initialValue;
                 }
             }
+            else
+                initialValue = 5M;
 
             #region debug
             //var user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID ==  _testHelper.UserIds[0]);
@@ -1187,7 +1194,7 @@ namespace TestProject1
             //}
             //#endregion
             
-            if (allowShortTermToResolve)
+            if (allowMonthToPass)
             {
                 _testHelper.WaitIdleTasks();
                 TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(31).GetTotalWholeMilliseconds()); // wait a month
@@ -1251,32 +1258,33 @@ namespace TestProject1
                 //}
                 //#endregion
             }
-            TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
-            _testHelper.WaitIdleTasks();
+            for (int i = 0; i <= 1; i++)
+            { // we do this twice because ratings review won't happen for 20 minutes
+                TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
+                _testHelper.WaitIdleTasks();
+            }            
 
-            // Check the first rating entered to make sure it has changed
+            // Check the first rating entered to make sure it has been updated
             int ratingIndexToUse = 0;
             Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
             UserRating userRating = rating.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
-            float appliedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)userRating.NewUserRating, 
-                userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating);
-            float expectedAdjustmentFactor = initializeRowsToNonNullValue && !allowShortTermToResolve ? 
-                adjustmentFactorToApply : 
-                1F; // if we start with a null value, then we don't want any later adjustment, though the trust may change
+            TrustTracker tt = userRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
+            if (adjustmentFactorToApply < 1.0)  
+                tt.OverallTrustLevel.Should().BeLessThan(1.0F);
+            float appliedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)rating.CurrentValue, userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating);
+            float expectedAdjustmentFactor = adjustmentFactorToApply;
+            if (allowMonthToPass)
+                expectedAdjustmentFactor = 1.0F; // b/c the userratings will be too old to adjust
             expectedAdjustmentFactor = PMTrustCalculations.Constrain(expectedAdjustmentFactor, 0, 1);
 
             float tolerance = 0.02F;
             appliedAdjustmentFactor.Should().BeInRange(expectedAdjustmentFactor - tolerance, expectedAdjustmentFactor + tolerance);
-            if (!initializeRowsToNonNullValue && !allowShortTermToResolve)
-            {
-                userRating.IsTrusted.Should().Be(adjustmentFactorToApply >= (initializeRowsToNonNullValue ? 0 : 0.7F));
-            }
 
             // Check the second rating entered to make sure it has not changed
             ratingIndexToUse = 1;
             rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
-            userRating = rating.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
-            userRating.EnteredUserRating.Should().Be(userRating.NewUserRating);
+            userRating = rating.UserRatings.SingleOrDefault(x => x.User.Username == "admin");
+            userRating.Should().BeNull();
         }
 
 
