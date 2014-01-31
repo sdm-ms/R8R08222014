@@ -1108,6 +1108,128 @@ x.UserID == _testHelper.UserIds[1]);
             }
         }
 
+        [TestMethod]
+        public void TestTrustTracking_UserInteractionStatsAreUndoneProperly()
+        {
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
+            TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
+
+            Initialize();
+            _testHelper.CreateSimpleTestTable(true);
+            _testHelper.CreateUsers(20);
+            int numTblRows = 1;
+            _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, numTblRows);
+            _testHelper.WaitIdleTasks();
+            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            var users = _dataManipulation.DataContext.GetTable<User>().ToArray();
+            for (int rowNum = 0; rowNum < numTblRows; rowNum++)
+            {
+                ratings[rowNum].CurrentValue = 5M;
+                ratings[rowNum].LastTrustedValue = 5M;
+            }
+
+            UserRatingResponse aResponse = new UserRatingResponse();
+            _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 4.5M, _testHelper.UserIds[0], ref aResponse);
+            decimal[] randomUserRatings = new decimal[20];
+            for (int j = 0; j < 20; j++)
+                randomUserRatings[j] = RandomGenerator.GetRandom(4.0M, 6.0M);
+            Dictionary<int, float> previousTrustLevels = new Dictionary<int, float>();
+            for (int j = 0; j < 100; j++)
+            {
+                int randomUser = RandomGenerator.GetRandom(1, 19);
+                _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID,randomUserRatings[randomUser], _testHelper.UserIds[randomUser], ref aResponse);
+                _testHelper.WaitIdleTasks();
+                var trustTrackers = _dataManipulation.DataContext.GetTable<TrustTracker>().Select(x => x).ToList();
+                foreach (var t in trustTrackers)
+                    t.EgalitarianTrustLevelOverride = 1.0F;
+                _testHelper.WaitIdleTasks();
+                TrustTracker tt = users.Single(x => x.UserID == _testHelper.UserIds[0]).TrustTrackers.First(x => x.TrustTrackerUnit.PointsManagers.Any());
+                UserInteractionStat uis = _dataManipulation.DataContext.GetTable<UserInteractionStat>().Single(x => x.StatNum == 0 && x.UserInteraction.User.UserID == _testHelper.UserIds[0] && x.UserInteraction.User1.UserID == _testHelper.UserIds[randomUser]);
+                Debug.WriteLine("Random user: " + _testHelper.UserIds[randomUser] + " rating userRating: " + randomUserRatings[randomUser] + " user interaction stat: " + uis.AvgAdjustmentPctWeighted + " trust level: " + tt.OverallTrustLevel);
+                if (previousTrustLevels.ContainsKey(randomUser))
+                {
+                    tt.OverallTrustLevel.Should().BeApproximately(previousTrustLevels[randomUser], 0.01F);
+                    tt.OverallTrustLevel.Should().BeGreaterThan(-1.251F);
+                    tt.OverallTrustLevel.Should().BeLessThan(1.251F);
+                }
+                else
+                    previousTrustLevels.Add(randomUser, tt.OverallTrustLevel);
+            }
+
+        }
+
+        [TestMethod]
+        public void TestTrustTracking_RatingsByBadSetOfUsersAdjustBack()
+        {
+            int numBadUsers = 3;
+            int numGoodUsers = 50;
+            int numRatingsUntouched = 5;
+            int numRatingsChallenged = 100; // one or more bad users enter a user rating and it gets corrected by a good user
+            int totalUserRatingsByGoodUsers = 1000;
+            decimal initialValue = 5M;
+            decimal correctValue = 7M;
+            decimal plusMinusCorrectValueInitial = 2.0M;
+            decimal ultimateBadValue = 3M;
+            decimal eachBadUserContributionToUltimateBadValue = (initialValue - ultimateBadValue) / numBadUsers;
+
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
+
+
+            Initialize();
+            _testHelper.CreateSimpleTestTable(true);
+            _testHelper.CreateUsers(numBadUsers + numGoodUsers + 1);
+            int numTblRows = numRatingsUntouched + numRatingsChallenged + 1;
+            _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, numTblRows);
+            _testHelper.WaitIdleTasks();
+            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            var users = _dataManipulation.DataContext.GetTable<User>().ToArray();
+
+            // Initialize, each tbl row to the initial value.
+            bool initializeRowsToNonNullValue = true;
+            if (initializeRowsToNonNullValue)
+            {
+                for (int rowNum = 0; rowNum < numTblRows; rowNum++)
+                {
+                    ratings[rowNum].CurrentValue = initialValue;
+                    ratings[rowNum].LastTrustedValue = initialValue;
+                }
+            }
+            else
+                initialValue = 5M;
+
+            UserRatingResponse aResponse = new UserRatingResponse();
+            foreach (Rating r in ratings)
+            {
+                for (int i = 0; i < numBadUsers; i++)
+                    _testHelper.ActionProcessor.UserRatingAdd(r.RatingID, initialValue - eachBadUserContributionToUltimateBadValue * (i + 1), _testHelper.UserIds[i], ref aResponse);
+            }
+            for (int i = 0; i < totalUserRatingsByGoodUsers; i++)
+            {
+                int userIndex = RandomGenerator.GetRandom(numBadUsers, numBadUsers + numGoodUsers);
+                int ratingID = ratings[RandomGenerator.GetRandom(numRatingsUntouched, numRatingsUntouched + numRatingsChallenged)].RatingID;
+                decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)i / (decimal)totalUserRatingsByGoodUsers)); // user ratings will gradually get more precise
+                decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal) RandomGenerator.GetRandom(-1.0, 1.0);
+                _testHelper.ActionProcessor.UserRatingAdd(ratingID, valueToDo, _testHelper.UserIds[userIndex], ref aResponse);
+                if (i % 10 == 0)
+                    _testHelper.WaitIdleTasks();
+            }
+
+            _testHelper.WaitIdleTasks();
+
+            var trustTrackers = users.Select(x => x.TrustTrackers.First()).ToList();
+            foreach (Rating r in ratings.Take(numRatingsUntouched))
+            {
+                decimal tolerance = 0.3M;
+                ((float) r.CurrentValue).Should().BeApproximately((float) initialValue, (float) tolerance);
+            }
+
+
+        }
+
         /// <summary>
         /// First, we will have User 1 add a rating and no one else rates it. Then, we will have User 1 add a rating and
         /// some other users set the rating to around the correct value based on the adjustment percentage specified, and we will
@@ -1143,6 +1265,8 @@ x.UserID == _testHelper.UserIds[1]);
 
             const int numTblRows = 10;
             decimal initialValue = 4M;
+            const decimal valueToWhichFirstUserSetsFirstRating = 7M; // we will want to see this corrected based on the adjustment factors
+            const decimal valueToWhichSecondUserSetsFirstRating = 8M; // this too should be corrected.
             const decimal correctValue = 7M;
             const int numUsers = 15;
 
@@ -1168,31 +1292,12 @@ x.UserID == _testHelper.UserIds[1]);
             else
                 initialValue = 5M;
 
-            #region debug
-            //var user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID ==  _testHelper.UserIds[0]);
-            //Debug.WriteLine(String.Format("User {0} is SuperUser: {1}", user.UserID, user.SuperUser));
-            #endregion
-
             // Rate the first rating
             UserRatingResponse aResponse = new UserRatingResponse();
-            _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, correctValue, _testHelper.UserIds[0], ref aResponse);
+            _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, valueToWhichFirstUserSetsFirstRating, _testHelper.UserIds[0], ref aResponse);
+            _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, valueToWhichSecondUserSetsFirstRating, _testHelper.UserIds[1], ref aResponse);
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds()); // so that trust will be updated, but not so far that short term resolution will be reflected
             _testHelper.WaitIdleTasks();
-            //#region debug
-            //{
-            //    Debug.WriteLine("***********************************************************");
-            //    Debug.WriteLine("******** Adjustment Factor (Before Any Rows Rated) ********");
-                
-            //    Rating r = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).First();
-            //    UserRating ur = r.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
-
-            //    float adjFac = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)ur.NewUserRating, 
-            //        ur.EnteredUserRating, ur.PreviousRatingOrVirtualRating);
-            //    Debug.WriteLine(String.Format("{1} = {2} - {4} / {3} - {4}", 
-            //        null, adjFac, 
-            //        ur.NewUserRating, ur.EnteredUserRating, ur.PreviousRatingOrVirtualRating));
-            //}
-            //#endregion
             
             if (allowMonthToPass)
             {
@@ -1211,7 +1316,7 @@ x.UserID == _testHelper.UserIds[1]);
                 _testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, _testHelper.UserIds[0], ref theResponse);
 
                 // Instead of just two users, rate the rating with the correct value using all other users.
-                foreach (int userNum in Enumerable.Range(1, numUsers - 1))
+                foreach (int userNum in Enumerable.Range(2, numUsers - 1))
                 {
                     _testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, correctValue, _testHelper.UserIds[userNum], ref theResponse);
                 }
@@ -1233,30 +1338,7 @@ x.UserID == _testHelper.UserIds[1]);
                     TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds()); 
                     _testHelper.WaitIdleTasks();
                 }
-                //#region debug
-                //Debug.WriteLine(String.Format("******** User Trusts (After Row Row {0} Rated) ********", rowNum));
-                //foreach (int userNum in Enumerable.Range(0, numUsers))
-                //{
-                //    var trustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>()
-                //        .Single(tt => tt.UserID == _testHelper.UserIds[userNum]);
-                //    Debug.WriteLine(String.Format("<User {0}> Overall/Skeptical Trust: {1}/{2}", userNum, 
-                //        trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
-                //}
-                //#endregion
-                //#region debug
-                //{
-                //    Debug.WriteLine(String.Format("******** Adjustment Factor (After Row {0} Rated) ********", rowNum));
-                    
-                //    Rating r = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).First();
-                //    UserRating ur = r.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
 
-                //    float adjFac = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)ur.NewUserRating, 
-                //        ur.EnteredUserRating, ur.PreviousRatingOrVirtualRating);
-                //    Debug.WriteLine(String.Format("{1} = {2} - {4} / {3} - {4}", 
-                //        null, adjFac, 
-                //        ur.NewUserRating, ur.EnteredUserRating, ur.PreviousRatingOrVirtualRating));
-                //}
-                //#endregion
             }
             for (int i = 0; i <= 1; i++)
             { // we do this twice because ratings review won't happen for 20 minutes
@@ -1267,11 +1349,11 @@ x.UserID == _testHelper.UserIds[1]);
             // Check the first rating entered to make sure it has been updated
             int ratingIndexToUse = 0;
             Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
-            UserRating userRating = rating.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
-            TrustTracker tt = userRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
+            UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
+            TrustTracker tt = firstUserRatingForFirstRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
             if (adjustmentFactorToApply < 1.0)  
                 tt.OverallTrustLevel.Should().BeLessThan(1.0F);
-            float appliedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)rating.CurrentValue, userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating);
+            float appliedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
             float expectedAdjustmentFactor = adjustmentFactorToApply;
             if (allowMonthToPass)
                 expectedAdjustmentFactor = 1.0F; // b/c the userratings will be too old to adjust
@@ -1280,11 +1362,11 @@ x.UserID == _testHelper.UserIds[1]);
             float tolerance = 0.02F;
             appliedAdjustmentFactor.Should().BeInRange(expectedAdjustmentFactor - tolerance, expectedAdjustmentFactor + tolerance);
 
-            // Check the second rating entered to make sure it has not changed
+            // Check to make sure admin has not rerated the rating in the second tblrow
             ratingIndexToUse = 1;
             rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
-            userRating = rating.UserRatings.SingleOrDefault(x => x.User.Username == "admin");
-            userRating.Should().BeNull();
+            firstUserRatingForFirstRating = rating.UserRatings.SingleOrDefault(x => x.User.Username == "admin");
+            firstUserRatingForFirstRating.Should().BeNull();
         }
 
 

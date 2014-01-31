@@ -178,6 +178,8 @@ namespace ClassLibrary1.Model
             bool subtractFromUserInteraction,
             TrustTracker mostRecentUserTrustTracker)
         {
+            if (theUserInteraction != null)
+                Debug.WriteLine("DEBUG AdjustUserInteraction " + theUserInteraction.User.UserID + " " + theUserInteraction.User1.UserID + " subtract: " + subtractFromUserInteraction + " latest user rating: " + (latestUserRating == null ? -1 : latestUserRating.UserID));
             if (originalUserRating == null || latestUserRating == null || ratingCharacteristic == null)
                 return;
             if (originalUserRating.User == latestUserRating.User)
@@ -239,7 +241,11 @@ namespace ClassLibrary1.Model
                 originalSumWeights[i] = theStat.SumWeights;
                 theStat.SumAdjustPctTimesWeight += theStatFloat * changeInIndividualUserInteractionAdjustmentFactor * positiveOrNegative;
                 theStat.SumWeights += theStatFloat * positiveOrNegative;
-                theStat.AvgAdjustmentPctWeighted = (theStat.SumWeights == 0) ? 0 : theStat.SumAdjustPctTimesWeight / theStat.SumWeights;
+                theStat.AvgAdjustmentPctWeighted = (theStat.SumWeights == 0 || Math.Abs(theStat.SumWeights) < 0.0000001F) ? 0 : theStat.SumAdjustPctTimesWeight / theStat.SumWeights;
+                if (theStat.AvgAdjustmentPctWeighted < -1.26F)
+                {
+                    var DEBUG0 = 0;
+                }
                 //Trace.TraceInformation(String.Format("Stat {0}: {1}", i, theStat.SumWeights == 0 ? 0 : theStat.SumAdjustPctTimesWeight / theStat.SumWeights));
             }
             theUserInteraction.NumTransactions += 1 * (int)positiveOrNegative;
