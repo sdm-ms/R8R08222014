@@ -178,8 +178,6 @@ namespace ClassLibrary1.Model
             bool subtractFromUserInteraction,
             TrustTracker mostRecentUserTrustTracker)
         {
-            if (theUserInteraction != null)
-                Debug.WriteLine("DEBUG AdjustUserInteraction " + theUserInteraction.User.UserID + " " + theUserInteraction.User1.UserID + " subtract: " + subtractFromUserInteraction + " latest user rating: " + (latestUserRating == null ? -1 : latestUserRating.UserID));
             if (originalUserRating == null || latestUserRating == null || ratingCharacteristic == null)
                 return;
             if (originalUserRating.User == latestUserRating.User)
@@ -216,6 +214,8 @@ namespace ClassLibrary1.Model
                 logBase: latestUserRating.LogarithmicBase,
                 constrainForRetrospectiveAssessment: true);
             UpdateUserInteractionStats(theUserInteraction, originalUserRating, originalUserTrustTrackerStats, ratingCharacteristic, adjustFactor, subtractFromUserInteraction);
+//            if (theUserInteraction != null && theUserInteraction.User.UserID == 2)
+ //               Debug.WriteLine("AdjustUserInteraction " + theUserInteraction.User.UserID + " " + theUserInteraction.User1.UserID + " subtract: " + subtractFromUserInteraction + " latest user rating: " + (latestUserRating == null ? -1 : latestUserRating.UserID) + " adjust: " + adjustFactor + " latest entered " + latestUserRating.EnteredUserRating + " latest new " + latestUserRating.NewUserRating);
         }
 
         public static void UpdateUserInteractionStats(

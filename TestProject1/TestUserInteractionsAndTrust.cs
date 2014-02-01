@@ -314,6 +314,8 @@ namespace TestProject1
         [TestMethod]
         public void UserInteractionStatsForTwoUsersWhoEachRateTwoRatingsShouldEqualPredictedValues()
         {
+            Initialize();
+
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true; // we're looking at user interaction stats, so it's easiest to test this way
             PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
@@ -473,6 +475,8 @@ namespace TestProject1
         [TestMethod]
         public void WeightInCalculatingTrustTotalForTwoUsersWhoEachRateTwoRatingsShouldEqualPredictedValue()
         {
+            Initialize();
+
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
             const decimal minRating = 0M;
@@ -928,7 +932,6 @@ namespace TestProject1
         [TestMethod]
         public void Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess()
         {
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
 
             int? randomSeed = null;
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, false, true, randomSeed);
@@ -945,6 +948,7 @@ namespace TestProject1
             bool applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue, 
             int? randomSeed = null)
         {
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true; // we want all the userratings to have adjustment factors of 1 for testing purposes. That is, if a user enters a userrating, the rating will be set to that userrating. But we can still see what the trust levels (i.e., retrospective adjustment factors are).
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0.0F; // this allows us to make calculations without adjusting for the fact that trust will be a little lower than it otherwise would be
 
@@ -1111,11 +1115,14 @@ x.UserID == _testHelper.UserIds[1]);
         [TestMethod]
         public void TestTrustTracking_UserInteractionStatsAreUndoneProperly()
         {
+
+            Initialize(); 
+            
+            RandomGenerator.SeedOverride = 0;
             PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
-            Initialize();
             _testHelper.CreateSimpleTestTable(true);
             _testHelper.CreateUsers(20);
             int numTblRows = 1;
@@ -1139,6 +1146,7 @@ x.UserID == _testHelper.UserIds[1]);
             for (int j = 0; j < 100; j++)
             {
                 int randomUser = RandomGenerator.GetRandom(1, 19);
+                Debug.WriteLine("Adding for random user " + _testHelper.UserIds[randomUser]);
                 _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID,randomUserRatings[randomUser], _testHelper.UserIds[randomUser], ref aResponse);
                 _testHelper.WaitIdleTasks();
                 var trustTrackers = _dataManipulation.DataContext.GetTable<TrustTracker>().Select(x => x).ToList();
@@ -1220,7 +1228,7 @@ x.UserID == _testHelper.UserIds[1]);
 
             _testHelper.WaitIdleTasks();
 
-            var trustTrackers = users.Select(x => x.TrustTrackers.First()).ToList();
+            var trustTrackers = users.Select(x => x.TrustTrackers.Any() ? x.TrustTrackers.First() : null).ToList();
             foreach (Rating r in ratings.Take(numRatingsUntouched))
             {
                 decimal tolerance = 0.3M;

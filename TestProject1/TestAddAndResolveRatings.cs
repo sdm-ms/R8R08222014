@@ -413,6 +413,7 @@ namespace TestProject1
         [TestMethod]
         public void VolatilityRecordedProperly()
         {
+            Initialize();
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
             const decimal minRating = 0M;
