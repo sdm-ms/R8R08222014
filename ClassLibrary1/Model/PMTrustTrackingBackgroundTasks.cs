@@ -233,16 +233,16 @@ namespace ClassLibrary1.Model
             UserInteractionStat noExtraWeightingStat = null;
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
             {
-                UserInteractionStat theStat = theUserInteraction.UserInteractionStats.Single(x => x.StatNum == i);
+                UserInteractionStat userInteractionStat = theUserInteraction.UserInteractionStats.Single(x => x.StatNum == i);
                 if (i == 0)
-                    noExtraWeightingStat = theStat;
-                float theStatFloat = manager.GetStat(i);
-                originalAvgAdjustmentPct[i] = theStat.AvgAdjustmentPctWeighted;
-                originalSumWeights[i] = theStat.SumWeights;
-                theStat.SumAdjustPctTimesWeight += theStatFloat * changeInIndividualUserInteractionAdjustmentFactor * positiveOrNegative;
-                theStat.SumWeights += theStatFloat * positiveOrNegative;
-                theStat.AvgAdjustmentPctWeighted = (theStat.SumWeights == 0 || Math.Abs(theStat.SumWeights) < 0.0000001F) ? 0 : theStat.SumAdjustPctTimesWeight / theStat.SumWeights;
-                if (theStat.AvgAdjustmentPctWeighted < -1.26F)
+                    noExtraWeightingStat = userInteractionStat;
+                float userRatingStat = manager.GetStat(i);
+                originalAvgAdjustmentPct[i] = userInteractionStat.AvgAdjustmentPctWeighted;
+                originalSumWeights[i] = userInteractionStat.SumWeights;
+                userInteractionStat.SumAdjustPctTimesWeight += userRatingStat * changeInIndividualUserInteractionAdjustmentFactor * positiveOrNegative;
+                userInteractionStat.SumWeights += userRatingStat * positiveOrNegative;
+                userInteractionStat.AvgAdjustmentPctWeighted = (userInteractionStat.SumWeights == 0 || Math.Abs(userInteractionStat.SumWeights) < 0.0000001F) ? 0 : userInteractionStat.SumAdjustPctTimesWeight / userInteractionStat.SumWeights;
+                if (userInteractionStat.AvgAdjustmentPctWeighted < -1.26F)
                 {
                     var DEBUG0 = 0;
                 }

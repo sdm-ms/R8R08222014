@@ -1123,6 +1123,8 @@ x.UserID == _testHelper.UserIds[1]);
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
+            int numReratingsToDo = 20;
+
             _testHelper.CreateSimpleTestTable(true);
             _testHelper.CreateUsers(20);
             int numTblRows = 1;
@@ -1142,8 +1144,8 @@ x.UserID == _testHelper.UserIds[1]);
             decimal[] randomUserRatings = new decimal[20];
             for (int j = 0; j < 20; j++)
                 randomUserRatings[j] = RandomGenerator.GetRandom(4.0M, 6.0M);
-            Dictionary<int, float> previousTrustLevels = new Dictionary<int, float>();
-            for (int j = 0; j < 100; j++)
+            Dictionary<int, float[]> previousTrustLevels = new Dictionary<int, float[]>();
+            for (int j = 0; j < numReratingsToDo; j++)
             {
                 int randomUser = RandomGenerator.GetRandom(1, 19);
                 Debug.WriteLine("Adding for random user " + _testHelper.UserIds[randomUser]);
@@ -1158,12 +1160,15 @@ x.UserID == _testHelper.UserIds[1]);
                 Debug.WriteLine("Random user: " + _testHelper.UserIds[randomUser] + " rating userRating: " + randomUserRatings[randomUser] + " user interaction stat: " + uis.AvgAdjustmentPctWeighted + " trust level: " + tt.OverallTrustLevel);
                 if (previousTrustLevels.ContainsKey(randomUser))
                 {
-                    tt.OverallTrustLevel.Should().BeApproximately(previousTrustLevels[randomUser], 0.01F);
-                    tt.OverallTrustLevel.Should().BeGreaterThan(-1.251F);
-                    tt.OverallTrustLevel.Should().BeLessThan(1.251F);
+                    float[] previousTrustTrackerStat = previousTrustLevels[randomUser];
+                    for (int ts = 0; ts < TrustTrackerStatManager.NumStats; ts++)
+                    {
+                        TrustTrackerStat tts = tt.TrustTrackerStats.Single(x => x.StatNum == ts);
+                        tts.TrustValue.Should().BeApproximately(previousTrustTrackerStat[ts], 0.01F);
+                    }
                 }
                 else
-                    previousTrustLevels.Add(randomUser, tt.OverallTrustLevel);
+                    previousTrustLevels.Add(randomUser, tt.TrustTrackerStats.OrderBy(x => x.StatNum).Select(x => x.TrustValue).ToArray());
             }
 
         }
