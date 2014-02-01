@@ -25,6 +25,7 @@ using MoreStrings;
 
 using ClassLibrary1.Model;
 using ClassLibrary1.Misc;
+using System.Diagnostics;
 
 
 namespace ClassLibrary1.Model
@@ -62,7 +63,10 @@ namespace ClassLibrary1.Model
             foreach (var item in trustTrackerWithRatings)
             {
                 foreach (Rating r in item.Ratings)
+                {
                     r.ReviewRecentUserRatingsAfter = TestableDateTime.Now + TimeSpan.FromMinutes(20); // see above for why we delay this
+                    Debug.WriteLine("Set rating " + r.RatingID + " for review at " + r.ReviewRecentUserRatingsAfter.ToString()); // DEBUG
+                }
                 item.TrustTracker.OverallTrustLevelAtLastReview = item.TrustTracker.OverallTrustLevel;
                 if (item.Ratings.Count() < MaxRatingsToFlagPerUser)
                     item.TrustTracker.DeltaOverallTrustLevel = 0;
@@ -114,6 +118,7 @@ namespace ClassLibrary1.Model
             bool moreWorkToDo = userRatingsInitialQuery.Count() == NumRatingsToReviewAtOnce;
             foreach (var urSet in urSets)
             {
+                Debug.WriteLine("DEBUG reviewing rating " + urSet.Rating.RatingID);
                 decimal? trackIdealRatingValue = null;
                 int numUserRatings = urSet.UserRatings.Count();
                 List<UserRating> urs = urSet.UserRatings.ToList();

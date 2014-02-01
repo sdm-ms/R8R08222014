@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using ClassLibrary1.Misc;
 
 namespace ClassLibrary1.Model
 {
@@ -17,9 +18,9 @@ namespace ClassLibrary1.Model
 
     public static class TrustTrackerTrustEveryone
     {
-        internal static bool _DoOverride = false;
-
-        public static bool AllAdjustmentFactorsAre1ForTestingPurposes { get { return _DoOverride; } set { _DoOverride = value; } }
+        internal static bool OverrideAdjustmentFactors = false;
+        public static bool AllAdjustmentFactorsAre1ForTestingPurposes { get { return OverrideAdjustmentFactors; } set { OverrideAdjustmentFactors = value; } }
+        public static bool LatestUserEgalitarianTrustAlways1 = false;
     }
 
     public class TrustTrackerStatManager
@@ -106,7 +107,8 @@ namespace ClassLibrary1.Model
             if (theTrustTracker == null)
                 theTrustTracker = PMTrustTrackingBackgroundTasks.AddTrustTracker(RaterooDB, theUser, theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit);
             TrustTrackerStat[] theTrustTrackerStats = theTrustTracker.TrustTrackerStats.ToArray();
-            SetStatsAndAdjustmentFactor(theRating.LastTrustedValue ?? currentRatingOrBasisOfCalc, theRating.CurrentValue, currentRatingOrBasisOfCalc, enteredRating, oneDayVolatilityDecimal, oneHourVolatilityDecimal, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null ? null : theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase, (float) pctPreviousRatings, theTrustTrackerStats);
+            SetStats(theRating.LastTrustedValue ?? currentRatingOrBasisOfCalc, theRating.CurrentValue, currentRatingOrBasisOfCalc, enteredRating, oneDayVolatilityDecimal, oneHourVolatilityDecimal, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null ? null : theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase, (float) pctPreviousRatings);
+            SetAdjustmentFactor(theRating.CurrentValue, theTrustTrackerStats);
             bool isTrusted = true; // we are disabling the approach of trusting only some users
                 //(theRating.CurrentValue != null && theTrustTracker.SkepticalTrustLevel > 0) ||
                 //(theRating.CurrentValue == null && theTrustTracker.SkepticalTrustLevel > PMTrustTrackingBackgroundTasks.MinSkepticalTrustNeededForTrustedOnInitialRating) || 
@@ -120,10 +122,10 @@ namespace ClassLibrary1.Model
         /// <param name="theUserRating"></param>
         /// <param name="theRatingCharacteristic"></param>
         /// <param name="trustTrackerStats"></param>
-        public TrustTrackerStatManager(UserRating theUserRating, RatingCharacteristic theRatingCharacteristic,  TrustTrackerStat[] trustTrackerStats)
+        public TrustTrackerStatManager(UserRating theUserRating, RatingCharacteristic theRatingCharacteristic)
         {
             TrustTrackerChoiceSummary = theUserRating.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(x => new TrustTrackerChoiceSummary { ChoiceInGroupID = x.TrustTrackerForChoiceInGroup.ChoiceInGroupID, SumAdjustmentPctTimesRatingMagnitude = x.TrustTrackerForChoiceInGroup.SumAdjustmentPctTimesRatingMagnitude, SumRatingMagnitudes = x.TrustTrackerForChoiceInGroup.SumRatingMagnitudes }).ToList();
-            SetStatsAndAdjustmentFactor(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.OneDayVolatility ?? 0, theUserRating.OneHourVolatility ?? 0, theRatingCharacteristic, theUserRating.LogarithmicBase, (float) theUserRating.PercentPreviousRatings, trustTrackerStats);
+            SetStats(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.OneDayVolatility ?? 0, theUserRating.OneHourVolatility ?? 0, theRatingCharacteristic, theUserRating.LogarithmicBase, (float) theUserRating.PercentPreviousRatings);
         }
 
         /// <summary>
@@ -139,7 +141,7 @@ namespace ClassLibrary1.Model
         /// <param name="logBase"></param>
         /// <param name="pctPreviousRatings"></param>
         /// <param name="trustTrackerStats"></param>
-        void SetStatsAndAdjustmentFactor(
+        void SetStats(
             decimal lastTrustedRatingOrBasisOfCalc, 
             decimal? currentRating, 
             decimal currentRatingOrBasisOfCalc, 
@@ -148,22 +150,32 @@ namespace ClassLibrary1.Model
             decimal oneHourVolatility, 
             RatingCharacteristic theRatingCharacteristic, 
             decimal? logBase, 
-            float pctPreviousRatings, 
-            TrustTrackerStat[] trustTrackerStats)
+            float pctPreviousRatings)
         {
             RatingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(enteredUserRating, lastTrustedRatingOrBasisOfCalc,
                 theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, logBase);
             
             NoExtraWeighting = 1.0F * RatingMagnitude;
-            LargeDeltaRatings = (float)Math.Pow(RatingMagnitude, 2) * RatingMagnitude; // This makes bigger ratings matter more. Note that even for numbers between 0 and 1, 4^2/9^2 is lower than 4/9. 
-            SmallDeltaRatings = (float)Math.Pow((1F - RatingMagnitude), 2) * RatingMagnitude;
+            if (RatingMagnitude < 0.6F)
+                LargeDeltaRatings = 0; // setting 0 for most cases eliminates effects of weird rounding errors
+            else
+                LargeDeltaRatings = (float)Math.Pow(RatingMagnitude, 2) * RatingMagnitude; // This makes bigger ratings matter more. Note that even for numbers between 0 and 1, 4^2/9^2 is lower than 4/9. 
+            if (RatingMagnitude > 0.4F)
+                SmallDeltaRatings = 0;
+            else
+                SmallDeltaRatings = (float)Math.Pow((1F - RatingMagnitude), 2) * RatingMagnitude;
             LastDayVolatility = (float)oneDayVolatility * RatingMagnitude;
+            //Debug.WriteLine("One day volatility: " + oneDayVolatility + " time: " + TestableDateTime.Now.ToShortTimeString()); // DEBUG
             LastHourVolatility = (float)oneHourVolatility * RatingMagnitude;
             Extremeness = (float)PMAdjustmentFactor.CalculateExtremeness(enteredUserRating, logBase, 
                 theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating) * RatingMagnitude;
             CurrentRatingQuestionable = (float)PMAdjustmentFactor.CalculateRelativeMagnitude(currentRatingOrBasisOfCalc, lastTrustedRatingOrBasisOfCalc, theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, logBase) *
                 RatingMagnitude;
             PercentPreviousRatings = pctPreviousRatings * RatingMagnitude;
+        }
+
+        private void SetAdjustmentFactor(decimal? currentRating, TrustTrackerStat[] trustTrackerStats)
+        {
             if (currentRating == null)
                 AdjustmentFactor = 1F;
             else

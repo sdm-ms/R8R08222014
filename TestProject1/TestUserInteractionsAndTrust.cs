@@ -1115,13 +1115,13 @@ x.UserID == _testHelper.UserIds[1]);
         [TestMethod]
         public void TestTrustTracking_UserInteractionStatsAreUndoneProperly()
         {
-
+            //RandomGenerator.SeedOverride = 1; // 0 means use date & time
             Initialize(); 
             
-            RandomGenerator.SeedOverride = 0;
             PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
+            TrustTrackerTrustEveryone.LatestUserEgalitarianTrustAlways1 = true;
 
             int numReratingsToDo = 20;
 
@@ -1152,8 +1152,6 @@ x.UserID == _testHelper.UserIds[1]);
                 _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID,randomUserRatings[randomUser], _testHelper.UserIds[randomUser], ref aResponse);
                 _testHelper.WaitIdleTasks();
                 var trustTrackers = _dataManipulation.DataContext.GetTable<TrustTracker>().Select(x => x).ToList();
-                foreach (var t in trustTrackers)
-                    t.EgalitarianTrustLevelOverride = 1.0F;
                 _testHelper.WaitIdleTasks();
                 TrustTracker tt = users.Single(x => x.UserID == _testHelper.UserIds[0]).TrustTrackers.First(x => x.TrustTrackerUnit.PointsManagers.Any());
                 UserInteractionStat uis = _dataManipulation.DataContext.GetTable<UserInteractionStat>().Single(x => x.StatNum == 0 && x.UserInteraction.User.UserID == _testHelper.UserIds[0] && x.UserInteraction.User1.UserID == _testHelper.UserIds[randomUser]);
@@ -1176,6 +1174,8 @@ x.UserID == _testHelper.UserIds[1]);
         [TestMethod]
         public void TestTrustTracking_RatingsByBadSetOfUsersAdjustBack()
         {
+            RandomGenerator.SeedOverride = 1; // 0 means use date & time
+
             int numBadUsers = 3;
             int numGoodUsers = 50;
             int numRatingsUntouched = 5;
@@ -1232,13 +1232,24 @@ x.UserID == _testHelper.UserIds[1]);
             }
 
             _testHelper.WaitIdleTasks();
+            TestableDateTime.SleepOrSkipTime((long)TimeSpan.FromMinutes(60).TotalMilliseconds);
+            _testHelper.WaitIdleTasks();
 
             var trustTrackers = users.Select(x => x.TrustTrackers.Any() ? x.TrustTrackers.First() : null).ToList();
             foreach (Rating r in ratings.Take(numRatingsUntouched))
             {
                 decimal tolerance = 0.3M;
                 ((float) r.CurrentValue).Should().BeApproximately((float) initialValue, (float) tolerance);
+            } 
+            // make sure that other ratings are generally pretty accurate
+            int numOutsideTolerance = 0;
+            foreach (Rating r in ratings.Skip(numRatingsUntouched).Take(numRatingsChallenged))
+            {
+                decimal tolerance = 0.5M;
+                if (Math.Abs((decimal) r.CurrentValue - (decimal) correctValue) > tolerance)
+                    numOutsideTolerance++;
             }
+            (((double)numOutsideTolerance) / ((double)numRatingsChallenged)).Should().BeLessThan(0.1);
 
 
         }
