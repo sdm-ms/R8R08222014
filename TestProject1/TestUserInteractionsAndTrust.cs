@@ -1265,6 +1265,7 @@ x.UserID == _testHelper.UserIds[1]);
         {
             TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, true, false);
             TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, true, true);
+            TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.9F, true, false);
             TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(1.5F, true, false);
             TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(-0.2F, true, false);
             TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, false, false);
@@ -1290,7 +1291,6 @@ x.UserID == _testHelper.UserIds[1]);
             const int numTblRows = 10;
             decimal initialValue = 4M;
             const decimal valueToWhichFirstUserSetsFirstRating = 7M; // we will want to see this corrected based on the adjustment factors
-            const decimal valueToWhichSecondUserSetsFirstRating = 8M; // this too should be corrected.
             const decimal correctValue = 7M;
             const int numUsers = 15;
 
@@ -1319,7 +1319,8 @@ x.UserID == _testHelper.UserIds[1]);
             // Rate the first rating
             UserRatingResponse aResponse = new UserRatingResponse();
             _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, valueToWhichFirstUserSetsFirstRating, _testHelper.UserIds[0], ref aResponse);
-            _testHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, valueToWhichSecondUserSetsFirstRating, _testHelper.UserIds[1], ref aResponse);
+
+            Debug.WriteLine("Added rating that should get reverted to " + ratings[0].RatingID);
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds()); // so that trust will be updated, but not so far that short term resolution will be reflected
             _testHelper.WaitIdleTasks();
             
@@ -1337,15 +1338,21 @@ x.UserID == _testHelper.UserIds[1]);
                 decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // PMAdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
                 valueToEnterByFirstUser = PMTrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10);
                 UserRatingResponse theResponse = new UserRatingResponse();
+                Debug.WriteLine("Added rating to " + ratings[rowNum].RatingID);
                 _testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, _testHelper.UserIds[0], ref theResponse);
 
                 // Instead of just two users, rate the rating with the correct value using all other users.
-                foreach (int userNum in Enumerable.Range(2, numUsers - 1))
+                decimal plusMinusCorrectValueInitial = 0.3M;
+                List<int> users = Enumerable.Range(2, numUsers - 3).ToList();
+                users.Shuffle();
+                foreach (int userNum in users)
                 {
-                    _testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, correctValue, _testHelper.UserIds[userNum], ref theResponse);
+                    decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)userNum / (decimal) (numUsers - 3))); // user ratings will gradually get more precise
+                    decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal)RandomGenerator.GetRandom(-1.0, 1.0);
+                    _testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToDo, _testHelper.UserIds[userNum], ref theResponse);
                 }
 
-                Debug.WriteLine(String.Format("{0} RowNum {1} Rated.", TestableDateTime.Now, rowNum));
+                Debug.WriteLine(String.Format("{0} RatingID {1} Rated.", TestableDateTime.Now, ratings[rowNum].RatingID));
 
                 //int userNum1 = RandomGenerator.GetRandom(2, 10);
                 //_testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, correctValue + 0.001M, _testHelper.UserIds[userNum1], ref theResponse);
@@ -1375,16 +1382,19 @@ x.UserID == _testHelper.UserIds[1]);
             Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
             UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
             TrustTracker tt = firstUserRatingForFirstRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
-            if (adjustmentFactorToApply < 1.0)  
-                tt.OverallTrustLevel.Should().BeLessThan(1.0F);
             float appliedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
             float expectedAdjustmentFactor = adjustmentFactorToApply;
             if (allowMonthToPass)
                 expectedAdjustmentFactor = 1.0F; // b/c the userratings will be too old to adjust
             expectedAdjustmentFactor = PMTrustCalculations.Constrain(expectedAdjustmentFactor, 0, 1);
+            if (expectedAdjustmentFactor > RaterooDataManipulation.HypotheticalAdjFactorsNotWorthImplementing.Item1 && expectedAdjustmentFactor < RaterooDataManipulation.HypotheticalAdjFactorsNotWorthImplementing.Item2)
+                expectedAdjustmentFactor = 1.0F;
 
             float tolerance = 0.02F;
-            appliedAdjustmentFactor.Should().BeInRange(expectedAdjustmentFactor - tolerance, expectedAdjustmentFactor + tolerance);
+            if (allowMonthToPass)
+                appliedAdjustmentFactor.Should().BeApproximately(1.0F, tolerance); // because we only review ratings for 30 days, so this one won't get changed
+            else
+                appliedAdjustmentFactor.Should().BeApproximately(PMTrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance);
 
             // Check to make sure admin has not rerated the rating in the second tblrow
             ratingIndexToUse = 1;

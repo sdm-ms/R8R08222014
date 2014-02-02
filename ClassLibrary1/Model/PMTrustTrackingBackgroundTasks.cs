@@ -281,10 +281,6 @@ namespace ClassLibrary1.Model
 
         private static void UpdateEarlierUserTrustTrackerStatsandEgalitarianTrustAfterUpdatingUserInteraction(UserInteraction theUserInteraction, float[] originalAvgAdjustmentPctOrNullIfNoChange, float[] originalSumWeightsOrNullIfNoChange, float originalWeightInCalculatingTrustTotal)
         {
-            if (theUserInteraction.User.UserID == 43 && theUserInteraction.User1.UserID == 20)
-            {
-                var DEBUG0 = 0;
-            }
             bool noChangeToOriginalAvgAdjustmentPct = originalAvgAdjustmentPctOrNullIfNoChange == null;
             bool noChangeToOriginalSumWeights = originalSumWeightsOrNullIfNoChange == null;
 

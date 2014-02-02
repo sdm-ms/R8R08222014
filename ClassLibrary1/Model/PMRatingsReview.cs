@@ -76,6 +76,8 @@ namespace ClassLibrary1.Model
             return moreWorkToDo;
         }
 
+        public static Tuple<float, float> HypotheticalAdjFactorsNotWorthImplementing = new Tuple<float, float>(0.8F, 1.2F);
+
         public bool IdleTaskReviewRecentUserRatings()
         {
             DateTime cutoffTime = TestableDateTime.Now - TimeSpan.FromDays(MaxNumDaysToReview); // for userratings
@@ -139,7 +141,7 @@ namespace ClassLibrary1.Model
                     throw new Exception("Internal error. Rating CurrentValue should equal most recent UserRating NewUserRating");
                 // is this a big enough difference?
                 float hypotheticalAdjustmentFactorForLastUser = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)trackIdealRatingValue, actualFinalRating, urs[numUserRatings - 1].PreviousRatingOrVirtualRating);
-                bool bigEnoughDifference = (hypotheticalAdjustmentFactorForLastUser < 0.8F || hypotheticalAdjustmentFactorForLastUser > 1.2F);
+                bool bigEnoughDifference = (hypotheticalAdjustmentFactorForLastUser < HypotheticalAdjFactorsNotWorthImplementing.Item1 || hypotheticalAdjustmentFactorForLastUser > HypotheticalAdjFactorsNotWorthImplementing.Item2);
                 if (bigEnoughDifference)
                 { // add the new UserRating
                     UserRatingGroup urg = AddUserRatingGroup(urSet.Rating.RatingGroup2);

@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using System.Collections.Generic;
 
 //namespace PredRatings
 //{
@@ -108,6 +109,7 @@ namespace ClassLibrary1.Model
             }
         }
 
+
         public static double GetRandom(double low, double high)
         {
             return low + GetRandom() * (high - low);
@@ -141,6 +143,22 @@ namespace ClassLibrary1.Model
             lock (r)
             {
                 return r.Next(low, high + 1);
+            }
+        }
+    }
+
+    public static class ShuffleExtension
+    {
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = RandomGenerator.GetRandom(0, n);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
             }
         }
     }
