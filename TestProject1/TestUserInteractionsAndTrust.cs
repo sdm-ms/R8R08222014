@@ -133,6 +133,13 @@ namespace TestProject1
             _testHelper.CreateUsers(4); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
 
             UserRatingResponse theResponse = new UserRatingResponse();
+
+            decimal user0Rating1UserRatingValue = 5M;
+            // Must ensure that this rating is trusted
+            _testHelper.ActionProcessor.UserRatingAdd(_testHelper.Rating.RatingID, user0Rating1UserRatingValue, _testHelper.UserIds[0], ref theResponse);
+            _testHelper.WaitIdleTasks();
+            _testHelper.Rating.CurrentValue.Should().Be(user0Rating1UserRatingValue);
+
             decimal user1Rating1UserRatingValue = 7M;
             // Must ensure that this rating is trusted
             _testHelper.ActionProcessor.UserRatingAdd(_testHelper.Rating.RatingID, user1Rating1UserRatingValue, _testHelper.UserIds[1], ref theResponse);
@@ -160,38 +167,35 @@ namespace TestProject1
             expectedAdjustmentFactor.Should().BeInRange(0.0F, 1.0F, "because this test is specifically intended to test adjustment factors between 0F and 1F.");
 
             float ratingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, basisRatingValue, minRating, maxRating, null);
-            float expectedAbsoluteVolatility = (float)Math.Abs(ratingValue / basisRatingValue);
+
+            float expectedAbsoluteVolatility = (float)Math.Abs(user1Rating1UserRatingValue - user0Rating1UserRatingValue); // volatility for user 2's userinteraction with user 3 depends on volatility before user 2 entered its user rating
             float maximumVolatility = (float)(maxRating - minRating);
             float expectedRelativeVolatility = expectedAbsoluteVolatility / maximumVolatility;
 
             List<float> expectedStats = new List<float>(TrustTrackerStatManager.NumStats);
             float expectedNoExtraWeightingStat1 = (1 * ratingMagnitude);
             expectedStats.Add(expectedNoExtraWeightingStat1);
-            float expectedLargeDeltaRatingStat1 = (float)Math.Pow(ratingMagnitude, 2) * ratingMagnitude;
+            float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2) * ratingMagnitude : 0;
             expectedStats.Add(expectedLargeDeltaRatingStat1);
-            expectedStats.Add((float)Math.Pow(1 - ratingMagnitude, 2) * ratingMagnitude);
+            float expectedSmallDeltaRatingStat1 = ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) * ratingMagnitude : 0; 
+            expectedStats.Add(expectedSmallDeltaRatingStat1);
 
             // Volatility is zero, for some reason.
-            //expectedStats.Add(expectedRelativeVolatility * ratingMagnitude);
-            //expectedStats.Add(expectedRelativeVolatility * ratingMagnitude);
-            expectedStats.Add(0);
-            expectedStats.Add(0);
+            expectedStats.Add(expectedRelativeVolatility * ratingMagnitude);
+            expectedStats.Add(expectedRelativeVolatility * ratingMagnitude);
 
-            expectedStats.Add(PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, (maxRating - minRating) / 2, minRating, maxRating, null) * ratingMagnitude);
+            expectedStats.Add(PMAdjustmentFactor.CalculateExtremeness(ratingValue, null, minRating, maxRating) * ratingMagnitude); // extremeness
+
+            expectedStats.Add(PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, ratingValue /* since this is a trusted rating */, minRating, maxRating, null) * ratingMagnitude); // questionability -- should change now that we've elimintaed trust
             
-            // Both zero, for some reason
-            //expectedStats.Add(
-            //    PMAdjustmentPercentages.CalculateRelativeMagnitude(currentRatingValue, basisRatingValue, minRating, maxRating, null) * ratingMagnitude);
-            //expectedStats.Add(
-            //    (1F / // this user has rated the rating once
-            //    3F) * // Three users have rating this rating in total
-            //    ratingMagnitude);
-            expectedStats.Add(0);
-            expectedStats.Add(0);
+            expectedStats.Add(0); // user 2 did not rate previously
+
+            for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
+                expectedStats[i].Should().BeApproximately(user2User3InteractionStats[i].SumWeights, 0.01F);
 
             List<float> expectedAverageAdjustmentPercentageWeightedByStats = new List<float>();
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
-                expectedAverageAdjustmentPercentageWeightedByStats.Add((expectedAdjustmentFactor * expectedStats[i]) / (expectedStats[i]));
+                expectedAverageAdjustmentPercentageWeightedByStats.Add(expectedStats[i] == 0 ? 0 : (expectedAdjustmentFactor * expectedStats[i]) / (expectedStats[i]));
 
             List<float> actualAverageAdjustmentFactorWeightedByStats = new List<float>();
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
@@ -452,8 +456,8 @@ namespace TestProject1
 
             // Test the LargeDeltaRating Stat
 
-            float largeDeltaRatingStat1 = (float)Math.Pow(ratingMagnitude1, 2) * ratingMagnitude1;
-            float largeDeltaRatingStat2 = (float)Math.Pow(ratingMagnitude2, 2) * ratingMagnitude2;
+            float largeDeltaRatingStat1 = ratingMagnitude2 >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude1, 2) * ratingMagnitude1 : 0;
+            float largeDeltaRatingStat2 = ratingMagnitude2 >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude2, 2) * ratingMagnitude2 : 0;
             float SumAdjustmentPercentageTimesWeightsLargeDeltaRatingStat2 =
                 0 + largeDeltaRatingStat1 * adjustmentPercentage1 + largeDeltaRatingStat2 * adjustmentPercentage2;
             float sumWeightLargeDeltaRatingStat2 = 0 + largeDeltaRatingStat1 + largeDeltaRatingStat2;
@@ -650,9 +654,9 @@ namespace TestProject1
             List<float> expectedStats = new List<float>(TrustTrackerStatManager.NumStats);
             float expectedNoExtraWeightingStat1 = (1 * ratingMagnitude);
             expectedStats.Add(expectedNoExtraWeightingStat1);
-            float expectedLargeDeltaRatingStat1 = (float)Math.Pow(ratingMagnitude, 2) * ratingMagnitude;
+            float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2) * ratingMagnitude : 0;
             expectedStats.Add(expectedLargeDeltaRatingStat1);
-            expectedStats.Add((float)Math.Pow(1 - ratingMagnitude, 2) * ratingMagnitude);
+            expectedStats.Add(ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) * ratingMagnitude : 0);
 
             expectedStats.Add(volatilityObservedDay); // last day volatility
             expectedStats.Add(volatilityObservedHour); // last hour volatility
@@ -1062,17 +1066,13 @@ namespace TestProject1
             // Check the trust tracker
             TrustTracker trustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.TrustTrackerUnit.TrustTrackerUnitID == _testHelper.Tbl.PointsManager.TrustTrackerUnit.TrustTrackerUnitID && 
 x.UserID == _testHelper.UserIds[1]);
-            TrustTrackerStat noExtraWeightingTrustStat = trustTracker.TrustTrackerStats.Single(x => x.StatNum == 0);
+            TrustTrackerStat noExtraWeightingTrustStat = trustTracker.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.NoExtraWeighting);
             float tolerance = baselineAdjustmentFactorToApply == specialCaseAdjustmentFactorToApply ?
                 0.01F : 0.15F;
 
             /* What it is supposed to be doing in those lines is making sure that when the ratings do adjust a certain amount, 
              * the user's trust tracking should reflect that. So, if, for example, whenever a user makes a userrating, it almost 
              * moves back 50%, then we should end up with a number close to 0.50.
-             * 
-             * In words what is this comparison checking?
-             * If noExtraWeightingStat used to be about equal to baselineAdjustmentFactorToApply, and we changed noExtraWeightStat to be multiplied by
-             * RatingMagnitude, then baselineAdjustmentFactorToApply should be multiplied by RatingMagnitude.
              */
             noExtraWeightingTrustStat.TrustValue.Should().BeInRange(
                 baselineAdjustmentFactorToApply - tolerance, 
@@ -1081,8 +1081,8 @@ x.UserID == _testHelper.UserIds[1]);
             if (baselineAdjustmentFactorToApply != specialCaseAdjustmentFactorToApply && 
                 applySpecialCaseAdjustmentFactorToHighMagnitudeRatings)
             {
-                var highMagnitude = trustTracker.TrustTrackerStats.Single(x => x.StatNum == 1); 
-                //var uis = DataAccess.RaterooDB.GetTable<UserInteractionStat>().Where(x => x.UserInteraction.User.UserID == theTestHelper.theUsers[1] && x.StatNum == 2).ToList();
+                var highMagnitude = trustTracker.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.LargeDeltaRatings); 
+                //var uis = DataAccess.RaterooDB.GetTable<UserInteractionStat>().Where(x => x.UserInteraction.User.UserID == theTestHelper.theUsers[1] && x.StatNum == (int)TrustStat.LargeDeltaRatings).ToList();
                 //foreach (var debugui in uis.Where(x => x.SumWeights > 0))
                 //    Trace.TraceInformation("Adj pct " + debugui.SumAdjustPctTimesWeight / debugui.SumWeights + " weights: " + debugui.SumWeights);
                 Math.Abs(noExtraWeightingTrustStat.TrustValue - specialCaseAdjustmentFactorToApply)
@@ -1154,7 +1154,7 @@ x.UserID == _testHelper.UserIds[1]);
                 var trustTrackers = _dataManipulation.DataContext.GetTable<TrustTracker>().Select(x => x).ToList();
                 _testHelper.WaitIdleTasks();
                 TrustTracker tt = users.Single(x => x.UserID == _testHelper.UserIds[0]).TrustTrackers.First(x => x.TrustTrackerUnit.PointsManagers.Any());
-                UserInteractionStat uis = _dataManipulation.DataContext.GetTable<UserInteractionStat>().Single(x => x.StatNum == 0 && x.UserInteraction.User.UserID == _testHelper.UserIds[0] && x.UserInteraction.User1.UserID == _testHelper.UserIds[randomUser]);
+                UserInteractionStat uis = _dataManipulation.DataContext.GetTable<UserInteractionStat>().Single(x => x.StatNum == (int)TrustStat.NoExtraWeighting && x.UserInteraction.User.UserID == _testHelper.UserIds[0] && x.UserInteraction.User1.UserID == _testHelper.UserIds[randomUser]);
                 Debug.WriteLine("Random user: " + _testHelper.UserIds[randomUser] + " rating userRating: " + randomUserRatings[randomUser] + " user interaction stat: " + uis.AvgAdjustmentPctWeighted + " trust level: " + tt.OverallTrustLevel);
                 if (previousTrustLevels.ContainsKey(randomUser))
                 {

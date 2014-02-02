@@ -101,7 +101,7 @@ namespace ClassLibrary1.Model
 
             float pctPreviousRatings = 0;
             if (theRating.TotalUserRatings > 0)
-                pctPreviousRatings = ((float) theUser.UserRatings.Count(x => x.Rating == theRating)) / ((float) theRating.TotalUserRatings);
+                pctPreviousRatings = ((float) theUser.UserRatings.Count(x => x.Rating == theRating)) / ((float) theRating.TotalUserRatings); // DEBUG -- too slow to pull all this data in. We could keep track of it in a separate data structure.
 
             TrustTracker theTrustTracker = theUser.TrustTrackers.FirstOrDefault(x => x.TrustTrackerUnit == (theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit));
             if (theTrustTracker == null)
@@ -127,6 +127,9 @@ namespace ClassLibrary1.Model
             TrustTrackerChoiceSummary = theUserRating.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(x => new TrustTrackerChoiceSummary { ChoiceInGroupID = x.TrustTrackerForChoiceInGroup.ChoiceInGroupID, SumAdjustmentPctTimesRatingMagnitude = x.TrustTrackerForChoiceInGroup.SumAdjustmentPctTimesRatingMagnitude, SumRatingMagnitudes = x.TrustTrackerForChoiceInGroup.SumRatingMagnitudes }).ToList();
             SetStats(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.OneDayVolatility ?? 0, theUserRating.OneHourVolatility ?? 0, theRatingCharacteristic, theUserRating.LogarithmicBase, (float) theUserRating.PercentPreviousRatings);
         }
+
+        public static float MinThresholdToBeConsideredHighMagnitudeRating = 0.3F; // a userrating with less than a 30% change will get a 0 in this category
+        public static float MaxThresholdToBeConsideredLowMagnitudeRating = 0.7F; // a userrating with more than a 70% change will get a 0 in this category
 
         /// <summary>
         /// Set the Stat Manager's statistics based on data reflecting the situation at the time the user entered the UserRating.
@@ -156,11 +159,11 @@ namespace ClassLibrary1.Model
                 theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, logBase);
             
             NoExtraWeighting = 1.0F * RatingMagnitude;
-            if (RatingMagnitude < 0.6F)
+            if (RatingMagnitude < MinThresholdToBeConsideredHighMagnitudeRating)
                 LargeDeltaRatings = 0; // setting 0 for most cases eliminates effects of weird rounding errors
             else
                 LargeDeltaRatings = (float)Math.Pow(RatingMagnitude, 2) * RatingMagnitude; // This makes bigger ratings matter more. Note that even for numbers between 0 and 1, 4^2/9^2 is lower than 4/9. 
-            if (RatingMagnitude > 0.4F)
+            if (RatingMagnitude > MaxThresholdToBeConsideredLowMagnitudeRating)
                 SmallDeltaRatings = 0;
             else
                 SmallDeltaRatings = (float)Math.Pow((1F - RatingMagnitude), 2) * RatingMagnitude;
@@ -170,7 +173,7 @@ namespace ClassLibrary1.Model
             Extremeness = (float)PMAdjustmentFactor.CalculateExtremeness(enteredUserRating, logBase, 
                 theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating) * RatingMagnitude;
             CurrentRatingQuestionable = (float)PMAdjustmentFactor.CalculateRelativeMagnitude(currentRatingOrBasisOfCalc, lastTrustedRatingOrBasisOfCalc, theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, logBase) *
-                RatingMagnitude;
+                RatingMagnitude; // DEBUG -- no longer useful. Maybe swap in something about whether it is a first rating
             PercentPreviousRatings = pctPreviousRatings * RatingMagnitude;
         }
 
