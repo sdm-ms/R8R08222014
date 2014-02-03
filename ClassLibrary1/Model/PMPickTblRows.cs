@@ -188,7 +188,7 @@ namespace ClassLibrary1.Model
             IQueryable<VolatilityTblRowTracker> theQuery = null;
 
             theQuery = theDataContext.GetTable<VolatilityTblRowTracker>().Where(x => x.TblRow.Tbl == theTbl);
-            theQuery = theQuery.Where(t => t.DurationType == (int)theTimeFrame).OrderByDescending(t => t.Volatility);
+            theQuery = theQuery.Where(t => t.DurationType == (int)theTimeFrame).OrderByDescending(t => t.Pushback);
             theQuery = theQuery.Take((int) numToConsider); 
             IQueryable<TblRow> theQueryAsTblRows = theQuery.Select(t => t.TblRow);
             theQueryAsTblRows = theQueryAsTblRows.Distinct().Take((int)numToConsider);

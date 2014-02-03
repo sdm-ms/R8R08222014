@@ -95,9 +95,9 @@ namespace ClassLibrary1.Model
             else
                 currentRatingOrBasisOfCalc = RaterooDataManipulation.GetAlternativeBasisForCalcIfNoPreviousUserRating(RaterooDB, theRating, theRating.RatingGroup.RatingGroupAttribute);
             VolatilityTracker oneDayVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int) VolatilityDuration.oneDay);
-            decimal oneDayVolatilityDecimal = (oneDayVolatility == null) ? 0 : oneDayVolatility.Volatility;
+            decimal oneDayVolatilityDecimal = (oneDayVolatility == null) ? 0 : oneDayVolatility.Pushback;
             VolatilityTracker oneHourVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int)VolatilityDuration.oneHour);
-            decimal oneHourVolatilityDecimal = (oneHourVolatility == null) ? 0 : oneHourVolatility.Volatility;
+            decimal oneHourVolatilityDecimal = (oneHourVolatility == null) ? 0 : oneHourVolatility.Pushback;
 
             float pctPreviousRatings = 0;
             if (theRating.TotalUserRatings > 0)

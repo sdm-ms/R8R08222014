@@ -431,35 +431,74 @@ namespace TestProject1
             float volatilityObservedDay;
             float volatilityObservedHour;
             float volatilityObservedWeek;
-            GetVolatilityForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
             float expectedAbsoluteVolatility = (float)Math.Abs(user1RatingValue - basis);
             float maximumVolatility = (float)(maxRating - minRating);
             float expectedRelativeVolatility = expectedAbsoluteVolatility / maximumVolatility; // starting from 0 volatility
             volatilityObservedHour.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
+            float distanceFromStartObservedDay;
+            float distanceFromStartObservedHour;
+            float distanceFromStartObservedWeek;
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek);
+            float expectedDistanceFromStart = (float)(user1RatingValue - basis);
+            float maximumDistanceFromStart = (float)(maxRating - minRating);
+            float expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
+            distanceFromStartObservedHour.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedDay.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+
 
             decimal user2RatingValue = 8M;
             theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user2RatingValue, theTestHelper.UserIds[2], ref theResponse);
             theTestHelper.WaitIdleTasks();
-            GetVolatilityForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
             expectedAbsoluteVolatility = (float)Math.Abs(user2RatingValue - user1RatingValue);
             maximumVolatility = (float)(maxRating - minRating);
             expectedRelativeVolatility += expectedAbsoluteVolatility / maximumVolatility; // add to previous
             volatilityObservedHour.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek);
+            expectedDistanceFromStart = (float)(user2RatingValue - basis);
+            maximumDistanceFromStart = (float)(maxRating - minRating);
+            expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
+            distanceFromStartObservedHour.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedDay.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            float pushbackObservedHour, pushbackObservedDay, pushbackObservedWeek;
+            GetPushbackFromStartForRating(theTestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek);
+            float pushback = (expectedRelativeVolatility - Math.Abs(expectedRelativeDistanceFromStart));
+            pushbackObservedHour.Should().BeApproximately(pushback, 0.01F);
+            float pushbackProportionObservedHour, pushbackProportionObservedDay, pushbackProportionObservedWeek;
+            GetPushbackProportionFromStartForRating(theTestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek);
+            float pushbackProportion = expectedRelativeVolatility == 0 ? 0 : pushback/expectedRelativeVolatility;
+            pushbackProportionObservedHour.Should().BeApproximately(pushbackProportion, 0.01F);
 
             decimal user3RatingValue = 7M;
             theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user3RatingValue, theTestHelper.UserIds[3], ref theResponse);
             theTestHelper.WaitIdleTasks();
-            GetVolatilityForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
             expectedAbsoluteVolatility = (float)Math.Abs(user3RatingValue - user2RatingValue);
             maximumVolatility = (float)(maxRating - minRating);
             expectedRelativeVolatility += expectedAbsoluteVolatility / maximumVolatility; // add to previous
             volatilityObservedHour.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek);
+            expectedDistanceFromStart = (float)(user3RatingValue - basis);
+            maximumDistanceFromStart = (float)(maxRating - minRating);
+            expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
+            distanceFromStartObservedHour.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedDay.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            GetPushbackFromStartForRating(theTestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek);
+            pushback = (expectedRelativeVolatility - Math.Abs(expectedRelativeDistanceFromStart));
+            pushbackObservedHour.Should().BeApproximately(pushback, 0.01F);
+            GetPushbackProportionFromStartForRating(theTestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek);
+            pushbackProportion = pushback / expectedRelativeVolatility;
+            pushbackProportionObservedHour.Should().BeApproximately(pushbackProportion, 0.01F);
 
             // now add two at once by different users (we cannot use user 2 again because user 2 is not wholly trusted now that its rating was partly reverted)
             decimal user4RatingValue = 3M;
@@ -467,8 +506,7 @@ namespace TestProject1
             theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user4RatingValue, theTestHelper.UserIds[4], ref theResponse);
             theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user5RatingValue, theTestHelper.UserIds[5], ref theResponse);
             theTestHelper.WaitIdleTasks();
-            // DEBUG: We end up with errors here, because the PreviousDisplayedOrVirtualRating is 7M for both of users 4 and 5. It seems that when there are two simultaneous user ratings being added, with no idle tasks between them, both get full credit in terms of what the previous displayed rating was. This may make sense from the perspective of awarding points (or maybe not, since it could lead to redundant points), but certainly doesn't from the perspective of volatility, since simultaneous ratings will increase volatility. It would make sense to see if there is a way of determining what the most recent value is of the Rating when we add a UserRating, even if there has been some interim change.
-            GetVolatilityForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
             // count volatility for two separately
             // first for user 4's new userrating
             expectedAbsoluteVolatility = (float)Math.Abs(user4RatingValue - user3RatingValue);
@@ -482,38 +520,88 @@ namespace TestProject1
             volatilityObservedHour.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek);
+            expectedDistanceFromStart = (float)(user5RatingValue - basis);
+            maximumDistanceFromStart = (float)(maxRating - minRating);
+            expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
+            distanceFromStartObservedHour.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedDay.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            GetPushbackFromStartForRating(theTestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek);
+            pushback = (expectedRelativeVolatility - Math.Abs(expectedRelativeDistanceFromStart));
+            pushbackObservedHour.Should().BeApproximately(pushback, 0.01F);
+            GetPushbackProportionFromStartForRating(theTestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek);
+            pushbackProportion = pushback / expectedRelativeVolatility;
+            pushbackProportionObservedHour.Should().BeApproximately(pushbackProportion, 0.01F);
 
             // now, add time
             TestableDateTime.SleepOrSkipTime((long) TimeSpan.FromHours(23.1).TotalMilliseconds);
             theTestHelper.WaitIdleTasks();
-            GetVolatilityForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
             volatilityObservedHour.Should().BeApproximately(0, 0.01F);
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek);
+            expectedDistanceFromStart = 0;
+            maximumDistanceFromStart = 0;
+            expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
+            distanceFromStartObservedHour.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedDay.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
+            GetPushbackFromStartForRating(theTestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek);
+            pushback = (expectedRelativeVolatility - Math.Abs(expectedRelativeDistanceFromStart)) ;
+            pushbackObservedHour.Should().BeApproximately(pushback, 0.01F);
+            GetPushbackProportionFromStartForRating(theTestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek);
+            pushbackProportion = expectedRelativeVolatility == 0 ? 0 : pushback / expectedRelativeVolatility;
+            pushbackProportionObservedHour.Should().BeApproximately(pushbackProportion, 0.01F);
 
+            // now just test whether further time cancels out the TotalMovement user rating (in which case others will follow)
             TestableDateTime.SleepOrSkipTime((long) TimeSpan.FromDays(5).TotalMilliseconds);
             theTestHelper.WaitIdleTasks();
-            GetVolatilityForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
             volatilityObservedHour.Should().BeApproximately(0, 0.01F);
             volatilityObservedDay.Should().BeApproximately(0, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
 
             TestableDateTime.SleepOrSkipTime((long)TimeSpan.FromDays(3).TotalMilliseconds);
             theTestHelper.WaitIdleTasks();
-            GetVolatilityForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek);
             volatilityObservedHour.Should().BeApproximately(0, 0.01F);
             volatilityObservedDay.Should().BeApproximately(0, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(0, 0.01F);
         }
 
-        private void GetVolatilityForRating(Rating rating, out float volatilityObservedHour, out float volatilityObservedDay, out float volatilityObservedWeek)
+        private void GetVolatilityTotalMovementForRating(Rating rating, out float volatilityObservedHour, out float volatilityObservedDay, out float volatilityObservedWeek)
         {
             RatingGroup rg = rating.RatingGroup;
-            volatilityObservedHour = (float) rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).Volatility;
-            volatilityObservedDay = (float) rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).Volatility;
-            volatilityObservedWeek = (float) rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneWeek).Volatility;
+            volatilityObservedHour = (float) rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).TotalMovement;
+            volatilityObservedDay = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).TotalMovement;
+            volatilityObservedWeek = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneWeek).TotalMovement;
         }
 
+        private void GetVolatilityDistanceFromStartForRating(Rating rating, out float volatilityObservedHour, out float volatilityObservedDay, out float volatilityObservedWeek)
+        {
+            RatingGroup rg = rating.RatingGroup;
+            volatilityObservedHour = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).DistanceFromStart;
+            volatilityObservedDay = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).DistanceFromStart;
+            volatilityObservedWeek = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneWeek).DistanceFromStart;
+        }
+
+        private void GetPushbackFromStartForRating(Rating rating, out float volatilityObservedHour, out float volatilityObservedDay, out float volatilityObservedWeek)
+        {
+            RatingGroup rg = rating.RatingGroup;
+            volatilityObservedHour = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).Pushback;
+            volatilityObservedDay = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).Pushback;
+            volatilityObservedWeek = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneWeek).Pushback;
+        }
+
+        private void GetPushbackProportionFromStartForRating(Rating rating, out float volatilityObservedHour, out float volatilityObservedDay, out float volatilityObservedWeek)
+        {
+            RatingGroup rg = rating.RatingGroup;
+            volatilityObservedHour = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).PushbackProportion;
+            volatilityObservedDay = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).PushbackProportion;
+            volatilityObservedWeek = (float)rg.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneWeek).PushbackProportion;
+        }
     }
 
     public class TestRatingResolution

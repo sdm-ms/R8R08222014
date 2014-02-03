@@ -93,19 +93,6 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void ResetVolatilityTrackers()
-        {
-            PMActionProcessor theProcessor = new PMActionProcessor();
-            IRaterooDataContext theDC = theProcessor.DataContext;
-            var toFix = theDC.GetTable<VolatilityTracker>().Where(t => t.Volatility != 0);
-            var toFix2 = theDC.GetTable <VolatilityTblRowTracker>().Where(t => t.Volatility != 0);
-            foreach (var x in toFix)
-                x.Volatility = 0;
-            foreach (var y in toFix2)
-                y.Volatility = 0;
-            theDC.SubmitChanges();
-        }
-
         public void AddMissingVolatilityTrackers()
         {
             bool moreToDo = true;

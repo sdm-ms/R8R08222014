@@ -391,11 +391,11 @@ namespace ClassLibrary1.Model
 
             if (mostActiveFirst)
                 theFilteredQueryWithSortValues = from e in GetFilteredQueryAsTblRows(theDataContext, null)
-                                                 orderby e.VolatilityTblRowTrackers.Single(x => x.DurationType == (int)theTimeFrame).Volatility descending
+                                                 orderby e.VolatilityTblRowTrackers.Single(x => x.DurationType == (int)theTimeFrame).Pushback descending
                                                  select e;
             else
                 theFilteredQueryWithSortValues = from e in GetFilteredQueryAsTblRows(theDataContext, null)
-                                                 orderby e.VolatilityTblRowTrackers.Single(x => x.DurationType == (int)theTimeFrame).Volatility
+                                                 orderby e.VolatilityTblRowTrackers.Single(x => x.DurationType == (int)theTimeFrame).Pushback
                                                  select e;
 
             if (maxNumResults != null)

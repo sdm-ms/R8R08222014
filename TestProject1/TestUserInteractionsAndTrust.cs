@@ -585,21 +585,6 @@ namespace TestProject1
                     "because the more transactions we have, the greater the weight, by we increase this only logarithmically.");
         }
 
-        /// <summary>
-        /// I think the idea is that the test is being applied to user 3 (because we need to have an easy way to see whether the previous rating 
-        /// is questionable, so we need this to be at least the third rating). So, I think that lastTrustedRating = 7, currentRating = 8, and 
-        /// enteredRating = 7.5. But I think for this to work, we need to be sure that user 1's rating will be trusted and user 2's rating will 
-        /// not be trusted, and I don't see anything in this code that does it. So that may be something that I neglected, or maybe there is 
-        /// something that I'm not thinking of (perhaps I ensured that in the initialization routines for the table). Feel free to change as 
-        /// necessary so that the test is actually testing correctly.
-        /// 
-        /// It does look right to me. But a couple of ideas: (1) You might look carefully at the number that you do get, and figure out how 
-        /// you get that number from the numbers that you have by playing with the math. If you can't figure it out that way, of course you 
-        /// could put a break point at the relevant points of the code to see where it's getting its numbers from, and then we need to figure
-        ///  out if the discrepancy is a problem with the test or with the code. (2) One possibility is that it's not trusting the users we 
-        /// think -- I can't remember why we think that users 1, 3, and 4 are trusted, but not 2. (Ideally, that would be clearer in the test.) 
-        /// (3) relativeVolatility still looks wrong, though I don't think that's causing the result.
-        /// </summary>
         [TestMethod]
         public void TestTrustTracker_CalculatesUserInteractionCorrectly_WhereAdjPctIsGreaterThan1()
         {
@@ -625,8 +610,8 @@ namespace TestProject1
             _testHelper.Rating.CurrentValue.Should().Be(7M);
 
             /* see what the volatility values are expected and are actually as of just before user 2's rating */
-            float volatilityObservedDay = (float)_testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).Volatility;
-            float volatilityObservedHour = (float)_testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).Volatility;
+            float volatilityObservedDay = (float)_testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).TotalMovement;
+            float volatilityObservedHour = (float)_testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).TotalMovement;
 
             decimal user2RatingValue = 8M;
             decimal user3RatingValue = 9M;
@@ -938,10 +923,11 @@ namespace TestProject1
         {
 
             int? randomSeed = null;
+            Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.4F, 0.6F, true, false, randomSeed);
+            Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, true, false, randomSeed); 
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, false, true, randomSeed);
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.8F, false, true, randomSeed);
-            Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.8F, true, false, randomSeed);
-            Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, true, false, randomSeed);
+            
         }
 
         public void Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(
@@ -965,12 +951,12 @@ namespace TestProject1
             if (applySpecialCaseAdjustmentFactorToHighMagnitudeRatings && applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
                 throw new Exception("Can't apply special case to high magnitude ratings and specified choice field value.");
 
-            decimal initialValue = 4M;
+            decimal initialValue = 2M;
             // different even/odd values so that we have two classes of ratings
             // The idea is that we might have ratings with different ChoiceInGroupIDs, and we want to make sure there is a difference.
-            decimal correctValueEvens = 4.2M;
-            decimal correctValueOdds = 3.5M;
-            decimal correctValueHighMagnitude = 8M;
+            decimal correctValueEvens = 3.2M;
+            decimal correctValueOdds = 1.5M;
+            decimal correctValueHighMagnitude = 6M;
 
             if (randomSeed != null)
                 RandomGenerator.SeedOverride = randomSeed;
@@ -987,7 +973,7 @@ namespace TestProject1
             ratings.Count().Should().Be(numTblRows, "because we started with one TblRow and added numTblRows-1 TblRows, so we should end up with numTblRows TblRows."); 
             tblRows.Count().Should().Be(numTblRows);
 
-            
+            #region applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue
             if (applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
             {
                 RaterooTestEnvironmentCreator testEnv = new RaterooTestEnvironmentCreator(_testHelper);
@@ -1011,6 +997,8 @@ namespace TestProject1
                     _testHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(theTblRow, fieldDefinitionID, theChoiceId, _testHelper.SuperUserId, null);
                 }
             }
+            #endregion
+
 
             // Initialize, each tbl row to the initial value.
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
@@ -1021,8 +1009,6 @@ namespace TestProject1
                 theRating.LastTrustedValue = initialValue;
             }
 
-            decimal valueEnteredHighValue = initialValue + 
-                (correctValueHighMagnitude - initialValue) / (decimal)specialCaseAdjustmentFactorToApply;
 
             // Now, for each table row, have user # 1 enter a value reflecting the adjustment factor that it applies
             // and then have two other users enter very close to the correct value.
@@ -1039,6 +1025,8 @@ namespace TestProject1
 
                 //decimal valueToEnterByFirstUser = PMAdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
                 decimal valueToEnterByFirstUser = initialValue + (correctValue - initialValue) / (decimal)adjustmentFactorToApply;
+                if (valueToEnterByFirstUser > 10 || valueToEnterByFirstUser < 0)
+                    throw new Exception("Internal error: Test should be designed so that first user enters a value that is within range.");
                 valueToEnterByFirstUser = PMTrustCalculations.Constrain(valueToEnterByFirstUser, minRatingValue,
                     maxRatingValue);
 
@@ -1074,9 +1062,12 @@ x.UserID == _testHelper.UserIds[1]);
              * the user's trust tracking should reflect that. So, if, for example, whenever a user makes a userrating, it almost 
              * moves back 50%, then we should end up with a number close to 0.50.
              */
+            float expectedOverallTrustValue = baselineAdjustmentFactorToApply;
+            if (applySpecialCaseAdjustmentFactorToHighMagnitudeRatings || applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
+                expectedOverallTrustValue = baselineAdjustmentFactorToApply * 0.9F + specialCaseAdjustmentFactorToApply * 0.1F;
             noExtraWeightingTrustStat.TrustValue.Should().BeInRange(
-                baselineAdjustmentFactorToApply - tolerance, 
-                baselineAdjustmentFactorToApply + tolerance);
+                expectedOverallTrustValue - tolerance,
+                expectedOverallTrustValue + tolerance);
 
             if (baselineAdjustmentFactorToApply != specialCaseAdjustmentFactorToApply && 
                 applySpecialCaseAdjustmentFactorToHighMagnitudeRatings)

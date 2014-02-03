@@ -1678,7 +1678,7 @@ namespace ClassLibrary1.Model
                 TrustTrackerUnit = trustTrackerUnit,
                 RewardPendingPointsTrackerID = (theRewardPendingPointsTracker == null) ? (int?)null : theRewardPendingPointsTracker.RewardPendingPointsTrackerID,
                 UserRating1 = null, /* most recent user rating -- does not include this one */
-                PreviousRatingOrVirtualRating = lastTrustedRatingOrBasisOfCalc,
+                PreviousRatingOrVirtualRating = previousUserRating ?? lastTrustedRatingOrBasisOfCalc, // Formerly: lastTrustedRatingOrBasisOfCalc, BUT: we have eliminated the concept of trusted vs. nontrusted ratings, so now we can always use the previous user rating if there is one, resorting to the basis of the calculation if the previous user rating was null.
                 PreviousDisplayedRating = previousUserRating,
                 EnteredUserRating = enteredUserRatingValue,
                 NewUserRating = newUserRatingValue,
@@ -2526,7 +2526,10 @@ namespace ClassLibrary1.Model
             {
                 TblRow = theTblRow,
                 DurationType = (byte) theTimeFrame,
-                Volatility = 0
+                TotalMovement = 0,
+                DistanceFromStart = 0,
+                Pushback = 0,
+                PushbackProportion = 0
             };
             DataContext.GetTable<VolatilityTblRowTracker>().InsertOnSubmit(theTracker);
             DataContext.RegisterObjectToBeInserted(theTracker);
@@ -2545,7 +2548,10 @@ namespace ClassLibrary1.Model
                 EndTime = currentTime,
                 StartTime = currentTime - theTimeSpan,
                 VolatilityTblRowTracker = theVolatilityTblRowTracker,
-                Volatility = 0
+                TotalMovement = 0,
+                DistanceFromStart = 0,
+                Pushback = 0,
+                PushbackProportion = 0
             };
             DataContext.GetTable<VolatilityTracker>().InsertOnSubmit(theTracker);
             DataContext.RegisterObjectToBeInserted(theTracker);

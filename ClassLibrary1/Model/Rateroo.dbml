@@ -1,18 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Rateroo7" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="RaterooDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="RaterooConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.VolatilityTrackers" Member="VolatilityTrackers">
-    <Type Name="VolatilityTracker">
-      <Column Name="VolatilityTrackerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="RatingGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="VolatilityTblRowTrackerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DurationType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="EndTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Volatility" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Association Name="VolatilityTblRowTracker_VolatilityTracker" Member="VolatilityTblRowTracker" ThisKey="VolatilityTblRowTrackerID" OtherKey="VolatilityTblRowTrackerID" Type="VolatilityTblRowTracker" IsForeignKey="true" />
-      <Association Name="RatingGroup_VolatilityTracker" Member="RatingGroup" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroup" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.AddressFields" Member="AddressFields">
     <Type Name="AddressField">
       <Column Name="AddressFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1010,16 +997,6 @@
       <Association Name="PointsManager_UsersRight" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.VolatilityTblRowTrackers" Member="VolatilityTblRowTrackers">
-    <Type Name="VolatilityTblRowTracker">
-      <Column Name="VolatilityTblRowTrackerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TblRowID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DurationType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="Volatility" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Association Name="VolatilityTblRowTracker_VolatilityTracker" Member="VolatilityTrackers" ThisKey="VolatilityTblRowTrackerID" OtherKey="VolatilityTblRowTrackerID" Type="VolatilityTracker" />
-      <Association Name="TblRow_VolatilityTblRowTracker" Member="TblRow" ThisKey="TblRowID" OtherKey="TblRowID" Type="TblRow" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.SearchWordHierarchyItems" Member="SearchWordHierarchyItems">
     <Type Name="SearchWordHierarchyItem">
       <Column Name="SearchWordHierarchyItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1055,7 +1032,6 @@
       <Column Name="TypeOfRatingGroup" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="HighStakesKnown" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="RatingGroup_VolatilityTracker" Member="VolatilityTrackers" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="VolatilityTracker" />
       <Association Name="RatingGroup_RatingGroupResolution" Member="RatingGroupResolutions" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroupResolution" />
       <Association Name="RatingGroup_RatingGroupStatusRecord" Member="RatingGroupStatusRecords" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroupStatusRecord" />
       <Association Name="RatingGroup_UserRatingGroup" Member="UserRatingGroups" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="UserRatingGroup" />
@@ -1064,6 +1040,7 @@
       <Association Name="RatingGroup_Rating" Member="Ratings" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="Rating" />
       <Association Name="RatingGroup_Rating1" Member="Ratings1" ThisKey="RatingGroupID" OtherKey="OwnedRatingGroupID" Type="Rating" />
       <Association Name="RatingGroup_Rating2" Member="Ratings2" ThisKey="RatingGroupID" OtherKey="TopmostRatingGroupID" Type="Rating" />
+      <Association Name="RatingGroup_VolatilityTracker" Member="VolatilityTrackers" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="VolatilityTracker" />
       <Association Name="TblRow_RatingGroup" Member="TblRow" ThisKey="TblRowID" OtherKey="TblRowID" Type="TblRow" IsForeignKey="true" />
       <Association Name="TblColumn_RatingGroup" Member="TblColumn" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
       <Association Name="RatingGroupAttribute_RatingGroup" Member="RatingGroupAttribute" ThisKey="RatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
@@ -1143,9 +1120,9 @@
       <Association Name="TblRow_RewardPendingPointsTracker" Member="RewardPendingPointsTrackers" ThisKey="TblRowID" OtherKey="RewardTblRowID" Type="RewardPendingPointsTracker" />
       <Association Name="TblRow_SearchWordTblRowName" Member="SearchWordTblRowNames" ThisKey="TblRowID" OtherKey="TblRowID" Type="SearchWordTblRowName" />
       <Association Name="TblRow_TblRowStatusRecord" Member="TblRowStatusRecords" ThisKey="TblRowID" OtherKey="TblRowId" Type="TblRowStatusRecord" />
-      <Association Name="TblRow_VolatilityTblRowTracker" Member="VolatilityTblRowTrackers" ThisKey="TblRowID" OtherKey="TblRowID" Type="VolatilityTblRowTracker" />
       <Association Name="TblRow_Comment" Member="Comments" ThisKey="TblRowID" OtherKey="TblRowID" Type="Comment" />
       <Association Name="TblRow_RatingGroup" Member="RatingGroups" ThisKey="TblRowID" OtherKey="TblRowID" Type="RatingGroup" />
+      <Association Name="TblRow_VolatilityTblRowTracker" Member="VolatilityTblRowTrackers" ThisKey="TblRowID" OtherKey="TblRowID" Type="VolatilityTblRowTracker" />
       <Association Name="TblRowFieldDisplay_TblRow" Member="TblRowFieldDisplay" ThisKey="TblRowFieldDisplayID" OtherKey="TblRowFieldDisplayID" Type="TblRowFieldDisplay" IsForeignKey="true" />
       <Association Name="Tbl_TblRow" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
@@ -1628,6 +1605,35 @@
       <Association Name="PointsManager_RatingGroupAttribute" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
       <Association Name="RatingCharacteristic_RatingGroupAttribute" Member="RatingCharacteristic" ThisKey="RatingCharacteristicsID" OtherKey="RatingCharacteristicsID" Type="RatingCharacteristic" IsForeignKey="true" />
       <Association Name="RatingCondition_RatingGroupAttribute" Member="RatingCondition" ThisKey="RatingConditionID" OtherKey="RatingConditionID" Type="RatingCondition" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VolatilityTblRowTrackers" Member="VolatilityTblRowTrackers">
+    <Type Name="VolatilityTblRowTracker">
+      <Column Name="VolatilityTblRowTrackerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TblRowID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DurationType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="TotalMovement" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DistanceFromStart" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Pushback" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PushbackProportion" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Association Name="VolatilityTblRowTracker_VolatilityTracker" Member="VolatilityTrackers" ThisKey="VolatilityTblRowTrackerID" OtherKey="VolatilityTblRowTrackerID" Type="VolatilityTracker" />
+      <Association Name="TblRow_VolatilityTblRowTracker" Member="TblRow" ThisKey="TblRowID" OtherKey="TblRowID" Type="TblRow" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VolatilityTrackers" Member="VolatilityTrackers">
+    <Type Name="VolatilityTracker">
+      <Column Name="VolatilityTrackerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RatingGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VolatilityTblRowTrackerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DurationType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TotalMovement" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DistanceFromStart" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Pushback" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PushbackProportion" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Association Name="RatingGroup_VolatilityTracker" Member="RatingGroup" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroup" IsForeignKey="true" />
+      <Association Name="VolatilityTblRowTracker_VolatilityTracker" Member="VolatilityTblRowTracker" ThisKey="VolatilityTblRowTrackerID" OtherKey="VolatilityTblRowTrackerID" Type="VolatilityTblRowTracker" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">

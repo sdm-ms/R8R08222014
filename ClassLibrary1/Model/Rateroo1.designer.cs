@@ -30,9 +30,6 @@ namespace ClassLibrary1.Model
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertVolatilityTracker(VolatilityTracker instance);
-    partial void UpdateVolatilityTracker(VolatilityTracker instance);
-    partial void DeleteVolatilityTracker(VolatilityTracker instance);
     partial void InsertAddressField(AddressField instance);
     partial void UpdateAddressField(AddressField instance);
     partial void DeleteAddressField(AddressField instance);
@@ -264,9 +261,6 @@ namespace ClassLibrary1.Model
     partial void InsertUsersRight(UsersRight instance);
     partial void UpdateUsersRight(UsersRight instance);
     partial void DeleteUsersRight(UsersRight instance);
-    partial void InsertVolatilityTblRowTracker(VolatilityTblRowTracker instance);
-    partial void UpdateVolatilityTblRowTracker(VolatilityTblRowTracker instance);
-    partial void DeleteVolatilityTblRowTracker(VolatilityTblRowTracker instance);
     partial void InsertSearchWordHierarchyItem(SearchWordHierarchyItem instance);
     partial void UpdateSearchWordHierarchyItem(SearchWordHierarchyItem instance);
     partial void DeleteSearchWordHierarchyItem(SearchWordHierarchyItem instance);
@@ -360,6 +354,12 @@ namespace ClassLibrary1.Model
     partial void InsertRatingGroupAttribute(RatingGroupAttribute instance);
     partial void UpdateRatingGroupAttribute(RatingGroupAttribute instance);
     partial void DeleteRatingGroupAttribute(RatingGroupAttribute instance);
+    partial void InsertVolatilityTblRowTracker(VolatilityTblRowTracker instance);
+    partial void UpdateVolatilityTblRowTracker(VolatilityTblRowTracker instance);
+    partial void DeleteVolatilityTblRowTracker(VolatilityTblRowTracker instance);
+    partial void InsertVolatilityTracker(VolatilityTracker instance);
+    partial void UpdateVolatilityTracker(VolatilityTracker instance);
+    partial void DeleteVolatilityTracker(VolatilityTracker instance);
     #endregion
 		
 		public RaterooDataContext() : 
@@ -390,14 +390,6 @@ namespace ClassLibrary1.Model
 				base(connection, mappingSource)
 		{
 			OnCreated();
-		}
-		
-		public System.Data.Linq.Table<VolatilityTracker> VolatilityTrackers
-		{
-			get
-			{
-				return this.GetTable<VolatilityTracker>();
-			}
 		}
 		
 		public System.Data.Linq.Table<AddressField> AddressFields
@@ -1024,14 +1016,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<VolatilityTblRowTracker> VolatilityTblRowTrackers
-		{
-			get
-			{
-				return this.GetTable<VolatilityTblRowTracker>();
-			}
-		}
-		
 		public System.Data.Linq.Table<SearchWordHierarchyItem> SearchWordHierarchyItems
 		{
 			get
@@ -1280,6 +1264,22 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		public System.Data.Linq.Table<VolatilityTblRowTracker> VolatilityTblRowTrackers
+		{
+			get
+			{
+				return this.GetTable<VolatilityTblRowTracker>();
+			}
+		}
+		
+		public System.Data.Linq.Table<VolatilityTracker> VolatilityTrackers
+		{
+			get
+			{
+				return this.GetTable<VolatilityTracker>();
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DistanceBetween", IsComposable=true)]
 		public System.Nullable<float> DistanceBetween([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Lat1", DbType="Real")] System.Nullable<float> lat1, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Long1", DbType="Real")] System.Nullable<float> long1, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Lat2", DbType="Real")] System.Nullable<float> lat2, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Long2", DbType="Real")] System.Nullable<float> long2)
 		{
@@ -1308,294 +1308,6 @@ namespace ClassLibrary1.Model
 		public IQueryable<UDFNearestNeighborsForTblResult> UDFNearestNeighborsForTbl([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Real")] System.Nullable<float> lat, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="long", DbType="Real")] System.Nullable<float> @long, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> neighbors, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TblID", DbType="Int")] System.Nullable<int> tblID)
 		{
 			return this.CreateMethodCallQuery<UDFNearestNeighborsForTblResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), lat, @long, neighbors, tblID);
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.VolatilityTrackers")]
-	public partial class VolatilityTracker : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _VolatilityTrackerID;
-		
-		private int _RatingGroupID;
-		
-		private int _VolatilityTblRowTrackerID;
-		
-		private byte _DurationType;
-		
-		private System.DateTime _StartTime;
-		
-		private System.DateTime _EndTime;
-		
-		private decimal _Volatility;
-		
-		private EntityRef<VolatilityTblRowTracker> _VolatilityTblRowTracker;
-		
-		private EntityRef<RatingGroup> _RatingGroup;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnVolatilityTrackerIDChanging(int value);
-    partial void OnVolatilityTrackerIDChanged();
-    partial void OnRatingGroupIDChanging(int value);
-    partial void OnRatingGroupIDChanged();
-    partial void OnVolatilityTblRowTrackerIDChanging(int value);
-    partial void OnVolatilityTblRowTrackerIDChanged();
-    partial void OnDurationTypeChanging(byte value);
-    partial void OnDurationTypeChanged();
-    partial void OnStartTimeChanging(System.DateTime value);
-    partial void OnStartTimeChanged();
-    partial void OnEndTimeChanging(System.DateTime value);
-    partial void OnEndTimeChanged();
-    partial void OnVolatilityChanging(decimal value);
-    partial void OnVolatilityChanged();
-    #endregion
-		
-		public VolatilityTracker()
-		{
-			this._VolatilityTblRowTracker = default(EntityRef<VolatilityTblRowTracker>);
-			this._RatingGroup = default(EntityRef<RatingGroup>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTrackerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int VolatilityTrackerID
-		{
-			get
-			{
-				return this._VolatilityTrackerID;
-			}
-			set
-			{
-				if ((this._VolatilityTrackerID != value))
-				{
-					this.OnVolatilityTrackerIDChanging(value);
-					this.SendPropertyChanging();
-					this._VolatilityTrackerID = value;
-					this.SendPropertyChanged("VolatilityTrackerID");
-					this.OnVolatilityTrackerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupID", DbType="Int NOT NULL")]
-		public int RatingGroupID
-		{
-			get
-			{
-				return this._RatingGroupID;
-			}
-			set
-			{
-				if ((this._RatingGroupID != value))
-				{
-					if (this._RatingGroup.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRatingGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._RatingGroupID = value;
-					this.SendPropertyChanged("RatingGroupID");
-					this.OnRatingGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTblRowTrackerID", DbType="Int NOT NULL")]
-		public int VolatilityTblRowTrackerID
-		{
-			get
-			{
-				return this._VolatilityTblRowTrackerID;
-			}
-			set
-			{
-				if ((this._VolatilityTblRowTrackerID != value))
-				{
-					if (this._VolatilityTblRowTracker.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnVolatilityTblRowTrackerIDChanging(value);
-					this.SendPropertyChanging();
-					this._VolatilityTblRowTrackerID = value;
-					this.SendPropertyChanged("VolatilityTblRowTrackerID");
-					this.OnVolatilityTblRowTrackerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DurationType", DbType="TinyInt NOT NULL")]
-		public byte DurationType
-		{
-			get
-			{
-				return this._DurationType;
-			}
-			set
-			{
-				if ((this._DurationType != value))
-				{
-					this.OnDurationTypeChanging(value);
-					this.SendPropertyChanging();
-					this._DurationType = value;
-					this.SendPropertyChanged("DurationType");
-					this.OnDurationTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="DateTime NOT NULL")]
-		public System.DateTime StartTime
-		{
-			get
-			{
-				return this._StartTime;
-			}
-			set
-			{
-				if ((this._StartTime != value))
-				{
-					this.OnStartTimeChanging(value);
-					this.SendPropertyChanging();
-					this._StartTime = value;
-					this.SendPropertyChanged("StartTime");
-					this.OnStartTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndTime", DbType="DateTime NOT NULL")]
-		public System.DateTime EndTime
-		{
-			get
-			{
-				return this._EndTime;
-			}
-			set
-			{
-				if ((this._EndTime != value))
-				{
-					this.OnEndTimeChanging(value);
-					this.SendPropertyChanging();
-					this._EndTime = value;
-					this.SendPropertyChanged("EndTime");
-					this.OnEndTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volatility", DbType="Decimal(18,4) NOT NULL")]
-		public decimal Volatility
-		{
-			get
-			{
-				return this._Volatility;
-			}
-			set
-			{
-				if ((this._Volatility != value))
-				{
-					this.OnVolatilityChanging(value);
-					this.SendPropertyChanging();
-					this._Volatility = value;
-					this.SendPropertyChanged("Volatility");
-					this.OnVolatilityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="VolatilityTblRowTracker_VolatilityTracker", Storage="_VolatilityTblRowTracker", ThisKey="VolatilityTblRowTrackerID", OtherKey="VolatilityTblRowTrackerID", IsForeignKey=true)]
-		public VolatilityTblRowTracker VolatilityTblRowTracker
-		{
-			get
-			{
-				return this._VolatilityTblRowTracker.Entity;
-			}
-			set
-			{
-				VolatilityTblRowTracker previousValue = this._VolatilityTblRowTracker.Entity;
-				if (((previousValue != value) 
-							|| (this._VolatilityTblRowTracker.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._VolatilityTblRowTracker.Entity = null;
-						previousValue.VolatilityTrackers.Remove(this);
-					}
-					this._VolatilityTblRowTracker.Entity = value;
-					if ((value != null))
-					{
-						value.VolatilityTrackers.Add(this);
-						this._VolatilityTblRowTrackerID = value.VolatilityTblRowTrackerID;
-					}
-					else
-					{
-						this._VolatilityTblRowTrackerID = default(int);
-					}
-					this.SendPropertyChanged("VolatilityTblRowTracker");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_VolatilityTracker", Storage="_RatingGroup", ThisKey="RatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
-		public RatingGroup RatingGroup
-		{
-			get
-			{
-				return this._RatingGroup.Entity;
-			}
-			set
-			{
-				RatingGroup previousValue = this._RatingGroup.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroup.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroup.Entity = null;
-						previousValue.VolatilityTrackers.Remove(this);
-					}
-					this._RatingGroup.Entity = value;
-					if ((value != null))
-					{
-						value.VolatilityTrackers.Add(this);
-						this._RatingGroupID = value.RatingGroupID;
-					}
-					else
-					{
-						this._RatingGroupID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroup");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -22721,209 +22433,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.VolatilityTblRowTrackers")]
-	public partial class VolatilityTblRowTracker : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _VolatilityTblRowTrackerID;
-		
-		private int _TblRowID;
-		
-		private byte _DurationType;
-		
-		private decimal _Volatility;
-		
-		private EntitySet<VolatilityTracker> _VolatilityTrackers;
-		
-		private EntityRef<TblRow> _TblRow;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnVolatilityTblRowTrackerIDChanging(int value);
-    partial void OnVolatilityTblRowTrackerIDChanged();
-    partial void OnTblRowIDChanging(int value);
-    partial void OnTblRowIDChanged();
-    partial void OnDurationTypeChanging(byte value);
-    partial void OnDurationTypeChanged();
-    partial void OnVolatilityChanging(decimal value);
-    partial void OnVolatilityChanged();
-    #endregion
-		
-		public VolatilityTblRowTracker()
-		{
-			this._VolatilityTrackers = new EntitySet<VolatilityTracker>(new Action<VolatilityTracker>(this.attach_VolatilityTrackers), new Action<VolatilityTracker>(this.detach_VolatilityTrackers));
-			this._TblRow = default(EntityRef<TblRow>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTblRowTrackerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int VolatilityTblRowTrackerID
-		{
-			get
-			{
-				return this._VolatilityTblRowTrackerID;
-			}
-			set
-			{
-				if ((this._VolatilityTblRowTrackerID != value))
-				{
-					this.OnVolatilityTblRowTrackerIDChanging(value);
-					this.SendPropertyChanging();
-					this._VolatilityTblRowTrackerID = value;
-					this.SendPropertyChanged("VolatilityTblRowTrackerID");
-					this.OnVolatilityTblRowTrackerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblRowID", DbType="Int NOT NULL")]
-		public int TblRowID
-		{
-			get
-			{
-				return this._TblRowID;
-			}
-			set
-			{
-				if ((this._TblRowID != value))
-				{
-					if (this._TblRow.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTblRowIDChanging(value);
-					this.SendPropertyChanging();
-					this._TblRowID = value;
-					this.SendPropertyChanged("TblRowID");
-					this.OnTblRowIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DurationType", DbType="TinyInt NOT NULL")]
-		public byte DurationType
-		{
-			get
-			{
-				return this._DurationType;
-			}
-			set
-			{
-				if ((this._DurationType != value))
-				{
-					this.OnDurationTypeChanging(value);
-					this.SendPropertyChanging();
-					this._DurationType = value;
-					this.SendPropertyChanged("DurationType");
-					this.OnDurationTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volatility", DbType="Decimal(18,4) NOT NULL")]
-		public decimal Volatility
-		{
-			get
-			{
-				return this._Volatility;
-			}
-			set
-			{
-				if ((this._Volatility != value))
-				{
-					this.OnVolatilityChanging(value);
-					this.SendPropertyChanging();
-					this._Volatility = value;
-					this.SendPropertyChanged("Volatility");
-					this.OnVolatilityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="VolatilityTblRowTracker_VolatilityTracker", Storage="_VolatilityTrackers", ThisKey="VolatilityTblRowTrackerID", OtherKey="VolatilityTblRowTrackerID")]
-		public EntitySet<VolatilityTracker> VolatilityTrackers
-		{
-			get
-			{
-				return this._VolatilityTrackers;
-			}
-			set
-			{
-				this._VolatilityTrackers.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblRow_VolatilityTblRowTracker", Storage="_TblRow", ThisKey="TblRowID", OtherKey="TblRowID", IsForeignKey=true)]
-		public TblRow TblRow
-		{
-			get
-			{
-				return this._TblRow.Entity;
-			}
-			set
-			{
-				TblRow previousValue = this._TblRow.Entity;
-				if (((previousValue != value) 
-							|| (this._TblRow.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TblRow.Entity = null;
-						previousValue.VolatilityTblRowTrackers.Remove(this);
-					}
-					this._TblRow.Entity = value;
-					if ((value != null))
-					{
-						value.VolatilityTblRowTrackers.Add(this);
-						this._TblRowID = value.TblRowID;
-					}
-					else
-					{
-						this._TblRowID = default(int);
-					}
-					this.SendPropertyChanged("TblRow");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_VolatilityTrackers(VolatilityTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.VolatilityTblRowTracker = this;
-		}
-		
-		private void detach_VolatilityTrackers(VolatilityTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.VolatilityTblRowTracker = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SearchWordHierarchyItems")]
 	public partial class SearchWordHierarchyItem : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -23454,8 +22963,6 @@ namespace ClassLibrary1.Model
 		
 		private bool _HighStakesKnown;
 		
-		private EntitySet<VolatilityTracker> _VolatilityTrackers;
-		
 		private EntitySet<RatingGroupResolution> _RatingGroupResolutions;
 		
 		private EntitySet<RatingGroupStatusRecord> _RatingGroupStatusRecords;
@@ -23471,6 +22978,8 @@ namespace ClassLibrary1.Model
 		private EntitySet<Rating> _Ratings1;
 		
 		private EntitySet<Rating> _Ratings2;
+		
+		private EntitySet<VolatilityTracker> _VolatilityTrackers;
 		
 		private EntityRef<TblRow> _TblRow;
 		
@@ -23506,7 +23015,6 @@ namespace ClassLibrary1.Model
 		
 		public RatingGroup()
 		{
-			this._VolatilityTrackers = new EntitySet<VolatilityTracker>(new Action<VolatilityTracker>(this.attach_VolatilityTrackers), new Action<VolatilityTracker>(this.detach_VolatilityTrackers));
 			this._RatingGroupResolutions = new EntitySet<RatingGroupResolution>(new Action<RatingGroupResolution>(this.attach_RatingGroupResolutions), new Action<RatingGroupResolution>(this.detach_RatingGroupResolutions));
 			this._RatingGroupStatusRecords = new EntitySet<RatingGroupStatusRecord>(new Action<RatingGroupStatusRecord>(this.attach_RatingGroupStatusRecords), new Action<RatingGroupStatusRecord>(this.detach_RatingGroupStatusRecords));
 			this._UserRatingGroups = new EntitySet<UserRatingGroup>(new Action<UserRatingGroup>(this.attach_UserRatingGroups), new Action<UserRatingGroup>(this.detach_UserRatingGroups));
@@ -23515,6 +23023,7 @@ namespace ClassLibrary1.Model
 			this._Ratings = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings), new Action<Rating>(this.detach_Ratings));
 			this._Ratings1 = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings1), new Action<Rating>(this.detach_Ratings1));
 			this._Ratings2 = new EntitySet<Rating>(new Action<Rating>(this.attach_Ratings2), new Action<Rating>(this.detach_Ratings2));
+			this._VolatilityTrackers = new EntitySet<VolatilityTracker>(new Action<VolatilityTracker>(this.attach_VolatilityTrackers), new Action<VolatilityTracker>(this.detach_VolatilityTrackers));
 			this._TblRow = default(EntityRef<TblRow>);
 			this._TblColumn = default(EntityRef<TblColumn>);
 			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
@@ -23733,19 +23242,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_VolatilityTracker", Storage="_VolatilityTrackers", ThisKey="RatingGroupID", OtherKey="RatingGroupID")]
-		public EntitySet<VolatilityTracker> VolatilityTrackers
-		{
-			get
-			{
-				return this._VolatilityTrackers;
-			}
-			set
-			{
-				this._VolatilityTrackers.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_RatingGroupResolution", Storage="_RatingGroupResolutions", ThisKey="RatingGroupID", OtherKey="RatingGroupID")]
 		public EntitySet<RatingGroupResolution> RatingGroupResolutions
 		{
@@ -23847,6 +23343,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._Ratings2.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_VolatilityTracker", Storage="_VolatilityTrackers", ThisKey="RatingGroupID", OtherKey="RatingGroupID")]
+		public EntitySet<VolatilityTracker> VolatilityTrackers
+		{
+			get
+			{
+				return this._VolatilityTrackers;
+			}
+			set
+			{
+				this._VolatilityTrackers.Assign(value);
 			}
 		}
 		
@@ -23972,18 +23481,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		private void attach_VolatilityTrackers(VolatilityTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroup = this;
-		}
-		
-		private void detach_VolatilityTrackers(VolatilityTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.RatingGroup = null;
-		}
-		
 		private void attach_RatingGroupResolutions(RatingGroupResolution entity)
 		{
 			this.SendPropertyChanging();
@@ -24078,6 +23575,18 @@ namespace ClassLibrary1.Model
 		{
 			this.SendPropertyChanging();
 			entity.RatingGroup2 = null;
+		}
+		
+		private void attach_VolatilityTrackers(VolatilityTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroup = this;
+		}
+		
+		private void detach_VolatilityTrackers(VolatilityTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.RatingGroup = null;
 		}
 	}
 	
@@ -25353,11 +24862,11 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<TblRowStatusRecord> _TblRowStatusRecords;
 		
-		private EntitySet<VolatilityTblRowTracker> _VolatilityTblRowTrackers;
-		
 		private EntitySet<Comment> _Comments;
 		
 		private EntitySet<RatingGroup> _RatingGroups;
+		
+		private EntitySet<VolatilityTblRowTracker> _VolatilityTblRowTrackers;
 		
 		private EntityRef<TblRowFieldDisplay> _TblRowFieldDisplay;
 		
@@ -25396,9 +24905,9 @@ namespace ClassLibrary1.Model
 			this._RewardPendingPointsTrackers = new EntitySet<RewardPendingPointsTracker>(new Action<RewardPendingPointsTracker>(this.attach_RewardPendingPointsTrackers), new Action<RewardPendingPointsTracker>(this.detach_RewardPendingPointsTrackers));
 			this._SearchWordTblRowNames = new EntitySet<SearchWordTblRowName>(new Action<SearchWordTblRowName>(this.attach_SearchWordTblRowNames), new Action<SearchWordTblRowName>(this.detach_SearchWordTblRowNames));
 			this._TblRowStatusRecords = new EntitySet<TblRowStatusRecord>(new Action<TblRowStatusRecord>(this.attach_TblRowStatusRecords), new Action<TblRowStatusRecord>(this.detach_TblRowStatusRecords));
-			this._VolatilityTblRowTrackers = new EntitySet<VolatilityTblRowTracker>(new Action<VolatilityTblRowTracker>(this.attach_VolatilityTblRowTrackers), new Action<VolatilityTblRowTracker>(this.detach_VolatilityTblRowTrackers));
 			this._Comments = new EntitySet<Comment>(new Action<Comment>(this.attach_Comments), new Action<Comment>(this.detach_Comments));
 			this._RatingGroups = new EntitySet<RatingGroup>(new Action<RatingGroup>(this.attach_RatingGroups), new Action<RatingGroup>(this.detach_RatingGroups));
+			this._VolatilityTblRowTrackers = new EntitySet<VolatilityTblRowTracker>(new Action<VolatilityTblRowTracker>(this.attach_VolatilityTblRowTrackers), new Action<VolatilityTblRowTracker>(this.detach_VolatilityTblRowTrackers));
 			this._TblRowFieldDisplay = default(EntityRef<TblRowFieldDisplay>);
 			this._Tbl = default(EntityRef<Tbl>);
 			OnCreated();
@@ -25677,19 +25186,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblRow_VolatilityTblRowTracker", Storage="_VolatilityTblRowTrackers", ThisKey="TblRowID", OtherKey="TblRowID")]
-		public EntitySet<VolatilityTblRowTracker> VolatilityTblRowTrackers
-		{
-			get
-			{
-				return this._VolatilityTblRowTrackers;
-			}
-			set
-			{
-				this._VolatilityTblRowTrackers.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblRow_Comment", Storage="_Comments", ThisKey="TblRowID", OtherKey="TblRowID")]
 		public EntitySet<Comment> Comments
 		{
@@ -25713,6 +25209,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._RatingGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblRow_VolatilityTblRowTracker", Storage="_VolatilityTblRowTrackers", ThisKey="TblRowID", OtherKey="TblRowID")]
+		public EntitySet<VolatilityTblRowTracker> VolatilityTblRowTrackers
+		{
+			get
+			{
+				return this._VolatilityTblRowTrackers;
+			}
+			set
+			{
+				this._VolatilityTblRowTrackers.Assign(value);
 			}
 		}
 		
@@ -25864,18 +25373,6 @@ namespace ClassLibrary1.Model
 			entity.TblRow = null;
 		}
 		
-		private void attach_VolatilityTblRowTrackers(VolatilityTblRowTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblRow = this;
-		}
-		
-		private void detach_VolatilityTblRowTrackers(VolatilityTblRowTracker entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblRow = null;
-		}
-		
 		private void attach_Comments(Comment entity)
 		{
 			this.SendPropertyChanging();
@@ -25895,6 +25392,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_RatingGroups(RatingGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblRow = null;
+		}
+		
+		private void attach_VolatilityTblRowTrackers(VolatilityTblRowTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblRow = this;
+		}
+		
+		private void detach_VolatilityTblRowTrackers(VolatilityTblRowTracker entity)
 		{
 			this.SendPropertyChanging();
 			entity.TblRow = null;
@@ -37197,6 +36706,641 @@ namespace ClassLibrary1.Model
 		{
 			this.SendPropertyChanging();
 			entity.RatingGroupAttribute = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.VolatilityTblRowTrackers")]
+	public partial class VolatilityTblRowTracker : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _VolatilityTblRowTrackerID;
+		
+		private int _TblRowID;
+		
+		private byte _DurationType;
+		
+		private decimal _TotalMovement;
+		
+		private decimal _DistanceFromStart;
+		
+		private decimal _Pushback;
+		
+		private decimal _PushbackProportion;
+		
+		private EntitySet<VolatilityTracker> _VolatilityTrackers;
+		
+		private EntityRef<TblRow> _TblRow;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnVolatilityTblRowTrackerIDChanging(int value);
+    partial void OnVolatilityTblRowTrackerIDChanged();
+    partial void OnTblRowIDChanging(int value);
+    partial void OnTblRowIDChanged();
+    partial void OnDurationTypeChanging(byte value);
+    partial void OnDurationTypeChanged();
+    partial void OnTotalMovementChanging(decimal value);
+    partial void OnTotalMovementChanged();
+    partial void OnDistanceFromStartChanging(decimal value);
+    partial void OnDistanceFromStartChanged();
+    partial void OnPushbackChanging(decimal value);
+    partial void OnPushbackChanged();
+    partial void OnPushbackProportionChanging(decimal value);
+    partial void OnPushbackProportionChanged();
+    #endregion
+		
+		public VolatilityTblRowTracker()
+		{
+			this._VolatilityTrackers = new EntitySet<VolatilityTracker>(new Action<VolatilityTracker>(this.attach_VolatilityTrackers), new Action<VolatilityTracker>(this.detach_VolatilityTrackers));
+			this._TblRow = default(EntityRef<TblRow>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTblRowTrackerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int VolatilityTblRowTrackerID
+		{
+			get
+			{
+				return this._VolatilityTblRowTrackerID;
+			}
+			set
+			{
+				if ((this._VolatilityTblRowTrackerID != value))
+				{
+					this.OnVolatilityTblRowTrackerIDChanging(value);
+					this.SendPropertyChanging();
+					this._VolatilityTblRowTrackerID = value;
+					this.SendPropertyChanged("VolatilityTblRowTrackerID");
+					this.OnVolatilityTblRowTrackerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblRowID", DbType="Int NOT NULL")]
+		public int TblRowID
+		{
+			get
+			{
+				return this._TblRowID;
+			}
+			set
+			{
+				if ((this._TblRowID != value))
+				{
+					if (this._TblRow.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTblRowIDChanging(value);
+					this.SendPropertyChanging();
+					this._TblRowID = value;
+					this.SendPropertyChanged("TblRowID");
+					this.OnTblRowIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DurationType", DbType="TinyInt NOT NULL")]
+		public byte DurationType
+		{
+			get
+			{
+				return this._DurationType;
+			}
+			set
+			{
+				if ((this._DurationType != value))
+				{
+					this.OnDurationTypeChanging(value);
+					this.SendPropertyChanging();
+					this._DurationType = value;
+					this.SendPropertyChanged("DurationType");
+					this.OnDurationTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalMovement", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalMovement
+		{
+			get
+			{
+				return this._TotalMovement;
+			}
+			set
+			{
+				if ((this._TotalMovement != value))
+				{
+					this.OnTotalMovementChanging(value);
+					this.SendPropertyChanging();
+					this._TotalMovement = value;
+					this.SendPropertyChanged("TotalMovement");
+					this.OnTotalMovementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistanceFromStart", DbType="Decimal(18,4) NOT NULL")]
+		public decimal DistanceFromStart
+		{
+			get
+			{
+				return this._DistanceFromStart;
+			}
+			set
+			{
+				if ((this._DistanceFromStart != value))
+				{
+					this.OnDistanceFromStartChanging(value);
+					this.SendPropertyChanging();
+					this._DistanceFromStart = value;
+					this.SendPropertyChanged("DistanceFromStart");
+					this.OnDistanceFromStartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pushback", DbType="Decimal(18,4) NOT NULL")]
+		public decimal Pushback
+		{
+			get
+			{
+				return this._Pushback;
+			}
+			set
+			{
+				if ((this._Pushback != value))
+				{
+					this.OnPushbackChanging(value);
+					this.SendPropertyChanging();
+					this._Pushback = value;
+					this.SendPropertyChanged("Pushback");
+					this.OnPushbackChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PushbackProportion", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PushbackProportion
+		{
+			get
+			{
+				return this._PushbackProportion;
+			}
+			set
+			{
+				if ((this._PushbackProportion != value))
+				{
+					this.OnPushbackProportionChanging(value);
+					this.SendPropertyChanging();
+					this._PushbackProportion = value;
+					this.SendPropertyChanged("PushbackProportion");
+					this.OnPushbackProportionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="VolatilityTblRowTracker_VolatilityTracker", Storage="_VolatilityTrackers", ThisKey="VolatilityTblRowTrackerID", OtherKey="VolatilityTblRowTrackerID")]
+		public EntitySet<VolatilityTracker> VolatilityTrackers
+		{
+			get
+			{
+				return this._VolatilityTrackers;
+			}
+			set
+			{
+				this._VolatilityTrackers.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblRow_VolatilityTblRowTracker", Storage="_TblRow", ThisKey="TblRowID", OtherKey="TblRowID", IsForeignKey=true)]
+		public TblRow TblRow
+		{
+			get
+			{
+				return this._TblRow.Entity;
+			}
+			set
+			{
+				TblRow previousValue = this._TblRow.Entity;
+				if (((previousValue != value) 
+							|| (this._TblRow.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TblRow.Entity = null;
+						previousValue.VolatilityTblRowTrackers.Remove(this);
+					}
+					this._TblRow.Entity = value;
+					if ((value != null))
+					{
+						value.VolatilityTblRowTrackers.Add(this);
+						this._TblRowID = value.TblRowID;
+					}
+					else
+					{
+						this._TblRowID = default(int);
+					}
+					this.SendPropertyChanged("TblRow");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_VolatilityTrackers(VolatilityTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.VolatilityTblRowTracker = this;
+		}
+		
+		private void detach_VolatilityTrackers(VolatilityTracker entity)
+		{
+			this.SendPropertyChanging();
+			entity.VolatilityTblRowTracker = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.VolatilityTrackers")]
+	public partial class VolatilityTracker : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _VolatilityTrackerID;
+		
+		private int _RatingGroupID;
+		
+		private int _VolatilityTblRowTrackerID;
+		
+		private byte _DurationType;
+		
+		private System.DateTime _StartTime;
+		
+		private System.DateTime _EndTime;
+		
+		private decimal _TotalMovement;
+		
+		private decimal _DistanceFromStart;
+		
+		private decimal _Pushback;
+		
+		private decimal _PushbackProportion;
+		
+		private EntityRef<RatingGroup> _RatingGroup;
+		
+		private EntityRef<VolatilityTblRowTracker> _VolatilityTblRowTracker;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnVolatilityTrackerIDChanging(int value);
+    partial void OnVolatilityTrackerIDChanged();
+    partial void OnRatingGroupIDChanging(int value);
+    partial void OnRatingGroupIDChanged();
+    partial void OnVolatilityTblRowTrackerIDChanging(int value);
+    partial void OnVolatilityTblRowTrackerIDChanged();
+    partial void OnDurationTypeChanging(byte value);
+    partial void OnDurationTypeChanged();
+    partial void OnStartTimeChanging(System.DateTime value);
+    partial void OnStartTimeChanged();
+    partial void OnEndTimeChanging(System.DateTime value);
+    partial void OnEndTimeChanged();
+    partial void OnTotalMovementChanging(decimal value);
+    partial void OnTotalMovementChanged();
+    partial void OnDistanceFromStartChanging(decimal value);
+    partial void OnDistanceFromStartChanged();
+    partial void OnPushbackChanging(decimal value);
+    partial void OnPushbackChanged();
+    partial void OnPushbackProportionChanging(decimal value);
+    partial void OnPushbackProportionChanged();
+    #endregion
+		
+		public VolatilityTracker()
+		{
+			this._RatingGroup = default(EntityRef<RatingGroup>);
+			this._VolatilityTblRowTracker = default(EntityRef<VolatilityTblRowTracker>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTrackerID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int VolatilityTrackerID
+		{
+			get
+			{
+				return this._VolatilityTrackerID;
+			}
+			set
+			{
+				if ((this._VolatilityTrackerID != value))
+				{
+					this.OnVolatilityTrackerIDChanging(value);
+					this.SendPropertyChanging();
+					this._VolatilityTrackerID = value;
+					this.SendPropertyChanged("VolatilityTrackerID");
+					this.OnVolatilityTrackerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingGroupID", DbType="Int NOT NULL")]
+		public int RatingGroupID
+		{
+			get
+			{
+				return this._RatingGroupID;
+			}
+			set
+			{
+				if ((this._RatingGroupID != value))
+				{
+					if (this._RatingGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRatingGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._RatingGroupID = value;
+					this.SendPropertyChanged("RatingGroupID");
+					this.OnRatingGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VolatilityTblRowTrackerID", DbType="Int NOT NULL")]
+		public int VolatilityTblRowTrackerID
+		{
+			get
+			{
+				return this._VolatilityTblRowTrackerID;
+			}
+			set
+			{
+				if ((this._VolatilityTblRowTrackerID != value))
+				{
+					if (this._VolatilityTblRowTracker.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnVolatilityTblRowTrackerIDChanging(value);
+					this.SendPropertyChanging();
+					this._VolatilityTblRowTrackerID = value;
+					this.SendPropertyChanged("VolatilityTblRowTrackerID");
+					this.OnVolatilityTblRowTrackerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DurationType", DbType="TinyInt NOT NULL")]
+		public byte DurationType
+		{
+			get
+			{
+				return this._DurationType;
+			}
+			set
+			{
+				if ((this._DurationType != value))
+				{
+					this.OnDurationTypeChanging(value);
+					this.SendPropertyChanging();
+					this._DurationType = value;
+					this.SendPropertyChanged("DurationType");
+					this.OnDurationTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="DateTime NOT NULL")]
+		public System.DateTime StartTime
+		{
+			get
+			{
+				return this._StartTime;
+			}
+			set
+			{
+				if ((this._StartTime != value))
+				{
+					this.OnStartTimeChanging(value);
+					this.SendPropertyChanging();
+					this._StartTime = value;
+					this.SendPropertyChanged("StartTime");
+					this.OnStartTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndTime", DbType="DateTime NOT NULL")]
+		public System.DateTime EndTime
+		{
+			get
+			{
+				return this._EndTime;
+			}
+			set
+			{
+				if ((this._EndTime != value))
+				{
+					this.OnEndTimeChanging(value);
+					this.SendPropertyChanging();
+					this._EndTime = value;
+					this.SendPropertyChanged("EndTime");
+					this.OnEndTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalMovement", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TotalMovement
+		{
+			get
+			{
+				return this._TotalMovement;
+			}
+			set
+			{
+				if ((this._TotalMovement != value))
+				{
+					this.OnTotalMovementChanging(value);
+					this.SendPropertyChanging();
+					this._TotalMovement = value;
+					this.SendPropertyChanged("TotalMovement");
+					this.OnTotalMovementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistanceFromStart", DbType="Decimal(18,4) NOT NULL")]
+		public decimal DistanceFromStart
+		{
+			get
+			{
+				return this._DistanceFromStart;
+			}
+			set
+			{
+				if ((this._DistanceFromStart != value))
+				{
+					this.OnDistanceFromStartChanging(value);
+					this.SendPropertyChanging();
+					this._DistanceFromStart = value;
+					this.SendPropertyChanged("DistanceFromStart");
+					this.OnDistanceFromStartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pushback", DbType="Decimal(18,4) NOT NULL")]
+		public decimal Pushback
+		{
+			get
+			{
+				return this._Pushback;
+			}
+			set
+			{
+				if ((this._Pushback != value))
+				{
+					this.OnPushbackChanging(value);
+					this.SendPropertyChanging();
+					this._Pushback = value;
+					this.SendPropertyChanged("Pushback");
+					this.OnPushbackChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PushbackProportion", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PushbackProportion
+		{
+			get
+			{
+				return this._PushbackProportion;
+			}
+			set
+			{
+				if ((this._PushbackProportion != value))
+				{
+					this.OnPushbackProportionChanging(value);
+					this.SendPropertyChanging();
+					this._PushbackProportion = value;
+					this.SendPropertyChanged("PushbackProportion");
+					this.OnPushbackProportionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroup_VolatilityTracker", Storage="_RatingGroup", ThisKey="RatingGroupID", OtherKey="RatingGroupID", IsForeignKey=true)]
+		public RatingGroup RatingGroup
+		{
+			get
+			{
+				return this._RatingGroup.Entity;
+			}
+			set
+			{
+				RatingGroup previousValue = this._RatingGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroup.Entity = null;
+						previousValue.VolatilityTrackers.Remove(this);
+					}
+					this._RatingGroup.Entity = value;
+					if ((value != null))
+					{
+						value.VolatilityTrackers.Add(this);
+						this._RatingGroupID = value.RatingGroupID;
+					}
+					else
+					{
+						this._RatingGroupID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="VolatilityTblRowTracker_VolatilityTracker", Storage="_VolatilityTblRowTracker", ThisKey="VolatilityTblRowTrackerID", OtherKey="VolatilityTblRowTrackerID", IsForeignKey=true)]
+		public VolatilityTblRowTracker VolatilityTblRowTracker
+		{
+			get
+			{
+				return this._VolatilityTblRowTracker.Entity;
+			}
+			set
+			{
+				VolatilityTblRowTracker previousValue = this._VolatilityTblRowTracker.Entity;
+				if (((previousValue != value) 
+							|| (this._VolatilityTblRowTracker.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._VolatilityTblRowTracker.Entity = null;
+						previousValue.VolatilityTrackers.Remove(this);
+					}
+					this._VolatilityTblRowTracker.Entity = value;
+					if ((value != null))
+					{
+						value.VolatilityTrackers.Add(this);
+						this._VolatilityTblRowTrackerID = value.VolatilityTblRowTrackerID;
+					}
+					else
+					{
+						this._VolatilityTblRowTrackerID = default(int);
+					}
+					this.SendPropertyChanged("VolatilityTblRowTracker");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

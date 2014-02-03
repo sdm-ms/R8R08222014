@@ -109,13 +109,23 @@ namespace ClassLibrary1.Model
         {
             if (theTracker == null)
                 return;
-            decimal absoluteVolatility = Math.Abs((decimal) theUserRating.NewUserRating - (decimal) theUserRating.PreviousRatingOrVirtualRating);
+            decimal userRatingMovement = (decimal)theUserRating.NewUserRating - (decimal)theUserRating.PreviousRatingOrVirtualRating;
+            decimal userRatingAbsMovement = Math.Abs(userRatingMovement);
             decimal maximumVolatility = theUserRating.Rating.RatingCharacteristic.MaximumUserRating - theUserRating.Rating.RatingCharacteristic.MinimumUserRating;
-            decimal relativeVolatility = Math.Round(absoluteVolatility / maximumVolatility,3);
-            if (!addToVolatility)
-                relativeVolatility = 0 - relativeVolatility;
-            theTracker.Volatility += relativeVolatility;
-            theTracker.VolatilityTblRowTracker.Volatility += relativeVolatility;
+            decimal userRatingMovementRelativeToDistance = userRatingMovement / maximumVolatility;
+            decimal userRatingAbsMovementRelativeToDistance = Math.Abs(userRatingMovementRelativeToDistance);
+            decimal multiplier = (addToVolatility) ? 1.0M : -1.0M;
+            theTracker.TotalMovement += userRatingAbsMovementRelativeToDistance * multiplier;
+            theTracker.DistanceFromStart += userRatingMovementRelativeToDistance * multiplier;
+            decimal originalPushback = theTracker.Pushback;
+            decimal originalPushbackProportion = theTracker.PushbackProportion;
+            theTracker.Pushback = (theTracker.TotalMovement - Math.Abs(theTracker.DistanceFromStart));
+            theTracker.PushbackProportion = theTracker.TotalMovement == 0 ? 0 : theTracker.Pushback / theTracker.TotalMovement;
+
+            theTracker.VolatilityTblRowTracker.TotalMovement += userRatingAbsMovementRelativeToDistance * multiplier;
+            theTracker.VolatilityTblRowTracker.DistanceFromStart += userRatingMovementRelativeToDistance * multiplier;
+            theTracker.VolatilityTblRowTracker.Pushback += theTracker.Pushback - originalPushback;
+            theTracker.VolatilityTblRowTracker.PushbackProportion += theTracker.PushbackProportion - originalPushbackProportion;
         }
 
         public static bool UpdateTrackers(IRaterooDataContext theDataContext, VolatilityDuration theTimeFrame)
@@ -189,16 +199,16 @@ namespace ClassLibrary1.Model
                 return false;
             foreach (var theTracker in theTrackersWithInfo)
             {
-                decimal originalValue = theTracker.Tracker.Volatility;
+                decimal originalValue = theTracker.Tracker.TotalMovement;
                 if (theTracker.NewVolatility == null)
                     theTracker.NewVolatility = 0;
                 if (theTracker.ExpiredVolatility == null)
                     theTracker.ExpiredVolatility = 0;
-                theTracker.Tracker.Volatility = ((theTracker.Tracker.Volatility * theTracker.MaximumVolatility) + ((decimal) theTracker.NewVolatility) - ((decimal) theTracker.ExpiredVolatility)) / theTracker.MaximumVolatility;
+                theTracker.Tracker.TotalMovement = ((theTracker.Tracker.TotalMovement * theTracker.MaximumVolatility) + ((decimal)theTracker.NewVolatility) - ((decimal)theTracker.ExpiredVolatility)) / theTracker.MaximumVolatility;
                 theTracker.Tracker.StartTime = newStartTime;
                 theTracker.Tracker.EndTime = newEndTime;
-                theTracker.Tracker.VolatilityTblRowTracker.Volatility += theTracker.Tracker.Volatility - originalValue;
-                Trace.TraceInformation("Time frame " + theTimeFrame + " " + theTracker.Tracker.RatingGroup.TblRow.Name + " new volatility " + theTracker.Tracker.VolatilityTblRowTracker.Volatility);
+                theTracker.Tracker.VolatilityTblRowTracker.TotalMovement += theTracker.Tracker.TotalMovement - originalValue;
+                Trace.TraceInformation("Time frame " + theTimeFrame + " " + theTracker.Tracker.RatingGroup.TblRow.Name + " new volatility " + theTracker.Tracker.VolatilityTblRowTracker.TotalMovement);
             }
             return true;
         }
