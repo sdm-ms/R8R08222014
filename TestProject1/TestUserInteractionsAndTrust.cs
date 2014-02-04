@@ -173,25 +173,28 @@ namespace TestProject1
             float expectedRelativeVolatility = expectedAbsoluteVolatility / maximumVolatility;
 
             List<float> expectedStats = new List<float>(TrustTrackerStatManager.NumStats);
-            float expectedNoExtraWeightingStat1 = (1 * ratingMagnitude);
+            float expectedNoExtraWeightingStat1 = 1.0F;
             expectedStats.Add(expectedNoExtraWeightingStat1);
-            float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2) * ratingMagnitude : 0;
+            float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2) : 0;
             expectedStats.Add(expectedLargeDeltaRatingStat1);
-            float expectedSmallDeltaRatingStat1 = ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) * ratingMagnitude : 0; 
+            float expectedSmallDeltaRatingStat1 = ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) : 0;
             expectedStats.Add(expectedSmallDeltaRatingStat1);
-
-            // Volatility is zero, for some reason.
-            expectedStats.Add(expectedRelativeVolatility * ratingMagnitude);
-            expectedStats.Add(expectedRelativeVolatility * ratingMagnitude);
-
-            expectedStats.Add(PMAdjustmentFactor.CalculateExtremeness(ratingValue, null, minRating, maxRating) * ratingMagnitude); // extremeness
-
-            expectedStats.Add(PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, ratingValue /* since this is a trusted rating */, minRating, maxRating, null) * ratingMagnitude); // questionability -- should change now that we've elimintaed trust
-            
-            expectedStats.Add(0); // user 2 did not rate previously
+            expectedStats.Add(PMAdjustmentFactor.CalculateExtremeness(ratingValue, null, minRating, maxRating)); // extremeness
+            expectedStats.Add(expectedRelativeVolatility);
+            expectedStats.Add(0); // no pushback
+            expectedStats.Add(0);
+            expectedStats.Add(1.0F); // is the first user rating from this user
+            expectedStats.Add(1.0F); // is user's first week
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
 
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
-                expectedStats[i].Should().BeApproximately(user2User3InteractionStats[i].SumWeights, 0.01F);
+                expectedStats[i] *= ratingMagnitude;
+
+            for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
+                (expectedStats[i]).Should().BeApproximately(user2User3InteractionStats[i].SumWeights, 0.01F);
 
             List<float> expectedAverageAdjustmentPercentageWeightedByStats = new List<float>();
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
@@ -610,8 +613,8 @@ namespace TestProject1
             _testHelper.Rating.CurrentValue.Should().Be(7M);
 
             /* see what the volatility values are expected and are actually as of just before user 2's rating */
-            float volatilityObservedDay = (float)_testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneDay).TotalMovement;
-            float volatilityObservedHour = (float)_testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneHour).TotalMovement;
+            VolatilityTracker volatilityObservedWeek = _testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneWeek);
+            VolatilityTracker volatilityObservedYear = _testHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneYear);
 
             decimal user2RatingValue = 8M;
             decimal user3RatingValue = 9M;
@@ -637,20 +640,27 @@ namespace TestProject1
             float ratingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, basisRatingValue, minRating, maxRating, null);
 
             List<float> expectedStats = new List<float>(TrustTrackerStatManager.NumStats);
-            float expectedNoExtraWeightingStat1 = (1 * ratingMagnitude);
+            float expectedNoExtraWeightingStat1 = 1;
             expectedStats.Add(expectedNoExtraWeightingStat1);
-            float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2) * ratingMagnitude : 0;
+            float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2)  : 0;
             expectedStats.Add(expectedLargeDeltaRatingStat1);
-            expectedStats.Add(ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) * ratingMagnitude : 0);
-
-            expectedStats.Add(volatilityObservedDay); // last day volatility
-            expectedStats.Add(volatilityObservedHour); // last hour volatility
-
-            float expectedExtremeness = PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, (maxRating - minRating) / 2, minRating, maxRating, null) * ratingMagnitude;
+            expectedStats.Add(ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) : 0);
+            float expectedExtremeness = PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, (maxRating - minRating) / 2, minRating, maxRating, null);
             expectedStats.Add(expectedExtremeness);
-            
-            expectedStats.Add(0); // current rating questionable is 0 because the last rating = last trusted rating, since everyone is trusted
-            expectedStats.Add(0); // percent previous ratings -- user 2 hasn't rated beore
+
+            expectedStats.Add((float)volatilityObservedWeek.DistanceFromStart);
+            expectedStats.Add((float)volatilityObservedWeek.Pushback);
+            expectedStats.Add((float)volatilityObservedYear.Pushback);
+
+            expectedStats.Add(1.0F); // is the first user rating from this user
+            expectedStats.Add(1.0F); // is user's first week
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+
+            for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
+                expectedStats[i] *= ratingMagnitude;
 
             List<float> expectedAverageAdjustmentPercentageWeightedByStats = new List<float>();
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)

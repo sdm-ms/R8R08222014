@@ -269,31 +269,27 @@ namespace ClassLibrary1.Model
     {
         public float AdjustPct;
         public float OverallTrustLevel;
-        public bool IsTrusted;
-        public float PercentPreviousRatings;
-        public decimal OneHourVolatility;
-        public decimal OneDayVolatility;
+        public float LastWeekDistanceFromStart;
+        public float LastWeekPushback;
+        public float LastYearPushback;
         public List<TrustTrackerChoiceSummary> TrustTrackerChoiceSummaries;
         public List<int> ChoiceInGroupIDsNotTrackedYet;
 
         public UserRatingHierarchyAdditionalInfo(
              float adjustPct,
              float overallTrustLevel,
-             bool isTrusted,
-             float percentPreviousRatings,
-             decimal oneHourVolatility,
-             decimal oneDayVolatility,
+             float lastWeekDistanceFromStart,
+             float lastWeekPushback,
+             float lastYearPushback,
              List<TrustTrackerChoiceSummary> theTrustTrackerChoiceSummaries,
              List<int> choiceInFieldIDsNotTrackedYet
         )
         {
             AdjustPct = adjustPct;
             OverallTrustLevel = overallTrustLevel;
-            if (double.IsNaN(OverallTrustLevel)) throw new Exception("DEBUG Exception.");
-            IsTrusted = isTrusted;
-            PercentPreviousRatings = percentPreviousRatings;
-            OneHourVolatility = oneHourVolatility;
-            OneDayVolatility = oneDayVolatility;
+            LastWeekDistanceFromStart = lastWeekDistanceFromStart;
+            LastWeekPushback = lastWeekPushback;
+            LastYearPushback = lastYearPushback;
             TrustTrackerChoiceSummaries = theTrustTrackerChoiceSummaries;
             ChoiceInGroupIDsNotTrackedYet = choiceInFieldIDsNotTrackedYet;
         }
@@ -853,14 +849,17 @@ namespace ClassLibrary1.Model
                             SumRatingMagnitudes = x.SumRatingMagnitudes,
                             TrustValueForChoice = x.TrustLevelForChoice
                         }).ToList();
-                var otherChoiceInFieldIDs = choiceInGroupIDs.Where(x => !choiceTrustTrackers.Any(y => y.ChoiceInGroupID == x)).ToList();
+                var otherChoiceInGroupIDs = choiceInGroupIDs.Where(x => !choiceTrustTrackers.Any(y => y.ChoiceInGroupID == x)).ToList(); // that is, no choice trust tracker is created yet
+                Rating theRating = theRatings.Single(x => x.RatingID == firstUserRating.RatingID);
+                PointsTotal thePointsTotal = DataContext.GetTable<PointsTotal>().SingleOrDefault(x => x.User == theUser && x.PointsManager == theRating.RatingGroup.RatingGroupAttribute.PointsManager);
                 TrustTrackerStatManager theManager = new TrustTrackerStatManager(
                     DataContext, 
-                    theRatings.Single(x => x.RatingID == firstUserRating.RatingID), 
+                    theRating,
                     theUser, 
+                    thePointsTotal,
                     firstUserRating.UserRatingValue, 
                     choiceTrustTrackers, 
-                    otherChoiceInFieldIDs,
+                    otherChoiceInGroupIDs,
                     out additionalInfo
                     );
 
@@ -884,7 +883,7 @@ namespace ClassLibrary1.Model
                         .Select(m => new RatingAndUserRatingString
                         {
                             ratingID = m.RatingId.ToString(),
-                            theUserRating = PMNumberandTableFormatter.FormatAsSpecified(m.NewValueAfterAdjustment, theRatings.Single(y => y.RatingID == m.RatingId).RatingCharacteristic.DecimalPlaces, theFormatting) + (additionalInfo.IsTrusted ? "" : "*")
+                            theUserRating = PMNumberandTableFormatter.FormatAsSpecified(m.NewValueAfterAdjustment, theRatings.Single(y => y.RatingID == m.RatingId).RatingCharacteristic.DecimalPlaces, theFormatting) 
                         }).ToList();
             }
             catch (System.Data.Linq.ChangeConflictException)

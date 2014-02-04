@@ -61,8 +61,8 @@ namespace ClassLibrary1.Model
                     //if (BackgroundThread.IsPauseRequested())
                     //Trace.TraceInformation("Pause is requested.");
                     MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
-                    const int numTasks = 21;
-                    const int numLoops = 20;
+                    const int numTasks = 22;
+                    const int numLoops = 10;
                     bool[] moreWorkToDoThisTask = new bool[numTasks];
                     for (int loop = 1; loop <= numLoops; loop++)
                     {
@@ -177,6 +177,10 @@ namespace ClassLibrary1.Model
 
                                         case 21:
                                             moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskReviewRecentUserRatings();
+                                            break;
+
+                                        case 22:
+                                            moreWorkToDoThisTask[i - 1] = PMRecencyUpdates.UpdateRecency(dataManipulation.DataContext);
                                             break;
 
                                     }

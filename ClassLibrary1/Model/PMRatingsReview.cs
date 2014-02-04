@@ -148,7 +148,7 @@ namespace ClassLibrary1.Model
                     User adminAccount = urSet.AdminAccount;
                     if (adminAccount == null)
                         adminAccount = DataContext.GetTable<User>().Single(x => x.Username == "admin");
-                    UserRatingHierarchyAdditionalInfo additionalInfo = new UserRatingHierarchyAdditionalInfo(1.0F, 1.0F, true, 0,0,0, new List<TrustTrackerChoiceSummary>(), new List<int>()); // not all info is accurate but it doesn't matter since we ignore UserInteractions where earlier user is the admin account
+                    UserRatingHierarchyAdditionalInfo additionalInfo = new UserRatingHierarchyAdditionalInfo(1.0F, 1.0F, 0,0,0, new List<TrustTrackerChoiceSummary>(), new List<int>()); // not all info is accurate but it doesn't matter since we ignore UserInteractions where earlier user is the admin account
 
                     UserRating newUr = AddUserRating(adminAccount, urSet.Rating, urg, urSet.AdminPointsTotals, urSet.RatingPhaseStatus, new List<RatingGroup>() { urSet.Rating.RatingGroup }, (decimal)trackIdealRatingValue, (decimal)trackIdealRatingValue, actualFinalRating, true, additionalInfo);
                 }

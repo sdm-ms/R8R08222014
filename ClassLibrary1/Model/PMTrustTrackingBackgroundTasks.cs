@@ -210,8 +210,8 @@ namespace ClassLibrary1.Model
             float adjustFactor = PMAdjustmentFactor.CalculateAdjustmentFactor(
                 laterValue: latestUserRating.NewUserRating, 
                 enteredValue: originalUserRating.EnteredUserRating, 
-                basisValue: originalUserRating.PreviousRatingOrVirtualRating, 
-                logBase: latestUserRating.LogarithmicBase,
+                basisValue: originalUserRating.PreviousRatingOrVirtualRating,
+                logBase: originalUserRating.LogarithmicBase,
                 constrainForRetrospectiveAssessment: true);
             UpdateUserInteractionStats(theUserInteraction, originalUserRating, ratingCharacteristic, adjustFactor, subtractFromUserInteraction);
 //            if (theUserInteraction != null && theUserInteraction.User.UserID == 2)
@@ -289,22 +289,9 @@ namespace ClassLibrary1.Model
             {
                 UserInteractionStat theStat = theUserInteraction.UserInteractionStats.Single(x => x.StatNum == i);
                 float originalAverageAdjustmentPct = noChangeToOriginalAvgAdjustmentPct ? theStat.AvgAdjustmentPctWeighted : originalAvgAdjustmentPctOrNullIfNoChange[i];
-                float previousContributionToTrustNumerator = originalAverageAdjustmentPct * originalWeightInCalculatingTrustTotal;
-                float newContributionToTrustNumerator = theStat.AvgAdjustmentPctWeighted * theStat.UserInteraction.WeightInCalculatingTrustTotal;
-                if (previousContributionToTrustNumerator != newContributionToTrustNumerator || theUserInteraction.WeightInCalculatingTrustTotal != originalWeightInCalculatingTrustTotal)
-                {
-                    float originalTrustValue = theStat.TrustTrackerStat.TrustValue;
-                    theStat.TrustTrackerStat.Trust_Numer += newContributionToTrustNumerator - previousContributionToTrustNumerator;
-                    theStat.TrustTrackerStat.Trust_Denom += theUserInteraction.WeightInCalculatingTrustTotal - originalWeightInCalculatingTrustTotal;
-                    theStat.TrustTrackerStat.TrustValue = (theStat.TrustTrackerStat.Trust_Denom == 0) ? 1F : theStat.TrustTrackerStat.Trust_Numer / theStat.TrustTrackerStat.Trust_Denom;
-
-                    //if (theUserInteraction != null && theUserInteraction.User.UserID == 43 && theUserInteraction.User1.UserID == 20 && i == 0)
-                    //{
-                    //    //Debug.WriteLine("Adjusting 43, " + theUserInteraction.User1.UserID + " based on previous stat " + i + " of " + previousContributionToTrustNumerator + "/" + originalWeightInCalculatingTrustTotal + "=" + originalTrustValue + " and new of " + newContributionToTrustNumerator + "/" + theUserInteraction.WeightInCalculatingTrustTotal + "=" + theStat.TrustTrackerStat.TrustValue);
-                    //}
-                    if (!noChangeToOriginalSumWeights)
-                        theStat.TrustTrackerStat.SumUserInteractionStatWeights += theStat.SumWeights - originalSumWeightsOrNullIfNoChange[i];
-                }
+                TrustTrackerStat ttStat = theStat.TrustTrackerStat;
+                float? originalSumWeightsThisStatOrNullIfNoChange = noChangeToOriginalSumWeights ? (float?) null : originalSumWeightsOrNullIfNoChange[i];
+                AdjustTrustTrackerStatsTrustLevel(theStat, ttStat, originalWeightInCalculatingTrustTotal, theUserInteraction.WeightInCalculatingTrustTotal, originalAverageAdjustmentPct, originalSumWeightsThisStatOrNullIfNoChange);
                 if (i == 0)
                 {
                     TrustTracker tt = theStat.TrustTrackerStat.TrustTracker;
@@ -322,15 +309,30 @@ namespace ClassLibrary1.Model
                     }
                     tt.DeltaOverallTrustLevel = Math.Abs(tt.OverallTrustLevelAtLastReview - tt.OverallTrustLevel);
                     tt.OverallTrustLevel = PMTrustCalculations.GetOverallTrustLevelWithNewUserCredit(theStat.TrustTrackerStat, (int) Math.Round(tt.Egalitarian_Denom));
-                    if (double.IsNaN(tt.OverallTrustLevel))
-                    {
-                        tt.OverallTrustLevel = PMTrustCalculations.GetOverallTrustLevelWithNewUserCredit(theStat.TrustTrackerStat, (int)Math.Round(tt.Egalitarian_Denom)); // DEBUG -- to repeat
-                        throw new Exception("DEBUG");
-                    }
                     tt.SkepticalTrustLevel = theStat.TrustTrackerStat.TrustValue; // we keep track of the "real" skeptical trust value, but won't use it in deciding adjustment factors.
                     if (tt.EgalitarianTrustLevel != originalEgalitarianTrustLevel && tt.EgalitarianTrustLevelOverride == null)
                         tt.MustUpdateUserInteractionEgalitarianTrustLevel = true;
                 }
+            }
+        }
+
+        public static void AdjustTrustTrackerStatsTrustLevel(UserInteractionStat theStat, TrustTrackerStat ttStat, float originalWeightInCalculatingTrustTotal, float newWeightInCalculatingTrustTotal, float originalAverageAdjustmentPct, float? originalSumWeightsThisStatOrNullIfNoChange)
+        {
+            float previousContributionToTrustNumerator = originalAverageAdjustmentPct * originalWeightInCalculatingTrustTotal;
+            float newContributionToTrustNumerator = theStat.AvgAdjustmentPctWeighted * theStat.UserInteraction.WeightInCalculatingTrustTotal;
+            if (previousContributionToTrustNumerator != newContributionToTrustNumerator || newWeightInCalculatingTrustTotal != originalWeightInCalculatingTrustTotal)
+            {
+                float originalTrustValue = theStat.TrustTrackerStat.TrustValue;
+                ttStat.Trust_Numer += newContributionToTrustNumerator - previousContributionToTrustNumerator;
+                ttStat.Trust_Denom += newWeightInCalculatingTrustTotal - originalWeightInCalculatingTrustTotal;
+                ttStat.TrustValue = (theStat.TrustTrackerStat.Trust_Denom == 0) ? 1F : ttStat.Trust_Numer / ttStat.Trust_Denom;
+
+                //if (theUserInteraction != null && theUserInteraction.User.UserID == 43 && theUserInteraction.User1.UserID == 20 && i == 0)
+                //{
+                //    //Debug.WriteLine("Adjusting 43, " + theUserInteraction.User1.UserID + " based on previous stat " + i + " of " + previousContributionToTrustNumerator + "/" + originalWeightInCalculatingTrustTotal + "=" + originalTrustValue + " and new of " + newContributionToTrustNumerator + "/" + theUserInteraction.WeightInCalculatingTrustTotal + "=" + theStat.TrustTrackerStat.TrustValue);
+                //}
+                if (originalSumWeightsThisStatOrNullIfNoChange != null)
+                    ttStat.SumUserInteractionStatWeights += theStat.SumWeights - (float)originalSumWeightsThisStatOrNullIfNoChange;
             }
         }
 

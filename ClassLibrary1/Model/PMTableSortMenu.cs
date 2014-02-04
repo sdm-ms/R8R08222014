@@ -56,6 +56,7 @@ namespace ClassLibrary1.Model
             theSortMenu.Add(new SortMenuItem { M = "Most Active (Last Hour)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleActivityLevel(VolatilityDuration.oneHour, false)) });
             theSortMenu.Add(new SortMenuItem { M = "Most Active (Last Day)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleActivityLevel(VolatilityDuration.oneDay, false)) });
             theSortMenu.Add(new SortMenuItem { M = "Most Active (Last Week)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleActivityLevel(VolatilityDuration.oneWeek, false)) });
+            theSortMenu.Add(new SortMenuItem { M = "Most Active (Last Year)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleActivityLevel(VolatilityDuration.oneYear, false)) });
 
             theSortMenu.Add(new SortMenuItem { M = "Newest in Rateroo", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleNewestInDatabase(false)) });
 

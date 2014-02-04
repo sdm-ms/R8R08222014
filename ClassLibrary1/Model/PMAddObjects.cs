@@ -1635,14 +1635,14 @@ namespace ClassLibrary1.Model
 
             decimal? oldLastTrustedUserRating = rating.LastTrustedValue;
             decimal? newLastTrustedUserRating;
-            if (additionalInfo.IsTrusted)
+            //if (additionalInfo.IsTrusted)
                 newLastTrustedUserRating = newUserRatingValue;
-            else
-                newLastTrustedUserRating = oldLastTrustedUserRating;
+            //else
+            //    newLastTrustedUserRating = oldLastTrustedUserRating;
 
             decimal forecastFutureRating = newUserRatingValue;
-            if (!additionalInfo.IsTrusted && newLastTrustedUserRating != null)
-                forecastFutureRating = (decimal) newLastTrustedUserRating;
+            //if (!additionalInfo.IsTrusted && newLastTrustedUserRating != null)
+            //    forecastFutureRating = (decimal) newLastTrustedUserRating;
 
             decimal profitShortTermUnweighted, profitLongTermUnweighted;
 
@@ -1663,6 +1663,15 @@ namespace ClassLibrary1.Model
                 newUserRatingValue = rating.RatingCharacteristic.MinimumUserRating;
             if (newUserRatingValue > rating.RatingCharacteristic.MaximumUserRating)
                 newUserRatingValue = rating.RatingCharacteristic.MaximumUserRating;
+
+            UpdateUserPointsAndStatus(user, tbl.PointsManager, PointsChangesReasons.RatingsUpdate, 0, 0, 0, profitShortTerm + profitLongTerm, maxLossLongTerm + maxLossShortTerm, profitLongTermUnweighted, false, pointsTotal);
+            if (pointsTotal == null)
+                pointsTotal = AddPointsTotal(user, tbl.PointsManager);
+            if (!userRatingIsFromSuperUser)
+                PMRaterTime.UpdateTimeForUser(pointsTotal, currentTime);
+            if (pointsTotal.FirstUserRating == null)
+                pointsTotal.FirstUserRating = currentTime;
+
 
             User previousUser = (rating.UserRating == null) ? null : rating.UserRating.User;
             //UserRating thePreviousUserRating = theRating.UserRatings.OrderByDescending(x => x.UserRatingID).FirstOrDefault();
@@ -1692,8 +1701,6 @@ namespace ClassLibrary1.Model
                 PastPointsPumpingProportion = pastPointsPumpingProportion,
                 OriginalAdjustmentPct = (decimal) additionalInfo.AdjustPct,
                 OriginalTrustLevel = (decimal) additionalInfo.OverallTrustLevel,
-                PercentPreviousRatings = (decimal) additionalInfo.PercentPreviousRatings,
-                IsTrusted = additionalInfo.IsTrusted,
                 MadeDirectly = madeDirectly,
                 LongTermResolutionReflected = false,
                 ShortTermResolutionReflected = false,
@@ -1701,14 +1708,23 @@ namespace ClassLibrary1.Model
                 ForceRecalculate = false,
                 HighStakesKnown = false, // may change below
                 HighStakesPreviouslySecret = false, // may change below
+                PreviouslyRated = rating.TotalUserRatings > 0,
                 SubsequentlyRated = false,
                 LogarithmicBase = (rating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null) ? null : rating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase,
                 HighStakesMultiplierOverride = noviceHighStakesSettings.HighStakesMultiplierOverride,
                 WhenPointsBecomePending = whenPending,
                 LastModifiedTime = currentTime,
                 VolatilityTrackingNextTimeFrameToRemove = (byte) VolatilityDuration.oneHour,
-                OneHourVolatility = additionalInfo.OneHourVolatility,
-                OneDayVolatility = additionalInfo.OneDayVolatility
+                IsMostRecent10Pct = true, // these will be updated by the recency update background task
+                IsMostRecent30Pct = true,
+                IsMostRecent70Pct = true,
+                IsMostRecent90Pct = true,
+                IsUsersFirstWeek = pointsTotal.FirstUserRating == null || pointsTotal.FirstUserRating > currentTime - TimeSpan.FromDays(7),
+                LastWeekDistanceFromStart = (decimal) additionalInfo.LastWeekDistanceFromStart,
+                LastWeekPushback = (decimal) additionalInfo.LastWeekPushback,
+                LastYearPushback = (decimal) additionalInfo.LastYearPushback,
+                UserRatingNumberForUser = pointsTotal.NumUserRatings + 1,
+                NextRecencyUpdateAtUserRatingNum = PMRecencyUpdates.GetNextRecencyUpdate(0, pointsTotal.NumUserRatings + 1).TotalUserRatingsAtNextUpdate
             };
             UpdateUserRatingHighStakesKnownFields(theUserRating, ratingGroupPhaseStatus, userRatingGroup.WhenMade);
 
@@ -1734,11 +1750,6 @@ namespace ClassLibrary1.Model
             if (!excludedRatingGroupTypes.Contains(topmostRatingGroup.TypeOfRatingGroup))
                 VolatilityTracking.AddVolatilityForUserRating(theUserRating);
 
-            UpdateUserPointsAndStatus(user, tbl.PointsManager, PointsChangesReasons.RatingsUpdate, 0, 0, 0, profitShortTerm + profitLongTerm, maxLossLongTerm + maxLossShortTerm, profitLongTermUnweighted, false, pointsTotal);
-            if (pointsTotal == null)
-                pointsTotal = AddPointsTotal(user, tbl.PointsManager);
-            if (!userRatingIsFromSuperUser)
-                PMRaterTime.UpdateTimeForUser(pointsTotal, currentTime);
 
             // Invalidate the cache for the individual table cell and for the row of table cells.
             PMCacheManagement.InvalidateCacheDependency("RatingGroupID" + rating.TopmostRatingGroupID.ToString());

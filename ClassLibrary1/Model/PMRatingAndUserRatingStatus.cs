@@ -336,8 +336,6 @@ namespace ClassLibrary1.Model
 
                     UpdatePointsForUserRating(userRatingInfo.UserRating, userRatingInfo.PointsTotal, currentTime);
                     TrustTrackerStat[] originalUserTrustTrackerStats = /* userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats == null ? new TrustTrackerStat[0] : */ userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats.ToArray();
-                    var DEBUG = userRatingInfo.MostRecentUserRatingInRating.User.TrustTrackers.ToList();
-                    var DEBUG1 = userRatingInfo.MostRecentUserRatingInRating.User;
                     PMTrustTrackingBackgroundTasks.UpdateUserInteractionsAfterNewUserRatingIsEntered(DataContext,
                         userRatingInfo.CurrentlyRecordedUserInteraction, userRatingInfo.ReplacementUserInteraction,
                         userRatingInfo.UserRating, originalUserTrustTrackerStats, userRatingInfo.MostRecentUserRatingInUserRating,
@@ -457,8 +455,7 @@ namespace ClassLibrary1.Model
             if (previousLatestUserRating != null && previousLatestUserRating != userRating)
                 previousAdjustmentPct = PMAdjustmentFactor.CalculateAdjustmentFactor(previousLatestUserRating.NewUserRating, userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating, userRating.LogarithmicBase, true);
             float newAdjustmentPct = PMAdjustmentFactor.CalculateAdjustmentFactor(newLatestUserRating.NewUserRating, userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating, userRating.LogarithmicBase, true);
-            float ratingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating,
-                    theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, userRating.LogarithmicBase);
+            float ratingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(userRating.EnteredUserRating, userRating.PreviousRatingOrVirtualRating, theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, userRating.LogarithmicBase);
             float deltaNumerator = newAdjustmentPct * ratingMagnitude - (previousAdjustmentPct ?? 0) * ratingMagnitude;
             float deltaDenominator = previousAdjustmentPct == null ? ratingMagnitude : 0; // no change in denominator when there was already a previous user rating recorded.
             foreach (TrustTrackerForChoiceInGroup ttcing in choiceInGroupTrustTrackers)

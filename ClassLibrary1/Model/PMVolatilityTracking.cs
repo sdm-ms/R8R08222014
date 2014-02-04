@@ -35,7 +35,8 @@ namespace ClassLibrary1.Model
     {
         oneHour,
         oneDay,
-        oneWeek
+        oneWeek,
+        oneYear
     }
 
     public static class VolatilityTracking
@@ -52,6 +53,9 @@ namespace ClassLibrary1.Model
 
                 case VolatilityDuration.oneWeek:
                     return new TimeSpan(7, 0, 0, 0);
+
+                case VolatilityDuration.oneYear:
+                    return new TimeSpan(365, 0, 0, 0);
             }
 
             throw new Exception("Internal error: Unknown volatility timing span.");
@@ -63,6 +67,7 @@ namespace ClassLibrary1.Model
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneHour);
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneDay);
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneWeek);
+            theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneYear);
             int[] excludedRatingGroupTypes = { (int) RatingGroupTypes.hierarchyNumbersBelow, (int) RatingGroupTypes.probabilityHierarchyBelow, (int) RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy };
             foreach (var theRatingGroup in theTblRow.RatingGroups)
             {
@@ -77,14 +82,16 @@ namespace ClassLibrary1.Model
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneHour);
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneDay);
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneWeek);
+            theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneYear);
         }
 
         public static bool UpdateTrackers(IRaterooDataContext theDataContext)
         {
-            bool[] moreWorkToDo = new bool[3];
+            bool[] moreWorkToDo = new bool[4];
             moreWorkToDo[0] = UpdateTrackers(theDataContext, VolatilityDuration.oneHour);
             moreWorkToDo[1] = UpdateTrackers(theDataContext, VolatilityDuration.oneDay);
             moreWorkToDo[2] = UpdateTrackers(theDataContext, VolatilityDuration.oneWeek);
+            moreWorkToDo[3] = UpdateTrackers(theDataContext, VolatilityDuration.oneYear);
             return moreWorkToDo.Any(x => x == true);
         }
 

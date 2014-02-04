@@ -225,6 +225,7 @@
     <Compile Include="Model\PMRatingAndUserRatingStatus.cs" />
     <Compile Include="Model\PMRatingsAndGroups.cs" />
     <Compile Include="Model\PMRatingsReview.cs" />
+    <Compile Include="Model\PMRecencyUpdates.cs" />
     <Compile Include="Model\PMResolveRatings.cs" />
     <Compile Include="Model\PMRewards.cs" />
     <Compile Include="Model\PMRouting.cs" />
@@ -241,7 +242,6 @@
     <Compile Include="Model\PMTblRowsAndFields.cs" />
     <Compile Include="Model\PMTest.cs" />
     <Compile Include="Model\PMTrustCalculations.cs" />
-    <Compile Include="Model\PMTrustStat.cs" />
     <Compile Include="Model\PMTrustTrackerStatManager.cs" />
     <Compile Include="Model\PMTrustTrackingBackgroundTasks.cs" />
     <Compile Include="Model\PMUntrustedRatings.cs" />

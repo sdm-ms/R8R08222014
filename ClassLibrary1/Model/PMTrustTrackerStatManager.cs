@@ -7,6 +7,24 @@ using ClassLibrary1.Misc;
 
 namespace ClassLibrary1.Model
 {
+    public enum TrustStat
+    {
+        NoExtraWeighting = 0, // just include the rating magnitude (which is multiplied by all the other statistics)
+        LargeDeltaRatings = 1, // is this an attempt to move the rating a large distance?
+        SmallDeltaRatings = 2, // is this an attempt to move the rating a small distance only?
+        Extremeness = 3, // is this a movement to near the end of the probability continuum?
+        LastWeekDistanceFromStart = 4, // has this on net moved much lately?
+        LastWeekPushback = 5, // has there been recent controversy?
+        LastYearPushback = 6, // has there been controversy generally?
+        IsFirstUserRating = 7, // is this something that hasn't previously been rated?
+        IsUsersFirstWeek = 8, // is this the user's first week?
+        IsMostRecent10PercentOfUsersUserRatings = 9, // 1 if most recent 10% of user ratings; will need to be updated as user does more user ratings
+        IsMostRecent30PercentOfUsersUserRatings = 10, // 1 if most recent half of ratings; will need to be updated as user does more user ratings
+        IsMostRecent70PercentOfUsersUserRatings = 11, // 1 if most recent 70% of ratings; will need to be updated as user does more user ratings
+        IsMostRecent90PercentOfUsersUserRatings = 12 // 1 if most recent 90% of ratings; will need to be updated as user does more user ratings
+        // NumStats must be set below to the total number
+    }
+
     [Serializable()]
     public class TrustTrackerChoiceSummary
     {
@@ -25,6 +43,9 @@ namespace ClassLibrary1.Model
 
     public class TrustTrackerStatManager
     {
+
+        public static int NumStats = 13; 
+
         float _adjustmentFactor;
         public float AdjustmentFactor
         {
@@ -55,15 +76,7 @@ namespace ClassLibrary1.Model
 
         internal bool SingleNumberRating;
         internal float RatingMagnitude;
-
-        internal float NoExtraWeighting;
-        internal float LargeDeltaRatings;
-        internal float SmallDeltaRatings;
-        internal float LastDayVolatility;
-        internal float LastHourVolatility;
-        internal float Extremeness;
-        internal float CurrentRatingQuestionable;
-        internal float PercentPreviousRatings;
+        internal float[] StatValueUnadjusted = new float[NumStats];
         internal List<TrustTrackerChoiceSummary> TrustTrackerChoiceSummary;
 
         /// <summary>
@@ -79,7 +92,7 @@ namespace ClassLibrary1.Model
         /// <param name="additionalInfo"></param>
         public TrustTrackerStatManager(
             IRaterooDataContext RaterooDB, 
-            Rating theRating, User theUser,
+            Rating theRating, User theUser, PointsTotal pointsTotal,
             decimal enteredRating, 
             List<TrustTrackerChoiceSummary> trustTrackerForChoiceFieldsSummary, 
             List<int> otherChoiceInFieldIDs, 
@@ -94,26 +107,18 @@ namespace ClassLibrary1.Model
                 currentRatingOrBasisOfCalc = (decimal)theRating.CurrentValue;
             else
                 currentRatingOrBasisOfCalc = RaterooDataManipulation.GetAlternativeBasisForCalcIfNoPreviousUserRating(RaterooDB, theRating, theRating.RatingGroup.RatingGroupAttribute);
-            VolatilityTracker oneDayVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int) VolatilityDuration.oneDay);
-            decimal oneDayVolatilityDecimal = (oneDayVolatility == null) ? 0 : oneDayVolatility.Pushback;
-            VolatilityTracker oneHourVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int)VolatilityDuration.oneHour);
-            decimal oneHourVolatilityDecimal = (oneHourVolatility == null) ? 0 : oneHourVolatility.Pushback;
-
-            float pctPreviousRatings = 0;
-            if (theRating.TotalUserRatings > 0)
-                pctPreviousRatings = ((float) theUser.UserRatings.Count(x => x.Rating == theRating)) / ((float) theRating.TotalUserRatings); // DEBUG -- too slow to pull all this data in. We could keep track of it in a separate data structure.
+            VolatilityTracker oneWeekVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int) VolatilityDuration.oneWeek);
+            VolatilityTracker oneYearVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int)VolatilityDuration.oneYear);
+            bool isFirstUserRating = theRating.TotalUserRatings == 0; // this may turn out to be wrong once we finally process it, but it doesn't matter; right now, we're just making a forecast
+            bool isUsersFirstWeek = pointsTotal == null || pointsTotal.FirstUserRating > TestableDateTime.Now - TimeSpan.FromDays(7);
 
             TrustTracker theTrustTracker = theUser.TrustTrackers.FirstOrDefault(x => x.TrustTrackerUnit == (theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit));
             if (theTrustTracker == null)
                 theTrustTracker = PMTrustTrackingBackgroundTasks.AddTrustTracker(RaterooDB, theUser, theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit);
             TrustTrackerStat[] theTrustTrackerStats = theTrustTracker.TrustTrackerStats.ToArray();
-            SetStats(theRating.LastTrustedValue ?? currentRatingOrBasisOfCalc, theRating.CurrentValue, currentRatingOrBasisOfCalc, enteredRating, oneDayVolatilityDecimal, oneHourVolatilityDecimal, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null ? null : theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase, (float) pctPreviousRatings);
+            SetStats(theRating.LastTrustedValue ?? currentRatingOrBasisOfCalc, theRating.CurrentValue, currentRatingOrBasisOfCalc, enteredRating, oneWeekVolatility.DistanceFromStart, oneWeekVolatility.Pushback, oneYearVolatility.Pushback, isFirstUserRating, isUsersFirstWeek, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null ? null : theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase);
             SetAdjustmentFactor(theRating.CurrentValue, theTrustTrackerStats);
-            bool isTrusted = true; // we are disabling the approach of trusting only some users
-                //(theRating.CurrentValue != null && theTrustTracker.SkepticalTrustLevel > 0) ||
-                //(theRating.CurrentValue == null && theTrustTracker.SkepticalTrustLevel > PMTrustTrackingBackgroundTasks.MinSkepticalTrustNeededForTrustedOnInitialRating) || 
-                //TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes; 
-            additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactorConservative, theTrustTracker.OverallTrustLevel, isTrusted, pctPreviousRatings, oneHourVolatilityDecimal, oneDayVolatilityDecimal, trustTrackerForChoiceFieldsSummary, otherChoiceInFieldIDs);
+            additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactorConservative, theTrustTracker.OverallTrustLevel, (float) oneWeekVolatility.DistanceFromStart, (float) oneWeekVolatility.Pushback, (float) oneYearVolatility.Pushback, trustTrackerForChoiceFieldsSummary, otherChoiceInFieldIDs);
         }
 
         /// <summary>
@@ -125,7 +130,7 @@ namespace ClassLibrary1.Model
         public TrustTrackerStatManager(UserRating theUserRating, RatingCharacteristic theRatingCharacteristic)
         {
             TrustTrackerChoiceSummary = theUserRating.TrustTrackerForChoiceInGroupsUserRatingLinks.Select(x => new TrustTrackerChoiceSummary { ChoiceInGroupID = x.TrustTrackerForChoiceInGroup.ChoiceInGroupID, SumAdjustmentPctTimesRatingMagnitude = x.TrustTrackerForChoiceInGroup.SumAdjustmentPctTimesRatingMagnitude, SumRatingMagnitudes = x.TrustTrackerForChoiceInGroup.SumRatingMagnitudes }).ToList();
-            SetStats(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.OneDayVolatility ?? 0, theUserRating.OneHourVolatility ?? 0, theRatingCharacteristic, theUserRating.LogarithmicBase, (float) theUserRating.PercentPreviousRatings);
+            SetStats(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.LastWeekDistanceFromStart, theUserRating.LastWeekPushback, theUserRating.LastYearPushback, theUserRating.UserRatingNumberForUser == 1, theUserRating.IsUsersFirstWeek, theRatingCharacteristic, theUserRating.LogarithmicBase);
         }
 
         public static float MinThresholdToBeConsideredHighMagnitudeRating = 0.3F; // a userrating with less than a 30% change will get a 0 in this category
@@ -149,32 +154,37 @@ namespace ClassLibrary1.Model
             decimal? currentRating, 
             decimal currentRatingOrBasisOfCalc, 
             decimal enteredUserRating, 
-            decimal oneDayVolatility, 
-            decimal oneHourVolatility, 
+            decimal lastWeekDistanceFromStart,
+            decimal lastWeekPushback,
+            decimal lastYearPushback,
+            bool isFirstUserRating,
+            bool isUsersFirstWeek,
             RatingCharacteristic theRatingCharacteristic, 
-            decimal? logBase, 
-            float pctPreviousRatings)
+            decimal? logBase)
         {
             RatingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(enteredUserRating, lastTrustedRatingOrBasisOfCalc,
                 theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, logBase);
             
-            NoExtraWeighting = 1.0F * RatingMagnitude;
+            StatValueUnadjusted[(int) TrustStat.NoExtraWeighting] = 1.0F;
             if (RatingMagnitude < MinThresholdToBeConsideredHighMagnitudeRating)
-                LargeDeltaRatings = 0; // setting 0 for most cases eliminates effects of weird rounding errors
+                StatValueUnadjusted[(int) TrustStat.LargeDeltaRatings] = 0; // setting 0 for most cases eliminates effects of weird rounding errors
             else
-                LargeDeltaRatings = (float)Math.Pow(RatingMagnitude, 2) * RatingMagnitude; // This makes bigger ratings matter more. Note that even for numbers between 0 and 1, 4^2/9^2 is lower than 4/9. 
+                StatValueUnadjusted[(int)TrustStat.LargeDeltaRatings] = (float)Math.Pow(RatingMagnitude, 2); // This makes bigger ratings matter more. Note that even for numbers between 0 and 1, 4^2/9^2 is lower than 4/9. 
             if (RatingMagnitude > MaxThresholdToBeConsideredLowMagnitudeRating)
-                SmallDeltaRatings = 0;
+                StatValueUnadjusted[(int)TrustStat.SmallDeltaRatings] = 0;
             else
-                SmallDeltaRatings = (float)Math.Pow((1F - RatingMagnitude), 2) * RatingMagnitude;
-            LastDayVolatility = (float)oneDayVolatility * RatingMagnitude;
-            //Debug.WriteLine("One day volatility: " + oneDayVolatility + " time: " + TestableDateTime.Now.ToShortTimeString()); // DEBUG
-            LastHourVolatility = (float)oneHourVolatility * RatingMagnitude;
-            Extremeness = (float)PMAdjustmentFactor.CalculateExtremeness(enteredUserRating, logBase, 
-                theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating) * RatingMagnitude;
-            CurrentRatingQuestionable = (float)PMAdjustmentFactor.CalculateRelativeMagnitude(currentRatingOrBasisOfCalc, lastTrustedRatingOrBasisOfCalc, theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating, logBase) *
-                RatingMagnitude; // DEBUG -- no longer useful. Maybe swap in something about whether it is a first rating
-            PercentPreviousRatings = pctPreviousRatings * RatingMagnitude;
+                StatValueUnadjusted[(int)TrustStat.SmallDeltaRatings] = (float)Math.Pow((1F - RatingMagnitude), 2);
+            StatValueUnadjusted[(int)TrustStat.Extremeness] = (float)PMAdjustmentFactor.CalculateExtremeness(enteredUserRating, logBase,
+                theRatingCharacteristic.MinimumUserRating, theRatingCharacteristic.MaximumUserRating);
+            StatValueUnadjusted[(int)TrustStat.LastWeekDistanceFromStart] = (float)lastWeekDistanceFromStart;
+            StatValueUnadjusted[(int)TrustStat.LastWeekPushback] = (float)lastWeekPushback;
+            StatValueUnadjusted[(int)TrustStat.LastYearPushback] = (float)lastYearPushback;
+            StatValueUnadjusted[(int)TrustStat.IsFirstUserRating] = isFirstUserRating ? 1.0F : 0.0F;
+            StatValueUnadjusted[(int)TrustStat.IsUsersFirstWeek] = isUsersFirstWeek ? 1.0F : 0.0F;
+            StatValueUnadjusted[(int)TrustStat.IsMostRecent10PercentOfUsersUserRatings] = 1.0F; // a new user rating is always recent
+            StatValueUnadjusted[(int)TrustStat.IsMostRecent30PercentOfUsersUserRatings] = 1.0F; // a new user rating is always recent
+            StatValueUnadjusted[(int)TrustStat.IsMostRecent70PercentOfUsersUserRatings] = 1.0F; // a new user rating is always recent
+            StatValueUnadjusted[(int)TrustStat.IsMostRecent90PercentOfUsersUserRatings] = 1.0F; // a new user rating is always recent
         }
 
         private void SetAdjustmentFactor(decimal? currentRating, TrustTrackerStat[] trustTrackerStats)
@@ -185,7 +195,6 @@ namespace ClassLibrary1.Model
                 CalculateAdjustmentFactorForUserRating(trustTrackerStats);
         }
 
-        public static int NumStats = 8; // see PMTrustStat.cs for the list
 
         /// <summary>
         /// Gets the statistic corresponding to the statistic number. For example, if statNum is 1,
@@ -196,26 +205,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public float GetStat(int statNum)
         {
-            switch (statNum)
-            {
-                case (int) TrustStat.NoExtraWeighting:
-                    return NoExtraWeighting;
-                case (int)TrustStat.LargeDeltaRatings:
-                    return LargeDeltaRatings;
-                case (int)TrustStat.SmallDeltaRatings:
-                    return SmallDeltaRatings;
-                case (int)TrustStat.LastDayVolatility:
-                    return LastDayVolatility;
-                case (int)TrustStat.LastHourVolatility:
-                    return LastHourVolatility;
-                case (int)TrustStat.Extremeness:
-                    return Extremeness;
-                case (int)TrustStat.CurrentRatingQuestionable:
-                    return CurrentRatingQuestionable;
-                case (int)TrustStat.PercentPreviousRatings:
-                    return PercentPreviousRatings;
-            }
-            throw new Exception("Internal error: Unknown Trust Tracker Stat.");
+            return StatValueUnadjusted[statNum] * RatingMagnitude;
         }
 
         /// <summary>
