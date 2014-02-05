@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using FluentAssertions.Assertions;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
 using Microsoft.WindowsAzure.ServiceRuntime;
@@ -172,23 +171,23 @@ namespace TestProject1
             float maximumVolatility = (float)(maxRating - minRating);
             float expectedRelativeVolatility = expectedAbsoluteVolatility / maximumVolatility;
 
-            List<float> expectedStats = new List<float>(TrustTrackerStatManager.NumStats);
-            float expectedNoExtraWeightingStat1 = 1.0F;
+            List<double> expectedStats = new List<double>(TrustTrackerStatManager.NumStats);
+            double expectedNoExtraWeightingStat1 = 1.0F;
             expectedStats.Add(expectedNoExtraWeightingStat1);
-            float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2) : 0;
+            double expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2) : 0;
             expectedStats.Add(expectedLargeDeltaRatingStat1);
-            float expectedSmallDeltaRatingStat1 = ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) : 0;
+            double expectedSmallDeltaRatingStat1 = ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) : 0;
             expectedStats.Add(expectedSmallDeltaRatingStat1);
             expectedStats.Add(PMAdjustmentFactor.CalculateExtremeness(ratingValue, null, minRating, maxRating)); // extremeness
             expectedStats.Add(expectedRelativeVolatility);
             expectedStats.Add(0); // no pushback
             expectedStats.Add(0);
-            expectedStats.Add(1.0F); // is the first user rating from this user
-            expectedStats.Add(1.0F); // is user's first week
-            expectedStats.Add(1.0F); // is among most recent user ratings by this user
-            expectedStats.Add(1.0F); // is among most recent user ratings by this user
-            expectedStats.Add(1.0F); // is among most recent user ratings by this user
-            expectedStats.Add(1.0F); // is among most recent user ratings by this user
+            expectedStats.Add(1.0); // is the first user rating from this user
+            expectedStats.Add(1.0); // is user's first week
+            expectedStats.Add(1.0); // is among most recent user ratings by this user
+            expectedStats.Add(1.0); // is among most recent user ratings by this user
+            expectedStats.Add(1.0); // is among most recent user ratings by this user
+            expectedStats.Add(1.0); // is among most recent user ratings by this user
 
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
                 expectedStats[i] *= ratingMagnitude;
@@ -196,11 +195,11 @@ namespace TestProject1
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
                 (expectedStats[i]).Should().BeApproximately(user2User3InteractionStats[i].SumWeights, 0.01F);
 
-            List<float> expectedAverageAdjustmentPercentageWeightedByStats = new List<float>();
+            List<double> expectedAverageAdjustmentPercentageWeightedByStats = new List<double>();
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
                 expectedAverageAdjustmentPercentageWeightedByStats.Add(expectedStats[i] == 0 ? 0 : (expectedAdjustmentFactor * expectedStats[i]) / (expectedStats[i]));
 
-            List<float> actualAverageAdjustmentFactorWeightedByStats = new List<float>();
+            List<double> actualAverageAdjustmentFactorWeightedByStats = new List<double>();
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
                 actualAverageAdjustmentFactorWeightedByStats.Add(user2User3InteractionStats[i].AvgAdjustmentPctWeighted);
 
@@ -284,7 +283,7 @@ namespace TestProject1
                 x.User.UserID == _testHelper.UserIds[2] &&
                 x.User1.UserID == _testHelper.UserIds[4]);
             List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
-            float adjustmentPctCalculatedInUserInteraction = user2User4InteractionStats[0].AvgAdjustmentPctWeighted;
+            double adjustmentPctCalculatedInUserInteraction = user2User4InteractionStats[0].AvgAdjustmentPctWeighted;
             adjustmentPctCalculatedInUserInteraction.Should().BeApproximately(1.1F, 0.01F, "because rating moved 110 percent of user 2's movement as of user 4 entry");
             adjustmentPctCalculatedInUserInteraction.Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, 0.01F, "because manual calculation should produce same result");
 
@@ -714,13 +713,13 @@ namespace TestProject1
 
             // get the original LatestUserEgalitarianTrust
             UserInteraction theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[1] && x.User1.UserID == _testHelper.UserIds[3]);
-            float originalLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
+            double originalLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
             originalLatestUserEgalitarianTrust1.Should().BeApproximately(1.0F, 0.01F);
             UserInteraction theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[2] && x.User1.UserID == _testHelper.UserIds[3]);
-            float originalLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
+            double originalLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             originalLatestUserEgalitarianTrust2.Should().BeApproximately(1.0F, 0.01F);
-            float originalOverallTrust1 = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
-            float originalOverallTrust2 = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double originalOverallTrust1 = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
+            double originalOverallTrust2 = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
 
             // user 3 gets rerated on some new ratings
             _testHelper.ActionProcessor.UserRatingAdd(ratings[2].RatingID, 5M, _testHelper.UserIds[6], ref theResponse);
@@ -736,14 +735,14 @@ namespace TestProject1
             theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[1] && x.User1.UserID == _testHelper.UserIds[3]);
             TrustTracker user3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == _testHelper.UserIds[3]);
             user3.EgalitarianTrustLevel.Should().BeApproximately(0.25F, 0.01F);
-            float revisedLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
+            double revisedLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust1.Should().BeApproximately(0.25F, 0.01F);
             theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[2] && x.User1.UserID == _testHelper.UserIds[3]);
-            float revisedLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
+            double revisedLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust2.Should().BeApproximately(0.25F, 0.01F);
-            float revisedOverallTrust1 = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust1 = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1 == originalOverallTrust1).Should().BeFalse(); // because user 3's egalitarian trust has changed and user 3 is only one of users who rerated 1
-            float revisedOverallTrust2 = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust2 = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust2 == originalOverallTrust2).Should().BeTrue(); // because user 3 is still only rerater of user 2
 
             // set the EgalitarianTrustOverride, and see if that changes things
@@ -758,9 +757,9 @@ namespace TestProject1
             theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[2] && x.User1.UserID == _testHelper.UserIds[3]);
             revisedLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust2.Should().BeApproximately(0.9F, 0.01F);
-            float revisedOverallTrust1a = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust1a = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1 == revisedOverallTrust1a).Should().BeFalse(); // because user 3's egalitarian trust has changed and user 3 is only one of users who rerated 1
-            float revisedOverallTrust2a = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust2a = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
             revisedOverallTrust2.Should().BeApproximately(revisedOverallTrust2a, 0.01F); // because user 3 is still only rerater of user 2
 
             // now change the EgalitarianTrustOverride only slightly. That should change LatestUserEgalitarianTrust, but not the overall trust level of the earlier users
@@ -776,9 +775,9 @@ namespace TestProject1
             theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[2] && x.User1.UserID == _testHelper.UserIds[3]);
             revisedLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust2.Should().BeApproximately(0.91F, 0.001F);
-            float revisedOverallTrust1b = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust1b = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1a == revisedOverallTrust1b).Should().BeTrue(); // because the override value did not change by enough to change the weighting
-            float revisedOverallTrust2b = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust2b = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
             revisedOverallTrust2a.Should().BeApproximately(revisedOverallTrust2b, 0.01F); // for the same reason and because user 3 is still only rerater of user 2
         }
 
@@ -828,10 +827,10 @@ namespace TestProject1
             _testHelper.WaitIdleTasks();
 
             var theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[1] && x.User1.UserID == _testHelper.UserIds[2]);
-            float correctWeightInCalculatingTrustTotal1 = PMTrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats[0], theUserInteraction1);
+            double correctWeightInCalculatingTrustTotal1 = PMTrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats[0], theUserInteraction1);
             theUserInteraction1.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal1, 0.01F);
             var theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == _testHelper.UserIds[1] && x.User1.UserID == _testHelper.UserIds[3]);
-            float correctWeightInCalculatingTrustTotal2 = PMTrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats[0], theUserInteraction2);
+            double correctWeightInCalculatingTrustTotal2 = PMTrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats[0], theUserInteraction2);
             theUserInteraction2.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal2, 0.01F);
             var theUserInteraction3 = _dataManipulation.DataContext.GetTable<UserInteraction>().SingleOrDefault(x => x.User.UserID == _testHelper.UserIds[1] && x.User1.UserID == _testHelper.UserIds[9]);
             theUserInteraction3.Should().BeNull(); // because the idle task should eliminate it
@@ -842,13 +841,13 @@ namespace TestProject1
                 TrustTrackerStat theTrustTrackerStat = _dataManipulation.DataContext.GetTable<TrustTrackerStat>().Single(x => x.TrustTracker.UserID == _testHelper.UserIds[1] && x.StatNum == i);
                 UserInteractionStat theUserInteractionStat1 = theUserInteraction1.UserInteractionStats.Single(x => x.StatNum == i);
                 UserInteractionStat theUserInteractionStat2 = theUserInteraction2.UserInteractionStats.Single(x => x.StatNum == i);
-                float avgAdjustPctFromUserInteractionStat1 = theUserInteractionStat1.AvgAdjustmentPctWeighted;
-                float avgAdjustPctFromUserInteractionStat2 = theUserInteractionStat2.AvgAdjustmentPctWeighted;
-                float trustNumerator = theUserInteraction1.WeightInCalculatingTrustTotal * avgAdjustPctFromUserInteractionStat1 + theUserInteraction2.WeightInCalculatingTrustTotal * avgAdjustPctFromUserInteractionStat2;
-                float trustDenominator = theUserInteraction1.WeightInCalculatingTrustTotal + theUserInteraction2.WeightInCalculatingTrustTotal;
+                double avgAdjustPctFromUserInteractionStat1 = theUserInteractionStat1.AvgAdjustmentPctWeighted;
+                double avgAdjustPctFromUserInteractionStat2 = theUserInteractionStat2.AvgAdjustmentPctWeighted;
+                double trustNumerator = theUserInteraction1.WeightInCalculatingTrustTotal * avgAdjustPctFromUserInteractionStat1 + theUserInteraction2.WeightInCalculatingTrustTotal * avgAdjustPctFromUserInteractionStat2;
+                double trustDenominator = theUserInteraction1.WeightInCalculatingTrustTotal + theUserInteraction2.WeightInCalculatingTrustTotal;
                 if (theUserInteractionStat1.SumWeights > 0 || theUserInteractionStat2.SumWeights > 0)
                     (trustDenominator > 0).Should().BeTrue();
-                float trustValue = (trustDenominator == 0) ? 1F : trustNumerator / trustDenominator;
+                double trustValue = (trustDenominator == 0) ? 1F : trustNumerator / trustDenominator;
                 theTrustTrackerStat.TrustValue.Should().BeApproximately(trustValue, 0.01F);
             }
         }
@@ -918,13 +917,13 @@ namespace TestProject1
                 TrustTrackerStat theTrustTrackerStat = _dataManipulation.DataContext.GetTable<TrustTrackerStat>().Single(x => x.TrustTracker.UserID == _testHelper.UserIds[1] && x.StatNum == i);
                 List<UserInteractionStat> userInteractionStats = userInteractions.Select(x => x.UserInteractionStats.Single(y => y.StatNum == i)).ToList();
 
-                List<float> avgAdjustPctFromUserInteractionStats = userInteractionStats.Select(x => x.AvgAdjustmentPctWeighted).ToList();
-                float trustNumerator = Enumerable.Range(0, numSequences).Sum(s => userInteractions[s].WeightInCalculatingTrustTotal * avgAdjustPctFromUserInteractionStats[s]);
-                float trustDenominator = Enumerable.Range(0, numSequences).Sum(s => userInteractions[s].WeightInCalculatingTrustTotal);
+                List<double> avgAdjustPctFromUserInteractionStats = userInteractionStats.Select(x => x.AvgAdjustmentPctWeighted).ToList();
+                double trustNumerator = Enumerable.Range(0, numSequences).Sum(s => userInteractions[s].WeightInCalculatingTrustTotal * avgAdjustPctFromUserInteractionStats[s]);
+                double trustDenominator = Enumerable.Range(0, numSequences).Sum(s => userInteractions[s].WeightInCalculatingTrustTotal);
                 if (userInteractionStats.Any(z => z.SumWeights > 0))
                     (trustDenominator > 0).Should().BeTrue();
-                float trustValue = (trustDenominator == 0) ? 1F : trustNumerator / trustDenominator;
-                theTrustTrackerStat.TrustValue.Should().BeApproximately(trustValue, 0.01F);
+                double trustValue = (trustDenominator == 0) ? 1F : trustNumerator / trustDenominator;
+                theTrustTrackerStat.TrustValue.Should().BeApproximately((float) trustValue, 0.01F);
             }
         }
 
@@ -951,8 +950,10 @@ namespace TestProject1
             PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true; // we want all the userratings to have adjustment factors of 1 for testing purposes. That is, if a user enters a userrating, the rating will be set to that userrating. But we can still see what the trust levels (i.e., retrospective adjustment factors are).
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0.0F; // this allows us to make calculations without adjusting for the fact that trust will be a little lower than it otherwise would be
-
+            TrustTrackerStatManager.UseOverallTrustValueOnly = true; // so results aren't complicated by user interaction stats
+            
             const decimal minRatingValue = 0M;
+
             const decimal maxRatingValue = 10M;
             const decimal otherUserRatingValueOffset = 0.001M;
 
@@ -1066,7 +1067,7 @@ namespace TestProject1
 x.UserID == _testHelper.UserIds[1]);
             TrustTrackerStat noExtraWeightingTrustStat = trustTracker.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.NoExtraWeighting);
             float tolerance = baselineAdjustmentFactorToApply == specialCaseAdjustmentFactorToApply ?
-                0.01F : 0.15F;
+                0.05F : 0.15F;
 
             /* What it is supposed to be doing in those lines is making sure that when the ratings do adjust a certain amount, 
              * the user's trust tracking should reflect that. So, if, for example, whenever a user makes a userrating, it almost 
@@ -1145,7 +1146,7 @@ x.UserID == _testHelper.UserIds[1]);
             decimal[] randomUserRatings = new decimal[20];
             for (int j = 0; j < 20; j++)
                 randomUserRatings[j] = RandomGenerator.GetRandom(4.0M, 6.0M);
-            Dictionary<int, float[]> previousTrustLevels = new Dictionary<int, float[]>();
+            Dictionary<int, double[]> previousTrustLevels = new Dictionary<int, double[]>();
             for (int j = 0; j < numReratingsToDo; j++)
             {
                 int randomUser = RandomGenerator.GetRandom(1, 19);
@@ -1159,11 +1160,11 @@ x.UserID == _testHelper.UserIds[1]);
                 Debug.WriteLine("Random user: " + _testHelper.UserIds[randomUser] + " rating userRating: " + randomUserRatings[randomUser] + " user interaction stat: " + uis.AvgAdjustmentPctWeighted + " trust level: " + tt.OverallTrustLevel);
                 if (previousTrustLevels.ContainsKey(randomUser))
                 {
-                    float[] previousTrustTrackerStat = previousTrustLevels[randomUser];
+                    double[] previousTrustTrackerStat = previousTrustLevels[randomUser];
                     for (int ts = 0; ts < TrustTrackerStatManager.NumStats; ts++)
                     {
                         TrustTrackerStat tts = tt.TrustTrackerStats.Single(x => x.StatNum == ts);
-                        tts.TrustValue.Should().BeApproximately(previousTrustTrackerStat[ts], 0.01F);
+                        tts.TrustValue.Should().BeApproximately((float) previousTrustTrackerStat[ts], 0.01F);
                     }
                 }
                 else
@@ -1283,6 +1284,9 @@ x.UserID == _testHelper.UserIds[1]);
 
             PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
+            RaterooDataManipulation.MinChangePromptingReview = 0.01F; // make the review super-precise for purpose of this test
+            PMTrustTrackingBackgroundTasks.MinChangeToLatestUserEgalitarianTrustBeforeUpdatingWeightInCalculatingTrustTotal = 0.01F; // ditto
+            RaterooDataManipulation.HypotheticalAdjFactorsNotWorthImplementing = new Tuple<float, float>(0.99F, 1.01F); // ditto
 
             if (adjustmentFactorToApply == 0)
                 throw new Exception("This test won't work with applying adjustment percentage of 0, because the initial user must apply some wrong number that will yield the correct number after the adjustment percentage is applied.");
@@ -1384,24 +1388,21 @@ x.UserID == _testHelper.UserIds[1]);
             UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == _testHelper.UserIds[0]);
             TrustTracker tt = firstUserRatingForFirstRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
             float appliedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
-            float expectedAdjustmentFactor = adjustmentFactorToApply;
-            if (allowMonthToPass)
-                expectedAdjustmentFactor = 1.0F; // b/c the userratings will be too old to adjust
-            expectedAdjustmentFactor = PMTrustCalculations.Constrain(expectedAdjustmentFactor, 0, 1);
-            if (expectedAdjustmentFactor > RaterooDataManipulation.HypotheticalAdjFactorsNotWorthImplementing.Item1 && expectedAdjustmentFactor < RaterooDataManipulation.HypotheticalAdjFactorsNotWorthImplementing.Item2)
-                expectedAdjustmentFactor = 1.0F;
 
             float tolerance = 0.02F;
             if (allowMonthToPass)
                 appliedAdjustmentFactor.Should().BeApproximately(1.0F, tolerance); // because we only review ratings for 30 days, so this one won't get changed
             else
-                appliedAdjustmentFactor.Should().BeApproximately(PMTrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance);
+                appliedAdjustmentFactor.Should().BeApproximately((float) PMTrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance);
 
-            // Check to make sure admin has not rerated the rating in the second tblrow
-            ratingIndexToUse = 1;
-            rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
-            firstUserRatingForFirstRating = rating.UserRatings.SingleOrDefault(x => x.User.Username == "admin");
-            firstUserRatingForFirstRating.Should().BeNull();
+            // second rating may get rerated a small distance, so the following doesn't apply.
+            //// Check to make sure admin has not rerated the rating in the second tblrow
+            //ratingIndexToUse = 1;
+            //rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
+            //UserRating lastNonAdminUserRating = rating.UserRatings.Where(x => x.User.Username != "admin").Last();
+            //TrustTracker lastNonAdminTT = lastNonAdminUserRating.User.TrustTrackers.First();
+            //UserRating adminUserRating = rating.UserRatings.SingleOrDefault(x => x.User.Username == "admin");
+            //adminUserRating.Should().BeNull();
         }
 
 

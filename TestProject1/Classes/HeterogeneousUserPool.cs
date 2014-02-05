@@ -73,6 +73,12 @@ namespace TestProject1
             HeterogeneousUsers = heterogeneousUsers;
         }
 
+        public void PrintOutUsersInfo()
+        {
+            foreach (HeterogeneousUser user in HeterogeneousUsers)
+                user.PrintOutInfo();
+        }
+
         /// <summary>
         /// Picks <paramref name="usersRatingEachRatingCount"/> users at random to rate each rating.
         /// </summary>

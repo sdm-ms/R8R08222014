@@ -35,7 +35,7 @@ namespace ClassLibrary1.Model
     /// </summary>
     public partial class RaterooDataManipulation
     {
-        const float MinChangePromptingReview = 0.2F;
+        public static float MinChangePromptingReview = 0.2F;
         const int NumUsersWhoseRatingsShouldBeFlaggedAtOnce = 30;
         const int MaxRatingsToFlagPerUser = 200;
         const int MaxNumDaysToReview = 30;
@@ -120,18 +120,27 @@ namespace ClassLibrary1.Model
             bool moreWorkToDo = userRatingsInitialQuery.Count() == NumRatingsToReviewAtOnce;
             foreach (var urSet in urSets)
             {
-                Debug.WriteLine("DEBUG reviewing rating " + urSet.Rating.RatingID);
+                User adminAccount = urSet.AdminAccount;
+                if (adminAccount == null)
+                    adminAccount = DataContext.GetTable<User>().Single(x => x.Username == "admin");
+
                 decimal? trackIdealRatingValue = null;
                 int numUserRatings = urSet.UserRatings.Count();
                 List<UserRating> urs = urSet.UserRatings.ToList();
 
-                List<float> newTrusts = urSet.NewTrustLevel.ToList();
-                for (int u = 0; u < numUserRatings; u++)
+                List<double> newTrusts = urSet.NewTrustLevel.ToList();
+                int numAdminUserRatingsAlreadyAtEnd = 0;
+                for (int u = numUserRatings - 1; u >= 0; u--)
+                    if (urs[u].UserID == adminAccount.UserID)
+                        numAdminUserRatingsAlreadyAtEnd++;
+                    else
+                        break;
+                for (int u = 0; u < numUserRatings - numAdminUserRatingsAlreadyAtEnd; u++)
                 {
                     UserRating ur = urs[u];
                     if (trackIdealRatingValue == null)
                         trackIdealRatingValue = ur.PreviousRatingOrVirtualRating;
-                    decimal newAdjustmentFactor = ur.OriginalAdjustmentPct * ((decimal) newTrusts[u] / ur.OriginalTrustLevel);
+                    decimal newAdjustmentFactor = ur.OriginalTrustLevel == 0 ? (decimal) newTrusts[u] : ur.OriginalAdjustmentPct * ((decimal) newTrusts[u] / ur.OriginalTrustLevel);
                     if (newAdjustmentFactor > 1.0M)
                         newAdjustmentFactor = 1.0M;
                     trackIdealRatingValue = PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor((decimal) trackIdealRatingValue, ur.EnteredUserRating, (float) newAdjustmentFactor, ur.LogarithmicBase);
@@ -142,12 +151,10 @@ namespace ClassLibrary1.Model
                 // is this a big enough difference?
                 float hypotheticalAdjustmentFactorForLastUser = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)trackIdealRatingValue, actualFinalRating, urs[numUserRatings - 1].PreviousRatingOrVirtualRating);
                 bool bigEnoughDifference = (hypotheticalAdjustmentFactorForLastUser < HypotheticalAdjFactorsNotWorthImplementing.Item1 || hypotheticalAdjustmentFactorForLastUser > HypotheticalAdjFactorsNotWorthImplementing.Item2);
+                Debug.WriteLine("DEBUG reviewing rating " + urSet.Rating.RatingID + " entered " + urs.Last().EnteredUserRating + " final " + actualFinalRating + " ideal " + trackIdealRatingValue + " hypo adj " + hypotheticalAdjustmentFactorForLastUser + " big enough? " + bigEnoughDifference);
                 if (bigEnoughDifference)
                 { // add the new UserRating
                     UserRatingGroup urg = AddUserRatingGroup(urSet.Rating.RatingGroup2);
-                    User adminAccount = urSet.AdminAccount;
-                    if (adminAccount == null)
-                        adminAccount = DataContext.GetTable<User>().Single(x => x.Username == "admin");
                     UserRatingHierarchyAdditionalInfo additionalInfo = new UserRatingHierarchyAdditionalInfo(1.0F, 1.0F, 0,0,0, new List<TrustTrackerChoiceSummary>(), new List<int>()); // not all info is accurate but it doesn't matter since we ignore UserInteractions where earlier user is the admin account
 
                     UserRating newUr = AddUserRating(adminAccount, urSet.Rating, urg, urSet.AdminPointsTotals, urSet.RatingPhaseStatus, new List<RatingGroup>() { urSet.Rating.RatingGroup }, (decimal)trackIdealRatingValue, (decimal)trackIdealRatingValue, actualFinalRating, true, additionalInfo);

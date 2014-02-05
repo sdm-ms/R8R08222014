@@ -268,7 +268,7 @@ namespace ClassLibrary1.Model
     public class UserRatingHierarchyAdditionalInfo
     {
         public float AdjustPct;
-        public float OverallTrustLevel;
+        public double OverallTrustLevel;
         public float LastWeekDistanceFromStart;
         public float LastWeekPushback;
         public float LastYearPushback;
@@ -277,7 +277,7 @@ namespace ClassLibrary1.Model
 
         public UserRatingHierarchyAdditionalInfo(
              float adjustPct,
-             float overallTrustLevel,
+             double overallTrustLevel,
              float lastWeekDistanceFromStart,
              float lastWeekPushback,
              float lastYearPushback,

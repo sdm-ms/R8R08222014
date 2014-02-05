@@ -242,34 +242,40 @@ namespace ClassLibrary1.Model
             /// For example, if the statistic is one day volatility, then it would indicate that this is a user rating with relatively
             /// high one-day volatility.
             /// </summary>
-            public float PortionOfPool
+            public double PortionOfPool
             { 
                 get 
                 {
                     return TrustTrackerStat.SumUserInteractionStatWeights == 0 ? 0 : StatValue / TrustTrackerStat.SumUserInteractionStatWeights;
                 } 
             }
+            /// <summary>
+            /// The statistic being used or null for choices.
+            /// </summary>
+            public TrustStat? StatNum;
 
             /// <summary>
             /// This will be set to a value that averages the trust value for this statistic with a trust value for the simplest statistic.
             /// The simplest statistic will receive no weight when PortionOfPool is sufficiently small, i.e. we have a lot of data for this situation.
             /// When PortionOfPool is large (i.e., there is little data for this statistic), then we regress back to the trust value for the simplest statistic.
             /// </summary>
-            public float RegressedMeanTrustValue;
+            public double RegressedMeanTrustValue;
 
             /// <summary>
             /// absolute difference between trust value and the simple trust tracker stat's value, so we weigh more
             /// heavily trust trackers that indicate a greater difference in how much the user can be trusted.
             /// </summary>
-            public float Weight;
+            public double Weight;
         }
+
+        public static bool UseOverallTrustValueOnly = false;
 
         internal void CalculateAdjustmentFactorForUserRating(TrustTrackerStat[] trustTrackerStats)
         {
             TrustTrackerStat simpleTrustTrackerStat = trustTrackerStats.Single(tts => tts.StatNum == 0);
-            if (simpleTrustTrackerStat.SumUserInteractionStatWeights == 0)
+            if (simpleTrustTrackerStat.SumUserInteractionStatWeights == 0 || UseOverallTrustValueOnly)
             {
-                AdjustmentFactor = simpleTrustTrackerStat.TrustValue;
+                AdjustmentFactor = (float) simpleTrustTrackerStat.TrustValue;
             }
             else
             {
@@ -292,9 +298,10 @@ namespace ClassLibrary1.Model
                 List<TrustTrackerStatWithValue> alternativeTrustTrackerStatWithValues = 
                     nonChoiceTrustTrackerStatWithValues.Concat(choiceTrustTrackerStatWithValues)
                         .Where(ttswsv => ttswsv.PortionOfPool > simpleTrustTrackerStatWithValue.PortionOfPool).ToList();
+                KeepOnlyMostInfluentialOfMutuallyExclusiveTrustStats(alternativeTrustTrackerStatWithValues);
                 if (!alternativeTrustTrackerStatWithValues.Any())
                 {
-                    AdjustmentFactor = simpleTrustTrackerStat.TrustValue;
+                    AdjustmentFactor = (float) simpleTrustTrackerStat.TrustValue;
                 }
                 else
                 {
@@ -319,22 +326,42 @@ namespace ClassLibrary1.Model
                             proportionOfRegressedMeanValue * alternativeTrustTrackerStatWithValue.TrustTrackerStat.TrustValue + 
                             (1 - proportionOfRegressedMeanValue) * simpleTrustTrackerStat.TrustValue;
                     }
-                    float sumOfWeights = alternativeTrustTrackerStatWithValues.Sum(ttswv => ttswv.Weight);
+                    double sumOfWeights = alternativeTrustTrackerStatWithValues.Sum(ttswv => ttswv.Weight);
                     if (sumOfWeights == 0)
                     {
-                        AdjustmentFactor = simpleTrustTrackerStat.TrustValue;
+                        AdjustmentFactor = (float) simpleTrustTrackerStat.TrustValue;
                     }
                     else
                     {
                         AdjustmentFactor = 0;
                         // Calculate a weighted average of the trust trackers to use.
                         foreach (var alternativeCandidatePool in alternativeTrustTrackerStatWithValues)
-                            AdjustmentFactor += alternativeCandidatePool.RegressedMeanTrustValue * (alternativeCandidatePool.Weight / sumOfWeights);
+                            AdjustmentFactor += (float) (alternativeCandidatePool.RegressedMeanTrustValue * (alternativeCandidatePool.Weight / sumOfWeights));
                     }
                 }
                 AdjustmentFactor = PMTrustCalculations.Constrain(AdjustmentFactor,
                     PMAdjustmentFactor.MinimumPredictiveAdjustmentFactor,
                     PMAdjustmentFactor.MaximumPredictiveAdjustmentFactor);
+            }
+        }
+
+        private static void KeepOnlyMostInfluentialOfMutuallyExclusiveTrustStats(List<TrustTrackerStatWithValue> alternativeTrustTrackerStatWithValues)
+        {
+            List<List<TrustStat>> mutuallyExclusiveTrustStatsList = new List<List<TrustStat>>() { 
+                    new List<TrustStat>() { TrustStat.IsMostRecent10PercentOfUsersUserRatings, TrustStat.IsMostRecent30PercentOfUsersUserRatings, TrustStat.IsMostRecent70PercentOfUsersUserRatings, TrustStat.IsMostRecent90PercentOfUsersUserRatings },
+                    new List<TrustStat>() { TrustStat.LastWeekDistanceFromStart, TrustStat.LastWeekPushback, TrustStat.LastYearPushback },
+                };
+            foreach (List<TrustStat> mutuallyExclusiveTrustStats in mutuallyExclusiveTrustStatsList)
+            {
+                var matching = alternativeTrustTrackerStatWithValues.Where(x => x.StatNum != null && mutuallyExclusiveTrustStats.Contains((TrustStat)x.StatNum));
+                if (matching.Count() > 1)
+                {
+                    var highestPortion = matching.Max(x => x.PortionOfPool);
+                    TrustTrackerStatWithValue theHighest = matching.First(x => x.PortionOfPool == highestPortion);
+                    foreach (var match in matching)
+                        if (match != theHighest)
+                            alternativeTrustTrackerStatWithValues.Remove(match);
+                }
             }
         }
 

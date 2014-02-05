@@ -11,29 +11,29 @@ namespace ClassLibrary1.Model
 
         public static int NumPerfectScoresToGiveNewUser = 10;
 
-        public static float GetOverallTrustLevelWithNewUserCredit(TrustTrackerStat noWeightingStat, int actualContributingUserInteractions)
+        public static double GetOverallTrustLevelWithNewUserCredit(TrustTrackerStat noWeightingStat, int actualContributingUserInteractions)
         {
-            float averageContributionToDenominator;
+            double averageContributionToDenominator;
             if (actualContributingUserInteractions == 0)
                 averageContributionToDenominator = 0;
             else
-                averageContributionToDenominator = noWeightingStat.Trust_Denom / (float)actualContributingUserInteractions;
-            float newNumerator = noWeightingStat.Trust_Numer + (float)NumPerfectScoresToGiveNewUser * averageContributionToDenominator * 1.0F;
-            float newDenominator = noWeightingStat.Trust_Denom + (float)NumPerfectScoresToGiveNewUser * averageContributionToDenominator;
+                averageContributionToDenominator = noWeightingStat.Trust_Denom / (double)actualContributingUserInteractions;
+            double newNumerator = noWeightingStat.Trust_Numer + (double)NumPerfectScoresToGiveNewUser * averageContributionToDenominator * 1.0;
+            double newDenominator = noWeightingStat.Trust_Denom + (double)NumPerfectScoresToGiveNewUser * averageContributionToDenominator;
             if (newDenominator == 0)
                 return 1.0F;
             return newNumerator / newDenominator;
         }
 
-        public static float GetUserInteractionWeightInCalculatingTrustTotal(UserInteractionStat noWeightingStat, UserInteraction theUserInteraction)
+        public static double GetUserInteractionWeightInCalculatingTrustTotal(UserInteractionStat noWeightingStat, UserInteraction theUserInteraction)
         {
             if (theUserInteraction.NumTransactions == 0)
-                return 0.0F;
+                return 0.0;
             return
-                    (noWeightingStat.SumWeights / (float)theUserInteraction.NumTransactions)
+                    (noWeightingStat.SumWeights / (double)theUserInteraction.NumTransactions)
                         *
                 /* giving somewhat more weight when there have been more transactions, but at least some weight as soon as there have been 2 transactions */
-                        (float)Math.Log((double)(theUserInteraction.NumTransactions + 1), 10.0)
+                        (double)Math.Log((double)(theUserInteraction.NumTransactions + 1), 10.0)
                         *
                         ConstrainLatestUserTrust(theUserInteraction.LatestUserEgalitarianTrust);
         }
@@ -44,20 +44,20 @@ namespace ClassLibrary1.Model
         /// <param name="noWeightingStat"></param>
         /// <param name="theUserInteraction"></param>
         /// <returns></returns>
-        public static float GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(UserInteractionStat noWeightingStat, UserInteraction theUserInteraction)
+        public static double GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(UserInteractionStat noWeightingStat, UserInteraction theUserInteraction)
         {
             if (theUserInteraction.NumTransactions == 0)
-                return 0.0F;
+                return 0.0;
             return
-                    (noWeightingStat.SumWeights / (float)theUserInteraction.NumTransactions)
+                    (noWeightingStat.SumWeights / (double)theUserInteraction.NumTransactions)
                         *
                 /* giving somewhat more weight when there have been more transactions, but at least some weight as soon as there have been 2 transactions */
-                        (float)Math.Log((double)(theUserInteraction.NumTransactions + 1), 10.0)
+                        (double)Math.Log((double)(theUserInteraction.NumTransactions + 1), 10.0)
                         *
-                        ConstrainLatestUserTrust(theUserInteraction.LatestUserEgalitarianTrustAtLastWeightUpdate ?? theUserInteraction.LatestUserEgalitarianTrust);
+                        (double) ConstrainLatestUserTrust(theUserInteraction.LatestUserEgalitarianTrustAtLastWeightUpdate ?? theUserInteraction.LatestUserEgalitarianTrust);
         }
-        
-        public static float ConstrainLatestUserTrust(float unconstrainedTrust)
+
+        public static double ConstrainLatestUserTrust(double unconstrainedTrust)
         {
             return Constrain(unconstrainedTrust, PMAdjustmentFactor.MinimumRetrospectiveAdjustmentFactor, PMAdjustmentFactor.MaximumRetrospectiveAdjustmentFactor);
         }
@@ -70,6 +70,14 @@ namespace ClassLibrary1.Model
             return Math.Max((float)0, ((float)(Math.Log((double)number) / Math.Log((double)theBase))));
         }
 
+        public static double Constrain(double value, double minValue, double maxValue)
+        {
+            if (value < minValue)
+                return minValue;
+            if (value > maxValue)
+                return maxValue;
+            return value;
+        }
 
         public static float Constrain(float value, float minValue, float maxValue)
         {

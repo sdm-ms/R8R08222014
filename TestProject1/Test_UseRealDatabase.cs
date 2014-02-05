@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using FluentAssertions.Assertions;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
 using Microsoft.WindowsAzure.ServiceRuntime;

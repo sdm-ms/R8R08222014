@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClassLibrary1.Model;
 using ClassLibrary1.Misc;
 using FluentAssertions;
-using FluentAssertions.Assertions;
 
 namespace TestProject1
 {

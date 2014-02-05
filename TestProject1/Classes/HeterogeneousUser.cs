@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
+using System.Diagnostics;
 
 namespace TestProject1
 {
@@ -60,6 +61,14 @@ namespace TestProject1
             UserRatingEstimateWeight = userRatingEstimateWeight;
         }
 
+        public void PrintOutInfo()
+        {
+            RaterooDataManipulation dc = new RaterooDataManipulation();
+            User theUser = dc.DataContext.GetTable<User>().Single(x => x.UserID == UserId);
+            TrustTracker theTrustTracker = theUser.TrustTrackers.First();
+            Debug.WriteLine("UserID: " + UserId + " Subversive: " + (Type == HeterogeneousUserType.Subversive) + " Quality: " + Quality + " EstimateWeight: " + UserRatingEstimateWeight + " Overall trust: " + theTrustTracker.OverallTrustLevel + " at last review: " + theTrustTracker.OverallTrustLevelAtLastReview);
+        }
+
         /// <summary>
         /// Returns a weighted average of _userRatingTargetValue and
         /// a random value between the minimum and maximum user rating
@@ -81,7 +90,7 @@ namespace TestProject1
 
             if (UserRatingEstimateWeight == Int32.MaxValue ||
                 rating.UserRatings.Count < 1 ||
-                subversiveUserIgnoresPreviousRatings)
+                (subversiveUserIgnoresPreviousRatings && Type == HeterogeneousUserType.Subversive))
             {
                 userRatingValue = userRatingEstimate;
             }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using FluentAssertions.Assertions;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
 using Microsoft.WindowsAzure.ServiceRuntime;
@@ -186,7 +185,7 @@ namespace TestProject1
             theUserRating.PointsEarnedShortTerm.Should().Be(shortTermPointsEarnedInitially);
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
-            theUserRating.LongTermResolutionValue.Should().NotBeNull();
+            theUserRating.LongTermResolutionValue.Should().NotBe(null);
             decimal longTermResolutionValueAfterInitialResolution = (decimal) theUserRating.LongTermResolutionValue;
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeFalse();
             decimal longTermPointsEarnedInitially = theUserRating.PointsEarnedLongTerm;

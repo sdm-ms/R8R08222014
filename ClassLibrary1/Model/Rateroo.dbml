@@ -953,13 +953,13 @@
       <Association Name="User_UserCheckIn" Member="UserCheckIns" ThisKey="UserID" OtherKey="UserID" Type="UserCheckIn" />
       <Association Name="User_UserRatingsToAdd" Member="UserRatingsToAdds" ThisKey="UserID" OtherKey="UserID" Type="UserRatingsToAdd" />
       <Association Name="User_UserInfo" Member="UserInfo" Storage="_UserInfos" ThisKey="UserID" OtherKey="UserID" Type="UserInfo" Cardinality="One" />
-      <Association Name="User_UserInteraction" Member="UserInteractions" ThisKey="UserID" OtherKey="OrigRatingUserID" Type="UserInteraction" />
-      <Association Name="User_UserInteraction1" Member="UserInteractions1" ThisKey="UserID" OtherKey="LatestRatingUserID" Type="UserInteraction" />
       <Association Name="User_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="UserID" OtherKey="UserID" Type="TrustTrackerForChoiceInGroup" />
-      <Association Name="User_TrustTracker" Member="TrustTrackers" ThisKey="UserID" OtherKey="UserID" Type="TrustTracker" />
       <Association Name="User_Rating" Member="Ratings" ThisKey="UserID" OtherKey="Creator" Type="Rating" />
       <Association Name="User_UserRating" Member="UserRatings" ThisKey="UserID" OtherKey="UserID" Type="UserRating" />
       <Association Name="User_PointsTotal" Member="PointsTotals" ThisKey="UserID" OtherKey="UserID" Type="PointsTotal" />
+      <Association Name="User_TrustTracker" Member="TrustTrackers" ThisKey="UserID" OtherKey="UserID" Type="TrustTracker" />
+      <Association Name="User_UserInteraction" Member="UserInteractions" ThisKey="UserID" OtherKey="OrigRatingUserID" Type="UserInteraction" />
+      <Association Name="User_UserInteraction1" Member="UserInteractions1" ThisKey="UserID" OtherKey="LatestRatingUserID" Type="UserInteraction" />
     </Type>
   </Table>
   <Table Name="dbo.UsersAdministrationRightsGroups" Member="UsersAdministrationRightsGroups">
@@ -1295,52 +1295,10 @@
       <Column Name="ExtendIntervalWhenChangeIsLessThanThis" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="ExtendIntervalMultiplier" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Association Name="TrustTrackerUnit_TblColumn" Member="TblColumns" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TblColumn" />
-      <Association Name="TrustTrackerUnit_UserInteraction" Member="UserInteractions" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserInteraction" />
       <Association Name="TrustTrackerUnit_PointsManager" Member="PointsManagers" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="PointsManager" />
-      <Association Name="TrustTrackerUnit_TrustTracker" Member="TrustTrackers" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTracker" />
       <Association Name="TrustTrackerUnit_UserRating" Member="UserRatings" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserRating" />
-    </Type>
-  </Table>
-  <Table Name="dbo.UserInteractions" Member="UserInteractions">
-    <Type Name="UserInteraction">
-      <Column Name="UserInteractionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="OrigRatingUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LatestRatingUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="NumTransactions" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LatestUserEgalitarianTrust" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="WeightInCalculatingTrustTotal" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="LatestUserEgalitarianTrustAtLastWeightUpdate" Type="System.Single" DbType="Real" CanBeNull="true" />
-      <Association Name="UserInteraction_UserInteractionStat" Member="UserInteractionStats" ThisKey="UserInteractionID" OtherKey="UserInteractionID" Type="UserInteractionStat" />
-      <Association Name="TrustTrackerUnit_UserInteraction" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
-      <Association Name="User_UserInteraction" Member="User" ThisKey="OrigRatingUserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
-      <Association Name="User_UserInteraction1" Member="User1" ThisKey="LatestRatingUserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.UserInteractionStats" Member="UserInteractionStats">
-    <Type Name="UserInteractionStat">
-      <Column Name="UserInteractionStatID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserInteractionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TrustTrackerStatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="StatNum" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="SumAdjustPctTimesWeight" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="SumWeights" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="AvgAdjustmentPctWeighted" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Association Name="UserInteraction_UserInteractionStat" Member="UserInteraction" ThisKey="UserInteractionID" OtherKey="UserInteractionID" Type="UserInteraction" IsForeignKey="true" />
-      <Association Name="TrustTrackerStat_UserInteractionStat" Member="TrustTrackerStat" ThisKey="TrustTrackerStatID" OtherKey="TrustTrackerStatID" Type="TrustTrackerStat" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrustTrackerStats" Member="TrustTrackerStats">
-    <Type Name="TrustTrackerStat">
-      <Column Name="TrustTrackerStatID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TrustTrackerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="StatNum" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="TrustValue" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="Trust_Numer" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="Trust_Denom" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="SumUserInteractionStatWeights" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Association Name="TrustTrackerStat_UserInteractionStat" Member="UserInteractionStats" ThisKey="TrustTrackerStatID" OtherKey="TrustTrackerStatID" Type="UserInteractionStat" />
-      <Association Name="TrustTracker_TrustTrackerStat" Member="TrustTracker" ThisKey="TrustTrackerID" OtherKey="TrustTrackerID" Type="TrustTracker" IsForeignKey="true" />
+      <Association Name="TrustTrackerUnit_TrustTracker" Member="TrustTrackers" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTracker" />
+      <Association Name="TrustTrackerUnit_UserInteraction" Member="UserInteractions" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserInteraction" />
     </Type>
   </Table>
   <Table Name="dbo.TrustTrackerForChoiceInGroupsUserRatingLinks" Member="TrustTrackerForChoiceInGroupsUserRatingLinks">
@@ -1438,26 +1396,6 @@
       <Association Name="RatingPhaseStatus_UserRating" Member="UserRatings" ThisKey="RatingPhaseStatusID" OtherKey="RatingPhaseStatusID" Type="UserRating" />
       <Association Name="RatingGroupPhaseStatus_RatingPhaseStatus" Member="RatingGroupPhaseStatus" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="RatingGroupPhaseStatus" IsForeignKey="true" />
       <Association Name="Rating_RatingPhaseStatus" Member="Rating" ThisKey="RatingID" OtherKey="RatingID" Type="Rating" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrustTrackers" Member="TrustTrackers">
-    <Type Name="TrustTracker">
-      <Column Name="TrustTrackerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="OverallTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="OverallTrustLevelAtLastReview" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="DeltaOverallTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="SkepticalTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="SumUserInteractionWeights" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="EgalitarianTrustLevel" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="Egalitarian_Num" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="Egalitarian_Denom" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Column Name="EgalitarianTrustLevelOverride" Type="System.Single" DbType="Real" CanBeNull="true" />
-      <Column Name="MustUpdateUserInteractionEgalitarianTrustLevel" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="TrustTracker_TrustTrackerStat" Member="TrustTrackerStats" ThisKey="TrustTrackerID" OtherKey="TrustTrackerID" Type="TrustTrackerStat" />
-      <Association Name="TrustTrackerUnit_TrustTracker" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
-      <Association Name="User_TrustTracker" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Ratings" Member="Ratings">
@@ -1644,6 +1582,68 @@
       <Column Name="NumUserRatings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="PointsManager_PointsTotal" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
       <Association Name="User_PointsTotal" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrustTrackers" Member="TrustTrackers">
+    <Type Name="TrustTracker">
+      <Column Name="TrustTrackerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OverallTrustLevel" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="OverallTrustLevelAtLastReview" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaOverallTrustLevel" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="SkepticalTrustLevel" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="SumUserInteractionWeights" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="EgalitarianTrustLevel" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Egalitarian_Num" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Egalitarian_Denom" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="EgalitarianTrustLevelOverride" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MustUpdateUserInteractionEgalitarianTrustLevel" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="TrustTracker_TrustTrackerStat" Member="TrustTrackerStats" ThisKey="TrustTrackerID" OtherKey="TrustTrackerID" Type="TrustTrackerStat" />
+      <Association Name="TrustTrackerUnit_TrustTracker" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
+      <Association Name="User_TrustTracker" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserInteractionStats" Member="UserInteractionStats">
+    <Type Name="UserInteractionStat">
+      <Column Name="UserInteractionStatID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserInteractionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TrustTrackerStatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StatNum" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="SumAdjustPctTimesWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="SumWeights" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AvgAdjustmentPctWeighted" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="TrustTrackerStat_UserInteractionStat" Member="TrustTrackerStat" ThisKey="TrustTrackerStatID" OtherKey="TrustTrackerStatID" Type="TrustTrackerStat" IsForeignKey="true" />
+      <Association Name="UserInteraction_UserInteractionStat" Member="UserInteraction" ThisKey="UserInteractionID" OtherKey="UserInteractionID" Type="UserInteraction" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrustTrackerStats" Member="TrustTrackerStats">
+    <Type Name="TrustTrackerStat">
+      <Column Name="TrustTrackerStatID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TrustTrackerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StatNum" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="TrustValue" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Trust_Numer" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Trust_Denom" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="SumUserInteractionStatWeights" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="TrustTrackerStat_UserInteractionStat" Member="UserInteractionStats" ThisKey="TrustTrackerStatID" OtherKey="TrustTrackerStatID" Type="UserInteractionStat" />
+      <Association Name="TrustTracker_TrustTrackerStat" Member="TrustTracker" ThisKey="TrustTrackerID" OtherKey="TrustTrackerID" Type="TrustTracker" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserInteractions" Member="UserInteractions">
+    <Type Name="UserInteraction">
+      <Column Name="UserInteractionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrigRatingUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LatestRatingUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumTransactions" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LatestUserEgalitarianTrust" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="WeightInCalculatingTrustTotal" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="LatestUserEgalitarianTrustAtLastWeightUpdate" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="UserInteraction_UserInteractionStat" Member="UserInteractionStats" ThisKey="UserInteractionID" OtherKey="UserInteractionID" Type="UserInteractionStat" />
+      <Association Name="TrustTrackerUnit_UserInteraction" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
+      <Association Name="User_UserInteraction" Member="User" ThisKey="OrigRatingUserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+      <Association Name="User_UserInteraction1" Member="User1" ThisKey="LatestRatingUserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">

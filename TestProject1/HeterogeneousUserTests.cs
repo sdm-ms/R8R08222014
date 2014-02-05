@@ -13,7 +13,7 @@ namespace TestProject1
     [TestClass]
     public class HeterogeneousUserTests
     {
-        static float _CalculateProportionWithinTolerance(IEnumerable<Rating> ratings, decimal target, decimal tolerance)
+        static float CalculateProportionWithinTolerance(IEnumerable<Rating> ratings, decimal target, decimal tolerance)
         {
             int numWithinTolerance = ratings
                 .Where(r =>
@@ -98,7 +98,7 @@ namespace TestProject1
                 tolerance: 1m,
                 requiredProportionOfRatingsWithinTolerance: 0.90f,
                 breakUponSuccess:true,
-                subversiveUserIgnoresPreviousRatings: false);
+                subversiveUserIgnoresPreviousRatings: true);
         }
 
         public void RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
@@ -139,7 +139,7 @@ namespace TestProject1
                 _testHelper.WaitIdleTasks();
                 IEnumerable<Rating> interRatings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
                     .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
-                float interProportion = _CalculateProportionWithinTolerance(interRatings, correctRatingValue, tolerance);
+                float interProportion = CalculateProportionWithinTolerance(interRatings, correctRatingValue, tolerance);
                 #region Debug
                 Debug.WriteLine(String.Format("Round {0}: {1}% within tolerance", i, interProportion * 100));
                 #endregion
@@ -153,24 +153,25 @@ namespace TestProject1
              */
             IEnumerable<Rating> ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
                 .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
-            float proportion = _CalculateProportionWithinTolerance(ratings, correctRatingValue, tolerance);
+            float proportion = CalculateProportionWithinTolerance(ratings, correctRatingValue, tolerance);
             #region Debug
-            //IEnumerable<Rating> ratings2 = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-            //    .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
-            //foreach (Rating rating in ratings)
-            //{
-            //    Debug.WriteLine(String.Format("<Rating {0}> CurrentValue={1} LastTrustedValue={2}", rating.RatingID,
-            //        rating.CurrentValue, rating.LastTrustedValue));
-            //    foreach (UserRating userRating in rating.UserRatings)
-            //    {
-            //        Debug.WriteLine(String.Format("\t<UserRating {0}> EnteredUserRating={1}", userRating.RatingID, 
-            //            userRating.EnteredUserRating));
-            //        TrustTracker trustTracker = userRating.User.TrustTrackers.Single();
-            //        Debug.WriteLine(String.Format(
-            //            "\t\t<User {0}> OverallTrustLevel={1} SkepticalTrustLevel={2}", 
-            //            userRating.User.UserID, trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
-            //    }
-            //}
+            pool.PrintOutUsersInfo();
+            IEnumerable<Rating> ratings2 = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
+            foreach (Rating rating in ratings)
+            {
+                Debug.WriteLine(String.Format("<Rating {0}> CurrentValue={1} LastTrustedValue={2}", rating.RatingID,
+                    rating.CurrentValue, rating.LastTrustedValue));
+                foreach (UserRating userRating in rating.UserRatings)
+                {
+                    Debug.WriteLine(String.Format("\t<UserRating {0}> EnteredUserRating={1}", userRating.RatingID,
+                        userRating.EnteredUserRating));
+                    TrustTracker trustTracker = userRating.User.TrustTrackers.Single();
+                    Debug.WriteLine(String.Format(
+                        "\t\t<User {0}> OverallTrustLevel={1} SkepticalTrustLevel={2}",
+                        userRating.User.UserID, trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
+                }
+            }
             #endregion
             proportion.Should().BeGreaterThan(requiredProportionOfRatingsWithinTolerance,
                 String.Format(

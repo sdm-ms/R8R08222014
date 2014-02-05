@@ -123,11 +123,11 @@ namespace ClassLibrary1
 
         internal static void RemoveUserRatingFromRecencyUserInteractionStat(UserRating userRating, UserInteractionStat userInteractionStat, TrustTrackerStat trustTrackerStat, float ratingMagnitude, float adjustmentPct)
         {
-            float weightInCalculatingTrustTotal = userInteractionStat.UserInteraction.WeightInCalculatingTrustTotal;
-            float previousWeightForIndividualUserInteraction = ratingMagnitude; // the statistic is the same as the NoExtraWeighting statistic as long as the user rating is still recent
-            float ratingMagnitudeTimesAdjustmentPct = previousWeightForIndividualUserInteraction * adjustmentPct; 
-            float originalAverageAdjustmentPct = userInteractionStat.AvgAdjustmentPctWeighted;
-            float originalSumWeights = userInteractionStat.SumWeights;
+            double weightInCalculatingTrustTotal = userInteractionStat.UserInteraction.WeightInCalculatingTrustTotal;
+            double previousWeightForIndividualUserInteraction = ratingMagnitude; // the statistic is the same as the NoExtraWeighting statistic as long as the user rating is still recent
+            double ratingMagnitudeTimesAdjustmentPct = previousWeightForIndividualUserInteraction * adjustmentPct; 
+            double originalAverageAdjustmentPct = userInteractionStat.AvgAdjustmentPctWeighted;
+            double originalSumWeights = userInteractionStat.SumWeights;
             userInteractionStat.SumAdjustPctTimesWeight -= ratingMagnitudeTimesAdjustmentPct;
             userInteractionStat.SumWeights -= previousWeightForIndividualUserInteraction;
             if (userInteractionStat.UserInteraction.NumTransactions == 0 || userInteractionStat.SumWeights == 0)
