@@ -86,17 +86,17 @@ namespace TestProject1
         public void HeterogeneousTestWorksWithRealisticConditions()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
-                tblRowCount: 20,
+                tblRowCount: 40,
                 userCount: 20,  
                 subversivePercentage: 0.1f,
-                quality: 0.8f,
-                userRatingEstimateWeight: Int32.MaxValue,
+                quality: 0.6f,
+                userRatingEstimateWeight: 6,
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 2m,
-                rounds: 40,
-                userRatingsPerRating: 8,
+                rounds: 30,
+                userRatingsPerRating: 1,
                 tolerance: 1m,
-                requiredProportionOfRatingsWithinTolerance: 0.90f,
+                requiredProportionOfRatingsWithinTolerance: 0.95f,
                 breakUponSuccess:true,
                 subversiveUserIgnoresPreviousRatings: true);
         }
@@ -124,6 +124,9 @@ namespace TestProject1
             _testHelper.CreateUsers(userCount);
             _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowCount);
             _testHelper.WaitIdleTasks();
+
+            // This is not needed: TrustTrackerStatManager.UseOverallTrustValueOnly = true;
+            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 2; // reduce this to get faster convergence
 
             Action skip1Hour = () => TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
             HeterogeneousUserPool pool = new HeterogeneousUserPool(_testHelper, quality,
@@ -160,16 +163,20 @@ namespace TestProject1
                 .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
             foreach (Rating rating in ratings)
             {
-                Debug.WriteLine(String.Format("<Rating {0}> CurrentValue={1} LastTrustedValue={2}", rating.RatingID,
-                    rating.CurrentValue, rating.LastTrustedValue));
-                foreach (UserRating userRating in rating.UserRatings)
+                if (Math.Abs(rating.CurrentValue.Value - correctRatingValue) > tolerance)
                 {
-                    Debug.WriteLine(String.Format("\t<UserRating {0}> EnteredUserRating={1}", userRating.RatingID,
-                        userRating.EnteredUserRating));
-                    TrustTracker trustTracker = userRating.User.TrustTrackers.Single();
-                    Debug.WriteLine(String.Format(
-                        "\t\t<User {0}> OverallTrustLevel={1} SkepticalTrustLevel={2}",
-                        userRating.User.UserID, trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
+                    Debug.WriteLine(String.Format("<Rating {0}> CurrentValue={1} LastTrustedValue={2}", rating.RatingID,
+                        rating.CurrentValue, rating.LastTrustedValue));
+                    foreach (UserRating userRating in rating.UserRatings)
+                    {
+                        TrustTracker trustTracker = userRating.User.TrustTrackers.Single();
+                        Debug.Write(String.Format("\t<Rating {0}> <UserRating {1}> PreviousUserRating={2} EnteredUserRating={3} NewUserRating={4}", rating.RatingID, userRating.UserRatingID,
+                            userRating.PreviousDisplayedRating,
+                            userRating.EnteredUserRating, userRating.NewUserRating));
+                        Debug.WriteLine(String.Format(
+                            "\t\t<User {0}> OverallTrustLevel={1} SkepticalTrustLevel={2}",
+                            userRating.User.UserID, trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
+                    }
                 }
             }
             #endregion

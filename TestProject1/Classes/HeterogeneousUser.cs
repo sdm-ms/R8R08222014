@@ -78,8 +78,10 @@ namespace TestProject1
         public decimal GetUserRatingEstimate(decimal userRatingValueTarget)
         {
             return 
-                (decimal)Quality * userRatingValueTarget + 
-                (decimal)(1 - Quality) * RandomGenerator.GetRandom(Rating.MinRatingValue, Rating.MaxRatingValue);
+                PMTrustCalculations.Constrain(
+                (decimal) userRatingValueTarget + 
+                (decimal)(1 - Quality) * (decimal) RandomGenerator.GetRandom(-2.0, 2.0), // this is a somewhat simplified approach, but if we just weigh in random noise, we will end up with a downward bias
+                0, 10);
         }
 
         public void Rate(Rating rating, decimal userRatingValueTarget, bool subversiveUserIgnoresPreviousRatings)
@@ -88,18 +90,20 @@ namespace TestProject1
 
             decimal userRatingEstimate = GetUserRatingEstimate(userRatingValueTarget);
 
+            List<UserRating> previousUserRatings = rating.UserRatings
+                    .Where(ur => ur.UserID != this.UserId).ToList();
+            int previousUserRatingCount = previousUserRatings.Count;
             if (UserRatingEstimateWeight == Int32.MaxValue ||
-                rating.UserRatings.Count < 1 ||
+                previousUserRatingCount < 1 ||
                 (subversiveUserIgnoresPreviousRatings && Type == HeterogeneousUserType.Subversive))
             {
                 userRatingValue = userRatingEstimate;
             }
             else
             {
-                decimal previousUserRatingValueAverage = rating.UserRatings
-                    .Where(ur => ur.UserID != this.UserId)
-                    .Average(ur => ur.EnteredUserRating);
-                int previousUserRatingCount = rating.UserRatings.Count;
+                double? theMedian = previousUserRatings
+                    .Median(ur => ur.EnteredUserRating);
+                decimal previousUserRatingValueAverage = (decimal)theMedian; // there must be at least 1
                 userRatingValue = 
                     (UserRatingEstimateWeight * userRatingEstimate + 
                         previousUserRatingCount * previousUserRatingValueAverage) 
