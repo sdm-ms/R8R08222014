@@ -32,7 +32,7 @@ namespace ClassLibrary1.Model
     {
         RaterooDataManipulation _dataManipulation = null;
 
-        RaterooDataManipulation DataManipulation
+        public RaterooDataManipulation DataManipulation
         {
             get
             {

@@ -339,10 +339,11 @@ namespace ClassLibrary1.Model
                             AdjustmentFactor += (float) (alternativeCandidatePool.RegressedMeanTrustValue * (alternativeCandidatePool.Weight / sumOfWeights));
                     }
                 }
-                AdjustmentFactor = PMTrustCalculations.Constrain(AdjustmentFactor,
-                    PMAdjustmentFactor.MinimumPredictiveAdjustmentFactor,
-                    PMAdjustmentFactor.MaximumPredictiveAdjustmentFactor);
             }
+            AdjustmentFactor = PMTrustCalculations.Constrain(AdjustmentFactor,
+    PMAdjustmentFactor.MinimumPredictiveAdjustmentFactor,
+    PMAdjustmentFactor.MaximumPredictiveAdjustmentFactor);
+
         }
 
         private static void KeepOnlyMostInfluentialOfMutuallyExclusiveTrustStats(List<TrustTrackerStatWithValue> alternativeTrustTrackerStatWithValues)

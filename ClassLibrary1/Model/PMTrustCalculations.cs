@@ -9,7 +9,7 @@ namespace ClassLibrary1.Model
     public static class PMTrustCalculations
     {
 
-        public static int NumPerfectScoresToGiveNewUser = 10;
+        public static int NumPerfectScoresToGiveNewUser = 5;
 
         public static double GetOverallTrustLevelWithNewUserCredit(TrustTrackerStat noWeightingStat, int actualContributingUserInteractions)
         {

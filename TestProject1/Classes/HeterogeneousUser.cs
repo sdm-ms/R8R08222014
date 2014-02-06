@@ -113,6 +113,7 @@ namespace TestProject1
             
             UserRatingResponse theResponse = new UserRatingResponse();
             TestHelper.ActionProcessor.UserRatingAdd(rating.RatingID, userRatingValue, UserId, ref theResponse);
+            TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation);
         }
     }
 }

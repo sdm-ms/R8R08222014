@@ -1627,7 +1627,9 @@ namespace ClassLibrary1.Model
             else
                 noviceHighStakesSettings = new NoviceHighStakesSettings() { UseNoviceHighStakes = false, HighStakesMultiplierOverride = 1.0M };
 
-            decimal? previousUserRating = rating.CurrentValue;
+            decimal? previousUserRating = lastTrustedRatingOrBasisOfCalc; // this should equal rating.CurrentValue, since we made sure of that above
+            if (rating.CurrentValue != null && rating.CurrentValue != lastTrustedRatingOrBasisOfCalc)
+                throw new Exception("Internal error: Rating current value should equal last trusted value.");
 
             decimal maxLossLongTerm, maxGainLongTerm, profitLongTerm, maxLossShortTerm, maxGainShortTerm, profitShortTerm;
 
@@ -1702,6 +1704,7 @@ namespace ClassLibrary1.Model
                 OriginalAdjustmentPct = (decimal) additionalInfo.AdjustPct,
                 OriginalTrustLevel = (decimal) additionalInfo.OverallTrustLevel,
                 MadeDirectly = madeDirectly,
+                IsTrusted = true, // all ratings are trusted now
                 LongTermResolutionReflected = false,
                 ShortTermResolutionReflected = false,
                 PointsHaveBecomePending = false,
@@ -1726,6 +1729,10 @@ namespace ClassLibrary1.Model
                 UserRatingNumberForUser = pointsTotal.NumUserRatings + 1,
                 NextRecencyUpdateAtUserRatingNum = PMRecencyUpdates.GetNextRecencyUpdate(0, pointsTotal.NumUserRatings + 1).TotalUserRatingsAtNextUpdate
             };
+
+            if (theUserRating.NewUserRating - theUserRating.EnteredUserRating <= 0 != theUserRating.EnteredUserRating - theUserRating.PreviousDisplayedRating >= 0 && theUserRating.PreviousDisplayedRating != null && theUserRating.NewUserRating != theUserRating.EnteredUserRating && theUserRating.EnteredUserRating != theUserRating.PreviousDisplayedRating && theUserRating.NewUserRating != theUserRating.PreviousDisplayedRating)
+                throw new Exception("User rating moved in wrong direction. Internal error. DEBUG.");
+
             UpdateUserRatingHighStakesKnownFields(theUserRating, ratingGroupPhaseStatus, userRatingGroup.WhenMade);
 
             DataContext.GetTable<UserRating>().InsertOnSubmit(theUserRating);
@@ -1759,6 +1766,8 @@ namespace ClassLibrary1.Model
             //Trace.TraceInformation("2Setting current value to " + newUserRating);
             rating.CurrentValue = newUserRatingValue;
             rating.LastTrustedValue = newLastTrustedUserRating;
+            if (rating.LastTrustedValue != rating.CurrentValue && rating.CurrentValue != null)
+                throw new Exception("Internal error: Trusted value should equal current value, since trust concept is eliminated.");
             rating.LastModifiedResolutionTimeOrCurrentValue = currentTime;
             ratingPhaseStatus.NumUserRatingsMadeDuringPhase++;
             pointsTotal.NumUserRatings++;

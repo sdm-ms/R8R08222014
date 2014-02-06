@@ -45,7 +45,7 @@ namespace TestProject1
         }
         
         [TestMethod]
-        public void HeterogeneousTestWorksWithPerfectConditions()
+        public void HeterogeneousTestWorksWithNoSubversiveUsers()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
                 tblRowCount: 20,
@@ -56,34 +56,34 @@ namespace TestProject1
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 2m,
                 rounds: 10,
-                userRatingsPerRating: 20,
+                userRatingsPerRating: 10,
                 tolerance: 0.5m,
                 requiredProportionOfRatingsWithinTolerance: 0.95f,
-                breakUponSuccess: false,
+                breakUponSuccess: true,
                 subversiveUserIgnoresPreviousRatings: false);
         }
         
         [TestMethod]
-        public void HeterogeneousTestWorksWithPerfectConditionsPlusSubversiveUsers()
+        public void HeterogeneousTestWorksWithSubversiveUsersAccountingForPreviousRatings()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
                 tblRowCount: 20,
                 userCount: 20,
                 subversivePercentage: 0.1f,
                 quality: 1,
-                userRatingEstimateWeight: Int32.MaxValue,
+                userRatingEstimateWeight: 12,
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 2m,
-                rounds: 20,
+                rounds: 5,
                 userRatingsPerRating: 20,
                 tolerance: 0.5m,
-                requiredProportionOfRatingsWithinTolerance: 0.95f,
-                breakUponSuccess: false,
+                requiredProportionOfRatingsWithinTolerance: 0.98f,
+                breakUponSuccess: true,
                 subversiveUserIgnoresPreviousRatings: false);
         }
 
         [TestMethod]
-        public void HeterogeneousTestWorksWithRealisticConditions()
+        public void HeterogeneousTestWorksWithSubversiveUsersIgnoringPreviousRatings()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
                 tblRowCount: 40,
@@ -94,7 +94,7 @@ namespace TestProject1
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 2m,
                 rounds: 30,
-                userRatingsPerRating: 1,
+                userRatingsPerRating: 5,
                 tolerance: 1m,
                 requiredProportionOfRatingsWithinTolerance: 0.95f,
                 breakUponSuccess:true,
@@ -265,6 +265,8 @@ namespace TestProject1
                      * Calculate the intermediate absolute error.
                      */
                     decimal averageAbsError2 = _CalculateAverageAbsoluteError(ratings, correctRatingValue);
+                    if (averageAbsError2 < maximumAllowableAverageAbsoluteErrorForFinalIteration)
+                        return; // success
                     #region Debug
                     Debug.WriteLine(String.Format("Iteration {0} Round {1} Average Absolute Error: {2}", iteration, round, averageAbsError2));
                     #endregion

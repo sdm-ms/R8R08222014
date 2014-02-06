@@ -65,7 +65,7 @@ namespace ClassLibrary1.Model
                 foreach (Rating r in item.Ratings)
                 {
                     r.ReviewRecentUserRatingsAfter = TestableDateTime.Now + TimeSpan.FromMinutes(20); // see above for why we delay this
-                    Debug.WriteLine("Set rating " + r.RatingID + " for review at " + r.ReviewRecentUserRatingsAfter.ToString()); // DEBUG
+                    //Debug.WriteLine("Set rating " + r.RatingID + " for review at " + r.ReviewRecentUserRatingsAfter.ToString());
                 }
                 item.TrustTracker.OverallTrustLevelAtLastReview = item.TrustTracker.OverallTrustLevel;
                 if (item.Ratings.Count() < MaxRatingsToFlagPerUser)
@@ -151,7 +151,7 @@ namespace ClassLibrary1.Model
                 // is this a big enough difference?
                 float hypotheticalAdjustmentFactorForLastUser = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)trackIdealRatingValue, actualFinalRating, urs[numUserRatings - 1].PreviousRatingOrVirtualRating);
                 bool bigEnoughDifference = (hypotheticalAdjustmentFactorForLastUser < HypotheticalAdjFactorsNotWorthImplementing.Item1 || hypotheticalAdjustmentFactorForLastUser > HypotheticalAdjFactorsNotWorthImplementing.Item2);
-                Debug.WriteLine("DEBUG reviewing rating " + urSet.Rating.RatingID + " entered " + urs.Last().EnteredUserRating + " final " + actualFinalRating + " ideal " + trackIdealRatingValue + " hypo adj " + hypotheticalAdjustmentFactorForLastUser + " big enough? " + bigEnoughDifference);
+                //Debug.WriteLine("DEBUG reviewing rating " + urSet.Rating.RatingID + " entered " + urs.Last().EnteredUserRating + " final " + actualFinalRating + " ideal " + trackIdealRatingValue + " hypo adj " + hypotheticalAdjustmentFactorForLastUser + " big enough? " + bigEnoughDifference);
                 if (bigEnoughDifference)
                 { // add the new UserRating
                     UserRatingGroup urg = AddUserRatingGroup(urSet.Rating.RatingGroup2);

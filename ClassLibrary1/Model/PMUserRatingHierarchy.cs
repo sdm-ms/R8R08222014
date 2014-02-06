@@ -243,6 +243,8 @@ namespace ClassLibrary1.Model
             OriginalTrustedValue = theOriginalTrustedValue;
             OriginalDisplayedRating = theOriginalDisplayedRating;
             OriginalTrustedValueOrBasisForCalculatingPoints = theOriginalDisplayedRatingOrBasisOfCalc;
+            if (OriginalTrustedValue != null && (OriginalTrustedValue != OriginalTrustedValueOrBasisForCalculatingPoints || OriginalDisplayedRating != OriginalTrustedValue || OriginalDisplayedRating != OriginalTrustedValueOrBasisForCalculatingPoints))
+                throw new Exception("DEBUG here.");
             EnteredValueOrCalculatedValue = theNewValue;
             MadeDirectly = theDirectlyMade;
             CannotBeChanged = theCannotBeChanged;
@@ -393,7 +395,6 @@ namespace ClassLibrary1.Model
             int? superior = null;
             if (hierarchyLevel > 1)
                 superior = UserRatingHierarchyEntries.Last(d => d.HierarchyLevel == hierarchyLevel - 1).EntryNum;
-
             UserRatingHierarchyEntries.Add(new UserRatingHierarchyEntry(ratingID, ratingGroupID, theOriginalTrustedValue, theOriginalDisplayedRating, theOriginalDisplayedRatingOrBasisOfCalc, theNewValue, theDirectlyMade, theCannotBeChanged, hierarchyLevel, numEntries + 1, superior));
         }
 
@@ -605,6 +606,9 @@ namespace ClassLibrary1.Model
                 else
                     predictionToAdjust.NewValueAfterAdjustment = predictionToAdjust.OriginalTrustedValue.Value + (decimal)adjustmentFactor *
                         (predictionToAdjust.EnteredValueOrCalculatedValue.Value - predictionToAdjust.OriginalTrustedValue.Value);
+                // DEBUG Debug.WriteLine(predictionToAdjust.OriginalTrustedValue.Value + ", " + predictionToAdjust.EnteredValueOrCalculatedValue.Value + ", " + predictionToAdjust.NewValueAfterAdjustment);
+                if (adjustmentFactor > 1)
+                    throw new Exception("DEBUG");
                 sumNewValuesAdjusted += (decimal)predictionToAdjust.NewValueAfterAdjustment;
                 i++;
             }
@@ -715,27 +719,27 @@ namespace ClassLibrary1.Model
                 if (theRating.OwnedRatingGroupID != null)
                     AddRatingGroupToUserRatingHierarchy(theRatingGroups.Single(mg => mg.RatingGroupID == (int)theRating.OwnedRatingGroupID), theRatings, theRatingGroups, ref theData, hierarchyLevel + 1);
             }
-            // Check whether there is going to be a new prediction hierarchy shortly because of very recently added ratings.
-            if (hierarchyLevel == 1)
-            {
-                if (newUserRatings != null)
-                {
-                    UserRatingHierarchyData replacementData = BinarySerializer.Deserialize<UserRatingHierarchyData>(newUserRatings.UserRatingHierarchy.ToArray());
-                    var replaceEntries = replacementData.UserRatingHierarchyEntries.Where(x => x.EnteredValueOrCalculatedValue != null || x.OriginalTrustedValue != null);
-                    foreach (var replaceEntry in replaceEntries)
-                    {
-                        var entryToChange = theData.UserRatingHierarchyEntries.Single(x => x.EntryNum == replaceEntry.EntryNum);
-                        var realCurrentValue = replaceEntry.EnteredValueOrCalculatedValue ?? replaceEntry.OriginalTrustedValue; // could be multiple predictions
-                        if (entryToChange.OriginalTrustedValue != realCurrentValue)
-                        {
-                            //Trace.TraceInformation("Replacing in " + entryToChange.entryNum + " " + entryToChange.originalValue + " with " + realCurrentValue);
-                            entryToChange.OriginalTrustedValue = realCurrentValue;
-                        }
-                    }
-                }
-                //else
-                //    Trace.TraceInformation("No newer ratings for replacement.");
-            }
+            //// Check whether there is going to be a new prediction hierarchy shortly because of very recently added ratings.
+            //if (hierarchyLevel == 1)
+            //{
+            //    if (newUserRatings != null)
+            //    {
+            //        UserRatingHierarchyData replacementData = BinarySerializer.Deserialize<UserRatingHierarchyData>(newUserRatings.UserRatingHierarchy.ToArray());
+            //        var replaceEntries = replacementData.UserRatingHierarchyEntries.Where(x => x.EnteredValueOrCalculatedValue != null || x.OriginalTrustedValue != null);
+            //        foreach (var replaceEntry in replaceEntries)
+            //        {
+            //            var entryToChange = theData.UserRatingHierarchyEntries.Single(x => x.EntryNum == replaceEntry.EntryNum);
+            //            var realCurrentValue = replaceEntry.EnteredValueOrCalculatedValue ?? replaceEntry.OriginalTrustedValue; // could be multiple predictions
+            //            if (entryToChange.OriginalTrustedValue != realCurrentValue)
+            //            {
+            //                //Trace.TraceInformation("Replacing in " + entryToChange.entryNum + " " + entryToChange.originalValue + " with " + realCurrentValue);
+            //                entryToChange.OriginalTrustedValue = realCurrentValue;
+            //            }
+            //        }
+            //    }
+            //    //else
+            //    //    Trace.TraceInformation("No newer ratings for replacement.");
+            //}
         }
 
 
@@ -864,7 +868,19 @@ namespace ClassLibrary1.Model
                     );
 
                 UserRatingHierarchyData theData = new UserRatingHierarchyData(additionalInfo);
+                //Debug.WriteLine("DEBUG Getting user rating hierarchy for rating " + theRatings.First().RatingID + " with adjustment factor " + theManager.AdjustmentFactorConservative);
                 GetUserRatingHierarchyBasedOnUserRatings(ratingIdAndUserRatingValues, theRatings, theRatingGroups, constrainedSum, theManager.AdjustmentFactorConservative, ref theData);
+                var DEBUGe = theData.UserRatingHierarchyEntries.First();
+                //Debug.WriteLine("DEBUG result for rating " + theRatings.First().RatingID + " " + DEBUGe.OriginalTrustedValue + "/" + DEBUGe.OriginalDisplayedRating + "/" + DEBUGe.OriginalTrustedValueOrBasisForCalculatingPoints + ", " + DEBUGe.EnteredValueOrCalculatedValue + ", " + DEBUGe.NewValueAfterAdjustment);
+                if (! ((DEBUGe.OriginalTrustedValue <= DEBUGe.NewValueAfterAdjustment && DEBUGe.NewValueAfterAdjustment <= DEBUGe.EnteredValueOrCalculatedValue) || (DEBUGe.OriginalTrustedValue >= DEBUGe.NewValueAfterAdjustment && DEBUGe.NewValueAfterAdjustment >= DEBUGe.EnteredValueOrCalculatedValue) || DEBUGe.OriginalTrustedValue == null ) )
+                {
+                    var DEBUGhere = 0;
+                    while (true)
+                    {
+                        theData = new UserRatingHierarchyData(additionalInfo);
+                        GetUserRatingHierarchyBasedOnUserRatings(ratingIdAndUserRatingValues, theRatings, theRatingGroups, constrainedSum, theManager.AdjustmentFactorConservative, ref theData);
+                    }
+                }
 
                 if (RatingGroupIsResolved(topRatingGroup))
                     throw new UserRatingDataException("You cannot enter a rating, because this table cell is completed.");
@@ -909,69 +925,77 @@ namespace ClassLibrary1.Model
         static bool loadUserRatingsToAddFromAzure = false; // feature not yet implemented...
         // The other challenges for implementing this are around AddUserRatingsToAdd and AddRatingGroupToUserRatingHierarchy.
 
+        public static object AddUserRatingLockForTesting = null; // if non-null, lock on this, so we can just do multiple add user ratings instead of entire background thread sometimes
+
         public bool CompleteMultipleAddUserRatings()
         {
-            DataContext.SetUserRatingAddingLoadOptions();
-            int numAtATime = 100;
-            /* We manually load the first rating in rating group to speed processing of common scenario. The load options should bring everything else in. */
-            List<UserRatingsToAdd> userRatingsToAddList = null;
-            //IQueryable<DataTableServiceEntity<UserRatingsToAdd>> userRatingsToAddDataServiceEntities = null;
-            if (loadUserRatingsToAddFromAzure)
+            object alternativeLock = new object(); // won't actually do any locking since it's local
+
+            lock (AddUserRatingLockForTesting ?? alternativeLock)
             {
-                throw new NotImplementedException();
-                //List<string> partitionKeys = AzureQueue.Pop("UserRatingsToAddQueue", numAtATime).ConvertAll<string>(x => (string)x);
-                //theUserRatingsInfos = new List<UserRatingsToAdd>();
-                //foreach (string partitionKey in partitionKeys)
+
+                DataContext.SetUserRatingAddingLoadOptions();
+                int numAtATime = 100;
+                /* We manually load the first rating in rating group to speed processing of common scenario. The load options should bring everything else in. */
+                List<UserRatingsToAdd> userRatingsToAddList = null;
+                //IQueryable<DataTableServiceEntity<UserRatingsToAdd>> userRatingsToAddDataServiceEntities = null;
+                if (loadUserRatingsToAddFromAzure)
+                {
+                    throw new NotImplementedException();
+                    //List<string> partitionKeys = AzureQueue.Pop("UserRatingsToAddQueue", numAtATime).ConvertAll<string>(x => (string)x);
+                    //theUserRatingsInfos = new List<UserRatingsToAdd>();
+                    //foreach (string partitionKey in partitionKeys)
+                    //{
+                    //    TableServiceContextAccess<DataTableServiceEntity<UserRatingsToAdd>> context = null;
+                    //    userRatingsToAddDataServiceEntities = AzureTable<UserRatingsToAdd>.LoadDataTableServiceEntityByPartitionKey(partitionKey, ref context, "UserRatingsToAdd");
+                    //    theUserRatingsInfos = theUserRatingsInfos.Concat<UserRatingsToAdd>(userRatingsToAddDataServiceEntities.Select(x => x.GetData()).AsEnumerable()).ToList();
+                    //}
+                }
+                else
+                    userRatingsToAddList = DataContext.GetTable<UserRatingsToAdd>()
+                            .Take(numAtATime)
+                            .ToList();
+
+                //var DEBUGx = theUserRatingsInfos.FirstOrDefault();
+                //if (DEBUGx != null)
                 //{
-                //    TableServiceContextAccess<DataTableServiceEntity<UserRatingsToAdd>> context = null;
-                //    userRatingsToAddDataServiceEntities = AzureTable<UserRatingsToAdd>.LoadDataTableServiceEntityByPartitionKey(partitionKey, ref context, "UserRatingsToAdd");
-                //    theUserRatingsInfos = theUserRatingsInfos.Concat<UserRatingsToAdd>(userRatingsToAddDataServiceEntities.Select(x => x.GetData()).AsEnumerable()).ToList();
+                //    var myTest = DEBUGx.RatingGroup;
+                //    var myTest2 = DEBUGx.RatingGroup.Ratings;
+                //    var firstRating = DEBUGx.RatingGroup.Ratings.First();
+                //    var pointsTotal = DEBUGx.User.PointsTotals.SingleOrDefault(pt => pt.User == DEBUGx.User && pt.PointsManager == DEBUGx.RatingGroup.TblRow.Tbl.PointsManager);
+                //    Debug.WriteLine("CompleteMultiple firstRatingID " + firstRating.RatingID + " pointsTotal is null? " + (pointsTotal == null).ToString());
                 //}
-            }
-            else
-                userRatingsToAddList = DataContext.GetTable<UserRatingsToAdd>()
-                        .Take(numAtATime)
-                        .ToList();
 
-            //var DEBUGx = theUserRatingsInfos.FirstOrDefault();
-            //if (DEBUGx != null)
-            //{
-            //    var myTest = DEBUGx.RatingGroup;
-            //    var myTest2 = DEBUGx.RatingGroup.Ratings;
-            //    var firstRating = DEBUGx.RatingGroup.Ratings.First();
-            //    var pointsTotal = DEBUGx.User.PointsTotals.SingleOrDefault(pt => pt.User == DEBUGx.User && pt.PointsManager == DEBUGx.RatingGroup.TblRow.Tbl.PointsManager);
-            //    Debug.WriteLine("CompleteMultiple firstRatingID " + firstRating.RatingID + " pointsTotal is null? " + (pointsTotal == null).ToString());
-            //}
-
-            var theUserRatingsInfoList = userRatingsToAddList
-                        .Select(urta => new
-                        {
-                            UserRatingsToAdd = urta,
-                            //FirstRating = urta.RatingGroup.Ratings.First(),
-                            PointsTotal = urta.User.PointsTotals.SingleOrDefault(pt =>
-                                pt.User.UserID == urta.User.UserID &&
-                                pt.PointsManager == urta.RatingGroup.TblRow.Tbl.PointsManager)
-                        })
-                        .ToList();
-            foreach (var theUserRatingsInfo in theUserRatingsInfoList)
-            {
-                try
+                var theUserRatingsInfoList = userRatingsToAddList
+                            .Select(urta => new
+                            {
+                                UserRatingsToAdd = urta,
+                                //FirstRating = urta.RatingGroup.Ratings.First(),
+                                PointsTotal = urta.User.PointsTotals.SingleOrDefault(pt =>
+                                    pt.User.UserID == urta.User.UserID &&
+                                    pt.PointsManager == urta.RatingGroup.TblRow.Tbl.PointsManager)
+                            })
+                            .ToList();
+                foreach (var theUserRatingsInfo in theUserRatingsInfoList)
                 {
-                    CompleteAddUserRatings(theUserRatingsInfo.UserRatingsToAdd, theUserRatingsInfo.PointsTotal);
+                    try
+                    {
+                        CompleteAddUserRatings(theUserRatingsInfo.UserRatingsToAdd, theUserRatingsInfo.PointsTotal);
+                    }
+                    catch
+                    {
+                    }
+                    finally
+                    { // if there is an error, we just disregard the prediction.
+                        //if (loadUserRatingsToAddFromAzure)
+                        //    userRatingsToAddDataServiceEntities.ToList().ForEach(x => AzureTable<UserRatingsToAdd>.Delete(x, context, "UserRatingsToAdd"));
+                        //else
+                        DataContext.GetTable<UserRatingsToAdd>().DeleteOnSubmit(theUserRatingsInfo.UserRatingsToAdd);
+                    }
                 }
-                catch
-                {
-                }
-                finally
-                { // if there is an error, we just disregard the prediction.
-                    //if (loadUserRatingsToAddFromAzure)
-                    //    userRatingsToAddDataServiceEntities.ToList().ForEach(x => AzureTable<UserRatingsToAdd>.Delete(x, context, "UserRatingsToAdd"));
-                    //else
-                    DataContext.GetTable<UserRatingsToAdd>().DeleteOnSubmit(theUserRatingsInfo.UserRatingsToAdd);
-                }
-            }
 
-            return theUserRatingsInfoList.Count() == numAtATime; // If we had this many, we still may have more work to do.
+                return theUserRatingsInfoList.Count() == numAtATime; // If we had this many, we still may have more work to do.
+            }
         }
 
         public void CompleteAddUserRatings(UserRatingsToAdd userRatingsToAdd, PointsTotal theUserPointsTotal)
@@ -986,18 +1010,57 @@ namespace ClassLibrary1.Model
 
             UserRatingGroup theUserRatingGroup = AddUserRatingGroup(topRatingGroup);
 
+
+            // Multiple user ratings could arrive almost simultaneously. How should we handle this?
+            // On the one hand, we would like to use rating.CurrentValue as the previous rating.
+            // This ensures that our volatility statistics are correct, and also avoids giving
+            // multiple users the benefit of a sudden change in information.
+            // But this has the side effect of creating anomalies where it seems that Rateroo is
+            // overshooting. For example, if the rating is originally 3 and then is moved simultaneously
+            // up to 7 (which is processed first) and then an entered value of 6 with a new value of 5,
+            // it will appear that the previous rating was 7 and Rateroo chose 5 based on a value of 6,
+            // when someone else had simultaneously said 7.
+            // Perhaps the simplest thing to do will be to respond by setting rating.CurrentValue as the
+            // previous rating, but using an adjustment percentage of 0. Thus, the user rating will appear
+            // in the list, but Rateroo will not have trusted it. That makes sense
+            bool changeInRatingHasOccurred = false;
+            Rating theRating = null;
             foreach (UserRatingHierarchyEntry theEntry in userRatingHierarchyData.UserRatingHierarchyEntries)
             {
-                Rating theRating = theRatings.Single(x => x.RatingID == theEntry.RatingId);
+                theRating = theRatings.Single(x => x.RatingID == theEntry.RatingId);
+                if (theRating.CurrentValue != theEntry.OriginalDisplayedRating && theRating.CurrentValue != null)
+                {
+                    changeInRatingHasOccurred = true;
+                    break;
+                }
+                if (theEntry.OriginalDisplayedRating != null && theEntry.OriginalTrustedValueOrBasisForCalculatingPoints != theEntry.OriginalDisplayedRating)
+                    throw new Exception("DEBUG");
+            }
+
+            foreach (UserRatingHierarchyEntry theEntry in userRatingHierarchyData.UserRatingHierarchyEntries)
+            {
+                if (theEntry.OriginalTrustedValue != null && theEntry.OriginalTrustedValue != theEntry.OriginalTrustedValueOrBasisForCalculatingPoints)
+                    throw new Exception("DEBUG");
+                if (theRating.RatingID != theEntry.RatingId)
+                    theRating = theRatings.Single(x => x.RatingID == theEntry.RatingId);
                 if (theEntry.MadeDirectly && theEntry.EnteredValueOrCalculatedValue != null)
                 {
                     RatingPhaseStatus theRatingPhaseStatus = GetRatingPhaseStatus(theRating);
+                    if (changeInRatingHasOccurred)
+                    {
+                        theEntry.OriginalTrustedValueOrBasisForCalculatingPoints = (decimal) theRating.CurrentValue;
+                        theEntry.NewValueAfterAdjustment = (decimal)theRating.CurrentValue;
+                        userRatingHierarchyData.AdditionalInfo.AdjustPct = 0;
+                    }
                     AddUserRating(userRatingsToAdd.User, theRating, theUserRatingGroup,
                                     theUserPointsTotal, theRatingPhaseStatus, theRatingGroups,
                                     (decimal) theEntry.EnteredValueOrCalculatedValue,
                                     theEntry.NewValueAfterAdjustment,
                                     theEntry.OriginalTrustedValueOrBasisForCalculatingPoints,
                                     theEntry.MadeDirectly, userRatingHierarchyData.AdditionalInfo);
+                    if ((theEntry.OriginalTrustedValueOrBasisForCalculatingPoints < theEntry.EnteredValueOrCalculatedValue && theEntry.EnteredValueOrCalculatedValue < theEntry.NewValueAfterAdjustment) || (theEntry.OriginalTrustedValueOrBasisForCalculatingPoints > theEntry.EnteredValueOrCalculatedValue && theEntry.EnteredValueOrCalculatedValue > theEntry.NewValueAfterAdjustment))
+                        throw new Exception("DEBUG");
+                    //Debug.WriteLine("Calling AddUserRating for rating " + theRating.RatingID + " with " + theEntry.OriginalTrustedValueOrBasisForCalculatingPoints + ", " + theEntry.EnteredValueOrCalculatedValue + ", " + theEntry.NewValueAfterAdjustment);
                 }
             }
         }
