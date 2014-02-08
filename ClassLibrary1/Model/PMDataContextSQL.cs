@@ -184,6 +184,8 @@ namespace ClassLibrary1.Model
             _underlyingRaterooDataContext.ExecuteCommand("SET DEADLOCK_PRIORITY HIGH;");
         }
 
+        public bool TooLateToSetPageLoadOptions { get; set; } // this can be called to prevent re-loading page load options
+
         public void SetPageLoadOptions()
         {
             //Connection.Open();
@@ -213,14 +215,19 @@ namespace ClassLibrary1.Model
 
         public void LoadStatsWithTrustTrackersAndUserInteractions()
         {
+            if (TooLateToSetPageLoadOptions)
+                return;
             DataLoadOptions dl = new DataLoadOptions();
             dl.LoadWith<TrustTracker>(x => x.TrustTrackerStats);
             dl.LoadWith<UserInteraction>(x => x.UserInteractionStats);
             _underlyingRaterooDataContext.LoadOptions = dl;
+            TooLateToSetPageLoadOptions = true;
         }
 
         public void SetUserRatingUpdatingLoadOptions()
         {
+            if (TooLateToSetPageLoadOptions)
+                return;
             DataLoadOptions dl = new DataLoadOptions();
             dl.LoadWith<RatingGroup>(x => x.RatingGroupAttribute);
             dl.LoadWith<RatingGroupAttribute>(x => x.RatingCharacteristic);
@@ -233,10 +240,13 @@ namespace ClassLibrary1.Model
             dl.LoadWith<Tbl>(x => x.PointsManager);
 
             _underlyingRaterooDataContext.LoadOptions = dl;
+            TooLateToSetPageLoadOptions = true;
         }
 
         public void SetUserRatingAddingLoadOptions()
         {
+            if (TooLateToSetPageLoadOptions)
+                return;
             DataLoadOptions dl = new DataLoadOptions();
             dl.LoadWith<Rating>(x => x.RatingCharacteristic);
             dl.LoadWith<Rating>(x => x.RatingGroup);
@@ -259,6 +269,7 @@ namespace ClassLibrary1.Model
             dl.LoadWith<SubsidyDensityRangeGroup>(x => x.SubsidyDensityRanges);
 
             _underlyingRaterooDataContext.LoadOptions = dl;
+            TooLateToSetPageLoadOptions = true;
         }
 
         public IQueryable<TblRow> UDFNearestNeighborsForTbl(float? latitude, float? longitude, int? maxNumResults, int? tblID)

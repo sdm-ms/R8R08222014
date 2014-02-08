@@ -636,6 +636,8 @@ namespace ClassLibrary1.Misc
             LoadFromPermanentStorage();
         }
 
+        public bool TooLateToSetPageLoadOptions { get; set; }
+
         public void Reset()
         {
             // LoadFromPermanentStorage() doesn't seem to help and is a bit time consuming.

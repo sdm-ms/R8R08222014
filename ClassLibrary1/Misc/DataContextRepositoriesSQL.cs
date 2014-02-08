@@ -66,13 +66,22 @@ namespace ClassLibrary1.Misc
             UnderlyingDataContext = underlyingDataContext;
         }
 
+        bool _tooLate = false;
+        public bool TooLateToSetPageLoadOptions
+        {
+            get { return _tooLate; }
+            set { _tooLate = value; }
+        }
+
         public void Reset()
         {
             UnderlyingDataContext.Dispose();
+            TooLateToSetPageLoadOptions = false;
         }
 
         public IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
+            TooLateToSetPageLoadOptions = true; // can't do it after a query
             return new SQLRepository<T>(UnderlyingDataContext.GetTable<T>());
         }
 
@@ -85,6 +94,7 @@ namespace ClassLibrary1.Misc
         {
             BeforeSubmitChanges();
             CompleteSubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+            TooLateToSetPageLoadOptions = true;
         }
 
         public virtual void BeforeSubmitChanges()

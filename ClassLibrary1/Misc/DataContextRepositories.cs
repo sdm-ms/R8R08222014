@@ -21,6 +21,7 @@ namespace ClassLibrary1.Misc
         void SubmitChanges(System.Data.Linq.ConflictMode conflictMode);
         void CompleteSubmitChanges(System.Data.Linq.ConflictMode conflictMode);
         void Reset();
+        bool TooLateToSetPageLoadOptions { get; set; }
     }
 
     public interface IRepository<T> : IQueryable<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged

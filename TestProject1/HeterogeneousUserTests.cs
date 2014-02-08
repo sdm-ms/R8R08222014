@@ -261,6 +261,12 @@ namespace TestProject1
                         subversiveUserIgnoresPreviousRatings);
                     _testHelper.WaitIdleTasks();
 
+                    // reload data
+                    tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration);
+                    _testHelper.WaitIdleTasks();
+                    ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                        .Where(r => tblRows.Contains(r.RatingGroup.TblRow));
+
                     /*
                      * Calculate the intermediate absolute error.
                      */

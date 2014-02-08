@@ -1147,14 +1147,7 @@ x.UserID == TestHelper.UserIds[1]);
 
         private void FinishUserRatingAdd()
         {
-            if (RaterooDataManipulation.AddUserRatingLockForTesting == null)
-            {
-                RaterooDataManipulation.AddUserRatingLockForTesting = new object();
-                Thread.Sleep(50); // give enough time for any past loop to finish
-            }
-            _dataManipulation.DataContext.SubmitChanges();
-            _dataManipulation.CompleteMultipleAddUserRatings();
-            _dataManipulation.DataContext.SubmitChanges();
+            TestHelper.FinishUserRatingAdd(_dataManipulation);
         }
 
         [TestMethod]
@@ -1199,6 +1192,7 @@ x.UserID == TestHelper.UserIds[1]);
                 FinishUserRatingAdd();
                 var trustTrackers = _dataManipulation.DataContext.GetTable<TrustTracker>().Select(x => x).ToList();
                 TestHelper.WaitIdleTasks();
+                users = _dataManipulation.DataContext.GetTable<User>().ToArray(); // must reload users so that we can use the related properties not eagerly loaded
                 TrustTracker tt = users.Single(x => x.UserID == TestHelper.UserIds[0]).TrustTrackers.First(x => x.TrustTrackerUnit.PointsManagers.Any());
                 UserInteractionStat uis = _dataManipulation.DataContext.GetTable<UserInteractionStat>().Single(x => x.StatNum == (int)TrustStat.NoExtraWeighting && x.UserInteraction.User.UserID == TestHelper.UserIds[0] && x.UserInteraction.User1.UserID == TestHelper.UserIds[randomUser]);
                 Debug.WriteLine("Random user: " + TestHelper.UserIds[randomUser] + " rating userRating: " + randomUserRatings[randomUser] + " user interaction stat: " + uis.AvgAdjustmentPctWeighted + " trust level: " + tt.OverallTrustLevel);
@@ -1277,13 +1271,18 @@ x.UserID == TestHelper.UserIds[1]);
                 decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal) RandomGenerator.GetRandom(-1.0, 1.0);
                 TestHelper.ActionProcessor.UserRatingAdd(ratingID, valueToDo, TestHelper.UserIds[userIndex], ref aResponse);
                 FinishUserRatingAdd();
-                if (i % 10 == 0)
+                if (i % 50 == 0)
                     TestHelper.WaitIdleTasks();
             }
 
             TestHelper.WaitIdleTasks();
             TestableDateTime.SleepOrSkipTime((long)TimeSpan.FromMinutes(60).TotalMilliseconds);
             TestHelper.WaitIdleTasks();
+
+            // reload data now that datacontext is disposed
+            tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
+            ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            users = _dataManipulation.DataContext.GetTable<User>().ToArray();
 
             var trustTrackers = users.Select(x => x.TrustTrackers.Any() ? x.TrustTrackers.First() : null).ToList();
             foreach (Rating r in ratings.Take(numRatingsUntouched))
