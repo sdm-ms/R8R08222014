@@ -49,8 +49,8 @@ namespace ClassLibrary1.Model
                 {
                     IRaterooDataContext iDataContext = ((IRaterooDataContext)_ThreadDataContext);
                     iDataContext.Reset();
+                    _ThreadDataContext = null;
                 }
-                _ThreadDataContext = null;
                 //LocalDataStoreSlot threadData = Thread.GetNamedDataSlot(key);
                 //if (threadData != null)
                 //{
@@ -61,19 +61,15 @@ namespace ClassLibrary1.Model
             // Trace.TraceInformation("DataContext reset.");
         }
 
+        private string GetThreadKey()
+        {
+            return "__WRSCDC_" + (HttpContext.Current == null ? "" : HttpContext.Current.GetHashCode().ToString("x")) + Thread.CurrentContext.ContextID.ToString();
+        }
+
         public void ResetMyDataContext()
         {
-            string key;
-            if (HttpContext.Current != null)
-            {
-                key = "__WRSCDC_" + HttpContext.Current.GetHashCode().ToString("x") + Thread.CurrentContext.ContextID.ToString();
-                ResetMyDataContext(key);
-            }
-            else
-            {
-                key = "__WRSCDC_" + Thread.CurrentContext.ContextID.ToString();
-                ResetMyDataContext(key);
-            }
+            string key = GetThreadKey();
+            ResetMyDataContext(key);
         }
 
         internal IRaterooDataContext GetDataContext(string key, bool doAllowChangeData, bool enableObjectTracking)
@@ -137,15 +133,7 @@ namespace ClassLibrary1.Model
 
         public IRaterooDataContext GetDataContext(bool doAllowChangeData, bool enableObjectTracking)
         {
-            string key;
-            if (HttpContext.Current != null)
-            {
-                key = "__WRSCDC_" + HttpContext.Current.GetHashCode().ToString("x") + Thread.CurrentContext.ContextID.ToString();
-            }
-            else
-            {
-                key = "__WRSCDC_" + Thread.CurrentContext.ContextID.ToString();
-            }
+            string key = GetThreadKey();
             //Trace.TraceInformation("GetDataContext " + key);
             return GetDataContext(key, doAllowChangeData, enableObjectTracking);
         }
