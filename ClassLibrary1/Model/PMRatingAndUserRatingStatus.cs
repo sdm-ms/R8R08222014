@@ -221,11 +221,11 @@ namespace ClassLibrary1.Model
                 var ratingsWithlastUserRatings = resolution.RatingResolution.RatingGroup.Ratings2.Select(x => new { 
                     Rating = x, 
                     ReferenceUserRating = x.UserRatings
-                        .Where(y => y.UserRatingGroup.WhenMade < resolution.RatingResolution.EffectiveTime) // DEBUG added
+                        .Where(y => y.UserRatingGroup.WhenMade < resolution.RatingResolution.EffectiveTime) 
                         .OrderByDescending(y => y.UserRatingGroup.WhenMade)
                         .FirstOrDefault(),
                     ReferenceLastTrustedUserRating = x.UserRatings
-                        .Where(y => y.IsTrusted && y.UserRatingGroup.WhenMade < resolution.RatingResolution.EffectiveTime) // DEBUG added
+                        .Where(y => y.IsTrusted && y.UserRatingGroup.WhenMade < resolution.RatingResolution.EffectiveTime)
                         .OrderByDescending(y => y.UserRatingGroup.WhenMade)
                         .FirstOrDefault()
                 });

@@ -15,7 +15,7 @@ namespace ClassLibrary1.Misc
             double? returnVal = source.Select<TColl, TValue>(selector).Median();
 
             if (returnVal == null)
-                throw new Exception("DEBUG");
+                throw new Exception("Internal error.");
 
             return returnVal;
         }
@@ -41,7 +41,7 @@ namespace ClassLibrary1.Misc
                 returnVal = Convert.ToDouble(source.ElementAt(midpoint));
 
             if (returnVal == null)
-                throw new Exception("DEBUG");
+                throw new Exception("Internal error");
 
             return returnVal;
         }

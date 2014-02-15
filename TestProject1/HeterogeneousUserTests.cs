@@ -7,27 +7,14 @@ using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
 using FluentAssertions;
 using Debug = System.Diagnostics.Debug;
+using System.Reflection;
+using System.Data.SqlClient;
 
 namespace TestProject1
 {
     [TestClass]
     public class HeterogeneousUserTests
     {
-        static float CalculateProportionWithinTolerance(IEnumerable<Rating> ratings, decimal target, decimal tolerance)
-        {
-            int numWithinTolerance = ratings
-                .Where(r =>
-                    r.CurrentValue != null &&
-                    Math.Abs(r.CurrentValue.Value - target) < tolerance)
-                .Count();
-            float proportionWithinToleranceOfTarget = numWithinTolerance / (float)ratings.Count(); // Floating-point division
-            return proportionWithinToleranceOfTarget;
-        }
-
-        private decimal _CalculateAverageAbsoluteError(IEnumerable<Rating> ratings, decimal correctRatingValue)
-        {
-            return ratings.Average(r => Math.Abs(r.CurrentValue.Value - correctRatingValue));
-        }
 
         TestHelper _testHelper;
         RaterooDataManipulation _dataManipulation;
@@ -43,6 +30,27 @@ namespace TestProject1
             _testHelper = new TestHelper();
             _dataManipulation = new RaterooDataManipulation();
         }
+
+        static float CalculateProportionWithinTolerance(IEnumerable<Rating> ratings, decimal target, decimal tolerance)
+        {
+            int numWithinTolerance = ratings
+                .Where(r =>
+                    r.CurrentValue != null &&
+                    Math.Abs(r.CurrentValue.Value - target) < tolerance)
+                .Count();
+            float proportionWithinToleranceOfTarget = numWithinTolerance / (float)ratings.Count(); // Floating-point division
+            return proportionWithinToleranceOfTarget;
+        }
+
+        private decimal _CalculateAverageAbsoluteError(IEnumerable<Rating> ratings, decimal correctRatingValue)
+        {
+            var nonNull = ratings.Where(r => r.CurrentValue != null);
+            if (nonNull.Any())
+                return nonNull.Average(r => Math.Abs(r.CurrentValue.Value - correctRatingValue));
+            else
+                return decimal.MaxValue;
+        }
+
         
         [TestMethod]
         public void HeterogeneousTestWorksWithNoSubversiveUsers()
@@ -186,18 +194,19 @@ namespace TestProject1
                     requiredProportionOfRatingsWithinTolerance * 100, tolerance));
         }
 
+
         [TestMethod]
         public void AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows()
         {
             AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows_Helper(
-                tblRowsPerIteration: 20,
+                tblRowsPerIteration: 20, 
                 userCount: 20,  
                 subversivePercentage: 0.1f,
                 quality: 0.9f,
                 userRatingEstimateWeight: 5,
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 6m,
-                iterations: 40,
+                iterations: 40, 
                 roundsPerIteration: 1,
                 userRatingsPerRatingPerRound: 20,
                 maximumAllowableAverageAbsoluteErrorForFinalIteration: 1m,
@@ -252,20 +261,34 @@ namespace TestProject1
             {
                 IEnumerable<TblRow> tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration);
                 _testHelper.WaitIdleTasks();
-                IEnumerable<Rating> ratings =  _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                    .Where(r => tblRows.Contains(r.RatingGroup.TblRow));
 
+                List<Rating> ratings = null;
                 foreach (int round in Enumerable.Range(0, roundsPerIteration))
                 {
+
+                    ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                        .Where(r => tblRows.Contains(r.RatingGroup.TblRow)).ToList(); // load ratings from the most recent set of tbl rows.
                     pool.PerformRatings(ratings, correctRatingValue, subversiveUserRatingvalue, userRatingsPerRatingPerRound,
                         subversiveUserIgnoresPreviousRatings);
                     _testHelper.WaitIdleTasks();
 
-                    // reload data
+                    GC.Collect();
+                    long memoryInit = GC.GetTotalMemory(false);
+                    Debug.WriteLine("Initial Memory: " + memoryInit);
+                    for (int DEBUGx = 0; DEBUGx < 100; DEBUGx++)
+                    {
+                        _testHelper.FinishUserRatingAdd(new RaterooDataManipulation());
+                        GC.Collect();
+                        Debug.WriteLine("Average memroy usage: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(DEBUGx + 1))));
+                        //_testHelper.WaitIdleTasks();
+                    }
+
+
+                    // load a new set of rows
                     tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration);
                     _testHelper.WaitIdleTasks();
                     ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                        .Where(r => tblRows.Contains(r.RatingGroup.TblRow));
+                        .Where(r => tblRows.Contains(r.RatingGroup.TblRow)).ToList();
 
                     /*
                      * Calculate the intermediate absolute error.
@@ -278,6 +301,8 @@ namespace TestProject1
                     #endregion
                 }
 
+                ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                    .Where(r => tblRows.Contains(r.RatingGroup.TblRow)).ToList(); // must reload
                 /*
                  * After the final iteration, 
                  */

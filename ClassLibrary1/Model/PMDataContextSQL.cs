@@ -11,8 +11,7 @@ namespace ClassLibrary1.Model
 {
     public partial class RaterooDataContext
     {
-
-        public new void Dispose()
+        public new void Dispose() // Note: Because this hides Dispose() from the base class it won't get called when Dispose is called on IDataContext. Tried to implement standard Dispose(bool disposing) pattern, but it seems that the DataContext base class is not set up properly for that. So, we must make sure to close the connection state when resetting the data context, and we must remember to do that.
         {
             var changes = this.GetChangeSet();
             if (changes.Deletes.Any() || changes.Inserts.Any() || changes.Updates.Any())
@@ -23,12 +22,16 @@ namespace ClassLibrary1.Model
                 //    theChange.DebugOutput();
             }
             if (this.Connection != null)
+            {
                 if (this.Connection.State != System.Data.ConnectionState.Closed)
-                {
                     this.Connection.Close();
-                    this.Connection.Dispose();
-                }
+            }
         }
+
+        partial void OnCreated()
+        {
+        }
+
     }
 
     public class RaterooSQLDataContext : SQLDataContext, IRaterooDataContext
@@ -183,8 +186,6 @@ namespace ClassLibrary1.Model
             //Connection.Open();
             _underlyingRaterooDataContext.ExecuteCommand("SET DEADLOCK_PRIORITY HIGH;");
         }
-
-        public bool TooLateToSetPageLoadOptions { get; set; } // this can be called to prevent re-loading page load options
 
         public void SetPageLoadOptions()
         {

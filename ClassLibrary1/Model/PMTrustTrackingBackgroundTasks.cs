@@ -257,7 +257,6 @@ namespace ClassLibrary1.Model
                 userInteractionStat.AvgAdjustmentPctWeighted = PMTrustCalculations.Constrain(userInteractionStat.AvgAdjustmentPctWeighted, PMAdjustmentFactor.MinimumRetrospectiveAdjustmentFactor, PMAdjustmentFactor.MaximumRetrospectiveAdjustmentFactor);
                 //if (i == 1 && theUserInteraction.User.UserID == 43 && theUserInteraction.User1.UserID == 20)
                 //{
-                //    // DEBUG
                 //    Debug.WriteLine("-------------------------------");
                 //    manager.GetStat(i);
                 //    Debug.WriteLine(String.Format("changeInIndividualUserInteractionAdjustmentFactor {0} * userRatingStat {1} * positiveOrNegative {2} = sumAdjustPctTimesWeightDelta {3}", changeInIndividualUserInteractionAdjustmentFactor, userRatingStat, positiveOrNegative, sumAdjustPctTimesWeightDelta));
@@ -265,10 +264,6 @@ namespace ClassLibrary1.Model
                 //    Debug.WriteLine(String.Format("SumAdjustPctTimesWeight {0} / userInteractionStat.SumWeights {1} = userInteractionStat.AvgAdjustmentPctWeighted {2}", userInteractionStat.SumAdjustPctTimesWeight, userInteractionStat.SumWeights, userInteractionStat.AvgAdjustmentPctWeighted));
                 //    Debug.WriteLine("-------------------------------");
                 //}
-                if (userInteractionStat.AvgAdjustmentPctWeighted < -1.26)
-                {
-                    var DEBUG0 = 0;
-                }
                 //Trace.TraceInformation(String.Format("Stat {0}: {1}", i, theStat.SumWeights == 0 ? 0 : theStat.SumAdjustPctTimesWeight / theStat.SumWeights));
             }
             double originalWeightInCalculatingTrustTotal = theUserInteraction.WeightInCalculatingTrustTotal;

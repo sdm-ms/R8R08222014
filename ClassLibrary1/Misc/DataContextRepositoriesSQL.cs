@@ -6,6 +6,7 @@ using System.Collections;
 using System.Data.Linq;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace ClassLibrary1.Misc
 {
@@ -75,6 +76,13 @@ namespace ClassLibrary1.Misc
 
         public void Reset()
         {
+            if (UnderlyingDataContext.Connection != null)
+            {
+                if (UnderlyingDataContext.Connection.State != System.Data.ConnectionState.Closed)
+                {
+                    UnderlyingDataContext.Connection.Close();
+                }
+            }
             UnderlyingDataContext.Dispose();
             TooLateToSetPageLoadOptions = false;
         }

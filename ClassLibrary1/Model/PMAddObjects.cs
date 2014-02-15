@@ -1731,7 +1731,7 @@ namespace ClassLibrary1.Model
             };
 
             if (theUserRating.NewUserRating - theUserRating.EnteredUserRating <= 0 != theUserRating.EnteredUserRating - theUserRating.PreviousDisplayedRating >= 0 && theUserRating.PreviousDisplayedRating != null && theUserRating.NewUserRating != theUserRating.EnteredUserRating && theUserRating.EnteredUserRating != theUserRating.PreviousDisplayedRating && theUserRating.NewUserRating != theUserRating.PreviousDisplayedRating)
-                throw new Exception("User rating moved in wrong direction. Internal error. DEBUG.");
+                throw new Exception("User rating moved in wrong direction. Internal error. DEBUG");
 
             UpdateUserRatingHighStakesKnownFields(theUserRating, ratingGroupPhaseStatus, userRatingGroup.WhenMade);
 
@@ -1848,12 +1848,6 @@ namespace ClassLibrary1.Model
             //AzureTable<UserRatingsToAdd>.Add(theUserRatingsData, theUserRatingsData.TopRatingGroupID.ToString(), "UserRatingsToAdd");
             //AzureQueue.Push("UserRatingsToAddQueue", theUserRatingsData.TopRatingGroupID.ToString());
 
-            //// DEBUG --> ordinarily we don't want to do this here
-            //RaterooDB.SubmitChanges();
-            //ResetDataContexts();
-            //var userRatingsToAdd = RaterooDB.GetTable<UserRatingsToAdd>().Where(x => x.RatingGroup == null);
-            //if (userRatingsToAdd.Any())
-            //    throw new Exception("DEBUG: Here is the problem.");
 
             return theUserRatingsData;
         }

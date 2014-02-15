@@ -106,7 +106,8 @@ namespace ClassLibrary1.Model
                 RaterooDataManipulation.AddUserRatingLockForTesting = new object();
                 Thread.Sleep(50); // give enough time for any past loop to finish
             }
-            //rdm.DataContext.SubmitChanges();
+            rdm.DataContext.SubmitChanges();
+            rdm.ResetDataContexts(); // we must reset the data contexts; otherwise, when using the real database, we will still have the old data, not taking into account subsequent changes
             Thread myThread = new Thread(FinishUserRatingAdd_Helper);
             myThread.Name = "FinishUserRating " + TestableDateTime.Now.ToString();
             myThread.Start();
@@ -119,6 +120,7 @@ namespace ClassLibrary1.Model
             RaterooDataManipulation rdm = new RaterooDataManipulation();
             rdm.CompleteMultipleAddUserRatings();
             rdm.DataContext.SubmitChanges();
+            rdm.ResetDataContexts();
         }
 
         public void CreateSimpleTestTable(bool useExtraLongRatingPhaseGroup)

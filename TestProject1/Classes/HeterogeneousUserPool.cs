@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ClassLibrary1.Model;
 using ClassLibrary1.Misc;
+using System.Diagnostics;
 
 namespace TestProject1
 {
@@ -89,8 +90,8 @@ namespace TestProject1
         public void PerformRatings(decimal correctRatingValue, decimal subversiveUserRatingValue, Tbl tbl,
             int userRatingsPerRating, bool subversiveUserIgnoresPreviousRatings)
         {
-            IEnumerable<Rating> ratings = TestHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(tbl));
+            List<Rating> ratings = TestHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(tbl)).ToList();
             PerformRatings(ratings, correctRatingValue, subversiveUserRatingValue, userRatingsPerRating, subversiveUserIgnoresPreviousRatings);
         }
 
@@ -102,10 +103,14 @@ namespace TestProject1
         /// <param name="subversiveUserRatingValue"></param>
         /// <param name="tbl"></param>
         /// <param name="usersRatingEachRatingCount"></param>
-        public void PerformRatings(IEnumerable<Rating> ratings,
+        public void PerformRatings(List<Rating> ratings,
             decimal correctRatingValue, decimal subversiveUserRatingValue,
             int userRatingsPerRating, bool subversiveUserIgnoresPreviousRatings)
         {
+            GC.Collect();
+            long memoryInit = GC.GetTotalMemory(false);
+            Debug.WriteLine("Pre rating: " + memoryInit);
+            int numberUserRatings = 0;
             foreach (Rating rating in ratings)
             {
                 var randomUsers = HeterogeneousUsers.OrderBy(u => Guid.NewGuid()).Take(userRatingsPerRating);
@@ -115,6 +120,12 @@ namespace TestProject1
                         user.Rate(rating, correctRatingValue, subversiveUserIgnoresPreviousRatings);
                     else
                         user.Rate(rating, subversiveUserRatingValue, subversiveUserIgnoresPreviousRatings);
+                    numberUserRatings++;
+                    GC.Collect(); // DEBUG
+                    Debug.WriteLine("DEBUG1 average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
+                    TestHelper.ActionProcessor.ResetDataContexts(); // DEBUG -- delete this
+                    GC.Collect(); // DEBUG
+                    Debug.WriteLine("DEBUG average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
                 }
             }
         }

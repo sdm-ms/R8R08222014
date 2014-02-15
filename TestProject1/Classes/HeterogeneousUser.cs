@@ -90,8 +90,7 @@ namespace TestProject1
 
             decimal userRatingEstimate = GetUserRatingEstimate(userRatingValueTarget);
 
-            List<UserRating> previousUserRatings = rating.UserRatings
-                    .Where(ur => ur.UserID != this.UserId).ToList();
+            List<UserRating> previousUserRatings = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(ur => ur.UserID != this.UserId && ur.Rating.RatingID == rating.RatingID).ToList();
             int previousUserRatingCount = previousUserRatings.Count;
             if (UserRatingEstimateWeight == Int32.MaxValue ||
                 previousUserRatingCount < 1 ||
@@ -114,6 +113,7 @@ namespace TestProject1
             UserRatingResponse theResponse = new UserRatingResponse();
             TestHelper.ActionProcessor.UserRatingAdd(rating.RatingID, userRatingValue, UserId, ref theResponse);
             TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation);
+
         }
     }
 }

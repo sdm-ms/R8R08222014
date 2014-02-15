@@ -103,7 +103,7 @@ namespace TestProject1
         {
             Initialize();
 
-            RandomGenerator.SeedOverride = 1; // DEBUG
+            RandomGenerator.SeedOverride = 1;
 
             /* before pending */
             TestCreateTableAndAddUserRatingFromFirstUser(true);

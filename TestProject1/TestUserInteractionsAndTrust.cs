@@ -699,7 +699,7 @@ namespace TestProject1
             UserRatingResponse theResponse = new UserRatingResponse();
             Func<decimal> ran = () => (decimal) (RandomGenerator.GetRandom() * 10.0);
 
-            // users 1 and 2 are rerated by user 3, and user 1 is separately rerated by user 9
+            // users 1 and 2 are rerated by user 3 (with adjustment percentage > 1), and user 1 is separately rerated by user 9 (adj perc = 0.5)
             TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 5M, TestHelper.UserIds[6], ref theResponse);
             FinishUserRatingAdd();
             TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 6M, TestHelper.UserIds[1], ref theResponse);

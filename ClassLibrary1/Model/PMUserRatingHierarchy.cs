@@ -243,8 +243,6 @@ namespace ClassLibrary1.Model
             OriginalTrustedValue = theOriginalTrustedValue;
             OriginalDisplayedRating = theOriginalDisplayedRating;
             OriginalTrustedValueOrBasisForCalculatingPoints = theOriginalDisplayedRatingOrBasisOfCalc;
-            if (OriginalTrustedValue != null && (OriginalTrustedValue != OriginalTrustedValueOrBasisForCalculatingPoints || OriginalDisplayedRating != OriginalTrustedValue || OriginalDisplayedRating != OriginalTrustedValueOrBasisForCalculatingPoints))
-                throw new Exception("DEBUG here.");
             EnteredValueOrCalculatedValue = theNewValue;
             MadeDirectly = theDirectlyMade;
             CannotBeChanged = theCannotBeChanged;
@@ -606,9 +604,6 @@ namespace ClassLibrary1.Model
                 else
                     predictionToAdjust.NewValueAfterAdjustment = predictionToAdjust.OriginalTrustedValue.Value + (decimal)adjustmentFactor *
                         (predictionToAdjust.EnteredValueOrCalculatedValue.Value - predictionToAdjust.OriginalTrustedValue.Value);
-                // DEBUG Debug.WriteLine(predictionToAdjust.OriginalTrustedValue.Value + ", " + predictionToAdjust.EnteredValueOrCalculatedValue.Value + ", " + predictionToAdjust.NewValueAfterAdjustment);
-                if (adjustmentFactor > 1)
-                    throw new Exception("DEBUG");
                 sumNewValuesAdjusted += (decimal)predictionToAdjust.NewValueAfterAdjustment;
                 i++;
             }
@@ -868,19 +863,7 @@ namespace ClassLibrary1.Model
                     );
 
                 UserRatingHierarchyData theData = new UserRatingHierarchyData(additionalInfo);
-                //Debug.WriteLine("DEBUG Getting user rating hierarchy for rating " + theRatings.First().RatingID + " with adjustment factor " + theManager.AdjustmentFactorConservative);
                 GetUserRatingHierarchyBasedOnUserRatings(ratingIdAndUserRatingValues, theRatings, theRatingGroups, constrainedSum, theManager.AdjustmentFactorConservative, ref theData);
-                var DEBUGe = theData.UserRatingHierarchyEntries.First();
-                //Debug.WriteLine("DEBUG result for rating " + theRatings.First().RatingID + " " + DEBUGe.OriginalTrustedValue + "/" + DEBUGe.OriginalDisplayedRating + "/" + DEBUGe.OriginalTrustedValueOrBasisForCalculatingPoints + ", " + DEBUGe.EnteredValueOrCalculatedValue + ", " + DEBUGe.NewValueAfterAdjustment);
-                if (! ((DEBUGe.OriginalTrustedValue <= DEBUGe.NewValueAfterAdjustment && DEBUGe.NewValueAfterAdjustment <= DEBUGe.EnteredValueOrCalculatedValue) || (DEBUGe.OriginalTrustedValue >= DEBUGe.NewValueAfterAdjustment && DEBUGe.NewValueAfterAdjustment >= DEBUGe.EnteredValueOrCalculatedValue) || DEBUGe.OriginalTrustedValue == null ) )
-                {
-                    var DEBUGhere = 0;
-                    while (true)
-                    {
-                        theData = new UserRatingHierarchyData(additionalInfo);
-                        GetUserRatingHierarchyBasedOnUserRatings(ratingIdAndUserRatingValues, theRatings, theRatingGroups, constrainedSum, theManager.AdjustmentFactorConservative, ref theData);
-                    }
-                }
 
                 if (RatingGroupIsResolved(topRatingGroup))
                     throw new UserRatingDataException("You cannot enter a rating, because this table cell is completed.");
@@ -956,15 +939,6 @@ namespace ClassLibrary1.Model
                             .Take(numAtATime)
                             .ToList();
 
-                //var DEBUGx = theUserRatingsInfos.FirstOrDefault();
-                //if (DEBUGx != null)
-                //{
-                //    var myTest = DEBUGx.RatingGroup;
-                //    var myTest2 = DEBUGx.RatingGroup.Ratings;
-                //    var firstRating = DEBUGx.RatingGroup.Ratings.First();
-                //    var pointsTotal = DEBUGx.User.PointsTotals.SingleOrDefault(pt => pt.User == DEBUGx.User && pt.PointsManager == DEBUGx.RatingGroup.TblRow.Tbl.PointsManager);
-                //    Debug.WriteLine("CompleteMultiple firstRatingID " + firstRating.RatingID + " pointsTotal is null? " + (pointsTotal == null).ToString());
-                //}
 
                 var theUserRatingsInfoList = userRatingsToAddList
                             .Select(urta => new
@@ -1033,14 +1007,10 @@ namespace ClassLibrary1.Model
                     changeInRatingHasOccurred = true;
                     break;
                 }
-                if (theEntry.OriginalDisplayedRating != null && theEntry.OriginalTrustedValueOrBasisForCalculatingPoints != theEntry.OriginalDisplayedRating)
-                    throw new Exception("DEBUG");
             }
 
             foreach (UserRatingHierarchyEntry theEntry in userRatingHierarchyData.UserRatingHierarchyEntries)
             {
-                if (theEntry.OriginalTrustedValue != null && theEntry.OriginalTrustedValue != theEntry.OriginalTrustedValueOrBasisForCalculatingPoints)
-                    throw new Exception("DEBUG");
                 if (theRating.RatingID != theEntry.RatingId)
                     theRating = theRatings.Single(x => x.RatingID == theEntry.RatingId);
                 if (theEntry.MadeDirectly && theEntry.EnteredValueOrCalculatedValue != null)
@@ -1058,9 +1028,6 @@ namespace ClassLibrary1.Model
                                     theEntry.NewValueAfterAdjustment,
                                     theEntry.OriginalTrustedValueOrBasisForCalculatingPoints,
                                     theEntry.MadeDirectly, userRatingHierarchyData.AdditionalInfo);
-                    if ((theEntry.OriginalTrustedValueOrBasisForCalculatingPoints < theEntry.EnteredValueOrCalculatedValue && theEntry.EnteredValueOrCalculatedValue < theEntry.NewValueAfterAdjustment) || (theEntry.OriginalTrustedValueOrBasisForCalculatingPoints > theEntry.EnteredValueOrCalculatedValue && theEntry.EnteredValueOrCalculatedValue > theEntry.NewValueAfterAdjustment))
-                        throw new Exception("DEBUG");
-                    //Debug.WriteLine("Calling AddUserRating for rating " + theRating.RatingID + " with " + theEntry.OriginalTrustedValueOrBasisForCalculatingPoints + ", " + theEntry.EnteredValueOrCalculatedValue + ", " + theEntry.NewValueAfterAdjustment);
                 }
             }
         }

@@ -90,11 +90,11 @@ namespace ClassLibrary1.Model
             }
             finally
             {
-                myConnection.Close();
+                myConnection.Dispose();
             }
         }
 
-       [DebuggerHidden]
+        [DebuggerHidden]
         public void DeleteAllRecords(string tableName)
         {
             ExecuteCommand("DELETE FROM " + tableName);
@@ -387,9 +387,6 @@ namespace ClassLibrary1.Model
         public void CreateStandardStuff()
         {
             Supporter.AddDatabaseStatus();
-            //CreateStandardDefaultRatingCharacteristics();
-            //CreateStandardRatingGroupAttributes();
-            //CreateMiscellaneousUserRatingsTbl();
             CreateEstablishedUsers();
             CreateCssTemplates();
             CreateUserActions();
@@ -404,7 +401,7 @@ namespace ClassLibrary1.Model
             ResetDataContexts();
         }
 
-        static List<MetaTable> successfulOrder = new List<MetaTable>();
+        List<MetaTable> successfulOrder = new List<MetaTable>();
 
         public void DeleteAllTablesSql(IRaterooDataContext dataContext)
         {
@@ -423,7 +420,7 @@ namespace ClassLibrary1.Model
                     return;
             }
 
-            List<MetaTable> theTables = dataContext.GetRealDatabaseIfExists().Mapping.GetTables().ToList().Where(x => !x.TableName.Contains("aspnet") && !x.TableName.Contains("Forum") && !successfulOrder.Any(y => y.TableName == x.TableName) ).ToList();
+            List<MetaTable> theTables = dataContext.GetRealDatabaseIfExists().Mapping.GetTables().ToList().Where(x => !x.TableName.Contains("aspnet") && !x.TableName.Contains("Forum") && !successfulOrder.Any(y => y.TableName == x.TableName)).ToList();
             while (theTables.Any())
             {
                 ExecuteCommand("EXEC sp_msforeachtable \"ALTER TABLE ? NOCHECK CONSTRAINT all\"");
@@ -460,17 +457,19 @@ namespace ClassLibrary1.Model
             RaterooDataManipulation manipulator = new RaterooDataManipulation();
             if (manipulator.DataContext.IsRealDatabase())
             {
-                manipulator.DropFastAccessTables();
+                //manipulator.DropFastAccessTables();
                 DeleteAllTablesSql(manipulator.DataContext);
 
-                List<IUserProfileInfo> profiles = UserProfileCollection.GetAllUsers();
-                foreach (var profile in profiles)
-                    profile.DeleteUser(true);
+                //List<IUserProfileInfo> profiles = UserProfileCollection.GetAllUsers();
+                //foreach (var profile in profiles)
+                //    profile.DeleteUser(true);
 
-                UserProfileCollection.DeleteInactiveProfiles();
+                //UserProfileCollection.DeleteInactiveProfiles();
 
-                if (RoleEnvironment.IsAvailable)
-                    DeleteTempImportExportFiles();
+                //if (RoleEnvironment.IsAvailable)
+                //    DeleteTempImportExportFiles();
+
+                manipulator.ResetDataContexts();
             }
             else
                 SimulatedPermanentStorage.Reset();
