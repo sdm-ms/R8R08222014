@@ -116,7 +116,6 @@ namespace ClassLibrary1.Model
             myThread.Start();
             while (myThread.IsAlive)
                 Thread.Sleep(1);
-            PMCacheManagement.ClearCache(); // otherwise, all objects are saved and we get massive cache increase DEBUG
         }
 
         private void FinishUserRatingAdd_Helper()

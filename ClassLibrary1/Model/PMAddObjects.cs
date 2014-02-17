@@ -2494,12 +2494,11 @@ namespace ClassLibrary1.Model
         /// <returns>the ID of the user added</returns>
         public User AddUser(String userName, string email, string password, bool isSuperUser = false, bool profileAlreadyAdded = false)
         {
-            //DEBUG -- restore this
-            //IUserProfileInfo theUserProfileInfo;
-            //if (profileAlreadyAdded)
-            //    theUserProfileInfo = UserProfileCollection.LoadByUsername(userName);
-            //else
-            //    theUserProfileInfo = UserProfileCollection.CreateUser(userName, password, email);
+            IUserProfileInfo theUserProfileInfo;
+            if (profileAlreadyAdded)
+                theUserProfileInfo = UserProfileCollection.LoadByUsername(userName);
+            else
+                theUserProfileInfo = UserProfileCollection.CreateUser(userName, password, email);
             User theUser = new User {
                 Username = userName,
                 SuperUser = isSuperUser,
@@ -2509,8 +2508,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<User>().InsertOnSubmit(theUser);
             DataContext.SubmitChanges();
 
-            // DEBUG - restore this
-            //theUserProfileInfo.SetProperty("UserID", theUser.UserID);
+            theUserProfileInfo.SetProperty("UserID", theUser.UserID);
 
             return theUser;
         }

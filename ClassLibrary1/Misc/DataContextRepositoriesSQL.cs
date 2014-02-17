@@ -91,7 +91,6 @@ namespace ClassLibrary1.Misc
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
             var theTable = UnderlyingDataContext.GetTable<T>();
-            WeakReferenceTracker.AddWeakReferenceTo(theTable); // DEBUG
             return new SQLRepository<T>(theTable);
         }
 

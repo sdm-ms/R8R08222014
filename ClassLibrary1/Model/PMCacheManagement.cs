@@ -43,8 +43,7 @@ namespace ClassLibrary1.Model
 
         public static object GetItemFromCache(string cacheKey, out bool isInCacheButNull)
         {
-            bool disableCaching = false;
-            if (disableCaching)
+            if (DisableCaching)
             {
                 isInCacheButNull = false;
                 return null;
@@ -73,9 +72,12 @@ namespace ClassLibrary1.Model
             AddItemToCache(theCacheKey, theDependencyStrings, theObject, new TimeSpan(0, 120, 0));
         }
 
+        public static bool DisableCaching = false;
+
         public static void AddItemToCache(string theCacheKey, string[] theDependencyStrings, object theObject, TimeSpan keepFor)
         {
-            return; // DEBUG
+            if (DisableCaching)
+                return;
             CacheDependency theDependencies = null;
             theDependencies = CreateCacheDependencyFromStrings(theDependencyStrings);
             if (theObject == null)

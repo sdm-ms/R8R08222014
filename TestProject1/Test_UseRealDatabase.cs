@@ -55,6 +55,7 @@ namespace TestProject1
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
+            PMCacheManagement.DisableCaching = true; 
 
             _testHelper = new TestHelper(true);
             _dataManipulation = new RaterooDataManipulation();
@@ -120,9 +121,7 @@ namespace TestProject1
             };
             myDataContext.GetTable<User>().InsertOnSubmit(newUser);
             myDataContext.SubmitChanges();
-
             myDataContext.ClearContextCache();
-            //System.Data.SqlClient.SqlConnection.ClearAllPools(); // DEBUG
         }
 
 

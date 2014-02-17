@@ -89,15 +89,13 @@ namespace ClassLibrary1.Model
                                 // Trace.TraceInformation("Task " + i);
                                // ProfileSimple.Start("TaskNum" + i);
                                 dataManipulation.ResetDataContexts();
-                                WeakReferenceTracker.AddWeakReferenceTo(dataManipulation.DataContext); // DEBUG
-                                WeakReferenceTracker.AddWeakReferenceTo(((RaterooSQLDataContext) dataManipulation.DataContext).UnderlyingDataContext.Connection); // DEBUG
                                 try
                                 {
                                     switch (i)
                                     {
 
                                         case 1:
-                                            moreWorkToDoThisTask[i - 1] = false; // DEBUG dataManipulation.CompleteMultipleAddUserRatings();
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings();
                                             break;
 
                                         case 2:

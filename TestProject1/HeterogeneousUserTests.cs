@@ -78,7 +78,7 @@ namespace TestProject1
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 2m,
                 rounds: 10,
-                userRatingsPerRating: 10,
+                userRatingsPerRating: 4,
                 tolerance: 0.5m,
                 requiredProportionOfRatingsWithinTolerance: 0.95f,
                 breakUponSuccess: true,
@@ -98,7 +98,7 @@ namespace TestProject1
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 2m,
                 rounds: 5,
-                userRatingsPerRating: 20,
+                userRatingsPerRating: 4,
                 tolerance: 0.5m,
                 requiredProportionOfRatingsWithinTolerance: 0.98f,
                 breakUponSuccess: true,
@@ -220,13 +220,13 @@ namespace TestProject1
                 userCount: 20,  
                 subversivePercentage: 0.1f,
                 quality: 0.9f,
-                userRatingEstimateWeight: 5,
+                userRatingEstimateWeight: 2,
                 correctRatingValue: 8m,
                 subversiveUserRatingvalue: 6m,
-                iterations: 40, 
+                iterations: 20, 
                 roundsPerIteration: 1,
-                userRatingsPerRatingPerRound: 20,
-                maximumAllowableAverageAbsoluteErrorForFinalIteration: 1m,
+                userRatingsPerRating: 5,
+                maximumAllowableAverageAbsoluteErrorForFinalIteration: 0.15m,
                 subversiveUserIgnoresPreviousRatings: false);
         }
 
@@ -244,7 +244,7 @@ namespace TestProject1
         /// <param name="iterations">The number of times new TblRows will be created and rounds of UserRatings created on them.</param>
         /// <param name="roundsPerIteration">The number of rating-rounds that will occur each iteration.  multiple rating
         /// rounds allow for the same users to rate a rating more than once.</param>
-        /// <param name="userRatingsPerRatingPerRound">The number of users that will make a single UserRating per round</param>
+        /// <param name="userRatingsPerRating">The number of users that will make a single UserRating per round</param>
         /// <param name="maximumAllowableAverageAbsoluteErrorForFinalIteration">
         /// The maximum absolute error that ratings for the last iteration of TblRows can have on average to pass the test.</param>
         public void AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows_Helper(
@@ -257,7 +257,7 @@ namespace TestProject1
             decimal subversiveUserRatingvalue,
             int iterations,
             int roundsPerIteration,
-            int userRatingsPerRatingPerRound,
+            int userRatingsPerRating,
             decimal maximumAllowableAverageAbsoluteErrorForFinalIteration,
             bool subversiveUserIgnoresPreviousRatings)
         {
@@ -276,36 +276,21 @@ namespace TestProject1
              */
             foreach (int iteration in Enumerable.Range(0, iterations))
             {
-                IEnumerable<TblRow> tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration);
+                int countCurrentTblRows = _testHelper.ActionProcessor.DataContext.GetTable<TblRow>().Select(x => x).Count();
+                List<TblRow> tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration).ToList();
                 _testHelper.WaitIdleTasks();
-
-                List<Rating> ratings = null;
+                List<int> tblRowIDs = _testHelper.ActionProcessor.DataContext.GetTable<TblRow>().Where(x => !(x.RatingGroups.SelectMany(y => y.Ratings.SelectMany(z => z.UserRatings))).Any()).Select(x => x.TblRowID).ToList(); // TblRows without any user ratings
+                Func<List<Rating>> reload_ratings = () => _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                        .Where(r => tblRowIDs.Contains(r.RatingGroup.TblRowID)).ToList(); // load ratings from the most recent set of tbl rows -- must do this after each background task
+                List<Rating> ratings = reload_ratings();
                 foreach (int round in Enumerable.Range(0, roundsPerIteration))
                 {
 
-                    ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                        .Where(r => tblRows.Contains(r.RatingGroup.TblRow)).ToList(); // load ratings from the most recent set of tbl rows.
-                    pool.PerformRatings(ratings, correctRatingValue, subversiveUserRatingvalue, userRatingsPerRatingPerRound,
+                    ratings = reload_ratings();
+                    pool.PerformRatings(ratings, correctRatingValue, subversiveUserRatingvalue, userRatingsPerRating,
                         subversiveUserIgnoresPreviousRatings);
                     _testHelper.WaitIdleTasks();
-
-                    GC.Collect();
-                    long memoryInit = GC.GetTotalMemory(false);
-                    Debug.WriteLine("Initial Memory: " + memoryInit);
-                    for (int DEBUGx = 0; DEBUGx < 100; DEBUGx++)
-                    {
-                        _testHelper.FinishUserRatingAdd(new RaterooDataManipulation());
-                        GC.Collect();
-                        Debug.WriteLine("Average memroy usage: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(DEBUGx + 1))));
-                        //_testHelper.WaitIdleTasks();
-                    }
-
-
-                    // load a new set of rows
-                    tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration);
-                    _testHelper.WaitIdleTasks();
-                    ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                        .Where(r => tblRows.Contains(r.RatingGroup.TblRow)).ToList();
+                    ratings = reload_ratings();
 
                     /*
                      * Calculate the intermediate absolute error.
@@ -318,8 +303,7 @@ namespace TestProject1
                     #endregion
                 }
 
-                ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                    .Where(r => tblRows.Contains(r.RatingGroup.TblRow)).ToList(); // must reload
+                ratings = reload_ratings();
                 /*
                  * After the final iteration, 
                  */
