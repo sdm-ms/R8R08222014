@@ -2,7 +2,20 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+
+#if !NUNIT
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Category = Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute;
+#else
+using NUnit.Framework;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using TestContext = System.Object;
+using TestProperty = NUnit.Framework.PropertyAttribute;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+#endif
+
 using FluentAssertions;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
@@ -48,6 +61,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItem_CanGetAndSetPrimaryKey()
         {
             User theUser = new User();
@@ -59,6 +73,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItem_CanGetAndSetPrimaryKey_ForUserAction()
         {
             UserAction theUserAction = new UserAction();
@@ -69,6 +84,7 @@ namespace TestProject1
             primaryKey.Should().Be(5);
         }
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToMany()
         {
             repositoryList.Should().NotBeNull("because there should be exactly one association from AddressField to Field");
@@ -81,6 +97,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToOneWithForeignKeyID()
         {
             addressFieldToField.PropertyReturnsEntitySet.Should().BeFalse("because an AddressFIeld can point to only one Field");
@@ -91,6 +108,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToOneWithoutForeignKeyID()
         {
             userToUserInfo.Should().NotBeNull("because there should be exactly one association from User to UserInfo");
@@ -103,6 +121,7 @@ namespace TestProject1
 
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForMultipleOneToManyPropertiesBetweenSameTypes()
         {
             int ratingToRatingGroupCount = ratingToRatingGroup.Count();
@@ -116,6 +135,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItemAssociationInfo_GetAllAssociatedObjects()
         {
             Field theField = new Field();
@@ -130,6 +150,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItemAssociationInfo_GetForeignKeyID()
         {
             AddressField theAddressField = new AddressField();
@@ -138,6 +159,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItemAssociationInfo_AddAndRemoveForeignItem_ForOneToOneWithForeignKeyID()
         {
             AddressField theAddressField = new AddressField();
@@ -151,6 +173,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItemAssociationInfo_AddAndRemoveForeignItem_ForOneToMany()
         {
             AddressField theAddressField = new AddressField();
@@ -164,6 +187,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItemAssociationInfo_AddAndRemoveForeignItem_ForOneToOneWithoutForeignKeyID()
         {
             User theUser = new User();
@@ -188,6 +212,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepositoryList_GetRepository()
         {
             InitializeInMemoryRepositoryList();
@@ -196,6 +221,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_InsertOnSubmit()
         {
             InitializeInMemoryRepositoryList();
@@ -205,6 +231,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_DeleteOnSubmit()
         {
             InitializeInMemoryRepositoryList();
@@ -216,6 +243,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_GetItemByID()
         {
             InitializeInMemoryRepositoryList();
@@ -226,6 +254,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_SetUnsetPrimaryKey()
         {
             InitializeInMemoryRepositoryList();
@@ -235,8 +264,9 @@ namespace TestProject1
             theInMemoryRepositoryAddressField.GetItemByID(1).Should().Equals(theAddressField);
         }
 
-        // This isn't working right now -- but might have better luck after upgrading to VS2013 Ultimate.
+        // This isn't working right now -- but might have better luck after upgrading to VS2013 Ultimate, which supports fakes
         //[TestMethod]
+        //[Category("InMemoryRepository")]
         //public void InMemoryRepository_SetPropertiesBasedOnForeignKeyID()
         //{
         //    InitializeInMemoryRepositoryList();
@@ -261,6 +291,7 @@ namespace TestProject1
         //}
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithID()
         {
             InitializeInMemoryRepositoryList();
@@ -277,6 +308,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetBefore()
         {
             InitializeInMemoryRepositoryList();
@@ -295,6 +327,7 @@ namespace TestProject1
 
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetAfterAssociationCreation()
         {
             InitializeInMemoryRepositoryList();
@@ -312,6 +345,7 @@ namespace TestProject1
 
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetOnCompletingInsertOnSubmit()
         {
             InitializeInMemoryRepositoryList();
@@ -328,6 +362,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetIndirectly()
         {
             InitializeInMemoryRepositoryList();
@@ -345,6 +380,7 @@ namespace TestProject1
 
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void RepositoryItemAssociationInfo_CompleteInsertOnSubmit_WhereMultipleSimilarPropertiesExist()
         {
             var repoList2 = new InMemoryRepositoryList(UnderlyingRaterooDataContext);
@@ -371,6 +407,7 @@ namespace TestProject1
         }
 
         //[TestMethod]
+        //[Category("InMemoryRepository")]
         //public void RepositoryItemAssociationInfo_CompleteInsertOnSubmit_WhereMultipleSimilarPropertiesExist2()
         //{
         //    var repoList2 = new InMemoryRepositoryList(UnderlyingRaterooDataContext);
@@ -389,6 +426,7 @@ namespace TestProject1
         //}
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_ConfirmNoAssociationWithUninsertedItemOrItemSetToDelete()
         {
             InitializeInMemoryRepositoryList();
@@ -404,6 +442,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_ConfirmNoAssociationWithNondeletedItem()
         {
             InitializeInMemoryRepositoryList();
@@ -419,6 +458,7 @@ namespace TestProject1
 
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepository_CompleteDeleteOnSubmit()
         {
             InitializeInMemoryRepositoryList();
@@ -434,6 +474,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryRepositoryListTests()
         {
             InitializeInMemoryRepositoryList();
@@ -470,6 +511,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void SimulatedPermanentStorageTest()
         {
             var thePermanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingRaterooDataContext);
@@ -480,6 +522,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("InMemoryRepository")]
         public void InMemoryContextTest()
         {
             InMemoryContext theInMemoryContext = new InMemoryContext(UnderlyingRaterooDataContext);

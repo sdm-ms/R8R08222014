@@ -27,10 +27,13 @@ namespace ClassLibrary1.Misc
 
         public static void CheckUncollected()
         {
-            GC.Collect();
-            var uncollected = weakRefs.Where(x => x.IsAlive).ToList();
-            Debug.WriteLine("Uncollected: " + uncollected.Count().ToString() + " of " + weakRefs.Count().ToString());
-            //weakRefs = new List<WeakReference>();
+            if (Track)
+            {
+                GC.Collect();
+                var uncollected = weakRefs.Where(x => x.IsAlive).ToList();
+                Debug.WriteLine("Uncollected: " + uncollected.Count().ToString() + " of " + weakRefs.Count().ToString());
+                //weakRefs = new List<WeakReference>(); // uncomment this to reset
+            }
         }
     }
 }

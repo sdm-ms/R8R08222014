@@ -2,7 +2,20 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+
+#if !NUNIT
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Category = Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute;
+#else
+using NUnit.Framework;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using TestContext = System.Object;
+using TestProperty = NUnit.Framework.PropertyAttribute;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+#endif
+
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
 using FluentAssertions;
@@ -51,8 +64,9 @@ namespace TestProject1
                 return decimal.MaxValue;
         }
 
-        
+
         [TestMethod]
+        [Category("Convergence")]
         public void HeterogeneousTestWorksWithNoSubversiveUsers()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
@@ -70,8 +84,9 @@ namespace TestProject1
                 breakUponSuccess: true,
                 subversiveUserIgnoresPreviousRatings: false);
         }
-        
+
         [TestMethod]
+        [Category("Convergence")]
         public void HeterogeneousTestWorksWithSubversiveUsersAccountingForPreviousRatings()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
@@ -91,6 +106,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Convergence")]
         public void HeterogeneousTestWorksWithSubversiveUsersIgnoringPreviousRatings()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
@@ -196,6 +212,7 @@ namespace TestProject1
 
 
         [TestMethod]
+        [Category("Convergence")]
         public void AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows()
         {
             AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows_Helper(
