@@ -5,6 +5,7 @@ using System.Text;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
 using System.Diagnostics;
+using System.Threading;
 
 namespace TestProject1
 {
@@ -90,6 +91,8 @@ namespace TestProject1
 
             decimal userRatingEstimate = GetUserRatingEstimate(userRatingValueTarget);
 
+            System.Data.SqlClient.SqlConnection.ClearAllPools(); // DEBUG
+            GC.Collect();
             List<UserRating> previousUserRatings = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(ur => ur.UserID != this.UserId && ur.Rating.RatingID == rating.RatingID).ToList();
             int previousUserRatingCount = previousUserRatings.Count;
             if (UserRatingEstimateWeight == Int32.MaxValue ||
@@ -113,7 +116,9 @@ namespace TestProject1
             UserRatingResponse theResponse = new UserRatingResponse();
             TestHelper.ActionProcessor.UserRatingAdd(rating.RatingID, userRatingValue, UserId, ref theResponse);
             TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation);
-
+            TestHelper.ActionProcessor.ResetDataContexts();
+            System.Data.SqlClient.SqlConnection.ClearAllPools(); // DEBUG
+            TestHelper.ActionProcessor.ResetDataContexts(); // DEBUG
         }
     }
 }

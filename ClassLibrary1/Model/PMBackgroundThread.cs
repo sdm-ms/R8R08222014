@@ -61,7 +61,7 @@ namespace ClassLibrary1.Model
                     //if (BackgroundThread.IsPauseRequested())
                     //Trace.TraceInformation("Pause is requested.");
                     MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
-                    const int numTasks = 22;
+                    const int numTasks = 1; // DEBUG 22;
                     const int numLoops = 10;
                     bool[] moreWorkToDoThisTask = new bool[numTasks];
                     for (int loop = 1; loop <= numLoops; loop++)
@@ -86,16 +86,20 @@ namespace ClassLibrary1.Model
                                 moreWorkToDoThisTask[i - 1] = true;
                             if (!BackgroundThread.IsBriefPauseRequested() && ((i == 1 && moreWorkToDoThisTask.Any(x => x == true)) || moreWorkToDoThisTask[i - 1]))
                             {
+                                Debug.WriteLine("Task " + i);
+                                WeakReferenceTracker.Track = true; // DEBUG
                                 // Trace.TraceInformation("Task " + i);
                                // ProfileSimple.Start("TaskNum" + i);
                                 dataManipulation.ResetDataContexts();
+                                WeakReferenceTracker.AddWeakReferenceTo(dataManipulation.DataContext); // DEBUG
+                                WeakReferenceTracker.AddWeakReferenceTo(((RaterooSQLDataContext) dataManipulation.DataContext).UnderlyingDataContext.Connection); // DEBUG
                                 try
                                 {
                                     switch (i)
                                     {
 
                                         case 1:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings();
+                                            moreWorkToDoThisTask[i - 1] = false; // DEBUG dataManipulation.CompleteMultipleAddUserRatings();
                                             break;
 
                                         case 2:
@@ -194,6 +198,7 @@ namespace ClassLibrary1.Model
                                 dataManipulation.ResetDataContexts();
                                 PMDatabaseAndAzureRoleStatus.CheckInRole(dataManipulation.DataContext);
                                 dataManipulation.ResetDataContexts();
+                                WeakReferenceTracker.CheckUncollected();
                                 //Trace.TraceInformation("TaskNum " + i);
                                // ProfileSimple.End("TaskNum" + i);
 

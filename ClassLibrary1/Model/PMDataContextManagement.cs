@@ -101,7 +101,9 @@ namespace ClassLibrary1.Model
             else
             {
                 if (_ThreadDataContext == null)
+                {
                     _ThreadDataContext = GetIRaterooDataContext.New(doAllowChangeData, enableObjectTracking);
+                }
                 dataContext = _ThreadDataContext;
                 //LocalDataStoreSlot threadData = Thread.GetNamedDataSlot(key);
                 //if (threadData != null)

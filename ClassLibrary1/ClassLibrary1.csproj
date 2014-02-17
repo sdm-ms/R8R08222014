@@ -181,6 +181,7 @@
     <Compile Include="Misc\StringEnum.cs" />
     <Compile Include="Misc\TestableDateTime.cs" />
     <Compile Include="Misc\UserProfileInfo.cs" />
+    <Compile Include="Misc\WeakReferenceTracker.cs" />
     <Compile Include="Model\IEnumerableExtensions.cs" />
     <Compile Include="Model\PMDataContextAbstract.cs" />
     <Compile Include="Model\PMActionProcessor.cs" />

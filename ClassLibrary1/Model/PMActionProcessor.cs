@@ -1900,6 +1900,13 @@ namespace ClassLibrary1.Model
 
         public void UserRatingsAdd(List<RatingIdAndUserRatingValue> theUserRatings, List<Rating> theRatings, List<RatingGroup> theRatingGroups, User theUser, ref UserRatingResponse theResponse)
         {
+            WeakReferenceTracker.AddWeakReferenceTo(theUserRatings); // DEBUG this and following
+            WeakReferenceTracker.AddWeakReferenceTo(theRatings);
+            WeakReferenceTracker.AddWeakReferenceTo(theRatingGroups);
+            WeakReferenceTracker.AddWeakReferenceTo(theUser);
+            WeakReferenceTracker.AddWeakReferenceTo(theRatings[0]);
+            WeakReferenceTracker.AddWeakReferenceTo(theRatingGroups[0]);
+
 
             theResponse = new UserRatingResponse();
             if (!theUserRatings.Any())

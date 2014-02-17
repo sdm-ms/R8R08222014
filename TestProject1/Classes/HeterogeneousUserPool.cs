@@ -122,10 +122,10 @@ namespace TestProject1
                         user.Rate(rating, subversiveUserRatingValue, subversiveUserIgnoresPreviousRatings);
                     numberUserRatings++;
                     GC.Collect(); // DEBUG
-                    Debug.WriteLine("DEBUG1 average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
+                    //Debug.WriteLine("DEBUG1 average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
                     TestHelper.ActionProcessor.ResetDataContexts(); // DEBUG -- delete this
                     GC.Collect(); // DEBUG
-                    Debug.WriteLine("DEBUG average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
+                   // Debug.WriteLine("DEBUG average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
                 }
             }
         }

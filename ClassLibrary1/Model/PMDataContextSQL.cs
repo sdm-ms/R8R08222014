@@ -6,30 +6,39 @@ using ClassLibrary1.Misc;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using System.Diagnostics;
 using System.Data.Linq;
+using System.Reflection;
 
 namespace ClassLibrary1.Model
 {
     public partial class RaterooDataContext
     {
-        public new void Dispose() // Note: Because this hides Dispose() from the base class it won't get called when Dispose is called on IDataContext. Tried to implement standard Dispose(bool disposing) pattern, but it seems that the DataContext base class is not set up properly for that. So, we must make sure to close the connection state when resetting the data context, and we must remember to do that.
-        {
-            var changes = this.GetChangeSet();
-            if (changes.Deletes.Any() || changes.Inserts.Any() || changes.Updates.Any())
-            {
-                Trace.TraceError("Changes exist, but DataContext is being disposed.");
-                //var theChanges = this.GetChangedItems();
-                //foreach (var theChange in theChanges)
-                //    theChange.DebugOutput();
-            }
-            if (this.Connection != null)
-            {
-                if (this.Connection.State != System.Data.ConnectionState.Closed)
-                    this.Connection.Close();
-            }
-        }
+        //public new void Dispose() // Note: Because this hides Dispose() from the base class it won't get called when Dispose is called on IDataContext. Tried to implement standard Dispose(bool disposing) pattern, but it seems that the DataContext base class is not set up properly for that. So, we must make sure to close the connection state when resetting the data context, and we must remember to do that.
+        //{
+        //    var changes = this.GetChangeSet();
+        //    if (changes.Deletes.Any() || changes.Inserts.Any() || changes.Updates.Any())
+        //    {
+        //        Trace.TraceError("Changes exist, but DataContext is being disposed.");
+        //        //var theChanges = this.GetChangedItems();
+        //        //foreach (var theChange in theChanges)
+        //        //    theChange.DebugOutput();
+        //    }
+        //    if (this.Connection != null)
+        //    {
+        //        if (this.Connection.State != System.Data.ConnectionState.Closed)
+        //            this.Connection.Close();
+        //    }
+        //}
 
-        partial void OnCreated()
+        //partial void OnCreated()
+        //{
+        //}
+
+
+        public void ClearContextCache()
         {
+            const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
+            var method = this.GetType().GetMethod("ClearCache", FLAGS);
+            method.Invoke(this, null);
         }
 
     }

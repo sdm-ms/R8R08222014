@@ -41,7 +41,10 @@ namespace ClassLibrary1.Misc
         public static void RegisterObjectToBeInserted(this IDataContextExtended theDataContext, object theObject)
         {
             if (theObject != null)
+            {
                 theDataContext.RegisteredToBeInserted.Add(theObject);
+                WeakReferenceTracker.AddWeakReferenceTo(theObject);
+            }
         }
 
         internal static void InsertOnSubmitObjectsToBeInserted<T>(this IDataContextExtended theDataContext) where T : class, INotifyPropertyChanging, INotifyPropertyChanged

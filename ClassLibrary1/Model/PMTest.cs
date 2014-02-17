@@ -58,10 +58,13 @@ namespace ClassLibrary1.Model
     {
         public PMActionProcessor ActionProcessor;
 
-        public TestHelper()
+        public TestHelper(bool rebuild = true)
         {
-            var builder = new RaterooBuilder();
-            builder.DeleteAndRebuild();
+            if (rebuild)
+            {
+                var builder = new RaterooBuilder();
+                builder.DeleteAndRebuild();
+            }
             ActionProcessor = new PMActionProcessor();
         }
 
@@ -113,6 +116,7 @@ namespace ClassLibrary1.Model
             myThread.Start();
             while (myThread.IsAlive)
                 Thread.Sleep(1);
+            PMCacheManagement.ClearCache(); // otherwise, all objects are saved and we get massive cache increase DEBUG
         }
 
         private void FinishUserRatingAdd_Helper()
@@ -130,12 +134,12 @@ namespace ClassLibrary1.Model
                 simp.UseExtraLongRatingPhaseGroup();
             simp.Create();
 
-            Tbl = ActionProcessor.DataContext.GetTable<Tbl>().SingleOrDefault(x => x.Name.Contains("Test"));
+            Tbl = ActionProcessor.DataContext.GetTable<Tbl>().FirstOrDefault(x => x.Name.Contains("Test"));
             AddTblRowsToTbl(Tbl.TblID, 1);
             ActionProcessor.DataContext.SubmitChanges();
 
-            TblRow = ActionProcessor.DataContext.GetTable<TblRow>().SingleOrDefault();
-            Rating = ActionProcessor.DataContext.GetTable<Rating>().SingleOrDefault();
+            TblRow = ActionProcessor.DataContext.GetTable<TblRow>().FirstOrDefault();
+            Rating = ActionProcessor.DataContext.GetTable<Rating>().FirstOrDefault();
             RatingGroup = Rating.RatingGroup;
             TblColumn = RatingGroup.TblColumn;
             TblTab = RatingGroup.TblColumn.TblTab;
@@ -181,7 +185,7 @@ namespace ClassLibrary1.Model
             for(int i = 0; i<NumUsers;i++)
             {
 
-                var existingUser = ActionProcessor.DataContext.GetTable<User>().SingleOrDefault(u => u.Username == "user " + testInUsernameString + i.ToString());
+                var existingUser = ActionProcessor.DataContext.GetTable<User>().FirstOrDefault(u => u.Username == "user" + testInUsernameString + i.ToString());
                 if (existingUser == null)
                     UserIds[i] = ActionProcessor.UserAdd("user" + i.ToString(), false, "mbabramo@gmail.com", "password" + i.ToString(), false);
                 else
@@ -253,15 +257,17 @@ namespace ClassLibrary1.Model
             }
         }
 
+        public bool exitImmediately = false;
         public void WaitIdleTasks()
         {
+            exitImmediately = false;
             ActionProcessor.DataContext.SubmitChanges();
             long? initialLoopSetCompleted = null;
             bool hasBeenNotBusy = true; // now that we are requesting pauses at the end of this routine we don't have to wait for it not to have been busy.
             bool hasBeenBusyAfterBeingNotBusy = false; // we want it to be not busy, busy, and then not busy again
             bool hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = false;
             BackgroundThread.CurrentlyPaused = false;
-            while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy)
+            while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy && !exitImmediately)
             {
                 //Trace.TraceInformation("WaitIdleTasks still more work to do.");
                 BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false);
@@ -293,6 +299,7 @@ namespace ClassLibrary1.Model
             }
             //Trace.TraceInformation("WaitIdleTasks complete.");
             ActionProcessor.ResetDataContexts(); // Otherwise, we may have stale data in our data context.
+            exitImmediately = false;
         }
 
 

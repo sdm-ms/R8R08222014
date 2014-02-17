@@ -90,7 +90,9 @@ namespace ClassLibrary1.Misc
         public IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
-            return new SQLRepository<T>(UnderlyingDataContext.GetTable<T>());
+            var theTable = UnderlyingDataContext.GetTable<T>();
+            WeakReferenceTracker.AddWeakReferenceTo(theTable); // DEBUG
+            return new SQLRepository<T>(theTable);
         }
 
         public virtual void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)

@@ -14,9 +14,11 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            var test = new HeterogeneousUserTests();
-            test.Initialize();
-            test.AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows();
+            var test = new TestRealDatabase();
+            test.TestMemoryLeaks();
+            //var test = new HeterogeneousUserTests();
+            //test.Initialize();
+            //test.AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows();
         }
     }
 }
