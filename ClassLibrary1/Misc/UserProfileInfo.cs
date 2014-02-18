@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Security;
 using System.Web.Profile;
 using Microsoft.WindowsAzure.ServiceRuntime;
+using ClassLibrary1.Model;
 
 namespace ClassLibrary1.Misc
 {
@@ -21,9 +22,69 @@ namespace ClassLibrary1.Misc
         string Username { get; set; }
     }
 
+    public class AnonymousUser : IUserProfileInfo
+    {
+        public void DeleteUser(bool deleteAllRelatedData)
+        {
+        }
+
+        public string Email
+        {
+            get
+            {
+                return "N/A";
+            }
+            set
+            {
+            }
+        }
+
+        public object GetProperty(string propertyName)
+        {
+            if (propertyName == "UserID")
+                return 0;
+            return "N/A";
+        }
+
+        public void SavePropertyChanges()
+        {
+        }
+
+        public void SetProperty(string propertyName, object propertyValue, bool save = true)
+        {
+        }
+
+        public IUserProfileInfo LoadByUsername(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IUserProfileInfo CreateUser(string username, string password, string email)
+        {
+            return this;
+        }
+
+        public bool UnlockUser()
+        {
+            return true;
+        }
+
+        public string Username
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
+
     public static class UseFakeUserProfileInfo 
     {
-        public static bool UseFake { get { return !RoleEnvironment.IsAvailable; } } // i.e., are we unit testing?
+        public static bool UseFake { get { return !GetIRaterooDataContext.UseRealDatabase; } } //  !RoleEnvironment.IsAvailable; } } // i.e., are we unit testing?
     }
 
     public static class UserProfileCollection
@@ -45,12 +106,12 @@ namespace ClassLibrary1.Misc
                 return RealUserProfileCollection.GetCurrentUser();
         }
 
-        public static void DeleteInactiveProfiles()
+        public static void DeleteAllUsers()
         {
             if (UseFakeUserProfileInfo.UseFake)
-                FakeUserProfileCollection.DeleteInactiveProfiles();
+                FakeUserProfileCollection.DeleteAllUsers();
             else
-                RealUserProfileCollection.DeleteInactiveProfiles();
+                RealUserProfileCollection.DeleteAllUsers();
         }
 
         public static IUserProfileInfo LoadByUsername(string username)
@@ -58,7 +119,7 @@ namespace ClassLibrary1.Misc
             if (UseFakeUserProfileInfo.UseFake)
                 return new FakeUserProfileInfo().LoadByUsername(username);
             else
-                return UserProfileCollection.LoadByUsername(username);
+                return new RealUserProfileInfo().LoadByUsername(username);
         }
 
         public static IUserProfileInfo CreateUser(string username, string password, string email)
@@ -66,7 +127,7 @@ namespace ClassLibrary1.Misc
             if (UseFakeUserProfileInfo.UseFake)
                 return new FakeUserProfileInfo().CreateUser(username, password, email);
             else
-                return UserProfileCollection.CreateUser(username, password, email);
+                return new RealUserProfileInfo().CreateUser(username, password, email);
         }
     }
 
@@ -94,7 +155,7 @@ namespace ClassLibrary1.Misc
             return null;
         }
 
-        public static void DeleteInactiveProfiles()
+        public static void DeleteAllUsers()
         {
         }
     }
@@ -156,12 +217,15 @@ namespace ClassLibrary1.Misc
         {
             MembershipUser theUser = Membership.GetUser();
             if (theUser == null)
-                return null;
+                return new AnonymousUser();
             return UserProfileCollection.LoadByUsername(theUser.UserName);
         }
 
-        public static void DeleteInactiveProfiles()
+        public static void DeleteAllUsers()
         {
+            var allUsers = GetAllUsers();
+            foreach (var user in allUsers)
+                user.DeleteUser(true);
             System.Web.Profile.ProfileManager.DeleteInactiveProfiles(System.Web.Profile.ProfileAuthenticationOption.All, TestableDateTime.Now);
         }
     }

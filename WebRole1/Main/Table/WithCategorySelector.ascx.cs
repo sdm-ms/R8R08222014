@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Text;
 
 using ClassLibrary1.Model;
+using ClassLibrary1.Misc;
 
 public partial class Main_Table_WithCategorySelector : System.Web.UI.UserControl
 {
@@ -158,7 +159,8 @@ public partial class Main_Table_WithCategorySelector : System.Web.UI.UserControl
             // theInfo.IPAddress = Request.UserHostAddress;
 
             bool userIsTrusted = false;
-            int? userID = (int?) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            IUserProfileInfo currentUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
+            int? userID = currentUser == null ? null : (int?) currentUser.GetProperty("UserID");
             if (userID != null && userID != 0) // logged in user ==> probably a rater
             {
                 TblTab theTblTab;

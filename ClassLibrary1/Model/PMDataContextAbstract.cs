@@ -14,7 +14,7 @@ namespace ClassLibrary1.Model
         private static RaterooDataContext _UnderlyingSQLDataContextForInMemoryContext = 
             new RaterooDataContext("no real connection"); // RaterooSQLDataContext(true,true).GetRealDatabaseIfExists();
 
-        public static bool UseRealDatabase { get; set; }
+        public static bool UseRealDatabase = true;
 
         public static IRaterooDataContext New(bool doAllowChangeData, bool enableObjectTracking)
         {

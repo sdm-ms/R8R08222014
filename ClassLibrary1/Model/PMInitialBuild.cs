@@ -349,7 +349,6 @@ namespace ClassLibrary1.Model
         public void CreateEstablishedUsers()
         {
             int theUserID2 = Supporter.AddUserReturnId("admin", true, "mbabramo@yahoo.com", "finch2127248474", false);
-
             // theUserID = Supporter.AddUser("basic", false, "Anonymous", "User", "", "No address", "", "", "", "", "basic", "", "", "", "");
             //SetStatusOfObjectInitialBuild(theUserID, TypeOfObject.User, StatusOfObject.Active);
 
@@ -473,6 +472,8 @@ namespace ClassLibrary1.Model
             }
             else
                 SimulatedPermanentStorage.Reset();
+
+            UserProfileCollection.DeleteAllUsers();
 
             // clear the cache
             if (HttpContext.Current != null)

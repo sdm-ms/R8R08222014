@@ -43,6 +43,14 @@ namespace TestProject1
     {
 
         [TestMethod]
+        public void ResetAndCreateStandard()
+        {
+            RaterooBuilder theBuilder = new RaterooBuilder();
+            theBuilder.DeleteAndRebuild();
+            theBuilder.CreateStandard();
+        }
+
+        [TestMethod]
         public void TestMemoryLeaks()
         {
             // before switching to NUnit, this test was failing, with dramatic increases in memory, even though we were not getting the same result when running the same test through a console application. It's not clear why using MSTest should make a difference, particularly since we are using the same vstest execution engine with NUnit, but it appears to make a difference.

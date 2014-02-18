@@ -116,7 +116,10 @@ public partial class ViewTbl : System.Web.UI.Page
             SetChildrenProperties();
             int? anyUserID = null;
             if (HttpContext.Current.Profile != null)
-                anyUserID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            {
+                IUserProfileInfo currentUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
+                anyUserID = currentUser == null ? null : (int?)currentUser.GetProperty("UserID");
+            }
             if (anyUserID == 0)
                 anyUserID = null;
             bool canViewPage = DataAccess.CheckUserRights(anyUserID, UserActionOldList.View, false, null, theLocation.theTbl.TblID);
