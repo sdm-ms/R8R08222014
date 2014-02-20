@@ -390,7 +390,7 @@ namespace ClassLibrary1.Model
             return moreWorkToDo;
         }
 
-        protected void SetPointsPumpingProportion(List<UserRating> userRatingsForRatingInChronologicalOrder, List<PointsTotal> correspondingPointsTotals)
+        public static void SetPointsPumpingProportion(List<UserRating> userRatingsForRatingInChronologicalOrder, List<PointsTotal> correspondingPointsTotals)
         {
             // a point-pumping scheme is an attempt to create a new user account that has nothing to lose, move ratings with that account, and then benefit by fixing the ratings with another account. We are tracking the proportion of points that may be due to points pumping for each user on this table. If it is relatively high for a particular user, then we will reduce all the users' points proportionately. 
             int count = userRatingsForRatingInChronologicalOrder.Count();

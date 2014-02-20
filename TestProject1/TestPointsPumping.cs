@@ -46,8 +46,55 @@ namespace TestProject1
             _random = new Random();
         }
 
-        public void CheckPointsPumpingProportionSetting(decimal? previousRatingValue, List<decimal> userRatings, List<bool> usersHaveSufficientPoints, decimal expectedContributionToPointsPumpingNumerator, decimal expectedContributionToPointsPumpingDenominator)
+        [TestMethod]
+        public void CheckPointsPumpingProportionSetting()
         {
+            CheckPointsPumpingProportionSetting_Helper(5, new List<decimal>() { 6 }, new List<bool>() { false }, new List<float> { 0.0F }); // moving user rating without help should not be points pumping
+            CheckPointsPumpingProportionSetting_Helper(5, new List<decimal>() { 6, 7 }, new List<bool>() { false, false }, new List<float> { 0.0F, 0.0F }); // moving user rating further without help should not be points pumping
+            CheckPointsPumpingProportionSetting_Helper(5, new List<decimal>() { 6, 7, 6 }, new List<bool>() { false, false, false }, new List<float> { 0.0F, 0.0F, 1.0F }); // here, second user pushed to 7 without points so moving back to 6 is points pumping
+        }
+
+        public void CheckPointsPumpingProportionSetting_Helper(decimal previousRatingOrVirtualRating, List<decimal> userRatings, List<bool> usersHaveSufficientPoints, List<float> expectedContributionToPointsPumpingNumeratorWithMaxGainOf1)
+        {
+            int n = userRatings.Count();
+            List<UserRating> urList = new List<UserRating>();
+            List<PointsTotal> ptList = new List<PointsTotal>();
+            // Setup 
+            for (int i = 0; i < n; i++)
+            {
+                UserRating ur = new UserRating();
+                if (i == 0)
+                    ur.PreviousRatingOrVirtualRating = previousRatingOrVirtualRating;
+                else
+                    ur.PreviousRatingOrVirtualRating = userRatings[i - 1];
+                ur.NewUserRating = userRatings[i];
+                if (ur.PreviousRatingOrVirtualRating == ur.NewUserRating)
+                    ur.MaxGain = 0;
+                else
+                    ur.MaxGain = 1.0M; // we just need an assumption 
+                urList.Add(ur);
+                PointsTotal pt = new PointsTotal();
+                if (usersHaveSufficientPoints[i])
+                    pt.TotalPoints = 1000000; // gives user sufficient points
+                // assuming this is the first user rating
+                pt.PointsPumpingProportionAvg_Numer = 0;
+                pt.PointsPumpingProportionAvg_Denom = 0;
+                ptList.Add(pt);
+            }
+            RaterooDataManipulation.SetPointsPumpingProportion(urList, ptList);
+            for (int i = 0; i < n; i++)
+            {
+                if (urList[i].MaxGain == 0)
+                {
+                    ptList[i].PointsPumpingProportionAvg_Numer.Should().BeApproximately(0, 0.01F, "because the user rating did not move");
+                    ptList[i].PointsPumpingProportionAvg_Denom.Should().BeApproximately(0, 0.01F, "because the user rating did not move");
+                }
+                else
+                {
+                    ptList[i].PointsPumpingProportionAvg_Numer.Should().BeApproximately(expectedContributionToPointsPumpingNumeratorWithMaxGainOf1[i], 0.01F, "based on expected calculation provided");
+                    ptList[i].PointsPumpingProportionAvg_Denom.Should().BeApproximately(1.0F, 0.01F, "based max gain was 1.0");
+                }
+            }
 
         }
     }
