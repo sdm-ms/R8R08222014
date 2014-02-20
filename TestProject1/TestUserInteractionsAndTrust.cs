@@ -974,7 +974,7 @@ namespace TestProject1
 
             int? randomSeed = null;
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.4F, 0.6F, true, false, randomSeed);
-            Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, true, false, randomSeed); 
+            Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, true, false, randomSeed);
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.6F, false, true, randomSeed);
             Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess_Helper(100, 0.6F, 0.8F, false, true, randomSeed);
             
@@ -1097,7 +1097,7 @@ namespace TestProject1
                 TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, correctValue - otherUserRatingValueOffset, TestHelper.UserIds[otherUser2Num], ref theResponse);
                 FinishUserRatingAdd();
 
-                if (rowNum % 5 == 0) // periodically, skip ahead and also do complete set of idle tasks
+                if (rowNum % 20 == 0) // periodically, skip ahead and also do complete set of idle tasks
                 {
                     TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(10).GetTotalWholeMilliseconds());
                     TestHelper.WaitIdleTasks();

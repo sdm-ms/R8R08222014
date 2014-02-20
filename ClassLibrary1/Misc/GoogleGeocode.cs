@@ -4,6 +4,7 @@ using System.Text;
 using System.Web;
 using System.Net;
 using System.Web.UI;
+using Newtonsoft.Json;
 
 
 namespace GoogleGeocoder
@@ -59,15 +60,49 @@ namespace GoogleGeocoder
 
     public class Geocode
     {
-        private const string _googleUri = "http://maps.google.com/maps/geo?q=";
-        private const string _googleKey = "ABQIAAAAxJm82XBjR9SRcFpZJCVO6BRRVfaJZ8QztGdpa7Rq78iMlA85jRR9ITKlRPrnzARoUPhqrbkt_dMQ6Q"; // Attached to Jessie.K.Liu@gmail.com
+        private const string _googleUri = "https://maps.googleapis.com/maps/api/geocode/json"; 
+        private const string _googleKey = "ABQIAAAAxJm82XBjR9SRcFpZJCVO6BRRVfaJZ8QztGdpa7Rq78iMlA85jRR9ITKlRPrnzARoUPhqrbkt_dMQ6Q"; // Attached to Jessie.K.Liu@gmail.com NOTE: We no longer need this for up to 2500 per day.
         // private const string _googleKey = "ABQIAAAAs-ZODfxj8f9LNfbR_FZHTRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSOqvFJau5XR-PEzbSn1R2d2qm26A";
-        private const string _outputType = "csv"; // Available options: csv, xml, kml, json
+
+        public class GoogleGeoCodeResponse
+        {
+
+            public string status { get; set; }
+            public results[] results { get; set; }
+
+        }
+
+        public class results
+        {
+            public string formatted_address { get; set; }
+            public geometry geometry { get; set; }
+            public string[] types { get; set; }
+            public address_component[] address_components { get; set; }
+        }
+
+        public class geometry
+        {
+            public string location_type { get; set; }
+            public location location { get; set; }
+        }
+
+        public class location
+        {
+            public string lat { get; set; }
+            public string lng { get; set; }
+        }
+
+        public class address_component
+        {
+            public string long_name { get; set; }
+            public string short_name { get; set; }
+            public string[] types { get; set; }
+        }
 
         private static Uri GetGeocodeUri(string address)
         {
             address = HttpUtility.UrlEncode(address);
-            return new Uri(String.Format("{0}{1}&output={2}&key={3}", _googleUri, address, _outputType, _googleKey));
+            return new Uri(String.Format("{0}?address={1}&sensor=false", _googleUri, address));
         }
 
         /// <summary>
@@ -81,6 +116,7 @@ namespace GoogleGeocoder
         /// <returns>A spatial coordinate that contains the latitude and longitude of the address.</returns>
         public static Coordinate GetCoordinates(string address)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
             WebClient client = new WebClient();
             Uri uri = GetGeocodeUri(address);
 
@@ -90,9 +126,15 @@ namespace GoogleGeocoder
             * the third is the latitude, 
             * the fourth one is the longitude.
             */
-            string[] geocodeInfo = client.DownloadString(uri).Split(',');
+            string geocodeInfo = client.DownloadString(uri);
 
-            return new Coordinate(Convert.ToDecimal(geocodeInfo[2]), Convert.ToDecimal(geocodeInfo[3]));
+            GoogleGeoCodeResponse gr = JsonConvert.DeserializeObject<GoogleGeoCodeResponse>(geocodeInfo);
+
+            if (gr.results == null)
+                return new Coordinate(0.0M, 0.0M);
+            location loc = gr.results[0].geometry.location;
+
+            return new Coordinate(Convert.ToDecimal(loc.lat), Convert.ToDecimal(loc.lng));
         }
 
         public static Coordinate GetCoordinatesAndReformatAddress(ref string address)

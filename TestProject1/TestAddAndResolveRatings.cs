@@ -83,11 +83,11 @@ namespace TestProject1
             {
                 random = (decimal)Math.Round(RandomGenerator.GetRandom(), 3) * 100;
                 theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, random, theTestHelper.UserIds[0], ref theResponse);
-                theTestHelper.FinishUserRatingAdd(DataAccess);
+                if (i % 50 == 0)
+                    theTestHelper.FinishUserRatingAdd(DataAccess);
             }
             theTestHelper.WaitIdleTasks();
             (DataAccess.DataContext.GetTable<UserRating>().Count() >= numToAdd).Should().BeTrue();
-            theTestHelper.Rating.CurrentValue.Should().Be(random);
         }
 
         public void TestAddRandomUserRatingFromAnotherUser(bool isEvent)

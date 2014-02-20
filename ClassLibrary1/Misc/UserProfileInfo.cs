@@ -203,7 +203,7 @@ namespace ClassLibrary1.Misc
     {
         public static List<IUserProfileInfo> GetAllUsers()
         {
-            MembershipUserCollection theCollection = new MembershipUserCollection();
+            MembershipUserCollection theCollection = Membership.GetAllUsers();
             List<IUserProfileInfo> theList = new List<IUserProfileInfo>();
             foreach (var item in theCollection)
             {
@@ -226,7 +226,7 @@ namespace ClassLibrary1.Misc
             var allUsers = GetAllUsers();
             foreach (var user in allUsers)
                 user.DeleteUser(true);
-            System.Web.Profile.ProfileManager.DeleteInactiveProfiles(System.Web.Profile.ProfileAuthenticationOption.All, TestableDateTime.Now);
+            ProfileManager.DeleteInactiveProfiles(System.Web.Profile.ProfileAuthenticationOption.All, TestableDateTime.Now);
         }
     }
 

@@ -351,7 +351,7 @@ namespace ClassLibrary1.Model
         {
             DateTime currentTime = TestableDateTime.Now;
             const int maxToTake = 400;
-
+            // DEBUG -- can we simpify? We shouldn't need all this information
             var userRatingInfoQuery = from x in DataContext.GetTable<UserRating>()
                                       where
                                           (!x.PointsHaveBecomePending && x.WhenPointsBecomePending < currentTime) // triggered when time for points to become pending arrives
@@ -392,20 +392,21 @@ namespace ClassLibrary1.Model
 
         protected void SetPointsPumpingProportion(List<UserRating> userRatingsForRatingInChronologicalOrder, List<PointsTotal> correspondingPointsTotals)
         {
+            // a point-pumping scheme is an attempt to create a new user account that has nothing to lose, move ratings with that account, and then benefit by fixing the ratings with another account. We are tracking the proportion of points that may be due to points pumping for each user on this table. If it is relatively high for a particular user, then we will reduce all the users' points proportionately. 
             int count = userRatingsForRatingInChronologicalOrder.Count();
             for (int i = 0; i < count; i++)
             {
-                UserRating laterUserRating = userRatingsForRatingInChronologicalOrder[i];
-                decimal previousRating = laterUserRating.PreviousRatingOrVirtualRating;
-                decimal newRating = laterUserRating.NewUserRating;
-                Tuple<decimal, decimal> laterUserRange = new Tuple<decimal,decimal>(Math.Min(previousRating, newRating), Math.Max(previousRating, newRating));
-                bool laterUserRaisedRating = newRating > previousRating;
-                decimal cumulativeOverlapProportion = 0;
-                bool usersMovingInOppositeDirectionExist = false; // if there are no such users, then there are no concerns about point-pumping schemes
+                UserRating laterUserRating = userRatingsForRatingInChronologicalOrder[i]; // we will look at the earlier user ratings in this phase that preceded this later user rating below
+                decimal immediatelyPreviousRatingValue = laterUserRating.PreviousRatingOrVirtualRating;
+                decimal laterUserRatingNewRatingValue = laterUserRating.NewUserRating;
+                Tuple<decimal, decimal> laterUserRange = new Tuple<decimal,decimal>(Math.Min(immediatelyPreviousRatingValue, laterUserRatingNewRatingValue), Math.Max(immediatelyPreviousRatingValue, laterUserRatingNewRatingValue));
+                bool laterUserRaisedRating = laterUserRatingNewRatingValue > immediatelyPreviousRatingValue;
+                decimal cumulativeOverlapProportion = 0; // the cumulative overlap proportion is the proportion of the movement by the later user in one direction that is balanced by users with sufficient points who have moved over the same range in the other direction in this phase.
+                bool usersMovingInOppositeDirectionExist = false; // assume this for now -- if there are no such users, then there are no concerns about point-pumping schemes
                 for (int j = 0; j < i; j++)
                 {
                     if (cumulativeOverlapProportion >= 1.0M)
-                        continue; // we already have enough points backing up this one that we don't need to worry about point-pumping schemes
+                        continue; // we already have enough points backing up this one that we don't need to worry about point-pumping schemes for this user
                     UserRating earlierUserRating = userRatingsForRatingInChronologicalOrder[j];
                     decimal earlierPreviousRating = earlierUserRating.PreviousRatingOrVirtualRating;
                     decimal earlierNewRating = earlierUserRating.NewUserRating;
@@ -415,13 +416,13 @@ namespace ClassLibrary1.Model
                     usersMovingInOppositeDirectionExist = true;
 
                     Tuple<decimal, decimal> earlierUserRange = new Tuple<decimal,decimal>(Math.Min(earlierPreviousRating, earlierNewRating), Math.Max(earlierPreviousRating, earlierNewRating));
-                    if (earlierUserRange.Item2 < laterUserRange.Item1 || earlierUserRange.Item1 > laterUserRange.Item2)
-                        continue; // not relevant given absence of overlap
+                    if (earlierUserRange.Item2 < laterUserRange.Item1 || earlierUserRange.Item1 > laterUserRange.Item2 || earlierUserRange.Item1 == earlierUserRange.Item2 || laterUserRange.Item1 == laterUserRange.Item2)
+                        continue; // not relevant given absence of overlap -- cumulative overlap proportion should be 0
 
                     Tuple<decimal, decimal> overlapRange = new Tuple<decimal, decimal>(Math.Max(earlierUserRange.Item1, laterUserRange.Item1), Math.Min(earlierUserRange.Item2, laterUserRange.Item2));
                     decimal overlapProportion;
                     if (laterUserRange.Item1 == laterUserRange.Item2)
-                        overlapProportion = 0; // helps avoid divide-by-zero exception
+                        overlapProportion = 0; // helps avoid divide-by-zero exception (though now we already continue on this above so it's a redundant check) -- in this case, the user's points pumping proportion for the table won't be changed anyway because MaxGain will be 0.
                     else
                     {
                         if (laterUserRating.LogarithmicBase == null)
@@ -444,7 +445,7 @@ namespace ClassLibrary1.Model
                 laterUserRating.PointsPumpingProportion = pointsPumpingProportion;
                 PointsTotal laterPointsTotal = correspondingPointsTotals[i];
                 laterPointsTotal.PointsPumpingProportionAvg_Numer += (float)(laterUserRating.MaxGain * (pointsPumpingProportion - oldValue ?? 0));
-                laterPointsTotal.PointsPumpingProportionAvg_Denom += oldValue == null ? (float) laterUserRating.MaxGain : 0F;
+                laterPointsTotal.PointsPumpingProportionAvg_Denom += oldValue == null ? (float) laterUserRating.MaxGain : 0F; // if there already was a value for points pumping proportion, then there is no change to the denominator, because we've already taken the MaxGain into account.
                 laterPointsTotal.PointsPumpingProportionAvg = RaterooDataManipulation.CalculatePointsPumpingProportionAvg(laterPointsTotal.PointsPumpingProportionAvg_Numer, laterPointsTotal.PointsPumpingProportionAvg_Denom, laterPointsTotal.NumUserRatings); 
             }
         }

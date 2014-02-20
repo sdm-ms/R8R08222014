@@ -256,17 +256,17 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public bool exitImmediately = false;
+        public bool ExitImmediately = false;
         public void WaitIdleTasks()
         {
-            exitImmediately = false;
+            ExitImmediately = false;
             ActionProcessor.DataContext.SubmitChanges();
             long? initialLoopSetCompleted = null;
             bool hasBeenNotBusy = true; // now that we are requesting pauses at the end of this routine we don't have to wait for it not to have been busy.
             bool hasBeenBusyAfterBeingNotBusy = false; // we want it to be not busy, busy, and then not busy again
             bool hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = false;
             BackgroundThread.CurrentlyPaused = false;
-            while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy && !exitImmediately)
+            while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy && !ExitImmediately)
             {
                 //Trace.TraceInformation("WaitIdleTasks still more work to do.");
                 BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false);
@@ -296,9 +296,11 @@ namespace ClassLibrary1.Model
                         throw new Exception("Idle tasks appear to be in an infinite loop."); // we can put a conditional breakpoint earlier if we want to more easily debut
                 }
             }
+            if (ExitImmediately)
+                BackgroundThread.Instance.ExitAsSoonAsPossible();
             //Trace.TraceInformation("WaitIdleTasks complete.");
             ActionProcessor.ResetDataContexts(); // Otherwise, we may have stale data in our data context.
-            exitImmediately = false;
+            ExitImmediately = false;
         }
 
 

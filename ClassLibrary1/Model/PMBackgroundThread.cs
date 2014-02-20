@@ -66,6 +66,11 @@ namespace ClassLibrary1.Model
                     bool[] moreWorkToDoThisTask = new bool[numTasks];
                     for (int loop = 1; loop <= numLoops; loop++)
                     {
+                        if (BackgroundThread.ExitRequested)
+                        {
+                            BackgroundThread.ExitGranted = true;
+                            return;
+                        }
                         if (loop != 1 && BackgroundThread.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
                         {
                             BackgroundThread.PauseRequestedWhenWorkIsComplete = false;
@@ -254,6 +259,11 @@ namespace ClassLibrary1.Model
 
                 CurrentlyInBriefPause = false;
                 //Trace.TraceInformation("IdleTasksOnce");
+                if (BackgroundThread.ExitRequested || BackgroundThread.ExitGranted)
+                {
+                    CurrentlyInBriefPause = false;
+                    return;
+                }
                 IdleTasksLoop(theDataAccessModule);
                 if (!MoreWorkToDo)
                 {
@@ -285,6 +295,8 @@ namespace ClassLibrary1.Model
         public static bool PauseRequestedImmediately { get; set; }
         public static bool PauseRequestedWhenWorkIsComplete { get; set; }
         public static bool CurrentlyPaused { get; set; }
+        public static bool ExitRequested = false;
+        public static bool ExitGranted = false;
 
         internal static bool BriefPauseRequested
         {
@@ -309,6 +321,8 @@ namespace ClassLibrary1.Model
         BackgroundThread()
         {
             _briefPauseRequested = false;
+            ExitRequested = false;
+            ExitGranted = false;
         }
 
         public static bool IsBriefPauseRequested()
@@ -386,7 +400,7 @@ namespace ClassLibrary1.Model
                     threadState = myThread.ThreadState;
                 if (myThread == null || (threadState != System.Threading.ThreadState.Running && threadState != System.Threading.ThreadState.WaitSleepJoin))
                 {
-                    //Trace.TraceInformation("About to reset thread, which was in state " + ((myThread == null) ? "null" : threadState.ToString()));
+                    Trace.TraceInformation("About to reset thread, which was in state " + ((myThread == null) ? "null" : threadState.ToString()));
                     ResetThread(repeatIndefinitely);
                 }
                 //else
@@ -405,6 +419,21 @@ namespace ClassLibrary1.Model
             //    Monitor.Exit(padlock);
             //}
             //Trace.TraceInformation("Exiting EnsureBackgroundTaskIsRunning");
+        }
+
+        public void ExitAsSoonAsPossible()
+        {
+            ExitRequested = true;
+            CurrentlyPaused = false;
+            int maximumRepetitions = 1000;
+            int r = 0;
+            while (!ExitGranted)
+            {
+                r++;
+                if (r > maximumRepetitions)
+                    throw new Exception("Thread is not exiting as requested.");
+                Thread.Sleep(100);
+            }
         }
 
         internal void ResetThread(bool repeatIndefinitely)
