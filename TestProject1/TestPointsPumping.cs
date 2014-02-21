@@ -30,7 +30,7 @@ namespace TestProject1
         const float Precision = 0.0001f;
 
         RaterooDataManipulation _dataManipulation;
-        TestHelper _testHelper;
+        TestHelper TestHelper;
         Random _random;
 
         public void Initialize()
@@ -40,10 +40,39 @@ namespace TestProject1
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds());
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
-            _testHelper = new TestHelper();
+            TestHelper = new TestHelper();
             _dataManipulation = new RaterooDataManipulation();
 
             _random = new Random();
+        }
+
+        [TestMethod]
+        public void SimplePointsPumpingInitiativeCounteracted()
+        {
+            Initialize();
+            TestHelper.CreateSimpleTestTable(true);
+            int numFakeUsers = 100;
+            TestHelper.CreateUsers(100 + 1);
+            TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
+
+            UserRatingResponse theResponse = new UserRatingResponse();
+            int fakeUserNumber = 1;
+            for (int i = 1; i <= numFakeUsers * 2; i++)
+            {
+                if (i % 2 == 1)
+                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 4.0M, TestHelper.UserIds[0], ref theResponse);
+                else
+                {
+                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 5.0M, TestHelper.UserIds[fakeUserNumber], ref theResponse);
+                    fakeUserNumber++;
+                }
+                TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation); // must do this, otherwise next user rating will get an adjustment factor of 0.
+                if (i % 10 == 0)
+                    TestHelper.WaitIdleTasks();
+            }
+            TestHelper.WaitIdleTasks();
+            decimal? ppp = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == TestHelper.UserIds[0]).Last().PointsPumpingProportion;
+            ppp.Should().Equals(1.0M);
         }
 
         [TestMethod]
