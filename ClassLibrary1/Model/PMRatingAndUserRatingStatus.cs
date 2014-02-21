@@ -398,6 +398,33 @@ namespace ClassLibrary1.Model
             public int IndexOfUserWhoMovedIt;
             public bool UserWhoMovedItHadPointsToLose;
             public bool MoveRepresentsPointsPumping;
+
+            public PointsMovementSegment DeepCopy()
+            {
+                return new PointsMovementSegment() { FromPointIndex = this.FromPointIndex, ToPointIndex = this.ToPointIndex, DistanceBetweenPoints = this.DistanceBetweenPoints, IndexOfUserWhoMovedIt = this.IndexOfUserWhoMovedIt, UserWhoMovedItHadPointsToLose = this.UserWhoMovedItHadPointsToLose, MoveRepresentsPointsPumping = this.MoveRepresentsPointsPumping };
+            }
+
+            public void SetDistance(List<decimal> points, decimal? logarithmicBase)
+            {
+                if (logarithmicBase == null)
+                    DistanceBetweenPoints = Math.Abs(points[ToPointIndex] - points[FromPointIndex]);
+                else
+                {
+                    Func<decimal, decimal> lg = x => (decimal)Math.Log((double)x, (double)logarithmicBase);
+                    DistanceBetweenPoints = Math.Abs(lg(points[ToPointIndex]) - lg(points[FromPointIndex]));
+                }
+            }
+
+            public List<PointsMovementSegment> SplitAtIndex(int splitIndex, List<decimal> points, decimal? logarithmicBase)
+            {
+                PointsMovementSegment s1 = this.DeepCopy();
+                PointsMovementSegment s2 = this.DeepCopy();
+                s1.ToPointIndex = splitIndex;
+                s2.FromPointIndex = splitIndex;
+                s1.SetDistance(points, logarithmicBase);
+                s2.SetDistance(points, logarithmicBase);
+                return new List<PointsMovementSegment>() { s1, s2 };
+            }
         }
 
         public static void SetPointsPumpingProportion(List<UserRating> userRatingsForRatingInChronologicalOrder, List<PointsTotal> correspondingPointsTotals)
@@ -437,23 +464,33 @@ namespace ClassLibrary1.Model
                     while (i != endingIndex)
                     {
                         int orig_i = i;
-                        if (ratingIsIncreased)
-                            i++;
-                        else
-                            i--;
-                        decimal distanceBetweenPoints;
-                        if (ur.LogarithmicBase == null)
-                            distanceBetweenPoints = Math.Abs(points[orig_i] - points[i]);
-                        else
+                        bool goFurther = true;
+                        while (goFurther)
                         {
-                            Func<decimal, decimal> lg = x => (decimal)Math.Log((double)x, (double)ur.LogarithmicBase);
-                            distanceBetweenPoints = Math.Abs(lg(points[orig_i]) - lg(points[i]));
+                            if (ratingIsIncreased)
+                                i++;
+                            else
+                                i--;
+                            goFurther = i != endingIndex && !segmentsAlreadyExaminedAndStillRelevant.Any(x => x.FromPointIndex == i || x.ToPointIndex == i); // So, if user 1 goes from point 0 to point 5, and user 2 moves from point 5 to point 0, we should have a full segment all the way back -- despite the fact that user 3 may move from 0 to 1.
                         }
+                        // any past points that straddle the new ending index need to be split up
+                        List<PointsMovementSegment> segmentsNeedingSplitting = segmentsAlreadyExaminedAndStillRelevant.Where(x =>
+                            (x.FromPointIndex < i && i < x.ToPointIndex) ||
+                            (x.ToPointIndex < i && i < x.FromPointIndex)
+                            ).ToList();
+                        foreach (PointsMovementSegment straddler in segmentsNeedingSplitting)
+                        {
+                            List<PointsMovementSegment> replacements = straddler.SplitAtIndex(i, points, ur.LogarithmicBase);
+                            int indexOfStraddler = segmentsAlreadyExaminedAndStillRelevant.IndexOf(straddler);
+                            segmentsAlreadyExaminedAndStillRelevant.RemoveAt(indexOfStraddler);
+                            segmentsAlreadyExaminedAndStillRelevant.Insert(indexOfStraddler, replacements[0]);
+                            segmentsAlreadyExaminedAndStillRelevant.Insert(indexOfStraddler + 1, replacements[1]);
+                        }
+
                         PointsMovementSegment pms = new PointsMovementSegment()
                         {
                             FromPointIndex = orig_i,
                             ToPointIndex = i,
-                            DistanceBetweenPoints = distanceBetweenPoints,
                             IndexOfUserWhoMovedIt = u,
                             UserWhoMovedItHadPointsToLose = (pointsTotalOfMovingUser.PendingPoints + pointsTotalOfMovingUser.NotYetPendingPoints + pointsTotalOfMovingUser.TotalPoints) > userRatingsForRatingInChronologicalOrder[u].MaxGain * 10.0M,
                             MoveRepresentsPointsPumping = segmentsAlreadyExaminedAndStillRelevant.Any(x =>
@@ -461,6 +498,7 @@ namespace ClassLibrary1.Model
                                             && !x.UserWhoMovedItHadPointsToLose // by someone without points to lose
                                             )
                         }; // by user without points
+                        pms.SetDistance(points, ur.LogarithmicBase);
                         newSegmentsForThisUser.Add(pms);
                         // We save memory and speed up queries by removing irrelevant items rather than simply marking them as irrelevant. This adds time to remove them from the list, and makes the algorithm a bit less transparent. But the memory savings could be significant if we have a very large number of user ratings, because each might be divided across a large number of segments. 
                         List<PointsMovementSegment> segmentsNowIrrelevant = segmentsAlreadyExaminedAndStillRelevant.Where(x =>
