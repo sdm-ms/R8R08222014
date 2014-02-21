@@ -283,7 +283,7 @@ namespace ClassLibrary1.Model
                 int returnVal = AddOrResetLongProcess(typeOfProcess, delayBeforeReset, object1ID, object2ID, priority, theData);
 
 
-                BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false);
+                BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true);
 
                 return returnVal;
             }

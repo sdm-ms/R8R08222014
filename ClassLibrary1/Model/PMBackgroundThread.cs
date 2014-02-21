@@ -31,7 +31,7 @@ namespace ClassLibrary1.Model
         public MyBackgroundTask()
         {
             MoreWorkToDo = true;
-            RepeatIndefinitely = false;
+            RepeatIndefinitely = true;
             CurrentlyInBriefPause = false;
             BackgroundThread.CurrentlyPaused = false;
         }

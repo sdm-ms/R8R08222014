@@ -390,63 +390,112 @@ namespace ClassLibrary1.Model
             return moreWorkToDo;
         }
 
+        private class PointsMovementSegment
+        {
+            public int FromPointIndex;
+            public int ToPointIndex;
+            public decimal DistanceBetweenPoints;
+            public int IndexOfUserWhoMovedIt;
+            public bool UserWhoMovedItHadPointsToLose;
+            public int? IrrelevantAfterMoveByUserWithThisIndex;
+            public bool MoveRepresentsPointsPumping;
+        }
+
         public static void SetPointsPumpingProportion(List<UserRating> userRatingsForRatingInChronologicalOrder, List<PointsTotal> correspondingPointsTotals)
         {
             // a point-pumping scheme is an attempt to create a new user account that has nothing to lose, move ratings with that account, and then benefit by fixing the ratings with another account. We are tracking the proportion of points that may be due to points pumping for each user on this table. If it is relatively high for a particular user, then we will reduce all the users' points proportionately. 
+            // we measure this by looking only at the current rating phase (though there may be some possibility of long-term points pumping).
+            // Points pumping occurs only when one is challenging an earlier user without points who moved along the same segment in the opposite direction.
+            // Thus, a movement from value A to B is NOT points pumping if: (1) there were no earlier movement from B to A by a user without points to lose; or (2) there was an earlier movement from B to A but it was by a user with points to lose.
+            // A movement by User i becomes irrelevant after subsequent user j if User j reversed the movement by User i, AND either User i or User j had points to lose. If User i had points to lose, that can save only User j from points pumping. If User j had points to lose, then that user is the new user who can be challenged, not User i, because one user's movement from A to B cannot allow an unlimited number of users to move from B to A.
+            // A movement by User i also becomes irrelevant after subsequent user j with points to lose moves the user rating in the same direction, because then user K will be challenging user j, not user i. Note that user i's move might still represent points pumping, but it won't be relevant for future users.
+            // Note that if we have many movements back and forth by users without points to lose, they will all be points pumping, because they will stay relevant under these criteria.
             int count = userRatingsForRatingInChronologicalOrder.Count();
-            for (int i = 0; i < count; i++)
+            if (count == 0)
+                return;
+            // create a list of the points at the end of moves
+            List<decimal> points = userRatingsForRatingInChronologicalOrder.Select(x => x.NewUserRating).ToList();
+            points.Add(userRatingsForRatingInChronologicalOrder[0].PreviousRatingOrVirtualRating);
+            points = points.Distinct().OrderBy(x => x).ToList();
+            Dictionary<decimal, int> pointIndices = new Dictionary<decimal,int>();
+            for (int p = 0; p < points.Count(); p++)
+                pointIndices.Add(points[p], p);
+            
+            //  break down each user rating movement into PointsMovementSegments, so that we can keep track of which segments remain relevant and potentially indicate points pumping.
+            List<PointsMovementSegment> segmentsAlreadyExamined = new List<PointsMovementSegment>();
+            for (int u = 0; u < count; u++)
             {
-                UserRating laterUserRating = userRatingsForRatingInChronologicalOrder[i]; // we will look at the earlier user ratings in this phase that preceded this later user rating below
-                decimal immediatelyPreviousRatingValue = laterUserRating.PreviousRatingOrVirtualRating;
-                decimal laterUserRatingNewRatingValue = laterUserRating.NewUserRating;
-                Tuple<decimal, decimal> laterUserRange = new Tuple<decimal,decimal>(Math.Min(immediatelyPreviousRatingValue, laterUserRatingNewRatingValue), Math.Max(immediatelyPreviousRatingValue, laterUserRatingNewRatingValue));
-                bool laterUserRaisedRating = laterUserRatingNewRatingValue > immediatelyPreviousRatingValue;
-                decimal cumulativeOverlapProportion = 0; // the cumulative overlap proportion is the proportion of the movement by the later user in one direction that is balanced by users with sufficient points who have moved over the same range in the other direction in this phase.
-                bool usersMovingInOppositeDirectionExist = false; // assume this for now -- if there are no such users, then there are no concerns about point-pumping schemes
-                for (int j = 0; j < i; j++)
+                // Add new segments for this user
+                UserRating ur = userRatingsForRatingInChronologicalOrder[u];
+                PointsTotal pointsTotalOfMovingUser = correspondingPointsTotals[u];
+                List<PointsMovementSegment> newSegmentsForThisUser = new List<PointsMovementSegment>();
+                int startingIndex = pointIndices[ur.PreviousRatingOrVirtualRating];
+                int endingIndex = pointIndices[ur.NewUserRating];
+                if (startingIndex != endingIndex)
                 {
-                    if (cumulativeOverlapProportion >= 1.0M)
-                        continue; // we already have enough points backing up this one that we don't need to worry about point-pumping schemes for this user
-                    UserRating earlierUserRating = userRatingsForRatingInChronologicalOrder[j];
-                    decimal earlierPreviousRating = earlierUserRating.PreviousRatingOrVirtualRating;
-                    decimal earlierNewRating = earlierUserRating.NewUserRating;
-                    bool earlierUserRaisedRating = earlierNewRating > earlierPreviousRating;
-                    if (earlierUserRaisedRating == laterUserRaisedRating)
-                        continue; // this is not relevant to the points at stake -- we are looking to see whether users who were pushing the rating in the opposite direction had points at stake.
-                    usersMovingInOppositeDirectionExist = true;
-
-                    Tuple<decimal, decimal> earlierUserRange = new Tuple<decimal,decimal>(Math.Min(earlierPreviousRating, earlierNewRating), Math.Max(earlierPreviousRating, earlierNewRating));
-                    if (earlierUserRange.Item2 < laterUserRange.Item1 || earlierUserRange.Item1 > laterUserRange.Item2 || earlierUserRange.Item1 == earlierUserRange.Item2 || laterUserRange.Item1 == laterUserRange.Item2)
-                        continue; // not relevant given absence of overlap -- cumulative overlap proportion should be 0
-
-                    Tuple<decimal, decimal> overlapRange = new Tuple<decimal, decimal>(Math.Max(earlierUserRange.Item1, laterUserRange.Item1), Math.Min(earlierUserRange.Item2, laterUserRange.Item2));
-                    decimal overlapProportion;
-                    if (laterUserRange.Item1 == laterUserRange.Item2)
-                        overlapProportion = 0; // helps avoid divide-by-zero exception (though now we already continue on this above so it's a redundant check) -- in this case, the user's points pumping proportion for the table won't be changed anyway because MaxGain will be 0.
-                    else
+                    int i = startingIndex;
+                    bool ratingIsIncreased = endingIndex > startingIndex;
+                    while (i != endingIndex)
                     {
-                        if (laterUserRating.LogarithmicBase == null)
-                            overlapProportion = (overlapRange.Item2 - overlapRange.Item1) / (laterUserRange.Item2 - laterUserRange.Item1);
+                        int orig_i = i;
+                        if (ratingIsIncreased)
+                            i++;
+                        else
+                            i--;
+                        decimal distanceBetweenPoints;
+                        if (ur.LogarithmicBase == null)
+                            distanceBetweenPoints = Math.Abs(points[orig_i] - points[i]);
                         else
                         {
-                            Func<decimal, decimal> lg = x => (decimal)Math.Log((double)x, (double)laterUserRating.LogarithmicBase);
-                            overlapProportion = (lg(overlapRange.Item2) - lg(overlapRange.Item1)) / (lg(laterUserRange.Item2) - lg(laterUserRange.Item1));
+                            Func<decimal, decimal> lg = x => (decimal)Math.Log((double)x, (double)ur.LogarithmicBase);
+                            distanceBetweenPoints = Math.Abs(lg(points[orig_i]) - lg(points[i]));
+                        }
+                        var DEBUG = segmentsAlreadyExamined.Where(x =>
+                                            x.FromPointIndex == i && x.ToPointIndex == orig_i // same segment in opposite direction
+                                            && x.IrrelevantAfterMoveByUserWithThisIndex == null // still relevant
+                                            && !x.UserWhoMovedItHadPointsToLose // by someone without points to lose
+                                            );
+                        PointsMovementSegment pms = new PointsMovementSegment()
+                        {
+                            FromPointIndex = orig_i,
+                            ToPointIndex = i,
+                            DistanceBetweenPoints = distanceBetweenPoints,
+                            IndexOfUserWhoMovedIt = u,
+                            UserWhoMovedItHadPointsToLose = (pointsTotalOfMovingUser.PendingPoints + pointsTotalOfMovingUser.NotYetPendingPoints + pointsTotalOfMovingUser.TotalPoints) > userRatingsForRatingInChronologicalOrder[u].MaxGain * 10.0M,
+                            MoveRepresentsPointsPumping = segmentsAlreadyExamined.Any(x =>
+                                            x.FromPointIndex == i && x.ToPointIndex == orig_i // same segment in opposite direction
+                                            && x.IrrelevantAfterMoveByUserWithThisIndex == null // still relevant
+                                            && !x.UserWhoMovedItHadPointsToLose // by someone without points to lose
+                                            )
+                        }; // by user without points
+                        newSegmentsForThisUser.Add(pms);
+                        IEnumerable<PointsMovementSegment> segmentsNowIrrelevant = segmentsAlreadyExamined.Where(x =>
+                            x.FromPointIndex == i && x.ToPointIndex == orig_i // same segment in opposite direction
+                            && x.IrrelevantAfterMoveByUserWithThisIndex == null // was not irrelevant before
+                            && (x.UserWhoMovedItHadPointsToLose || pms.UserWhoMovedItHadPointsToLose));
+                        foreach (PointsMovementSegment segment in segmentsNowIrrelevant)
+                            segment.IrrelevantAfterMoveByUserWithThisIndex = u;
+                        if (pms.UserWhoMovedItHadPointsToLose)
+                        {
+                            IEnumerable<PointsMovementSegment> additionalSegmentsNowIrrelevant = segmentsAlreadyExamined.Where(x =>
+                                x.FromPointIndex == orig_i && x.ToPointIndex == i // same segment in same direction
+                                && x.IrrelevantAfterMoveByUserWithThisIndex == null // was not irrelevant before
+                                );
+                            foreach (PointsMovementSegment segment in additionalSegmentsNowIrrelevant)
+                                segment.IrrelevantAfterMoveByUserWithThisIndex = u;
                         }
                     }
-                    PointsTotal earlierPointsTotal = correspondingPointsTotals[j];
-                    bool earlierUserHasPlentyOfPoints = (earlierPointsTotal.PendingPoints + earlierPointsTotal.NotYetPendingPoints + earlierPointsTotal.TotalPoints) > laterUserRating.MaxGain * 10.0M;
-                    if (earlierUserHasPlentyOfPoints)
-                        cumulativeOverlapProportion += overlapProportion;
                 }
-                if (cumulativeOverlapProportion > 1.0M || !usersMovingInOppositeDirectionExist)
-                    cumulativeOverlapProportion = 1.0M;
-                decimal pointsPumpingProportion = 1.0M - cumulativeOverlapProportion;
-                decimal? oldValue = laterUserRating.PointsPumpingProportion;
-                laterUserRating.PointsPumpingProportion = pointsPumpingProportion;
-                PointsTotal laterPointsTotal = correspondingPointsTotals[i];
-                laterPointsTotal.PointsPumpingProportionAvg_Numer += (float)(laterUserRating.MaxGain * (pointsPumpingProportion - oldValue ?? 0));
-                laterPointsTotal.PointsPumpingProportionAvg_Denom += oldValue == null ? (float) laterUserRating.MaxGain : 0F; // if there already was a value for points pumping proportion, then there is no change to the denominator, because we've already taken the MaxGain into account.
-                laterPointsTotal.PointsPumpingProportionAvg = RaterooDataManipulation.CalculatePointsPumpingProportionAvg(laterPointsTotal.PointsPumpingProportionAvg_Numer, laterPointsTotal.PointsPumpingProportionAvg_Denom, laterPointsTotal.NumUserRatings); 
+                decimal pointsPumpingNumerator = newSegmentsForThisUser.Where(x => x.MoveRepresentsPointsPumping).Sum(x => x.DistanceBetweenPoints);
+                decimal pointsPumpingDenominator = newSegmentsForThisUser.Sum(x => x.DistanceBetweenPoints);
+                decimal pointsPumpingProportion = pointsPumpingDenominator == 0 ? 0.0M : pointsPumpingNumerator / pointsPumpingDenominator;
+                decimal? oldValue = ur.PointsPumpingProportion;
+                ur.PointsPumpingProportion = pointsPumpingProportion;
+                pointsTotalOfMovingUser.PointsPumpingProportionAvg_Numer += (float)(ur.MaxGain * (pointsPumpingProportion - (oldValue ?? 0)));
+                pointsTotalOfMovingUser.PointsPumpingProportionAvg_Denom += oldValue == null ? (float) ur.MaxGain : 0F; // if there already was a value for points pumping proportion, then there is no change to the denominator, because we've already taken the MaxGain into account.
+                pointsTotalOfMovingUser.PointsPumpingProportionAvg = RaterooDataManipulation.CalculatePointsPumpingProportionAvg(pointsTotalOfMovingUser.PointsPumpingProportionAvg_Numer, pointsTotalOfMovingUser.PointsPumpingProportionAvg_Denom, pointsTotalOfMovingUser.NumUserRatings);
+
+                segmentsAlreadyExamined.AddRange(newSegmentsForThisUser);
             }
         }
 

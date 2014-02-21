@@ -49,16 +49,41 @@ namespace TestProject1
         [TestMethod]
         public void CheckPointsPumpingProportionSetting()
         {
-            CheckPointsPumpingProportionSetting_Helper(5, new List<decimal>() { 6 }, new List<bool>() { false }, new List<float> { 0.0F }); // moving user rating without help should not be points pumping
-            CheckPointsPumpingProportionSetting_Helper(5, new List<decimal>() { 6, 7 }, new List<bool>() { false, false }, new List<float> { 0.0F, 0.0F }); // moving user rating further without help should not be points pumping
-            CheckPointsPumpingProportionSetting_Helper(5, new List<decimal>() { 6, 7, 6 }, new List<bool>() { false, false, false }, new List<float> { 0.0F, 0.0F, 1.0F }); // here, second user pushed to 7 without points so moving back to 6 is points pumping
+            CheckPointsPumpingProportionSetting_Helper(
+                5, 
+                // index up/down     0U     1U     2D     3D     4U     5D    6U    7D    8U     9D     10U   11U    12D
+                new List<decimal>() 
+                                    { 6,     7,     6,     5,     5.5M,  4.5M, 7.0M, 4.0M, 7.0M,  4.0M,  5.0M, 7.0M,  3.0M }, 
+                new List<bool>() 
+                                    { false, false, false, false, true, false, true, true, false, false, false, true, false }, 
+                new List<float> 
+                { 
+                    0.0F, // 0: moving user rating without help should not be points pumping
+                    0.0F, // 1: moving user rating further without help should not be points pumping
+                    1.0F, // 2: here, user 1 pushed to 7 without points so moving back to 6 is points pumping
+                    1.0F, // 3: 5 to 6 was covered by user 0 without points, so points pumping
+                    1.0F, // 4: since user 3 without points moved from 6 to 5, moving back to 5.5 is points pumping; it doesn't matter that new user has points
+                    0.0F, // 5: moving from 5.5M to 5.0M is not points pumping because user 4 had points (and user 0's move was made irrelevant by user 4's move), and 5.0M to 4.5M is not because that's pushing beyond
+                    1.0F, // 6: user 4's move from 5 to 5.5 was already challenged by user 5, so it and everything else is points pumping
+                    0.0F, // 7: 4.5M to 7.0M was covered by user 6, and 4.0 is beyond 4.5, so no points pumping
+                    0.0F, // 8: user 7 covered this in reverse; there are now no creditable unchallenged segments
+                    1.0F, // 9: all points pumping since witihn range traversed
+                    1.0F, // 10: entire range from 7 to 4 was covered including 5 to 4
+                    1.0F, // 11: entire range from 7 to 4 was covered including 7 to 5
+                    0.25F, // 12: 5.0 to 7.0 was covered by user 11, but 4.0 to 5.0 was traveled previously and not challenged; 3.0 to 4.0 is beyond previous range
+                }
+                    );
+
+
+            //Arguably, this is a bad approach, because once you've seen that there is controversy, you might have a profitable strategy (if you assume that the current value is more likely to represent the true value) to move it away from the current value and back, but it's at least risky given the existence of controversy. 
         }
 
-        public void CheckPointsPumpingProportionSetting_Helper(decimal previousRatingOrVirtualRating, List<decimal> userRatings, List<bool> usersHaveSufficientPoints, List<float> expectedContributionToPointsPumpingNumeratorWithMaxGainOf1)
+        public void CheckPointsPumpingProportionSetting_Helper(decimal previousRatingOrVirtualRating, List<decimal> userRatings, List<bool> usersHaveSufficientPoints, List<float> expectedPointsPumpingProportion)
         {
             int n = userRatings.Count();
             List<UserRating> urList = new List<UserRating>();
             List<PointsTotal> ptList = new List<PointsTotal>();
+            const decimal assumedMaxGain = 10.0M;
             // Setup 
             for (int i = 0; i < n; i++)
             {
@@ -71,7 +96,7 @@ namespace TestProject1
                 if (ur.PreviousRatingOrVirtualRating == ur.NewUserRating)
                     ur.MaxGain = 0;
                 else
-                    ur.MaxGain = 1.0M; // we just need an assumption 
+                    ur.MaxGain = assumedMaxGain; // we just need an assumption 
                 urList.Add(ur);
                 PointsTotal pt = new PointsTotal();
                 if (usersHaveSufficientPoints[i])
@@ -91,8 +116,9 @@ namespace TestProject1
                 }
                 else
                 {
-                    ptList[i].PointsPumpingProportionAvg_Numer.Should().BeApproximately(expectedContributionToPointsPumpingNumeratorWithMaxGainOf1[i], 0.01F, "based on expected calculation provided");
-                    ptList[i].PointsPumpingProportionAvg_Denom.Should().BeApproximately(1.0F, 0.01F, "based max gain was 1.0");
+                    ((float)urList[i].PointsPumpingProportion).Should().BeApproximately(expectedPointsPumpingProportion[i], 0.01F);
+                    ptList[i].PointsPumpingProportionAvg_Numer.Should().BeApproximately(expectedPointsPumpingProportion[i] * (float) assumedMaxGain, 0.01F, "based on expected calculation provided");
+                    ptList[i].PointsPumpingProportionAvg_Denom.Should().BeApproximately(1.0F * (float)assumedMaxGain, 0.01F, "based max gain was 1.0");
                 }
             }
 

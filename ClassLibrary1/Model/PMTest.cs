@@ -269,7 +269,7 @@ namespace ClassLibrary1.Model
             while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy && !ExitImmediately)
             {
                 //Trace.TraceInformation("WaitIdleTasks still more work to do.");
-                BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false);
+                BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true);
                 if (initialLoopSetCompleted == null)
                     initialLoopSetCompleted = BackgroundThread.Instance.LoopSetsCompleted();
                 bool moreWorkToDo = BackgroundThread.Instance.IsBackgroundTaskBusy();
@@ -436,7 +436,7 @@ namespace ClassLibrary1.Model
                         theRatingsCount = theRatings.Count();
                         if (theRatingsCount == 0)
                         {
-                            BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false); // allow ratings to be created
+                            BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true); // allow ratings to be created
 
                         }
                     } while (theRatingsCount == 0);
@@ -454,7 +454,7 @@ namespace ClassLibrary1.Model
                 }
                 if (i % 25 == 0)
                 {
-                    BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false);
+                    BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true);
                     Thread.Sleep(15000);
                 }
             }
@@ -1420,7 +1420,7 @@ namespace ClassLibrary1.Model
                 Trace.TraceInformation("TESTEVENT # " + count);
                 TestEvent(false,10,25,TestPhasesTypes.oneMinPhasesSquareRoot, TestRatingGroupAttributesTypes.multipleContingencies, numUserRatings);
             }
-            BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(false);
+            BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true);
         }
 
         public void LaunchTestAddUserRatingsToExisting(int numUserRatings)
