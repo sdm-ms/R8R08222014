@@ -397,7 +397,6 @@ namespace ClassLibrary1.Model
             public decimal DistanceBetweenPoints;
             public int IndexOfUserWhoMovedIt;
             public bool UserWhoMovedItHadPointsToLose;
-            public int? IrrelevantAfterMoveByUserWithThisIndex;
             public bool MoveRepresentsPointsPumping;
         }
 
@@ -422,7 +421,7 @@ namespace ClassLibrary1.Model
                 pointIndices.Add(points[p], p);
             
             //  break down each user rating movement into PointsMovementSegments, so that we can keep track of which segments remain relevant and potentially indicate points pumping.
-            List<PointsMovementSegment> segmentsAlreadyExamined = new List<PointsMovementSegment>();
+            List<PointsMovementSegment> segmentsAlreadyExaminedAndStillRelevant = new List<PointsMovementSegment>();
             for (int u = 0; u < count; u++)
             {
                 // Add new segments for this user
@@ -450,11 +449,6 @@ namespace ClassLibrary1.Model
                             Func<decimal, decimal> lg = x => (decimal)Math.Log((double)x, (double)ur.LogarithmicBase);
                             distanceBetweenPoints = Math.Abs(lg(points[orig_i]) - lg(points[i]));
                         }
-                        var DEBUG = segmentsAlreadyExamined.Where(x =>
-                                            x.FromPointIndex == i && x.ToPointIndex == orig_i // same segment in opposite direction
-                                            && x.IrrelevantAfterMoveByUserWithThisIndex == null // still relevant
-                                            && !x.UserWhoMovedItHadPointsToLose // by someone without points to lose
-                                            );
                         PointsMovementSegment pms = new PointsMovementSegment()
                         {
                             FromPointIndex = orig_i,
@@ -462,27 +456,25 @@ namespace ClassLibrary1.Model
                             DistanceBetweenPoints = distanceBetweenPoints,
                             IndexOfUserWhoMovedIt = u,
                             UserWhoMovedItHadPointsToLose = (pointsTotalOfMovingUser.PendingPoints + pointsTotalOfMovingUser.NotYetPendingPoints + pointsTotalOfMovingUser.TotalPoints) > userRatingsForRatingInChronologicalOrder[u].MaxGain * 10.0M,
-                            MoveRepresentsPointsPumping = segmentsAlreadyExamined.Any(x =>
+                            MoveRepresentsPointsPumping = segmentsAlreadyExaminedAndStillRelevant.Any(x =>
                                             x.FromPointIndex == i && x.ToPointIndex == orig_i // same segment in opposite direction
-                                            && x.IrrelevantAfterMoveByUserWithThisIndex == null // still relevant
                                             && !x.UserWhoMovedItHadPointsToLose // by someone without points to lose
                                             )
                         }; // by user without points
                         newSegmentsForThisUser.Add(pms);
-                        IEnumerable<PointsMovementSegment> segmentsNowIrrelevant = segmentsAlreadyExamined.Where(x =>
+                        // We save memory and speed up queries by removing irrelevant items rather than simply marking them as irrelevant. This adds time to remove them from the list, and makes the algorithm a bit less transparent. But the memory savings could be significant if we have a very large number of user ratings, because each might be divided across a large number of segments. 
+                        List<PointsMovementSegment> segmentsNowIrrelevant = segmentsAlreadyExaminedAndStillRelevant.Where(x =>
                             x.FromPointIndex == i && x.ToPointIndex == orig_i // same segment in opposite direction
-                            && x.IrrelevantAfterMoveByUserWithThisIndex == null // was not irrelevant before
-                            && (x.UserWhoMovedItHadPointsToLose || pms.UserWhoMovedItHadPointsToLose));
+                            && (x.UserWhoMovedItHadPointsToLose || pms.UserWhoMovedItHadPointsToLose)).ToList();
                         foreach (PointsMovementSegment segment in segmentsNowIrrelevant)
-                            segment.IrrelevantAfterMoveByUserWithThisIndex = u;
+                            segmentsAlreadyExaminedAndStillRelevant.Remove(segment);
                         if (pms.UserWhoMovedItHadPointsToLose)
                         {
-                            IEnumerable<PointsMovementSegment> additionalSegmentsNowIrrelevant = segmentsAlreadyExamined.Where(x =>
+                            List<PointsMovementSegment> additionalSegmentsNowIrrelevant = segmentsAlreadyExaminedAndStillRelevant.Where(x =>
                                 x.FromPointIndex == orig_i && x.ToPointIndex == i // same segment in same direction
-                                && x.IrrelevantAfterMoveByUserWithThisIndex == null // was not irrelevant before
-                                );
+                                ).ToList();
                             foreach (PointsMovementSegment segment in additionalSegmentsNowIrrelevant)
-                                segment.IrrelevantAfterMoveByUserWithThisIndex = u;
+                                segmentsAlreadyExaminedAndStillRelevant.Remove(segment);
                         }
                     }
                 }
@@ -495,7 +487,7 @@ namespace ClassLibrary1.Model
                 pointsTotalOfMovingUser.PointsPumpingProportionAvg_Denom += oldValue == null ? (float) ur.MaxGain : 0F; // if there already was a value for points pumping proportion, then there is no change to the denominator, because we've already taken the MaxGain into account.
                 pointsTotalOfMovingUser.PointsPumpingProportionAvg = RaterooDataManipulation.CalculatePointsPumpingProportionAvg(pointsTotalOfMovingUser.PointsPumpingProportionAvg_Numer, pointsTotalOfMovingUser.PointsPumpingProportionAvg_Denom, pointsTotalOfMovingUser.NumUserRatings);
 
-                segmentsAlreadyExamined.AddRange(newSegmentsForThisUser);
+                segmentsAlreadyExaminedAndStillRelevant.AddRange(newSegmentsForThisUser);
             }
         }
 
