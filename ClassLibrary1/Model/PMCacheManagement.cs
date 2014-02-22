@@ -85,7 +85,6 @@ namespace ClassLibrary1.Model
             HttpRuntime.Cache.Add(theCacheKey, theObject, theDependencies, TestableDateTime.Now + keepFor, Cache.NoSlidingExpiration, CacheItemPriority.High, null);
         }
 
-
         // Disable caching by the browser. This leaves unaffected caching by the server.
         public static void DisablePageCaching()
         {
@@ -96,7 +95,6 @@ namespace ClassLibrary1.Model
             HttpContext.Current.Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
             HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             HttpContext.Current.Response.Cache.SetNoStore();
-
         }
 
         // We have defined the following cache dependency strings. 

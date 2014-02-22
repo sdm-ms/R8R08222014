@@ -269,7 +269,7 @@ namespace ClassLibrary1.Model
             return shortTermExpireds.Count() == maxToTake;
         }
 
-        public bool IdleTaskRespondToUpdatePointsTriggers()
+        public bool IdleTaskUpdatePointsAndUserInteractionsInResponseToRatingPhaseStatusTrigger()
         {
             DateTime currentTime = TestableDateTime.Now;
             const int maxToTake = 50;
@@ -347,11 +347,12 @@ namespace ClassLibrary1.Model
             return moreWorkToDo;
         }
 
-        public bool IdleTaskUpdatePoints()
+        public bool IdleTaskUpdatePointsBecauseOfSomethingOtherThanNewUserRating()
         {
             DateTime currentTime = TestableDateTime.Now;
             const int maxToTake = 400;
-            // DEBUG -- can we simpify? We shouldn't need all this information
+            // DEBUG: Now that this is not called in response to a new UserRating -- only in response to some other need to update points -- 
+            // we probably don't need to load all the trust-related data here.
             var userRatingInfoQuery = from x in DataContext.GetTable<UserRating>()
                                       where
                                           (!x.PointsHaveBecomePending && x.WhenPointsBecomePending < currentTime) // triggered when time for points to become pending arrives

@@ -553,7 +553,6 @@ namespace ClassLibrary1.Model
             DataContext.SubmitChanges();
         }
 
-        static DateTime? waitForStatusInconsistenciesCheckUntil = null;
         public bool FixStatusInconsistencies()
         {
             // Because this background process takes some time, once we have no more to do, we won't do it for at least twenty seconds.
@@ -581,11 +580,6 @@ namespace ClassLibrary1.Model
                 if (!moreWorkToDo)
                     FixStatusInconsistenciesHelper(false, hierarchyComparisonToMake);
             }
-
-            if (moreWorkToDo)
-                waitForStatusInconsistenciesCheckUntil = null;
-            else
-                waitForStatusInconsistenciesCheckUntil = TestableDateTime.Now + new TimeSpan(0, 0, 20);
 
             return moreWorkToDo;
         }

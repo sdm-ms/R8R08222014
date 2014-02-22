@@ -166,7 +166,7 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// Checks to see if there is a universe to cash out.
         /// </summary>
-        public bool IdleTaskCheckPointsManagers()
+        public bool IdleTaskCashOutPointsManagers()
         {
             DateTime now = TestableDateTime.Now;
             PointsManager thePointsManager = DataContext.GetTable<PointsManager>().FirstOrDefault(u => u.EndOfDollarSubsidyPeriod != null && u.EndOfDollarSubsidyPeriod < now);

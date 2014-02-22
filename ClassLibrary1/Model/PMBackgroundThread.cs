@@ -61,7 +61,7 @@ namespace ClassLibrary1.Model
                     //if (BackgroundThread.IsPauseRequested())
                     //Trace.TraceInformation("Pause is requested.");
                     MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
-                    const int numTasks = 22;
+                    const int numTasks = 20;
                     const int numLoops = 10;
                     bool[] moreWorkToDoThisTask = new bool[numTasks];
                     for (int loop = 1; loop <= numLoops; loop++)
@@ -99,93 +99,99 @@ namespace ClassLibrary1.Model
                                     switch (i)
                                     {
 
+                                        // Table as a whole
+
                                         case 1:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings();
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskCashOutPointsManagers();
                                             break;
+                                        
+                                        // Table data
 
                                         case 2:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskImplementResolutions();
-                                            break;
-
-                                        case 3:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.FixStatusInconsistencies();
-                                            break;
-
-                                        case 4:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskShortTermResolve();
-                                            break;
-
-                                        case 5:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskCheckPointsManagers();
-                                            break;
-
-                                        case 6:
                                             moreWorkToDoThisTask[i - 1] = dataManipulation.RespondToResetTblRowFieldDisplays();
                                             break;
 
+                                        case 3:
+                                            moreWorkToDoThisTask[i - 1] = GeocodeUpdate.DoUpdate(dataManipulation.DataContext); // updating addresses that couldn't be geocoded before
+                                            break;
+
+                                        case 4:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess(); // currently, create missing ratings and upload table rows
+                                            break;
+
+                                        // Rating status (note that long process above also can include ratings)
+
+                                        case 5:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.FixStatusInconsistencies(); // From the domain level down to the Rating level, ensures that we can stop further short-term resolution activity and entering of new user ratings when it should be inactive/deleted
+                                            break;
+
+                                        case 6:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings(); // loads the UserRatingsToAdd and completes the process of adding UserRating to the database
+                                            break;
+
                                         case 7:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess();
+                                            moreWorkToDoThisTask[i - 1] = StatusRecords.DeleteOldStatusRecords(dataManipulation.DataContext); // we are deleting old status records (which are used to ensure consistent sorting even after user ratings have been changed)
                                             break;
 
                                         case 8:
-                                            moreWorkToDoThisTask[i - 1] = GeocodeUpdate.DoUpdate(dataManipulation.DataContext);
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskImplementResolutions(); // completes the ratinggroupresolutions in the proposed state
                                             break;
 
                                         case 9:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePoints();
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskShortTermResolve(); // Sets the ShortTermResolutionValue for the RatingPhaseStatus
                                             break;
 
                                         case 10:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskRespondToUpdatePointsTriggers();
-                                            break;
-
-                                        case 11:
-                                            moreWorkToDoThisTask[i - 1] = PMTrustTrackingBackgroundTasks.DoTrustTrackingBackgroundTasks(dataManipulation.DataContext);
-                                            break;
-
-                                        case 12:
-                                            moreWorkToDoThisTask[i - 1] = StatusRecords.DeleteOldStatusRecords(dataManipulation.DataContext);
-                                            break;
-
-                                        case 13:
-                                            moreWorkToDoThisTask[i - 1] = VolatilityTracking.UpdateTrackers(dataManipulation.DataContext);
-                                            break;
-
-                                        case 14:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskRevertLongUntrustedRatings();
-                                            break;
-
-                                        case 15:
                                             moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskMakeHighStakesKnown();
                                             break;
 
-                                        case 16:
-                                            CacheInvalidityNotification.DeleteOldNotifications();
-                                            moreWorkToDoThisTask[i - 1] = false;
-                                            break;
-
-                                        case 17:
-                                            moreWorkToDoThisTask[i - 1] = SQLFastAccess.ContinueFastAccessMaintenance(dataManipulation.DataContext);
-                                            break;
-
-                                        case 18:
+                                        case 11:
                                             moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskConsiderDemotingHighStakesPrematurely();
                                             break;
 
-                                        case 19:
+                                        case 12:
                                             moreWorkToDoThisTask[i - 1] = dataManipulation.AdvanceRatingGroupsNeedingAdvancing();
                                             break;
 
-                                        case 20:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskFlagRatingsNeedingReview();
+                                        // Points and user ratings
+
+                                        case 13:
+                                            moreWorkToDoThisTask[i - 1] = VolatilityTracking.UpdateTrackers(dataManipulation.DataContext); // updates volatility both for user ratings and for the TblRows that they are in
                                             break;
 
-                                        case 21:
+                                        case 14:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePointsBecauseOfSomethingOtherThanNewUserRating();
+                                            break;
+
+                                        case 15:
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePointsAndUserInteractionsInResponseToRatingPhaseStatusTrigger();
+                                            break;
+
+                                        case 16:
                                             moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskReviewRecentUserRatings();
                                             break;
 
-                                        case 22:
+                                        // Trust
+
+                                        case 17:
+                                            // This also affects Ratings. Only the TrustTracker is consulted. So, if we moved trust tracking to a separate database, we would do this with the Ratings.
+                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskFlagRatingsNeedingReviewBasedOnChangeInTrust(); // when a user's overall trust level has changed sufficiently, we set the ReviewRecentUserRatingsAfter field of the Ratings so that the UserRatings will be reviewed soon.
+                                            break;
+
+                                        case 18:
+                                            // These are internal to trust tracking, but one is triggered by the adjust user interaction process.
+                                            moreWorkToDoThisTask[i - 1] = PMTrustTrackingBackgroundTasks.DoTrustTrackingBackgroundTasks(dataManipulation.DataContext);
+                                            break;
+
+                                        case 19:
+                                            // As user ratings get old, we update how recent they are, and chnage the user interaction stats accordingly.
                                             moreWorkToDoThisTask[i - 1] = PMRecencyUpdates.UpdateRecency(dataManipulation.DataContext);
+                                            break;
+
+                                        // Data sync
+
+                                        case 20:
+                                            moreWorkToDoThisTask[i - 1] = SQLFastAccess.ContinueFastAccessMaintenance(dataManipulation.DataContext);
                                             break;
 
                                     }

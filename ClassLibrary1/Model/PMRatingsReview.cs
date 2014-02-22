@@ -41,7 +41,7 @@ namespace ClassLibrary1.Model
         const int MaxNumDaysToReview = 30;
         const int NumRatingsToReviewAtOnce = 30;
 
-        public bool IdleTaskFlagRatingsNeedingReview()
+        public bool IdleTaskFlagRatingsNeedingReviewBasedOnChangeInTrust()
         {
             var trustTrackerQuery = 
                 from tt in DataContext.GetTable<TrustTracker>()
@@ -54,9 +54,9 @@ namespace ClassLibrary1.Model
                                         TrustTracker = tt,
                                         Ratings = ur.Select(x => x.Rating)
                                                     .Where(x => x.RatingGroup.RatingGroupAttribute.TypeOfRatingGroup == (int)RatingGroupTypes.probabilitySingleOutcome || x.RatingGroup.RatingGroupAttribute.TypeOfRatingGroup == (int)RatingGroupTypes.singleDate || x.RatingGroup.RatingGroupAttribute.TypeOfRatingGroup == (int)RatingGroupTypes.singleNumber) // we are updating only single-number types of ratings
-                                                    .Where(x => x.ReviewRecentUserRatingsAfter == null) // since we allow 20 minutes before this should start, we decrease the risk that we will end up in an endless loop where we flag some set of ratings and those are updated before we flag the remaining ratings for a particular user
+                                                    .Where(x => x.ReviewRecentUserRatingsAfter == null) // since we allow 20 minutes before this should start, we decrease the risk that we will end up in an endless loop where we flag some set of ratings and those are updated before we flag the remaining ratings for a particular user; when this is null, it means that we have already flagged this one
                                                     .Distinct()
-                                                    .Take(MaxRatingsToFlagPerUser)
+                                                    .Take(MaxRatingsToFlagPerUser) // this shows that we are updating this only incompletely right now; we'll update more later
                                     };
             var trustTrackerWithRatings = ratingsQuery.ToList();
             bool moreWorkToDo = trustTrackerWithRatings.Count() == NumUsersWhoseRatingsShouldBeFlaggedAtOnce; // see also below
@@ -64,6 +64,7 @@ namespace ClassLibrary1.Model
             {
                 foreach (Rating r in item.Ratings)
                 {
+                    // this is the flag -- it tells us that pretty soon we're going to review the user ratings for this rating
                     r.ReviewRecentUserRatingsAfter = TestableDateTime.Now + TimeSpan.FromMinutes(20); // see above for why we delay this
                     //Debug.WriteLine("Set rating " + r.RatingID + " for review at " + r.ReviewRecentUserRatingsAfter.ToString());
                 }

@@ -135,10 +135,6 @@ namespace ClassLibrary1.Model
 
         public enum LongProcessTypes
         {
-            updatePendingPoints,
-            shortTermExpiration,
-            resolveRating,
-            undoResolveRating,
             createMissingRatings,
             uploadTblRows
             
@@ -148,14 +144,6 @@ namespace ClassLibrary1.Model
         {
             switch (theProcessType)
             {
-                case LongProcessTypes.updatePendingPoints:
-                    return 30;
-                case LongProcessTypes.shortTermExpiration:
-                    return 40;
-                case LongProcessTypes.undoResolveRating:
-                    return 50;
-                case LongProcessTypes.resolveRating:
-                    return 45;
                 case LongProcessTypes.createMissingRatings:
                     return 40;
                 case LongProcessTypes.uploadTblRows:
@@ -169,14 +157,6 @@ namespace ClassLibrary1.Model
         {
             switch (theProcessType)
             {
-                case LongProcessTypes.updatePendingPoints:
-                    return UserRatingUpdatingReason.pendingPointsRecalculate;
-                case LongProcessTypes.shortTermExpiration:
-                    return UserRatingUpdatingReason.shortTermExpiration;
-                case LongProcessTypes.undoResolveRating:
-                    return UserRatingUpdatingReason.undoResolution;
-                case LongProcessTypes.resolveRating:
-                    return UserRatingUpdatingReason.resolution;
                 default:
                     throw new Exception("Internal error: not a prediction updating long process.");
             }
@@ -186,14 +166,6 @@ namespace ClassLibrary1.Model
         {
             switch (theReason)
             {
-                case UserRatingUpdatingReason.pendingPointsRecalculate:
-                    return LongProcessTypes.updatePendingPoints;
-                case UserRatingUpdatingReason.resolution:
-                    return LongProcessTypes.resolveRating;
-                case UserRatingUpdatingReason.shortTermExpiration:
-                    return LongProcessTypes.shortTermExpiration;
-                case UserRatingUpdatingReason.undoResolution:
-                    return LongProcessTypes.undoResolveRating;
                 default:
                     throw new Exception("Internal error: not a known prediction updating reason.");
             }
@@ -327,18 +299,6 @@ namespace ClassLibrary1.Model
                     MemoryStream mStream = new MemoryStream(byteArray);
                     BinaryFormatter binFormat = new BinaryFormatter();
 
-                    if (myLongProcess.TypeOfProcess == (int)LongProcessTypes.resolveRating
-                        || myLongProcess.TypeOfProcess == (int)LongProcessTypes.shortTermExpiration
-                        || myLongProcess.TypeOfProcess == (int)LongProcessTypes.undoResolveRating
-                        || myLongProcess.TypeOfProcess == (int)LongProcessTypes.updatePendingPoints)
-                    {
-                        throw new Exception("Internal error: Points-related long process attempted (that could no longer exist).");
-                        //Trace.TraceInformation("About to continue points-related long process.");
-                        //UpdateUserRatingsProcessInfo myUpdateInfo;
-                        //myUpdateInfo = (UpdateUserRatingsProcessInfo)binFormat.Deserialize(mStream);
-                        //if (myUpdateInfo != null)
-                        //    myLongProcess.ProgressInfo = myUpdateInfo.Continue(myLongProcess.ProgressInfo, (int)myLongProcess.Object1ID, (int)myLongProcess.Object2ID, GetUserRatingUpdatingReasonForLongProcess((LongProcessTypes)myLongProcess.TypeOfProcess));
-                    }
 
                     if (myLongProcess.TypeOfProcess == (int)LongProcessTypes.createMissingRatings)
                     {
