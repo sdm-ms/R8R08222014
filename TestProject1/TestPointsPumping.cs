@@ -25,8 +25,6 @@ namespace TestProject1
     [TestClass]
     public class TestPointsPumping
     {
-        const decimal MaxRating = 10M;
-        const decimal MinRating = 0M;
         const float Precision = 0.0001f;
 
         RaterooDataManipulation _dataManipulation;

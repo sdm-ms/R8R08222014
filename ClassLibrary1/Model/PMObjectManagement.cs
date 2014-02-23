@@ -555,10 +555,6 @@ namespace ClassLibrary1.Model
 
         public bool FixStatusInconsistencies()
         {
-            // Because this background process takes some time, once we have no more to do, we won't do it for at least twenty seconds.
-            if (waitForStatusInconsistenciesCheckUntil != null && (DateTime)waitForStatusInconsistenciesCheckUntil > TestableDateTime.Now)
-                return false;
-
             // We look for objects that are Active but should be set to DerivativelyUnavailable because
             // the immediately higher object in the hierarchy is not Active, and also we look for objects that are DerivativelyUnavailable
             // but should be set to Active because the immediate superior is now Active again.
