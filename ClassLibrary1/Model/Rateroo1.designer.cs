@@ -22,7 +22,7 @@ namespace ClassLibrary1.Model
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Rateroo7")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Rateroo9")]
 	public partial class RaterooDataContext : System.Data.Linq.DataContext
 	{
 		

@@ -26,7 +26,7 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=Rateroo9;Integrated Security=True")]
         public string RaterooConnectionString {
             get {
                 return ((string)(this["RaterooConnectionString"]));
@@ -36,20 +36,20 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=True")]
-        public string Rateroo7ConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=Rateroo9;Integrated Security=True")]
+        public string Rateroo9ConnectionString {
             get {
-                return ((string)(this["Rateroo7ConnectionString"]));
+                return ((string)(this["Rateroo9ConnectionString"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=True")]
-        public string Rateroo7ConnectionString1 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=Rateroo9;Integrated Security=True")]
+        public string Rateroo9ConnectionString1 {
             get {
-                return ((string)(this["Rateroo7ConnectionString1"]));
+                return ((string)(this["Rateroo9ConnectionString1"]));
             }
         }
     }

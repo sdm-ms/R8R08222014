@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Rateroo7" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="RaterooDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="RaterooConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Rateroo9" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="RaterooDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Rateroo9;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="RaterooConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AddressFields" Member="AddressFields">
     <Type Name="AddressField">
       <Column Name="AddressFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
