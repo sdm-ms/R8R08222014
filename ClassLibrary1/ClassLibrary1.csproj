@@ -120,6 +120,7 @@
     <Reference Include="System.Data.SqlXml" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
@@ -302,6 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />

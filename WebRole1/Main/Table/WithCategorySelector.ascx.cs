@@ -42,7 +42,7 @@ public partial class Main_Table_WithCategorySelector : System.Web.UI.UserControl
         FieldsBox = theFieldsBox;
         if (CheckJavaScriptHelper.IsJavascriptEnabled)
         {
-            LiteralControl myLiteral = new LiteralControl("<div class=\"outerDivAroundMainTable\"><div id=\"divAroundMainTable\" class=\"divAroundMainTable possibleBottom\"><div id=\"areaAroundTableHeader\"><table id=\"headert\" class=\"mainTable mainTablePositioning \"></table></div><div id=\"mainTableScrollArea\" class=\"mainTableScrollable\"><table id=\"maint\" class=\"mainTable " + SuppStyle + " " + SuppStyleHeader + " mainTablePositioning " + "\"></table></div></div><table><tr id=\"asteriskRow\" class=\"asteriskRowMain\"><td colspan=\"99\" class=\"asteriskRow\"><span><i>* Rating by an untrusted user</i></span></td></tr></table></div>");
+            LiteralControl myLiteral = new LiteralControl("<div class=\"outerDivAroundMainTable\"><div id=\"divAroundMainTable\" class=\"divAroundMainTable possibleBottom\"><div id=\"areaAroundTableHeader\"><table id=\"headert\" class=\"mainTable mainTablePositioning \"></table></div><div id=\"mainTableScrollArea\" class=\"mainTableScrollable\"><table id=\"maint\" class=\"mainTable " + SuppStyle + " " + SuppStyleHeader + " mainTablePositioning " + "\"></table></div></div><table><tr id=\"asteriskRow\" class=\"asteriskRowMain\"><td colspan=\"99\" class=\"asteriskRow\"><span></span></td></tr></table></div>");
             MainTablePlaceholder.Controls.Add(myLiteral); 
             int? TblTabID = GetTblTabID();
             if (TblTabID != null)

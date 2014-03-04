@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E6B5A13C-7B54-48AD-8727-04B114AB5B02}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EFExperimental</RootNamespace>
+    <AssemblyName>EFExperimental</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="WikiraterEF.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WikiraterEF.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="packages.config" />
+    <None Include="WikiraterEF.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WikiraterEF.edmx</DependentUpon>
+      <LastGenOutput>WikiraterEF.Context.cs</LastGenOutput>
+    </None>
+    <None Include="WikiraterEF.edmx.diagram">
+      <DependentUpon>WikiraterEF.edmx</DependentUpon>
+    </None>
+    <None Include="WikiraterEF.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WikiraterEF.edmx</DependentUpon>
+      <LastGenOutput>WikiraterEF.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddressField.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrationRight.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrationRightsGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChangesGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChangesStatusOfObject.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChoiceField.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChoiceGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChoiceGroupFieldDefinition.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChoiceInField.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChoiceInGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comment.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseStatu.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeField.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeFieldDefinition.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Domain.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Field.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FieldDefinition.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HierarchyItem.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InsertableContent.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InvitedUser.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LongProcess.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberField.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberFieldDefinition.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OverrideCharacteristic.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PointsAdjustment.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PointsManager.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PointsTotal.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProposalEvaluationRatingSetting.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProposalSetting.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Rating.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingCharacteristic.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingCondition.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingGroupAttribute.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingGroupPhaseStatu.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingGroupResolution.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingGroupStatusRecord.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingPhas.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingPhaseGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingPhaseStatu.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RatingPlan.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RewardPendingPointsTracker.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RewardRatingSetting.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleStatu.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchWord.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchWordChoice.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchWordHierarchyItem.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchWordTblRowName.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchWordTextField.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubsidyAdjustment.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubsidyDensityRange.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubsidyDensityRangeGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tbl.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblColumn.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblColumnFormatting.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblDimension.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblRow.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblRowFieldDisplay.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblRowStatusRecord.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TblTab.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TextField.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TextFieldDefinition.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrustTracker.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrustTrackerForChoiceInGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrustTrackerForChoiceInGroupsUserRatingLink.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrustTrackerStat.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrustTrackerUnit.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAction.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCheckIn.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInfo.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInteraction.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInteractionStat.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserRating.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserRatingGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserRatingsToAdd.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UsersAdministrationRightsGroup.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UsersRight.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VolatilityTblRowTracker.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VolatilityTracker.cs">
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WikiraterEF.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WikiraterEF.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WikiraterEF.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WikiraterEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WikiraterEF.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WikiraterEF.edmx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -379,10 +379,13 @@ namespace ClassLibrary1.Model
             var theFields = theElement.Elements();
             foreach (var theField in theFields)
             {
+                if (theField.Name == "SerializedValues" && !copyValues)
+                    continue;
                 if (theField.Name == "SerializedValues" && copyValues)
                 {
                     if (!String.IsNullOrWhiteSpace(theField.Value))
                         theInfo.defaultTblVals = JsonSerializer.Deserialize<List<TblVal>>(theField.Value);
+                    continue;
                 }
                 if (theField.Name == "EntityName")
                     theInfo.theEntityName = theField.Value;
@@ -694,19 +697,19 @@ namespace ClassLibrary1.Model
             XmlSchemaSequence SqTblRow = new XmlSchemaSequence();
             CtTblRows.Particle = SqTblRow;
 
-            XmlSchemaElement NameElement = new XmlSchemaElement();
-            SqTblRow.Items.Add(NameElement);
-            NameElement.Name = "EntityName";
-            NameElement.MinOccurs = 1;
-            NameElement.MaxOccurs = 1;
-            NameElement.SchemaTypeName = new XmlQualifiedName("string", "http://www.w3.org/2001/XMLSchema");
-
             XmlSchemaElement ValuesElement = new XmlSchemaElement();
             SqTblRow.Items.Add(ValuesElement);
             ValuesElement.Name = "SerializedValues";
             ValuesElement.MinOccurs = 0;
             ValuesElement.MaxOccurs = 1;
             ValuesElement.SchemaTypeName = new XmlQualifiedName("string", "http://www.w3.org/2001/XMLSchema");
+
+            XmlSchemaElement NameElement = new XmlSchemaElement();
+            SqTblRow.Items.Add(NameElement);
+            NameElement.Name = "EntityName";
+            NameElement.MinOccurs = 1;
+            NameElement.MaxOccurs = 1;
+            NameElement.SchemaTypeName = new XmlQualifiedName("string", "http://www.w3.org/2001/XMLSchema");
 
             foreach (var m in Filterdata)
             {

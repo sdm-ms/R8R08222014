@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Linq;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace ClassLibrary1.Misc
 {
@@ -97,32 +98,80 @@ namespace ClassLibrary1.Misc
         }
     }
 
+    public interface ISQLDirectConnectionManager
+    {
+        string GetConnectionString();
+    }
+
+    public class SQLParameterInfo
+    {
+        public string paramname { get; set; }
+        public object value { get; set; }
+        public SqlDbType dbtype { get; set; }
+    }
 
     public static class SQLDirectManipulate
     {
-        internal static void ExecuteSQL(this DataContext linqSqlDataContext, string command)
+        internal static void ExecuteSQLNonQuery(ISQLDirectConnectionManager database, string command, List<SQLParameterInfo> parameters = null)
         {
-            linqSqlDataContext.ExecuteCommand(command);
+            using (SqlConnection connection =
+               new SqlConnection(database.GetConnectionString()))
+            {
+                // Create the Command and Parameter objects.
+                SqlCommand sqlCommand = new SqlCommand(command, connection);
+                if (parameters != null)
+                {
+                    foreach (SQLParameterInfo p in parameters)
+                    {
+                        string fullname = "@" + p.paramname;
+                        sqlCommand.Parameters.Add(fullname, p.dbtype);
+                        sqlCommand.Parameters[fullname].Value = p.value;
+                    }
+                }
+                sqlCommand.Connection.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
         }
 
-        public static void DropTable(DataContext linqSqlDataContext, string tableName)
+        internal static object ExecuteSQLScalar(ISQLDirectConnectionManager database, string command, List<SQLParameterInfo> parameters = null)
+        {
+            using (SqlConnection connection =
+               new SqlConnection(database.GetConnectionString()))
+            {
+                // Create the Command and Parameter objects.
+                SqlCommand sqlCommand = new SqlCommand(command, connection);
+                if (parameters != null)
+                {
+                    foreach (SQLParameterInfo p in parameters)
+                    {
+                        string fullname = "@" + p.paramname;
+                        sqlCommand.Parameters.Add(fullname, p.dbtype);
+                        sqlCommand.Parameters[fullname].Value = p.value;
+                    }
+                }
+                sqlCommand.Connection.Open();
+                return sqlCommand.ExecuteScalar();
+            }
+        }
+
+        public static void DropTable(ISQLDirectConnectionManager database, string tableName)
         {
             string dropCommand = String.Format("IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{0}]') AND type in (N'U')) \n DROP TABLE [dbo].[{0}] \n ", tableName);
-            linqSqlDataContext.ExecuteCommand(dropCommand);
+            ExecuteSQLNonQuery(database, dropCommand);
         }
 
-        public static void AddTable(DataContext linqSqlDataContext, SQLTableDescription table)
+        public static void AddTable(ISQLDirectConnectionManager database, SQLTableDescription table)
         {
-            DropTable(linqSqlDataContext, table.Name);
+            DropTable(database, table.Name);
             string colNames = "";
             foreach (var col in table.Columns)
                 colNames += col.ToSpecificationString() + ", \n ";
             string primaryKey = table.Columns.Single(x => x.PrimaryKey).Name;
             string addCommand = String.Format("CREATE TABLE [dbo].[{0}]( \n {1} CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED \n ( \n [{2}] ASC \n )WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF \n ) ON [PRIMARY] \n ) ON [PRIMARY]", table.Name, colNames, primaryKey);
-            linqSqlDataContext.ExecuteCommand(addCommand);
+            ExecuteSQLNonQuery(database, addCommand);
         }
 
-        public static void AddIndicesForSpecifiedColumns(DataContext linqSqlDataContext, SQLTableDescription table)
+        public static void AddIndicesForSpecifiedColumns(ISQLDirectConnectionManager database, SQLTableDescription table)
         {
             foreach (var col in table.Columns.Where(x => x.NonclusteredIndex))
             {
@@ -143,7 +192,7 @@ CELLS_PER_OBJECT = 16, PAD_INDEX  = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = O
                 {
                     cmd = "CREATE NONCLUSTERED INDEX IX_" + table.Name + "_" + col.Name + " ON " + table.Name + " (" + col.Name + (col.Ascending ? " ASC)" : " DESC)");
                 }
-                linqSqlDataContext.ExecuteCommand(cmd);
+                ExecuteSQLNonQuery(database, cmd);
             }
         }
 

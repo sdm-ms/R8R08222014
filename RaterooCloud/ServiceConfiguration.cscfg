@@ -7,15 +7,17 @@
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="RaterooConnectionString" value="Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=True;Connect Timeout=300" />
+      <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>
   </Role>
   <!--<Role name="WorkerRole1">
     <Instances count="0" />
     <ConfigurationSettings>
       <Setting name="DiagnosticsConnectionString" value="DefaultEndpointsProtocol=https;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
+      <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=Qp9XFhL4hCnswDJjEKyJwx7Tk6B1g1oOkrfOmyQqX3QtD4ZW4q7xnWHFFRQBMu1SRUnYKCPQrYioSF/nnHD/tA==" />
+      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=Qp9XFhL4hCnswDJjEKyJwx7Tk6B1g1oOkrfOmyQqX3QtD4ZW4q7xnWHFFRQBMu1SRUnYKCPQrYioSF/nnHD/tA==" />
       <Setting name="RaterooConnectionString" value="Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=True;Connect Timeout=60" />
+      <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>
   </Role>-->
 </ServiceConfiguration>
@@ -27,6 +29,7 @@
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=Qp9XFhL4hCnswDJjEKyJwx7Tk6B1g1oOkrfOmyQqX3QtD4ZW4q7xnWHFFRQBMu1SRUnYKCPQrYioSF/nnHD/tA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=Qp9XFhL4hCnswDJjEKyJwx7Tk6B1g1oOkrfOmyQqX3QtD4ZW4q7xnWHFFRQBMu1SRUnYKCPQrYioSF/nnHD/tA==" />
       <Setting name="RaterooConnectionString" value="Server=tcp:xccqgdjupe.database.windows.net;Database=Rateroo2;User ID=RaterooAdmin@xccqgdjupe;Password=Finch2127248474;Trusted_Connection=False;Encrypt=True;Connect Timeout=60" />
+      <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />  DEBUG
     </ConfigurationSettings>
   </Role>
   Comment out worker role here and in service definition file to deploy with just a web role
@@ -37,6 +40,6 @@
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=Qp9XFhL4hCnswDJjEKyJwx7Tk6B1g1oOkrfOmyQqX3QtD4ZW4q7xnWHFFRQBMu1SRUnYKCPQrYioSF/nnHD/tA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroo;AccountKey=Qp9XFhL4hCnswDJjEKyJwx7Tk6B1g1oOkrfOmyQqX3QtD4ZW4q7xnWHFFRQBMu1SRUnYKCPQrYioSF/nnHD/tA==" />
       <Setting name="RaterooConnectionString" value="Server=tcp:xccqgdjupe.database.windows.net;Database=Rateroo2;User ID=RaterooAdmin@xccqgdjupe;Password=Finch2127248474;Trusted_Connection=False;Encrypt=True;Connect Timeout=60" />
-    </ConfigurationSettings>
+      <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />    DEBUG </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>-->

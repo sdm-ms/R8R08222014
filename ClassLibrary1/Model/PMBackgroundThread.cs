@@ -191,7 +191,7 @@ namespace ClassLibrary1.Model
                                         // Data sync
 
                                         case 20:
-                                            moreWorkToDoThisTask[i - 1] = SQLFastAccess.ContinueFastAccessMaintenance(dataManipulation.DataContext);
+                                            moreWorkToDoThisTask[i - 1] = SQLFastAccess.ContinueFastAccessMaintenance(dataManipulation.DataContext, new DenormalizedTableAccess(1)); // DEBUG: Must change this once we have denormalized tables stored in multiple locations
                                             break;
 
                                     }

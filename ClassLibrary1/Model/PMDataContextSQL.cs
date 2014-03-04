@@ -107,10 +107,15 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public override void SubmitChanges(ConflictMode conflictMode)
+        public override void SubmitChanges()
         {
             BeforeSubmitChanges();
             this.RepeatedlyAttemptToSubmitChanges(ConflictMode.ContinueOnConflict);
+        }
+
+        public override void SubmitChanges(ConflictMode conflictMode)
+        {
+            SubmitChanges(); // ignore conflictmode setting
         }
 
         public override void BeforeSubmitChanges()

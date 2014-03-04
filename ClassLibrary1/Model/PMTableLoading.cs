@@ -156,7 +156,8 @@ namespace ClassLibrary1.Model
                 if (theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.bulkCopyCompleted && SQLFastAccess.FastAccessTablesEnabled() && !theTableInfo.Filters.theFilterRules.Any(x => x is SearchWordsFilterRule)) // we don't do fast queries during bulk copying (or updating), if it is disabled, or if we have a search words query, which is too cumbersome to implement.
                 {
                     //ProfileSimple.Start("GetTablePopulateResponseWithFastQueries");
-                    theResponse = GetTablePopulateResponseWithFastQueries(firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, thePointsManager, theTbl, headerRow, rowCountOverride);
+                    DenormalizedTableAccess dta = new DenormalizedTableAccess(1);
+                    theResponse = GetTablePopulateResponseWithFastQueries(dta, firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, thePointsManager, theTbl, headerRow, rowCountOverride);
                     //ProfileSimple.End("GetTablePopulateResponseWithFastQueries");
                 }
             }
@@ -169,12 +170,12 @@ namespace ClassLibrary1.Model
             return theResponse;
         }
 
-        private static TablePopulateResponse GetTablePopulateResponseWithFastQueries(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
+        private static TablePopulateResponse GetTablePopulateResponseWithFastQueries(DenormalizedTableAccess dta, int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
         {
             //ProfileSimple.Start("FastQueries intro");
             List<InfoForBodyRows> theInfoForBodyRows;
             int? rowCountFromQuery = null;
-            SQLFastAccess.DoQuery(firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess.RaterooDB, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, theTbl, out theInfoForBodyRows, out rowCountFromQuery);
+            SQLFastAccess.DoQuery(dta, firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess.RaterooDB, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, theTbl, out theInfoForBodyRows, out rowCountFromQuery);
 
             int? rowCount = rowCountOverride ?? rowCountFromQuery;
 

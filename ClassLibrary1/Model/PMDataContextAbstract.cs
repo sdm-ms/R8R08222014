@@ -57,14 +57,11 @@ namespace ClassLibrary1.Model
 
         public static void PreSubmittingChangesTasks(this IRaterooDataContext theDataContext)
         {
-            //PMDatabaseAndAzureRoleStatus.CheckPreventChanges(theDataContext);
-            //RaterooDataManipulation.BulkAddSearchWordsCorrect(theDataContext);
-            //theDataContext.GetTable<InsertOnSubmitObjectsToBeIn>()erted();
-            //SQLFastAccess.PushRowsRequiringUpdateToAzureQueue(theDataContext);
-            //StatusRecords.RecordRememberedStatusRecordChanges(theDataContext);
-            //if (!_allowChangeData)
-            //    throw new Exception("Internal error: Tried to submit changes on a read only DataContext.");
-            //theDataContext.RegisteredToBeInserted = new List<object>();
+            PMDatabaseAndAzureRoleStatus.CheckPreventChanges(theDataContext);
+            RaterooDataManipulation.BulkAddSearchWordsCorrect(theDataContext);
+            SQLFastAccess.PushRowsRequiringUpdateToAzureQueue(theDataContext);
+            StatusRecords.RecordRememberedStatusRecordChanges(theDataContext);
+            theDataContext.RegisteredToBeInserted = new List<object>();
         }
 
 

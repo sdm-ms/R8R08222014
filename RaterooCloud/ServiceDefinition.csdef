@@ -12,6 +12,7 @@
       <Setting name="DiagnosticsConnectionString" />
       <Setting name="BlobConnectionString" />
       <Setting name="RaterooConnectionString" />
+      <Setting name="Denorm0001ConnectionString" />
       <Setting name="DataConnectionString" />
     </ConfigurationSettings>
     <LocalResources>

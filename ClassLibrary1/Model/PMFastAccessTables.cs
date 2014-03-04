@@ -16,6 +16,20 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace ClassLibrary1.Model
 {
+    public class DenormalizedTableAccess : ISQLDirectConnectionManager
+    {
+        int DenormalizedTableGroupNumber;
+        public DenormalizedTableAccess(int denormalizedTableGroupNumber)
+        {
+            DenormalizedTableGroupNumber = denormalizedTableGroupNumber;
+        }
+
+        public string GetConnectionString()
+        {
+            return AzureSetup.GetConfigurationSetting(String.Format("Denorm{0}ConnectionString", DenormalizedTableGroupNumber.ToString("D4")));
+        }
+    }
+
     public class SQLTableColumnInfo
     {
         TblColumn TheTblColumn;
@@ -224,42 +238,36 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 ", tblID, geoColName);
         }
 
-        public void AddTable(IRaterooDataContext iDataContext)
+        public void AddTable(DenormalizedTableAccess dta)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
             var columns = GetColumns();
             SQLTableDescription theTable = new SQLTableDescription() { Name = "V" + TheTbl.TblID, Columns = columns };
-            SQLDirectManipulate.AddTable(dataContext, theTable);
-            SQLDirectManipulate.AddIndicesForSpecifiedColumns(dataContext, theTable);
-            SQLDirectManipulate.ExecuteSQL(dataContext, GetSqlCommandToDropFunctionForTblRowStatusRecords(TheTbl.TblID));
-            SQLDirectManipulate.ExecuteSQL(dataContext, GetSqlCommandToAddFunctionForTblRowStatusRecords(TheTbl.TblID));
+            SQLDirectManipulate.AddTable(dta, theTable);
+            SQLDirectManipulate.AddIndicesForSpecifiedColumns(dta, theTable);
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToDropFunctionForTblRowStatusRecords(TheTbl.TblID));
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToAddFunctionForTblRowStatusRecords(TheTbl.TblID));
             var geocolumns = columns.Where(x => x.ColType == SQLColumnType.typeGeography);
             foreach (var geocol in geocolumns)
             {
-                SQLDirectManipulate.ExecuteSQL(dataContext, GetSqlCommandToDropFunctionForNearestNeighbors(geocol.Name));
-                SQLDirectManipulate.ExecuteSQL(dataContext, GetSqlCommandToAddFunctionForNearestNeighbors(TheTbl.TblID, geocol.Name));
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToDropFunctionForNearestNeighbors(geocol.Name));
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToAddFunctionForNearestNeighbors(TheTbl.TblID, geocol.Name));
             }
 
             foreach (var fieldMC in filterableMultipleChoiceFields)
             {
                 SQLTableDescription subTable = fieldMC.GetSQLTableDescription();
-                SQLDirectManipulate.AddTable(dataContext, subTable);
-                SQLDirectManipulate.AddIndicesForSpecifiedColumns(dataContext, subTable);
+                SQLDirectManipulate.AddTable(dta, subTable);
+                SQLDirectManipulate.AddIndicesForSpecifiedColumns(dta, subTable);
             }
         }
 
-        public void DropTable(IRaterooDataContext iDataContext)
+        public void DropTable(DenormalizedTableAccess dta)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-            SQLDirectManipulate.DropTable(dataContext, "V" + TheTbl.TblID);
+            SQLDirectManipulate.DropTable(dta, "V" + TheTbl.TblID);
             foreach (var fieldMC in filterableMultipleChoiceFields)
             {
                 SQLTableDescription subTable = fieldMC.GetSQLTableDescription();
-                SQLDirectManipulate.DropTable(dataContext, subTable.Name);
+                SQLDirectManipulate.DropTable(dta, subTable.Name);
             }
         }
 
@@ -421,15 +429,10 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         }
 
-
-
         internal List<FastTextRowsInfo> storedRows;
 
-        internal void StoreRowsInfo(IRaterooDataContext iDataContext, IQueryable<TblRow> tblRows, bool omitRatings = false, bool omitFields = false)
+        internal void StoreRowsInfo(IQueryable<TblRow> tblRows, bool omitRatings = false, bool omitFields = false)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
             if (omitRatings && omitFields)
             {
                 storedRows = tblRows.Select(x => new FastTextRowsInfo
@@ -639,17 +642,19 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
 
 
-        public int BulkCopyRows(IRaterooDataContext iDataContext, IQueryable<TblRow> tblRows)
+        public int BulkCopyRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, IQueryable<TblRow> tblRows)
         {
-
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return 0;
 
-            StoreRowsInfo(iDataContext, tblRows, false, false);
+            StoreRowsInfo(tblRows, false, false);
 
             DataTable theDataTable = CreateDataTable(iDataContext, tblRows);
-            SqlBulkCopy bulk = new SqlBulkCopy(AzureSetup.GetConfigurationSetting("RaterooConnectionString"), SqlBulkCopyOptions.KeepIdentity & SqlBulkCopyOptions.KeepNulls & SqlBulkCopyOptions.UseInternalTransaction);
+
+            string denormalizedConnection = dta.GetConnectionString();
+
+            SqlBulkCopy bulk = new SqlBulkCopy(denormalizedConnection, SqlBulkCopyOptions.KeepIdentity & SqlBulkCopyOptions.KeepNulls & SqlBulkCopyOptions.UseInternalTransaction);
             bulk.DestinationTableName = "dbo.V" + TheTbl.TblID.ToString();
             bulk.WriteToServer(theDataTable);
             int numRecords = theDataTable.Rows.Count;
@@ -658,7 +663,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             foreach (var fieldMC in filterableMultipleChoiceFields)
             {
                 theDataTable = CreateDataTableForMultipleChoiceField(iDataContext, fieldMC);
-                SqlBulkCopy bulk2 = new SqlBulkCopy(AzureSetup.GetConfigurationSetting("RaterooConnectionString"));
+                SqlBulkCopy bulk2 = new SqlBulkCopy(denormalizedConnection);
                 bulk2.ColumnMappings.Add(new SqlBulkCopyColumnMapping("TRID", "TRID"));
                 bulk2.ColumnMappings.Add(new SqlBulkCopyColumnMapping("CHO", "CHO"));
                 bulk2.DestinationTableName = "dbo.VFMC" + fieldMC.TheFieldDefinition.FieldDefinitionID.ToString();
@@ -675,36 +680,24 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             public decimal Latitude { get; set; }
         }
 
-        internal class FastUpdateVariableInfo
-        {
-            public string varname {get; set;}
-            public object value {get; set;}
-            public SqlDbType dbtype { get; set; }
-        }
-
         internal class FastUpdateRowInfo
         {
-            public List<FastUpdateVariableInfo> Variables {get; set;}
+            public List<SQLParameterInfo> Parameters { get; set; }
 
             public FastUpdateRowInfo()
             {
-                Variables = new List<FastUpdateVariableInfo>();
+                Parameters = new List<SQLParameterInfo>();
             }
 
             public void Add(string varname, object value, SqlDbType dbtype)
             {
-                Variables.Add(new FastUpdateVariableInfo { varname = varname, value = value, dbtype = dbtype });
+                Parameters.Add(new SQLParameterInfo { paramname = varname, value = value, dbtype = dbtype });
             }
 
-            public void DoUpdate(IRaterooDataContext iDataContext, string tableName)
+            public void DoUpdate(DenormalizedTableAccess dta, string tableName)
             {
-
-                RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-                if (dataContext == null)
-                    return;
-
                 // step 1: formulate the SQL statement
-                if (!Variables.Any())
+                if (!Parameters.Any())
                     return;
 
 
@@ -712,15 +705,16 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                   "UPDATE " + tableName + " " + "SET ";
                 bool isFirst = true;
                 int varNum = 0;
-                foreach (var variable in Variables)
+                int geoNum = 0;
+                foreach (var variable in Parameters)
                 {
-                    if (variable.varname != "ID")
+                    if (variable.paramname != "ID")
                     {
                         if (!isFirst)
                             updateString += ", ";
                         isFirst = false;
                         //updateString += variable.varname + " = @" + variable.varname;
-                        updateString += variable.varname;
+                        updateString += variable.paramname;
                         if (variable.value == null)
                             updateString += " = NULL";
                         else
@@ -732,52 +726,55 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                                 varNum++;
                                 int latVarNum = varNum;
                                 varNum++;
-                                updateString += " = geography::STPointFromText('POINT(' + CAST({" + longVarNum + "} AS VARCHAR(20)) + ' ' + CAST({" + latVarNum + "} AS VARCHAR(20)) + ')', 4326)";
+                                updateString += " = geography::STPointFromText('POINT(' + CAST(@geo" + geoNum.ToString() + " AS VARCHAR(20)) + ' ' + CAST(@geo" + (geoNum + 1).ToString() + " AS VARCHAR(20)) + ')', 4326)";
+                                geoNum += 2;
                             }
                             else
                             {
-                                updateString += " = {" + varNum.ToString() + "}";
+                                updateString += " = @" + variable.paramname;
                                 varNum++;
                             }
                         }
                     }
                 }
-                updateString += " WHERE ID = {" + varNum.ToString() + "}";
+                updateString += " WHERE ID = @ID";
 
-                Object[] parameters  = Variables.Where(x => x.value != null).OrderBy(x => x.varname == "ID").Select(x => x.value).ToArray(); // put ID field last, and exclude null fields, because ExecuteCommand cannot handle null parameters (despite documentation to the contrary)
-                Object[] parameters2 = ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(parameters);
+                foreach (var p in Parameters)
+                    if (p.value == null)
+                        p.value = DBNull.Value;
+
+                List<SQLParameterInfo> sqlParameters = Parameters.OrderBy(x => x.paramname == "ID").ToList(); // put ID field last
+                List<SQLParameterInfo> parameters2 = ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(sqlParameters);
 
                 // execute the command
-                dataContext.ExecuteCommand(updateString, parameters2);
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, updateString, parameters2);
             }
 
-            private static Object[] ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(Object[] parameters)
+            private static List<SQLParameterInfo> ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(List<SQLParameterInfo> parameters)
             {
-                Object[] parameters2 = null;
-                if (parameters.Any(x => x is FastUpdateGeography))
+                int geoNum = 0;
+                if (parameters.Any(x => x.value is FastUpdateGeography))
                 {
-                    int numGeo = parameters.Count(x => x is FastUpdateGeography);
-                    parameters2 = new Object[parameters.Length + numGeo];
-                    int indexInNewParameters = 0;
-                    for (int indexInOldParameters = 0; indexInOldParameters < parameters.Length; indexInOldParameters++)
+                    List<SQLParameterInfo> parameters2 = new List<SQLParameterInfo>();
+                    foreach (SQLParameterInfo p in parameters)
                     {
-                        if (parameters[indexInOldParameters] is FastUpdateGeography)
+                        if (p.value is FastUpdateGeography)
                         {
-                            parameters2[indexInNewParameters] = ((FastUpdateGeography)parameters[indexInOldParameters]).Longitude;
-                            indexInNewParameters++;
-                            parameters2[indexInNewParameters] = ((FastUpdateGeography)parameters[indexInOldParameters]).Latitude;
-                            indexInNewParameters++;
+                            FastUpdateGeography fug = ((FastUpdateGeography)(p.value));
+                            SQLParameterInfo longParam = new SQLParameterInfo() { dbtype = SqlDbType.Decimal, value = fug.Longitude, paramname = "geo" + geoNum.ToString() };
+                            geoNum++;
+                            parameters2.Add(longParam);
+                            SQLParameterInfo latParam = new SQLParameterInfo() { dbtype = SqlDbType.Decimal, value = fug.Latitude, paramname = "geo" + geoNum.ToString() };
+                            geoNum++;
+                            parameters2.Add(latParam);
                         }
                         else
-                        {
-                            parameters2[indexInNewParameters] = parameters[indexInOldParameters];
-                            indexInNewParameters++;
-                        }
+                            parameters2.Add(p);
                     }
+                    return parameters2;
                 }
                 else
-                    parameters2 = parameters;
-                return parameters2;
+                    return parameters;
             }
         }
 
@@ -786,77 +783,51 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             public string TableName { get; set; }
             public List<FastUpdateRowInfo> Rows {get; set;}
 
-            public void DoUpdate(IRaterooDataContext iDataContext)
+            public void DoUpdate(DenormalizedTableAccess dta)
             {
-
-                RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-                if (dataContext == null)
-                    return;
-
                 foreach (var row in Rows)
-                    row.DoUpdate(iDataContext, TableName);
+                    row.DoUpdate(dta, TableName);
             }
         }
 
-        public void UpdateRows(IRaterooDataContext iDataContext, IQueryable<TblRow> tblRows, bool updateRatings = true, bool updateFields = true)
+        public void UpdateRows(DenormalizedTableAccess dta, IQueryable<TblRow> tblRows, bool updateRatings = true, bool updateFields = true)
         {
-
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-
-            StoreRowsInfo(iDataContext, tblRows, !updateRatings, !updateFields);
+            StoreRowsInfo(tblRows, !updateRatings, !updateFields);
             FastUpdateRowsInfo allRows = GenerateFastUpdateRowsInfoForMainTable(updateRatings, updateFields);
             if (updateFields)
-                GenerateChangesForMCTables(iDataContext);
-            allRows.DoUpdate(iDataContext);
+                GenerateChangesForMCTables(dta);
+            allRows.DoUpdate(dta);
         }
 
-        internal void GenerateChangesForMCTables(IRaterooDataContext iDataContext)
+        internal void GenerateChangesForMCTables(DenormalizedTableAccess dta)
         {
-
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-
             foreach (var storedRow in storedRows)
             {
                 foreach (var choiceField in storedRow.ChoiceFields)
                 {
                     if (choiceField.MultipleChoices)
                     {
-                        DeleteExistingChoicesInMCTable(iDataContext, choiceField.FieldDefinitionID, storedRow.ID);
-                        AddChoicesToMCTable(iDataContext, choiceField.FieldDefinitionID, storedRow.ID, choiceField.Choices.Select(x => x.ChoiceInGroupID).ToList());
+                        DeleteExistingChoicesInMCTable(dta, choiceField.FieldDefinitionID, storedRow.ID);
+                        AddChoicesToMCTable(dta, choiceField.FieldDefinitionID, storedRow.ID, choiceField.Choices.Select(x => x.ChoiceInGroupID).ToList());
                     }
                 }
             }
-
         }
 
-        internal void DeleteExistingChoicesInMCTable(IRaterooDataContext iDataContext, int fieldDefinitionID, int tblRowID)
+        internal void DeleteExistingChoicesInMCTable(DenormalizedTableAccess dta, int fieldDefinitionID, int tblRowID)
         {
-
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-
             string tableName = "dbo.VFMC" + fieldDefinitionID.ToString();
-            string deleteString = "DELETE FROM " + tableName + " WHERE TRID = {0} ";
-            dataContext.ExecuteCommand(deleteString, new object[] { tblRowID });
+            string deleteString = "DELETE FROM " + tableName + " WHERE TRID = @trid ";
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, paramname = "trid" } });
         }
 
-        internal void AddChoicesToMCTable(IRaterooDataContext iDataContext, int fieldDefinitionID, int tblRowID, List<int> choiceInGroupIDs)
+        internal void AddChoicesToMCTable(DenormalizedTableAccess dta, int fieldDefinitionID, int tblRowID, List<int> choiceInGroupIDs)
         {
-
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-
             string tableName = "dbo.VFMC" + fieldDefinitionID.ToString();
             foreach (int choiceInGroupID in choiceInGroupIDs)
             {
-                string insertString = "INSERT INTO " + tableName + " (TRID, CHO) VALUES ({0}, {1}) ";
-                dataContext.ExecuteCommand(insertString, new object[] { tblRowID, choiceInGroupID });
+                string insertString = "INSERT INTO " + tableName + " (TRID, CHO) VALUES (@trid, @cigid) ";
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, insertString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, paramname = "trid" }, new SQLParameterInfo() { dbtype = SqlDbType.Int, value = choiceInGroupID, paramname = "cigid" } } );
             }
         }
 
@@ -933,35 +904,31 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
     public static class SQLFastAccess
     {
-        public static int CountHighestRecord(IRaterooDataContext iDataContext, string tableName)
+        public static int CountHighestRecord(DenormalizedTableAccess dta, string tableName)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return 0;
-
-            IEnumerable<int> result = dataContext.ExecuteQuery<int>(String.Format("SELECT TOP 1 [ID] FROM [dbo].[{0}] ORDER BY [ID] DESC", tableName)).ToList();
-            if (result.Count() == 0)
+            object result = SQLDirectManipulate.ExecuteSQLScalar(dta, String.Format("SELECT TOP 1 [ID] FROM [dbo].[{0}] ORDER BY [ID] DESC", tableName));
+            if (result == null)
                 return 0;
             else
-                return result.First();
+                return (int) result;
         }
 
-        public static bool ContinueFastAccessMaintenance(IRaterooDataContext iDataContext)
+        public static bool ContinueFastAccessMaintenance(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
 
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null || !RoleEnvironment.IsAvailable)
                 return false;
 
-            bool moreBulkCopyingToDo = ContinueBulkCopy(iDataContext);
+            bool moreBulkCopyingToDo = ContinueBulkCopy(iDataContext, dta);
             bool moreUpdatingToDo = true;
             if (!moreBulkCopyingToDo)
-                moreUpdatingToDo = ContinueUpdate(iDataContext);
+                moreUpdatingToDo = ContinueUpdate(iDataContext, dta);
 
             return moreBulkCopyingToDo || moreUpdatingToDo;
         }
 
-        internal static bool ContinueBulkCopy(IRaterooDataContext iDataContext)
+        internal static bool ContinueBulkCopy(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
 
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
@@ -976,15 +943,15 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
             if (theTbl.FastTableSyncStatus == (int) FastAccessTableStatus.bulkCopyNotStarted)
             {
-                new SQLFastAccessTableInfo(iDataContext, theTbl).DropTable(iDataContext);
-                new SQLFastAccessTableInfo(iDataContext, theTbl).AddTable(iDataContext);
+                new SQLFastAccessTableInfo(iDataContext, theTbl).DropTable(dta);
+                new SQLFastAccessTableInfo(iDataContext, theTbl).AddTable(dta);
                 theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyInProgress;
                 PMCacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
                 dataContext.SubmitChanges();
             }
 
             const int numToTake = 500;
-            int virtualTableHighestID = CountHighestRecord(iDataContext, "V" + theTbl.TblID.ToString());
+            int virtualTableHighestID = CountHighestRecord(dta, "V" + theTbl.TblID.ToString());
             IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => x.TblID == theTbl.TblID && x.TblRowID > virtualTableHighestID).OrderBy(x => x.TblRowID).Take(numToTake);
             TblRow lastTblRow = tblRows.OrderByDescending(x => x.TblRowID).FirstOrDefault();
             int lastTableRowID = 0;
@@ -992,7 +959,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 lastTableRowID = lastTblRow.TblRowID;
             int numRecords = 0;
             if (lastTableRowID > 0)
-                numRecords = new SQLFastAccessTableInfo(iDataContext, theTbl).BulkCopyRows(iDataContext, tblRows);
+                numRecords = new SQLFastAccessTableInfo(iDataContext, theTbl).BulkCopyRows(iDataContext, dta, tblRows);
             System.Diagnostics.Trace.TraceInformation("Bulk copy from " + theTbl.Name + " to V" + theTbl.TblID.ToString() + " " + numRecords.ToString() + " records");
 
             if (numRecords == 0)
@@ -1071,18 +1038,19 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             if (theRowsRequiringUpdates != null)
             {
                 RowsRequiringUpdate theRows = new RowsRequiringUpdate { Rows = theRowsRequiringUpdates.ToList() };
+                
                 AzureQueue.Push("fasttablerowupdate", theRows );
             }
             iDataContext.TempCacheAdd("fasttablerowupdate", null);
         }
 
-        internal static bool ContinueUpdate(IRaterooDataContext iDataContext)
+        internal static bool ContinueUpdate(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
             const int numAtOnce = 100;
-            var queue = new AzureQueueWithErrorRecovery(10, RebuildTableBecauseOfFailedUpdateBasedOnCloudMessage);
+            var queue = new AzureQueueWithErrorRecovery(10, null);
             List<RowRequiringUpdate> theRows = new List<RowRequiringUpdate>();
             var theMessages = queue.GetMessages("fasttablerowupdate", numAtOnce);
             foreach (var setOfRows in theMessages)
@@ -1101,7 +1069,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 bool newRowsAdded = table.Any(x => x.Item.TblRowID == 0); // we can't use update for this, because we don't know the TblRowID yet.
                 List<int> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => tblRowIDs.Contains(x.TblRowID));
-                new SQLFastAccessTableInfo(iDataContext, theTbl).UpdateRows(iDataContext, tblRows, table.First().Item.UpdateRatings, table.First().Item.UpdateFields);
+                new SQLFastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.First().Item.UpdateRatings, table.First().Item.UpdateFields);
                 if (newRowsAdded && theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.bulkCopyCompleted)
                 {
                     theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyInProgress;
@@ -1112,49 +1080,18 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
             queue.ConfirmProperExecution("fasttablerowupdate");
             if (anyNewRowsAdded)
-                ContinueBulkCopy(iDataContext);
+                ContinueBulkCopy(iDataContext, dta);
             return theRows.Count() == numAtOnce; // more work to do
-        }
-
-        internal static void RebuildTableBecauseOfFailedUpdateBasedOnCloudMessage(object rowRequiringUpdateObject)
-        {
-            RowRequiringUpdate row = (RowRequiringUpdate)rowRequiringUpdateObject;
-            int tblID = Convert.ToInt32(row.TableName.Substring(1));
-            IRaterooDataContext iDataContext = GetIRaterooDataContext.New(true, true);
-            if (iDataContext.GetRealDatabaseIfExists() == null)
-                return;
-            Tbl theTbl = iDataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
-            RebuildTableBecauseOfFailedUpdate(iDataContext, theTbl);
-        }
-
-        public static void RebuildTableBecauseOfFailedUpdate(IRaterooDataContext iDataContext, Tbl theTbl)
-        {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-            theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyNotStarted;
-            PMCacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
-            iDataContext.SubmitChanges();
-            new SQLFastAccessTableInfo(iDataContext, theTbl).DropTable(iDataContext);
         }
 
         public static void PlanDropTbl(IRaterooDataContext iDataContext, Tbl theTbl)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-            theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyNotStarted;
-            PMCacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
-            dataContext.SubmitChanges(); // fast access table will be dropped
+            // DEBUG -- we must implement a substitute for this
         }
 
         public static void PlanDropTbls(IRaterooDataContext iDataContext, PointsManager pointsManager)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-            foreach (var tbl in pointsManager.Tbls)
-                PlanDropTbl(iDataContext, tbl);
+            // DEBUG -- we must implement a substitute for this
         }
 
         internal class DoQueryResults
@@ -1519,7 +1456,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             return returnVal;
         }
 
-        internal static DataTable GetDataTable(IRaterooDataContext iDataContext, List<string> variableList, TableSortRule tableSortRule, FilterRules filters, List<ChoiceFullFieldDefinition> choiceFieldDefinitions, int tblID, int skip, int take)
+        internal static DataTable GetDataTable(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, List<string> variableList, TableSortRule tableSortRule, FilterRules filters, List<ChoiceFullFieldDefinition> choiceFieldDefinitions, int tblID, int skip, int take)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
@@ -1570,7 +1507,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             string rowCountInstruction = String.Format(", ( SELECT COUNT(ID) {0} {1} {2} {3} ) AS row_count ", fromInstruction, joinInstructionForOrdering, joinInstructionForFiltering, whereInstruction);
             string skipTakeInstruction = " seq where seq.rownum BETWEEN " + (skip + 1).ToString() + " and " + (skip + take).ToString();
             string entireQuery = String.Format("SELECT * {0} FROM ( {1} ) {2}", rowCountInstruction, coreQuery, skipTakeInstruction);
-            SqlDataAdapter adapter = new SqlDataAdapter(entireQuery, AzureSetup.GetConfigurationSetting("RaterooConnectionString"));
+            SqlDataAdapter adapter = new SqlDataAdapter(entireQuery, dta.GetConnectionString()); 
             foreach (var whereParam in parameters)
                 adapter.SelectCommand.Parameters.Add(whereParam);
             DataSet data = new DataSet();
@@ -1592,7 +1529,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             return stringList;
         }
 
-        public static void DoQuery(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, IRaterooDataContext iDataContext, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, Tbl theTbl, out List<InfoForBodyRows> bodyRowList, out int? rowCount)
+        public static void DoQuery(DenormalizedTableAccess dta, int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, IRaterooDataContext iDataContext, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, Tbl theTbl, out List<InfoForBodyRows> bodyRowList, out int? rowCount)
         {
             bodyRowList = null;
             rowCount = null;
@@ -1611,7 +1548,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 List<string> theVariables = GetListOfFastAccessVariablesToLoad(tblColumns, true);
                 List<ChoiceFullFieldDefinition> choiceFieldDefinitions = GetChoiceFullFieldDefinitions(iDataContext, theTbl);
                 //ProfileSimple.Start("GetDataTable");
-                DataTable theDataTable = GetDataTable(iDataContext, theVariables, theTableSortRule, theTableInfo.Filters, choiceFieldDefinitions, theTbl.TblID, firstRowNum - 1, numRows);
+                DataTable theDataTable = GetDataTable(iDataContext, dta, theVariables, theTableSortRule, theTableInfo.Filters, choiceFieldDefinitions, theTbl.TblID, firstRowNum - 1, numRows);
                 //ProfileSimple.End("GetDataTable");
                 theResults = ParseDataTable(tblColumns, theDataTable);
 

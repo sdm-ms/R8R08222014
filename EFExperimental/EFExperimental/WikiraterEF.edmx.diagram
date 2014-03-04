@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cc942906ca9f426cb4ec85b731b3e3d3" Name="Diagram1">
+        <EntityTypeShape EntityType="Rateroo7Model.AddressField" Width="1.5" PointX="12.75" PointY="120.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.AdministrationRight" Width="1.5" PointX="22.25" PointY="100.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.AdministrationRightsGroup" Width="1.5" PointX="0.75" PointY="88" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ChangesGroup" Width="1.5" PointX="3" PointY="97.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ChangesStatusOfObject" Width="1.5" PointX="5.25" PointY="86.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ChoiceField" Width="1.5" PointX="12.75" PointY="123.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ChoiceGroupFieldDefinition" Width="1.5" PointX="11.5" PointY="107.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ChoiceGroup" Width="1.5" PointX="6" PointY="96.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ChoiceInField" Width="1.5" PointX="10.5" PointY="110.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ChoiceInGroup" Width="1.5" PointX="8.25" PointY="109.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.Comment" Width="1.5" PointX="3" PointY="92.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.DatabaseStatu" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.DateTimeFieldDefinition" Width="1.5" PointX="10.5" PointY="114.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.DateTimeField" Width="1.5" PointX="12.75" PointY="126.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.Domain" Width="1.5" PointX="1.5" PointY="70.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.FieldDefinition" Width="1.5" PointX="8.25" PointY="116.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.Field" Width="1.5" PointX="10.5" PointY="117.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.HierarchyItem" Width="1.5" PointX="8.25" PointY="121.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.InsertableContent" Width="1.5" PointX="14.25" PointY="104.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.InvitedUser" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.LongProcess" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.NumberFieldDefinition" Width="1.5" PointX="10.5" PointY="131.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.NumberField" Width="1.5" PointX="12.75" PointY="129.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.OverrideCharacteristic" Width="1.5" PointX="22.25" PointY="109.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.PointsAdjustment" Width="1.5" PointX="3" PointY="102.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.PointsManager" Width="1.5" PointX="1.5" PointY="75.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.PointsTotal" Width="1.5" PointX="9" PointY="95.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ProposalEvaluationRatingSetting" Width="1.5" PointX="21.25" PointY="114.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.ProposalSetting" Width="1.5" PointX="16.25" PointY="109" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingCharacteristic" Width="1.5" PointX="5.25" PointY="113.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingCondition" Width="1.5" PointX="15.75" PointY="116.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingGroupAttribute" Width="1.5" PointX="19" PointY="113.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingGroupPhaseStatu" Width="1.5" PointX="27.5" PointY="113.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingGroupResolution" Width="1.5" PointX="27.5" PointY="103.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingGroup" Width="1.5" PointX="25.25" PointY="108.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingGroupStatusRecord" Width="1.5" PointX="27.5" PointY="119.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingPhaseGroup" Width="1.5" PointX="3" PointY="124.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingPhas" Width="1.5" PointX="5.25" PointY="123.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingPhaseStatu" Width="1.5" PointX="29.75" PointY="114" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RatingPlan" Width="1.5" PointX="22.25" PointY="104.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.Rating" Width="1.5" PointX="13.5" PointY="113.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RewardPendingPointsTracker" Width="1.5" PointX="6" PointY="93" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RewardRatingSetting" Width="1.5" PointX="24.25" PointY="114.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.RoleStatu" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SearchWordChoice" Width="1.5" PointX="13.5" PointY="111" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SearchWordHierarchyItem" Width="1.5" PointX="10.5" PointY="122.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SearchWord" Width="1.5" PointX="11.25" PointY="87.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SearchWordTblRowName" Width="1.5" PointX="19.5" PointY="102.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SearchWordTextField" Width="1.5" PointX="15" PointY="132.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SubsidyAdjustment" Width="1.5" PointX="29.75" PointY="118.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SubsidyDensityRangeGroup" Width="1.5" PointX="3" PointY="131.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.SubsidyDensityRange" Width="1.5" PointX="5.25" PointY="131.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TblColumnFormatting" Width="1.5" PointX="23.5" PointY="121.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TblColumn" Width="1.5" PointX="21.25" PointY="120.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TblDimension" Width="1.5" PointX="1.5" PointY="66.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TblRowFieldDisplay" Width="1.5" PointX="15" PointY="94.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TblRow" Width="1.5" PointX="17.25" PointY="102.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TblRowStatusRecord" Width="1.5" PointX="19.5" PointY="105.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.Tbl" Width="1.5" PointX="6" PointY="102.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TblTab" Width="1.5" PointX="8.25" PointY="129.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TextFieldDefinition" Width="1.5" PointX="10.5" PointY="134.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TextField" Width="1.5" PointX="12.75" PointY="132" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TrustTrackerForChoiceInGroup" Width="1.5" PointX="11.5" PointY="102.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TrustTrackerForChoiceInGroupsUserRatingLink" Width="1.5" PointX="16.75" PointY="99.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TrustTracker" Width="1.5" PointX="9" PointY="90.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TrustTrackerStat" Width="1.5" PointX="11.25" PointY="90.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.TrustTrackerUnit" Width="1.5" PointX="1.5" PointY="62.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserAction" Width="1.5" PointX="19" PointY="120" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserCheckIn" Width="1.5" PointX="3" PointY="157.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserInfo" Width="1.5" PointX="3" PointY="159.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserInteraction" Width="1.5" PointX="9" PointY="104.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserInteractionStat" Width="1.5" PointX="14.5" PointY="98" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserRatingGroup" Width="1.5" PointX="29.75" PointY="110.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserRating" Width="1.5" PointX="33" PointY="100.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UserRatingsToAdd" Width="1.5" PointX="30.5" PointY="103.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.User" Width="1.5" PointX="0.75" PointY="96.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UsersAdministrationRightsGroup" Width="1.5" PointX="3" PointY="89" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.UsersRight" Width="1.5" PointX="12" PointY="96.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.VolatilityTblRowTracker" Width="1.5" PointX="19.5" PointY="108.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Rateroo7Model.VolatilityTracker" Width="1.5" PointX="27.5" PointY="109.125" IsExpanded="true" />
+        <AssociationConnector Association="Rateroo7Model.Field_AddressField" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.AdministrationRightsGroup_AdministrationRight" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.UserAction_AdministrationRight" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.AdministrationRightsGroup_UsersAdministrationRightsGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_AdministrationRightsGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.ChangesGroup_ChangesStatusOfObject" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_ChangesGroup_Ratings" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_ChangesGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Tbl_ChangesGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_ChangesGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Field_ChoiceField" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_ChoiceInFields_ChoiceFields" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.ChoiceGroup_ChoiceGroupFieldDefinition" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FieldDefinition_ChoiceGroupFieldDefinition" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_ChoiceGroupFieldDefinitions_ChoiceGroupFieldDefinitions" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.ChoiceGroup_ChoiceInGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_ChoiceGroups_ChoiceGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_ChoiceGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_ChoiceGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_ChoiceInFields_ChoiceInGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_ChoiceInGroups_ChoiceInGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordChoices_ChoiceInGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackerForChoiceInGroups_ChoiceInGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblRow_Comment" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_Comment" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FieldDefinition_DateTimeFieldDefinition" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Field_DateTimeField" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Domain_InsertableContents" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManagers_Domains" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblDimension_Domain" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FieldDefinition_Field" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FieldDefinition_NumberFieldDefinition" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TextFieldDefinitions_FieldDefinitions" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Tbl_FieldDefinition" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Field_NumberField" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Field_TextField" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblRow_Field" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_HierarchyItems_HierarchyItems" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_HierarchyItems_HierarchyItems1" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_HierarchyItems_Tbls" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordHierarchyItems_HierarchyItems" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_InsertableContents" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Tbl_InsertableContents" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupAttribute_OverrideCharacteristic" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblColumn_OverrideCharacteristic" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblRow_OverrideCharacteristic" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_PointsAdjustment" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_PointsAdjustment" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_PointsManagers_TrustTrackerUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_PointsTotal" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_ProposalEvaluationRatingSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_ProposalSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_RatingGroupAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_RewardRatingSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_Tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_UsersAdministrationRightsGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.PointsManager_UsersRight" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_PointsTotal" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupAttribute_ProposalEvaluationRatingSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.UserAction_ProposalEvaluationRatingSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Tbl_ProposalSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingCharacteristic_Rating" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingCharacteristic_RatingGroupAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingPhaseGroup_RatingCharacteristic" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.SubsidyDensityRangeGroup_RatingCharacteristic" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_RatingCharacteristic" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_RatingConditions_Ratings" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingCondition_RatingGroupAttribute" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupAttribute_RatingGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupAttribute_RatingPlan" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupAttribute_RatingPlan1" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupAttribute_RewardRatingSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupAttribute_TblColumn" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_RatingGroupPhaseStatus_RatingGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_RatingPhaseStatus_RatingGroupPhaseStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatingGroups_RatingGroupPhaseStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroupPhaseStatus_SubsidyAdjustment" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingPhase_RatingGroupPhaseStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingPhaseGroup_RatingGroupPhaseStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroup_RatingGroupResolution" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_RatingGroupResolution" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_RatingGroupStatusRecords_RatingGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatingsToAdd_RatingGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_VolatilityTrackers_RatingGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroup_Rating" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroup_Rating1" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroup_Rating2" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingGroup_UserRatingGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblColumn_RatingGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblRow_RatingGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.RatingPhaseGroup_RatingPhase" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_RatingPhaseGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_RatingPhaseStatus_Ratings" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatings_RatingPhaseStatus1" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_RatingPlan" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_Ratings_UserRatings" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatings_Ratings" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_Rating" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_RewardPendingPointsTrackers_TblRows" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_RewardPendingPointsTrackers_TblRows1" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatings_RewardPendingPointsTrackers" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.UserAction_RewardRatingSetting" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordChoices_SearchWords" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordHierarchyItems_SearchWords" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordTblRowNames_SearchWords" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordTextFields_SearchWords" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordTblRowNames_TblRows" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_SearchWordTextFields_TextFields" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.SubsidyDensityRangeGroup_SubsidyDensityRange" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_SubsidyDensityRangeGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TblColumnFormatting_TblColumns" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TblColumns_TblColumns" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TblColumns_TrustTrackerUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblTab_TblColumn" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.TblDimension_Tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TblRows_TblRowFieldDisplays" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TblRowStatusRecord_TblRows" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_VolatilityTblRowTrackers_TblRows" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Tbl_TblRow" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackerForChoiceInGroups_Tbls" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.Tbl_TblTab" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_Tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackerForChoiceInGroups_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackerForChoiceInGroupsUserRatingLinks_TrustTrackerForChoiceInGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackerForChoiceInGroupsUserRatingLinks_UserRatings" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackers_TrustTrackerUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackers_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_TrustTrackerStats_TrustTrackers" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserInteractionStats_TrustTrackerStats" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserInteractions_TrustTrackerUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatings_TrustTrackerUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserCheckIns_Users1" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_UserInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserInteractions_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserInteractions_Users1" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserInteractionStats_UserInteractions" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatings_UserRatingGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatings_UserRatings" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatings_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_UserRatingsToAdd_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_UsersAdministrationRightsGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.User_UsersRight" ManuallyRouted="false" />
+        <AssociationConnector Association="Rateroo7Model.FK_VolatilityTrackers_VolatilityTblRowTrackers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

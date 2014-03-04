@@ -34,7 +34,7 @@ namespace TestProject1
         {
             // Use true when you want all tests to use a SQL Server database
             // Use false when you want all tests to use an in-memory database
-            return false;
+            return true;
         }
     }
 
@@ -45,6 +45,8 @@ namespace TestProject1
         [TestMethod]
         public void ResetAndCreateStandard()
         {
+            if (!Test_UseRealDatabase.UseReal())
+                return;
             RaterooBuilder theBuilder = new RaterooBuilder();
             theBuilder.DeleteAndRebuild();
             theBuilder.CreateStandard();

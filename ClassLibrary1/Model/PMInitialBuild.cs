@@ -28,7 +28,8 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.Misc;
 using System.Diagnostics;
 using ClassLibrary1.Model;
-using System.Text.RegularExpressions; 
+using System.Text.RegularExpressions;
+using System.Threading; 
 //namespace PredRatings
 //{
 
@@ -696,7 +697,9 @@ namespace ClassLibrary1.Model
         {
             BackgroundThread.BriefPauseRequestNumberSeconds = 30000;
             BackgroundThread.BriefPauseRequested = true;
+            Thread.Sleep(5000);
 
+            /*
             PMGovernment government = new PMGovernment();
             government.Create();
 
@@ -711,11 +714,12 @@ namespace ClassLibrary1.Model
 
             PMRealEstate realEstate = new PMRealEstate();
             realEstate.Create();
+            */ /* DEBUG */
 
             PMRestaurants restaurants = new PMRestaurants();
             restaurants.Create();
 
-            PMBlogs blogs = new PMBlogs();
+            /* DEBUG PMBlogs blogs = new PMBlogs();
             blogs.Create();
 
             PMNews news = new PMNews();
@@ -723,7 +727,7 @@ namespace ClassLibrary1.Model
 
             PMPrivatePages privatePages = new PMPrivatePages();
             privatePages.Create();
-
+            */
 
             BackgroundThread.BriefPauseRequestNumberSeconds = 0;
         }

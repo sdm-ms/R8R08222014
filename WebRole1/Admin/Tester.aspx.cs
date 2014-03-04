@@ -257,24 +257,23 @@ public partial class Tester : System.Web.UI.Page
         PMDatabaseAndAzureRoleStatus.SetPreventChanges(DataManipulation.DataContext, false);
     }
 
-
     protected void AddFastAccessTables(object sender, EventArgs e)
     {
         RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
-        DataTransitions.AddFastAccessTables();
+        DataTransitions.AddFastAccessTables(new DenormalizedTableAccess(1));
     }
 
     protected void DropFastAccessTables(object sender, EventArgs e)
     {
         RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
-        DataTransitions.DropFastAccessTables();
+        DataTransitions.DropFastAccessTables(new DenormalizedTableAccess(1));
     }
 
 
     protected void TestBulkCopyToFastAccess(object sender, EventArgs e)
     {
         RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
-        DataTransitions.TestBulkCopyToFastAccess();
+        DataTransitions.TestBulkCopyToFastAccess(new DenormalizedTableAccess(1));
     }
 
     protected void GoToFuture_Click(object sender, EventArgs e)

@@ -65,9 +65,9 @@ public class AzureQueueWithErrorRecovery
     internal int MaxAttempts = 5;
     internal Action<object> FailureAction;
 
-    public AzureQueueWithErrorRecovery(int maxAttemptsBeforeDeleting, Action<object> failureAction)
+    public AzureQueueWithErrorRecovery(int maxAttemptsBeforeTakingFailureAction, Action<object> failureAction)
     {
-        MaxAttempts = maxAttemptsBeforeDeleting;
+        MaxAttempts = maxAttemptsBeforeTakingFailureAction;
         FailureAction = failureAction;
     }
 
@@ -89,7 +89,8 @@ public class AzureQueueWithErrorRecovery
             if (message.DequeueCount > MaxAttempts)
             {
                 q.DeleteMessage(message);
-                FailureAction(theObject);
+                if (FailureAction != null)
+                    FailureAction(theObject);
             }
             else
                 objects.Add(theObject);

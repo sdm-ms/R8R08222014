@@ -409,31 +409,31 @@ namespace ClassLibrary1.Model
 
         }
 
-        public void AddFastAccessTables()
+        public void AddFastAccessTables(DenormalizedTableAccess dta)
         {
             foreach (var tbl in DataContext.GetTable<Tbl>())
             {
-                new SQLFastAccessTableInfo(DataContext, tbl).AddTable(DataContext);
+                new SQLFastAccessTableInfo(DataContext, tbl).AddTable(dta);
             }
         }
 
-        public void DropFastAccessTables()
+        public void DropFastAccessTables(DenormalizedTableAccess dta)
         {
             foreach (var tbl in DataContext.GetTable<Tbl>())
             {
                 tbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyNotStarted;
                 PMCacheManagement.InvalidateCacheDependency("TblID" + tbl.TblID);
                 DataContext.SubmitChanges();
-                new SQLFastAccessTableInfo(DataContext, tbl).DropTable(DataContext);
+                new SQLFastAccessTableInfo(DataContext, tbl).DropTable(dta);
             }
             DataContext.SubmitChanges();
         }
 
-        public void TestBulkCopyToFastAccess()
+        public void TestBulkCopyToFastAccess(DenormalizedTableAccess dta)
         {
             Tbl theTblToTest = DataContext.GetTable<Tbl>().Single(x => x.TblID == 270);
             IQueryable<TblRow> theTblRows = DataContext.GetTable<TblRow>().Where(x => x.TblID == 270);
-            new SQLFastAccessTableInfo(DataContext, theTblToTest).BulkCopyRows(DataContext, theTblRows);
+            new SQLFastAccessTableInfo(DataContext, theTblToTest).BulkCopyRows(DataContext, dta, theTblRows);
         }
 
         public void DatabaseTransition20110324()

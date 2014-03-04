@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--TblRow Information-->
+<Restaurantlist>
+  <Restaurant ActionOnImport="nofieldschange" TblRowID="64276" InitialStatus="active" StatusChange="none">
+    <SerializedValues>[{"CurrentValue":9.5000,"NumInGroup":1,"TblCol":"Quality of food"},{"CurrentValue":9.3000,"NumInGroup":1,"TblCol":"Quality of experience"},{"CurrentValue":60.0000,"NumInGroup":1,"TblCol":"Price of a meal"}]</SerializedValues>
+    <EntityName>'Cesca</EntityName>
+    <Address>164 W 75th St
+New York, NY 10023-1903</Address>
+    <Cuisine>Fine Dining</Cuisine>
+    <Phone>
+      <Text>212.787.6300</Text>
+      <Link></Link>
+    </Phone>
+    <Source>
+      <Text>&lt;p&gt;&lt;table border="0" bgcolor="#9966ff" cellpadding="3" cellspacing="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;table width="100%" cellpadding="2" cellspacing="0" border="0"&gt;        &lt;tr align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2" color="#FFFFFF"&gt;Help build the largest open-content restaurant guide on the web.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr bgcolor="#CCCCCC" align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2"&gt; Submit a &lt;a href="http://chefmoz.org/cgi-bin/add.pl?where=United_States/NY/New_York"&gt;Restaurant&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/review.pl?ID=United_States/NY/New_York/'Cesca1088713815"&gt;Review&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/link.pl?restID=United_States/NY/New_York/'Cesca1088713815"&gt;Link&lt;/a&gt; - &lt;a href="http://chefmoz.org/about.html"&gt;&lt;b&gt;ChefMoz Project&lt;/b&gt;&lt;/a&gt; - &lt;a href="http://chefmoz.org/cgi-bin/apply.pl?where=United_States/NY/New_York"&gt;Become an Editor&lt;/a&gt; &lt;/font&gt; &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</Text>
+      <Link></Link>
+    </Source>
+  </Restaurant>
+  <Restaurant ActionOnImport="nofieldschange" TblRowID="64277" InitialStatus="active" StatusChange="none">
+    <SerializedValues>[{"CurrentValue":7.8000,"NumInGroup":1,"TblCol":"Quality of food"},{"CurrentValue":7.5000,"NumInGroup":1,"TblCol":"Quality of experience"},{"CurrentValue":30.0000,"NumInGroup":1,"TblCol":"Price of a meal"}]</SerializedValues>
+    <EntityName>'ino</EntityName>
+    <Address>21 Bedford St
+New York, NY 10014-4768</Address>
+    <Cuisine>Italian</Cuisine>
+    <Phone>
+      <Text>212.989.5769</Text>
+      <Link></Link>
+    </Phone>
+    <Source>
+      <Text>&lt;p&gt;&lt;table border="0" bgcolor="#9966ff" cellpadding="3" cellspacing="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;table width="100%" cellpadding="2" cellspacing="0" border="0"&gt;        &lt;tr align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2" color="#FFFFFF"&gt;Help build the largest open-content restaurant guide on the web.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr bgcolor="#CCCCCC" align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2"&gt; Submit a &lt;a href="http://chefmoz.org/cgi-bin/add.pl?where=United_States/NY/New_York"&gt;Restaurant&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/review.pl?ID=United_States/NY/New_York/'ino957992954"&gt;Review&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/link.pl?restID=United_States/NY/New_York/'ino957992954"&gt;Link&lt;/a&gt; - &lt;a href="http://chefmoz.org/about.html"&gt;&lt;b&gt;ChefMoz Project&lt;/b&gt;&lt;/a&gt; - &lt;a href="http://chefmoz.org/cgi-bin/apply.pl?where=United_States/NY/New_York"&gt;Become an Editor&lt;/a&gt; &lt;/font&gt; &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</Text>
+      <Link></Link>
+    </Source>
+  </Restaurant>
+  <Restaurant ActionOnImport="nofieldschange" TblRowID="64279" InitialStatus="active" StatusChange="none">
+    <SerializedValues>[{"CurrentValue":6.2000,"NumInGroup":1,"TblCol":"Quality of food"},{"CurrentValue":6.6000,"NumInGroup":1,"TblCol":"Quality of experience"},{"CurrentValue":25.0000,"NumInGroup":1,"TblCol":"Price of a meal"}]</SerializedValues>
+    <EntityName>107 West</EntityName>
+    <Address>811 W 187th St
+New York, NY 10033-1219</Address>
+    <Cuisine>Cajun / Creole</Cuisine>
+    <Phone>
+      <Text>212.923.3311</Text>
+      <Link></Link>
+    </Phone>
+    <Source>
+      <Text>&lt;p&gt;&lt;table border="0" bgcolor="#9966ff" cellpadding="3" cellspacing="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;table width="100%" cellpadding="2" cellspacing="0" border="0"&gt;        &lt;tr align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2" color="#FFFFFF"&gt;Help build the largest open-content restaurant guide on the web.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr bgcolor="#CCCCCC" align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2"&gt; Submit a &lt;a href="http://chefmoz.org/cgi-bin/add.pl?where=United_States/NY/New_York"&gt;Restaurant&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/review.pl?ID=United_States/NY/New_York/107_West1009306006"&gt;Review&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/link.pl?restID=United_States/NY/New_York/107_West1009306006"&gt;Link&lt;/a&gt; - &lt;a href="http://chefmoz.org/about.html"&gt;&lt;b&gt;ChefMoz Project&lt;/b&gt;&lt;/a&gt; - &lt;a href="http://chefmoz.org/cgi-bin/apply.pl?where=United_States/NY/New_York"&gt;Become an Editor&lt;/a&gt; &lt;/font&gt; &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</Text>
+      <Link></Link>
+    </Source>
+  </Restaurant>
+  <Restaurant ActionOnImport="nofieldschange" TblRowID="64280" InitialStatus="active" StatusChange="none">
+    <SerializedValues>[{"CurrentValue":7.2000,"NumInGroup":1,"TblCol":"Quality of food"},{"CurrentValue":7.3000,"NumInGroup":1,"TblCol":"Quality of experience"},{"CurrentValue":27.0000,"NumInGroup":1,"TblCol":"Price of a meal"}]</SerializedValues>
+    <EntityName>107 West</EntityName>
+    <Address>2787 Broadway
+New York, NY 10025-2828</Address>
+    <Cuisine>Southern</Cuisine>
+    <Phone>
+      <Text>212.864.1555</Text>
+      <Link></Link>
+    </Phone>
+    <Source>
+      <Text>&lt;p&gt;&lt;table border="0" bgcolor="#9966ff" cellpadding="3" cellspacing="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;table width="100%" cellpadding="2" cellspacing="0" border="0"&gt;        &lt;tr align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2" color="#FFFFFF"&gt;Help build the largest open-content restaurant guide on the web.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr bgcolor="#CCCCCC" align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2"&gt; Submit a &lt;a href="http://chefmoz.org/cgi-bin/add.pl?where=United_States/NY/New_York"&gt;Restaurant&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/review.pl?ID=United_States/NY/New_York/107_West954203251"&gt;Review&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/link.pl?restID=United_States/NY/New_York/107_West954203251"&gt;Link&lt;/a&gt; - &lt;a href="http://chefmoz.org/about.html"&gt;&lt;b&gt;ChefMoz Project&lt;/b&gt;&lt;/a&gt; - &lt;a href="http://chefmoz.org/cgi-bin/apply.pl?where=United_States/NY/New_York"&gt;Become an Editor&lt;/a&gt; &lt;/font&gt; &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</Text>
+      <Link></Link>
+    </Source>
+  </Restaurant>
+  <Restaurant ActionOnImport="nofieldschange" TblRowID="64281" InitialStatus="active" StatusChange="none">
+    <SerializedValues>[{"CurrentValue":7.0000,"NumInGroup":1,"TblCol":"Quality of food"},{"CurrentValue":7.0000,"NumInGroup":1,"TblCol":"Quality of experience"},{"CurrentValue":22.0000,"NumInGroup":1,"TblCol":"Price of a meal"}]</SerializedValues>
+    <EntityName>14 Wall Street Restaurant</EntityName>
+    <Address>14 Wall St
+New York, NY 10005-2101</Address>
+    <Cuisine>French</Cuisine>
+    <Phone>
+      <Text>212.233.2780</Text>
+      <Link></Link>
+    </Phone>
+    <Source>
+      <Text>&lt;p&gt;&lt;table border="0" bgcolor="#9966ff" cellpadding="3" cellspacing="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;table width="100%" cellpadding="2" cellspacing="0" border="0"&gt;        &lt;tr align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2" color="#FFFFFF"&gt;Help build the largest open-content restaurant guide on the web.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr bgcolor="#CCCCCC" align="center"&gt;&lt;td&gt;&lt;font face="sans-serif, Arial, Helvetica" size="2"&gt; Submit a &lt;a href="http://chefmoz.org/cgi-bin/add.pl?where=United_States/NY/New_York"&gt;Restaurant&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/review.pl?ID=United_States/NY/New_York/14_Wall_Street_Restaurant954203253"&gt;Review&lt;/a&gt; / &lt;a href="http://chefmoz.org/cgi-bin/link.pl?restID=United_States/NY/New_York/14_Wall_Street_Restaurant954203253"&gt;Link&lt;/a&gt; - &lt;a href="http://chefmoz.org/about.html"&gt;&lt;b&gt;ChefMoz Project&lt;/b&gt;&lt;/a&gt; - &lt;a href="http://chefmoz.org/cgi-bin/apply.pl?where=United_States/NY/New_York"&gt;Become an Editor&lt;/a&gt; &lt;/font&gt; &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</Text>
+      <Link></Link>
+    </Source>
+  </Restaurant>
+</Restaurantlist>

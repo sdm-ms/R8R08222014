@@ -15,29 +15,30 @@ namespace ClassLibrary1.Model
 
         public static bool DoUpdate(IRaterooDataContext theDataContext)
         {
-            DateTime recheckSince = TestableDateTime.Now - new TimeSpan(7, 0, 0, 0); // only check if it hasn't been checked in a week
-            var addressFieldsAndTblRowFieldDisplays = theDataContext.GetTable<AddressField>().Where(x => x.LastGeocode == null || (DateTime)x.LastGeocode < recheckSince).Take(100).Select(x => new { TheAddressField = x, TheTblRowFieldDisplay = x.Field.TblRow.TblRowFieldDisplay }).ToList();
-            List<AddressField> theAddressFieldsNeedingUpdating = addressFieldsAndTblRowFieldDisplays.Select(x => x.TheAddressField).ToList();
-            if (theAddressFieldsNeedingUpdating.Any())
-            {
-                List<String> theAddresses = theAddressFieldsNeedingUpdating.Select(x => x.AddressString).ToList();
-                List<Coordinate> theCoordinates;
-                MapquestGeocode theGeocoder = new MapquestGeocode();
-                MapquestGeocode.BulkGetCoordinatesAndReformatAddress(theAddresses, out theCoordinates);
-                for (int i = 0; i < theAddresses.Count(); i++)
-                {
-                    if (theCoordinates[i].Latitude != 0 || theCoordinates[i].Longitude != 0)
-                    {
-                        theAddressFieldsNeedingUpdating[i].Latitude = theCoordinates[i].Latitude;
-                        theAddressFieldsNeedingUpdating[i].Longitude = theCoordinates[i].Longitude;
-                        theAddressFieldsNeedingUpdating[i].AddressString = theAddresses[i];
-                        theAddressFieldsNeedingUpdating[i].LastGeocode = TestableDateTime.Now;
-                        addressFieldsAndTblRowFieldDisplays[i].TheTblRowFieldDisplay.ResetNeeded = true;
-                    }
-                }
-                return true;
-            }
-            return false;
+            return false; // DEBUG -- must update MapQuest Geocode account/code to conform to current API -- then uncomment the rest of this
+            //DateTime recheckSince = TestableDateTime.Now - new TimeSpan(7, 0, 0, 0); // only check if it hasn't been checked in a week
+            //var addressFieldsAndTblRowFieldDisplays = theDataContext.GetTable<AddressField>().Where(x => x.LastGeocode == null || (DateTime)x.LastGeocode < recheckSince).Take(100).Select(x => new { TheAddressField = x, TheTblRowFieldDisplay = x.Field.TblRow.TblRowFieldDisplay }).ToList();
+            //List<AddressField> theAddressFieldsNeedingUpdating = addressFieldsAndTblRowFieldDisplays.Select(x => x.TheAddressField).ToList();
+            //if (theAddressFieldsNeedingUpdating.Any())
+            //{
+            //    List<String> theAddresses = theAddressFieldsNeedingUpdating.Select(x => x.AddressString).ToList();
+            //    List<Coordinate> theCoordinates;
+            //    MapquestGeocode theGeocoder = new MapquestGeocode();
+            //    MapquestGeocode.BulkGetCoordinatesAndReformatAddress(theAddresses, out theCoordinates);
+            //    for (int i = 0; i < theAddresses.Count(); i++)
+            //    {
+            //        if (theCoordinates[i].Latitude != 0 || theCoordinates[i].Longitude != 0)
+            //        {
+            //            theAddressFieldsNeedingUpdating[i].Latitude = theCoordinates[i].Latitude;
+            //            theAddressFieldsNeedingUpdating[i].Longitude = theCoordinates[i].Longitude;
+            //            theAddressFieldsNeedingUpdating[i].AddressString = theAddresses[i];
+            //            theAddressFieldsNeedingUpdating[i].LastGeocode = TestableDateTime.Now;
+            //            addressFieldsAndTblRowFieldDisplays[i].TheTblRowFieldDisplay.ResetNeeded = true;
+            //        }
+            //    }
+            //    return true;
+            //}
+            //return false;
         }
 
         public static bool DoUpdateOneAtATime(IRaterooDataContext theDataContext)
