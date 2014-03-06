@@ -48,7 +48,7 @@ namespace ClassLibrary1.Model
         public void SetFieldDisplayHtml(TblRow theTblRow)
         {
             var dataAccess = new RaterooDataAccess();
-            SQLFastAccess.IdentifyRowRequiringUpdate(dataAccess.RaterooDB, theTblRow.Tbl, theTblRow.TblRowID, false, true);
+            SQLFastAccess.IdentifyRowRequiringUpdate(dataAccess.RaterooDB, theTblRow.Tbl, theTblRow, false, true);
             TblDimensionAccess theCssAccess = new TblDimensionAccess(new RaterooDataAccess());
             TblDimension theTblDimension = theCssAccess.GetTblDimensionsForRegularTbl(theTblRow.TblID);
             FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow);

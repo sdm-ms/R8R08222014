@@ -266,7 +266,15 @@ namespace ClassLibrary1.Model
                     theUser.SetProperty("PasswordForWebService", GetRandomPasswordUsingGUID(12), false);
                     //Trace.WriteLine("Setting brand new PasswordForWebService " + existing_pc["PasswordForWebService"]);
                 }
-                DateTime theLastPageLoadDateTime = DateTime.ParseExact((string)theUser.GetProperty("LastPageLoadDateTime"), "yyyy-MM-dd HH:mm tt", CultureInfo.InvariantCulture);
+                DateTime theLastPageLoadDateTime;
+                try
+                {
+                    theLastPageLoadDateTime = DateTime.ParseExact((string)theUser.GetProperty("LastPageLoadDateTime"), "yyyy-MM-dd HH:mm tt", CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    theLastPageLoadDateTime = TestableDateTime.Now - new TimeSpan(24, 0, 0);
+                }
                 if (TestableDateTime.Now - theLastPageLoadDateTime > new TimeSpan(24, 0, 0))
                 {
                     //Trace.WriteLine("Time lapsed -- LastPageLoadDateTime was " + theLastPageLoadDateTime.ToLongTimeString() + " is " + TestableDateTime.Now.ToLongTimeString() + " so Setting new PasswordForWebService " + existing_pc["PasswordForWebService"]);

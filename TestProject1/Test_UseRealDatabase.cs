@@ -145,7 +145,7 @@ namespace TestProject1
             if (!Test_UseRealDatabase.UseReal())
                 return;
 
-            string connectionString = AzureSetup.GetConfigurationSetting("RaterooConnectionString"); //  "Data Source=PC2012;Initial Catalog=Rateroo7;Integrated Security=true";
+            string connectionString = AzureSetup.GetConfigurationSetting("RaterooConnectionString"); //  "Data Source=PC2012;Initial Catalog=Rateroo9;Integrated Security=true";
 
             // Provide the query string with a parameter placeholder. 
             string queryString =

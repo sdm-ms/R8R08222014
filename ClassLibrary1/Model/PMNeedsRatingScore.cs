@@ -60,7 +60,7 @@ namespace ClassLibrary1.Model
             currentPointsPerRating = current == null ? 0 : current.PointsPerRating;
             decimal increase = currentPointsPerRating - formerPointsPerRating;
             row.CountUserPoints += increase;
-            SQLFastAccess.IdentifyRowRequiringUpdate(dataContext, row.Tbl, row.TblRowID, false, false);
+            SQLFastAccess.IdentifyRowRequiringUpdate(dataContext, row.Tbl, row, false, false);
         }
     }
 }

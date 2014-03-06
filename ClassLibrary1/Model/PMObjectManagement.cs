@@ -434,7 +434,7 @@ namespace ClassLibrary1.Model
                     TblRow theTblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID == objectID);
                     StatusOfObject originalStatus = (StatusOfObject)theTblRow.Status;
                     theTblRow.Status = newValue;
-                    SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theTblRow.Tbl, theTblRow.TblRowID, false, false);
+                    SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theTblRow.Tbl, theTblRow, false, false);
                     DataContext.SubmitChanges();
                     if (theStatus == StatusOfObject.Active) 
                     {

@@ -858,7 +858,7 @@ namespace ClassLibrary1.Model
                     theRatingGroup.TblRow.CountNullEntries++;
                 theRatingGroup.CurrentValueOfFirstRating = null; //  defaultUserRating;
 
-                SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theRatingGroup.TblRow.Tbl, theRatingGroup.TblRow.TblRowID, false, false);
+                SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theRatingGroup.TblRow.Tbl, theRatingGroup.TblRow, false, false);
             }
 
             AddRatingPhaseStatus(theRating, ratingGroupPhaseStatus);
@@ -1297,7 +1297,7 @@ namespace ClassLibrary1.Model
                     topRatingGroup.TblRow.ElevateOnMostNeedsRating = false;
                     topRatingGroup.TblRow.Tbl.PointsManager.HighStakesNoviceNumActive--;
                 }
-                SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, topRatingGroup.TblRow.Tbl, topRatingGroup.TblRow.TblRowID, false, false);
+                SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, topRatingGroup.TblRow.Tbl, topRatingGroup.TblRow, false, false);
             }
             topRatingGroup.HighStakesKnown = false; /* may be changed later by background process */
 
@@ -1808,7 +1808,7 @@ namespace ClassLibrary1.Model
 
             CheckChangeGroupsLinkedToRating(rating); // See if there are any changes groups linked to this rating
 
-            SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, tbl, tblRow.TblRowID, true, false);
+            SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, tbl, tblRow, true, false);
 
             //Trace.TraceInformation("Added prediction " + theUserRating.UserRatingID + " at " + theUserRating.UserRatingGroup.WhenMade);
             return theUserRating;

@@ -168,7 +168,7 @@ namespace ClassLibrary1.Model
                 theDataContext.GetTable<RatingGroupStatusRecord>().DeleteOnSubmit(theOneToDelete.ratingGroupStatusRecord);
                 if (!theOneToDelete.anyToKeepForThisRatingGroup)
                     theOneToDelete.ratingGroupStatusRecord.RatingGroup.ValueRecentlyChanged = false;
-                SQLFastAccess.IdentifyRowRequiringUpdate(theDataContext, theOneToDelete.tbl, theOneToDelete.tblRow.TblRowID, true, false);
+                SQLFastAccess.IdentifyRowRequiringUpdate(theDataContext, theOneToDelete.tbl, theOneToDelete.tblRow, true, false);
             }
             return false; // no more work to do for a while.
 

@@ -721,7 +721,7 @@ namespace ClassLibrary1.Model
                 }
                 else
                 {
-                    SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theSet.theTbl, theSet.theTblRow.TblRowID, theSet.defaultTblVals != null, true); // ensures that if this is new, it will be copied.
+                    SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theSet.theTbl, theSet.theTblRow, theSet.defaultTblVals != null, true); // ensures that if this is new, it will be copied.
                     theSet.theTblRow.TblRowFieldDisplay.ResetNeeded = true;
                     // Once this reset is processed, the row will be updated again. This means that initially, we will move to the FastSQL the fields
                     // without the field display htmls, and then later recopy all the fields, plus the field display htmls that have been set.
@@ -737,10 +737,11 @@ namespace ClassLibrary1.Model
                         {
                             //Trace.TraceInformation("1Setting current value to " + tblVal.CurrentValue);
                             theRating.CurrentValue = theRating.LastTrustedValue = tblVal.CurrentValue;
+                            if (theRating.NumInGroup == 1)
+                                theRating.RatingGroup.CurrentValueOfFirstRating = theRating.CurrentValue;
                             theRating.LastModifiedResolutionTimeOrCurrentValue = TestableDateTime.Now;
                         }
                     }
-
                 }
 
                 //ProfileSimple.End("FieldDelete and FieldChange");

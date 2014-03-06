@@ -695,6 +695,7 @@ namespace ClassLibrary1.Model
 
         public void CreateStandard()
         {
+            RaterooDataAccess.AllowNullOrUserID0UserForTestingAndInitialBuild = true;
             BackgroundThread.BriefPauseRequestNumberSeconds = 30000;
             BackgroundThread.BriefPauseRequested = true;
             Thread.Sleep(5000);

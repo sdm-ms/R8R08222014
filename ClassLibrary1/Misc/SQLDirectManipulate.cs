@@ -126,6 +126,8 @@ namespace ClassLibrary1.Misc
                         string fullname = "@" + p.paramname;
                         sqlCommand.Parameters.Add(fullname, p.dbtype);
                         sqlCommand.Parameters[fullname].Value = p.value;
+                        if (p.dbtype == SqlDbType.Udt)
+                            sqlCommand.Parameters[fullname].UdtTypeName = "Geography";
                     }
                 }
                 sqlCommand.Connection.Open();

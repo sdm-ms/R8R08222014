@@ -1129,6 +1129,9 @@ namespace ClassLibrary1.Model
             return userIsTrusted;
         }
 
+
+        public static bool AllowNullOrUserID0UserForTestingAndInitialBuild = false; 
+
         /// <summary>
         /// Check the user right
         /// </summary>
@@ -1140,6 +1143,8 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public bool CheckUserRights(int? userID, UserActionOldList theAction, bool proposalOnly, int? pointsManagerID, int? TblID)
         {
+            if (AllowNullOrUserID0UserForTestingAndInitialBuild && (userID == null || userID == 0))
+                return true;
 
             bool returnVal = false;
 

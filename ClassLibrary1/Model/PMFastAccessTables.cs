@@ -640,8 +640,6 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             return dataTable;
         }
 
-
-
         public int BulkCopyRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, IQueryable<TblRow> tblRows)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
@@ -859,6 +857,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                         {
                             rowInfo.Add("F" + field.FieldDefinitionID.ToString(), field.Choices.First().ChoiceInGroupID, SqlDbType.Int);
                         }
+                        //DEBUG -- check this
                     }
                     foreach (var field in storedRow.DateTimeFields)
                     {
@@ -1015,22 +1014,37 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             public List<RowRequiringUpdate> Rows { get; set; }
         }
 
-        public static void IdentifyRowRequiringUpdate(IRaterooDataContext iDataContext, Tbl theTbl, int tblRowID, bool updateRatings, bool updateFields)
+        static bool useAzureQueuesToDesignateRowsToUpdate = false; // for now, we are disabling the azure approach, because querying based on tbl row ids identified by number seems to tax sql server
+
+        public static void IdentifyRowRequiringUpdate(IRaterooDataContext iDataContext, Tbl theTbl, TblRow theTblRow, bool updateRatings, bool updateFields)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return;
-            RowRequiringUpdate row = new RowRequiringUpdate("V" + theTbl.TblID.ToString(), tblRowID, updateRatings, updateFields);
-            List<RowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<RowRequiringUpdate>;
-            if (theRowsRequiringUpdates == null)
-                theRowsRequiringUpdates = new List<RowRequiringUpdate>();
-            if (!theRowsRequiringUpdates.Any(x => x.TableName == "V" + theTbl.TblID.ToString() && x.TblRowID == tblRowID && x.UpdateFields == updateFields && x.UpdateRatings == updateRatings))
-                theRowsRequiringUpdates.Add(row);
-            iDataContext.TempCacheAdd("fasttablerowupdate", theRowsRequiringUpdates);
+            if (useAzureQueuesToDesignateRowsToUpdate)
+            {
+                RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+                if (dataContext == null)
+                    return;
+                RowRequiringUpdate row = new RowRequiringUpdate("V" + theTbl.TblID.ToString(), theTblRow.TblRowID, updateRatings, updateFields);
+                List<RowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<RowRequiringUpdate>;
+                if (theRowsRequiringUpdates == null)
+                    theRowsRequiringUpdates = new List<RowRequiringUpdate>();
+                if (!theRowsRequiringUpdates.Any(x => x.TableName == "V" + theTbl.TblID.ToString() && x.TblRowID == theTblRow.TblRowID && x.UpdateFields == updateFields && x.UpdateRatings == updateRatings))
+                    theRowsRequiringUpdates.Add(row);
+                iDataContext.TempCacheAdd("fasttablerowupdate", theRowsRequiringUpdates);
+            }
+            else
+            {
+                if (updateRatings)
+                    theTblRow.FastAccessUpdateRatings = true;
+                if (updateFields)
+                    theTblRow.FastAccessUpdateFields = true;
+            }
         }
 
         public static void PushRowsRequiringUpdateToAzureQueue(IRaterooDataContext iDataContext)
         {
+            if (!useAzureQueuesToDesignateRowsToUpdate)
+                return;
+
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
@@ -1049,7 +1063,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
-            const int numAtOnce = 100;
+            const int numAtOnce = 25; // 100 produced an error for too many parameters, presumably because we enumerate the tbl rows we want and then query for the fields. 
             var queue = new AzureQueueWithErrorRecovery(10, null);
             List<RowRequiringUpdate> theRows = new List<RowRequiringUpdate>();
             var theMessages = queue.GetMessages("fasttablerowupdate", numAtOnce);
@@ -1067,6 +1081,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 int tblID = Convert.ToInt32(table.First().Item.TableName.Substring(1));
                 Tbl theTbl = iDataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
                 bool newRowsAdded = table.Any(x => x.Item.TblRowID == 0); // we can't use update for this, because we don't know the TblRowID yet.
+                debug; // just filter those out
                 List<int> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => tblRowIDs.Contains(x.TblRowID));
                 new SQLFastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.First().Item.UpdateRatings, table.First().Item.UpdateFields);
@@ -1194,6 +1209,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 TableSortRuleDistance distanceSortRule = (TableSortRuleDistance)tableSortRule;
                 sqlTblIndex++;
                 int nearestNeighborsIndex = sqlTblIndex;
+                // DEBUG: We should not need to use UDFNearestNeighbors here. Search for nearest neighbors SQL Server 2012 for some simpler code examples. We do need it in the normalized database, since Linq to SQL otherwise won't produce appropriate queries.
                 joinString = String.Format(" INNER JOIN [dbo].[UDFNearestNeighborsFor{0}]({1}, {2}, {3}) AS [t{5}] ON ([t{4}].[ID]) = [t{5}].[TblRowID] ", "F" + distanceSortRule.FieldDefinitionID.ToString(), distanceSortRule.Latitude, distanceSortRule.Longitude, 1000, originalTblIndex, nearestNeighborsIndex);
                 orderByString = String.Format(" ORDER BY [t{0}].TblRowID {1}", nearestNeighborsIndex, ascOrDescString);
             }
