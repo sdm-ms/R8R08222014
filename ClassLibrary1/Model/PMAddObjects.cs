@@ -424,7 +424,8 @@ namespace ClassLibrary1.Model
                 SuppStylesHeader = "",
                 SuppStylesMain = "",
                 WidthStyleEntityCol = widthStyleEntityCol,
-                WidthStyleNumCol = widthStyleNumCol
+                WidthStyleNumCol = widthStyleNumCol,
+                FastTableSyncStatus = (int) FastAccessTableStatus.fastAccessNotCreated
             };
             string i = theTbl.Name;
 
@@ -556,10 +557,14 @@ namespace ClassLibrary1.Model
                 Tbl = Tbl,
                 TblRowFieldDisplay = theFieldDisplay,
                 Name = name,
+                FastAccessInitialCopy = true, // must copy this to the denormalized fast access table
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<TblRow>().InsertOnSubmit(theTblRow);
             DataContext.RegisterObjectToBeInserted(theTblRow);
+
+            if (Tbl.FastTableSyncStatus == (int) (FastAccessTableStatus.apparentlySynchronized))
+                Tbl.FastTableSyncStatus = (int)(FastAccessTableStatus.newRowsMustBeCopied);
 
             if (theRatingTypeOverrides != null)
             {

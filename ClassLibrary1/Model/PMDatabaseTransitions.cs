@@ -421,7 +421,7 @@ namespace ClassLibrary1.Model
         {
             foreach (var tbl in DataContext.GetTable<Tbl>())
             {
-                tbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyNotStarted;
+                tbl.FastTableSyncStatus = (int)FastAccessTableStatus.fastAccessNotCreated;
                 PMCacheManagement.InvalidateCacheDependency("TblID" + tbl.TblID);
                 DataContext.SubmitChanges();
                 new SQLFastAccessTableInfo(DataContext, tbl).DropTable(dta);
@@ -433,7 +433,7 @@ namespace ClassLibrary1.Model
         {
             Tbl theTblToTest = DataContext.GetTable<Tbl>().Single(x => x.TblID == 270);
             IQueryable<TblRow> theTblRows = DataContext.GetTable<TblRow>().Where(x => x.TblID == 270);
-            new SQLFastAccessTableInfo(DataContext, theTblToTest).BulkCopyRows(DataContext, dta, theTblRows);
+            new SQLFastAccessTableInfo(DataContext, theTblToTest).BulkCopyRows(DataContext, dta, theTblRows.ToList());
         }
 
         public void DatabaseTransition20110324()

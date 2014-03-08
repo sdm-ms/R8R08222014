@@ -1634,6 +1634,8 @@
       <Column Name="CountNullEntries" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CountUserPoints" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="ElevateOnMostNeedsRating" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FastAccessInitialCopy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FastAccessDeleteThenRecopy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FastAccessUpdateFields" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FastAccessUpdateRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="TblRow_Field" Member="Fields" ThisKey="TblRowID" OtherKey="TblRowID" Type="Field" />

@@ -153,7 +153,7 @@ namespace ClassLibrary1.Model
             TablePopulateResponse theResponse = null;
             try
             {
-                if (theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.bulkCopyCompleted && SQLFastAccess.FastAccessTablesEnabled() && !theTableInfo.Filters.theFilterRules.Any(x => x is SearchWordsFilterRule)) // we don't do fast queries during bulk copying (or updating), if it is disabled, or if we have a search words query, which is too cumbersome to implement.
+                if (theTbl.FastTableSyncStatus != (int)FastAccessTableStatus.fastAccessNotCreated && SQLFastAccess.FastAccessTablesEnabled() && !theTableInfo.Filters.theFilterRules.Any(x => x is SearchWordsFilterRule)) // we don't do fast queries if it is disabled, or (for now) if we have a search words query, which is too cumbersome to implement.
                 {
                     //ProfileSimple.Start("GetTablePopulateResponseWithFastQueries");
                     DenormalizedTableAccess dta = new DenormalizedTableAccess(1);

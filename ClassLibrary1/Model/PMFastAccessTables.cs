@@ -431,7 +431,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         internal List<FastTextRowsInfo> storedRows;
 
-        internal void StoreRowsInfo(IQueryable<TblRow> tblRows, bool omitRatings = false, bool omitFields = false)
+        internal void StoreRowsInfo(IEnumerable<TblRow> tblRows, bool omitRatings = false, bool omitFields = false)
         {
             if (omitRatings && omitFields)
             {
@@ -595,7 +595,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
         }
 
-        internal DataTable CreateDataTable(IRaterooDataContext iDataContext, IQueryable<TblRow> tblRows)
+        internal DataTable CreateDataTable(IRaterooDataContext iDataContext, List<TblRow> tblRows)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
@@ -640,7 +640,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             return dataTable;
         }
 
-        public int BulkCopyRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, IQueryable<TblRow> tblRows)
+        public int BulkCopyRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, List<TblRow> tblRows)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
@@ -651,10 +651,11 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             DataTable theDataTable = CreateDataTable(iDataContext, tblRows);
 
             string denormalizedConnection = dta.GetConnectionString();
-
+            
             SqlBulkCopy bulk = new SqlBulkCopy(denormalizedConnection, SqlBulkCopyOptions.KeepIdentity & SqlBulkCopyOptions.KeepNulls & SqlBulkCopyOptions.UseInternalTransaction);
             bulk.DestinationTableName = "dbo.V" + TheTbl.TblID.ToString();
             bulk.WriteToServer(theDataTable);
+
             int numRecords = theDataTable.Rows.Count;
 
             // now, bulk copy data to the separate table created for each multiple choice field (if any)
@@ -788,13 +789,14 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
         }
 
-        public void UpdateRows(DenormalizedTableAccess dta, IQueryable<TblRow> tblRows, bool updateRatings = true, bool updateFields = true)
+        public int UpdateRows(DenormalizedTableAccess dta, IQueryable<TblRow> tblRows, bool updateRatings = true, bool updateFields = true)
         {
             StoreRowsInfo(tblRows, !updateRatings, !updateFields);
             FastUpdateRowsInfo allRows = GenerateFastUpdateRowsInfoForMainTable(updateRatings, updateFields);
             if (updateFields)
                 GenerateChangesForMCTables(dta);
             allRows.DoUpdate(dta);
+            return allRows.Rows.Count();
         }
 
         internal void GenerateChangesForMCTables(DenormalizedTableAccess dta)
@@ -896,15 +898,16 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
     enum FastAccessTableStatus
     {
-        bulkCopyNotStarted,
-        bulkCopyInProgress,
-        bulkCopyCompleted
+        fastAccessNotCreated,
+        newRowsMustBeCopied,
+        apparentlySynchronized
     }
 
     public static class SQLFastAccess
     {
         public static int CountHighestRecord(DenormalizedTableAccess dta, string tableName)
         {
+            // Note: We may not be able to rely on this if we change from numeric IDs.
             object result = SQLDirectManipulate.ExecuteSQLScalar(dta, String.Format("SELECT TOP 1 [ID] FROM [dbo].[{0}] ORDER BY [ID] DESC", tableName));
             if (result == null)
                 return 0;
@@ -919,15 +922,29 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             if (dataContext == null || !RoleEnvironment.IsAvailable)
                 return false;
 
-            bool moreBulkCopyingToDo = ContinueBulkCopy(iDataContext, dta);
-            bool moreUpdatingToDo = true;
-            if (!moreBulkCopyingToDo)
+            bool moreTableCreationToDo = false;
+            bool moreBulkCopyingToDo = false;
+            bool moreUpdatingToDo = false;
+            moreTableCreationToDo = ContinueCreatingFastAccessTables(iDataContext, dta);
+            moreBulkCopyingToDo = ContinueAddingNewRows(iDataContext, dta); // this will not conflict with above, because it will filter out cases where Tbl hasn't been created
+            if (!moreTableCreationToDo && !moreBulkCopyingToDo)
                 moreUpdatingToDo = ContinueUpdate(iDataContext, dta);
-
-            return moreBulkCopyingToDo || moreUpdatingToDo;
+            return moreTableCreationToDo || moreBulkCopyingToDo || moreUpdatingToDo;
         }
 
-        internal static bool ContinueBulkCopy(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        internal static bool ContinueCreatingFastAccessTables(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        {
+            int numToProcess = 5;
+            List<Tbl> tblsToBeCopied = iDataContext.GetTable<Tbl>().Where(x => x.FastTableSyncStatus == (int)FastAccessTableStatus.fastAccessNotCreated).Take(numToProcess).ToList();
+            foreach (Tbl tbl in tblsToBeCopied)
+            {
+                new SQLFastAccessTableInfo(iDataContext, tbl).AddTable(dta); // will drop first if it exists
+                tbl.FastTableSyncStatus = (int) FastAccessTableStatus.newRowsMustBeCopied;
+            }
+            return tblsToBeCopied.Count() == numToProcess; // if so, there may be more work to do.
+        }
+
+        internal static bool ContinueAddingNewRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
 
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
@@ -936,49 +953,65 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
             if (!FastAccessTablesEnabled())
                 return false; // not enabled, so no more work to do.
-            Tbl theTbl = iDataContext.GetTable<Tbl>().FirstOrDefault(x => x.FastTableSyncStatus == (int) FastAccessTableStatus.bulkCopyNotStarted || x.FastTableSyncStatus == (int) FastAccessTableStatus.bulkCopyInProgress);
+
+            Tbl theTbl = iDataContext.GetTable<Tbl>().FirstOrDefault(x => x.FastTableSyncStatus == (int) FastAccessTableStatus.newRowsMustBeCopied);
+            if (theTbl == null)
+            {
+                theTbl = iDataContext.GetTable<Tbl>().FirstOrDefault(x => x.FastTableSyncStatus == (int) FastAccessTableStatus.apparentlySynchronized && x.TblRows.Any(y => y.FastAccessInitialCopy || y.FastAccessDeleteThenRecopy)); // apparently synchronized but not actually synchronized
+                if (theTbl != null)
+                    theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.newRowsMustBeCopied;
+            }
             if (theTbl == null)
                 return false;
 
-            if (theTbl.FastTableSyncStatus == (int) FastAccessTableStatus.bulkCopyNotStarted)
+            const int numToTake = 500;
+            
+
+            string cacheKey = "fastaccesstableinfo" + theTbl.TblID;
+            SQLFastAccessTableInfo tinfo = (SQLFastAccessTableInfo) PMCacheManagement.GetItemFromCache(cacheKey);
+            if (tinfo == null)
             {
-                new SQLFastAccessTableInfo(iDataContext, theTbl).DropTable(dta);
-                new SQLFastAccessTableInfo(iDataContext, theTbl).AddTable(dta);
-                theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyInProgress;
-                PMCacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
-                dataContext.SubmitChanges();
+                tinfo = new SQLFastAccessTableInfo(iDataContext, theTbl);
+                PMCacheManagement.AddItemToCache(cacheKey, new string[] {"TblID" + theTbl.TblID }, tinfo);
             }
 
-            const int numToTake = 500;
-            int virtualTableHighestID = CountHighestRecord(dta, "V" + theTbl.TblID.ToString());
-            IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => x.TblID == theTbl.TblID && x.TblRowID > virtualTableHighestID).OrderBy(x => x.TblRowID).Take(numToTake);
-            TblRow lastTblRow = tblRows.OrderByDescending(x => x.TblRowID).FirstOrDefault();
-            int lastTableRowID = 0;
-            if (lastTblRow != null)
-                lastTableRowID = lastTblRow.TblRowID;
-            int numRecords = 0;
-            if (lastTableRowID > 0)
-                numRecords = new SQLFastAccessTableInfo(iDataContext, theTbl).BulkCopyRows(iDataContext, dta, tblRows);
-            System.Diagnostics.Trace.TraceInformation("Bulk copy from " + theTbl.Name + " to V" + theTbl.TblID.ToString() + " " + numRecords.ToString() + " records");
-
-            if (numRecords == 0)
+            List<TblRow> tblRowsToDeleteBecauseOfPastFailure = iDataContext
+                .GetTable<TblRow>()
+                .Where(x => x.FastAccessDeleteThenRecopy == true)
+                .Take(numToTake)
+                .ToList();
+            if (tblRowsToDeleteBecauseOfPastFailure.Any())
             {
-                theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyCompleted;
-                PMCacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
-                dataContext.SubmitChanges();
-                RaterooDataContext newDataContext = GetIRaterooDataContext.New(true, true).GetRealDatabaseIfExists();
-                TblRow lastTblRow2 = newDataContext.GetTable<TblRow>().Where(x => x.TblID == theTbl.TblID && x.TblRowID > virtualTableHighestID).OrderByDescending(x => x.TblRowID).FirstOrDefault();
-                int lastTableRowID2 = 0;
-                if (lastTblRow2 != null)
-                    lastTableRowID2 = lastTblRow2.TblRowID;
-                if (lastTableRowID != lastTableRowID2)
-                { // looks like a row was added while we ran this, so we must change the table status back
-                    Tbl theTbl2 = newDataContext.GetTable<Tbl>().Single(t => t.TblID == theTbl.TblID);
-                    theTbl2.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyInProgress;
-                    newDataContext.SubmitChanges();
+                SQLDirectManipulate.DeleteMatchingItems(dta, "V" + theTbl.TblID, "ID", tblRowsToDeleteBecauseOfPastFailure.Select(x => x.TblRowID.ToString()).ToList());
+                foreach (var tr in tblRowsToDeleteBecauseOfPastFailure)
+                {
+                    tr.FastAccessDeleteThenRecopy = false;
+                    tr.FastAccessInitialCopy = true;
                 }
             }
 
+            List<TblRow> tblRowsToAdd = iDataContext
+                .GetTable<TblRow>()
+                .Where(x => x.FastAccessInitialCopy == true)
+                .Take(numToTake)
+                .ToList();
+
+            int numRows = numToTake;
+            try
+            {
+                numRows = tinfo.BulkCopyRows(iDataContext, dta, tblRowsToAdd);
+                foreach (var tr in tblRowsToAdd)
+                    tr.FastAccessInitialCopy = false;
+            }
+            catch
+            { // this could be because row has already been copied, or for some other reason. either way, we'll back up and try to delete the row before continuing.
+                foreach (var tr in tblRowsToAdd)
+                    tr.FastAccessDeleteThenRecopy = true;
+            }
+            iDataContext.SubmitChanges(); // this will reduce the complication associated with handling change conflict exception if somewhere else we have set FastTableSyncStatus to indicate that new rows must be added -- it doesn't matter because we'll find the new rows eventually anyway
+
+            if (numRows == 0 || numRows < numToTake)
+                theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.apparentlySynchronized; // if another row has been added, then this will result in a change conflict exception that is then handled 
 
             return true;
         }
@@ -1058,12 +1091,13 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             iDataContext.TempCacheAdd("fasttablerowupdate", null);
         }
 
-        internal static bool ContinueUpdate(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        internal static bool ContinueUpdate_AzureVersion(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
             const int numAtOnce = 25; // 100 produced an error for too many parameters, presumably because we enumerate the tbl rows we want and then query for the fields. 
+
             var queue = new AzureQueueWithErrorRecovery(10, null);
             List<RowRequiringUpdate> theRows = new List<RowRequiringUpdate>();
             var theMessages = queue.GetMessages("fasttablerowupdate", numAtOnce);
@@ -1081,13 +1115,12 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 int tblID = Convert.ToInt32(table.First().Item.TableName.Substring(1));
                 Tbl theTbl = iDataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
                 bool newRowsAdded = table.Any(x => x.Item.TblRowID == 0); // we can't use update for this, because we don't know the TblRowID yet.
-                debug; // just filter those out
                 List<int> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => tblRowIDs.Contains(x.TblRowID));
                 new SQLFastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.First().Item.UpdateRatings, table.First().Item.UpdateFields);
-                if (newRowsAdded && theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.bulkCopyCompleted)
+                if (newRowsAdded && theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.apparentlySynchronized)
                 {
-                    theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.bulkCopyInProgress;
+                    theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.newRowsMustBeCopied;
                     PMCacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
                     dataContext.SubmitChanges();
                     anyNewRowsAdded = true;
@@ -1095,8 +1128,41 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
             queue.ConfirmProperExecution("fasttablerowupdate");
             if (anyNewRowsAdded)
-                ContinueBulkCopy(iDataContext, dta);
+                ContinueAddingNewRows(iDataContext, dta);
             return theRows.Count() == numAtOnce; // more work to do
+        }
+
+            
+        internal static bool ContinueUpdate(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        {
+            if (useAzureQueuesToDesignateRowsToUpdate)
+                return ContinueUpdate_AzureVersion(iDataContext, dta); // seems to create more problems but we'll keep the code around for now in case we change our mind
+            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            if (dataContext == null)
+                return false;
+            const int numAtOnce = 100;
+            bool noMoreWork = true; // assume for now
+            List<TblRow> theRows = iDataContext.GetTable<TblRow>().Where(x => x.FastAccessUpdateFields || x.FastAccessUpdateRatings).Take(numAtOnce).ToList();
+            if (theRows.Count() == numAtOnce)
+                noMoreWork = false;
+            var theRowsByTableAndUpdateInstruction = theRows.Select(x => new { Item = x, GroupByInstruct = x.TblID + x.FastAccessUpdateFields.ToString() + x.FastAccessUpdateRatings.ToString() }).GroupBy(x => x.GroupByInstruct);
+            foreach (var group in theRowsByTableAndUpdateInstruction)
+            {
+                Tbl theTbl = group.First().Item.Tbl;
+                int tblID = theTbl.TblID;
+                IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => x.TblID == tblID && (x.FastAccessUpdateFields || x.FastAccessUpdateRatings)).Take(numAtOnce);
+                int numRowsUpdated = new SQLFastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, group.First().Item.FastAccessUpdateRatings, group.First().Item.FastAccessUpdateFields);
+                foreach (TblRow tblRow in group.Select(x => x.Item))
+                {
+                    tblRow.FastAccessUpdateFields = false;
+                    tblRow.FastAccessUpdateRatings = false;
+                }
+                if (numRowsUpdated == numAtOnce)
+                    noMoreWork = false;
+
+                PMCacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
+            }
+            return noMoreWork;
         }
 
         public static void PlanDropTbl(IRaterooDataContext iDataContext, Tbl theTbl)

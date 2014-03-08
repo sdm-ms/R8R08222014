@@ -589,35 +589,35 @@
         <classShapeMoniker Id="68c728ce-b358-4572-aea9-2a9ccfd124a8" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.9984625384615 : 90.7043197882612); (14.8125 : 91.2668197882612); (15.3125 : 101.510448404948); (15.5 : 101.510448404948)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(14.25 : 89.567904697516); (14.2658209401357 : 89.6156885800872 : JumpStart); (14.3182065345551 : 89.773908450126 : JumpEnd); (14.3488072027903 : 89.8663314493289 : JumpStart); (14.4011927972097 : 90.0245513193677 : JumpEnd); (14.5988072027903 : 90.6214048229934 : JumpStart); (14.6511927972097 : 90.7796246930322 : JumpEnd); (14.6613072027903 : 90.8101731664095 : JumpStart); (14.7136927972097 : 90.9683930364483 : JumpEnd); (14.8125 : 91.2668197882612); (15.3125 : 91.2668197882612); (15.4837926986481 : 100.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/FieldDefinition/FieldDefinition_DateTimeFieldDefinition" />
       <nodes>
         <classShapeMoniker Id="db620445-3761-4787-8f39-1d73c72ee702" />
         <classShapeMoniker Id="d120ee3c-1717-4c1b-bfa7-d25d03bc3b9f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(20 : 88.1642976888021); (20.6875 : 88.1642976888021); (20.6875 : 96.65625); (21.75 : 96.65625); (21.75 : 96.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(20 : 88.1642976888021); (20.1437484304717 : 88.1642976888021 : JumpStart); (20.3104150971383 : 88.1642976888021 : JumpEnd); (20.6875 : 88.1642976888021); (20.6875 : 96.65625); (21.75 : 96.65625); (21.75 : 96.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/Field/Field_AddressField" />
       <nodes>
         <classShapeMoniker Id="306f5906-4e61-4a4f-bef8-1554b07af8ec" />
         <classShapeMoniker Id="a56bd228-9648-49b8-ac2e-cda8c3158b62" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(20 : 88.9523800734675); (20.375 : 89.3273800734675); (20.375 : 91.875); (20.75 : 92.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(20 : 88.9523800734675); (20.375 : 89.3273800734675); (20.375 : 91.875); (20.5660769349011 : 92.0660769349011 : JumpStart); (20.7464255650989 : 92.2464255650989 : JumpEnd); (20.75 : 92.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/Field/Field_ChoiceField" />
       <nodes>
         <classShapeMoniker Id="306f5906-4e61-4a4f-bef8-1554b07af8ec" />
         <classShapeMoniker Id="b993e2f8-4a75-4145-83de-240ae55bb016" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(20 : 88.1642976888021); (21.1875 : 89.5961651245493); (21.1875 : 90.6642976888021); (21.6873025802951 : 90.6642976888021 : JumpStart); (21.8539692469618 : 90.6642976888021 : JumpEnd); (22.75 : 90.6642976888021)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(20 : 88.1642976888021); (20.6343027499485 : 88.9291292273757 : JumpStart); (20.7406972500515 : 89.0574179179358 : JumpEnd); (20.9929993735235 : 89.361639555468 : JumpStart); (21.0993938736265 : 89.489928246028 : JumpEnd); (21.1875 : 89.5961651245493); (21.1875 : 90.6642976888021); (21.339375369768 : 90.6642976888021 : JumpStart); (21.5060420364347 : 90.6642976888021 : JumpEnd); (21.6873025802951 : 90.6642976888021 : JumpStart); (21.8539692469618 : 90.6642976888021 : JumpEnd); (22.75 : 90.6642976888021)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/Field/Field_DateTimeField" />
       <nodes>
         <classShapeMoniker Id="306f5906-4e61-4a4f-bef8-1554b07af8ec" />
         <classShapeMoniker Id="27f3271c-60f8-4592-95a6-20fcd59ee640" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.25 : 88.7540511067708); (14.2916666666667 : 88.7540511067708 : JumpStart); (14.4583333333333 : 88.7540511067708 : JumpEnd); (14.5416666666667 : 88.7540511067708 : JumpStart); (14.7708333333333 : 88.7540511067708 : JumpEnd); (14.9479166666667 : 88.7540511067708 : JumpStart); (15.1145833333333 : 88.7540511067708 : JumpEnd); (15.9947891666667 : 88.7540511067708 : JumpStart); (16.1614558333333 : 88.7540511067708 : JumpEnd); (16.9947916666667 : 88.7540511067708 : JumpStart); (17.1927083333333 : 88.7540511067708 : JumpEnd); (18 : 88.7540511067708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(14.25 : 89.3373527018229); (14.2916666666667 : 89.3373527018229 : JumpStart); (14.5144361239767 : 89.3373527018229 : JumpEnd); (14.5416666666667 : 89.3373527018229 : JumpStart); (14.7708333333333 : 89.3373527018229 : JumpEnd); (15.0416666666667 : 89.3373527018229 : JumpStart); (15.2083333333333 : 89.3373527018229 : JumpEnd); (15.25 : 89.3373527018229); (15.25 : 89.6266097005208); (17.0260391666667 : 89.6266097005208 : JumpStart); (17.4114608333333 : 89.6266097005208 : JumpEnd); (17.75 : 89.6266097005208); (17.75 : 89.5); (17.7916666666667 : 89.5 : JumpStart); (17.9583333333333 : 89.5 : JumpEnd); (19 : 89.5); (19 : 88.9535953776042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/FieldDefinition/FieldDefinition_Field" />
       <nodes>
         <classShapeMoniker Id="db620445-3761-4787-8f39-1d73c72ee702" />
@@ -645,7 +645,7 @@
         <classShapeMoniker Id="0f374a2e-e425-491e-b5c0-b068005401d4" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.6562525 : 90.7997054036458); (14.6850323688244 : 91.7711920327118 : JumpStart); (14.6899676311756 : 91.9377856129101 : JumpEnd); (14.7787873688244 : 94.9359642373306 : JumpStart); (14.7837226311756 : 95.1025578175289 : JumpEnd); (14.9047150384615 : 99.1867496744792); (15.1157450063634 : 99.1867496744792 : JumpStart); (15.2824116730301 : 99.1867496744792 : JumpEnd); (15.9047175384615 : 99.1867496744792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(14.25 : 89.0439228891226); (14.3696320413018 : 90.8972590760439 : JumpStart); (14.3803679586983 : 91.0635796035065 : JumpEnd); (14.6821320413018 : 95.7385002026754 : JumpStart); (14.6928679586983 : 95.904820730138 : JumpEnd); (14.9047150384615 : 99.1867496744792); (15 : 99.1867496744792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/FieldDefinition/FieldDefinition_NumberFieldDefinition" />
       <nodes>
         <classShapeMoniker Id="db620445-3761-4787-8f39-1d73c72ee702" />
@@ -722,7 +722,7 @@
         <classShapeMoniker Id="ca7be1f2-184d-4672-8096-05c056728bef" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.3739473076923 : 90.7997054036458); (14.5660744349011 : 90.9918325308546 : JumpStart); (14.7464255650989 : 91.1721836610524 : JumpEnd); (14.781255 : 91.2070130959535); (14.781255 : 104.231599121094); (15.156255 : 104.231599121094)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(14.25 : 88.6247374424078); (14.3544742822333 : 89.035829769983 : JumpStart); (14.3955257177667 : 89.197361678343 : JumpEnd); (14.6044742822333 : 90.0195463334932 : JumpStart); (14.6455257177667 : 90.1810782418532 : JumpEnd); (14.6669742822333 : 90.2654754743708 : JumpStart); (14.7080257177667 : 90.4270073827308 : JumpEnd); (14.906255 : 91.2070130959535); (14.906255 : 104.231599121094); (15 : 104.231599121094)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/FieldDefinition/FieldDefinition_TextFieldDefinition" />
       <nodes>
         <classShapeMoniker Id="db620445-3761-4787-8f39-1d73c72ee702" />
@@ -743,14 +743,14 @@
         <classShapeMoniker Id="9ebf76fb-45c4-43eb-b43f-0c22ba12b53c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 77.7604484049479); (2.82251729811515 : 77.7604484049479 : JumpStart); (3.39583333333333 : 77.7604484049479 : JumpEnd); (3.5 : 77.7604484049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 77.7604484049479); (2.82251729811515 : 77.7604484049479 : JumpStart); (3.27083333333333 : 77.7604484049479 : JumpEnd); (3.5 : 77.7604484049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_ChangesGroup" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="dedc12d7-733f-4b61-8975-c22339334219" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 77.7917004049479); (2.84734714185613 : 77.7917004049479 : JumpStart); (3.39583333333333 : 77.7917004049479 : JumpEnd); (3.4375 : 77.7917004049479); (3.4375 : 76.4375); (6.08854091666667 : 76.4375 : JumpStart); (6.25520758333333 : 76.4375 : JumpEnd); (6.44791916666667 : 76.4375 : JumpStart); (6.61458583333333 : 76.4375 : JumpEnd); (7.3125 : 76.4375); (7.3125 : 74.8125); (9.46875 : 74.8125); (9.46875 : 75.1026025390625); (10.5 : 75.1026025390625); (10.5 : 76)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 77.7917004049479); (2.84734714185613 : 77.7917004049479 : JumpStart); (3.27083333333333 : 77.7917004049479 : JumpEnd); (3.4375 : 77.7917004049479); (3.4375 : 76.4375); (6.08854091666667 : 76.4375 : JumpStart); (6.25520758333333 : 76.4375 : JumpEnd); (6.44791916666667 : 76.4375 : JumpStart); (6.61458583333333 : 76.4375 : JumpEnd); (7.3125 : 76.4375); (7.3125 : 74.8125); (9.46875 : 74.8125); (9.46875 : 75.1026025390625); (10.5 : 75.1026025390625); (10.5 : 76)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_ChoiceGroup" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -764,56 +764,56 @@
         <classShapeMoniker Id="6855058d-d646-451f-840c-270f1f570b81" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 77.5642875275441); (3.01066102408872 : 77.8923676560299 : JumpStart); (3.23933897591128 : 78.1801923972934 : JumpEnd); (3.26066102408872 : 78.2070293221083 : JumpStart); (3.36433897591128 : 78.3375232303326 : JumpEnd); (3.984375 : 79.1179295038061); (4.23432969788659 : 81.786564188701 : JumpStart); (4.24987231750709 : 81.9525045537515 : JumpEnd); (6.6310420612559 : 107.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 77.5642875275441); (2.94816102408872 : 77.8137022395103 : JumpStart); (3.23933897591128 : 78.1801923972934 : JumpEnd); (3.984375 : 79.1179295038061); (4.23432969788659 : 81.786564188701 : JumpStart); (4.24987231750709 : 81.9525045537515 : JumpEnd); (6.6310420612559 : 107.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_RatingCharacteristic" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="20c1269b-c879-4ffb-88e5-91b59de14538" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(1.640626 : 78.6458968098958); (1.640626 : 82.25); (1.88150966666667 : 82.25 : JumpStart); (2.04817633333333 : 82.25 : JumpEnd); (2.14323166666667 : 82.25 : JumpStart); (2.30989833333333 : 82.25 : JumpEnd); (2.43620116666667 : 82.25 : JumpStart); (2.60286783333333 : 82.25 : JumpEnd); (2.9375 : 82.25); (2.9375 : 91.7708968098958); (3.04166666666667 : 91.7708968098958 : JumpStart); (3.20833333333333 : 91.7708968098958 : JumpEnd); (3.51042166666667 : 91.7708968098958 : JumpStart); (3.77083333333333 : 91.7708968098958 : JumpEnd); (3.84519342207572 : 91.7708968098958 : JumpStart); (4.10049723928177 : 91.7708968098958 : JumpEnd); (4.37368788295311 : 91.7708968098958 : JumpStart); (4.54035454961978 : 91.7708968098958 : JumpEnd); (5.08616776813873 : 91.7708968098958 : JumpStart); (5.25283443480539 : 91.7708968098958 : JumpEnd); (8.48188640191017 : 91.7708968098958 : JumpStart); (8.70833333333333 : 91.7708968098958 : JumpEnd); (9.35416666666667 : 91.7708968098958 : JumpStart); (9.52083333333333 : 91.7708968098958 : JumpEnd); (10.9479186666667 : 91.7708968098958 : JumpStart); (11.1145853333333 : 91.7708968098958 : JumpEnd); (11.8541666666667 : 91.7708968098958 : JumpStart); (12.0208333333333 : 91.7708968098958 : JumpEnd); (14.2916666666667 : 91.7708968098958 : JumpStart); (14.4583333333333 : 91.7708968098958 : JumpEnd); (14.5416666666667 : 91.7708968098958 : JumpStart); (14.9204377504055 : 91.7708968098958 : JumpEnd); (16.9947916666667 : 91.7708968098958 : JumpStart); (17.1927083333333 : 91.7708968098958 : JumpEnd); (20.2916666666667 : 91.7708968098958 : JumpStart); (20.4583333333333 : 91.7708968098958 : JumpEnd); (20.5729179166667 : 91.7708968098958 : JumpStart); (20.7708333333333 : 91.7708968098958 : JumpEnd); (21.3580040647967 : 91.7708968098958 : JumpStart); (21.5246707314633 : 91.7708968098958 : JumpEnd); (23.375 : 91.7708968098958); (23.375 : 91.5489005533854); (23.75 : 91.5489005533854)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.71630145673077 : 78.6458968098958); (1.71630145673077 : 82); (2.16100084935898 : 82 : JumpStart); (2.32766751602564 : 82 : JumpEnd); (2.44508575801282 : 82 : JumpStart); (2.61175242467949 : 82 : JumpEnd); (2.9375 : 82); (2.9375 : 91.7708968098958); (3.16666666666667 : 91.7708968098958 : JumpStart); (3.33333333333333 : 91.7708968098958 : JumpEnd); (3.51042166666667 : 91.7708968098958 : JumpStart); (3.77083333333333 : 91.7708968098958 : JumpEnd); (3.84519342207572 : 91.7708968098958 : JumpStart); (4.10049723928177 : 91.7708968098958 : JumpEnd); (4.37368788295311 : 91.7708968098958 : JumpStart); (4.54035454961978 : 91.7708968098958 : JumpEnd); (5.08616776813873 : 91.7708968098958 : JumpStart); (5.25283443480539 : 91.7708968098958 : JumpEnd); (8.48188640191017 : 91.7708968098958 : JumpStart); (8.70833333333333 : 91.7708968098958 : JumpEnd); (9.35416666666667 : 91.7708968098958 : JumpStart); (9.52083333333333 : 91.7708968098958 : JumpEnd); (10.9479186666667 : 91.7708968098958 : JumpStart); (11.1145853333333 : 91.7708968098958 : JumpEnd); (11.8541666666667 : 91.7708968098958 : JumpStart); (12.0208333333333 : 91.7708968098958 : JumpEnd); (14.2916666666667 : 91.7708968098958 : JumpStart); (14.5093583087376 : 91.7708968098958 : JumpEnd); (14.5416666666667 : 91.7708968098958 : JumpStart); (14.7708333333333 : 91.7708968098958 : JumpEnd); (14.8229216666667 : 91.7708968098958 : JumpStart); (14.9895883333333 : 91.7708968098958 : JumpEnd); (15.2383933230687 : 91.7708968098958 : JumpStart); (15.4050599897354 : 91.7708968098958 : JumpEnd); (17.0260391666667 : 91.7708968098958 : JumpStart); (17.4114608333333 : 91.7708968098958 : JumpEnd); (20.2916666666667 : 91.7708968098958 : JumpStart); (20.4583333333333 : 91.7708968098958 : JumpEnd); (20.5729179166667 : 91.7708968098958 : JumpStart); (20.7708333333333 : 91.7708968098958 : JumpEnd); (21.3580040647967 : 91.7708968098958 : JumpStart); (21.5246707314633 : 91.7708968098958 : JumpEnd); (23.375 : 91.7708968098958); (23.375 : 91.5489005533854); (23.75 : 91.5489005533854)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_RatingGroupResolution" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="35f84715-f9ba-4b1a-a4e2-0b0149c56bf8" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 78.1527701597556); (3.00060838369788 : 78.3787211081043 : JumpStart); (3.12439161630213 : 78.4903252706782 : JumpEnd); (3.25060838369788 : 78.6041235318128 : JumpStart); (3.37439161630213 : 78.7157276943867 : JumpEnd); (3.71852870576557 : 79.0260050305989 : JumpStart); (3.84231193836982 : 79.1376091931728 : JumpEnd); (3.84473848763185 : 79.1397969935124 : JumpStart); (4.06138346369398 : 79.3351262042672 : JumpEnd); (4.078125 : 79.3502205357071); (4 : 79.3502205357071); (4.07690141500276 : 135)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 78.1527701597556); (2.93810838369788 : 78.3223705021772 : JumpStart); (3.12439161630212 : 78.4903252706782 : JumpEnd); (3.71852870576557 : 79.0260050305989 : JumpStart); (3.84231193836982 : 79.1376091931728 : JumpEnd); (3.84473848763185 : 79.1397969935124 : JumpStart); (4.06138346369398 : 79.3351262042672 : JumpEnd); (4.078125 : 79.3502205357071); (4 : 79.3502205357071); (4.07690141500276 : 135)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_RatingPhaseGroup" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="e8b168a9-bdfe-40d2-8717-bf15b8004592" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 77.3681266501402); (3.02138474191578 : 77.8465656936083 : JumpStart); (3.10361525808422 : 77.9915343798425 : JumpEnd); (3.14638474191578 : 78.0669350482424 : JumpStart); (3.22861525808422 : 78.2119037344766 : JumpEnd); (3.27138474191578 : 78.2873044028765 : JumpStart); (3.35361525808422 : 78.4322730891106 : JumpEnd); (3.6875 : 79.0208968098958); (3.6875 : 93.6450512695313); (3.84845678075538 : 93.6450512695313 : JumpStart); (4.10308709913866 : 93.6450512695313 : JumpEnd); (4.41436851351168 : 93.6450512695313 : JumpStart); (4.58103518017834 : 93.6450512695313 : JumpEnd); (5.26170835988872 : 93.6450512695313 : JumpStart); (5.42837502655538 : 93.6450512695313 : JumpEnd); (8.54166666666667 : 93.6450512695313 : JumpStart); (8.70833333333333 : 93.6450512695313 : JumpEnd); (9.35416666666667 : 93.6450512695313 : JumpStart); (9.52083333333333 : 93.6450512695313 : JumpEnd); (10.9479186666667 : 93.6450512695313 : JumpStart); (11.1145853333333 : 93.6450512695313 : JumpEnd); (11.4166666666667 : 93.6450512695313 : JumpStart); (11.5833333333333 : 93.6450512695313 : JumpEnd); (11.75 : 93.6450512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 77.3681266501402); (2.95888474191578 : 77.7363810162913 : JumpStart); (3.10361525808422 : 77.9915343798425 : JumpEnd); (3.14638474191578 : 78.0669350482424 : JumpStart); (3.22861525808422 : 78.2119037344766 : JumpEnd); (3.6875 : 79.0208968098958); (3.6875 : 93.6450512695313); (3.84845678075538 : 93.6450512695313 : JumpStart); (4.10308709913866 : 93.6450512695313 : JumpEnd); (4.41436851351168 : 93.6450512695313 : JumpStart); (4.58103518017834 : 93.6450512695313 : JumpEnd); (5.26170835988872 : 93.6450512695313 : JumpStart); (5.42837502655538 : 93.6450512695313 : JumpEnd); (8.54166666666667 : 93.6450512695313 : JumpStart); (8.70833333333333 : 93.6450512695313 : JumpEnd); (9.35416666666667 : 93.6450512695313 : JumpStart); (9.52083333333333 : 93.6450512695313 : JumpEnd); (10.9479186666667 : 93.6450512695313 : JumpStart); (11.1145853333333 : 93.6450512695313 : JumpEnd); (11.4166666666667 : 93.6450512695313 : JumpStart); (11.5833333333333 : 93.6450512695313 : JumpEnd); (11.75 : 93.6450512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_RatingPlan" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="ae04a270-93a1-4eaf-a25a-34f5a69f7223" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.05849251552484 : 78.6458968098958); (1.96929298959793 : 80.313920499766 : JumpStart); (1.96039301040207 : 80.4803493678991 : JumpEnd); (1.94541438541667 : 80.7604484049479); (2.14323166666667 : 80.7604484049479 : JumpStart); (2.30989833333333 : 80.7604484049479 : JumpEnd); (2.43620116666667 : 80.7604484049479 : JumpStart); (2.60286783333333 : 80.7604484049479 : JumpEnd); (2.97916666666667 : 80.7604484049479 : JumpStart); (3.14583333333333 : 80.7604484049479 : JumpEnd); (3.22916666666667 : 80.7604484049479 : JumpStart); (3.39583333333333 : 80.7604484049479 : JumpEnd); (3.5 : 80.7604484049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.14703735601963 : 78.6458968098958); (1.22133831816726 : 78.8426875644367 : JumpStart); (1.2802091433712 : 78.9986106343064 : JumpEnd); (1.6868660441288 : 80.0756669203388 : JumpStart); (1.74573686933274 : 80.2315899902084 : JumpEnd); (1.94541438541667 : 80.7604484049479); (2.16100084935898 : 80.7604484049479 : JumpStart); (2.32766751602564 : 80.7604484049479 : JumpEnd); (2.44508575801282 : 80.7604484049479 : JumpStart); (2.61175242467949 : 80.7604484049479 : JumpEnd); (2.91666666666667 : 80.7604484049479 : JumpStart); (3.14583333333333 : 80.7604484049479 : JumpEnd); (3.5 : 80.7604484049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_RewardPendingPointsTracker" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="8109e0c7-530a-4c17-b0b4-5fbb5704702c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 77.7604484049479); (3.01125475492201 : 78.0954682388468 : JumpStart); (3.11374524507799 : 78.2268968400162 : JumpEnd); (3.26125475492201 : 78.4160555464337 : JumpStart); (3.36374524507799 : 78.5474841476031 : JumpEnd); (3.51506182524735 : 78.7415248477221 : JumpStart); (3.61755231540334 : 78.8729534488916 : JumpEnd); (3.9375 : 79.2832381159856); (3.99478891666667 : 79.2832381159856 : JumpStart); (4.16145558333333 : 79.2832381159856 : JumpEnd); (4.18596253846154 : 79.2832381159856); (5.47132896100644 : 138.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 77.7604484049479); (2.94875475492201 : 78.01532141195 : JumpStart); (3.11374524507799 : 78.2268968400162 : JumpEnd); (3.51506182524735 : 78.7415248477221 : JumpStart); (3.61755231540334 : 78.8729534488916 : JumpEnd); (3.9375 : 79.2832381159856); (3.99478891666667 : 79.2832381159856 : JumpStart); (4.16145558333333 : 79.2832381159856 : JumpEnd); (4.18596253846154 : 79.2832381159856); (5.47132896100644 : 138.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_SubsidyDensityRangeGroup" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="2b839b38-dbd2-4969-aa9c-f3705078bd8c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 78.3489310371594); (3.00705063081075 : 78.6373122686471 : JumpStart); (3.11794936918925 : 78.7617278930832 : JumpEnd); (3.25705063081075 : 78.9177835036117 : JumpStart); (3.36794936918925 : 79.0421991280479 : JumpEnd); (3.51408753846154 : 79.2061493392929); (3.765625 : 79.2061493392929); (3.90730428070849 : 81.9592152198406 : JumpStart); (3.91587000638436 : 82.1256616259941 : JumpEnd); (3.95443273115842 : 82.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 78.3489310371594); (2.94455063081075 : 78.5671944599059 : JumpStart); (3.11794936918926 : 78.7617278930832 : JumpEnd); (3.51408753846154 : 79.2061493392929); (3.765625 : 79.2061493392929); (3.90730428070849 : 81.9592152198406 : JumpStart); (3.91587000638436 : 82.1256616259941 : JumpEnd); (3.95443273115842 : 82.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_UsersAdministrationRightsGroup" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
         <classShapeMoniker Id="57a36374-daa1-4fde-8aef-b14eef6d9658" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 78.0208755061849); (2.86975260852543 : 78.0208755061849 : JumpStart); (3.0364192751921 : 78.0208755061849 : JumpEnd); (3.125 : 78.0208755061849); (3.125 : 76.1875); (3.22916666666667 : 76.1875 : JumpStart); (3.39583333333333 : 76.1875 : JumpEnd); (6.08854091666667 : 76.1875 : JumpStart); (6.25520758333333 : 76.1875 : JumpEnd); (7.125 : 76.1875); (7.125 : 74.625); (7.47961538461538 : 74.625); (7.47961538461538 : 73.8285139973958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 78.0208755061849); (2.86975260852543 : 78.0208755061849 : JumpStart); (3.08333333333333 : 78.0208755061849 : JumpEnd); (3.125 : 78.0208755061849); (3.125 : 76.1875); (6.08854091666667 : 76.1875 : JumpStart); (6.25520758333333 : 76.1875 : JumpEnd); (7.125 : 76.1875); (7.125 : 74.625); (7.47961538461538 : 74.625); (7.47961538461538 : 73.8285139973958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_UsersRight" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -826,14 +826,14 @@
         <elementListCompartment Id="50920f42-fa20-443e-8175-45c35fd1b72f" absoluteBounds="18.015, 102.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(14.25 : 102.84375); (14.2916666666667 : 102.84375 : JumpStart); (14.8645883333333 : 102.84375 : JumpEnd); (17.7291666666667 : 102.84375 : JumpStart); (17.8958333333333 : 102.84375 : JumpEnd); (18 : 102.84375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(14.25 : 102.84375); (14.2916666666667 : 102.84375 : JumpStart); (14.7708333333333 : 102.84375 : JumpEnd); (14.8229216666667 : 102.84375 : JumpStart); (14.9895883333333 : 102.84375 : JumpEnd); (17.7291666666667 : 102.84375 : JumpStart); (17.8958333333333 : 102.84375 : JumpEnd); (18 : 102.84375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/HierarchyItem/HierarchyItem_SearchWordHierarchyItem" />
       <nodes>
         <classShapeMoniker Id="d8fdb2d8-f8e4-4b33-9a9c-7b75cb76db9a" />
         <classShapeMoniker Id="b6354ba6-444f-43e0-acfc-522e6e01a5b4" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(13.25 : 71.0689925130208); (13.25 : 71.625); (14.6875 : 71.625); (14.6875 : 103); (14.6979216666667 : 103 : JumpStart); (14.8645883333333 : 103 : JumpEnd); (17.375 : 103); (17.375 : 103.193146972656); (17.7291666666667 : 103.193146972656 : JumpStart); (17.8958333333333 : 103.193146972656 : JumpEnd); (18 : 103.193146972656)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(13.25 : 71.0689925130208); (13.25 : 71.625); (14.6875 : 71.625); (14.6875 : 103); (14.8229216666667 : 103 : JumpStart); (14.9895883333333 : 103 : JumpEnd); (17.375 : 103); (17.375 : 103.193146972656); (17.7291666666667 : 103.193146972656 : JumpStart); (17.8958333333333 : 103.193146972656 : JumpEnd); (18 : 103.193146972656)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/SearchWord/SearchWord_SearchWordHierarchyItem" />
       <nodes>
         <classShapeMoniker Id="15c00591-d6db-4d93-be43-c87966bc0d79" />
@@ -898,7 +898,7 @@
         <elementListCompartment Id="a57eb713-d882-4445-ad50-9812d958f1b1" absoluteBounds="9.515, 80.96, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(10.5 : 84.9631168619792); (10.5 : 85.1551168619792); (9.52083333333333 : 85.1551168619792 : JumpStart); (9.35416666666667 : 85.1551168619792 : JumpEnd); (5.692 : 85.1551168619792); (5.692 : 77.7700512695313); (5.5 : 77.7700512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(10.5 : 84.9631168619792); (10.5 : 85.1551168619792); (10.0520808333333 : 85.1551168619792 : JumpStart); (9.88541416666667 : 85.1551168619792 : JumpEnd); (9.52083333333333 : 85.1551168619792 : JumpStart); (9.35416666666667 : 85.1551168619792 : JumpEnd); (7.92708133333333 : 85.1551168619792 : JumpStart); (7.76041466666667 : 85.1551168619792 : JumpEnd); (5.692 : 85.1551168619792); (5.692 : 77.7700512695313); (5.5 : 77.7700512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/Tbl/Tbl_ChangesGroup" />
       <nodes>
         <classShapeMoniker Id="fbd5c818-e9f9-48cd-8417-779b0878ebe7" />
@@ -940,7 +940,7 @@
         <classShapeMoniker Id="fbd5c818-e9f9-48cd-8417-779b0878ebe7" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.5195345 : 78.6458968098958); (2.5195345 : 82.7315584309896); (2.85416666666667 : 82.7315584309896 : JumpStart); (3.39583333333333 : 82.7315584309896 : JumpEnd); (3.51042166666667 : 82.7315584309896 : JumpStart); (3.77083333333333 : 82.7315584309896 : JumpEnd); (3.82945373573049 : 82.7315584309896 : JumpStart); (4.08800594248386 : 82.7315584309896 : JumpEnd); (4.17747887616843 : 82.7315584309896 : JumpStart); (4.40617486525731 : 82.7315584309896 : JumpEnd); (4.67513503224588 : 82.7315584309896 : JumpStart); (4.84180169891254 : 82.7315584309896 : JumpEnd); (5.47916666666667 : 82.7315584309896 : JumpStart); (5.77533333333333 : 82.7315584309896 : JumpEnd); (5.8125 : 82.7315584309896); (5.8125 : 84.9773583984375); (9.40625 : 84.9773583984375); (9.40625 : 82.7315584309896); (9.5 : 82.7315584309896)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.00038736538461 : 78.6458968098958); (1.00038736538461 : 82.7315584309896); (1.1674403974359 : 82.7315584309896 : JumpStart); (1.33410706410256 : 82.7315584309896 : JumpEnd); (1.65533603205129 : 82.7315584309896 : JumpStart); (1.82200269871795 : 82.7315584309896 : JumpEnd); (2.85416666666667 : 82.7315584309896 : JumpStart); (3.08333333333333 : 82.7315584309896 : JumpEnd); (3.16666666666667 : 82.7315584309896 : JumpStart); (3.45833333333333 : 82.7315584309896 : JumpEnd); (3.51042166666667 : 82.7315584309896 : JumpStart); (3.77083333333333 : 82.7315584309896 : JumpEnd); (3.82945373573049 : 82.7315584309896 : JumpStart); (4.08800594248386 : 82.7315584309896 : JumpEnd); (4.17747887616843 : 82.7315584309896 : JumpStart); (4.40617486525731 : 82.7315584309896 : JumpEnd); (4.67513503224588 : 82.7315584309896 : JumpStart); (4.84180169891254 : 82.7315584309896 : JumpEnd); (5.47916666666667 : 82.7315584309896 : JumpStart); (5.77533333333333 : 82.7315584309896 : JumpEnd); (5.8125 : 82.7315584309896); (5.8125 : 84.9773583984375); (9.40625 : 84.9773583984375); (9.40625 : 82.7315584309896); (9.5 : 82.7315584309896)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_Tbl" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -953,7 +953,7 @@
         <elementListCompartment Id="3757d3b7-9333-46de-a401-e402c05e85c6" absoluteBounds="3.515, 132.58499999999998, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 77.9566092823517); (3.00002623647014 : 78.1773233016411 : JumpStart); (3.12497376352986 : 78.2876224097945 : JumpEnd); (3.17843677326976 : 78.3348175999057 : JumpStart); (3.48105860845439 : 78.6019610905701 : JumpEnd); (3.73125930028751 : 78.8228291126749 : JumpStart); (3.85620682734722 : 78.9331282208283 : JumpEnd); (3.90625 : 78.9773045038061); (3.99879306255796 : 132.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 77.9566092823517); (2.93752623647015 : 78.1221505869678 : JumpStart); (3.12497376352986 : 78.2876224097945 : JumpEnd); (3.17843677326976 : 78.3348175999057 : JumpStart); (3.30338430032947 : 78.4451167080591 : JumpEnd); (3.35611108139467 : 78.4916619824167 : JumpStart); (3.48105860845439 : 78.6019610905701 : JumpEnd); (3.73125930028751 : 78.8228291126749 : JumpStart); (3.85620682734722 : 78.9331282208283 : JumpEnd); (3.90625 : 78.9773045038061); (3.99879306255796 : 132.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_UserCheckIn" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -1013,14 +1013,14 @@
         <elementListCompartment Id="1a54c800-80c1-445d-b2a7-ad4d22266386" absoluteBounds="26.765, 89.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(20.65625125 : 99.625); (20.65625125 : 89.7038863639823); (26.75 : 89.7038863639823)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(20.65625125 : 99.625); (20.65625125 : 89.4018347689303); (20.9430013998714 : 89.4018347689303 : JumpStart); (21.113979180717 : 89.4018347689303 : JumpEnd); (26.75 : 89.4018347689303)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/RatingGroup/RatingGroup_UserRatingsToAdd" />
       <nodes>
         <classShapeMoniker Id="335b10cd-1d8b-4f83-b380-7a67f1c6e841" />
         <classShapeMoniker Id="77fcd779-4ec9-4457-b02a-1ab35d0b98ae" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(1.964843 : 78.6458968098958); (1.964843 : 82.375); (2.14323166666667 : 82.375 : JumpStart); (2.30989833333333 : 82.375 : JumpEnd); (2.43620116666667 : 82.375 : JumpStart); (2.60286783333333 : 82.375 : JumpEnd); (3 : 82.375); (3 : 91.0497054036458); (3.04166666666667 : 91.0497054036458 : JumpStart); (3.20833333333333 : 91.0497054036458 : JumpEnd); (3.51042166666667 : 91.0497054036458 : JumpStart); (3.77083333333333 : 91.0497054036458 : JumpEnd); (3.84393765245482 : 91.0497054036458 : JumpStart); (4.09950063803443 : 91.0497054036458 : JumpEnd); (4.35803361229851 : 91.0497054036458 : JumpStart); (4.52470027896517 : 91.0497054036458 : JumpEnd); (5.01861817767287 : 91.0497054036458 : JumpStart); (5.18528484433954 : 91.0497054036458 : JumpEnd); (8.54166666666667 : 91.0497054036458 : JumpStart); (8.70833333333333 : 91.0497054036458 : JumpEnd); (9.35416666666667 : 91.0497054036458 : JumpStart); (9.52083333333333 : 91.0497054036458 : JumpEnd); (10.9479186666667 : 91.0497054036458 : JumpStart); (11.1145853333333 : 91.0497054036458 : JumpEnd); (11.8541666666667 : 91.0497054036458 : JumpStart); (12.0208333333333 : 91.0497054036458 : JumpEnd); (14.2916666666667 : 91.0497054036458 : JumpStart); (14.4583333333333 : 91.0497054036458 : JumpEnd); (14.540613974359 : 91.0497054036458 : JumpStart); (14.7708333333333 : 91.0497054036458 : JumpEnd); (14.8009446970659 : 91.0497054036458 : JumpStart); (14.9676113637326 : 91.0497054036458 : JumpEnd); (16.9947916666667 : 91.0497054036458 : JumpStart); (17.2547705164935 : 91.0497054036458 : JumpEnd); (17.875 : 91.0497054036458); (17.875 : 89.4018347689303); (20.0077856966866 : 89.4018347689303 : JumpStart); (20.1744523633532 : 89.4018347689303 : JumpEnd); (20.6041666666667 : 89.4018347689303 : JumpStart); (20.7708333333333 : 89.4018347689303 : JumpEnd); (20.9430013998715 : 89.4018347689303 : JumpStart); (21.113979180717 : 89.4018347689303 : JumpEnd); (26.75 : 89.4018347689303)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.52841909134616 : 78.6458968098958); (2.52841909134616 : 82.375); (2.85416666666667 : 82.375 : JumpStart); (3.14583333333333 : 82.375 : JumpEnd); (3.16666666666667 : 82.375 : JumpStart); (3.33333333333333 : 82.375 : JumpEnd); (3.375 : 82.375); (3.375 : 91.0497054036458); (3.51042166666667 : 91.0497054036458 : JumpStart); (3.77083333333333 : 91.0497054036458 : JumpEnd); (3.84393765245482 : 91.0497054036458 : JumpStart); (4.09950063803443 : 91.0497054036458 : JumpEnd); (4.35803361229851 : 91.0497054036458 : JumpStart); (4.52470027896517 : 91.0497054036458 : JumpEnd); (5.01861817767287 : 91.0497054036458 : JumpStart); (5.18528484433954 : 91.0497054036458 : JumpEnd); (8.54166666666667 : 91.0497054036458 : JumpStart); (8.70833333333333 : 91.0497054036458 : JumpEnd); (9.35416666666667 : 91.0497054036458 : JumpStart); (9.52083333333333 : 91.0497054036458 : JumpEnd); (10.9479186666667 : 91.0497054036458 : JumpStart); (11.1145853333333 : 91.0497054036458 : JumpEnd); (11.8541666666667 : 91.0497054036458 : JumpStart); (12.0208333333333 : 91.0497054036458 : JumpEnd); (14.2916666666667 : 91.0497054036458 : JumpStart); (14.462805718491 : 91.0497054036458 : JumpEnd); (14.5416666666667 : 91.0497054036458 : JumpStart); (14.9496104326496 : 91.0497054036458 : JumpEnd); (17.0260391666667 : 91.0497054036458 : JumpStart); (17.4114608333333 : 91.0497054036458 : JumpEnd); (17.875 : 91.0497054036458); (17.875 : 89.3541984049479); (18.9166666666667 : 89.3541984049479 : JumpStart); (19.0833333333333 : 89.3541984049479 : JumpEnd); (19.9889758410745 : 89.3541984049479 : JumpStart); (20.1556425077412 : 89.3541984049479 : JumpEnd); (20.6041666666667 : 89.3541984049479 : JumpStart); (20.7708333333333 : 89.3541984049479 : JumpEnd); (20.9034948220858 : 89.3541984049479 : JumpStart); (21.083047686394 : 89.3541984049479 : JumpEnd); (26.75 : 89.3541984049479)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/User/User_UserRatingsToAdd" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -1046,14 +1046,14 @@
         <elementListCompartment Id="2d15511f-77eb-49b8-997b-14c9537fe23c" absoluteBounds="15.015, 93.21, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(17 : 96.6362125651042); (17.0348244349011 : 96.6710370000053 : JumpStart); (17.1683005650989 : 96.8045131302031 : JumpEnd); (17.375 : 97.0112125651042); (17.375 : 96.625); (17.625 : 96.625); (17.7535744349011 : 96.7535744349011 : JumpStart); (17.8714255650989 : 96.8714255650989 : JumpEnd); (18 : 97)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(17 : 96.6362125651042); (17.1598244349011 : 96.7960370000053 : JumpStart); (17.2776755650989 : 96.9138881302031 : JumpEnd); (17.375 : 97.0112125651042); (17.375 : 96.625); (17.625 : 96.625); (17.7535744349011 : 96.7535744349011 : JumpStart); (17.8714255650989 : 96.8714255650989 : JumpEnd); (18 : 97)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/TblColumn/TblColumn_OverrideCharacteristic" />
       <nodes>
         <classShapeMoniker Id="60cca1dd-e952-47a9-8058-804263bbe1f2" />
         <classShapeMoniker Id="6db3c79b-a09d-43d0-bda0-de62d8d53a97" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(17 : 95.5505211816406); (17.0104166666667 : 95.5505211816406 : JumpStart); (17.1927083333333 : 95.5505211816406 : JumpEnd); (17.8125 : 95.5505211816406); (17.8125 : 105.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(17 : 95.5505211816406); (17.1354166666667 : 95.5505211816406 : JumpStart); (17.4114608333333 : 95.5505211816406 : JumpEnd); (17.8125 : 95.5505211816406); (17.8125 : 105.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/TblColumn/TblColumn_TblColumnFormatting" />
       <nodes>
         <classShapeMoniker Id="60cca1dd-e952-47a9-8058-804263bbe1f2" />
@@ -1074,7 +1074,7 @@
         <classShapeMoniker Id="60cca1dd-e952-47a9-8058-804263bbe1f2" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.25 : 84.9616870896935); (14.3160744349011 : 85.0277615245946 : JumpStart); (14.4808055650989 : 85.1924926547924 : JumpEnd); (14.625 : 85.3366870896935); (14.625 : 94.1037761347656); (14.6708008249244 : 94.1037761347656 : JumpStart); (14.8645883333333 : 94.1037761347656 : JumpEnd); (15 : 94.1037761347656)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(14.25 : 84.9616870896935); (14.3160744349011 : 85.0277615245946 : JumpStart); (14.4808055650989 : 85.1924926547924 : JumpEnd); (14.625 : 85.3366870896935); (14.625 : 94.1037761347656); (14.8229216666667 : 94.1037761347656 : JumpStart); (14.9895883333333 : 94.1037761347656 : JumpEnd); (15 : 94.1037761347656)]" fixedFrom="NotFixed" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblTab/TblTab_TblColumn" />
       <nodes>
         <classShapeMoniker Id="c2ac8dbb-2354-4220-b25a-95a1d68ac4bf" />
@@ -1114,7 +1114,7 @@
         <classShapeMoniker Id="851a34e7-4577-4259-935d-712cebe1a8fc" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.25 : 89.729185447516); (14.2916666666667 : 89.729185447516 : JumpStart); (14.4583333333333 : 89.729185447516 : JumpEnd); (14.5416666666667 : 89.729185447516 : JumpStart); (14.7708333333333 : 89.729185447516 : JumpEnd); (15.03125 : 89.729185447516); (15.03125 : 84.4631982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(14.25 : 90.2131575520833); (14.2916666666667 : 90.2131575520833 : JumpStart); (14.7708333333333 : 90.2131575520833 : JumpEnd); (15.125 : 90.2131575520833); (15.125 : 84.4631982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/FieldDefinition/FieldDefinition_ChoiceGroupFieldDefinition" />
       <nodes>
         <classShapeMoniker Id="db620445-3761-4787-8f39-1d73c72ee702" />
@@ -1147,7 +1147,7 @@
         <elementListCompartment Id="3067bb19-eafc-47d9-9056-d72027cae728" absoluteBounds="0.765, 83.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 84.2656726074219); (2.85416666666667 : 84.2656726074219 : JumpStart); (3.39583333333333 : 84.2656726074219 : JumpEnd); (3.5 : 84.2656726074219)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 84.2656726074219); (2.85416666666667 : 84.2656726074219 : JumpStart); (3.08333333333333 : 84.2656726074219 : JumpEnd); (3.16666666666667 : 84.2656726074219 : JumpStart); (3.45833333333333 : 84.2656726074219 : JumpEnd); (3.5 : 84.2656726074219)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/AdministrationRightsGroup/AdministrationRightsGroup_UsersAdministrationRightsGroup" />
       <nodes>
         <classShapeMoniker Id="e52210f3-8a8d-4088-b811-85ce0a108548" />
@@ -1180,7 +1180,7 @@
         <elementListCompartment Id="42c9d5f2-06db-4298-a81a-58b31d54dfa4" absoluteBounds="0.51500000000000012, 69.585, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.25077373076923 : 71.2804996744792); (1.25077373076923 : 95.4575512695313); (2.26241149205784 : 95.4575512695313 : JumpStart); (2.42907815872451 : 95.4575512695313 : JumpEnd); (3.8516127840274 : 95.4575512695313 : JumpStart); (4.10559175982258 : 95.4575512695313 : JumpEnd); (4.45371086467613 : 95.4575512695313 : JumpStart); (4.6203775313428 : 95.4575512695313 : JumpEnd); (5.43147415529106 : 95.4575512695313 : JumpStart); (5.59814082195772 : 95.4575512695313 : JumpEnd); (8.54166666666667 : 95.4575512695313 : JumpStart); (8.70833333333333 : 95.4575512695313 : JumpEnd); (9.35416666666667 : 95.4575512695313 : JumpStart); (9.52083333333333 : 95.4575512695313 : JumpEnd); (10.9479186666667 : 95.4575512695313 : JumpStart); (11.1145853333333 : 95.4575512695313 : JumpEnd); (11.4166666666667 : 95.4575512695313 : JumpStart); (11.7708333333333 : 95.4575512695313 : JumpEnd); (14.2916666666667 : 95.4575512695313 : JumpStart); (14.4583333333333 : 95.4575512695313 : JumpEnd); (14.6041666666667 : 95.4575512695313 : JumpStart); (14.8775724911151 : 95.4575512695313 : JumpEnd); (14.9337197424412 : 95.4575512695313 : JumpStart); (15.1003864091078 : 95.4575512695313 : JumpEnd); (15.656255 : 95.4575512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.25077373076923 : 71.2804996744792); (1.25077373076923 : 95.4575512695313); (2.26241149205784 : 95.4575512695313 : JumpStart); (2.42907815872451 : 95.4575512695313 : JumpEnd); (3.8516127840274 : 95.4575512695313 : JumpStart); (4.10559175982258 : 95.4575512695313 : JumpEnd); (4.45371086467613 : 95.4575512695313 : JumpStart); (4.6203775313428 : 95.4575512695313 : JumpEnd); (5.43147415529106 : 95.4575512695313 : JumpStart); (5.59814082195772 : 95.4575512695313 : JumpEnd); (8.54166666666667 : 95.4575512695313 : JumpStart); (8.70833333333333 : 95.4575512695313 : JumpEnd); (9.35416666666667 : 95.4575512695313 : JumpStart); (9.52083333333333 : 95.4575512695313 : JumpEnd); (10.9479186666667 : 95.4575512695313 : JumpStart); (11.1145853333333 : 95.4575512695313 : JumpEnd); (11.4166666666667 : 95.4575512695313 : JumpStart); (11.7708333333333 : 95.4575512695313 : JumpEnd); (14.2916666666667 : 95.4575512695313 : JumpStart); (14.4583333333333 : 95.4575512695313 : JumpEnd); (14.5806635770565 : 95.4575512695313 : JumpStart); (14.7708333333333 : 95.4575512695313 : JumpEnd); (14.8229216666667 : 95.4575512695313 : JumpStart); (14.9895883333333 : 95.4575512695313 : JumpEnd); (15.3058740700821 : 95.4575512695313 : JumpStart); (15.4725407367488 : 95.4575512695313 : JumpEnd); (15.656255 : 95.4575512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/TrustTrackerUnit/TrustTrackerUnit_TblColumn" />
       <nodes>
         <classShapeMoniker Id="4e839bdf-82b6-4f73-b6ff-6f25240b3ee7" />
@@ -1233,7 +1233,7 @@
         <elementListCompartment Id="5450ae3b-fb07-40a3-8ad9-66524983a99a" absoluteBounds="7.515, 61.085, 1.9700000000000002, 8.1337483723958321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.5 : 67.5890644986979); (3.25 : 67.5890644986979); (3.25 : 76.125); (4.5 : 76.125); (4.5 : 76.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(7.5 : 67.5890644986979); (5.61458383333333 : 67.5890644986979 : JumpStart); (5.44791716666667 : 67.5890644986979 : JumpEnd); (3.25 : 67.5890644986979); (3.25 : 76.125); (4.5 : 76.125); (4.5 : 76.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/PointsManager/PointsManager_ChangesGroup" />
       <nodes>
         <classShapeMoniker Id="858a1c61-33f7-40cc-abea-516196a2d48b" />
@@ -1282,7 +1282,7 @@
         <classShapeMoniker Id="7bf708d3-4337-41b2-9c58-9e4c826cca15" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.5 : 64.373048078125); (5.61458383333333 : 64.373048078125 : JumpStart); (5.44791716666667 : 64.373048078125 : JumpEnd); (3.0625 : 64.373048078125); (3.0625 : 82.5625); (3.16666666666667 : 82.5625 : JumpStart); (3.39583333333333 : 82.5625 : JumpEnd); (3.51042166666667 : 82.5625 : JumpStart); (3.77083333333333 : 82.5625 : JumpEnd); (3.82915936388974 : 82.5625 : JumpStart); (4.08777232372227 : 82.5625 : JumpEnd); (4.17380927277019 : 82.5625 : JumpStart); (4.39034019546066 : 82.5625 : JumpEnd); (4.75846836557921 : 82.5625); (4.75846836557921 : 82.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(7.5 : 64.373048078125); (5.61458383333333 : 64.373048078125 : JumpStart); (5.44791716666667 : 64.373048078125 : JumpEnd); (3.0625 : 64.373048078125); (3.0625 : 82.5625); (3.16666666666667 : 82.5625 : JumpStart); (3.45833333333333 : 82.5625 : JumpEnd); (3.51042166666667 : 82.5625 : JumpStart); (3.77083333333333 : 82.5625 : JumpEnd); (3.82915936388974 : 82.5625 : JumpStart); (4.08777232372227 : 82.5625 : JumpEnd); (4.17380927277019 : 82.5625 : JumpStart); (4.39034019546066 : 82.5625 : JumpEnd); (4.75846836557921 : 82.5625); (4.75846836557921 : 82.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/PointsManager/PointsManager_UsersAdministrationRightsGroup" />
       <nodes>
         <classShapeMoniker Id="858a1c61-33f7-40cc-abea-516196a2d48b" />
@@ -1303,7 +1303,7 @@
         <classShapeMoniker Id="fbd5c818-e9f9-48cd-8417-779b0878ebe7" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.5 : 62.94921953125); (2.75 : 62.94921953125); (2.75 : 76.625); (0.5 : 76.625); (0.5 : 82.5); (0.918204128205127 : 82.5 : JumpStart); (1.08487079487179 : 82.5 : JumpEnd); (1.73866936538462 : 82.5); (1.73866936538462 : 82.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(7.5 : 62.94921953125); (5.61458383333333 : 62.94921953125 : JumpStart); (5.44791716666667 : 62.94921953125 : JumpEnd); (2.75 : 62.94921953125); (2.75 : 76.625); (2.73958333333333 : 76.625 : JumpStart); (2.57291666666667 : 76.625 : JumpEnd); (1.73958008333333 : 76.625 : JumpStart); (1.57291341666667 : 76.625 : JumpEnd); (1.42746357371795 : 76.625 : JumpStart); (1.1674403974359 : 76.625 : JumpEnd); (0.5 : 76.625); (0.5 : 82.5); (0.917054032051282 : 82.5 : JumpStart); (1.08487079487179 : 82.5 : JumpEnd); (1.1674403974359 : 82.5 : JumpStart); (1.33410706410256 : 82.5 : JumpEnd); (1.73866936538462 : 82.5); (1.73866936538462 : 82.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/PointsManager/PointsManager_AdministrationRightsGroup" />
       <nodes>
         <classShapeMoniker Id="858a1c61-33f7-40cc-abea-516196a2d48b" />
@@ -1343,7 +1343,7 @@
         <elementListCompartment Id="fcd3e401-b8df-4971-8d84-5fdd526a210c" absoluteBounds="39.765, 91.085, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(25.968755 : 91.5312505); (25.968755 : 90.3125); (21.5062410992235 : 90.686453678836 : JumpStart); (21.3401565562084 : 90.7003713779714 : JumpEnd); (20.7705422715076 : 90.7481044185888 : JumpStart); (20.5444042514324 : 90.7670545320029 : JumpEnd); (20.4580422715076 : 90.7742915694267 : JumpStart); (20.2919577284924 : 90.7882092685621 : JumpEnd); (17.1924172715076 : 91.0479472956837 : JumpStart); (16.9950827284924 : 91.0644837099029 : JumpEnd); (14.7705422715076 : 91.2508977146781 : JumpStart); (14.5419577284924 : 91.2700528439811 : JumpEnd); (14.4580422715076 : 91.2770848655161 : JumpStart); (14.2919577284924 : 91.2910025646515 : JumpEnd); (12.0205422715076 : 91.4813446420524 : JumpStart); (11.8544577284924 : 91.4952623411878 : JumpEnd); (11.1142942715076 : 91.5572872118848 : JumpStart); (10.9482097284924 : 91.5712049110202 : JumpEnd); (9.52054227150758 : 91.6908418487563 : JumpStart); (9.35445772849242 : 91.7047595478917 : JumpEnd); (8.70804227150758 : 91.7589284409351 : JumpStart); (8.54195772849242 : 91.7728461400705 : JumpEnd); (5.27898856133131 : 92.046279310503 : JumpStart); (5.11290401831615 : 92.0601970096383 : JumpEnd); (4.54752252379198 : 92.1075753471683 : JumpStart); (4.38143798077682 : 92.1214930463036 : JumpEnd); (4.10073278200966 : 92.1450158283232 : JumpStart); (3.84616094469761 : 92.1663486638521 : JumpEnd); (3.77054227150758 : 92.1726854241753 : JumpStart); (3.60445772849242 : 92.1866031233107 : JumpEnd); (3.593755 : 92.1875); (3.593755 : 79.5088525390625); (3.6097212035951 : 79.5027116890066 : JumpStart); (4.1559010464049 : 79.2926424325129 : JumpEnd); (4.8125045 : 79.0401025390625); (4.8125045 : 79.5088525390625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(25.968755 : 91.5312505); (25.968755 : 90.3125); (21.5062410992235 : 90.686453678836 : JumpStart); (21.3401565562084 : 90.7003713779714 : JumpEnd); (20.7705422715076 : 90.7481044185888 : JumpStart); (20.5444042514324 : 90.7670545320029 : JumpEnd); (20.4580422715076 : 90.7742915694267 : JumpStart); (20.2919577284924 : 90.7882092685621 : JumpEnd); (17.4111697715076 : 91.0296160805999 : JumpStart); (17.0263302284924 : 91.0618652043163 : JumpEnd); (14.7705422715076 : 91.2508977146781 : JumpStart); (14.5419577284924 : 91.2700528439811 : JumpEnd); (14.4775356490933 : 91.2754513422548 : JumpStart); (14.2919577284924 : 91.2910025646515 : JumpEnd); (12.0205422715076 : 91.4813446420524 : JumpStart); (11.8544577284924 : 91.4952623411878 : JumpEnd); (11.1142942715076 : 91.5572872118848 : JumpStart); (10.9482097284924 : 91.5712049110202 : JumpEnd); (9.52054227150758 : 91.6908418487563 : JumpStart); (9.35445772849242 : 91.7047595478917 : JumpEnd); (8.70804227150758 : 91.7589284409351 : JumpStart); (8.54195772849242 : 91.7728461400705 : JumpEnd); (5.27898856133131 : 92.046279310503 : JumpStart); (5.11290401831615 : 92.0601970096383 : JumpEnd); (4.54752252379198 : 92.1075753471683 : JumpStart); (4.38143798077682 : 92.1214930463036 : JumpEnd); (4.10073278200966 : 92.1450158283232 : JumpStart); (3.84616094469761 : 92.1663486638521 : JumpEnd); (3.77054227150758 : 92.1726854241753 : JumpStart); (3.60445772849242 : 92.1866031233107 : JumpEnd); (3.593755 : 92.1875); (3.593755 : 79.5088525390625); (3.6097212035951 : 79.5027116890066 : JumpStart); (4.1559010464049 : 79.2926424325129 : JumpEnd); (4.8125045 : 79.0401025390625); (4.8125045 : 79.5088525390625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/Rating/Rating_ChangesGroup" />
       <nodes>
         <classShapeMoniker Id="ea6a4f30-f3c9-49a6-9153-328c8a8158d1" />
@@ -1392,7 +1392,7 @@
         <classShapeMoniker Id="ea6a4f30-f3c9-49a6-9153-328c8a8158d1" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.226565 : 78.6458968098958); (2.226565 : 82.5); (2.43620116666667 : 82.5 : JumpStart); (2.60286783333333 : 82.5 : JumpEnd); (2.85416666666667 : 82.5 : JumpStart); (3.08333333333333 : 82.5 : JumpEnd); (3.125 : 82.5); (3.125 : 92.0625); (3.51042166666667 : 92.0625 : JumpStart); (3.77083333333333 : 92.0625 : JumpEnd); (3.84570117414308 : 92.0625 : JumpStart); (4.10090020041035 : 92.0625 : JumpEnd); (4.38001745818387 : 92.0625 : JumpStart); (4.54668412485054 : 92.0625 : JumpEnd); (5.00208833333341 : 92.0625 : JumpStart); (5.28014712308672 : 92.0625 : JumpEnd); (8.54166666666667 : 92.0625 : JumpStart); (8.70833333333333 : 92.0625 : JumpEnd); (9.35416666666667 : 92.0625 : JumpStart); (9.52083333333333 : 92.0625 : JumpEnd); (10.9479186666667 : 92.0625 : JumpStart); (11.1145853333333 : 92.0625 : JumpEnd); (11.8541666666667 : 92.0625 : JumpStart); (12.0208333333333 : 92.0625 : JumpEnd); (14.2916666666667 : 92.0625 : JumpStart); (14.4583333333333 : 92.0625 : JumpEnd); (14.5416666666667 : 92.0625 : JumpStart); (14.9346711437183 : 92.0625 : JumpEnd); (16.9947916666667 : 92.0625 : JumpStart); (17.1927083333333 : 92.0625 : JumpEnd); (20.4791666666667 : 92.0625 : JumpStart); (20.7708333333333 : 92.0625 : JumpEnd); (21.3629129670308 : 92.0625 : JumpStart); (21.5295796336975 : 92.0625 : JumpEnd); (23.5 : 92.0625); (23.5 : 92.9728011067708); (34.75 : 92.9728011067708); (34.75 : 92.25); (37.8229166666667 : 92.25 : JumpStart); (37.9895833333333 : 92.25 : JumpEnd); (39.375 : 92.25); (39.375 : 92.8601821002604); (39.75 : 92.8601821002604)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.24433418269231 : 78.6458968098958); (2.24433418269231 : 82.25); (2.44508575801282 : 82.25 : JumpStart); (2.61175242467949 : 82.25 : JumpEnd); (2.85416666666667 : 82.25 : JumpStart); (3.14583333333333 : 82.25 : JumpEnd); (3.25 : 82.25); (3.25 : 92.0625); (3.51042166666667 : 92.0625 : JumpStart); (3.77083333333333 : 92.0625 : JumpEnd); (3.84570117414308 : 92.0625 : JumpStart); (4.10090020041035 : 92.0625 : JumpEnd); (4.38001745818387 : 92.0625 : JumpStart); (4.54668412485054 : 92.0625 : JumpEnd); (5.00208833333341 : 92.0625 : JumpStart); (5.28014712308672 : 92.0625 : JumpEnd); (8.54166666666667 : 92.0625 : JumpStart); (8.70833333333333 : 92.0625 : JumpEnd); (9.35416666666667 : 92.0625 : JumpStart); (9.52083333333333 : 92.0625 : JumpEnd); (10.9479186666667 : 92.0625 : JumpStart); (11.1145853333333 : 92.0625 : JumpEnd); (11.8541666666667 : 92.0625 : JumpStart); (12.0208333333333 : 92.0625 : JumpEnd); (14.2916666666667 : 92.0625 : JumpStart); (14.5281811672824 : 92.0625 : JumpEnd); (14.5416666666667 : 92.0625 : JumpStart); (14.7708333333333 : 92.0625 : JumpEnd); (14.8229216666667 : 92.0625 : JumpStart); (14.9895883333333 : 92.0625 : JumpEnd); (15.243730845561 : 92.0625 : JumpStart); (15.4103975122277 : 92.0625 : JumpEnd); (17.0260391666667 : 92.0625 : JumpStart); (17.4114608333333 : 92.0625 : JumpEnd); (20.4791666666667 : 92.0625 : JumpStart); (20.7708333333333 : 92.0625 : JumpEnd); (21.3629129670308 : 92.0625 : JumpStart); (21.5295796336975 : 92.0625 : JumpEnd); (23.5 : 92.0625); (23.5 : 92.9728011067708); (34.75 : 92.9728011067708); (34.75 : 92.25); (37.8229166666667 : 92.25 : JumpStart); (37.9895833333333 : 92.25 : JumpEnd); (39.375 : 92.25); (39.375 : 92.8601821002604); (39.75 : 92.8601821002604)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_Rating" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -1405,7 +1405,7 @@
         <elementListCompartment Id="3c1c8af0-0559-4840-8023-cb0b517af6b2" absoluteBounds="9.015, 107.21, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(10 : 106.75); (10 : 105.636293945313); (11.4166666666667 : 105.636293945313 : JumpStart); (11.7708333333333 : 105.636293945313 : JumpEnd); (12.4028736523408 : 105.636293945313 : JumpStart); (12.5695403190075 : 105.636293945313 : JumpEnd); (12.6666666666667 : 105.636293945313 : JumpStart); (12.8333333333333 : 105.636293945313 : JumpEnd); (14.2916666666667 : 105.636293945313 : JumpStart); (14.4583333333333 : 105.636293945313 : JumpEnd); (14.5 : 105.636293945313); (14.5 : 97.5); (14.5416666666667 : 97.5 : JumpStart); (14.9380791463637 : 97.5 : JumpEnd); (15.0334133572185 : 97.5 : JumpStart); (15.2000800238852 : 97.5 : JumpEnd); (17.0260416666667 : 97.5 : JumpStart); (17.1927083333333 : 97.5 : JumpEnd); (17.625 : 97.5); (17.625 : 97.9167004049479); (17.7291666666667 : 97.9167004049479 : JumpStart); (17.8958333333333 : 97.9167004049479 : JumpEnd); (18 : 97.9167004049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(10 : 106.75); (10 : 105.636293945313); (11.4166666666667 : 105.636293945313 : JumpStart); (11.7708333333333 : 105.636293945313 : JumpEnd); (12.4028736523408 : 105.636293945313 : JumpStart); (12.5695403190075 : 105.636293945313 : JumpEnd); (12.6666666666667 : 105.636293945313 : JumpStart); (12.8333333333333 : 105.636293945313 : JumpEnd); (14.2916666666667 : 105.636293945313 : JumpStart); (14.4583333333333 : 105.636293945313 : JumpEnd); (14.5 : 105.636293945313); (14.5 : 97.5); (14.5416666666667 : 97.5 : JumpStart); (14.9895883333333 : 97.5 : JumpEnd); (15.3432591756236 : 97.5 : JumpStart); (15.5099258422903 : 97.5 : JumpEnd); (17.2447941666667 : 97.5 : JumpStart); (17.4114608333333 : 97.5 : JumpEnd); (17.625 : 97.5); (17.625 : 97.9167004049479); (17.7291666666667 : 97.9167004049479 : JumpStart); (17.8958333333333 : 97.9167004049479 : JumpEnd); (18 : 97.9167004049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/RatingGroupAttribute/RatingGroupAttribute_OverrideCharacteristic" />
       <nodes>
         <classShapeMoniker Id="4a8e3882-9e7c-49f6-bec8-823900982d30" />
@@ -1447,7 +1447,7 @@
         <classShapeMoniker Id="335b10cd-1d8b-4f83-b380-7a67f1c6e841" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11 : 106.800768230769); (11.4257682307692 : 106.375); (12.6666666666667 : 106.375 : JumpStart); (12.8333333333333 : 106.375 : JumpEnd); (14.2916666666667 : 106.375 : JumpStart); (14.4583333333333 : 106.375 : JumpEnd); (14.625 : 106.375); (14.625 : 97.0127500266426); (14.6285744349011 : 97.0091755917415 : JumpStart); (14.8930418311801 : 96.7447081954626 : JumpEnd); (15.0015374615385 : 96.6362125651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(11 : 106.800768230769); (11.4257682307692 : 106.375); (12.6666666666667 : 106.375 : JumpStart); (12.8333333333333 : 106.375 : JumpEnd); (14.2916666666667 : 106.375 : JumpStart); (14.4583333333333 : 106.375 : JumpEnd); (14.625 : 106.375); (14.625 : 97.0127500266426); (14.6285744349011 : 97.0091755917415 : JumpStart); (14.8148582296251 : 96.8228917970176 : JumpEnd); (14.8473294349011 : 96.7904205917416 : JumpStart); (14.9651805650989 : 96.6725694615438 : JumpEnd); (15.0015374615385 : 96.6362125651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/RatingGroupAttribute/RatingGroupAttribute_TblColumn" />
       <nodes>
         <classShapeMoniker Id="4a8e3882-9e7c-49f6-bec8-823900982d30" />
@@ -1487,14 +1487,14 @@
         <elementListCompartment Id="06fa1da5-dc4b-459b-946b-799bb221c851" absoluteBounds="24.765, 96.585, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(20.5624975 : 99.625); (20.5624975 : 96.488398844401); (24.75 : 96.488398844401)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(20.5624975 : 99.625); (20.5624975 : 96.488398844401); (20.5729179166667 : 96.488398844401 : JumpStart); (20.7708333333333 : 96.488398844401 : JumpEnd); (24.75 : 96.488398844401)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/RatingGroup/RatingGroup_VolatilityTracker" />
       <nodes>
         <classShapeMoniker Id="335b10cd-1d8b-4f83-b380-7a67f1c6e841" />
         <classShapeMoniker Id="a84333fe-bc8e-4bc7-84a9-e8fcb56ffff8" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(20.28125 : 94.7804996744792); (20.28125 : 96.222773844401); (20.5729179166667 : 96.222773844401 : JumpStart); (20.7708333333333 : 96.222773844401 : JumpEnd); (24.75 : 96.222773844401)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(20.28125 : 94.7804996744792); (20.28125 : 96.222773844401); (20.5416691666667 : 96.222773844401 : JumpStart); (20.7708333333333 : 96.222773844401 : JumpEnd); (24.75 : 96.222773844401)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/VolatilityTblRowTracker/VolatilityTblRowTracker_VolatilityTracker" />
       <nodes>
         <classShapeMoniker Id="a5a30ba4-448e-4881-9719-88e01addd52e" />
@@ -1535,21 +1535,21 @@
         <classShapeMoniker Id="084f561f-39e1-4505-978e-7b47e2459cca" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 80.7604484049479); (5.5625 : 80.7604484049479); (5.5625 : 85.0398583984375); (5.66666666666667 : 85.0398583984375 : JumpStart); (5.83333333333333 : 85.0398583984375 : JumpEnd); (8.375 : 85.0398583984375); (8.375 : 84.9148583984375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 80.7604484049479); (5.5625 : 80.7604484049479); (5.5625 : 85.0398583984375); (5.60866666666667 : 85.0398583984375 : JumpStart); (5.83333333333333 : 85.0398583984375 : JumpEnd); (7.76041466666667 : 85.0398583984375 : JumpStart); (7.92708133333333 : 85.0398583984375 : JumpEnd); (8.375 : 85.0398583984375); (8.375 : 84.9148583984375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/RewardPendingPointsTracker/RewardPendingPointsTracker_UserRating" />
       <nodes>
         <classShapeMoniker Id="8109e0c7-530a-4c17-b0b4-5fbb5704702c" />
         <classShapeMoniker Id="084f561f-39e1-4505-978e-7b47e2459cca" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(0.59375 : 71.2804996744792); (0.59375 : 75.6739005533854); (1.1674403974359 : 75.6739005533854 : JumpStart); (1.33410706410256 : 75.6739005533854 : JumpEnd); (1.57291341666667 : 75.6739005533854 : JumpStart); (1.73958008333333 : 75.6739005533854 : JumpEnd); (2.57291666666667 : 75.6739005533854 : JumpStart); (2.83333333333333 : 75.6739005533854 : JumpEnd); (2.97916666666667 : 75.6739005533854 : JumpStart); (3.14583333333333 : 75.6739005533854 : JumpEnd); (3.16666666666667 : 75.6739005533854 : JumpStart); (3.39583333333333 : 75.6739005533854 : JumpEnd); (6.08854091666667 : 75.6739005533854 : JumpStart); (6.25520758333333 : 75.6739005533854 : JumpEnd); (6.79166666666667 : 75.6739005533854 : JumpStart); (6.95833333333333 : 75.6739005533854 : JumpEnd); (7.04166666666667 : 75.6739005533854 : JumpStart); (7.20833333333333 : 75.6739005533854 : JumpEnd); (7.375 : 75.6739005533854)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(0.59375 : 71.2804996744792); (0.59375 : 75.6739005533854); (1.1674403974359 : 75.6739005533854 : JumpStart); (1.33410706410256 : 75.6739005533854 : JumpEnd); (1.57291341666667 : 75.6739005533854 : JumpStart); (1.73958008333333 : 75.6739005533854 : JumpEnd); (2.57291666666667 : 75.6739005533854 : JumpStart); (2.83333333333333 : 75.6739005533854 : JumpEnd); (2.91666666666667 : 75.6739005533854 : JumpStart); (3.14583333333333 : 75.6739005533854 : JumpEnd); (3.16666666666667 : 75.6739005533854 : JumpStart); (3.33333333333333 : 75.6739005533854 : JumpEnd); (6.08854091666667 : 75.6739005533854 : JumpStart); (6.25520758333333 : 75.6739005533854 : JumpEnd); (6.79166666666667 : 75.6739005533854 : JumpStart); (6.95833333333333 : 75.6739005533854 : JumpEnd); (7.04166666666667 : 75.6739005533854 : JumpStart); (7.20833333333333 : 75.6739005533854 : JumpEnd); (7.375 : 75.6739005533854)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/TrustTrackerUnit/TrustTrackerUnit_UserRating" />
       <nodes>
         <classShapeMoniker Id="4e839bdf-82b6-4f73-b6ff-6f25240b3ee7" />
         <classShapeMoniker Id="084f561f-39e1-4505-978e-7b47e2459cca" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(23.75 : 100.914297688802); (22.75 : 100.914297688802); (22.75 : 99.375); (20.7395845833333 : 99.375 : JumpStart); (20.4791641666667 : 99.375 : JumpEnd); (17.8958333333333 : 99.375 : JumpStart); (17.7291666666667 : 99.375 : JumpEnd); (17.375 : 99.375); (17.375 : 97.75); (17.1927083333333 : 97.75 : JumpStart); (17.0260416666667 : 97.75 : JumpEnd); (15.2122827310193 : 97.75 : JumpStart); (15.0456160643526 : 97.75 : JumpEnd); (14.9454852876227 : 97.75 : JumpStart); (14.2916666666667 : 97.75 : JumpEnd); (14 : 97.75); (14 : 95.75); (11.7708333333333 : 95.75 : JumpStart); (11.4166666666667 : 95.75 : JumpEnd); (11.1145853333333 : 95.75 : JumpStart); (10.9479186666667 : 95.75 : JumpEnd); (9.52083333333333 : 95.75 : JumpStart); (9.35416666666667 : 95.75 : JumpEnd); (8.625 : 95.75); (8.625 : 85.2898583984375); (7.843748 : 85.2898583984375); (7.843748 : 84.9148583984375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(23.75 : 100.914297688802); (22.75 : 100.914297688802); (22.75 : 99.375); (20.7395845833333 : 99.375 : JumpStart); (20.4791641666667 : 99.375 : JumpEnd); (17.8958333333333 : 99.375 : JumpStart); (17.7291666666667 : 99.375 : JumpEnd); (17.375 : 99.375); (17.375 : 97.75); (15.5145018574656 : 97.75 : JumpStart); (15.3478351907989 : 97.75 : JumpEnd); (14.9895883333333 : 97.75 : JumpStart); (14.2916666666667 : 97.75 : JumpEnd); (14 : 97.75); (14 : 95.75); (11.7708333333333 : 95.75 : JumpStart); (11.4166666666667 : 95.75 : JumpEnd); (11.1145853333333 : 95.75 : JumpStart); (10.9479186666667 : 95.75 : JumpEnd); (9.52083333333333 : 95.75 : JumpStart); (9.35416666666667 : 95.75 : JumpEnd); (8.625 : 95.75); (8.625 : 85.2898583984375); (7.843748 : 85.2898583984375); (7.843748 : 84.9148583984375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/UserRatingGroup/UserRatingGroup_UserRating" />
       <nodes>
         <classShapeMoniker Id="2c0d3b75-1e38-4612-a27c-a74d08479133" />
@@ -1563,7 +1563,7 @@
         <classShapeMoniker Id="084f561f-39e1-4505-978e-7b47e2459cca" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(1.34413024038462 : 76.875); (1.34413024038462 : 75.9307027766927); (1.57291341666667 : 75.9307027766927 : JumpStart); (1.73958008333333 : 75.9307027766927 : JumpEnd); (2.57291666666667 : 75.9307027766927 : JumpStart); (2.83333333333333 : 75.9307027766927 : JumpEnd); (2.97916666666667 : 75.9307027766927 : JumpStart); (3.14583333333333 : 75.9307027766927 : JumpEnd); (3.16666666666667 : 75.9307027766927 : JumpStart); (3.39583333333333 : 75.9307027766927 : JumpEnd); (6.08854091666667 : 75.9307027766927 : JumpStart); (6.25520758333333 : 75.9307027766927 : JumpEnd); (6.79166666666667 : 75.9307027766927 : JumpStart); (6.95833333333333 : 75.9307027766927 : JumpEnd); (7.04166666666667 : 75.9307027766927 : JumpStart); (7.20833333333333 : 75.9307027766927 : JumpEnd); (7.375 : 75.9307027766927)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.34413024038462 : 76.875); (1.34413024038462 : 75.9307027766927); (1.57291341666667 : 75.9307027766927 : JumpStart); (1.73958008333333 : 75.9307027766927 : JumpEnd); (2.57291666666667 : 75.9307027766927 : JumpStart); (2.83333333333333 : 75.9307027766927 : JumpEnd); (2.91666666666667 : 75.9307027766927 : JumpStart); (3.14583333333333 : 75.9307027766927 : JumpEnd); (3.16666666666667 : 75.9307027766927 : JumpStart); (3.33333333333333 : 75.9307027766927 : JumpEnd); (6.08854091666667 : 75.9307027766927 : JumpStart); (6.25520758333333 : 75.9307027766927 : JumpEnd); (6.79166666666667 : 75.9307027766927 : JumpStart); (6.95833333333333 : 75.9307027766927 : JumpEnd); (7.04166666666667 : 75.9307027766927 : JumpStart); (7.20833333333333 : 75.9307027766927 : JumpEnd); (7.375 : 75.9307027766927)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_UserRating" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -1583,7 +1583,7 @@
         <classShapeMoniker Id="414ff79c-96a3-434f-8f78-8edc45c188bb" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 77.5625253037109); (2.9375 : 77.5625253037109); (2.9375 : 76.3125); (2.97916666666667 : 76.3125 : JumpStart); (3.20833333333333 : 76.3125 : JumpEnd); (3.22916666666667 : 76.3125 : JumpStart); (3.39583333333333 : 76.3125 : JumpEnd); (4.41666666666667 : 76.3125 : JumpStart); (4.58333333333333 : 76.3125 : JumpEnd); (6.08854091666667 : 76.3125 : JumpStart); (6.25520758333333 : 76.3125 : JumpEnd); (6.5312525 : 76.3125); (6.5312525 : 76.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 77.5625253037109); (2.9375 : 77.5625253037109); (2.9375 : 76.3125); (2.97916666666667 : 76.3125 : JumpStart); (3.20833333333333 : 76.3125 : JumpEnd); (4.41666666666667 : 76.3125 : JumpStart); (4.58333333333333 : 76.3125 : JumpEnd); (6.08854091666667 : 76.3125 : JumpStart); (6.25520758333333 : 76.3125 : JumpEnd); (6.5312525 : 76.3125); (6.5312525 : 76.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_PointsTotal" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -1615,7 +1615,7 @@
         <classShapeMoniker Id="fbd12cbb-d89b-4aeb-bcd9-d2fd88f4687b" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 78.2500506074219); (2.77456307486157 : 78.2500506074219 : JumpStart); (2.94122974152824 : 78.2500506074219 : JumpEnd); (2.97916666666667 : 78.2500506074219 : JumpStart); (3.16574552159552 : 78.2500506074219 : JumpEnd); (3.1875 : 78.2500506074219); (3.1875 : 76.25); (3.22916666666667 : 76.25 : JumpStart); (3.39583333333333 : 76.25 : JumpEnd); (4.41666666666667 : 76.25 : JumpStart); (4.58333333333333 : 76.25 : JumpEnd); (6.08854091666667 : 76.25 : JumpStart); (6.25520758333333 : 76.25 : JumpEnd); (6.875 : 76.25); (6.875 : 74.375); (7.39628205128205 : 74.375 : JumpStart); (7.56294871794871 : 74.375 : JumpEnd); (9 : 74.375); (9 : 72); (9.35416666666667 : 72 : JumpStart); (9.52083333333333 : 72 : JumpEnd); (9.94791666666667 : 72 : JumpStart); (10.1145833333333 : 72 : JumpEnd); (10.4166666666667 : 72 : JumpStart); (10.5833333333333 : 72 : JumpEnd); (10.92187325 : 72); (10.92187325 : 68.5593082682292)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 78.2500506074219); (2.77456307486157 : 78.2500506074219 : JumpStart); (3.16574552159552 : 78.2500506074219 : JumpEnd); (3.1875 : 78.2500506074219); (3.1875 : 76.25); (4.41666666666667 : 76.25 : JumpStart); (4.58333333333333 : 76.25 : JumpEnd); (6.08854091666667 : 76.25 : JumpStart); (6.25520758333333 : 76.25 : JumpEnd); (6.875 : 76.25); (6.875 : 74.375); (7.39628205128205 : 74.375 : JumpStart); (7.56294871794871 : 74.375 : JumpEnd); (9 : 74.375); (9 : 72); (9.35416666666667 : 72 : JumpStart); (9.52083333333333 : 72 : JumpEnd); (9.94791666666667 : 72 : JumpStart); (10.1145833333333 : 72 : JumpEnd); (10.4166666666667 : 72 : JumpStart); (10.5833333333333 : 72 : JumpEnd); (10.92187325 : 72); (10.92187325 : 68.5593082682292)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/User/User_TrustTracker" />
       <nodes>
         <classShapeMoniker Id="bff93987-38f1-4ec7-bea5-3fd104791342" />
@@ -1670,80 +1670,80 @@
         <classShapeMoniker Id="23d72c4c-bd0e-4f14-b51a-cd4ccbd12aa4" />
       </nodes>
     </associationConnector>
-    <classShape Id="3765feb6-ee2e-4b61-9d81-455637714bff" absoluteBounds="15.125, 85.375, 2, 3.1170068359375">
+    <classShape Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" absoluteBounds="15.5, 85.875, 2, 3.5016097005208326">
       <DataClassMoniker Name="/RaterooDataContext/TblRow" />
       <nestedChildShapes>
-        <elementListCompartment Id="6e8dd01a-fa60-42e9-87c7-427f8faa9493" absoluteBounds="15.14, 85.835, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8fecec12-9a60-495d-9942-c7bdb53cbb5a" absoluteBounds="15.515, 86.335, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(17.125 : 87.9335034179688); (18 : 87.9335034179688)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(17.5 : 88.1642976888021); (18 : 88.1642976888021)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_Field" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="306f5906-4e61-4a4f-bef8-1554b07af8ec" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(17.09375 : 88.4920068359375); (17.09375 : 97.2812525); (17.7291666666667 : 97.2812525 : JumpStart); (17.8958333333333 : 97.2812525 : JumpEnd); (18 : 97.2812525)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(17.21875 : 89.3766097005208); (17.21875 : 97.2812525); (17.2447941666667 : 97.2812525 : JumpStart); (17.4114608333333 : 97.2812525 : JumpEnd); (17.7291666666667 : 97.2812525 : JumpStart); (17.8958333333333 : 97.2812525 : JumpEnd); (18 : 97.2812525)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_OverrideCharacteristic" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="6db3c79b-a09d-43d0-bda0-de62d8d53a97" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(15.125 : 86.5937505); (15.1145833333333 : 86.5937505 : JumpStart); (14.9479166666667 : 86.5937505 : JumpEnd); (14.7708333333333 : 86.5937505 : JumpStart); (14.5416666666667 : 86.5937505 : JumpEnd); (14.5052133333333 : 86.5937505 : JumpStart); (14.2916666666667 : 86.5937505 : JumpEnd); (12.0208333333333 : 86.5937505 : JumpStart); (11.8541666666667 : 86.5937505 : JumpEnd); (11.1145853333333 : 86.5937505 : JumpStart); (10.9479186666667 : 86.5937505 : JumpEnd); (10.5833333333333 : 86.5937505 : JumpStart); (10.4166666666667 : 86.5937505 : JumpEnd); (9.52083333333333 : 86.5937505 : JumpStart); (9.35416666666667 : 86.5937505 : JumpEnd); (8.70833333333333 : 86.5937505 : JumpStart); (8.54166666666667 : 86.5937505 : JumpEnd); (8.5 : 86.5937505); (8.5 : 85.375); (5.83333333333333 : 85.375 : JumpStart); (5.66666666666667 : 85.375 : JumpEnd); (4.65376987798153 : 85.375 : JumpStart); (4.48710321131487 : 85.375 : JumpEnd); (4.4015244153817 : 85.375 : JumpStart); (4.23485774871503 : 85.375 : JumpEnd); (4.09165886616282 : 85.375 : JumpStart); (3.83405661034632 : 85.375 : JumpEnd); (3.77083333333333 : 85.375 : JumpStart); (3.51042166666667 : 85.375 : JumpEnd); (3.25 : 85.375); (3.25 : 82.0208968098958); (3.51042166666667 : 82.0208968098958 : JumpStart); (3.77083333333333 : 82.0208968098958 : JumpEnd); (3.82714522786504 : 82.0208968098958 : JumpStart); (4.08702389215453 : 82.0208968098958 : JumpEnd); (4.16205316634434 : 82.0208968098958 : JumpStart); (4.33961153539971 : 82.0208968098958 : JumpEnd); (4.5937495 : 82.0208968098958); (4.5937495 : 81.6458968098958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(15.5 : 86.8437505); (15.2083333333333 : 86.8437505 : JumpStart); (15.0416666666667 : 86.8437505 : JumpEnd); (14.7708333333333 : 86.8437505 : JumpStart); (14.5416666666667 : 86.8437505 : JumpEnd); (14.5052133333333 : 86.8437505 : JumpStart); (14.2916666666667 : 86.8437505 : JumpEnd); (12.0208333333333 : 86.8437505 : JumpStart); (11.8541666666667 : 86.8437505 : JumpEnd); (11.1145853333333 : 86.8437505 : JumpStart); (10.9479186666667 : 86.8437505 : JumpEnd); (10.5833333333333 : 86.8437505 : JumpStart); (10.4166666666667 : 86.8437505 : JumpEnd); (9.52083333333333 : 86.8437505 : JumpStart); (9.35416666666667 : 86.8437505 : JumpEnd); (8.70833333333333 : 86.8437505 : JumpStart); (8.54166666666667 : 86.8437505 : JumpEnd); (8.5 : 86.8437505); (8.5 : 85.375); (5.83333333333333 : 85.375 : JumpStart); (5.66666666666667 : 85.375 : JumpEnd); (4.65376987798153 : 85.375 : JumpStart); (4.48710321131487 : 85.375 : JumpEnd); (4.4015244153817 : 85.375 : JumpStart); (4.23485774871503 : 85.375 : JumpEnd); (4.09165886616282 : 85.375 : JumpStart); (3.83405661034632 : 85.375 : JumpEnd); (3.77083333333333 : 85.375 : JumpStart); (3.51042166666667 : 85.375 : JumpEnd); (3.3125 : 85.375); (3.3125 : 82.0208968098958); (3.51042166666667 : 82.0208968098958 : JumpStart); (3.77083333333333 : 82.0208968098958 : JumpEnd); (3.82714522786504 : 82.0208968098958 : JumpStart); (4.08702389215453 : 82.0208968098958 : JumpEnd); (4.16205316634434 : 82.0208968098958 : JumpStart); (4.33961153539971 : 82.0208968098958 : JumpEnd); (4.5937495 : 82.0208968098958); (4.5937495 : 81.6458968098958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_RewardPendingPointsTracker" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="8109e0c7-530a-4c17-b0b4-5fbb5704702c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(17.125 : 86.3189111328125); (18.7904520546864 : 86.3189111328125 : JumpStart); (18.9571187213531 : 86.3189111328125 : JumpEnd); (21 : 86.3189111328125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(17.5 : 86.3189111328125); (18.7904520546864 : 86.3189111328125 : JumpStart); (18.9571187213531 : 86.3189111328125 : JumpEnd); (21 : 86.3189111328125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_SearchWordTblRowName" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="f5160053-0aad-4f9d-9c90-0b583c345f63" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(16.0781225 : 88.4920068359375); (16.0781225 : 90.3998527018229); (16.9947916666667 : 90.3998527018229 : JumpStart); (17.1927083333333 : 90.3998527018229 : JumpEnd); (17.7916666666667 : 90.3998527018229 : JumpStart); (17.9583333333333 : 90.3998527018229 : JumpEnd); (18 : 90.3998527018229)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(17.5 : 89.3766097005208); (17.8082302952224 : 89.6067901050041 : JumpStart); (17.9417697047776 : 89.7065147452563 : JumpEnd); (18 : 89.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_TblRowStatusRecord" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="69f211e5-3748-4f88-9e72-139061e9e1c7" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(15.125 : 85.95312325); (15.1145833333333 : 85.95312325 : JumpStart); (14.9479166666667 : 85.95312325 : JumpEnd); (14.7708333333333 : 85.95312325 : JumpStart); (14.5416666666667 : 85.95312325 : JumpEnd); (14.5052133333333 : 85.95312325 : JumpStart); (14.2916666666667 : 85.95312325 : JumpEnd); (12.0208333333333 : 85.95312325 : JumpStart); (11.8541666666667 : 85.95312325 : JumpEnd); (11.1145853333333 : 85.95312325 : JumpStart); (10.9479186666667 : 85.95312325 : JumpEnd); (10.5833333333333 : 85.95312325 : JumpStart); (10.4166666666667 : 85.95312325 : JumpEnd); (9.52083333333333 : 85.95312325 : JumpStart); (9.35416666666667 : 85.95312325 : JumpEnd); (8.75 : 85.95312325); (8.75 : 85.4375); (8.70833333333333 : 85.4375 : JumpStart); (8.54166666666667 : 85.4375 : JumpEnd); (5.83333333333333 : 85.4375 : JumpStart); (5.66666666666667 : 85.4375 : JumpEnd); (4.65962387092644 : 85.4375 : JumpStart); (4.49295720425978 : 85.4375 : JumpEnd); (4.40288104818047 : 85.4375 : JumpStart); (4.23621438151381 : 85.4375 : JumpEnd); (4.09174523377261 : 85.4375 : JumpStart); (3.83416543804536 : 85.4375 : JumpEnd); (3.77083333333333 : 85.4375 : JumpStart); (3.51042166666667 : 85.4375 : JumpEnd); (3.3125 : 85.4375); (3.3125 : 75.3478011067708); (4.5 : 75.3478011067708); (4.5 : 74.9728011067708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(15.5 : 86.32812325); (15.2083333333333 : 86.32812325 : JumpStart); (15.0416666666667 : 86.32812325 : JumpEnd); (14.7708333333333 : 86.32812325 : JumpStart); (14.5416666666667 : 86.32812325 : JumpEnd); (14.5052133333333 : 86.32812325 : JumpStart); (14.2916666666667 : 86.32812325 : JumpEnd); (12.0208333333333 : 86.32812325 : JumpStart); (11.8541666666667 : 86.32812325 : JumpEnd); (11.1145853333333 : 86.32812325 : JumpStart); (10.9479186666667 : 86.32812325 : JumpEnd); (10.5833333333333 : 86.32812325 : JumpStart); (10.4166666666667 : 86.32812325 : JumpEnd); (9.52083333333333 : 86.32812325 : JumpStart); (9.35416666666667 : 86.32812325 : JumpEnd); (8.75 : 86.32812325); (8.75 : 85.4375); (8.70833333333333 : 85.4375 : JumpStart); (8.54166666666667 : 85.4375 : JumpEnd); (5.83333333333333 : 85.4375 : JumpStart); (5.66666666666667 : 85.4375 : JumpEnd); (4.65962387092644 : 85.4375 : JumpStart); (4.49295720425978 : 85.4375 : JumpEnd); (4.40288104818047 : 85.4375 : JumpStart); (4.23621438151381 : 85.4375 : JumpEnd); (4.09174523377261 : 85.4375 : JumpStart); (3.83416543804536 : 85.4375 : JumpEnd); (3.77083333333333 : 85.4375 : JumpStart); (3.51042166666667 : 85.4375 : JumpEnd); (3.45833333333333 : 85.4375 : JumpStart); (3.16666666666667 : 85.4375 : JumpEnd); (3 : 85.4375); (3 : 75.3478011067708); (3.16666666666667 : 75.3478011067708 : JumpStart); (3.33333333333333 : 75.3478011067708 : JumpEnd); (4.5 : 75.3478011067708); (4.5 : 74.9728011067708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_Comment" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="14f859f7-c362-4674-9e93-4085b206686b" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(17.109375 : 88.4920068359375); (17.109375 : 100.294099121094); (17.7291666666667 : 100.294099121094 : JumpStart); (17.8958333333333 : 100.294099121094 : JumpEnd); (20.5 : 100.294099121094)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(17.3281275 : 89.3766097005208); (17.3281275 : 100.294099121094); (17.7291666666667 : 100.294099121094 : JumpStart); (17.8958333333333 : 100.294099121094 : JumpEnd); (20.5 : 100.294099121094)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_RatingGroup" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="335b10cd-1d8b-4f83-b380-7a67f1c6e841" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(17.078125 : 88.4920068359375); (17.078125 : 92.65625); (18.5 : 92.65625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(17.1093725 : 89.3766097005208); (17.1093725 : 92.65625); (17.1354166666667 : 92.65625 : JumpStart); (17.4114608333333 : 92.65625 : JumpEnd); (18.5 : 92.65625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRow/TblRow_VolatilityTblRowTracker" />
       <nodes>
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
         <classShapeMoniker Id="a5a30ba4-448e-4881-9719-88e01addd52e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.42188 : 73.6458968098958); (14.42188 : 87.23437775); (14.5416666666667 : 87.23437775 : JumpStart); (14.7708333333333 : 87.23437775 : JumpEnd); (14.9479166666667 : 87.23437775 : JumpStart); (15.1145833333333 : 87.23437775 : JumpEnd); (15.125 : 87.23437775)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(14.42188 : 73.6458968098958); (14.42188 : 87.35937775); (14.5416666666667 : 87.35937775 : JumpStart); (14.7708333333333 : 87.35937775 : JumpEnd); (15.0416666666667 : 87.35937775 : JumpStart); (15.2083333333333 : 87.35937775 : JumpEnd); (15.5 : 87.35937775)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/TblRowFieldDisplay/TblRowFieldDisplay_TblRow" />
       <nodes>
         <classShapeMoniker Id="431b186a-a893-4fcd-9bb1-30c2b45276e1" />
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.5 : 82.25); (11.6254166666667 : 82.25 : JumpStart); (11.7920833333333 : 82.25 : JumpEnd); (11.8541666666667 : 82.25 : JumpStart); (12.0208333333333 : 82.25 : JumpEnd); (14.2916666666667 : 82.25 : JumpStart); (14.5052133333333 : 82.25 : JumpEnd); (14.6041666666667 : 82.25 : JumpStart); (14.7708333333333 : 82.25 : JumpEnd); (16.0729216666667 : 82.25 : JumpStart); (16.2395883333333 : 82.25 : JumpEnd); (17.09375 : 82.25); (17.09375 : 85.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(9.9687475 : 84.9631168619792); (9.9687475 : 86.070309125); (10.4166666666667 : 86.070309125 : JumpStart); (10.5833333333333 : 86.070309125 : JumpEnd); (10.9479186666667 : 86.070309125 : JumpStart); (11.1145853333333 : 86.070309125 : JumpEnd); (11.8541666666667 : 86.070309125 : JumpStart); (12.0208333333333 : 86.070309125 : JumpEnd); (14.2916666666667 : 86.070309125 : JumpStart); (14.5052133333333 : 86.070309125 : JumpEnd); (14.5416666666667 : 86.070309125 : JumpStart); (14.7708333333333 : 86.070309125 : JumpEnd); (15.0416666666667 : 86.070309125 : JumpStart); (15.2083333333333 : 86.070309125 : JumpEnd); (15.5 : 86.070309125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RaterooDataContext/Tbl/Tbl_TblRow" />
       <nodes>
         <classShapeMoniker Id="fbd5c818-e9f9-48cd-8417-779b0878ebe7" />
-        <classShapeMoniker Id="3765feb6-ee2e-4b61-9d81-455637714bff" />
+        <classShapeMoniker Id="3ccdea25-1947-4887-9c89-ec3a244a94c7" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

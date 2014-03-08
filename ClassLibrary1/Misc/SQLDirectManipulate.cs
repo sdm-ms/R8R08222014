@@ -173,6 +173,14 @@ namespace ClassLibrary1.Misc
             ExecuteSQLNonQuery(database, addCommand);
         }
 
+        public static void DeleteMatchingItems(ISQLDirectConnectionManager database, string tableName, string fieldName, List<string> matchingValuesQuotedIfNecessary)
+        {
+            var individualMatches = matchingValuesQuotedIfNecessary.Select(x => fieldName + "=" + x);
+            string deleteStatement = String.Join(" OR ", individualMatches);
+            string deleteCommand = String.Format("DELETE FROM [dbo].[{0}] WHERE {1};", tableName, deleteStatement);
+            ExecuteSQLNonQuery(database, deleteCommand);
+        }
+
         public static void AddIndicesForSpecifiedColumns(ISQLDirectConnectionManager database, SQLTableDescription table)
         {
             foreach (var col in table.Columns.Where(x => x.NonclusteredIndex))

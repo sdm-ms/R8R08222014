@@ -37026,6 +37026,10 @@ namespace ClassLibrary1.Model
 		
 		private bool _ElevateOnMostNeedsRating;
 		
+		private bool _FastAccessInitialCopy;
+		
+		private bool _FastAccessDeleteThenRecopy;
+		
 		private bool _FastAccessUpdateFields;
 		
 		private bool _FastAccessUpdateRatings;
@@ -37074,6 +37078,10 @@ namespace ClassLibrary1.Model
     partial void OnCountUserPointsChanged();
     partial void OnElevateOnMostNeedsRatingChanging(bool value);
     partial void OnElevateOnMostNeedsRatingChanged();
+    partial void OnFastAccessInitialCopyChanging(bool value);
+    partial void OnFastAccessInitialCopyChanged();
+    partial void OnFastAccessDeleteThenRecopyChanging(bool value);
+    partial void OnFastAccessDeleteThenRecopyChanged();
     partial void OnFastAccessUpdateFieldsChanging(bool value);
     partial void OnFastAccessUpdateFieldsChanged();
     partial void OnFastAccessUpdateRatingsChanging(bool value);
@@ -37299,6 +37307,46 @@ namespace ClassLibrary1.Model
 					this._ElevateOnMostNeedsRating = value;
 					this.SendPropertyChanged("ElevateOnMostNeedsRating");
 					this.OnElevateOnMostNeedsRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FastAccessInitialCopy", DbType="Bit NOT NULL")]
+		public bool FastAccessInitialCopy
+		{
+			get
+			{
+				return this._FastAccessInitialCopy;
+			}
+			set
+			{
+				if ((this._FastAccessInitialCopy != value))
+				{
+					this.OnFastAccessInitialCopyChanging(value);
+					this.SendPropertyChanging();
+					this._FastAccessInitialCopy = value;
+					this.SendPropertyChanged("FastAccessInitialCopy");
+					this.OnFastAccessInitialCopyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FastAccessDeleteThenRecopy", DbType="Bit NOT NULL")]
+		public bool FastAccessDeleteThenRecopy
+		{
+			get
+			{
+				return this._FastAccessDeleteThenRecopy;
+			}
+			set
+			{
+				if ((this._FastAccessDeleteThenRecopy != value))
+				{
+					this.OnFastAccessDeleteThenRecopyChanging(value);
+					this.SendPropertyChanging();
+					this._FastAccessDeleteThenRecopy = value;
+					this.SendPropertyChanged("FastAccessDeleteThenRecopy");
+					this.OnFastAccessDeleteThenRecopyChanged();
 				}
 			}
 		}
