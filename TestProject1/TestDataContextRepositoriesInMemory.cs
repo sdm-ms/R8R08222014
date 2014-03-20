@@ -26,7 +26,7 @@ namespace TestProject1
     [TestClass]
     public class TestDataContextRepositoriesInMemory
     {
-        internal const string raterooConnectionString = "Data Source=PC2012;Initial Catalog=Rateroo9;Integrated Security=True;Connect Timeout=300";
+        internal const string raterooConnectionString = "Data Source=PC2012;Initial Catalog=Rateroo10;Integrated Security=True;Connect Timeout=300";
         internal RaterooDataContext UnderlyingRaterooDataContext;
         internal List<RepositoryItemAssociationInfo> repositoryList;
         internal RepositoryItemAssociationInfo fieldToAddressField;

@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Rateroo9" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="RaterooDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Rateroo9;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="RaterooConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Rateroo10" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="RaterooDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Rateroo10;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="RaterooConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AddressFields" Member="AddressFields">
     <Type Name="AddressField">
       <Column Name="AddressFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -165,9 +165,9 @@
       <Column Name="ScheduleImplementation" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="ChangesGroup_ChangesStatusOfObject" Member="ChangesStatusOfObjects" ThisKey="ChangesGroupID" OtherKey="ChangesGroupID" Type="ChangesStatusOfObject" />
       <Association Name="User_ChangesGroup" Member="User" ThisKey="Creator" OtherKey="UserID" Type="User" IsForeignKey="true" />
-      <Association Name="Tbl_ChangesGroup" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
       <Association Name="PointsManager_ChangesGroup" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
       <Association Name="Rating_ChangesGroup" Member="Rating" ThisKey="RewardRatingID" OtherKey="RatingID" Type="Rating" IsForeignKey="true" />
+      <Association Name="Tbl_ChangesGroup" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.ChangesStatusOfObject" Member="ChangesStatusOfObjects">
@@ -517,8 +517,8 @@
       <Column Name="Location" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Association Name="Domain_InsertableContent" Member="Domain" ThisKey="DomainID" OtherKey="DomainID" Type="Domain" IsForeignKey="true" />
-      <Association Name="Tbl_InsertableContent" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
       <Association Name="PointsManager_InsertableContent" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
+      <Association Name="Tbl_InsertableContent" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.InvitedUser" Member="InvitedUsers">
@@ -582,8 +582,8 @@
       <Column Name="TblRowID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TblColumnID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Association Name="TblColumn_OverrideCharacteristic" Member="TblColumn" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
       <Association Name="RatingGroupAttribute_OverrideCharacteristic" Member="RatingGroupAttribute" ThisKey="RatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
+      <Association Name="TblColumn_OverrideCharacteristic" Member="TblColumn" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
       <Association Name="TblRow_OverrideCharacteristic" Member="TblRow" ThisKey="TblRowID" OtherKey="TblRowID" Type="TblRow" IsForeignKey="true" />
     </Type>
   </Table>
@@ -650,8 +650,8 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Creator" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Association Name="Tbl_ProposalSetting" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
       <Association Name="PointsManager_ProposalSetting" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
+      <Association Name="Tbl_ProposalSetting" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.RatingCharacteristics" Member="RatingCharacteristics">
@@ -949,7 +949,6 @@
       <Association Name="User_UsersAdministrationRightsGroup" Member="UsersAdministrationRightsGroups" ThisKey="UserID" OtherKey="UserID" Type="UsersAdministrationRightsGroup" />
       <Association Name="User_UsersRight" Member="UsersRights" ThisKey="UserID" OtherKey="UserID" Type="UsersRight" />
       <Association Name="User_Comment" Member="Comments" ThisKey="UserID" OtherKey="UserID" Type="Comment" />
-      <Association Name="User_Tbl" Member="Tbls" ThisKey="UserID" OtherKey="Creator" Type="Tbl" />
       <Association Name="User_UserCheckIn" Member="UserCheckIns" ThisKey="UserID" OtherKey="UserID" Type="UserCheckIn" />
       <Association Name="User_UserRatingsToAdd" Member="UserRatingsToAdds" ThisKey="UserID" OtherKey="UserID" Type="UserRatingsToAdd" />
       <Association Name="User_UserInfo" Member="UserInfo" Storage="_UserInfos" ThisKey="UserID" OtherKey="UserID" Type="UserInfo" Cardinality="One" />
@@ -960,6 +959,7 @@
       <Association Name="User_TrustTracker" Member="TrustTrackers" ThisKey="UserID" OtherKey="UserID" Type="TrustTracker" />
       <Association Name="User_UserInteraction" Member="UserInteractions" ThisKey="UserID" OtherKey="OrigRatingUserID" Type="UserInteraction" />
       <Association Name="User_UserInteraction1" Member="UserInteractions1" ThisKey="UserID" OtherKey="LatestRatingUserID" Type="UserInteraction" />
+      <Association Name="User_Tbl" Member="Tbls" ThisKey="UserID" OtherKey="Creator" Type="Tbl" />
     </Type>
   </Table>
   <Table Name="dbo.UsersAdministrationRightsGroups" Member="UsersAdministrationRightsGroups">
@@ -1041,8 +1041,8 @@
       <Association Name="RatingGroup_Rating1" Member="Ratings1" ThisKey="RatingGroupID" OtherKey="OwnedRatingGroupID" Type="Rating" />
       <Association Name="RatingGroup_Rating2" Member="Ratings2" ThisKey="RatingGroupID" OtherKey="TopmostRatingGroupID" Type="Rating" />
       <Association Name="RatingGroup_VolatilityTracker" Member="VolatilityTrackers" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="VolatilityTracker" />
-      <Association Name="TblColumn_RatingGroup" Member="TblColumn" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
       <Association Name="RatingGroupAttribute_RatingGroup" Member="RatingGroupAttribute" ThisKey="RatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
+      <Association Name="TblColumn_RatingGroup" Member="TblColumn" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
       <Association Name="TblRow_RatingGroup" Member="TblRow" ThisKey="TblRowID" OtherKey="TblRowID" Type="TblRow" IsForeignKey="true" />
     </Type>
   </Table>
@@ -1059,40 +1059,6 @@
       <Column Name="LastCheckIn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="IsWorkerRole" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsBackgroundProcessing" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Tbls" Member="Tbls">
-    <Type Name="Tbl">
-      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="PointsManagerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DefaultRatingGroupAttributesID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TblTabWord" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="TblDimensionsID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Creator" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="AllowOverrideOfRatingGroupCharacterstics" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="TypeOfTblRow" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="AllowUsersToAddComments" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="LimitCommentsToUsersWhoCanMakeUserRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="OneRatingPerRatingGroup" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="TblRowAdditionCriteria" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="SuppStylesHeader" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="SuppStylesMain" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="WidthStyleEntityCol" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="WidthStyleNumCol" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="FastTableSyncStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Association Name="Tbl_ChangesGroup" Member="ChangesGroups" ThisKey="TblID" OtherKey="TblID" Type="ChangesGroup" />
-      <Association Name="Tbl_FieldDefinition" Member="FieldDefinitions" ThisKey="TblID" OtherKey="TblID" Type="FieldDefinition" />
-      <Association Name="Tbl_HierarchyItem" Member="HierarchyItems" ThisKey="TblID" OtherKey="TblID" Type="HierarchyItem" />
-      <Association Name="Tbl_InsertableContent" Member="InsertableContents" ThisKey="TblID" OtherKey="TblID" Type="InsertableContent" />
-      <Association Name="Tbl_ProposalSetting" Member="ProposalSettings" ThisKey="TblID" OtherKey="TblID" Type="ProposalSetting" />
-      <Association Name="Tbl_TblTab" Member="TblTabs" ThisKey="TblID" OtherKey="TblID" Type="TblTab" />
-      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="TblID" OtherKey="TblID" Type="TrustTrackerForChoiceInGroup" />
-      <Association Name="Tbl_TblRow" Member="TblRows" ThisKey="TblID" OtherKey="TblID" Type="TblRow" />
-      <Association Name="TblDimension_Tbl" Member="TblDimension" ThisKey="TblDimensionsID" OtherKey="TblDimensionsID" Type="TblDimension" IsForeignKey="true" />
-      <Association Name="User_Tbl" Member="User" ThisKey="Creator" OtherKey="UserID" Type="User" IsForeignKey="true" />
-      <Association Name="PointsManager_Tbl" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.UserCheckIns" Member="UserCheckIns">
@@ -1160,34 +1126,6 @@
       <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Association Name="TblTab_TblColumn" Member="TblColumns" ThisKey="TblTabID" OtherKey="TblTabID" Type="TblColumn" />
       <Association Name="Tbl_TblTab" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TblColumns" Member="TblColumns">
-    <Type Name="TblColumn">
-      <Column Name="TblColumnID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TblTabID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DefaultRatingGroupAttributesID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ConditionTblColumnID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ConditionGreaterThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="ConditionLessThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="CategoryNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Abbreviation" Type="System.String" DbType="NChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Explanation" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="WidthStyle" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="UseAsFilter" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Sortable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="DefaultSortOrderAscending" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Association Name="TblColumn_OverrideCharacteristic" Member="OverrideCharacteristics" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="OverrideCharacteristic" />
-      <Association Name="TblColumn_TblColumnFormatting" Member="TblColumnFormattings" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumnFormatting" />
-      <Association Name="TblColumn_RatingGroup" Member="RatingGroups" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="RatingGroup" />
-      <Association Name="TblColumn_TblColumn" Member="TblColumn2" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" Cardinality="One" />
-      <Association Name="TblColumn_TblColumn" Member="TblColumn1" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
-      <Association Name="TblTab_TblColumn" Member="TblTab" ThisKey="TblTabID" OtherKey="TblTabID" Type="TblTab" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="TrustTrackerUnit_TblColumn" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
-      <Association Name="RatingGroupAttribute_TblColumn" Member="RatingGroupAttribute" ThisKey="DefaultRatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.UserActions" Member="UserActions">
@@ -1270,11 +1208,11 @@
       <Column Name="MaxUpdateIntervalSeconds" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ExtendIntervalWhenChangeIsLessThanThis" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="ExtendIntervalMultiplier" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Association Name="TrustTrackerUnit_TblColumn" Member="TblColumns" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TblColumn" />
       <Association Name="TrustTrackerUnit_PointsManager" Member="PointsManagers" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="PointsManager" />
       <Association Name="TrustTrackerUnit_UserRating" Member="UserRatings" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserRating" />
       <Association Name="TrustTrackerUnit_TrustTracker" Member="TrustTrackers" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTracker" />
       <Association Name="TrustTrackerUnit_UserInteraction" Member="UserInteractions" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="UserInteraction" />
+      <Association Name="TrustTrackerUnit_TblColumn" Member="TblColumns" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TblColumn" />
     </Type>
   </Table>
   <Table Name="dbo.TrustTrackerForChoiceInGroupsUserRatingLinks" Member="TrustTrackerForChoiceInGroupsUserRatingLinks">
@@ -1297,8 +1235,8 @@
       <Column Name="TrustLevelForChoice" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
       <Association Name="TrustTrackerForChoiceInGroup_TrustTrackerForChoiceInGroupsUserRatingLink" Member="TrustTrackerForChoiceInGroupsUserRatingLinks" ThisKey="TrustTrackerForChoiceInGroupID" OtherKey="TrustTrackerForChoiceInGroupID" Type="TrustTrackerForChoiceInGroupsUserRatingLink" />
       <Association Name="ChoiceInGroup_TrustTrackerForChoiceInGroup" Member="ChoiceInGroup" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInGroup" IsForeignKey="true" />
-      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
       <Association Name="User_TrustTrackerForChoiceInGroup" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.PointsManagers" Member="PointsManagers">
@@ -1353,10 +1291,10 @@
       <Association Name="PointsManager_RewardRatingSetting" Member="RewardRatingSettings" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="RewardRatingSetting" />
       <Association Name="PointsManager_UsersAdministrationRightsGroup" Member="UsersAdministrationRightsGroups" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="UsersAdministrationRightsGroup" />
       <Association Name="PointsManager_UsersRight" Member="UsersRights" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="UsersRight" />
-      <Association Name="PointsManager_Tbl" Member="Tbls" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="Tbl" />
       <Association Name="PointsManager_AdministrationRightsGroup" Member="AdministrationRightsGroups" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="AdministrationRightsGroup" />
       <Association Name="PointsManager_RatingGroupAttribute" Member="RatingGroupAttributes" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="RatingGroupAttribute" />
       <Association Name="PointsManager_PointsTotal" Member="PointsTotals" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsTotal" />
+      <Association Name="PointsManager_Tbl" Member="Tbls" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="Tbl" />
       <Association Name="TrustTrackerUnit_PointsManager" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
       <Association Name="Domain_PointsManager" Member="Domain" ThisKey="DomainID" OtherKey="DomainID" Type="Domain" IsForeignKey="true" />
     </Type>
@@ -1622,6 +1560,78 @@
       <Association Name="User_UserInteraction1" Member="User1" ThisKey="LatestRatingUserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.TblColumns" Member="TblColumns">
+    <Type Name="TblColumn">
+      <Column Name="TblColumnID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TblTabID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultRatingGroupAttributesID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ConditionTblColumnID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ConditionGreaterThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="ConditionLessThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="CategoryNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Abbreviation" Type="System.String" DbType="NChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Explanation" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="WidthStyle" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsActiveNotNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsActiveNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsDeletedNotNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsDeletedNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UseAsFilter" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Sortable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultSortOrderAscending" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UseNonSparseIndex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AutomaticallyCreateMissingRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="TblColumn_OverrideCharacteristic" Member="OverrideCharacteristics" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="OverrideCharacteristic" />
+      <Association Name="TblColumn_TblColumnFormatting" Member="TblColumnFormattings" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumnFormatting" />
+      <Association Name="TblColumn_RatingGroup" Member="RatingGroups" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="RatingGroup" />
+      <Association Name="TblColumn_TblColumn" Member="TblColumn2" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" Cardinality="One" />
+      <Association Name="TblColumn_TblColumn" Member="TblColumn1" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
+      <Association Name="TrustTrackerUnit_TblColumn" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
+      <Association Name="RatingGroupAttribute_TblColumn" Member="RatingGroupAttribute" ThisKey="DefaultRatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
+      <Association Name="TblTab_TblColumn" Member="TblTab" ThisKey="TblTabID" OtherKey="TblTabID" Type="TblTab" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tbls" Member="Tbls">
+    <Type Name="Tbl">
+      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PointsManagerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultRatingGroupAttributesID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TblTabWord" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="TypeOfTblRow" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TblDimensionsID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Creator" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="AllowOverrideOfRatingGroupCharacterstics" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AllowUsersToAddComments" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LimitCommentsToUsersWhoCanMakeUserRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="OneRatingPerRatingGroup" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TblRowAdditionCriteria" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="SuppStylesHeader" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="SuppStylesMain" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="WidthStyleEntityCol" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="WidthStyleNumCol" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="FastTableSyncStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsActiveNotNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsActiveNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsDeletedNotNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumTblRowsDeletedNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Tbl_ChangesGroup" Member="ChangesGroups" ThisKey="TblID" OtherKey="TblID" Type="ChangesGroup" />
+      <Association Name="Tbl_FieldDefinition" Member="FieldDefinitions" ThisKey="TblID" OtherKey="TblID" Type="FieldDefinition" />
+      <Association Name="Tbl_HierarchyItem" Member="HierarchyItems" ThisKey="TblID" OtherKey="TblID" Type="HierarchyItem" />
+      <Association Name="Tbl_InsertableContent" Member="InsertableContents" ThisKey="TblID" OtherKey="TblID" Type="InsertableContent" />
+      <Association Name="Tbl_ProposalSetting" Member="ProposalSettings" ThisKey="TblID" OtherKey="TblID" Type="ProposalSetting" />
+      <Association Name="Tbl_TblTab" Member="TblTabs" ThisKey="TblID" OtherKey="TblID" Type="TblTab" />
+      <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="TblID" OtherKey="TblID" Type="TrustTrackerForChoiceInGroup" />
+      <Association Name="Tbl_TblRow" Member="TblRows" ThisKey="TblID" OtherKey="TblID" Type="TblRow" />
+      <Association Name="PointsManager_Tbl" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
+      <Association Name="TblDimension_Tbl" Member="TblDimension" ThisKey="TblDimensionsID" OtherKey="TblDimensionsID" Type="TblDimension" IsForeignKey="true" />
+      <Association Name="User_Tbl" Member="User" ThisKey="Creator" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.TblRows" Member="TblRows">
     <Type Name="TblRow">
       <Column Name="TblRowID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1631,13 +1641,16 @@
       <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="StatusRecentlyChanged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CountHighStakesNow" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CountNullEntries" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountNonnullEntries" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CountUserPoints" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="ElevateOnMostNeedsRating" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="InitialFieldsDisplaySet" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FastAccessInitialCopy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FastAccessDeleteThenRecopy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FastAccessUpdateFields" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FastAccessUpdateRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FastAccessUpdateSpecified" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FastAccessUpdated" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
       <Association Name="TblRow_Field" Member="Fields" ThisKey="TblRowID" OtherKey="TblRowID" Type="Field" />
       <Association Name="TblRow_OverrideCharacteristic" Member="OverrideCharacteristics" ThisKey="TblRowID" OtherKey="TblRowID" Type="OverrideCharacteristic" />
       <Association Name="TblRow_RewardPendingPointsTracker" Member="RewardPendingPointsTrackers" ThisKey="TblRowID" OtherKey="RewardTblRowID" Type="RewardPendingPointsTracker" />

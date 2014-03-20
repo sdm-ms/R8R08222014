@@ -127,7 +127,7 @@ namespace ClassLibrary1.Model
         {
             IQueryable<TblRow> theQuery = null;
 
-            theQuery = theDataContext.GetTable<TblRow>().Where(x => x.TblID == TblID);
+            theQuery = theDataContext.GetTable<TblRow>().Where(x => x.TblID == TblID && x.InitialFieldsDisplaySet);
 
             foreach (var r in theFilterRules)
             {
@@ -337,7 +337,7 @@ namespace ClassLibrary1.Model
             IQueryable<TblRow> theFilteredQueryWithSortValues = null;
 
             theFilteredQueryWithSortValues = from e in GetFilteredQueryAsTblRows(theDataContext, null)
-                                             orderby e.Status, e.ElevateOnMostNeedsRating descending, e.CountNullEntries descending, e.CountUserPoints
+                                             orderby e.Status, e.ElevateOnMostNeedsRating descending, e.CountNonnullEntries, e.CountUserPoints
                                              select e;
 
             if (maxNumResults != null)
@@ -353,7 +353,7 @@ namespace ClassLibrary1.Model
             IQueryable<TblRow> theFilteredQueryWithSortValues = null;
 
             theFilteredQueryWithSortValues = from e in GetFilteredQueryAsTblRows(theDataContext, null)
-                                             orderby e.Status, e.CountNullEntries descending, e.CountUserPoints
+                                             orderby e.Status, e.CountNonnullEntries, e.CountUserPoints
                                              select e;
 
             if (maxNumResults != null)

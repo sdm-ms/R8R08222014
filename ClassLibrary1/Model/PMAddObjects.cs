@@ -90,19 +90,19 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="TblTabID">Category group to add to</param>
         /// <param name="defaultRatingGroupAttributesID">The default rating group attributes for entities in this category</param>
-        /// <param name="categoryNum">The category number within the group (need not be unique)</param>
+        /// <param name="columnNum">The order within the group (need not be unique)</param>
         /// <param name="abbreviation">An abbreviation for the category (used in tables)</param>
         /// <param name="name">The name of the category</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddTblColumn(int TblTabID, int defaultRatingGroupAttributesID, int categoryNum, string abbreviation, string name, string widthStyle, string explanation, bool trackTrustWithinTableColumn)
+        public int AddTblColumn(int TblTabID, int defaultRatingGroupAttributesID, int columnNum, string abbreviation, string name, string widthStyle, string explanation, bool trackTrustWithinTableColumn)
         {
             TblColumn theTblColumn = new TblColumn
             {
                 TblTabID = TblTabID,
                 DefaultRatingGroupAttributesID = defaultRatingGroupAttributesID,
                 TrustTrackerUnit = trackTrustWithinTableColumn ? AddTrustTrackerUnit() : null,
-                CategoryNum = categoryNum,
+                CategoryNum = columnNum,
                 Abbreviation = abbreviation,
                 Name = name,
                 Explanation = explanation,
@@ -112,7 +112,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TblColumn>().InsertOnSubmit(theTblColumn);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("CategoriesForTblID" + DataContext.GetTable<TblTab>().Single(f => f.TblTabID == TblTabID).TblID);
-            SQLFastAccess.PlanDropTbl(DataContext, DataContext.GetTable<TblTab>().Single(f => f.TblTabID == TblTabID).Tbl);
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<TblTab>().Single(f => f.TblTabID == TblTabID).Tbl);
             return theTblColumn.TblColumnID;
         }
 
@@ -134,7 +134,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TblColumnFormatting>().InsertOnSubmit(theTblColumnFormatting);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("CategoriesForTblID" + DataContext.GetTable<TblColumn>().Single(f => f.TblColumnID == TblColumnID).TblTab.TblID);
-            SQLFastAccess.PlanDropTbl(DataContext, DataContext.GetTable<TblColumn>().Single(f => f.TblColumnID == TblColumnID).TblTab.Tbl);
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<TblColumn>().Single(f => f.TblColumnID == TblColumnID).TblTab.Tbl);
             return theTblColumnFormatting.TblColumnFormattingID;
         }
 
@@ -158,7 +158,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TblTab>().InsertOnSubmit(theTblTab);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("CategoriesForTblID" + TblID);
-            SQLFastAccess.PlanDropTbl(DataContext, theTblTab.Tbl);
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblTab.Tbl);
             return theTblTab.TblTabID;
         }
 
@@ -291,7 +291,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<ChoiceGroupFieldDefinition>().InsertOnSubmit(theChoiceGroupFieldDefinition);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            SQLFastAccess.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theChoiceGroupFieldDefinition.ChoiceGroupFieldDefinitionID;
         }
 
@@ -342,7 +342,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<ChoiceGroup>().InsertOnSubmit(theChoiceGroup);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-            SQLFastAccess.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(p => p.PointsManagerID == pointsManagerID));
+            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(p => p.PointsManagerID == pointsManagerID));
             return theChoiceGroup.ChoiceGroupID;
         }
 
@@ -512,7 +512,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<DateTimeFieldDefinition>().InsertOnSubmit(theDateTimeFieldDefinition);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            SQLFastAccess.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theDateTimeFieldDefinition.DateTimeFieldDefinitionID;
         }
 
@@ -558,6 +558,7 @@ namespace ClassLibrary1.Model
                 TblRowFieldDisplay = theFieldDisplay,
                 Name = name,
                 FastAccessInitialCopy = true, // must copy this to the denormalized fast access table
+                InitialFieldsDisplaySet = false, // we can't set the fields display now, because we don't have an id
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<TblRow>().InsertOnSubmit(theTblRow);
@@ -594,8 +595,8 @@ namespace ClassLibrary1.Model
         public TblRowFieldDisplay AddTblRowFieldDisplay()
         {
             TblRowFieldDisplay fieldDisplay = new TblRowFieldDisplay
-            {
-                Row = null, // they'll stay this way if no fields are ever added
+            { // these must be set later, after we get an ID
+                Row = null, 
                 PopUp = null,
                 TblRowPage = null,
                 ResetNeeded = false
@@ -678,7 +679,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<FieldDefinition>().InsertOnSubmit(theFieldDefinition);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<Tbl>().Single(f => f.TblID == TblID).PointsManagerID);
-            SQLFastAccess.PlanDropTbl(DataContext, DataContext.GetTable<Tbl>().Single(f => f.TblID == TblID));
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<Tbl>().Single(f => f.TblID == TblID));
             return theFieldDefinition.FieldDefinitionID;
         }
 
@@ -859,11 +860,13 @@ namespace ClassLibrary1.Model
             if (theRating.NumInGroup == 1)
             {
                 RatingGroup theRatingGroup = theRating.RatingGroup;
-                if (topRatingGroup == null)
-                    theRatingGroup.TblRow.CountNullEntries++;
+                if (topRatingGroup != null)
+                {
+                    theRatingGroup.TblRow.CountNonnullEntries++;
+                    var facnnei = new FastAccessCountNonNullEntriesInfo() { TblColumnID = ratingGroup.TblColumnID, CountNonNullEntries = theRatingGroup.TblRow.CountNonnullEntries };
+                    facnnei.AddToTblRow(ratingGroup.TblRow);
+                }
                 theRatingGroup.CurrentValueOfFirstRating = null; //  defaultUserRating;
-
-                SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theRatingGroup.TblRow.Tbl, theRatingGroup.TblRow, false, false);
             }
 
             AddRatingPhaseStatus(theRating, ratingGroupPhaseStatus);
@@ -1063,11 +1066,11 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// Adds ratings for a category if the Tbl is active. Used to add a category to running ratings.
         /// </summary>
-        /// <param name="theCategory"></param>
-        public void AddRatingsAfterAddingCategoryIfTblIsActive(int theCategory)
+        /// <param name="columnID"></param>
+        public void AddRatingsAfterAddingColumnIfTblIsActive(int columnID)
         {
 
-            Tbl theTbl = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == theCategory).TblTab.Tbl;
+            Tbl theTbl = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == columnID).TblTab.Tbl;
             // Check whether this is a Tbl to which ratings have already been added. If not, we'll add them later.
             var aRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow.TblID == theTbl.TblID);
 
@@ -1098,11 +1101,11 @@ namespace ClassLibrary1.Model
             else
                 theTblRowsToDo = theTblRows.Take((int) numToDo);
             int lastTblRowProcessed = 0;
-            foreach (TblRow entity in theTblRowsToDo)
+            foreach (TblRow tblRow in theTblRowsToDo)
             {
-                AddMissingRatingsForTblRow(entity);
+                AddMissingRatingsForTblRow(tblRow);
                 //Trace.TraceInformation("Adding ratings for entity " + entity);
-                lastTblRowProcessed = entity.TblRowID;
+                lastTblRowProcessed = tblRow.TblRowID;
             }
             if (entityCount <= numToDo)
                 return null;
@@ -1145,19 +1148,24 @@ namespace ClassLibrary1.Model
                 }
                 foreach (TblColumn theCategory in theCategories)
                 {
-                    RatingGroupAttribute theGroupAttributes;
-                    OverrideCharacteristic overrideCharacteristics = null;
-                    if (theTblRow.TblRowID != 0)
-                        overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theCategory.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
-                    if (overrideCharacteristics == null)
-                        theGroupAttributes = theCategory.RatingGroupAttribute;
-                    else
-                        theGroupAttributes = overrideCharacteristics.RatingGroupAttribute;
-                    //ProfileSimple.Start("AddRatingGroupAndRatings");
-                    AddRatingGroupAndRatings(theTblRow, theCategory, theGroupAttributes);
-                    //ProfileSimple.End("AddRatingGroupAndRatings");
+                    AddMissingRatingGroupAndRatings(theTblRow, theCategory);
                 }
             }
+        }
+
+        private void AddMissingRatingGroupAndRatings(TblRow theTblRow, TblColumn theCategory)
+        {
+            RatingGroupAttribute theGroupAttributes;
+            OverrideCharacteristic overrideCharacteristics = null;
+            if (theTblRow.TblRowID != 0)
+                overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theCategory.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
+            if (overrideCharacteristics == null)
+                theGroupAttributes = theCategory.RatingGroupAttribute;
+            else
+                theGroupAttributes = overrideCharacteristics.RatingGroupAttribute;
+            //ProfileSimple.Start("AddRatingGroupAndRatings");
+            AddRatingGroupAndRatings(theTblRow, theCategory, theGroupAttributes);
+            //ProfileSimple.End("AddRatingGroupAndRatings");
         }
 
 
@@ -1302,7 +1310,7 @@ namespace ClassLibrary1.Model
                     topRatingGroup.TblRow.ElevateOnMostNeedsRating = false;
                     topRatingGroup.TblRow.Tbl.PointsManager.HighStakesNoviceNumActive--;
                 }
-                SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, topRatingGroup.TblRow.Tbl, topRatingGroup.TblRow, false, false);
+                FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, topRatingGroup.TblRow.Tbl, topRatingGroup.TblRow, false, false);
             }
             topRatingGroup.HighStakesKnown = false; /* may be changed later by background process */
 
@@ -1431,7 +1439,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<NumberFieldDefinition>().InsertOnSubmit(theNumberFieldDefinition);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            SQLFastAccess.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theNumberFieldDefinition.NumberFieldDefinitionID;
         }
 
@@ -1758,10 +1766,11 @@ namespace ClassLibrary1.Model
                 AddTrustTrackerForChoiceInGroupsUserRatingLink(theUserRating, trustTrackerForChoiceInGroup);
 
 
-            int[] excludedRatingGroupTypes = { (int) RatingGroupTypes.hierarchyNumbersBelow, (int) RatingGroupTypes.probabilityHierarchyBelow, (int) RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy };
-            if (!excludedRatingGroupTypes.Contains(topmostRatingGroup.TypeOfRatingGroup))
+            
+            bool isHierarchyRatingType = RatingGroupTypesList.hierarchyRatingGroupTypes.Contains(topmostRatingGroup.TypeOfRatingGroup);
+            if (!isHierarchyRatingType)
                 VolatilityTracking.AddVolatilityForUserRating(theUserRating);
-
+            bool simpleRatingType = !isHierarchyRatingType && RatingGroupTypesList.singleItemNotDate.Contains(topmostRatingGroup.TypeOfRatingGroup);
 
             // Invalidate the cache for the individual table cell and for the row of table cells.
             PMCacheManagement.InvalidateCacheDependency("RatingGroupID" + rating.TopmostRatingGroupID.ToString());
@@ -1769,7 +1778,7 @@ namespace ClassLibrary1.Model
 
             rating.TotalUserRatings++;
             //Trace.TraceInformation("2Setting current value to " + newUserRating);
-            rating.CurrentValue = newUserRatingValue;
+            rating.CurrentValue = newUserRatingValue; 
             rating.LastTrustedValue = newLastTrustedUserRating;
             if (rating.LastTrustedValue != rating.CurrentValue && rating.CurrentValue != null)
                 throw new Exception("Internal error: Trusted value should equal current value, since trust concept is eliminated.");
@@ -1798,22 +1807,34 @@ namespace ClassLibrary1.Model
             if (rating.NumInGroup == 1 && rating.RatingGroupID == rating.TopmostRatingGroupID)
             {
                 AddRatingGroupStatusRecord(rating.RatingGroup, rating.RatingGroup.CurrentValueOfFirstRating);
-                PMNeedsRatingScore.SetCountUserPoints(DataContext, tblRow, previousUser, user);
+                PMNeedsRatingScore.SetCountUserPoints(DataContext, tblRow, previousUser, user, !simpleRatingType);
                 if (rating.RatingGroup.CurrentValueOfFirstRating == null)
-                    rating.RatingGroup.TblRow.CountNullEntries--;
-                else if (rating.RatingGroup.CurrentValueOfFirstRating != null)
-                    rating.RatingGroup.TblRow.CountNullEntries++;
+                    rating.RatingGroup.TblRow.CountNonnullEntries++;
                 rating.RatingGroup.CurrentValueOfFirstRating = newUserRatingValue;
 
-                rating.RatingGroup.ValueRecentlyChanged = true;
+                rating.RatingGroup.ValueRecentlyChanged = true; 
                 StatusRecords.PrepareToRecordRatingChange(DataContext, rating.RatingGroup.TblColumnID);
+            }
+            if (simpleRatingType && newUserRatingValue != rating.CurrentValue)
+            {
+                var farui = new FastAccessRatingUpdatingInfo()
+                {
+                    TblColumnID = tblCol.TblColumnID,
+                    NewValue = newUserRatingValue,
+                    StringRepresentation = PMNumberandTableFormatter.FormatAsSpecified(newUserRatingValue, rating.RatingCharacteristic.DecimalPlaces, tblCol.TblColumnID),
+                    RecentlyChanged = true,
+                    CountNonNullEntries = tblRow.CountNonnullEntries,
+                    CountUserPoints = tblRow.CountUserPoints
+                };
+                farui.AddToTblRow(tblRow);
             }
 
             //FindOffsettingUserRatings(theUserRating);
 
             CheckChangeGroupsLinkedToRating(rating); // See if there are any changes groups linked to this rating
 
-            SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, tbl, tblRow, true, false);
+            if (!simpleRatingType) // for multiple choice ratings, we can't use the simplified updating procedure
+                FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, tbl, tblRow, true, false);
 
             //Trace.TraceInformation("Added prediction " + theUserRating.UserRatingID + " at " + theUserRating.UserRatingGroup.WhenMade);
             return theUserRating;
@@ -2290,7 +2311,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TextFieldDefinition>().InsertOnSubmit(theTextFieldDefinition);
             DataContext.SubmitChanges();
             PMCacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            SQLFastAccess.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
+            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theTextFieldDefinition.TextFieldDefinitionID;
         }
 

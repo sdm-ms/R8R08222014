@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ClassLibrary1.Model
+namespace ClassLibrary1.Misc
 {
     public static class TimeSpanExtensions
     {

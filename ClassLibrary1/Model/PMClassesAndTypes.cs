@@ -291,6 +291,15 @@ namespace ClassLibrary1.Model
         hierarchyNumbersTop,
         hierarchyNumbersBelow
     }
+
+    public static class RatingGroupTypesList
+    {
+        public static int[] hierarchyRatingGroupTypes = { (int)RatingGroupTypes.hierarchyNumbersBelow, (int)RatingGroupTypes.probabilityHierarchyBelow, (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy, (int)RatingGroupTypes.hierarchyNumbersTop, (int)RatingGroupTypes.hierarchyNumbersBelow };
+        public static int[] singleItem = { (int)RatingGroupTypes.probabilitySingleOutcome, (int)RatingGroupTypes.singleNumber, (int)RatingGroupTypes.singleDate };
+        public static int[] singleItemNotDate = { (int)RatingGroupTypes.probabilitySingleOutcome, (int)RatingGroupTypes.singleNumber };
+        public static int[] notSingleItem = { (int)RatingGroupTypes.hierarchyNumbersBelow, (int)RatingGroupTypes.probabilityHierarchyBelow, (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy, (int)RatingGroupTypes.hierarchyNumbersTop, (int)RatingGroupTypes.hierarchyNumbersBelow, (int) RatingGroupTypes.probabilityMultipleOutcomes };
+    }
+
     /// <summary>
     /// Locations where contents to be inserted
     /// Enumerates the different locations.

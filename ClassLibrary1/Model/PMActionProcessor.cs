@@ -717,11 +717,11 @@ namespace ClassLibrary1.Model
                 if (theSet.theTblRow.TblRowID != 0)
                 {
                     FieldsDisplayCreator theFieldsDisplayCreator = new FieldsDisplayCreator();
-                    theFieldsDisplayCreator.SetFieldDisplayHtml(theSet.theTblRow);
+                    theFieldsDisplayCreator.SetFieldDisplayHtml(theSet.theTblRow);      
+                    FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, theSet.theTbl, theSet.theTblRow, theSet.defaultTblVals != null, true); 
                 }
                 else
                 {
-                    SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theSet.theTbl, theSet.theTblRow, theSet.defaultTblVals != null, true); // ensures that if this is new, it will be copied.
                     theSet.theTblRow.TblRowFieldDisplay.ResetNeeded = true;
                     // Once this reset is processed, the row will be updated again. This means that initially, we will move to the FastSQL the fields
                     // without the field display htmls, and then later recopy all the fields, plus the field display htmls that have been set.

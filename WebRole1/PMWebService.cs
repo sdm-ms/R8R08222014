@@ -56,14 +56,14 @@ namespace PMWebServices
                 theResponse.result = new UserRatingResult("For security purposes, please reload the web page. If you continue to receive this error, please log out and log in again.");
                 return theResponse;
             }
-            return null;
+            return null; // indicates that there is no problem
         }
         
         [WebMethod]
         public List<UserRatingResponse> ProcessRatingsBulk(UserAccessInfo theUserAccessInfo, List<List<RatingAndUserRatingString>> theUserRatings)
         {
             List<UserRatingResponse> theResponses = new List<UserRatingResponse>();
-            UserRatingResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo);
+            UserRatingResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo); // null if no problem
             PMActionProcessor actionProcessor = new PMActionProcessor();
             actionProcessor.ResetDataContexts();
             List<int> specifiedRatingIDs = new List<int>();

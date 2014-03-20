@@ -429,13 +429,6 @@ namespace ClassLibrary1.Model
             DataContext.SubmitChanges();
         }
 
-        public void TestBulkCopyToFastAccess(DenormalizedTableAccess dta)
-        {
-            Tbl theTblToTest = DataContext.GetTable<Tbl>().Single(x => x.TblID == 270);
-            IQueryable<TblRow> theTblRows = DataContext.GetTable<TblRow>().Where(x => x.TblID == 270);
-            new SQLFastAccessTableInfo(DataContext, theTblToTest).BulkCopyRows(DataContext, dta, theTblRows.ToList());
-        }
-
         public void DatabaseTransition20110324()
         {
             SetTimeTracking(); 

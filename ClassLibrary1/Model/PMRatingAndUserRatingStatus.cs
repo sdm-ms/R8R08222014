@@ -193,13 +193,17 @@ namespace ClassLibrary1.Model
                 .OrderBy(x => x.ExecutionTime).ThenBy(x => x.RatingGroupResolutionID)
                 .Take(maxAtOnce))
                 let RatingResolution = x
-                let Ratings = x.RatingGroup.Ratings2
+                let RatingGroup = x.RatingGroup
+                let Ratings = RatingGroup.Ratings2
                 let UserRatings = Ratings.SelectMany(y => y.UserRatings)
+                let TblRow = RatingGroup.TblRow
+                let Tbl = TblRow.Tbl
                 let Users = UserRatings.Select(y => y.User).Distinct()
                 let PointsTotals = Users.SelectMany(y => y.PointsTotals.Where(z => z.PointsManager == x.RatingGroup.TblRow.Tbl.PointsManager)).Distinct()
                 select new 
                     {
                         RatingResolution = RatingResolution,
+                        RatingGroup = RatingGroup,
                         Ratings = Ratings.ToList(),
                         //PreviousRatingResolution = Ratings.First().RatingGroup2.RatingGroupResolutions
                         //    .Where(rgr => rgr.ExecutionTime < x.ExecutionTime && rgr.Status == (int) StatusOfObject.Active)
@@ -207,6 +211,8 @@ namespace ClassLibrary1.Model
                         //    .ThenByDescending(rgr => rgr.RatingGroupResolutionID)
                         //    .FirstOrDefault(),
                         UserRatings = UserRatings.ToList(),
+                        TblRow = TblRow,
+                        Tbl = Tbl,
                         Users = Users.ToList(),
                         PointsTotals = PointsTotals.ToList()
                     })
@@ -231,7 +237,28 @@ namespace ClassLibrary1.Model
                 });
                 foreach (var z in ratingsWithlastUserRatings)
                 {
+                    decimal? previousValue = z.Rating.CurrentValue;
                     z.Rating.CurrentValue = (resolution.RatingResolution.ResolveByUnwinding || z.ReferenceUserRating == null) ? (decimal?) null : z.ReferenceUserRating.NewUserRating;
+                    if (previousValue != z.Rating.CurrentValue)
+                    {
+                        if (RatingGroupTypesList.singleItemNotDate.Contains(resolution.RatingGroup.TypeOfRatingGroup))
+                        {
+                            int tblColID = resolution.RatingGroup.TblColumnID;
+                            var farui = new FastAccessRatingUpdatingInfo()
+                            {
+                                TblColumnID = tblColID,
+                                NewValue = z.Rating.CurrentValue,
+                                StringRepresentation = PMNumberandTableFormatter.FormatAsSpecified(z.Rating.CurrentValue, z.Rating.RatingCharacteristic.DecimalPlaces, tblColID),
+                                RecentlyChanged = true,
+                                CountNonNullEntries = resolution.TblRow.CountNonnullEntries,
+                                CountUserPoints = resolution.TblRow.CountUserPoints
+                            };
+                            farui.AddToTblRow(resolution.TblRow);
+                        }
+                        else
+                            FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, resolution.Tbl, resolution.TblRow, true, false);
+                    }
+
                     //Trace.TraceInformation("3Setting rating to " + z.Rating.CurrentValue);
                     if (resolution.RatingResolution.CancelPreviousResolutions)
                     {

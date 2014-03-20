@@ -269,13 +269,6 @@ public partial class Tester : System.Web.UI.Page
         DataTransitions.DropFastAccessTables(new DenormalizedTableAccess(1));
     }
 
-
-    protected void TestBulkCopyToFastAccess(object sender, EventArgs e)
-    {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
-        DataTransitions.TestBulkCopyToFastAccess(new DenormalizedTableAccess(1));
-    }
-
     protected void GoToFuture_Click(object sender, EventArgs e)
     {
         TestableDateTime.UseFakeTimes();

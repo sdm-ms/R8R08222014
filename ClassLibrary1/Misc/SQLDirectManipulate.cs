@@ -110,6 +110,15 @@ namespace ClassLibrary1.Misc
         public SqlDbType dbtype { get; set; }
     }
 
+    public class SQLUpdateInfo
+    {
+        public string tableName;
+        public string nameOfColumnToMatch;
+        public string valueOfColumnToMatch;
+        public string nameOfColumnToSet;
+        public string valueOfColumnToSet;
+    }
+
     public static class SQLDirectManipulate
     {
         internal static void ExecuteSQLNonQuery(ISQLDirectConnectionManager database, string command, List<SQLParameterInfo> parameters = null)
@@ -179,6 +188,62 @@ namespace ClassLibrary1.Misc
             string deleteStatement = String.Join(" OR ", individualMatches);
             string deleteCommand = String.Format("DELETE FROM [dbo].[{0}] WHERE {1};", tableName, deleteStatement);
             ExecuteSQLNonQuery(database, deleteCommand);
+        }
+
+
+        private static string GetUpdateCommand(string tableName, string nameOfColumnToMatch, string valueOfColumnToMatch, List<string> namesOfColumnsToSet, List<string> valuesOfColumnsToSet)
+        {
+            int columnsCount = namesOfColumnsToSet.Count();
+            if (columnsCount != valuesOfColumnsToSet.Count())
+                throw new Exception("Number of columns to set must equal number of column values to set.");
+            StringBuilder sb = new StringBuilder();
+            sb.Append(" UPDATE ");
+            sb.Append(tableName);
+            sb.Append(" SET ");
+            for (int i = columnsCount - 1; i >= 0; i--) // go backward, so that last setting of column will control
+            {
+                bool alreadySet = false;
+                for (int j = columnsCount - 1; j > i; j--)
+                { // we can't set the column twice, so skip earlier settings of the columns
+                    if (namesOfColumnsToSet[j] == namesOfColumnsToSet[i])
+                    {
+                        alreadySet = true;
+                        break;
+                    }
+                }
+                if (alreadySet)
+                    continue;
+                sb.Append(namesOfColumnsToSet[i]);
+                sb.Append("=");
+                sb.Append(valuesOfColumnsToSet[i]);
+                if (i > 0)
+                    sb.Append(","); // no comma after last entry
+            }
+            sb.Append(" WHERE ");
+            sb.Append(nameOfColumnToMatch);
+            sb.Append("=");
+            sb.Append(valueOfColumnToMatch);
+            sb.Append(";");
+            return sb.ToString();
+        }
+
+        private static string GetUpdateCommands(List<SQLUpdateInfo> allUpdates)
+        {
+            StringBuilder sb = new StringBuilder();
+            var theUpdates = allUpdates.GroupBy(x => x.tableName + "/" + x.nameOfColumnToMatch + "/" + x.valueOfColumnToMatch);
+            foreach (var updateGroup in theUpdates)
+            {
+                List<SQLUpdateInfo> allInGroup = updateGroup.ToList();
+                SQLUpdateInfo firstInGroup = allInGroup.First();
+                sb.Append(GetUpdateCommand(firstInGroup.tableName, firstInGroup.nameOfColumnToMatch, firstInGroup.valueOfColumnToMatch, allInGroup.Select(x => x.nameOfColumnToSet).ToList(), allInGroup.Select(x => x.valueOfColumnToSet).ToList()));
+            }
+            return sb.ToString();
+        }
+
+        public static void ExecuteSpecifiedUpdates(ISQLDirectConnectionManager database, List<SQLUpdateInfo> allUpdates)
+        {
+            string updateCommands = GetUpdateCommands(allUpdates);
+            ExecuteSQLNonQuery(database, updateCommands);
         }
 
         public static void AddIndicesForSpecifiedColumns(ISQLDirectConnectionManager database, SQLTableDescription table)

@@ -20,10 +20,10 @@ namespace ClassLibrary1.Model
                                     .Where(y => !excludedRatingGroupTypes.Contains((int)y.TypeOfRatingGroup))
                                     .Where(y => y.TblColumn.Status == (int)StatusOfObject.Active)
                                     .Count(y => y.HighStakesKnown && y.RatingGroupPhaseStatus.OrderByDescending(z => z.ActualCompleteTime).First().HighStakesBecomeKnown < now),
-                IncludesNullCount = x.RatingGroups
+                NonNullCount = x.RatingGroups
                                     .Where(y => !excludedRatingGroupTypes.Contains((int)y.TypeOfRatingGroup))
                                     .Where(y => y.TblColumn.Status == (int) StatusOfObject.Active)
-                                    .Count(y => y.CurrentValueOfFirstRating == null),
+                                    .Count(y => y.CurrentValueOfFirstRating != null),
                 UserRaterPointsTotals = x.RatingGroups
                                     .Where(y => !excludedRatingGroupTypes.Contains((int)y.TypeOfRatingGroup))
                                     .Where(y => y.TblColumn.Status == (int)StatusOfObject.Active)
@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
                     rowInfo.Row.Tbl.PointsManager.HighStakesNoviceNumActive++;
                 else if (prevValue && !rowInfo.Row.ElevateOnMostNeedsRating)
                     rowInfo.Row.Tbl.PointsManager.HighStakesNoviceNumActive--;
-                rowInfo.Row.CountNullEntries = rowInfo.IncludesNullCount;
+                rowInfo.Row.CountNonnullEntries = rowInfo.NonNullCount;
                 rowInfo.Row.CountUserPoints = 0;
                 foreach (var urpt in rowInfo.UserRaterPointsTotals.ToList())
                     rowInfo.Row.CountUserPoints += (decimal) urpt.PointsPerRating;
@@ -47,7 +47,7 @@ namespace ClassLibrary1.Model
             dataContext.SubmitChanges();
         }
 
-        public static void SetCountUserPoints(IRaterooDataContext dataContext, TblRow row, User formerUser, User currentUser)
+        public static void SetCountUserPoints(IRaterooDataContext dataContext, TblRow row, User formerUser, User currentUser, bool multipleRatingsInRatingGroup)
         {
             decimal formerPointsPerRating = 0;
             decimal currentPointsPerRating;
@@ -60,7 +60,8 @@ namespace ClassLibrary1.Model
             currentPointsPerRating = current == null ? 0 : current.PointsPerRating;
             decimal increase = currentPointsPerRating - formerPointsPerRating;
             row.CountUserPoints += increase;
-            SQLFastAccess.IdentifyRowRequiringUpdate(dataContext, row.Tbl, row, false, false);
+            if (multipleRatingsInRatingGroup)
+                FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(dataContext, row.Tbl, row, false, false);
         }
     }
 }

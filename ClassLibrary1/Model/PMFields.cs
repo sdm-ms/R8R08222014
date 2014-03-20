@@ -194,10 +194,11 @@ namespace ClassLibrary1.Model
             // Note: Here we load all the fields. We won't actually use the projected data, but this serves to 
             // load the relevant data into the database, so that we can use the single query above in memory
             // for each entity needing updating.
+            const int maxAtOnce = 500;
             theQueryForMultipleNeedingResetting = CompiledQuery.Compile((RaterooDataContext CurrentDataContext) =>                               
                     CurrentDataContext.GetTable<Field>()
                     .Join<Field,TblRow,TblRow,Field>(
-                        CurrentDataContext.GetTable<TblRow>().Where(x => x.TblRowFieldDisplay.ResetNeeded).Take(50),
+                        CurrentDataContext.GetTable<TblRow>().Where(x => x.TblRowFieldDisplay.ResetNeeded).OrderBy(x => x.InitialFieldsDisplaySet).Take(50),
                         theField => theField.TblRow, // outer
                         theTblRow => theTblRow, // inner (from MultipleTblRows)
                         (theField, theTblRow) => theField // keep the field
@@ -228,6 +229,7 @@ namespace ClassLibrary1.Model
                                 ) // Note: We can't concatenate to this the table rows that have no fields, so we will deal with that in GetTblRowPlusFieldInfos.
                             }
                     )
+                    .Take(maxAtOnce)
                 );
 
         }
@@ -236,7 +238,7 @@ namespace ClassLibrary1.Model
         {
             return dataContextToUse.GetTable<Field>()
                     .Join<Field,TblRow,TblRow,Field>(
-                        dataContextToUse.GetTable<TblRow>().Where(x => x.TblRowFieldDisplay.ResetNeeded).Take(50),
+                        dataContextToUse.GetTable<TblRow>().Where(x => x.TblRowFieldDisplay.ResetNeeded).OrderBy(x => x.InitialFieldsDisplaySet).Take(50),
                         theField => theField.TblRow, // outer
                         theTblRow => theTblRow, // inner (from MultipleTblRows)
                         (theField, theTblRow) => theField // keep the field
@@ -270,6 +272,11 @@ namespace ClassLibrary1.Model
                 ;
         }
 
+        public static TblRowPlusFieldInfos GetTblRowPlusFieldInfosWithoutFieldInfos(TblRow theTblRow)
+        {
+            return new TblRowPlusFieldInfos() { Fields = null, PointsManager = theTblRow.Tbl.PointsManager, TblRow = theTblRow };
+        }
+
         public TblRowPlusFieldInfos GetTblRowPlusFieldInfos(FieldsLocation theLocation, TblRow theTblRow)
         {
             TblRowPlusFieldInfoLoaderRequest theRequest = new TblRowPlusFieldInfoLoaderRequest(theLocation, theTblRow); 
@@ -280,42 +287,20 @@ namespace ClassLibrary1.Model
         {
             FieldsDisplaySettingsMask bitMask = new FieldsDisplaySettingsMask();
             int visibleMask = bitMask.Visible;
-            //var test = dataContextToUse.Fields
-            //        .Join<Field, TblRow, TblRow, Field>(
-            //            dataContextToUse.TblRows.Where(x => x.TblRowFieldDisplay.ResetNeeded).Take(50),
-            //            theField => theField.TblRow, // outer
-            //            theTblRow => theTblRow, // inner (from MultipleTblRows)
-            //            (theField, theTblRow) => theField // keep the field
-            //        )
-            //        .Where(f => f.Status == (int)StatusOfObject.Active &&
-            //        (
-            //            ((f.FieldDefinition.DisplayInTblRowPageSettings & visibleMask) == visibleMask) ||
-            //            ((f.FieldDefinition.DisplayInTableSettings & visibleMask) == visibleMask) ||
-            //            (f.FieldDefinition.FieldType == (int)FieldTypes.AddressField) ||
-            //            ((f.FieldDefinition.DisplayInPopupSettings & visibleMask) == visibleMask)
-            //        ));
-            //var test2 = dataContextToUse.Fields
-            //        .Join(
-            //            dataContextToUse.TblRows.Where(x => x.TblRowFieldDisplay.ResetNeeded).Take(50),
-            //            theField => theField.TblRow, // outer
-            //            theTblRow => theTblRow, // inner (from MultipleTblRows)
-            //            (theField, theTblRow) => theField // keep the field
-            //        );
-            //var test3 = from theField in dataContextToUse.Fields
-            //            join theTblRow in dataContextToUse.TblRows.Where(x => x.TblRowFieldDisplay.ResetNeeded).Take(50)
-            //            on theField.TblRow equals theTblRow
-            //            select theField;
 
-
+            const int maxSimpleRowsAtOnce = 2000;
             var rowsWithNoFieldsNeedingResetting = dataContextToUse.GetTable<TblRow>()
                                  .Where(x => x.TblRowFieldDisplay.ResetNeeded && !x.Fields.Any())
+                                 .OrderBy(x => x.InitialFieldsDisplaySet)
                                  .Select(x => new TblRowPlusFieldInfos
                                  {
                                      TblRow = x,
                                      PointsManager = x.Tbl.PointsManager,
                                      Fields = null
                                  }
-                                 ).ToList();
+                                 )
+                                 .Take(maxSimpleRowsAtOnce)
+                                 .ToList();
 
 
             List<TblRowPlusFieldInfos> theListToReturn;

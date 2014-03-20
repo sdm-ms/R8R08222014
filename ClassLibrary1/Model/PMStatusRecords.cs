@@ -147,6 +147,7 @@ namespace ClassLibrary1.Model
             public RatingGroupStatusRecord ratingGroupStatusRecord;
             public bool anyToKeepForThisRatingGroup;
             public TblRow tblRow;
+            public TblColumn tblCol;
             public Tbl tbl;
 #pragma warning restore 0649
         }
@@ -161,14 +162,24 @@ namespace ClassLibrary1.Model
                     ratingGroupStatusRecord = x,
                     anyToKeepForThisRatingGroup = x.RatingGroup.RatingGroupStatusRecords.Any(y => y.NewValueTime >= oldestToKeep),
                     tblRow = x.RatingGroup.TblRow,
+                    tblCol = x.RatingGroup.TblColumn,
                     tbl = x.RatingGroup.TblRow.Tbl
                 }).ToList();
             foreach (var theOneToDelete in RatingGroupStatusRecordsToDelete)
             {
                 theDataContext.GetTable<RatingGroupStatusRecord>().DeleteOnSubmit(theOneToDelete.ratingGroupStatusRecord);
                 if (!theOneToDelete.anyToKeepForThisRatingGroup)
+                {
                     theOneToDelete.ratingGroupStatusRecord.RatingGroup.ValueRecentlyChanged = false;
-                SQLFastAccess.IdentifyRowRequiringUpdate(theDataContext, theOneToDelete.tbl, theOneToDelete.tblRow, true, false);
+
+                    var farui = new FastAccessRecentlyChangedInfo()
+                    {
+                        TblColumnID = theOneToDelete.tblCol.TblColumnID,
+                        RecentlyChanged = false,
+                    };
+                    farui.AddToTblRow(theOneToDelete.tblRow);
+                }
+                FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(theDataContext, theOneToDelete.tbl, theOneToDelete.tblRow, true, false);
             }
             return false; // no more work to do for a while.
 

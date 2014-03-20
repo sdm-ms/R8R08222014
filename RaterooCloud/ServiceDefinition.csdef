@@ -23,15 +23,16 @@
       <InputEndpoint name="HttpIn" protocol="http" port="80" />
     </Endpoints>
   </WebRole>
-  <!--<WorkerRole name="WorkerRole1">
+  <WorkerRole name="WorkerRole1">
     <Endpoints>
-      <InputEndpoint name="Email" protocol="tcp" port="80" />
+      <InputEndpoint name="Email" protocol="tcp" port="81" />
     </Endpoints>
     <ConfigurationSettings>
       <Setting name="DiagnosticsConnectionString" />
-      <Setting name="BlobConnectionString"/>
+      <Setting name="BlobConnectionString" />
       <Setting name="RaterooConnectionString" />
-      <Setting name="DataConnectionString"/>
+      <Setting name="Denorm0001ConnectionString" />
+      <Setting name="DataConnectionString" />
     </ConfigurationSettings>
     <LocalResources>
       <LocalStorage name="raterooLocal"
@@ -41,5 +42,5 @@
                       cleanOnRoleRecycle="false"
                       sizeInMB="300" />
     </LocalResources>
-  </WorkerRole>-->
+  </WorkerRole>
 </ServiceDefinition>

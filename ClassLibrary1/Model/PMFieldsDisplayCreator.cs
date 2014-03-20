@@ -41,14 +41,26 @@ namespace ClassLibrary1.Model
             {
                 SetFieldDisplayHtml(entityPlusFieldInfo.TblRow);
             }
+        }
 
-
+        public void SetFieldDisplayHtmlWithoutFieldsForNow(TblRow theTblRow)
+        {
+            var dataAccess = new RaterooDataAccess();
+            TblDimensionAccess theCssAccess = new TblDimensionAccess(new RaterooDataAccess());
+            TblDimension theTblDimension = theCssAccess.GetTblDimensionsForRegularTbl(theTblRow.TblID);
+            TblRowPlusFieldInfos tblRowInfo = TblRowPlusFieldInfoLoader.GetTblRowPlusFieldInfosWithoutFieldInfos(theTblRow);
+            FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow, tblRowInfo);
+            FieldDisplayHtml rowPopup = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowPopup, theTblRow, tblRowInfo);
+            FieldDisplayHtml entityPage = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.TblRowPage, theTblRow, tblRowInfo);
+            theTblRow.TblRowFieldDisplay.Row = row.theMainHtml;
+            theTblRow.TblRowFieldDisplay.PopUp = rowPopup.theMainHtml;
+            theTblRow.TblRowFieldDisplay.TblRowPage = entityPage.theMainHtml;
         }
 
         public void SetFieldDisplayHtml(TblRow theTblRow)
         {
             var dataAccess = new RaterooDataAccess();
-            SQLFastAccess.IdentifyRowRequiringUpdate(dataAccess.RaterooDB, theTblRow.Tbl, theTblRow, false, true);
+            FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(dataAccess.RaterooDB, theTblRow.Tbl, theTblRow, false, true);
             TblDimensionAccess theCssAccess = new TblDimensionAccess(new RaterooDataAccess());
             TblDimension theTblDimension = theCssAccess.GetTblDimensionsForRegularTbl(theTblRow.TblID);
             FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow);
@@ -58,6 +70,7 @@ namespace ClassLibrary1.Model
             theTblRow.TblRowFieldDisplay.PopUp = rowPopup.theMainHtml;
             theTblRow.TblRowFieldDisplay.TblRowPage = entityPage.theMainHtml;
             theTblRow.TblRowFieldDisplay.ResetNeeded = false;
+            theTblRow.InitialFieldsDisplaySet = true;
             PMCacheManagement.InvalidateCacheDependency("FieldForTblRowID" + theTblRow.TblRowID.ToString());
         }
 
@@ -125,6 +138,11 @@ namespace ClassLibrary1.Model
             //ProfileSimple.End("GetCompiledQuery");
             //ProfileSimple.Start("AfterCompiledQuery");
 
+            return BuildFieldDisplayHtml(theTblDimension, theLocation, entity, theTblRowPlusFieldInfos);
+        }
+
+        private FieldDisplayHtml BuildFieldDisplayHtml(TblDimension theTblDimension, FieldsLocation theLocation, TblRow entity, TblRowPlusFieldInfos theTblRowPlusFieldInfos)
+        {
             switch (theLocation)
             {
                 case FieldsLocation.RowHeading:

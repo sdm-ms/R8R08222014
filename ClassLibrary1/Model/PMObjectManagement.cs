@@ -434,7 +434,7 @@ namespace ClassLibrary1.Model
                     TblRow theTblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID == objectID);
                     StatusOfObject originalStatus = (StatusOfObject)theTblRow.Status;
                     theTblRow.Status = newValue;
-                    SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theTblRow.Tbl, theTblRow, false, false);
+                    FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, theTblRow.Tbl, theTblRow, false, false);
                     DataContext.SubmitChanges();
                     if (theStatus == StatusOfObject.Active) 
                     {
@@ -1006,13 +1006,13 @@ namespace ClassLibrary1.Model
                     theTblColumn.Name = theName;
                     PMCacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
 
-                    SQLFastAccess.PlanDropTbl(DataContext, theTblColumn.TblTab.Tbl);
+                    FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblColumn.TblTab.Tbl);
                     break;
                 case TypeOfObject.TblTab:
                     var theTblTab = DataContext.GetTable<TblTab>().Single(x => x.TblTabID==objectID);
                     theTblTab.Name = theName;
                     PMCacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblTab.TblID);
-                    SQLFastAccess.PlanDropTbl(DataContext, theTblTab.Tbl);
+                    FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblTab.Tbl);
                     break;
                 case TypeOfObject.ChoiceGroup:
                     var theChoiceGroup = DataContext.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID==objectID);

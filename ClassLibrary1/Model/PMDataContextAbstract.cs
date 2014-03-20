@@ -59,7 +59,7 @@ namespace ClassLibrary1.Model
         {
             PMDatabaseAndAzureRoleStatus.CheckPreventChanges(theDataContext);
             RaterooDataManipulation.BulkAddSearchWordsCorrect(theDataContext);
-            SQLFastAccess.PushRowsRequiringUpdateToAzureQueue(theDataContext);
+            FastAccessTablesMaintenance.PushRowsRequiringUpdateToAzureQueue(theDataContext);
             StatusRecords.RecordRememberedStatusRecordChanges(theDataContext);
             theDataContext.RegisteredToBeInserted = new List<object>();
         }
