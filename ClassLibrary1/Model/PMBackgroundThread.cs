@@ -39,206 +39,201 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// Perform idle tasks (such as checking for a rating that needs resolution or updating)
         /// </summary>
-        public void IdleTasksLoop(RaterooDataManipulation dataManipulation)
+        public void BackgroundTasksRunner(RaterooDataManipulation dataManipulation)
         {
-            bool performBackgroundProcess = false;
-            try
+            lock (BackgroundThread.padlock)
             {
-                lock (BackgroundThread.padlock)
-                {
                     
-                    dataManipulation.ResetDataContexts();
-                    performBackgroundProcess = PMDatabaseAndAzureRoleStatus.PerformBackgroundProcess(dataManipulation.DataContext); 
-                    if (!performBackgroundProcess)
+                dataManipulation.ResetDataContexts();
+                if (BackgroundThread.ExitRequested)
+                {
+                    BackgroundThread.ExitGranted = true;
+                    return;
+                }
+
+                //if (BackgroundThread.IsPauseRequested())
+                //Trace.TraceInformation("Pause is requested.");
+                MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
+                const int numTasks = 20;
+                const int numLoops = 10;
+                for (int loop = 1; loop <= numLoops; loop++)
+                {
+                    if (BackgroundThread.ExitRequested)
+                        break;
+                    if (loop != 1 && BackgroundThread.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
                     {
-                        if (!PMDatabaseAndAzureRoleStatus.CurrentRoleIsWorkerRole())
-                            CacheInvalidityNotification.ProcessNewNotifications(); // web roles should do this periodically (regardless of whether it's also performing worker role functions)
-                        Thread.Sleep(5000); // wait a bit
-                        return;
+                        BackgroundThread.PauseRequestedWhenWorkIsComplete = false;
+                        BackgroundThread.CurrentlyPaused = true;
                     }
-                    dataManipulation.ResetDataContexts();
-
-                    //if (BackgroundThread.IsPauseRequested())
-                    //Trace.TraceInformation("Pause is requested.");
-                    MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
-                    const int numTasks = 20;
-                    const int numLoops = 10;
-                    bool[] moreWorkToDoThisTask = new bool[numTasks];
-                    for (int loop = 1; loop <= numLoops; loop++)
-                    {
-                        if (BackgroundThread.ExitRequested)
-                        {
-                            BackgroundThread.ExitGranted = true;
-                            return;
-                        }
-                        if (loop != 1 && BackgroundThread.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
-                        {
-                            BackgroundThread.PauseRequestedWhenWorkIsComplete = false;
-                            BackgroundThread.CurrentlyPaused = true;
-                        }
-                        for (int i = 1; i <= numTasks; i++)
-                        {
-                            if (BackgroundThread.PauseRequestedImmediately)
-                            {
-                                BackgroundThread.PauseRequestedImmediately = false;
-                                BackgroundThread.CurrentlyPaused = true;
-                            }
-                            while (BackgroundThread.CurrentlyPaused)
-                            {
-                                Thread.Sleep(1); // very minimal pause until we check again to see if the pause request has been turned off
-                            }
-                            if (loop == 1 || loop == numLoops) // we try everything on first loop, as well as on last loop, so moreWorkToDo will be accurate
-                                moreWorkToDoThisTask[i - 1] = true;
-                            if (!BackgroundThread.IsBriefPauseRequested() && ((i == 1 && moreWorkToDoThisTask.Any(x => x == true)) || moreWorkToDoThisTask[i - 1]))
-                            {
-                                // Trace.TraceInformation("Task " + i);
-                               // ProfileSimple.Start("TaskNum" + i);
-                                dataManipulation.ResetDataContexts();
-                                try
-                                {
-                                    switch (i)
-                                    {
-
-                                        // Table as a whole
-
-                                        case 1:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskCashOutPointsManagers();
-                                            break;
-                                        
-                                        // Table data
-
-                                        case 2:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.RespondToResetTblRowFieldDisplays();
-                                            break;
-
-                                        case 3:
-                                            moreWorkToDoThisTask[i - 1] = GeocodeUpdate.DoUpdate(dataManipulation.DataContext); // updating addresses that couldn't be geocoded before
-                                            break;
-
-                                        case 4:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess(); // currently, create missing ratings and upload table rows
-                                            break;
-
-                                        // Rating status (note that long process above also can include ratings)
-
-                                        case 5:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.FixStatusInconsistencies(); // From the domain level down to the Rating level, ensures that we can stop further short-term resolution activity and entering of new user ratings when it should be inactive/deleted
-                                            break;
-
-                                        case 6:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings(); // loads the UserRatingsToAdd and completes the process of adding UserRating to the database
-                                            break;
-
-                                        case 7:
-                                            moreWorkToDoThisTask[i - 1] = StatusRecords.DeleteOldStatusRecords(dataManipulation.DataContext); // we are deleting old status records (which are used to ensure consistent sorting even after user ratings have been changed)
-                                            break;
-
-                                        case 8:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskImplementResolutions(); // completes the ratinggroupresolutions in the proposed state
-                                            break;
-
-                                        case 9:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskShortTermResolve(); // Sets the ShortTermResolutionValue for the RatingPhaseStatus
-                                            break;
-
-                                        case 10:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskMakeHighStakesKnown();
-                                            break;
-
-                                        case 11:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskConsiderDemotingHighStakesPrematurely();
-                                            break;
-
-                                        case 12:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.AdvanceRatingGroupsNeedingAdvancing();
-                                            break;
-
-                                        // Points and user ratings
-
-                                        case 13:
-                                            moreWorkToDoThisTask[i - 1] = VolatilityTracking.UpdateTrackers(dataManipulation.DataContext); // updates volatility both for user ratings and for the TblRows that they are in
-                                            break;
-
-                                        case 14:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePointsBecauseOfSomethingOtherThanNewUserRating();
-                                            break;
-
-                                        case 15:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePointsAndUserInteractionsInResponseToRatingPhaseStatusTrigger();
-                                            break;
-
-                                        case 16:
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskReviewRecentUserRatings();
-                                            break;
-
-                                        // Trust
-
-                                        case 17:
-                                            // This also affects Ratings. Only the TrustTracker is consulted. So, if we moved trust tracking to a separate database, we would do this with the Ratings.
-                                            moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskFlagRatingsNeedingReviewBasedOnChangeInTrust(); // when a user's overall trust level has changed sufficiently, we set the ReviewRecentUserRatingsAfter field of the Ratings so that the UserRatings will be reviewed soon.
-                                            break;
-
-                                        case 18:
-                                            // These are internal to trust tracking, but one is triggered by the adjust user interaction process.
-                                            moreWorkToDoThisTask[i - 1] = PMTrustTrackingBackgroundTasks.DoTrustTrackingBackgroundTasks(dataManipulation.DataContext);
-                                            break;
-
-                                        case 19:
-                                            // As user ratings get old, we update how recent they are, and chnage the user interaction stats accordingly.
-                                            moreWorkToDoThisTask[i - 1] = PMRecencyUpdates.UpdateRecency(dataManipulation.DataContext);
-                                            break;
-
-                                        // Data sync
-
-                                        case 20:
-                                            moreWorkToDoThisTask[i - 1] = FastAccessTablesMaintenance.ContinueFastAccessMaintenance(dataManipulation.DataContext, new DenormalizedTableAccess(1)); // DEBUG: Must change this once we have denormalized tables stored in multiple locations
-                                            break;
-
-                                    }
-                                }
-                                catch
-                                {
-                                    moreWorkToDoThisTask[i - 1] = false; // we don't want a single exception to stop all other background processing
-                                    // DEBUG -- log this
-                                }
-                                dataManipulation.DataContext.SubmitChanges();
-                                dataManipulation.ResetDataContexts();
-                                PMDatabaseAndAzureRoleStatus.CheckInRole(dataManipulation.DataContext);
-                                dataManipulation.ResetDataContexts();
-                                WeakReferenceTracker.CheckUncollected();
-                                //Trace.TraceInformation("TaskNum " + i);
-                               // ProfileSimple.End("TaskNum" + i);
-
-                                if (i != numTasks)
-                                    MoreWorkToDo = true;
-                                else
-                                    MoreWorkToDo = moreWorkToDoThisTask.Any(x => x == true);
-                            }
-                        }
-                    }
-                    LoopSetCompletedCount++;
-                    if (!MoreWorkToDo)
-                    {
-                        if (!RoleEnvironment.IsAvailable)
-                            Thread.Sleep(100); // sleep only long enough for unit tests to realize that the idle tasks have completed.
-                        else
-                            Thread.Sleep(3000);
-
-                    }
+                    MoreWorkToDo = CompleteSingleLoop(dataManipulation, numTasks, numLoops, loop);
+                }
+                LoopSetCompletedCount++;
+                if (!MoreWorkToDo)
+                {
+                    if (!RoleEnvironment.IsAvailable)
+                        Thread.Sleep(100); // sleep only long enough for unit tests to realize that the idle tasks have completed.
+                    else
+                        Thread.Sleep(3000);
                 }
             }
-            catch (Exception ex)
-            {
-                Trace.TraceError("Idle task failed: " + ex.Message);
-                // I cant' remember if this reset should happen or not.  At the least I think I should report that there was an error.
-                //dataManipulation.ResetDataContexts();
-            }
-            finally
-            {
-                if (performBackgroundProcess && !PMDatabaseAndAzureRoleStatus.ShouldPreventChanges(dataManipulation.DataContext))
-                    PMDatabaseAndAzureRoleStatus.CheckInRole(dataManipulation.DataContext);
-            }
             // Trace.TraceInformation("Exiting IdleTasks moreWorkToDo: " + moreWorkToDo.ToString());
+        }
+
+        private bool CompleteSingleLoop(RaterooDataManipulation dataManipulation, int numTasks, int numLoops, int loop)
+        {
+            bool moreWorkToDo = true;
+            dataManipulation.ResetDataContexts();
+            bool[] moreWorkToDoThisTask = new bool[numTasks];
+            for (int i = 1; i <= numTasks; i++)
+            {
+                if (BackgroundThread.ExitRequested)
+                    break;
+                if (BackgroundThread.PauseRequestedImmediately)
+                {
+                    BackgroundThread.PauseRequestedImmediately = false;
+                    BackgroundThread.CurrentlyPaused = true;
+                }
+                while (BackgroundThread.CurrentlyPaused)
+                {
+                    Thread.Sleep(1); // very minimal pause until we check again to see if the pause request has been turned off
+                }
+                if (loop == 1 || loop == numLoops) // we try everything on first loop, as well as on last loop, so moreWorkToDo will be accurate
+                    moreWorkToDoThisTask[i - 1] = true;
+                if (!BackgroundThread.IsBriefPauseRequested() && ((i == 1 && moreWorkToDoThisTask.Any(x => x == true)) || moreWorkToDoThisTask[i - 1]))
+                {
+                    // Trace.TraceInformation("Task " + i);
+                    // ProfileSimple.Start("TaskNum" + i);
+                    dataManipulation.ResetDataContexts();
+                    try
+                    {
+                        CompleteSingleTask(dataManipulation, moreWorkToDoThisTask, i);
+                        dataManipulation.DataContext.SubmitChanges();
+                        dataManipulation.ResetDataContexts();
+                    }
+                    catch (Exception ex)
+                    {
+                        moreWorkToDoThisTask[i - 1] = false; // we don't want a single exception to stop all other background processing
+                        Trace.TraceError("Idle task failed: " + ex.Message);
+                    }
+                    finally
+                    {
+                        PMDatabaseAndAzureRoleStatus.CheckInRole(dataManipulation.DataContext);
+                        dataManipulation.ResetDataContexts();
+                        WeakReferenceTracker.CheckUncollected();
+                    }
+                    //Trace.TraceInformation("TaskNum " + i);
+                    // ProfileSimple.End("TaskNum" + i);
+
+                    if (i != numTasks)
+                        moreWorkToDo = true;
+                    else
+                        moreWorkToDo = moreWorkToDoThisTask.Any(x => x == true);
+                }
+            }
+            return moreWorkToDo;
+        }
+
+        private static void CompleteSingleTask(RaterooDataManipulation dataManipulation, bool[] moreWorkToDoThisTask, int i)
+        {
+            switch (i)
+            {
+
+                // Table as a whole
+
+                case 1:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskCashOutPointsManagers();
+                    break;
+
+                // Table data
+
+                case 2:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.RespondToResetTblRowFieldDisplays();
+                    break;
+
+                case 3:
+                    moreWorkToDoThisTask[i - 1] = GeocodeUpdate.DoUpdate(dataManipulation.DataContext); // updating addresses that couldn't be geocoded before
+                    break;
+
+                case 4:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess(); // currently, create missing ratings and upload table rows
+                    break;
+
+                // Rating status (note that long process above also can include ratings)
+
+                case 5:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.FixStatusInconsistencies(); // From the domain level down to the Rating level, ensures that we can stop further short-term resolution activity and entering of new user ratings when it should be inactive/deleted
+                    break;
+
+                case 6:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings(); // loads the UserRatingsToAdd and completes the process of adding UserRating to the database
+                    break;
+
+                case 7:
+                    moreWorkToDoThisTask[i - 1] = StatusRecords.DeleteOldStatusRecords(dataManipulation.DataContext); // we are deleting old status records (which are used to ensure consistent sorting even after user ratings have been changed)
+                    break;
+
+                case 8:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskImplementResolutions(); // completes the ratinggroupresolutions in the proposed state
+                    break;
+
+                case 9:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskShortTermResolve(); // Sets the ShortTermResolutionValue for the RatingPhaseStatus
+                    break;
+
+                case 10:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskMakeHighStakesKnown();
+                    break;
+
+                case 11:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskConsiderDemotingHighStakesPrematurely();
+                    break;
+
+                case 12:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.AdvanceRatingGroupsNeedingAdvancing();
+                    break;
+
+                // Points and user ratings
+
+                case 13:
+                    moreWorkToDoThisTask[i - 1] = VolatilityTracking.UpdateTrackers(dataManipulation.DataContext); // updates volatility both for user ratings and for the TblRows that they are in
+                    break;
+
+                case 14:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePointsBecauseOfSomethingOtherThanNewUserRating();
+                    break;
+
+                case 15:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskUpdatePointsAndUserInteractionsInResponseToRatingPhaseStatusTrigger();
+                    break;
+
+                case 16:
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskReviewRecentUserRatings();
+                    break;
+
+                // Trust
+
+                case 17:
+                    // This also affects Ratings. Only the TrustTracker is consulted. So, if we moved trust tracking to a separate database, we would do this with the Ratings.
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskFlagRatingsNeedingReviewBasedOnChangeInTrust(); // when a user's overall trust level has changed sufficiently, we set the ReviewRecentUserRatingsAfter field of the Ratings so that the UserRatings will be reviewed soon.
+                    break;
+
+                case 18:
+                    // These are internal to trust tracking, but one is triggered by the adjust user interaction process.
+                    moreWorkToDoThisTask[i - 1] = PMTrustTrackingBackgroundTasks.DoTrustTrackingBackgroundTasks(dataManipulation.DataContext);
+                    break;
+
+                case 19:
+                    // As user ratings get old, we update how recent they are, and chnage the user interaction stats accordingly.
+                    moreWorkToDoThisTask[i - 1] = PMRecencyUpdates.UpdateRecency(dataManipulation.DataContext);
+                    break;
+
+                // Data sync
+
+                case 20:
+                    moreWorkToDoThisTask[i - 1] = FastAccessTablesMaintenance.ContinueFastAccessMaintenance(dataManipulation.DataContext, new DenormalizedTableAccess(1)); // DEBUG: Must change this once we have denormalized tables stored in multiple locations
+                    break;
+
+            }
         }
 
         //public Thread GetBackgroundThread()
@@ -270,7 +265,7 @@ namespace ClassLibrary1.Model
                     CurrentlyInBriefPause = false;
                     return;
                 }
-                IdleTasksLoop(theDataAccessModule);
+                BackgroundTasksRunner(theDataAccessModule);
                 if (!MoreWorkToDo)
                 {
                     CurrentlyInBriefPause = true;
@@ -419,7 +414,7 @@ namespace ClassLibrary1.Model
                 //Trace.TraceInformation("Using integrated idle tasks.");
                 theTask = new MyBackgroundTask();
                 RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
-                theTask.IdleTasksLoop(theDataAccessModule);
+                theTask.BackgroundTasksRunner(theDataAccessModule);
             }
             //}
             //finally

@@ -614,6 +614,8 @@ namespace ClassLibrary1.Model
         /// <param name="status">A character indicating the status of this record</param>
         public TblRowStatusRecord AddTblRowStatusRecord(TblRow entity, DateTime timeChanged, bool deleting, bool adding)
         {
+            if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
+                return null;
             StatusRecords.PrepareToRecordRowStatusChange(DataContext, entity.TblID);
             entity.StatusRecentlyChanged = true;
             TblRowStatusRecord record = new TblRowStatusRecord

@@ -25,7 +25,7 @@ namespace WorkerRole1
 
                 var theTask = new MyBackgroundTask();
                 RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
-                theTask.IdleTasksLoop(theDataAccessModule);
+                theTask.BackgroundTasksRunner(theDataAccessModule);
                 //Thread.Sleep(10000);
                 //Trace.TraceInformationLine("Working", "Information");
             }

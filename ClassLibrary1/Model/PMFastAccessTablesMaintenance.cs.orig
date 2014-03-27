@@ -333,5 +333,7 @@ namespace ClassLibrary1.Model
             // DEBUG -- we must implement a substitute for this
         }
 
+                if (FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords && asOfDateTime != null && StatusRecords.RowStatusHasChangedSince((DateTime)asOfDateTime, tblID))
+            //System.Diagnostics.Trace.WriteLine("DoQuery cacheString " + cacheString + " firstRow: " + firstRowNum + " numRows: " + numRows);
     }
 }
