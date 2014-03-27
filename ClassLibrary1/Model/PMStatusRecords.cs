@@ -154,6 +154,8 @@ namespace ClassLibrary1.Model
 
         public static bool DeleteOldRatingGroupStatusRecords(IRaterooDataContext theDataContext)
         {
+            if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
+                return false;
             DateTime oldestToKeep = TestableDateTime.Now - new TimeSpan(0, 30, 0);
             var RatingGroupStatusRecordsToDelete = theDataContext.GetTable<RatingGroupStatusRecord>()
                 .Where(x => x.NewValueTime < oldestToKeep)

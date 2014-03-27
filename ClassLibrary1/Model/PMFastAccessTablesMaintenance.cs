@@ -18,6 +18,9 @@ namespace ClassLibrary1.Model
 {
     public static class FastAccessTablesMaintenance
     {
+
+        public static bool RecordRecentChangesInStatusRecords = false; // We are disabling this feature. If enabling it, we would need to copy the TblRowStatusRecords to the denormalized database.
+
         public static int CountHighestRecord(DenormalizedTableAccess dta, string tableName)
         {
             // Note: We may not be able to rely on this if we change from numeric IDs.
@@ -638,7 +641,7 @@ namespace ClassLibrary1.Model
             {
                 //whereString += "WHERE ";
                 string mainFilter = GetSeparatedList(whereClauses, " AND ");
-                if (asOfDateTime != null && StatusRecords.RowStatusHasChangedSince((DateTime)asOfDateTime, tblID))
+                if (FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords && asOfDateTime != null && StatusRecords.RowStatusHasChangedSince((DateTime)asOfDateTime, tblID))
                     whereString = FilterBasedOnTblRowStatusRecords(mainFilter, originalSqlTableIndex, ref sqlTableIndex, ref paramNumber, parameters, (DateTime)asOfDateTime, tblID, !filters.ActiveOnly);
                 else
                 {
@@ -774,7 +777,7 @@ namespace ClassLibrary1.Model
             if (dataContext == null)
                 return;
 
-            System.Diagnostics.Trace.WriteLine("DoQuery cacheString " + cacheString + " firstRow: " + firstRowNum + " numRows: " + numRows);
+            //System.Diagnostics.Trace.WriteLine("DoQuery cacheString " + cacheString + " firstRow: " + firstRowNum + " numRows: " + numRows);
             DoQueryResults theResults = PMCacheManagement.GetItemFromCache(cacheString + "FastQueryResults") as DoQueryResults;
 
             if (theResults == null)

@@ -652,6 +652,8 @@ namespace ClassLibrary1.Model
 
         public void AddRatingGroupStatusRecord(RatingGroup theRatingGroup, decimal? oldValueOfFirstRating)
         {
+            if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
+                return;
             RatingGroupStatusRecord theRecord = new RatingGroupStatusRecord
             {
                 RatingGroup = theRatingGroup,

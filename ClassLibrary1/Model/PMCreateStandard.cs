@@ -376,8 +376,6 @@ namespace ClassLibrary1.Model
             return theTblID;
         }
 
-
-
         protected int CreatePointsManager(string name, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID, bool createRewardTbl, bool visibleToPublic = true, decimal probabilityHighStakes = 0.01M, decimal highStakesMultiplierSecret = 100M, decimal highStakesMultiplierKnown = 10M)
         {
             int myChangesGroup = Action.ChangesGroupCreate(null, null, superUser, null, null, null, null);

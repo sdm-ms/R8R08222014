@@ -35,12 +35,14 @@ namespace ClassLibrary1.Model
             // Note that we use the following to load the data into a list, but we don't actually use the field info from the list. Because it's loaded in, it won't be loaded in again.
             List<TblRowPlusFieldInfos> theTblRowPlusFieldInfos = theTblRowPlusFieldsInfoLoader.GetTblRowPlusFieldInfos(dataAccess.RaterooDB);
             //ProfileSimple.End("GetCompiledQuery");
-            //ProfileSimple.Start("AfterCompiledQuery");
+            ProfileSimple.Start("AfterCompiledQuery");
 
             foreach (var entityPlusFieldInfo in theTblRowPlusFieldInfos)
             {
                 SetFieldDisplayHtml(entityPlusFieldInfo.TblRow);
             }
+
+            ProfileSimple.End("AfterCompiledQuery");
         }
 
         public void SetFieldDisplayHtmlWithoutFieldsForNow(TblRow theTblRow)

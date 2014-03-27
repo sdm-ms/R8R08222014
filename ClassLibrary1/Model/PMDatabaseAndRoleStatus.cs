@@ -223,7 +223,6 @@ namespace ClassLibrary1.Model
         //static RoleInstance currentRole = null;
         static string workerRoleName = "WorkerRole1";
         // static string webRoleName = "WebRole1";
-        static bool useAzureCheck = true;
         static bool? performingBackgroundWork = null;
         static TimeSpan maximumTimeForBackgroundTasks = TimeSpan.FromMinutes((double)2);
         public static bool PerformBackgroundProcess(IRaterooDataContext theDataContext)
@@ -240,10 +239,7 @@ namespace ClassLibrary1.Model
             if (theStatus.PreventChanges)
                 return false;
 
-            if (useAzureCheck)
-                performingBackgroundWork = PerformBackgroundProcessAzureCheck(theDataContext);
-            else
-                throw new Exception("Background process not currently implemented outside of Azure.");
+            performingBackgroundWork = ShouldPerformBackgroundProcess(theDataContext);
 
             //Trace.TraceInformation("Perform background process for " + RoleEnvironment.CurrentRoleInstance.Id + ": " + performingBackgroundWork);
 
@@ -254,7 +250,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        private static bool PerformBackgroundProcessAzureCheck(IRaterooDataContext theDataContext)
+        private static bool ShouldPerformBackgroundProcess(IRaterooDataContext theDataContext)
         {
             RoleStatus thisRole = CheckInRole(theDataContext);
             if (disableProcessingUntil != null && TestableDateTime.Now < (DateTime)disableProcessingUntil)

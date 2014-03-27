@@ -126,18 +126,6 @@ namespace ClassLibrary1.Model
         {
             //Trace.TraceInformation("Worker role -- invalidating cache dependency " + dependencyString);
             InvalidateCacheDependencyOnThisMachine(dependencyString);
-            if (!RoleEnvironment.IsAvailable)
-                return;
-            try
-            {
-                bool isSoloRole = PMDatabaseAndAzureRoleStatus.CurrentRoleIsBackgroundProcessing() && !PMDatabaseAndAzureRoleStatus.CurrentRoleIsWorkerRole();
-                if (!isSoloRole)
-                    AzureNotificationProcessor.AddNotification("cache", dependencyString);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("InvalidateCacheDependency failed: " + ex.Message);
-            }
         }
 
         // This may be called within a web role either if the web role is also doing the background processing,
@@ -180,46 +168,7 @@ namespace ClassLibrary1.Model
                     return new List<string>();
             }
 
-            public void DeleteOldNotifications()
-            {
-                if (!RoleEnvironment.IsAvailable)
-                    return;
-                DateTime currentTime = TestableDateTime.Now;
-                if (lastDeleteCheck == null || currentTime - (DateTime)lastDeleteCheck > minTimeBetweenDeleteChecks)
-                {
-                    if (PMDatabaseAndAzureRoleStatus.CurrentRoleIsBackgroundProcessing() || PMDatabaseAndAzureRoleStatus.CurrentRoleIsWorkerRole())
-                    {
-                        AzureNotificationProcessor.DeleteOldNotifications(minTimeBetweenDeleteChecks);
-                        //System.Diagnostics.Trace.TraceInformation("Worker role deleting old notifications current time: " + currentTime.ToString());
-                    }
-                    lastDeleteCheck = currentTime;
-                }
-            }
         }
 
-        static CacheInvalidityNotificationProcessor processor = new CacheInvalidityNotificationProcessor();
-
-        public static void ProcessNewNotifications()
-        {
-            try
-            {
-                List<string> theNotifications = processor.GetNewNotifications();
-                foreach (string dependencyInvalidationString in theNotifications)
-                {
-                    //System.Diagnostics.Trace.TraceInformation("Invalidating dependency: " + dependencyInvalidationString + " worker? " + PMDatabaseAndAzureRoleStatus.CurrentRoleIsWorkerRole());
-                    PMCacheManagement.InvalidateCacheDependencyOnThisMachine(dependencyInvalidationString);
-                }
-            }
-            catch (AzureNotificationsRequestedAlreadyDeletedException)
-            {
-                //System.Diagnostics.Trace.TraceInformation("Clearing cache because the requested notifications have already been deleted.");
-                PMCacheManagement.ClearCache();
-            }
-        }
-
-        public static void DeleteOldNotifications()
-        {
-            processor.DeleteOldNotifications();
-        }
     }
 }
