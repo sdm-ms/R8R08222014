@@ -47,7 +47,6 @@ public partial class Ratings : System.Web.UI.Page
         if (UserIDOfBrowsingUser != null)
         {
             User browsingUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfBrowsingUser);
-            browsingUserIsTrusted = browsingUser.TrustPointsRatioTotals >= (decimal) 0.5; // eliminate casual users
             browsingUserIsAdmin = browsingUser.Username == "admin";
             RevertTrusted.Visible = browsingUserIsAdmin;
         }

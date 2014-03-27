@@ -13,7 +13,7 @@ namespace ClassLibrary1.Model
     {
         public string ItemPath;
         public string Item;
-        public string Page;
+        public string RouteToPage;
     }
 
     public static class PMItemPathWrapper
@@ -215,7 +215,7 @@ namespace ClassLibrary1.Model
             {
                 Item = GetItemNameOnly(false),
                 ItemPath = GetItemPath(false),
-                Page = GetPageForItem()
+                RouteToPage = GetPageForItem()
             };
         }
     }

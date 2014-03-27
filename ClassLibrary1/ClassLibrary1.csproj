@@ -214,6 +214,7 @@
     <Compile Include="Model\PMExecutingChanges.cs" />
     <Compile Include="Model\PMFastAccessRowUpdateInfo.cs" />
     <Compile Include="Model\PMFastAccessTablesMaintenance.cs" />
+    <Compile Include="Model\PMFastAccessTablesQuery.cs" />
     <Compile Include="Model\PMFields.cs" />
     <Compile Include="Model\PMFieldsDisplayCreator.cs" />
     <Compile Include="Model\PMFilterRules.cs" />

@@ -59,8 +59,10 @@ namespace ClassLibrary1.Model
         {
             PMItemPath theItemPath = new PMItemPath();
             theItemPath.Setup(theItem);
+            // The full hierarchy is what is used in the topics menu.
             theItem.FullHierarchyNoHtml = theItemPath.BuildItemPath(false);
             theItem.FullHierarchyWithHtml = theItemPath.BuildItemPath(true);
+            // The route is what is used in the URL and may be shorter than the full hierarchy, because a single word may designate what the item is relatively accurately.
             theItem.RouteToHere = BuildRouteToItem(theItem);
         }
 
