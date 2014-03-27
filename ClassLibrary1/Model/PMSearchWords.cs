@@ -66,7 +66,7 @@ namespace ClassLibrary1.Model
 
         /// <summary>
         /// The following allows partial matches. So the phrase "blog now" will return a list, the 
-        /// first element of which is all words beginning with "blog"
+        /// first element of which is all words beginning with "blog" (including "blogger" and "blogging")
         /// </summary>
         /// <param name="phrase"></param>
         /// <returns></returns>
