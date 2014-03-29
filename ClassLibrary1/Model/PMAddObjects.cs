@@ -865,7 +865,7 @@ namespace ClassLibrary1.Model
                 if (topRatingGroup != null)
                 {
                     theRatingGroup.TblRow.CountNonnullEntries++;
-                    var facnnei = new FastAccessCountNonNullEntriesInfo() { TblColumnID = ratingGroup.TblColumnID, CountNonNullEntries = theRatingGroup.TblRow.CountNonnullEntries };
+                    var facnnei = new FastAccessCountNonNullEntriesInfo() { CountNonNullEntries = theRatingGroup.TblRow.CountNonnullEntries };
                     facnnei.AddToTblRow(ratingGroup.TblRow);
                 }
                 theRatingGroup.CurrentValueOfFirstRating = null; //  defaultUserRating;

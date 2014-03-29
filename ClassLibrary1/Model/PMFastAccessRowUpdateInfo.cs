@@ -9,7 +9,6 @@ namespace ClassLibrary1.Model
     [Serializable]
     public abstract class FastAccessRowUpdateInfo
     {
-        public int TblColumnID;
         public abstract List<Tuple<string, string>> GetColumnNamesAndNewValues();
         public void AddToTblRow(TblRow tblRow)
         {
@@ -29,18 +28,6 @@ namespace ClassLibrary1.Model
         }
     }
 
-    [Serializable]
-    public class FastAccessRecentlyChangedInfo : FastAccessRowUpdateInfo
-    {
-        public bool RecentlyChanged;
-        public override List<Tuple<string, string>> GetColumnNamesAndNewValues()
-        {
-            return new List<Tuple<string, string>>()
-            {
-                new Tuple<string,string>("RC" + TblColumnID.ToString(), RecentlyChanged ? "1" : "0")
-            };
-        }
-    }
 
     [Serializable]
     public class FastAccessCountNonNullEntriesInfo : FastAccessRowUpdateInfo
@@ -56,7 +43,27 @@ namespace ClassLibrary1.Model
     }
 
     [Serializable]
-    public class FastAccessRatingUpdatingInfo : FastAccessRowUpdateInfo
+    public abstract class FastAccessCellUpdateInfo : FastAccessRowUpdateInfo
+    {
+        public int TblColumnID;
+    }
+
+    [Serializable]
+    public class FastAccessRecentlyChangedInfo : FastAccessCellUpdateInfo
+    {
+        public bool RecentlyChanged;
+        public override List<Tuple<string, string>> GetColumnNamesAndNewValues()
+        {
+            return new List<Tuple<string, string>>()
+            {
+                new Tuple<string,string>("RC" + TblColumnID.ToString(), RecentlyChanged ? "1" : "0")
+            };
+        }
+    }
+
+
+    [Serializable]
+    public class FastAccessRatingUpdatingInfo : FastAccessCellUpdateInfo
     {
         public decimal? NewValue;
         public string StringRepresentation;
@@ -77,7 +84,7 @@ namespace ClassLibrary1.Model
     }
 
     [Serializable]
-    public class FastAccessRatingIDUpdatingInfo : FastAccessRowUpdateInfo
+    public class FastAccessRatingIDUpdatingInfo : FastAccessCellUpdateInfo
     {
         public int RatingID;
         public int RatingGroupID;

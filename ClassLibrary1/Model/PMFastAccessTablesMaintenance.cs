@@ -298,7 +298,10 @@ namespace ClassLibrary1.Model
             const int numAtOnce = 200;
             bool noMoreWork = true; // assume for now
             List<TblRow> theRows = iDataContext.GetTable<TblRow>().Where(x => x.InitialFieldsDisplaySet == true && x.FastAccessUpdateSpecified).Take(numAtOnce).ToList();
-            if (theRows.Count() == numAtOnce)
+            int rowsCount = theRows.Count();
+            if (rowsCount == 0)
+                return false;
+            if (rowsCount == numAtOnce)
                 noMoreWork = false;
 
             List<SQLUpdateInfo> updateInfoList = new List<SQLUpdateInfo>();
@@ -319,7 +322,10 @@ namespace ClassLibrary1.Model
 
                         });
                 }
+                tblRow.FastAccessUpdateSpecified = false;
+                tblRow.FastAccessUpdated = null;
             }
+            SQLDirectManipulate.ExecuteSpecifiedUpdates(dta, updateInfoList);
             return !noMoreWork;
         }
 

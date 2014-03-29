@@ -200,6 +200,7 @@ namespace ClassLibrary1.Misc
             sb.Append(" UPDATE ");
             sb.Append(tableName);
             sb.Append(" SET ");
+            bool isFirstEntry = true;
             for (int i = columnsCount - 1; i >= 0; i--) // go backward, so that last setting of column will control
             {
                 bool alreadySet = false;
@@ -213,11 +214,13 @@ namespace ClassLibrary1.Misc
                 }
                 if (alreadySet)
                     continue;
+                if (!isFirstEntry)
+                    sb.Append(", "); // we add commas before the entry for all but the first (easier than tracking whether it's the last entry and adding comma afterward, because of the alreadySet logic).
+                else
+                    isFirstEntry = false;
                 sb.Append(namesOfColumnsToSet[i]);
                 sb.Append("=");
                 sb.Append(valuesOfColumnsToSet[i]);
-                if (i > 0)
-                    sb.Append(","); // no comma after last entry
             }
             sb.Append(" WHERE ");
             sb.Append(nameOfColumnToMatch);
@@ -242,6 +245,8 @@ namespace ClassLibrary1.Misc
 
         public static void ExecuteSpecifiedUpdates(ISQLDirectConnectionManager database, List<SQLUpdateInfo> allUpdates)
         {
+            if (allUpdates == null || !allUpdates.Any())
+                return;
             string updateCommands = GetUpdateCommands(allUpdates);
             ExecuteSQLNonQuery(database, updateCommands);
         }

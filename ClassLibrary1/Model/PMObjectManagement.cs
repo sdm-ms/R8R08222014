@@ -1034,6 +1034,7 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.TblRow:
                     TblRow theTblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID ==objectID);
                     theTblRow.Name = theName;
+                    FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, theTblRow.Tbl, theTblRow, false, true);
                     SetSearchWordsForEntityName(theTblRow, false);
                     PMCacheManagement.InvalidateCacheDependency("FieldForTblRowID" + objectID);
                     break;
