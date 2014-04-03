@@ -464,6 +464,7 @@ function viewtbl() {
         }
         return (rowTop < theMainTableHeight && (rowTop + rowElement.height() > 0));
     }
+
     $.expr[':'].rowScrolledIn = function (row) {
         return rowIsScrolledIn(row);
     };

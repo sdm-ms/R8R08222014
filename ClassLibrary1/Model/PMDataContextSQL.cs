@@ -126,9 +126,7 @@ namespace ClassLibrary1.Model
         RaterooDataContext _underlyingRaterooDataContext;
 
         public RaterooSQLDataContext(bool doAllowChangeData, bool enableObjectTracking) : 
-            base( new RaterooDataContext(GetIRaterooDataContext.UseRealDatabase ? 
-                AzureSetup.GetConfigurationSetting("RaterooConnectionString") : 
-                "FakeConnectionStringForInMemoryTesting"))
+            base( new RaterooDataContext(AzureSetup.GetConfigurationSetting("RaterooConnectionString"))
         {
             _underlyingRaterooDataContext = (RaterooDataContext) UnderlyingDataContext;
 

@@ -48,7 +48,7 @@ namespace ClassLibrary1.Model
         /// <param name="currentPointsAdjustment">Positive or negative change to current points</param>
         /// <param name="pendingPointsAdjustment">Positive or negative change to pending points</param>
         /// <param name="pendingMaxLossAdjustment">Positive or negative change to maximum loss</param>
-        public void UpdateUserPoints(int userID, int pointsManagerID, PointsChangesReasons theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, decimal? cashPaymentToMake, bool submitChanges)
+        public void UpdateUserPoints(int userID, int pointsManagerID, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, decimal? cashPaymentToMake, bool submitChanges)
         {
             PointsManager thePointsManager = DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID ==pointsManagerID);
             User theUser = DataContext.GetTable<User>().Single(x => x.UserID == userID);
@@ -56,7 +56,7 @@ namespace ClassLibrary1.Model
 
         }
         
-        public void UpdateUserPoints(User theUser, PointsManager thePointsManager, PointsChangesReasons theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, decimal? cashPaymentToMake, bool submitChanges, PointsTotal theTotals = null)
+        public void UpdateUserPoints(User theUser, PointsManager thePointsManager, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, decimal? cashPaymentToMake, bool submitChanges, PointsTotal theTotals = null)
         {
             if (totalPointsAdjustment != 0 || currentPointsAdjustment != 0) // Make a record of this adjustment
             {
@@ -85,7 +85,7 @@ namespace ClassLibrary1.Model
             theTotals.TotalPointsOrPendingPointsLongTermUnweighted += longTermUnweightedAdjustment;
             //System.Diagnostics.Trace.TraceInformation("Pending points adjustment for user " + userID + ": " + pendingPointsAdjustment + " so pending points is now " + theTotals.PendingPoints);
 
-            if (theReason == PointsChangesReasons.RatingsUpdate && Math.Abs(notYetPendingAdjustment) != 0 && (Math.Abs(totalPointsAdjustment) != 0 || Math.Abs(currentPointsAdjustment) != 0 || Math.Abs(pendingPointsAdjustment) != 0))
+            if (theReason == PointsAdjustmentReason.RatingsUpdate && Math.Abs(notYetPendingAdjustment) != 0 && (Math.Abs(totalPointsAdjustment) != 0 || Math.Abs(currentPointsAdjustment) != 0 || Math.Abs(pendingPointsAdjustment) != 0))
                 theTotals.NumPendingOrFinalizedRatings++;
             if (theTotals.NumPendingOrFinalizedRatings == 0)
                 theTotals.PointsPerRating = 0;
@@ -142,7 +142,7 @@ namespace ClassLibrary1.Model
         /// <param name="currentPointsAdjustment">Positive or negative change to current points</param>
         /// <param name="pendingPointsAdjustment">Positive or negative change to pending points</param>
         /// <param name="pendingMaxLossAdjustment">Positive or negative change to maximum loss</param>
-        public void UpdateUserPointsAndStatus(int userID, int pointsManagerID, PointsChangesReasons theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingPointsAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, bool submitChanges)
+        public void UpdateUserPointsAndStatus(int userID, int pointsManagerID, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingPointsAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, bool submitChanges)
         {
             User theUser = ObjDataAccess.GetUser(userID);
             PointsManager thePointsManager = ObjDataAccess.GetPointsManager(pointsManagerID);
@@ -150,7 +150,7 @@ namespace ClassLibrary1.Model
             UpdateUserPointsAndStatus(theUser, thePointsManager, theReason, totalPointsAdjustment, currentPointsAdjustment, pendingPointsAdjustment, notYetPendingPointsAdjustment, pendingMaxLossAdjustment, longTermUnweightedAdjustment, submitChanges, thePointsTotal);
         }
 
-        public void UpdateUserPointsAndStatus(User theUser, PointsManager thePointsManager, PointsChangesReasons theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingPointsAdjustment, decimal notYetPendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, bool submitChanges, PointsTotal thePointsTotal)
+        public void UpdateUserPointsAndStatus(User theUser, PointsManager thePointsManager, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingPointsAdjustment, decimal notYetPendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, bool submitChanges, PointsTotal thePointsTotal)
         {
             if (totalPointsAdjustment == 0 && currentPointsAdjustment == 0 && pendingPointsAdjustment == 0 && notYetPendingPointsAdjustment == 0 && notYetPendingMaxLossAdjustment == 0)
                 return;
@@ -257,7 +257,7 @@ namespace ClassLibrary1.Model
                         if (user.CashValue < user.PT.GuaranteedPaymentsEarnedThisRewardPeriod)
                             user.CashValue = user.PT.GuaranteedPaymentsEarnedThisRewardPeriod;
                         decimal pointsToCash = usePendingPointsOnly ? 0 : 0 - user.PointsToCash;
-                        UpdateUserPoints(user.User, thePointsManager.PointsManagerID, PointsChangesReasons.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.CashValue, true);
+                        UpdateUserPoints(user.User, thePointsManager.PointsManagerID, PointsAdjustmentReason.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.CashValue, true);
                         PMPaymentGuarantees.EndOfRewardPeriodTasks(user.PT, user.CashValue);
                     }
                 }
@@ -291,7 +291,7 @@ namespace ClassLibrary1.Model
                         if (user.Prize < user.PT.GuaranteedPaymentsEarnedThisRewardPeriod)
                             user.Prize = user.PT.GuaranteedPaymentsEarnedThisRewardPeriod;
                         decimal pointsToCash = usePendingPointsOnly ? 0 : 0 - user.PointsToCash;
-                        UpdateUserPoints(user.User, thePointsManager.PointsManagerID, PointsChangesReasons.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.Prize, true);
+                        UpdateUserPoints(user.User, thePointsManager.PointsManagerID, PointsAdjustmentReason.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.Prize, true);
                         PMPaymentGuarantees.EndOfRewardPeriodTasks(user.PT, user.Prize );
                     }
                 }

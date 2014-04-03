@@ -1048,17 +1048,11 @@ namespace ClassLibrary1.Model
 
         public int TblTabCreate(int TblID, String name, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID)
         {
-            //start of modification
-            // Preventing to add more than one category group when there is a entity in override of rating group characterstics
+            Tbl tbl = DataManipulation.DataContext.GetTable<Tbl>().Single(x => x.TblID == TblID);
+            if (tbl.AllowOverrideOfRatingGroupCharacterstics)
+                throw new NotImplementedException();
 
             
-            int NumOfTblRowsInOverrideCharacterstics = DataManipulation.DataContext.GetTable<OverrideCharacteristic>().Where(x => x.TblRow.TblID == TblID && x.Status == (byte)StatusOfObject.Active).Count();
-
-            if (NumOfTblRowsInOverrideCharacterstics>=1)
-            {
-                throw new Exception("Can not add category group");
-            }
-            // End of modification
             int? newObjectID = null;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.ChangeCategories, !makeActiveNow, null, TblID, true))
             {
@@ -1167,18 +1161,9 @@ namespace ClassLibrary1.Model
 
         public int TblColumnCreate(int TblTabID, int defaultRatingGroupAttributesID, String abbreviation, String name, String explanation, string widthStyle, bool trackTrustWithinTableColumn, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID)
         {
-            //start of modification
-            // Preventing to add more than one category group when there is a entity in override of rating group characterstics
-
-           
-            int TblID = DataAccess.GetTblTab(TblTabID).TblID;
-            int NumOfTblRowsInOverrideCharacterstics = DataManipulation.DataContext.GetTable<OverrideCharacteristic>().Where(x => x.TblRow.TblID == TblID && x.Status == (byte)StatusOfObject.Active).Count();
-
-            if (NumOfTblRowsInOverrideCharacterstics >= 1)
-            {
-                throw new Exception("Can not add category descriptor");
-            }
-            // End of modification
+            Tbl tbl = DataManipulation.DataContext.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
+            if (tbl.AllowOverrideOfRatingGroupCharacterstics)
+                throw new NotImplementedException();
 
             int? newObjectID = null;
             DataManipulation.ConfirmObjectExists(TblTabID, TypeOfObject.TblTab);
@@ -1638,7 +1623,7 @@ namespace ClassLibrary1.Model
 
                 User theUserToAdjust = DataContext.GetTable<User>().Single(u => u.UserID == userToAdjustID);
                 PointsManager thePointsManager = DataContext.GetTable<PointsManager>().Single(p => p.PointsManagerID == pointsManagerID);
-                PointsAdjustment thePointsAdjustment = DataManipulation.AddPointsAdjustment(theUserToAdjust, thePointsManager, PointsChangesReasons.AdministrativeChange, adjustmentToTotal, adjustmentToCurrent, null);
+                PointsAdjustment thePointsAdjustment = DataManipulation.AddPointsAdjustment(theUserToAdjust, thePointsManager, PointsAdjustmentReason.AdministrativeChange, adjustmentToTotal, adjustmentToCurrent, null);
                 return thePointsAdjustment;
             }
             else
@@ -2433,14 +2418,6 @@ namespace ClassLibrary1.Model
         public bool CheckUserRights(int? userID, UserActionOldList theAction, bool proposalOnly, int? pointsManagerID, int? TblID)
         {
             return DataAccess.CheckUserRights(userID, theAction, proposalOnly, pointsManagerID, TblID);
-        }
-        public RatingHierarchyData GetRatingHierarchyDataForTblRowCategory(int theTblRowID, int theTblColumnID, ref int? ratingGroupID)
-        {
-            return DataAccess.GetRatingHierarchyDataForTblRowCategory(theTblRowID, theTblColumnID, ref ratingGroupID);
-        }
-        public int GetRatingGroupAttributesForTblRowCategory(int theTblRowID, int theTblColumnID)
-        {
-            return DataAccess.GetRatingGroupAttributesForTblRowCategory(theTblRowID, theTblColumnID);
         }
         public int CreateRatingPhaseGroup(String name,bool makeActive,bool makeActiveNow,int? creator,int? changesGroupID)
         {

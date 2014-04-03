@@ -1369,13 +1369,15 @@ namespace ClassLibrary1.Model
         /// <param name="theTblRowID">The entity</param>
         /// <param name="theTblColumnID">The category descriptor</param>
         /// <returns></returns>
-        public int GetRatingGroupAttributesForTblRowCategory(int theTblRowID, int theTblColumnID)
+        public int GetRatingGroupAttributesForTblRowAndColumn(int theTblRowID, int theTblColumnID)
         {
-            var overrideCharacteristics = RaterooDB.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRowID == theTblRowID && oc.TblColumnID == theTblColumnID && oc.Status == (Byte)StatusOfObject.Active);
-            if (overrideCharacteristics == null)
-                return RaterooDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == theTblColumnID).DefaultRatingGroupAttributesID;
-            else
-                return overrideCharacteristics.RatingGroupAttributesID;
+            throw new NotImplementedException(); // we have disabled this functionality for now.
+            //TblColumn tblColumn = RaterooDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == theTblColumnID); // TODO: Check Cache
+            //var overrideCharacteristics = RaterooDB.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRowID == theTblRowID && oc.TblColumnID == theTblColumnID && oc.Status == (Byte)StatusOfObject.Active);
+            //if (overrideCharacteristics == null)
+            //    return tblColumn.DefaultRatingGroupAttributesID;
+            //else
+            //    return overrideCharacteristics.RatingGroupAttributesID;
         }
         /// <summary>
         /// Returns the topmost rating group for an entity for the specified category descriptor.

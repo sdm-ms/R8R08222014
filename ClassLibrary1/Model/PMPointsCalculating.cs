@@ -52,7 +52,6 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public decimal GetSubsidyLevelAtTime(Rating theRating, RatingGroup topmostRatingGroup, RatingGroupPhaseStatus theRatingGroupPhaseStatus, DateTime theTime)
         {
-            
             decimal baseSubsidyLevel = theRatingGroupPhaseStatus.RatingPhase.SubsidyLevel;
             var neverEndingAdjustments = theRatingGroupPhaseStatus.SubsidyAdjustments.Where(sa => sa.EffectiveTime < theTime && sa.EndingTime == null && sa.Status == (Byte)StatusOfObject.Active);
             var endingAdjustments = theRatingGroupPhaseStatus.SubsidyAdjustments.Where(sa => sa.EffectiveTime < theTime && sa.EndingTime != null && sa.Status == (Byte)StatusOfObject.Active).Where(sa => sa.EndingTime > theTime);
@@ -338,7 +337,9 @@ namespace ClassLibrary1.Model
         {
             TblColumn theCD = theRating.RatingGroup.TblColumn;
 
-            OverrideCharacteristic theOverride = theDataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(o => o.TblColumnID == theCD.TblColumnID && o.TblRowID == theRating.RatingGroup.TblRowID);
+            OverrideCharacteristic theOverride = null;
+            if (theCD.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
+                theOverride = theDataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(o => o.TblColumnID == theCD.TblColumnID && o.TblRowID == theRating.RatingGroup.TblRowID);
             if (theOverride != null) // this is unique, so we just go by the middle possible rating.
                 return (theRating.RatingCharacteristic.MinimumUserRating + theRating.RatingCharacteristic.MaximumUserRating) / 2;
 

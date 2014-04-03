@@ -614,7 +614,7 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.PointsAdjustment:
                         PointsAdjustment thePointsAdjustment = DataContext.GetTable<PointsAdjustment>().Single(x=>x.PointsAdjustmentID ==(int)theChange.NewObject);
-                        UpdateUserPointsAndStatus(thePointsAdjustment.UserID, thePointsAdjustment.PointsManagerID, PointsChangesReasons.AdministrativeChange, thePointsAdjustment.TotalAdjustment, thePointsAdjustment.CurrentAdjustment, 0, 0, 0, 0, true);
+                        UpdateUserPointsAndStatus(thePointsAdjustment.UserID, thePointsAdjustment.PointsManagerID, PointsAdjustmentReason.AdministrativeChange, thePointsAdjustment.TotalAdjustment, thePointsAdjustment.CurrentAdjustment, 0, 0, 0, 0, true);
                         break;
                     case TypeOfObject.PointsManager:
                         SetTradingStatus((int)theChange.NewObject, TypeOfObject.PointsManager, TradingStatus.Active);

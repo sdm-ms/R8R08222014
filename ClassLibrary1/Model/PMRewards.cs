@@ -172,9 +172,9 @@ namespace ClassLibrary1.Model
                     return;
                 RewardRatingSetting theSettings = DataContext.GetTable<RewardRatingSetting>().SingleOrDefault(rms => rms.PointsManagerID == pointsManagerID);
                 decimal multiplier = GetMultiplierForRewardRatingTblRow(theRewardRatingTblRow);
-                PointsChangesReasons theReason = PointsChangesReasons.RatingsUpdate;
+                PointsAdjustmentReason theReason = PointsAdjustmentReason.RatingsUpdate;
                 if (rawFinalPointsDelta != 0)
-                    theReason = PointsChangesReasons.RewardForUserDatabaseChange;
+                    theReason = PointsAdjustmentReason.RewardForUserDatabaseChange;
                 Trace.TraceInformation("UpdateRewardPoints final: " + rawFinalPointsDelta * multiplier + " pending: " + rawPendingPointsDelta * multiplier);
                 UpdateUserPointsAndStatus(userID, pointsManagerID, theReason, rawFinalPointsDelta * multiplier, rawFinalPointsDelta * multiplier, rawPendingPointsDelta * multiplier, 0, 0, 0, true);
             }
@@ -186,7 +186,7 @@ namespace ClassLibrary1.Model
                 decimal worstCaseScenario = multiplier * (0 - theSettings.RatingGroupAttribute.RatingCharacteristic.MinimumUserRating);
 
                 Trace.TraceInformation("UpdateRewardPointsPotentialMaxLossNotYetPending " + ((startingRewardRating) ? worstCaseScenario : 0 - worstCaseScenario));
-                UpdateUserPointsAndStatus(userID, pointsManagerID, PointsChangesReasons.RatingsUpdate, 0, 0, 0, 0, (startingRewardRating) ? worstCaseScenario : 0 - worstCaseScenario, 0, true);
+                UpdateUserPointsAndStatus(userID, pointsManagerID, PointsAdjustmentReason.RatingsUpdate, 0, 0, 0, 0, (startingRewardRating) ? worstCaseScenario : 0 - worstCaseScenario, 0, true);
             }
 
             internal void FinalizeReward(int userID, int pointsManagerID, TblRow theRewardRatingTblRow, decimal rawFinalPoints, bool isBeingUnresolved)

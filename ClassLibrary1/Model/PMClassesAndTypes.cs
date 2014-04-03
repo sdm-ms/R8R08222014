@@ -188,7 +188,7 @@ namespace ClassLibrary1.Model
     /// PointsChangesReasons
     /// Enumerates the different reasons that a user's points may change.
     /// </summary>
-    public enum PointsChangesReasons
+    public enum PointsAdjustmentReason
     {
         ReasonUnknown,
         RatingsUpdate,

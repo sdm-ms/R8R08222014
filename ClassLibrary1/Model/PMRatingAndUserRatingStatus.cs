@@ -641,7 +641,7 @@ namespace ClassLibrary1.Model
             notYetPendingAdjustment = (theUserRating.NotYetPendingPointsLongTerm + theUserRating.NotYetPendingPointsShortTerm) - (previousPointsNotYetPendingLongTerm + previousPointsNotYetPendingShortTerm);
             longTermUnweightedAdjustment = theUserRating.PointsOrPendingPointsLongTermUnweighted - previousPointsOrPendingPointsLongTermUnweighted;
 
-            UpdateUserPointsAndStatus(theUserRating.User, theUserRating.Rating.RatingGroup.TblRow.Tbl.PointsManager, PointsChangesReasons.RatingsUpdate, totalPointsAdjustment, totalPointsAdjustment, pendingPointsAdjustment, notYetPendingAdjustment, notYetPendingMaxLossAdjustment, longTermUnweightedAdjustment, false, thePointsTotal);
+            UpdateUserPointsAndStatus(theUserRating.User, theUserRating.Rating.RatingGroup.TblRow.Tbl.PointsManager, PointsAdjustmentReason.RatingsUpdate, totalPointsAdjustment, totalPointsAdjustment, pendingPointsAdjustment, notYetPendingAdjustment, notYetPendingMaxLossAdjustment, longTermUnweightedAdjustment, false, thePointsTotal);
         }
 
         public void UpdateUserRatingHighStakesKnownFields(UserRating theUserRating, RatingGroupPhaseStatus rgps, DateTime whenMade)

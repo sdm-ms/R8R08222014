@@ -1159,7 +1159,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroupAttribute theGroupAttributes;
             OverrideCharacteristic overrideCharacteristics = null;
-            if (theTblRow.TblRowID != 0)
+            if (theTblRow.TblRowID != 0 && theCategory.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
                 overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theCategory.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
             if (overrideCharacteristics == null)
                 theGroupAttributes = theCategory.RatingGroupAttribute;
@@ -1480,7 +1480,7 @@ namespace ClassLibrary1.Model
         /// <param name="currentAdjustment">The adjustment to the user's current points</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the object</returns>
-        public PointsAdjustment AddPointsAdjustment(User theUser, PointsManager thePointsManager, PointsChangesReasons theReason, decimal totalAdjustment, decimal currentAdjustment, decimal? cashValue)
+        public PointsAdjustment AddPointsAdjustment(User theUser, PointsManager thePointsManager, PointsAdjustmentReason theReason, decimal totalAdjustment, decimal currentAdjustment, decimal? cashValue)
         {
             PointsAdjustment theAdjustment = new PointsAdjustment
             {
@@ -1681,7 +1681,7 @@ namespace ClassLibrary1.Model
             if (newUserRatingValue > rating.RatingCharacteristic.MaximumUserRating)
                 newUserRatingValue = rating.RatingCharacteristic.MaximumUserRating;
 
-            UpdateUserPointsAndStatus(user, tbl.PointsManager, PointsChangesReasons.RatingsUpdate, 0, 0, 0, profitShortTerm + profitLongTerm, maxLossLongTerm + maxLossShortTerm, profitLongTermUnweighted, false, pointsTotal);
+            UpdateUserPointsAndStatus(user, tbl.PointsManager, PointsAdjustmentReason.RatingsUpdate, 0, 0, 0, profitShortTerm + profitLongTerm, maxLossLongTerm + maxLossShortTerm, profitLongTermUnweighted, false, pointsTotal);
             if (pointsTotal == null)
                 pointsTotal = AddPointsTotal(user, tbl.PointsManager);
             if (!userRatingIsFromSuperUser)
