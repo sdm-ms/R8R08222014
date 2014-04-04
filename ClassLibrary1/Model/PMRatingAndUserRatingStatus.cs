@@ -438,7 +438,7 @@ namespace ClassLibrary1.Model
                     DistanceBetweenPoints = Math.Abs(points[ToPointIndex] - points[FromPointIndex]);
                 else
                 {
-                    Func<decimal, decimal> lg = x => (decimal)Math.Log((double)x, (double)logarithmicBase);
+                    Func<decimal, decimal> lg = x => (decimal) PMTrustCalculations.LogBase(x, (decimal)logarithmicBase);
                     DistanceBetweenPoints = Math.Abs(lg(points[ToPointIndex]) - lg(points[FromPointIndex]));
                 }
             }

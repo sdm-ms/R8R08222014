@@ -291,9 +291,9 @@ namespace ClassLibrary1.Model
             SetStatusOfObjectInitialBuild(oneSecondPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
             int multiplePhasesGroupNum = Supporter.AddRatingPhaseGroup("Short initial phases, followed by one week phases", null);
             SetStatusOfObjectInitialBuild(multiplePhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int phase1 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 50, ScoringRules.Linear, true, false, null, 3600, 3600, false, 3);
+            int phase1 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 50, standardScoringRules, true, false, null, 3600, 3600, false, 3);
             SetStatusOfObjectInitialBuild(phase1, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int phase2 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 100, ScoringRules.Linear, true, false, null, 86400, 86400, false, 1);
+            int phase2 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 100, standardScoringRules, true, false, null, 86400, 86400, false, 1);
             SetStatusOfObjectInitialBuild(phase2, TypeOfObject.RatingPhase, StatusOfObject.Active);
             int phase3 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 1000, standardScoringRules, true, false, null, 604800, 86400, true, null);
             SetStatusOfObjectInitialBuild(phase3, TypeOfObject.RatingPhase, StatusOfObject.Active);
@@ -317,6 +317,7 @@ namespace ClassLibrary1.Model
 
         }
 
+        // NOTE: This seems not to be used any more. Maybe it can be deleted? 4/3/14
         public void CreateStandardDefaultRatingCharacteristics()
         {
             CreateStandardRatingPhaseGroups();
