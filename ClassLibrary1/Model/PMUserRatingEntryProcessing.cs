@@ -89,7 +89,7 @@ namespace ClassLibrary1.Model
         public decimal? theValue;
     }
 
-    public class RatinCurrentValueAndDecimalPlaces
+    public class RatingCurrentValueAndDecimalPlaces
     {
         public int ratingID;
         public decimal? theValue;
@@ -134,28 +134,5 @@ namespace ClassLibrary1.Model
     {
         public string userName;
         public string passwordForWebService;
-    }
-
-    public class MyPointsSidebarInfo
-    {
-        public string CurrentPeriod;
-        public string CurrentPrizeInfo;
-        public string CurrentInfo;
-        public string PointsThisPeriod;
-        public string PendingPointsThisPeriod;
-        public string ScoredRatings;
-        public string PointsPerRating;
-
-        public MyPointsSidebarInfo(PointsManager thePointsManager, PointsTotal thePointsTotal)
-        {
-
-            CurrentPeriod = thePointsManager.EndOfDollarSubsidyPeriod == null ? "<b>Current period</b>" : ("<b>Current period (ends " + ((DateTime)thePointsManager.EndOfDollarSubsidyPeriod).ToShortDateString() + ")</b>");
-            CurrentPrizeInfo = PMPaymentGuarantees.GetPrizePoolString(thePointsManager.CurrentPeriodDollarSubsidy, thePointsManager.NumPrizes, thePointsManager.EndOfDollarSubsidyPeriod, PMPaymentGuarantees.MaximumGuaranteesAvailable(thePointsManager) > 0, false);
-            CurrentInfo = PMPaymentGuarantees.PaymentGuaranteeStatusString(thePointsTotal, thePointsManager, "", "", "My Guaranteed: ");
-            PointsThisPeriod = "My Points: " + ((thePointsTotal == null) ? "0" : ((int)thePointsTotal.CurrentPoints).ToString());
-            PendingPointsThisPeriod = "My Pending Points: " + ((thePointsTotal == null) ? "0" : ((int)thePointsTotal.PendingPoints).ToString());
-            ScoredRatings = "My Ratings Scored: " + ((thePointsTotal == null) ? "0" : thePointsTotal.NumPendingOrFinalizedRatings.ToString());
-            PointsPerRating = "My Points Per Rating: " + ((thePointsTotal == null) ? "0" : thePointsTotal.PointsPerRating.ToString());
-        }
     }
 }

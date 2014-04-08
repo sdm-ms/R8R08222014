@@ -2087,9 +2087,9 @@ namespace ClassLibrary1.Model
                 int topRatingGroupID = Convert.ToInt32(ratingGroupIDString);
                 theFormatting = PMNumberandTableFormatter.GetFormattingForTblColumn(DataManipulation.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == topRatingGroupID).TblColumnID);
                 theResponse.result = new UserRatingResult();
-                List<RatinCurrentValueAndDecimalPlaces> theRatingIDsAndRatings = DataManipulation.DataContext.GetTable<Rating>()
+                List<RatingCurrentValueAndDecimalPlaces> theRatingIDsAndRatings = DataManipulation.DataContext.GetTable<Rating>()
                     .Where(m => m.TopmostRatingGroupID == topRatingGroupID)
-                    .Select(m => new RatinCurrentValueAndDecimalPlaces
+                    .Select(m => new RatingCurrentValueAndDecimalPlaces
                     {
                         ratingID = m.RatingID,
                         theValue = m.CurrentValue,

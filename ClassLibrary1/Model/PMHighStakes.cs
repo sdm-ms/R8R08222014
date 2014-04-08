@@ -39,19 +39,6 @@ namespace ClassLibrary1.Model
         // High stakes secret means that until HighStakesBecomeKnown, this is a super high stakes period, receiving the HighStakesSecretMultiplier, with the user's success depending on the period (within this phase status or the next one) when high stakes are known.
         // For ratings, the secret and known period are within the same phase period, since we're always projecting what people will think at the end of this period (rather than at the end of time). For events, we use different periods, since the score for ratings in the secret period will depend on the score for ratings in the period thereafter.
 
-        public void GuaranteeSettings(int pointsManagerID, decimal dollarValuePerPoint, decimal discountForGuarantees, decimal maximumTotalGuarantees, bool conditionalGuaranteesAvailableForNewUsers, bool allowApplicationsWhenNoConditionalGuaranteesAvailable, bool conditionalGuaranteesAvailableForExistingUsers, int conditionalGuaranteeTimeBlockInHours, decimal maximumGuaranteePaymentPerHour)
-        {
-            PointsManager thePointsManager = DataContext.NewOrSingle<PointsManager>(x => x.PointsManagerID == pointsManagerID);
-            thePointsManager.DollarValuePerPoint = dollarValuePerPoint;
-            thePointsManager.DiscountForGuarantees = discountForGuarantees;
-            thePointsManager.MaximumTotalGuarantees = maximumTotalGuarantees;
-            thePointsManager.AllowApplicationsWhenNoConditionalGuaranteesAvailable = allowApplicationsWhenNoConditionalGuaranteesAvailable;
-            thePointsManager.ConditionalGuaranteesAvailableForNewUsers = conditionalGuaranteesAvailableForNewUsers;
-            thePointsManager.ConditionalGuaranteesAvailableForExistingUsers = conditionalGuaranteesAvailableForExistingUsers;
-            thePointsManager.ConditionalGuaranteeTimeBlockInHours = conditionalGuaranteeTimeBlockInHours;
-            thePointsManager.MaximumGuaranteePaymentPerHour = maximumGuaranteePaymentPerHour;
-        }
-
         public void HighStakesSettings(int pointsManagerID, decimal highStakesProbability, decimal highStakesMultiplierSecret, decimal highStakesMultiplierKnown, bool highStakesNoviceOn, int highStakesNoviceNumAutomatic, int highStakesNoviceNumOneThird, int highStakesNoviceNumOneTenth, int highStakesNoviceTargetNum, decimal databaseChangeSelectHighStakesNoviceNumPct)
         {
             PointsManager thePointsManager = DataContext.NewOrSingle<PointsManager>(x => x.PointsManagerID == pointsManagerID);
@@ -269,7 +256,7 @@ namespace ClassLibrary1.Model
                 multiplyResultBy = (decimal) Math.Pow(0.97, (double)(thePointsManager.HighStakesNoviceNumActive - thePointsManager.HighStakesNoviceTargetNum));
             if (thePointsManager.HighStakesNoviceOn == false)
                 return 0;
-            if (thePointsTotal == null)
+            if (thePointsTotal == null && thePointsManager.HighStakesProbability > 0)
                 return multiplyResultBy; /* Brand new user -- maximum probability*/
             if (thePointsTotal.NumPendingOrFinalizedRatings <= 300)
             {
@@ -277,7 +264,7 @@ namespace ClassLibrary1.Model
                 if (thePointsTotal.NumPendingOrFinalizedRatings <= thePointsManager.HighStakesNoviceNumAutomatic)
                     probNoviceHighStakes = 1;
                 else if (thePointsTotal.NumPendingOrFinalizedRatings <= thePointsManager.HighStakesNoviceNumAutomatic + thePointsManager.HighStakesNoviceNumOneThird)
-                    probNoviceHighStakes = 0.3M;
+                    probNoviceHighStakes = 0.33M;
                 else if (thePointsTotal.NumPendingOrFinalizedRatings <= thePointsManager.HighStakesNoviceNumAutomatic + thePointsManager.HighStakesNoviceNumOneThird + thePointsManager.HighStakesNoviceNumOneTenth)
                     probNoviceHighStakes = 0.1M;
                 return probNoviceHighStakes * multiplyResultBy;

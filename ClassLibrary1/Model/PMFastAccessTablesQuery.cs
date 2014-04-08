@@ -469,18 +469,25 @@ namespace ClassLibrary1.Model
 
             if (theResults == null)
             {
-                //ProfileSimple.Start("DoQuery");
+                //ProfileSimple.Start("DoQuery"); // QUERYTIMING
+                //ProfileSimple.Start("TblColumnsForTab"); // QUERYTIMING
                 List<TblColumn> tblColumns = TblColumnsForTabCache.GetTblColumnsForTab(iDataContext, theTbl.TblID, theTableInfo.TblTabID);
-
+                //ProfileSimple.End("TblColumnsForTab"); // QUERYTIMING
+                //ProfileSimple.Start("GetListOfFastAccessVariablesToLoad"); // QUERYTIMING
                 List<string> theVariables = GetListOfFastAccessVariablesToLoad(tblColumns, true);
+                //ProfileSimple.End("GetListOfFastAccessVariablesToLoad"); // QUERYTIMING
+                //ProfileSimple.Start("GetChoiceFullFieldDefinitions"); // QUERYTIMING
                 List<ChoiceFullFieldDefinition> choiceFieldDefinitions = GetChoiceFullFieldDefinitions(iDataContext, theTbl);
-                //ProfileSimple.Start("GetDataTable");
+                //ProfileSimple.End("GetChoiceFullFieldDefinitions"); // QUERYTIMING
+                //ProfileSimple.Start("GetDataTable"); // QUERYTIMING
                 DataTable theDataTable = GetDataTable(iDataContext, dta, theVariables, theTableSortRule, theTableInfo.Filters, choiceFieldDefinitions, theTbl.TblID, firstRowNum - 1, numRows);
-                //ProfileSimple.End("GetDataTable");
+                //ProfileSimple.End("GetDataTable"); // QUERYTIMING
+                //ProfileSimple.Start("ParseDataTable"); // QUERYTIMING
                 theResults = ParseDataTable(tblColumns, theDataTable);
+                //ProfileSimple.End("ParseDataTable"); // QUERYTIMING
 
                 PMCacheManagement.AddItemToCache(cacheString + "FastQueryResults", myDependencies, theResults, new TimeSpan(0, 0, 15));
-                //ProfileSimple.End("DoQuery");
+                //ProfileSimple.End("DoQuery"); // QUERYTIMING
             }
 
             bodyRowList = theResults.bodyRowList;

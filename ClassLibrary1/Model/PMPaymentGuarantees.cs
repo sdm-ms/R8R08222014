@@ -23,6 +23,24 @@ namespace ClassLibrary1.Model
         canApplyWithoutDocumentation
     }
 
+    public partial class RaterooDataManipulation
+    {
+
+        public void GuaranteeSettings(int pointsManagerID, decimal dollarValuePerPoint, decimal discountForGuarantees, decimal maximumTotalGuarantees, bool conditionalGuaranteesAvailableForNewUsers, bool allowApplicationsWhenNoConditionalGuaranteesAvailable, bool conditionalGuaranteesAvailableForExistingUsers, int conditionalGuaranteeTimeBlockInHours, decimal maximumGuaranteePaymentPerHour)
+        {
+            PointsManager thePointsManager = DataContext.NewOrSingle<PointsManager>(x => x.PointsManagerID == pointsManagerID);
+            thePointsManager.DollarValuePerPoint = dollarValuePerPoint;
+            thePointsManager.DiscountForGuarantees = discountForGuarantees;
+            thePointsManager.MaximumTotalGuarantees = maximumTotalGuarantees;
+            thePointsManager.AllowApplicationsWhenNoConditionalGuaranteesAvailable = allowApplicationsWhenNoConditionalGuaranteesAvailable;
+            thePointsManager.ConditionalGuaranteesAvailableForNewUsers = conditionalGuaranteesAvailableForNewUsers;
+            thePointsManager.ConditionalGuaranteesAvailableForExistingUsers = conditionalGuaranteesAvailableForExistingUsers;
+            thePointsManager.ConditionalGuaranteeTimeBlockInHours = conditionalGuaranteeTimeBlockInHours;
+            thePointsManager.MaximumGuaranteePaymentPerHour = maximumGuaranteePaymentPerHour;
+        }
+
+    }
+
     public static class PMPaymentGuarantees
     {
 

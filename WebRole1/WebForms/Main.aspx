@@ -21,7 +21,7 @@ Inherits="ViewTbl" Title="Rateroo" Codebehind="Main.aspx.cs" %>
 	</script>
     <asp:ScriptManagerProxy ID="MyScriptManagerProxy" runat="server">
         <Scripts>
-            <asp:ScriptReference Path="~/js/viewtbl.js?v=503" />
+            <asp:ScriptReference Path="~/js/viewtbl.js?v=504" />
         </Scripts>
         <Services>
             <asp:ServiceReference Path="~/PMWebService.asmx" InlineScript="true" />

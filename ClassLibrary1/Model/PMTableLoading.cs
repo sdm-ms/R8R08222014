@@ -31,14 +31,15 @@ namespace ClassLibrary1.Model
 
         public static TablePopulateResponse PopulateTableSpecificRows(string theTableInfoString, int firstRowNum, int numRowsNeeded, int visibleRowsEstimate, int firstRowIfResetting)
         {
-            return PopulateTable(theTableInfoString, firstRowNum, Math.Max(numRowsNeeded, visibleRowsEstimate), false, false, firstRowIfResetting);
+            TablePopulateResponse theResponse = PopulateTable(theTableInfoString, firstRowNum, Math.Max(numRowsNeeded, visibleRowsEstimate), false, false, firstRowIfResetting);
+            return theResponse;
         }
 
         public static TablePopulateResponse PopulateTable(string theTableInfoString, int firstRowNum, int numRows, bool populatingInitially, bool includeHeaderRow, int? firstRowIfResetting)
         {
             try
             {
-                //ProfileSimple.Start("PopulateTable");
+                //ProfileSimple.Start("PopulateTable"); // QUERYTIMING
                 string cacheString = MD5HashGenerator.GenerateKey(theTableInfoString + firstRowNum.ToString() + numRows.ToString() + includeHeaderRow.ToString());
                 string[] myDependencies = { };
                 if (populatingInitially)
@@ -68,13 +69,13 @@ namespace ClassLibrary1.Model
                 if (includeHeaderRow)
                     theHeaderRow = LoadHeaderRowFromWebService(theDataAccess, theTableInfo.TblTabID, (theTableSortRule is TableSortRuleTblColumn ? (int?)((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTableSortRule is TableSortRuleEntityName, theTableSortRule.Ascending, theTbl.TblID);
 
-                //ProfileSimple.Start("GetTablePopulateResponse");
+                //ProfileSimple.Start("GetTablePopulateResponse"); // QUERYTIMING
                 TablePopulateResponse theResponse = GetTablePopulateResponse(firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, thePointsManager, theTbl, theHeaderRow, rowCountOverride);
-                //ProfileSimple.End("GetTablePopulateResponse");
+                //ProfileSimple.End("GetTablePopulateResponse"); // QUERYTIMING
 
                 if (firstRowNum == 1)
                     PMCacheManagement.AddItemToCache(cacheString + "FullResponse", myDependencies, theResponse, new TimeSpan(0, 0, 15));
-                //ProfileSimple.End("PopulateTable");
+                //ProfileSimple.End("PopulateTable"); // QUERYTIMING
                 return theResponse;
             }
             catch (Exception ex)
@@ -155,10 +156,10 @@ namespace ClassLibrary1.Model
             {
                 if (theTbl.FastTableSyncStatus != (int)FastAccessTableStatus.fastAccessNotCreated && PMFastAccessTablesQuery.FastAccessTablesEnabled() && !theTableInfo.Filters.theFilterRules.Any(x => x is SearchWordsFilterRule)) // we don't do fast queries if it is disabled, or (for now) if we have a search words query, which is too cumbersome to implement.
                 {
-                    //ProfileSimple.Start("GetTablePopulateResponseWithFastQueries");
+                    //ProfileSimple.Start("GetTablePopulateResponseWithFastQueries"); // QUERYTIMING
                     DenormalizedTableAccess dta = new DenormalizedTableAccess(1);
                     theResponse = GetTablePopulateResponseWithFastQueries(dta, firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, thePointsManager, theTbl, headerRow, rowCountOverride);
-                    //ProfileSimple.End("GetTablePopulateResponseWithFastQueries");
+                    //ProfileSimple.End("GetTablePopulateResponseWithFastQueries"); // QUERYTIMING
                 }
                 else
                     theResponse = GetTablePopulateResponseWithNormalizedQueries(firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, thePointsManager, theTbl, headerRow, rowCountOverride);
@@ -172,15 +173,16 @@ namespace ClassLibrary1.Model
 
         private static TablePopulateResponse GetTablePopulateResponseWithFastQueries(DenormalizedTableAccess dta, int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
         {
-            //ProfileSimple.Start("FastQueries intro");
+            //ProfileSimple.Start("FastQueries intro"); // QUERYTIMING
             List<InfoForBodyRows> theInfoForBodyRows;
             int? rowCountFromQuery = null;
             PMFastAccessTablesQuery.DoQuery(dta, firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess.RaterooDB, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, theTbl, out theInfoForBodyRows, out rowCountFromQuery);
 
             int? rowCount = rowCountOverride ?? rowCountFromQuery;
 
-            //ProfileSimple.End("FastQueries intro");
-            return CompleteGetTablePopulateResponse(theDataAccess, theTableInfo, tableInfoForReset, thePointsManager, theTbl, headerRow, rowCount, firstRowNum, null, theInfoForBodyRows);
+            //ProfileSimple.End("FastQueries intro"); // QUERYTIMING
+            TablePopulateResponse theResponse = CompleteGetTablePopulateResponse(theDataAccess, theTableInfo, tableInfoForReset, thePointsManager, theTbl, headerRow, rowCount, firstRowNum, null, theInfoForBodyRows);
+            return theResponse;
         }
 
         private static TablePopulateResponse GetTablePopulateResponseWithNormalizedQueries(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
@@ -196,16 +198,16 @@ namespace ClassLibrary1.Model
 
         private static TablePopulateResponse CompleteGetTablePopulateResponse(RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCount, int numRowOfFirstTblRow, TblRowsToPopulatePage theInfoToPopulatePage = null, List<InfoForBodyRows> bodyRowInfoList = null)
         {
-            //ProfileSimple.Start("CompleteTablePopulateResponse");
+            //ProfileSimple.Start("CompleteTablePopulateResponse"); // QUERYTIMING
             if (theInfoToPopulatePage == null && bodyRowInfoList == null)
                 throw new Exception("Internal error: one of theInfoToPopulatePage and bodyRowInfoList should be null, not both.");
 
-            //ProfileSimple.Start("GetTableDimension");
+            //ProfileSimple.Start("GetTableDimension"); // QUERYTIMING
             TblDimension theTblDimension = GetTblDimension(theDataAccess, theTbl);
-            //ProfileSimple.End("GetTableDimension");
-            //ProfileSimple.Start("GetMainRowsString");
+            //ProfileSimple.End("GetTableDimension"); // QUERYTIMING
+            //ProfileSimple.Start("GetMainRowsString"); // QUERYTIMING
             string mainRowsString = GetMainRowsString(theDataAccess, theTableInfo, thePointsManager, theTbl, theTblDimension, numRowOfFirstTblRow, theInfoToPopulatePage, bodyRowInfoList);
-            //ProfileSimple.End("GetMainRowsString");
+            //ProfileSimple.End("GetMainRowsString"); // QUERYTIMING
 
             TablePopulateResponse theResponse = new TablePopulateResponse
             {
@@ -217,7 +219,7 @@ namespace ClassLibrary1.Model
                 tableInfoForReset = tableInfoForReset
             };
 
-            //ProfileSimple.End("CompleteTablePopulateResponse");
+            //ProfileSimple.End("CompleteTablePopulateResponse"); // QUERYTIMING
             return theResponse;
         }
 

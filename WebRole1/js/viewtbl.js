@@ -23,8 +23,8 @@ function viewtbl() {
     var rowHeight = 50;
     var pendingServerCalls = 0;
     /*the number of extra rows to load when populating the table */
-    var rowsInitialToLoad = 15;
-    var rowsBuffer = 5;
+    var rowsInitialToLoad = 100;
+    var maxAddlRowsAtOnce = 150;
     var rowCount = 0;
     /*store cellInfo data structures here*/
     var recordedCellInfos = new Array();
@@ -745,7 +745,7 @@ function viewtbl() {
                 lastInRangeRowNum = theRowNum;
             }
             if (firstInRange != null) {
-                if (theRowNum > firstScrolledInWaitingRowNum + 32)
+                if (theRowNum > firstScrolledInWaitingRowNum + maxAddlRowsAtOnce)
                     break;
                 lastInRange = i;
                 lastInRangeRowNum = theRowNum;

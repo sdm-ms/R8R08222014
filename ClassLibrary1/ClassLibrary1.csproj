@@ -227,6 +227,7 @@
     <Compile Include="Model\PMItemPath.cs" />
     <Compile Include="Model\PMLongProcess.cs" />
     <Compile Include="Model\PMMisc.cs" />
+    <Compile Include="Model\PMMyPointsSidebar.cs" />
     <Compile Include="Model\PMNeedsRatingScore.cs" />
     <Compile Include="Model\PMObjectManagement.cs" />
     <Compile Include="Model\PMPaymentGuarantees.cs" />
