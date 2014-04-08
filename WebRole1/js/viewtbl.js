@@ -808,7 +808,7 @@ function viewtbl() {
                 widthPlan.Fixed = parseInt(item.substring(2));
         });
         if (widthPlan.Variable == null && widthPlan.Fixed == null)
-            widthPlan.Variable = 10; /* average size column */
+            widthPlan.Variable = 15; /* average size column */
         else if (widthPlan.Variable != null && widthPlan.Fixed != null)
             widthPlan.Variable = null;
         return widthPlan;

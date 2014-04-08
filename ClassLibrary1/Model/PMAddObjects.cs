@@ -1642,7 +1642,7 @@ namespace ClassLibrary1.Model
             else
                 noviceHighStakesSettings = new NoviceHighStakesSettings() { UseNoviceHighStakes = false, HighStakesMultiplierOverride = 1.0M };
 
-            decimal? previousUserRating = lastTrustedRatingOrBasisOfCalc; // this should equal rating.CurrentValue, since we made sure of that above
+            decimal? previousUserRating = lastTrustedRatingOrBasisOfCalc; // this should equal rating.CurrentValue if rating.CurrentValue != null, since we made sure of that above
             if (rating.CurrentValue != null && rating.CurrentValue != lastTrustedRatingOrBasisOfCalc)
                 throw new Exception("Internal error: Rating current value should equal last trusted value.");
 
@@ -1780,6 +1780,7 @@ namespace ClassLibrary1.Model
 
             rating.TotalUserRatings++;
             //Trace.TraceInformation("2Setting current value to " + newUserRating);
+            decimal? previousValue = rating.CurrentValue;
             rating.CurrentValue = newUserRatingValue; 
             rating.LastTrustedValue = newLastTrustedUserRating;
             if (rating.LastTrustedValue != rating.CurrentValue && rating.CurrentValue != null)
@@ -1817,7 +1818,7 @@ namespace ClassLibrary1.Model
                 rating.RatingGroup.ValueRecentlyChanged = true; 
                 StatusRecords.PrepareToRecordRatingChange(DataContext, rating.RatingGroup.TblColumnID);
             }
-            if (simpleRatingType && newUserRatingValue != rating.CurrentValue)
+            if (simpleRatingType && newUserRatingValue != previousValue)
             {
                 var farui = new FastAccessRatingUpdatingInfo()
                 {

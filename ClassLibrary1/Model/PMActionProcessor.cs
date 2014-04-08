@@ -1162,13 +1162,14 @@ namespace ClassLibrary1.Model
         public int TblColumnCreate(int TblTabID, int defaultRatingGroupAttributesID, String abbreviation, String name, String explanation, string widthStyle, bool trackTrustWithinTableColumn, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID)
         {
             Tbl tbl = DataManipulation.DataContext.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
+            int tblID = tbl.TblID;
             if (tbl.AllowOverrideOfRatingGroupCharacterstics)
                 throw new NotImplementedException();
 
             int? newObjectID = null;
             DataManipulation.ConfirmObjectExists(TblTabID, TypeOfObject.TblTab);
 
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.ChangeCategories, !makeActiveNow, null, TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionOldList.ChangeCategories, !makeActiveNow, null, tblID, true))
             {
                 int? theUser = userID;
                 if ( DataAccess.GetUser(userID).SuperUser)
@@ -1181,11 +1182,11 @@ namespace ClassLibrary1.Model
                     if (makeActiveNow)
                     {
                         //start of modification
-                        bool? AllowOverrideofRatingGroupCharacterstics = DataAccess.GetTbl(TblID).AllowOverrideOfRatingGroupCharacterstics;
-                        int NumofCategoryDesc = DataManipulation.DataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == TblID && x.Status == (byte)StatusOfObject.Active).Count();
+                        bool? AllowOverrideofRatingGroupCharacterstics = DataAccess.GetTbl(tblID).AllowOverrideOfRatingGroupCharacterstics;
+                        int NumofCategoryDesc = DataManipulation.DataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == tblID && x.Status == (byte)StatusOfObject.Active).Count();
                         if (AllowOverrideofRatingGroupCharacterstics == true && NumofCategoryDesc > 1)
                         {
-                            DataAccess.GetTbl(TblID).AllowOverrideOfRatingGroupCharacterstics = false;
+                            DataAccess.GetTbl(tblID).AllowOverrideOfRatingGroupCharacterstics = false;
                            
                         }
                         // End of modification
