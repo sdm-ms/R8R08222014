@@ -29,5 +29,5 @@
 </asp:DropDownList>
 <asp:DropDownList ID="timeOfDay" runat="server">
     <asp:ListItem Text="AM" Value="0"></asp:ListItem>
-    <asp:ListItem Text="PM" Value="12"></asp:ListItem>
+    <asp:ListItem Text="" Value="12"></asp:ListItem>
 </asp:DropDownList>

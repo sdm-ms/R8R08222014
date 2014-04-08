@@ -14,7 +14,7 @@ namespace WebApplication1
         protected void Page_Load(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+            Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
             return;
         }
     }

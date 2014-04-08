@@ -26,7 +26,7 @@ public partial class Main_Table_ViewCellMainSelected : System.Web.UI.UserControl
         string theCSSClass = "mainCellMarker";
         if (theTradingStatus == TradingStatus.Ended)
             theCSSClass += " deletedTblRow ";
-        theCSSClass += " " + PMNumberandTableFormatter.GetSuppStyleMain(TblColumnID);
+        theCSSClass += " " + NumberandTableFormatter.GetSuppStyleMain(TblColumnID);
         tdTag.AddAttribute("class", theCSSClass);
         tdTag.RenderNow();
         grpC.Value = ratingGroupID.ToString();
@@ -50,7 +50,7 @@ public partial class Main_Table_ViewCellMainSelected : System.Web.UI.UserControl
     protected void BtnEnter_Click(object sender, EventArgs e)
     {
         List<RatingIdAndUserRatingValue> theList = CellData.GetRatingsAndUserRatings();
-        PMActionProcessor theActionProcessor = new PMActionProcessor();
+        ActionProcessor theActionProcessor = new ActionProcessor();
         UserRatingResponse theResponse = new UserRatingResponse();
         User theUser = theActionProcessor.DataContext.GetTable<User>().Single(u => u.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
         theActionProcessor.UserRatingsAdd(theList, theUser, ref theResponse);

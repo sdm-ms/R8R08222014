@@ -189,92 +189,92 @@
     <Compile Include="Misc\TestableDateTime.cs" />
     <Compile Include="Misc\UserProfileInfo.cs" />
     <Compile Include="Misc\WeakReferenceTracker.cs" />
-    <Compile Include="Model\IEnumerableExtensions.cs" />
-    <Compile Include="Model\PMDataContextAbstract.cs" />
-    <Compile Include="Model\PMActionProcessor.cs" />
-    <Compile Include="Model\PMAddObjects.cs" />
-    <Compile Include="Model\PMAdjustmentFactor.cs" />
-    <Compile Include="Model\PMBackgroundThread.cs" />
-    <Compile Include="Model\PMBlobFiles.cs" />
-    <Compile Include="Model\PMCacheManagement.cs" />
-    <Compile Include="Model\PMCacheSubstitution.cs" />
-    <Compile Include="Model\PMCategories.cs" />
-    <Compile Include="Model\PMChoiceGroups.cs" />
-    <Compile Include="Model\PMClassesAndTypes.cs" />
-    <Compile Include="Model\PMConditionalRatings.cs" />
-    <Compile Include="Model\PMCreateStandard.cs" />
-    <Compile Include="Model\PMDataAccess.cs" />
-    <Compile Include="Model\PMDatabaseAndRoleStatus.cs" />
-    <Compile Include="Model\PMDatabaseTransitions.cs" />
-    <Compile Include="Model\PMDataContextInMemory.cs" />
-    <Compile Include="Model\PMDataContextManagement.cs" />
-    <Compile Include="Model\PMDataContextSQL.cs" />
-    <Compile Include="Model\PMDeleteObjects.cs" />
-    <Compile Include="Model\PMEmail.cs" />
-    <Compile Include="Model\PMExecutingChanges.cs" />
-    <Compile Include="Model\PMFastAccessRowUpdateInfo.cs" />
-    <Compile Include="Model\PMFastAccessTablesMaintenance.cs" />
-    <Compile Include="Model\PMFastAccessTablesQuery.cs" />
-    <Compile Include="Model\PMFields.cs" />
-    <Compile Include="Model\PMFieldsDisplayCreator.cs" />
-    <Compile Include="Model\PMFilterRules.cs" />
-    <Compile Include="Model\PMGeocodeUpdate.cs" />
-    <Compile Include="Model\PMHierarchyItems.cs" />
-    <Compile Include="Model\PMHighStakes.cs" />
-    <Compile Include="Model\PMImportExportTblRows.cs" />
-    <Compile Include="Model\PMInitialBuild.cs" />
-    <Compile Include="Model\PMInsertableContentManage.cs" />
-    <Compile Include="Model\PMItemPath.cs" />
-    <Compile Include="Model\PMLongProcess.cs" />
-    <Compile Include="Model\PMMisc.cs" />
-    <Compile Include="Model\PMMyPointsSidebar.cs" />
-    <Compile Include="Model\PMNeedsRatingScore.cs" />
-    <Compile Include="Model\PMObjectManagement.cs" />
-    <Compile Include="Model\PMPaymentGuarantees.cs" />
-    <Compile Include="Model\PMPickTblRows.cs" />
-    <Compile Include="Model\PMPointsCalculating.cs" />
-    <Compile Include="Model\PMPointsTracking.cs" />
-    <Compile Include="Model\PMRaterTime.cs" />
-    <Compile Include="Model\PMRatingAndUserRatingStatus.cs" />
-    <Compile Include="Model\PMRatingsAndGroups.cs" />
-    <Compile Include="Model\PMRatingsReview.cs" />
-    <Compile Include="Model\PMRecencyUpdates.cs" />
-    <Compile Include="Model\PMResolveRatings.cs" />
-    <Compile Include="Model\PMRewards.cs" />
-    <Compile Include="Model\PMRouting.cs" />
-    <Compile Include="Model\PMSearchWords.cs" />
-    <Compile Include="Model\PMFastAccessTablesDefinition.cs" />
-    <Compile Include="Model\PMStatusRecords.cs" />
-    <Compile Include="Model\PMStringConstants.cs" />
-    <Compile Include="Model\PMSupportBase.cs" />
-    <Compile Include="Model\PMTableInfo.cs" />
-    <Compile Include="Model\PMTableLoading.cs" />
-    <Compile Include="Model\PMTableSortMenu.cs" />
-    <Compile Include="Model\PMTblColumnFormatting.cs" />
-    <Compile Include="Model\PMTblDimension.cs" />
-    <Compile Include="Model\PMTblRowsAndFields.cs" />
-    <Compile Include="Model\PMTest.cs" />
-    <Compile Include="Model\PMTrustCalculations.cs" />
-    <Compile Include="Model\PMTrustTrackerStatManager.cs" />
-    <Compile Include="Model\PMTrustTrackingBackgroundTasks.cs" />
-    <Compile Include="Model\PMUntrustedRatings.cs" />
-    <Compile Include="Model\PMUserManagement.cs" />
-    <Compile Include="Model\PMUserRatingEntryProcessing.cs" />
-    <Compile Include="Model\PMUserRatingHierarchy.cs" />
-    <Compile Include="Model\PMUserSelectedRatingOverrides.cs" />
-    <Compile Include="Model\PMVolatilityTracking.cs" />
-    <Compile Include="Model\Rateroo.cs">
+    <Compile Include="Misc\IEnumerableExtensions.cs" />
+    <Compile Include="ModelFromDatabase\Rateroo.cs">
       <DependentUpon>Rateroo.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Rateroo1.designer.cs">
+    <Compile Include="ModelFromDatabase\Rateroo1.designer.cs">
       <DependentUpon>Rateroo.dbml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Model\Partials\Rating.cs" />
-    <Compile Include="Model\Partials\TrustTracker.cs" />
-    <Compile Include="Model\Partials\TrustTrackerUnit.cs" />
+    <Compile Include="ModelFromDatabase\Partials\Rating.cs" />
+    <Compile Include="ModelFromDatabase\Partials\TrustTracker.cs" />
+    <Compile Include="ModelFromDatabase\Partials\TrustTrackerUnit.cs" />
     <Compile Include="Misc\TimeSpanExtensions.cs" />
+    <Compile Include="Model\ActionProcessor.cs" />
+    <Compile Include="Model\AddObjects.cs" />
+    <Compile Include="Model\AdjustmentFactorCalc.cs" />
+    <Compile Include="Model\BackgroundThread.cs" />
+    <Compile Include="Model\BlobFiles.cs" />
+    <Compile Include="Model\CacheManagement.cs" />
+    <Compile Include="Model\CacheSubstitution.cs" />
+    <Compile Include="Model\Categories.cs" />
+    <Compile Include="Model\ChoiceGroups.cs" />
+    <Compile Include="Model\ClassesAndTypes.cs" />
+    <Compile Include="Model\ConditionalRatings.cs" />
+    <Compile Include="Model\CreateStandard.cs" />
+    <Compile Include="Model\DataAccess.cs" />
+    <Compile Include="Model\DatabaseAndRoleStatus.cs" />
+    <Compile Include="Model\DatabaseTransitions.cs" />
+    <Compile Include="Model\DataContextAbstract.cs" />
+    <Compile Include="Model\DataContextInMemory.cs" />
+    <Compile Include="Model\DataContextManagement.cs" />
+    <Compile Include="Model\DataContextSQL.cs" />
+    <Compile Include="Model\DeleteObjects.cs" />
+    <Compile Include="Model\Email.cs" />
+    <Compile Include="Model\ExecutingChanges.cs" />
+    <Compile Include="Model\FastAccessRowUpdateInfo.cs" />
+    <Compile Include="Model\FastAccessTablesDefinition.cs" />
+    <Compile Include="Model\FastAccessTablesMaintenance.cs" />
+    <Compile Include="Model\FastAccessTablesQuery.cs" />
+    <Compile Include="Model\Fields.cs" />
+    <Compile Include="Model\FieldsDisplayCreator.cs" />
+    <Compile Include="Model\FilterRules.cs" />
+    <Compile Include="Model\GeocodeUpdate.cs" />
+    <Compile Include="Model\HierarchyItems.cs" />
+    <Compile Include="Model\HighStakes.cs" />
+    <Compile Include="Model\ImportExportTblRows.cs" />
+    <Compile Include="Model\InitialBuild.cs" />
+    <Compile Include="Model\InsertableContentManage.cs" />
+    <Compile Include="Model\ItemPath.cs" />
+    <Compile Include="Model\LongProcess.cs" />
+    <Compile Include="Model\Misc.cs" />
+    <Compile Include="Model\MyPointsSidebar.cs" />
+    <Compile Include="Model\NeedsRatingScore.cs" />
+    <Compile Include="Model\ObjectManagement.cs" />
+    <Compile Include="Model\PaymentGuarantees.cs" />
+    <Compile Include="Model\PickTblRows.cs" />
+    <Compile Include="Model\PointsCalculating.cs" />
+    <Compile Include="Model\PointsTracking.cs" />
+    <Compile Include="Model\RaterTime.cs" />
+    <Compile Include="Model\RatingAndUserRatingStatus.cs" />
+    <Compile Include="Model\RatingsAndGroups.cs" />
+    <Compile Include="Model\RatingsReview.cs" />
+    <Compile Include="Model\RecencyUpdates.cs" />
+    <Compile Include="Model\ResolveRatings.cs" />
+    <Compile Include="Model\Rewards.cs" />
+    <Compile Include="Model\Routing.cs" />
+    <Compile Include="Model\SearchWords.cs" />
+    <Compile Include="Model\StatusRecords.cs" />
+    <Compile Include="Model\StringConstants.cs" />
+    <Compile Include="Model\SupportBase.cs" />
+    <Compile Include="Model\TableInfo.cs" />
+    <Compile Include="Model\TableLoading.cs" />
+    <Compile Include="Model\TableSortMenu.cs" />
+    <Compile Include="Model\TblColumnFormatting.cs" />
+    <Compile Include="Model\TblDimension.cs" />
+    <Compile Include="Model\TblRowsAndFields.cs" />
+    <Compile Include="Model\Test.cs" />
+    <Compile Include="Model\TrustCalculations.cs" />
+    <Compile Include="Model\TrustTrackerStatManager.cs" />
+    <Compile Include="Model\TrustTrackingBackgroundTasks.cs" />
+    <Compile Include="Model\UntrustedRatings.cs" />
+    <Compile Include="Model\UserManagement.cs" />
+    <Compile Include="Model\UserRatingEntryProcessing.cs" />
+    <Compile Include="Model\UserRatingHierarchy.cs" />
+    <Compile Include="Model\UserSelectedRatingOverrides.cs" />
+    <Compile Include="Model\VolatilityTracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -286,12 +286,12 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Model\Rateroo.dbml">
+    <None Include="ModelFromDatabase\Rateroo.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Rateroo1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Model\Rateroo.dbml.views">
+    <None Include="ModelFromDatabase\Rateroo.dbml.views">
       <DependentUpon>Rateroo.dbml</DependentUpon>
     </None>
     <None Include="packages.config" />
@@ -301,7 +301,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Model\Rateroo.dbml.layout">
+    <None Include="ModelFromDatabase\Rateroo.dbml.layout">
       <DependentUpon>Rateroo.dbml</DependentUpon>
     </None>
   </ItemGroup>
@@ -335,7 +335,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Model\Rateroo.dbml.views_def.layout">
+    <EmbeddedResource Include="ModelFromDatabase\Rateroo.dbml.views_def.layout">
       <DependentUpon>Rateroo.dbml</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

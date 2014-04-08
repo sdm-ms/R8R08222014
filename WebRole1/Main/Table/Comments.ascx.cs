@@ -45,8 +45,8 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
             ViewAllTblComments.Attributes.Add("style", "display:none;");
         else
         {
-            PMRoutingInfoMainContent theLocation = PMRouting.IncomingMainContent(Page.RouteData, null);
-            PMRoutingInfoMainContent commentsPage = PMRoutingInfoMainContentFactory.GetRoutingInfo(theLocation.lastItemInHierarchy);
+            RoutingInfoMainContent theLocation = Routing.IncomingMainContent(Page.RouteData, null);
+            RoutingInfoMainContent commentsPage = RoutingInfoMainContentFactory.GetRoutingInfo(theLocation.lastItemInHierarchy);
             commentsPage.commentsMode = true;
             ViewAllTblComments.Attributes.Add("href", commentsPage.GetOutgoingRoute());
         }
@@ -126,7 +126,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
                 Label RowName = (Label)e.Item.FindControl("RowName");
                 Label RowNameSeparator = (Label)e.Item.FindControl("RowNameSeparator");
 
-                RowLink.Attributes.Add("href", PMRouting.Outgoing(PMRoutingInfoMainContentFactory.GetRoutingInfo(theTblOrNullForRowOnly, commentData.TblRow)));
+                RowLink.Attributes.Add("href", Routing.Outgoing(RoutingInfoMainContentFactory.GetRoutingInfo(theTblOrNullForRowOnly, commentData.TblRow)));
                 RowName.Text = commentData.TblRow.Name;
                 RowNameSeparator.Text = "&nbsp;";
             }
@@ -137,14 +137,14 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
     public void AddComment_Click(object sender, EventArgs e)
     {
         int? userID = (int?) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-        PMActionProcessor theProcess = new PMActionProcessor();
+        ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && (UserCanProposeComments || UserCanAddComments))
         {
             string commentTitle = MoreStringManip.StripHtml(NewCommentTitle.Text).Replace("\n", "<br/>");
             string commentText = MoreStringManip.StripHtml(NewCommentText.Text).Replace("\n", "<br/>");
             theProcess.CommentForTblRowCreate(theTblRowOrNullForEntireTable.TblRowID, commentTitle, commentText, TestableDateTime.Now, (int)userID, !UserCanAddComments, true, null);
         }
-        PMRouting.Redirect(Response, PMRouting.Incoming(Page.RouteData, theProcess.DataContext));
+        Routing.Redirect(Response, Routing.Incoming(Page.RouteData, theProcess.DataContext));
     }
 
     private void GetCommentInfo(Button theButton, out int commentID, out bool isProposed, out bool isDeleted)
@@ -163,10 +163,10 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         bool isDeleted;
         GetCommentInfo((Button)sender, out commentID, out isProposed, out isDeleted);
         int? userID = (int?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-        PMActionProcessor theProcess = new PMActionProcessor();
+        ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && UserCanDeleteComments)
             theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (int)userID, true, null);
-        PMRouting.Redirect(Response, PMRouting.Incoming(Page.RouteData, theProcess.DataContext));
+        Routing.Redirect(Response, Routing.Incoming(Page.RouteData, theProcess.DataContext));
     }
 
     public void MainListView_ItemCreated(object sender, ListViewItemEventArgs e)

@@ -79,7 +79,7 @@ namespace TestProject1
         public decimal GetUserRatingEstimate(decimal userRatingValueTarget)
         {
             return 
-                PMTrustCalculations.Constrain(
+                TrustCalculations.Constrain(
                 (decimal) userRatingValueTarget + 
                 (decimal)(1 - Quality) * (decimal) RandomGenerator.GetRandom(-2.0, 2.0), // this is a somewhat simplified approach, but if we just weigh in random noise, we will end up with a downward bias
                 0, 10);

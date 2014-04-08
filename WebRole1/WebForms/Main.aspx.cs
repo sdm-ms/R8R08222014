@@ -31,21 +31,21 @@ public partial class ViewTbl : System.Web.UI.Page
     Main_Table_WithCategorySelector MainTableWithCategorySelector = null;
     Main_Table_TblRowView MainTableTblRowView = null;
     Main_Table_TableCellView MainTableCellView = null;
-    internal PMRoutingInfoMainContent theLocation;
+    internal RoutingInfoMainContent theLocation;
 
 
 
     protected void Page_Init(object sender, EventArgs e)
     {
-        PMCacheManagement.DisablePageCaching(); // No browser caching (we will use server caching)
+        CacheManagement.DisablePageCaching(); // No browser caching (we will use server caching)
         DataAccess.RaterooDB.SetPageLoadOptions();
         try
         {
-            theLocation = PMRouting.IncomingMainContent(Page.RouteData, DataAccess.RaterooDB);
+            theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.RaterooDB);
         }
         catch
         {
-            PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+            Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
             return;
         }
         ItemPath1.theTbl = theLocation.theTbl;
@@ -126,7 +126,7 @@ public partial class ViewTbl : System.Web.UI.Page
             bool canViewPage = DataAccess.CheckUserRights(anyUserID, UserActionOldList.View, false, null, theLocation.theTbl.TblID);
             if (!canViewPage)
             {
-                PMRouting.Redirect(Response, new PMRoutingInfoLoginRedirect(PMRouting.Outgoing(theLocation)));
+                Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(theLocation)));
                 return;
             }
 
@@ -165,7 +165,7 @@ public partial class ViewTbl : System.Web.UI.Page
                 if (IsValidForTblAdministration == true && theLocation.theTblRow == null)
                 {
                     BtnAdministration.Visible = true;
-                    BtnAdministration.PostBackUrl = PMRouting.Outgoing(new PMRoutingInfoMainContent(theLocation.theTbl, null, null, false, false, false, false, false, true, false));
+                    BtnAdministration.PostBackUrl = Routing.Outgoing(new RoutingInfoMainContent(theLocation.theTbl, null, null, false, false, false, false, false, true, false));
                 }
                 else
                     BtnAdministration.Visible = false;
@@ -225,9 +225,9 @@ public partial class ViewTbl : System.Web.UI.Page
     protected void AddOrChangeTblRow_Click(object sender, EventArgs e)
     {
         if (theLocation.theTblRow != null)
-            PMRouting.Redirect(Response, new PMRoutingInfoMainContent(theLocation.theTbl, theLocation.theTblRow, null, true, false));
+            Routing.Redirect(Response, new RoutingInfoMainContent(theLocation.theTbl, theLocation.theTblRow, null, true, false));
         else
-            PMRouting.Redirect(Response, new PMRoutingInfoMainContent(theLocation.theTbl, null, null, false,true));
+            Routing.Redirect(Response, new RoutingInfoMainContent(theLocation.theTbl, null, null, false,true));
 
     }
 
@@ -238,7 +238,7 @@ public partial class ViewTbl : System.Web.UI.Page
         {
             HierarchyItem changesHierarchyItem = theLocation.lastItemInHierarchy.HierarchyItems.FirstOrDefault(x => x.Tbl.Name == "Changes");
             if (changesHierarchyItem != null)
-                PMRouting.Redirect(Response, new PMRoutingInfoMainContent(changesHierarchyItem, null, null));
+                Routing.Redirect(Response, new RoutingInfoMainContent(changesHierarchyItem, null, null));
         }
     }
 

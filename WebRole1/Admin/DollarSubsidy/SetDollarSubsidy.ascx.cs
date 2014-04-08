@@ -15,7 +15,7 @@ using ClassLibrary1.Model;
 
 public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserControl
 {
-    PMActionProcessor Obj = new PMActionProcessor();
+    ActionProcessor Obj = new ActionProcessor();
     public int? SubtopicId=null;
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -29,7 +29,7 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
             Response.CacheControl = "no-cache";
             if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0))
             {
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 return;
             }
 

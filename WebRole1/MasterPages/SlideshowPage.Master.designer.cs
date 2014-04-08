@@ -55,7 +55,7 @@ public partial class SlideshowPage {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::User_Control_PMInsertableContent Advertisement;
+    protected global::User_Control_InsertableContent Advertisement;
     
     /// <summary>
     /// TheBackgroundEffect control.

@@ -30,8 +30,8 @@ public partial class Main_Table_ViewCellRatingValueUnselected : System.Web.UI.Us
         DataAccess = dataAccess;
         CanPredict = canPredict;
 
-        string theText = PMNumberandTableFormatter.FormatAsSpecified(value, decimalPlaces, TblColumnID);
-        TblColumnFormatting theFormatting = PMNumberandTableFormatter.GetFormattingForTblColumn(TblColumnID);
+        string theText = NumberandTableFormatter.FormatAsSpecified(value, decimalPlaces, TblColumnID);
+        TblColumnFormatting theFormatting = NumberandTableFormatter.GetFormattingForTblColumn(TblColumnID);
         if (theFormatting != null)
             suppStyle = suppStyle + " " + theFormatting.SuppStylesMain;
 

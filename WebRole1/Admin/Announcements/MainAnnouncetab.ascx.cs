@@ -14,7 +14,7 @@ using ClassLibrary1.Model;
 
 public partial class MainAnnounceTab : System.Web.UI.UserControl
 {
-    PMActionProcessor Obj = new PMActionProcessor();
+    ActionProcessor Obj = new ActionProcessor();
  
     Admin_Announcements_AddInsertableContents theInsertableContentsControl;
      public int? TableId = null;

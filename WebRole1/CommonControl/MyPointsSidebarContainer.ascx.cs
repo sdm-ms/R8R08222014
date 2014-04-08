@@ -13,7 +13,7 @@ namespace WebRole1.CommonControl
 {
     public partial class MyPointsSidebarContainer : System.Web.UI.UserControl
     {
-        internal PMRoutingInfoMainContent theLocation;
+        internal RoutingInfoMainContent theLocation;
         internal RaterooDataManipulation theDataAccess;
 
         protected void Page_Init(object sender, EventArgs e)
@@ -29,12 +29,12 @@ namespace WebRole1.CommonControl
             IUserProfileInfo theUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
             try
             {
-                theLocation = PMRouting.IncomingMainContent(Page.RouteData, theDataAccess.DataContext);
+                theLocation = Routing.IncomingMainContent(Page.RouteData, theDataAccess.DataContext);
                 thePointsManager = theLocation.thePointsManager;
             }
             catch
             {
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
                 return;
             }
 

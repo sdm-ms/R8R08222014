@@ -151,7 +151,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             bool disableCaching = CanPredict && !javascriptIsEnabled && Page.IsPostBack; // We have a button we need to respond to, so no html caching.
             string myCacheKey = "MainTableBodyRow" + theTblRowID.ToString() + "," + TblTabID.ToString() + "," + CanPredict.ToString() + "," + javascriptIsEnabled.ToString();
 
-            object cachedObject = PMCacheManagement.GetItemFromCache(myCacheKey);
+            object cachedObject = CacheManagement.GetItemFromCache(myCacheKey);
             if (!disableCaching && cachedObject != null)
             {
                 LiteralControl myLiteral = new LiteralControl();
@@ -175,7 +175,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
                                     "RatingsForTblRowIDAndTblTabID" + theTblRowID.ToString() + "," + TblTabID.ToString(),
                                     "CategoriesForTblID" + TblID.ToString()
                                                       };
-                    PMCacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
+                    CacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
                 }
             }
             MainTableBodyRowPlaceHolder.Controls.Add(theControlToUseAsBodyRow);

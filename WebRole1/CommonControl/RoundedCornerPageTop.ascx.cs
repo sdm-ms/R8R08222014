@@ -22,13 +22,13 @@ public partial class CommonControl_RoundedCornerPageTop : System.Web.UI.UserCont
         //// (2) use window setTimeout trick to overcome bug with dropdownlists in Firefox 3.0.
         //ScriptManager.RegisterStartupScript(Page, Page.GetType(), csname1, "window.setTimeout(\"treeSetup()\",0);", true);
 
-        ImageButtonAnchor.Attributes.Add("href", PMRouting.Outgoing(new PMRoutingInfo(PMRouteID.HomePage)));
+        ImageButtonAnchor.Attributes.Add("href", Routing.Outgoing(new RoutingInfo(RouteID.HomePage)));
     }
     protected void DoSearch_Click(object sender, EventArgs e)
     {
         if (SearchBox.Text != "")
         {
-            PMRouting.Redirect(Response, new PMRoutingInfoSearchResults(SearchBox.Text));
+            Routing.Redirect(Response, new RoutingInfoSearchResults(SearchBox.Text));
         }
     }
 }

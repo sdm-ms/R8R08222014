@@ -21,7 +21,7 @@ public partial class MyAccount : System.Web.UI.Page
     {
         if (theUserProfileInfo == null)
         {
-            PMRouting.Redirect(Response, new PMRoutingInfoLoginRedirect(PMRouting.Outgoing(new PMRoutingInfo(PMRouteID.MyAccount))));
+            Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(new RoutingInfo(RouteID.MyAccount))));
             return;
         }
         if (!Page.IsPostBack)
@@ -42,7 +42,7 @@ public partial class MyAccount : System.Web.UI.Page
 
     protected void CancelChanges_Click(object sender, EventArgs e)
     {
-        PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+        Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
         return;
     }
 
@@ -50,7 +50,7 @@ public partial class MyAccount : System.Web.UI.Page
     {
         if (!(HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null))
         {
-            PMRouting.Redirect(Response, new PMRoutingInfoLoginRedirect(PMRouting.Outgoing(new PMRoutingInfo(PMRouteID.MyAccount))));
+            Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(new RoutingInfo(RouteID.MyAccount))));
             return;
         }
         if (FirstName.Text != (string)(theUserProfileInfo.GetProperty("FirstName")))
@@ -78,6 +78,6 @@ public partial class MyAccount : System.Web.UI.Page
         if (HomePhone.Text != (string)theUserProfileInfo.GetProperty("HomePhone"))
             theUserProfileInfo.SetProperty("HomePhone", HomePhone.Text, false);
         theUserProfileInfo.SavePropertyChanges();
-        PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+        Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
     }
 }

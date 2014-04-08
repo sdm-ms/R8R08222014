@@ -33,12 +33,12 @@ namespace WebRole1.CommonControl
             ErrorMessage.Visible = false;
             if (ThePointsTotal == null)
                 ThePointsTotal = TheUser.PointsTotals.SingleOrDefault(x => x.PointsManager == ThePointsManager);
-            status = PMPaymentGuarantees.UserCanApplyForConditionalGuarantee(ThePointsTotal, ThePointsManager);
+            status = PaymentGuarantees.UserCanApplyForConditionalGuarantee(ThePointsTotal, ThePointsManager);
             if (Location == PaymentGuaranteeInfoLocation.GuaranteePage && ThePointsTotal != null)
             {
                 if (status == ConditionalGuaranteeUserCanApplyStatus.canApplyWithoutDocumentation || status == ConditionalGuaranteeUserCanApplyStatus.maximumGuaranteesAlreadyAwardedButUserCanApplyAndWait)
                 {
-                    PMPaymentGuarantees.InitiateConditionalGuaranteeForExistingUser(ThePointsTotal);
+                    PaymentGuarantees.InitiateConditionalGuaranteeForExistingUser(ThePointsTotal);
                 }
             }
             UpdateInfo();
@@ -70,7 +70,7 @@ namespace WebRole1.CommonControl
                     Apply.Text = "Apply";
                     break;
             }
-            string paymentGuaranteeStatusString = PMPaymentGuarantees.PaymentGuaranteeStatusString(ThePointsTotal, ThePointsManager, useThisIfGuaranteesNotAvailable, useThisIfUserNotTrusted, prefix);
+            string paymentGuaranteeStatusString = PaymentGuarantees.PaymentGuaranteeStatusString(ThePointsTotal, ThePointsManager, useThisIfGuaranteesNotAvailable, useThisIfUserNotTrusted, prefix);
             CurrentInfo.Text = spanOpening + paymentGuaranteeStatusString + "</span>";
             //if (paymentGuaranteeStatusString != "")
             //    CurrentInfo.Text += "<br/>";
@@ -87,9 +87,9 @@ namespace WebRole1.CommonControl
                 { // event won't fire, so set postback event directly
                     //string urlString;
                     //RouteValueDictionary parameters;
-                    //PMRouting.OutgoingGetRoute(new PMRoutingInfoMainContent(ThePointsManager.Tbls.First(), null, null, false, false, false, false, true), out urlString, out parameters );
-                    //Apply.PostBackUrl = "/" + new PMRoutingInfoMainContent(ThePointsManager.Tbls.First(x => x.Name != "Changes"), null, null, false, false, false, false, true).GetHierarchyRoutingParameterString(); // "~/Guarantees";
-                    PMRoutingInfoMainContent route = PMRouting.IncomingMainContent(Page.RouteData, GetIRaterooDataContext.New(false, false));
+                    //Routing.OutgoingGetRoute(new RoutingInfoMainContent(ThePointsManager.Tbls.First(), null, null, false, false, false, false, true), out urlString, out parameters );
+                    //Apply.PostBackUrl = "/" + new RoutingInfoMainContent(ThePointsManager.Tbls.First(x => x.Name != "Changes"), null, null, false, false, false, false, true).GetHierarchyRoutingParameterString(); // "~/Guarantees";
+                    RoutingInfoMainContent route = Routing.IncomingMainContent(Page.RouteData, GetIRaterooDataContext.New(false, false));
                     Apply.PostBackUrl = route.lastItemInHierarchy.RouteToHere + "/Guarantees";
                 }
                 if (Location == PaymentGuaranteeInfoLocation.GuaranteePage)
@@ -114,7 +114,7 @@ namespace WebRole1.CommonControl
                 {
                     try
                     {
-                        PMPaymentGuarantees.UploadConditionalGuaranteeApplicationForNewUser(TheDataAccess, TheUser, ThePointsManager, DocumentationUpload);
+                        PaymentGuarantees.UploadConditionalGuaranteeApplicationForNewUser(TheDataAccess, TheUser, ThePointsManager, DocumentationUpload);
                     }
                     catch (Exception ex)
                     {
@@ -126,7 +126,7 @@ namespace WebRole1.CommonControl
             else
             {
                 Tbl theTbl = ThePointsManager.Tbls.First(x => x.Name != "Changes");
-                PMRouting.Redirect(Response, new PMRoutingInfoMainContent(theTbl, null, null,false,false,false,false,true));
+                Routing.Redirect(Response, new RoutingInfoMainContent(theTbl, null, null,false,false,false,false,true));
             }
             UpdateInfo();
         }

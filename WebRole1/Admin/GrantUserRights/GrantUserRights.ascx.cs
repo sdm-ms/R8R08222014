@@ -11,13 +11,13 @@ namespace WebApplication1.Admin.GrantUserRights
 {
     public partial class GrantUserRights : System.Web.UI.UserControl
     {
-        public PMActionProcessor theActionProcessor;
+        public ActionProcessor theActionProcessor;
         public int pointsManagerID;
 
         public void Setup(int thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
-            theActionProcessor = new PMActionProcessor();
+            theActionProcessor = new ActionProcessor();
             existingUsers.Text = "Currently authorized users: " + GetExistingUsersString();
         }
 

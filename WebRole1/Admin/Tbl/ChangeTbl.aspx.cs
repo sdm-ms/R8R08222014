@@ -24,10 +24,10 @@ public partial class ChangeTbl : System.Web.UI.Page
 {
     static int TableId;
     
-    PMActionProcessor Obj = new PMActionProcessor();
+    ActionProcessor Obj = new ActionProcessor();
     protected void Page_Load(object sender, EventArgs e)
     {
-        PMRoutingInfoMainContent Location = PMRouting.IncomingMainContent(Page.RouteData, Obj.DataContext);
+        RoutingInfoMainContent Location = Routing.IncomingMainContent(Page.RouteData, Obj.DataContext);
         Tbl theTbl  = Location.lastItemInHierarchy.Tbl;
         TableId = theTbl.TblID;
 
@@ -38,13 +38,13 @@ public partial class ChangeTbl : System.Web.UI.Page
 
         if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
         {
-            PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+            Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
             return;
         }
 
         changeTblannounce.Setup(TableId, null, null);
 
-        AdministerPointsManager.HRef = PMRouting.Outgoing(new PMRoutingInfoMainContent(theTbl, null, null, false, false, false, false, false, false, true));
+        AdministerPointsManager.HRef = Routing.Outgoing(new RoutingInfoMainContent(theTbl, null, null, false, false, false, false, false, false, true));
     }
       
    

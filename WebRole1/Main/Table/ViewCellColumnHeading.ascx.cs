@@ -71,7 +71,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
 
         if (SortableColumn == true)
         {
-            string styleInfo = "mainTable " + PMNumberandTableFormatter.GetSuppStyleHeader(TblColumnID) + " " + WidthStyle + " ";
+            string styleInfo = "mainTable " + NumberandTableFormatter.GetSuppStyleHeader(TblColumnID) + " " + WidthStyle + " ";
 
             if (CurrentlySorting)
                 styleInfo += "sort";
@@ -135,7 +135,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
         }
         else
         {
-            string styleInfo = "mainTable " + PMNumberandTableFormatter.GetSuppStyleHeader(TblColumnID) + WidthStyle + " ";
+            string styleInfo = "mainTable " + NumberandTableFormatter.GetSuppStyleHeader(TblColumnID) + WidthStyle + " ";
             if (VerticalText)
                 styleInfo += " vertText";
 
@@ -169,7 +169,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
                     {
                         TblColumn theCD = DataAccess.RaterooDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnID);
                         TblRow theTblRow = DataAccess.RaterooDB.GetTable<TblRow>().SingleOrDefault(e => e.TblRowID == TblRowIDForChartButton);
-                        href = "href=\"" + PMRouting.Outgoing(new PMRoutingInfoMainContent(theTblRow.Tbl, theTblRow, theCD)) + "\"";
+                        href = "href=\"" + Routing.Outgoing(new RoutingInfoMainContent(theTblRow.Tbl, theTblRow, theCD)) + "\"";
                     }
                 }
                 LiteralControl myLiteral = new LiteralControl("<a id=\"NoSortColumn" + TblColumnID.ToString() + "\" " + href + ">" + (VerticalText ? "&nbsp;" : theText) + "</a>");

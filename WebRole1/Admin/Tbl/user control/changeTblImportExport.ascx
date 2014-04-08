@@ -3,8 +3,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
 <%@ Register TagPrefix="Uc" TagName="Hover" Src="~/CommonControl/Hover.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="ModalPopUp" Src="~/CommonControl/ModalPopUp.ascx" %>
-<%@ Register TagPrefix="Uc" TagName="PMFieldsBox" Src="~/Main/Field/PMFieldsBox.ascx" %>
-<%@ Reference Control="~/Main/Field/PMFieldsBox.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="FieldsBox" Src="~/Main/Field/FieldsBox.ascx" %>
+<%@ Reference Control="~/Main/Field/FieldsBox.ascx" %>
 
 <table>
     <tr>
@@ -77,7 +77,7 @@
                         <div style="width:300px; position:relative; padding:0 0 0 0;">
                             <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
-                                    <Uc:PMFieldsBox runat="server" ID="FieldsBox" />
+                                    <Uc:FieldsBox runat="server" ID="FieldsBox" />
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>

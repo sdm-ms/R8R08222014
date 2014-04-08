@@ -17,7 +17,7 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
     RaterooDataAccess myDataAccess;
 
     bool OpenAllInitially = false;
-    PMRoutingInfoMainContent theLocation;
+    RoutingInfoMainContent theLocation;
     string cacheString;
 
 
@@ -34,14 +34,14 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
         myDataAccess = new RaterooDataAccess();
         try
         {
-            theLocation = PMRouting.IncomingMainContent(Page.RouteData, myDataAccess.RaterooDB);
+            theLocation = Routing.IncomingMainContent(Page.RouteData, myDataAccess.RaterooDB);
         }
         catch
         {
-            theLocation = new PMRoutingInfoMainContent();
+            theLocation = new RoutingInfoMainContent();
         }
         cacheString = "CachedTopicsMenu" + theLocation.GetHashCode();
-        object cachedObject = (string)PMCacheManagement.GetItemFromCache(cacheString);
+        object cachedObject = (string)CacheManagement.GetItemFromCache(cacheString);
         if (cachedObject == null)
             BuildMenu();
         else
@@ -57,7 +57,7 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
         myStringBuilder.Append("</ul></div>");
         MenuLiteral.Text = myStringBuilder.ToString();
         string[] myDependencies = { "TopicsMenu" };
-        PMCacheManagement.AddItemToCache(cacheString, myDependencies, MenuLiteral.Text);
+        CacheManagement.AddItemToCache(cacheString, myDependencies, MenuLiteral.Text);
     }
 
     protected void AppendHtmlAttribute(StringBuilder theStringBuilder, string attributeName, string attributeValue, bool mustBeNonempty)

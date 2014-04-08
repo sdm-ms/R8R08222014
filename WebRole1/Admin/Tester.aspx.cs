@@ -31,7 +31,7 @@ public partial class Tester : System.Web.UI.Page
             bool allowEmergencyAdminAccess = false; // put breakpoint on next line to allow emergency access to this page
             if (!allowEmergencyAdminAccess && (string)HttpContext.Current.Profile.UserName != "admin")
             {
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 return;
             }
         }
@@ -241,20 +241,20 @@ public partial class Tester : System.Web.UI.Page
 
     protected void ClearCache_Click(object sender, EventArgs e)
     {
-        PMCacheManagement.ClearCache();
+        CacheManagement.ClearCache();
     }
 
 
     protected void StartPreventingChanges(object sender, EventArgs e)
     {
         RaterooDataManipulation DataManipulation = new RaterooDataManipulation();
-        PMDatabaseAndAzureRoleStatus.SetPreventChanges(DataManipulation.DataContext, true); 
+        DatabaseAndAzureRoleStatus.SetPreventChanges(DataManipulation.DataContext, true); 
     }
 
     protected void StopPreventingChanges(object sender, EventArgs e)
     {
         RaterooDataManipulation DataManipulation = new RaterooDataManipulation();
-        PMDatabaseAndAzureRoleStatus.SetPreventChanges(DataManipulation.DataContext, false);
+        DatabaseAndAzureRoleStatus.SetPreventChanges(DataManipulation.DataContext, false);
     }
 
     protected void AddFastAccessTables(object sender, EventArgs e)

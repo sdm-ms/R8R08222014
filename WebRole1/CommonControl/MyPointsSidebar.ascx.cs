@@ -27,7 +27,7 @@ namespace WebRole1.CommonControl
             ThePaymentGuaranteeInfo.TheDataAccess = TheDataAccess;
             if (ThePointsManager != null)
             {
-                MyPointsSidebarDiv.Attributes.Add("data-PMID", ThePointsManager.PointsManagerID.ToString());
+                MyPointsSidebarDiv.Attributes.Add("data-ID", ThePointsManager.PointsManagerID.ToString());
                 SetInfo(new MyPointsSidebarInfo(ThePointsManager, ThePointsTotal));
             }
         }

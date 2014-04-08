@@ -186,7 +186,7 @@ function viewtbl() {
             insertLoadingRow();
             pendingServerCalls++;
             waitingForProcessing = true;
-            PMWebServices.PMWebService.PopulateTableInitially(theTableInfoHtml, rowsVisibleEstimate,
+            WebServices.WebService.PopulateTableInitially(theTableInfoHtml, rowsVisibleEstimate,
                         rowsInitialToLoad, rowsToSkip, getHeaderRow, onPopulateCallback);
         }
     }
@@ -766,7 +766,7 @@ function viewtbl() {
             dataOnCallBack.tableInfoString = tableInfoString;
             var getRowsFromServerCallback = Function.createCallback(rowsRetrieved, dataOnCallBack);
 
-            PMWebServices.PMWebService.PopulateTableSpecificRows(tableInfo.html(), firstInRangeRowNum, lastInRangeRowNum - firstInRangeRowNum + 1, rowsVisibleEstimate, onRepopulateScrollTo, getRowsFromServerCallback, getRowsFromServerCallback, dataOnCallBack);
+            WebServices.WebService.PopulateTableSpecificRows(tableInfo.html(), firstInRangeRowNum, lastInRangeRowNum - firstInRangeRowNum + 1, rowsVisibleEstimate, onRepopulateScrollTo, getRowsFromServerCallback, getRowsFromServerCallback, dataOnCallBack);
         }
     }
 
@@ -1080,7 +1080,7 @@ function viewtbl() {
         var theUserRatingsList = createChangedList(theCellInfo.OriginalValues, theCellInfo.NewValues, theCellInfo.RatingIDs);
         var successCallback = Function.createCallback(onSubmitSuccess, theCellInfo);
         var failureCallback = Function.createCallback(onSubmitFailure, theCellInfo);
-        PMWebServices.PMWebService.ProcessRatings(theUserAccessInfo, theUserRatingsList, successCallback, failureCallback, theCellInfo);
+        WebServices.WebService.ProcessRatings(theUserAccessInfo, theUserRatingsList, successCallback, failureCallback, theCellInfo);
     }
 
     function onSubmitSuccess(result, theCellInfo, methodName) {
@@ -1135,7 +1135,7 @@ function viewtbl() {
         }
         var successCallback = Function.createCallback(onSubmitBulkSuccess, theCellInfoArray);
         var failureCallback = Function.createCallback(onSubmitBulkFailure, theCellInfoArray);
-        PMWebServices.PMWebService.ProcessRatingsBulk(theUserAccessInfo, theUserRatingsListList, successCallback, failureCallback, theCellInfoArray);
+        WebServices.WebService.ProcessRatingsBulk(theUserAccessInfo, theUserRatingsListList, successCallback, failureCallback, theCellInfoArray);
     }
 
     function onSubmitBulkSuccess(result, theCellInfoArray, methodName) {
@@ -1196,7 +1196,7 @@ function viewtbl() {
         var successCallback = Function.createCallback(onLoadUpdatedSuccess, null);
         var failureCallback = Function.createCallback(onLoadUpdatedFailure, null);
         refreshCellAnimate(theCellInfo.TheCell);
-        PMWebServices.PMWebService.GetUpdatedRatings(ratingGroupIDString, successCallback, failureCallback, theCellInfo);
+        WebServices.WebService.GetUpdatedRatings(ratingGroupIDString, successCallback, failureCallback, theCellInfo);
     }
 
     function loadUpdatedValuesBasedOnEvent(event) {
@@ -1223,7 +1223,7 @@ function viewtbl() {
         var allRatingIDs = recordRatingIDs(mainTable);
         var successCallback = Function.createCallback(onLoadPageSuccess, null);
         var failureCallback = Function.createCallback(onLoadPageFailure, null);
-        PMWebServices.PMWebService.GetUpdatedRatingsMultiple(allRatingIDs, successCallback, failureCallback);
+        WebServices.WebService.GetUpdatedRatingsMultiple(allRatingIDs, successCallback, failureCallback);
         return false;
     }
 
@@ -2050,7 +2050,7 @@ function viewtbl() {
     function initGoogleMapStep1() {
         var script = document.createElement("script");
         var scriptsrc = "http://www.google.com/jsapi?key=ABQIAAAAs-ZODfxj8f9LNfbR_FZHTRTfRkUUk3oX8DgAj5sWGEMsn5h-rhRi9M18xlAezldqPnUIGtD9BZ6w3g";
-        // DEVELOPMENT VERSION scriptsrc = "http://www.google.com/jsapi?key=ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA";
+        // DEVELOENT VERSION scriptsrc = "http://www.google.com/jsapi?key=ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA";
         // RELEASE VERSION
         //        script.src = scriptsrc;
         //        script.type = "text/javascript";
@@ -2511,8 +2511,8 @@ function viewtbl() {
     }
 
     function updateMyPointsSidebar() {
-        pointsManagerID = myPointsSidebar.attr("data-PMID");
-        PMWebServices.PMWebService.GetSidebarInfo(pointsManagerID, getUserAccessInfo(), Function.createCallback(updateMyPointsSidebarComplete, null));
+        pointsManagerID = myPointsSidebar.attr("data-ID");
+        WebServices.WebService.GetSidebarInfo(pointsManagerID, getUserAccessInfo(), Function.createCallback(updateMyPointsSidebarComplete, null));
     }
 
     function updateMyPointsSidebarComplete(result) {

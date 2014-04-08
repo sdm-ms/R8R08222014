@@ -31,7 +31,7 @@ namespace WebRole1
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
             string cacheKey = "ColHeadImage" + parameters.GetHashCode();
-            ImageInfo theInfo = PMCacheManagement.GetItemFromCache(cacheKey) as ImageInfo;
+            ImageInfo theInfo = CacheManagement.GetItemFromCache(cacheKey) as ImageInfo;
             //if (theInfo != null)
             //    return theInfo;
 
@@ -85,7 +85,7 @@ namespace WebRole1
                                // gra2.DrawLine(new Pen(Color.Red), 1, 1, 45, 60);
                                // gra2.DrawLine(new Pen(Color.Red), 100, 100, 50, 50);
                                 ImageInfo theImageInfo = new ImageInfo(bit);
-                                PMCacheManagement.AddItemToCache(cacheKey, new string[] { }, theImageInfo, new TimeSpan(0, 10, 0));
+                                CacheManagement.AddItemToCache(cacheKey, new string[] { }, theImageInfo, new TimeSpan(0, 10, 0));
                                 return theImageInfo;
                             }
                         }

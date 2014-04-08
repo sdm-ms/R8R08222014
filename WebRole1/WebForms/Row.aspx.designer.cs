@@ -36,7 +36,7 @@ public partial class Row {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::PMFieldsBox FieldsBox;
+    protected global::FieldsBox FieldsBox;
     
     /// <summary>
     /// Label1 control.

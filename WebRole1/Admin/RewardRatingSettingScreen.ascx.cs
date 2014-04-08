@@ -11,13 +11,13 @@ namespace WebRole1.Admin
 {
     public partial class RewardRatingSettingScreen : System.Web.UI.UserControl
     {
-        public PMActionProcessor theActionProcessor;
+        public ActionProcessor theActionProcessor;
         public int pointsManagerID;
 
         public void Setup(int thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
-            theActionProcessor = new PMActionProcessor();
+            theActionProcessor = new ActionProcessor();
             PointsManager thePointsManager = theActionProcessor.DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == pointsManagerID);
             RewardRatingSetting currentSetting = thePointsManager.RewardRatingSettings.FirstOrDefault(x => x.Status == (int)StatusOfObject.Active);
             if (!Page.IsPostBack)

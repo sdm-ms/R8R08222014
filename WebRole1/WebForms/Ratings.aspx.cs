@@ -41,7 +41,7 @@ public partial class Ratings : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        PMRoutingInfoRatings theRatingsInfo = PMRouting.IncomingRatings(Page.RouteData, theDataAccessModule.DataContext);
+        RoutingInfoRatings theRatingsInfo = Routing.IncomingRatings(Page.RouteData, theDataAccessModule.DataContext);
         if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
             UserIDOfBrowsingUser = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserIDOfBrowsingUser != null)
@@ -54,7 +54,7 @@ public partial class Ratings : System.Web.UI.Page
         if (theRatingsInfo.userID == null)
         {
             if (UserIDOfBrowsingUser == null)
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
             UserIDOfRatingsBeingViewed = (int) UserIDOfBrowsingUser;
             whoseRatings.Text = "My Ratings";
         }
@@ -63,7 +63,7 @@ public partial class Ratings : System.Web.UI.Page
             UserIDOfRatingsBeingViewed = (int)theRatingsInfo.userID;
             User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfRatingsBeingViewed);
             if (theUser == null)
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
             whoseRatings.Text = theUser.Username + "&#146;s Ratings";
         }
 
@@ -338,9 +338,9 @@ public partial class Ratings : System.Web.UI.Page
     protected void SetUserTimeSpans()
     {
 
-        TimeSpan1.Text = PMRaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(1, 0, 0, 0), TestableDateTime.Now).ToString();
-        TimeSpan2.Text = PMRaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(3, 0, 0, 0), TestableDateTime.Now).ToString();
-        TimeSpan3.Text = PMRaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(7, 0, 0, 0), TestableDateTime.Now).ToString();
-        TimeSpan4.Text = PMRaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(28, 0, 0, 0), TestableDateTime.Now).ToString();
+        TimeSpan1.Text = RaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(1, 0, 0, 0), TestableDateTime.Now).ToString();
+        TimeSpan2.Text = RaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(3, 0, 0, 0), TestableDateTime.Now).ToString();
+        TimeSpan3.Text = RaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(7, 0, 0, 0), TestableDateTime.Now).ToString();
+        TimeSpan4.Text = RaterTime.GetTimeForUser(UserIDOfRatingsBeingViewed, TestableDateTime.Now - new TimeSpan(28, 0, 0, 0), TestableDateTime.Now).ToString();
     }
 }

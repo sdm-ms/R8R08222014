@@ -36,7 +36,7 @@ public partial class Login : System.Web.UI.Page
 
     public void OnLoggedIn(object sender, EventArgs e)
     {
-        PMRoutingInfoLoginRedirect theRedirect = PMRouting.IncomingLoginRedirect(Page.RouteData, null);
+        RoutingInfoLoginRedirect theRedirect = Routing.IncomingLoginRedirect(Page.RouteData, null);
         Response.Redirect(theRedirect.redirectURL);
     }
 

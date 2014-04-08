@@ -83,11 +83,11 @@ namespace TestProject1
             //divideByZero.ShouldThrow<DivideByZeroException>();
 
             // Now make sure that it doesn't
-            Action avoidDivideByZero = () => { float adj = PMAdjustmentFactor.CalculateAdjustmentFactor(adjustedValue, value, basisValue); };
+            Action avoidDivideByZero = () => { float adj = AdjustmentFactorCalc.CalculateAdjustmentFactor(adjustedValue, value, basisValue); };
             avoidDivideByZero.ShouldNotThrow();
 
             // And make sure that the value returned when otherwise division by zero would ensue, is correct.
-            PMAdjustmentFactor.CalculateAdjustmentFactor(adjustedValue, value, basisValue).Should().BeApproximately(1F, 0F);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(adjustedValue, value, basisValue).Should().BeApproximately(1F, 0F);
         }
         //[TestMethod]
         //public void AdjustmentFactorCalculationConstrainsMaximumValue()
@@ -99,10 +99,10 @@ namespace TestProject1
         //        (adjustedValue - basisValue) / 
         //        (value - basisValue));
 
-        //    unconstrainedAdjustmentFactor.Should().BeGreaterThan(PMAdjustmentFactor.MaximumAdjustmentFactor);
+        //    unconstrainedAdjustmentFactor.Should().BeGreaterThan(AdjustmentFactor.MaximumAdjustmentFactor);
 
-        //    PMAdjustmentFactor.CalculateAdjustmentFactor(adjustedValue, value, basisValue)
-        //        .Should().BeApproximately(PMAdjustmentFactor.MaximumAdjustmentFactor, 0F);
+        //    AdjustmentFactor.CalculateAdjustmentFactor(adjustedValue, value, basisValue)
+        //        .Should().BeApproximately(AdjustmentFactor.MaximumAdjustmentFactor, 0F);
         //}
         //[TestMethod]
         //public void AdjustmentFactorCalculationConstrainsMinimumValue()
@@ -114,10 +114,10 @@ namespace TestProject1
         //        (adjustedValue - basisValue) /
         //        (value - basisValue));
 
-        //    unconstrainedAdjustmentFactor.Should().BeLessThan(PMAdjustmentFactor.MinimumAdjustmentFactor);
+        //    unconstrainedAdjustmentFactor.Should().BeLessThan(AdjustmentFactor.MinimumAdjustmentFactor);
 
-        //    PMAdjustmentFactor.CalculateAdjustmentFactor(adjustedValue, value, basisValue)
-        //        .Should().BeApproximately(PMAdjustmentFactor.MinimumAdjustmentFactor, 0F);
+        //    AdjustmentFactor.CalculateAdjustmentFactor(adjustedValue, value, basisValue)
+        //        .Should().BeApproximately(AdjustmentFactor.MinimumAdjustmentFactor, 0F);
         //}
         #endregion
 
@@ -172,7 +172,7 @@ namespace TestProject1
             decimal basisRatingValue = user1UserRatingValue;
             decimal ratingValue = user2UserRatingValue;
             decimal currentRatingValue = user2UserRatingValue;
-            float expectedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null);
+            float expectedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null);
 
         }
         #endregion

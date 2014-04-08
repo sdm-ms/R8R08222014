@@ -32,7 +32,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
     protected bool CommentsEnabled;
     protected TblDimension TheTblDimensions;
     protected RaterooDataAccess DataAccess;
-    PMActionProcessor Obj = new PMActionProcessor();
+    ActionProcessor Obj = new ActionProcessor();
 
     public void Setup(int entityID, int tblColumnID)
     {

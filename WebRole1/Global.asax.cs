@@ -16,7 +16,7 @@ namespace WebRole1
 
         public static void RegisterRoutes(RouteCollection routes)
         {
-            PMRouting.RegisterRoutes(routes);
+            Routing.RegisterRoutes(routes);
         }
 
         public override string GetVaryByCustomString(HttpContext context, string arg)

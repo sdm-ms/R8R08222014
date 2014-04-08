@@ -50,32 +50,32 @@ namespace TestProject1
         [TestMethod]
         public void AdjustmentFactorCalculatesCorrectlyInSeveralDifferentSituations()
         {
-            PMAdjustmentFactor.CalculateAdjustmentFactor(6M, 6, 7, null).Should().BeApproximately(1.0F, 0f);
-            PMAdjustmentFactor.CalculateAdjustmentFactor(7M, 6, 7, null).Should().BeApproximately(0, 0f);
-            PMAdjustmentFactor.CalculateAdjustmentFactor(10, 6, 7, null)
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(6M, 6, 7, null).Should().BeApproximately(1.0F, 0f);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(7M, 6, 7, null).Should().BeApproximately(0, 0f);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(10, 6, 7, null)
                 .Should().BeApproximately(-3F, 0f);
-            PMAdjustmentFactor.CalculateAdjustmentFactor(6.5M, 6, 7, null).Should().BeApproximately(0.5F, 0f);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(6.5M, 6, 7, null).Should().BeApproximately(0.5F, 0f);
 
-            PMAdjustmentFactor.CalculateAdjustmentFactor(1000M, 100M, 10M, 10M)
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(1000M, 100M, 10M, 10M)
                 .Should().BeApproximately(2.0F, 0f);
-            PMAdjustmentFactor.CalculateAdjustmentFactor(100M, 1000M, 10M, 10M).Should().BeApproximately(0.5F, 0f);
-            PMAdjustmentFactor.CalculateAdjustmentFactor(1M, 100M, 10M, 10M).Should().BeApproximately(-1.0F, 0f);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(100M, 1000M, 10M, 10M).Should().BeApproximately(0.5F, 0f);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(1M, 100M, 10M, 10M).Should().BeApproximately(-1.0F, 0f);
 
-            PMAdjustmentFactor.CalculateAdjustmentFactor(27M, 9M, 3M, 3M)
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(27M, 9M, 3M, 3M)
                 .Should().BeApproximately(2.0F, 0f);
-            PMAdjustmentFactor.CalculateAdjustmentFactor(9M, 27M, 3M, 3M).Should().BeApproximately(0.5F, 0f);
-            PMAdjustmentFactor.CalculateAdjustmentFactor(1M, 9M, 3M, 3M).Should().BeApproximately(-1.0F, 0f);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(9M, 27M, 3M, 3M).Should().BeApproximately(0.5F, 0f);
+            AdjustmentFactorCalc.CalculateAdjustmentFactor(1M, 9M, 3M, 3M).Should().BeApproximately(-1.0F, 0f);
         }
 
         [TestMethod]
         public void TestAdjustmentPcts_InReverse()
         {
-            PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor(5M, 6M, 0.50F, null).Should().Be(5.5M);
-            PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor(5M, 3M, 0.10F, null).Should().Be(4.8M);
-            PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor(5M, 3M, 2.00F, null).Should().Be(3.0M, "because adjustment pcts higher than 1 are treated as 1");
-            PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor(5M, 3M, -1.0F, null).Should().Be(5.0M, "because adjustment pcts lower than 0 are treated as 0");
+            AdjustmentFactorCalc.GetRatingToAcceptFromAdjustmentFactor(5M, 6M, 0.50F, null).Should().Be(5.5M);
+            AdjustmentFactorCalc.GetRatingToAcceptFromAdjustmentFactor(5M, 3M, 0.10F, null).Should().Be(4.8M);
+            AdjustmentFactorCalc.GetRatingToAcceptFromAdjustmentFactor(5M, 3M, 2.00F, null).Should().Be(3.0M, "because adjustment pcts higher than 1 are treated as 1");
+            AdjustmentFactorCalc.GetRatingToAcceptFromAdjustmentFactor(5M, 3M, -1.0F, null).Should().Be(5.0M, "because adjustment pcts lower than 0 are treated as 0");
 
-            PMAdjustmentFactor.GetRatingToAcceptFromAdjustmentFactor(10M, 1000M, 0.5F, 10M).Should().Be(100M);
+            AdjustmentFactorCalc.GetRatingToAcceptFromAdjustmentFactor(10M, 1000M, 0.5F, 10M).Should().Be(100M);
         }
 
         [TestMethod]
@@ -174,11 +174,11 @@ namespace TestProject1
             decimal basisRatingValue = user1Rating1UserRatingValue;
             decimal ratingValue = user2Rating1UserRatingValue;
             decimal currentRatingValue = user3Rating1UserRatingValue;
-            float expectedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null);
+            float expectedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null);
 
             expectedAdjustmentFactor.Should().BeInRange(0.0F, 1.0F, "because this test is specifically intended to test adjustment factors between 0F and 1F.");
 
-            float ratingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, basisRatingValue, minRating, maxRating, null);
+            float ratingMagnitude = AdjustmentFactorCalc.CalculateRelativeMagnitude(ratingValue, basisRatingValue, minRating, maxRating, null);
 
             float expectedAbsoluteVolatility = (float)Math.Abs(user1Rating1UserRatingValue - user0Rating1UserRatingValue); // volatility for user 2's userinteraction with user 3 depends on volatility before user 2 entered its user rating
             float maximumVolatility = (float)(maxRating - minRating);
@@ -191,7 +191,7 @@ namespace TestProject1
             expectedStats.Add(expectedLargeDeltaRatingStat1);
             double expectedSmallDeltaRatingStat1 = ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) : 0;
             expectedStats.Add(expectedSmallDeltaRatingStat1);
-            expectedStats.Add(PMAdjustmentFactor.CalculateExtremeness(ratingValue, null, minRating, maxRating)); // extremeness
+            expectedStats.Add(AdjustmentFactorCalc.CalculateExtremeness(ratingValue, null, minRating, maxRating)); // extremeness
             expectedStats.Add(expectedRelativeVolatility);
             expectedStats.Add(0); // no pushback
             expectedStats.Add(0);
@@ -282,10 +282,10 @@ namespace TestProject1
             //float ratingMagnitude = 
             //    (float)((user4Rating1UserRatingValue - user1Rating1UserRatingValue) / (user2Rating1UserRatingValue - user1Rating1UserRatingValue));
             float ratingMagnitude =
-                PMAdjustmentFactor.CalculateRelativeMagnitude(user4UserRatingValue, user2UserRatingValue,
+                AdjustmentFactorCalc.CalculateRelativeMagnitude(user4UserRatingValue, user2UserRatingValue,
                     0M, 10M, logBase:null);
             float noWeightingStat = 1f * ratingMagnitude;
-            float adjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor(user4UserRatingValue,
+            float adjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor(user4UserRatingValue,
                 user2UserRatingValue, user1UserRatingValue);
             float averageAdjustmentFactorWeightedByNoWeightingStat =
                 (noWeightingStat * adjustmentFactor) /
@@ -336,7 +336,7 @@ namespace TestProject1
             Initialize();
 
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true; // we're looking at user interaction stats, so it's easiest to test this way
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
 
             const decimal minRating = 0M;
@@ -431,26 +431,26 @@ namespace TestProject1
             decimal basisRatingValue1 = user1Rating1UserRatingValue;
             decimal ratingValue1 = user2Rating1UserRatingValue;
             decimal currentRatingValue1 = user4Rating1UserRatingValue;
-            //float adjustmentPercentage1 = PMAdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating1, enteredRating1, lastTrustedRating1, null);
-            //float ratingMagnitude1 = PMAdjustmentPercentages.GetRatingMagnitude(lastTrustedRating1, enteredRating1, null, minRating, maxRating);
-            float adjustmentPercentage1 = PMAdjustmentFactor.CalculateAdjustmentFactor(
+            //float adjustmentPercentage1 = AdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating1, enteredRating1, lastTrustedRating1, null);
+            //float ratingMagnitude1 = AdjustmentPercentages.GetRatingMagnitude(lastTrustedRating1, enteredRating1, null, minRating, maxRating);
+            float adjustmentPercentage1 = AdjustmentFactorCalc.CalculateAdjustmentFactor(
                 laterValue: currentRatingValue1, 
                 enteredValue: ratingValue1, 
                 basisValue: basisRatingValue1, 
                 logBase: null);
-            float ratingMagnitude1 = PMAdjustmentFactor.CalculateRelativeMagnitude(value: ratingValue1, basisValue: basisRatingValue1, minValue: minRating, maxValue: maxRating, logBase: null);
+            float ratingMagnitude1 = AdjustmentFactorCalc.CalculateRelativeMagnitude(value: ratingValue1, basisValue: basisRatingValue1, minValue: minRating, maxValue: maxRating, logBase: null);
 
             decimal basisRatingValue2 = user1Rating2UserRatingValue;
             decimal ratingValue2 = user2Rating2UserRatingValue;
             decimal currentRatingValue2 = user4Rating2UserRatingValue;
-            //float adjustmentPercentage2 = PMAdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating2, enteredRating2, lastTrustedRating2, null);
-            //float ratingMagnitude2 = PMAdjustmentPercentages.GetRatingMagnitude(lastTrustedRating2, enteredRating2, null, minRating, maxRating);
-            float adjustmentPercentage2 = PMAdjustmentFactor.CalculateAdjustmentFactor(
+            //float adjustmentPercentage2 = AdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating2, enteredRating2, lastTrustedRating2, null);
+            //float ratingMagnitude2 = AdjustmentPercentages.GetRatingMagnitude(lastTrustedRating2, enteredRating2, null, minRating, maxRating);
+            float adjustmentPercentage2 = AdjustmentFactorCalc.CalculateAdjustmentFactor(
                 laterValue: currentRatingValue2, 
                 enteredValue: ratingValue2, 
                 basisValue: basisRatingValue2, 
                 logBase: null);
-            float ratingMagnitude2 = PMAdjustmentFactor.CalculateRelativeMagnitude(value: ratingValue2, basisValue: basisRatingValue2, minValue: minRating, maxValue: maxRating, logBase: null);
+            float ratingMagnitude2 = AdjustmentFactorCalc.CalculateRelativeMagnitude(value: ratingValue2, basisValue: basisRatingValue2, minValue: minRating, maxValue: maxRating, logBase: null);
 
             // Test the NoExtraWeightingStat
 
@@ -567,26 +567,26 @@ namespace TestProject1
             decimal basisRatingValue1 = user1Rating1UserRatingValue;
             decimal ratingValue1 = user2Rating1UserRatingValue;
             decimal currentRatingValue1 = user4Rating1UserRatingValue;
-            //float adjustmentPercentage1 = PMAdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating1, enteredRating1, lastTrustedRating1, null);
-            //float ratingMagnitude1 = PMAdjustmentPercentages.GetRatingMagnitude(lastTrustedRating1, enteredRating1, null, minRating, maxRating);
-            float adjustmentPercentage1 = PMAdjustmentFactor.CalculateAdjustmentFactor(
+            //float adjustmentPercentage1 = AdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating1, enteredRating1, lastTrustedRating1, null);
+            //float ratingMagnitude1 = AdjustmentPercentages.GetRatingMagnitude(lastTrustedRating1, enteredRating1, null, minRating, maxRating);
+            float adjustmentPercentage1 = AdjustmentFactorCalc.CalculateAdjustmentFactor(
                 laterValue: currentRatingValue1,
                 enteredValue: ratingValue1,
                 basisValue: basisRatingValue1,
                 logBase: null);
-            float ratingMagnitude1 = PMAdjustmentFactor.CalculateRelativeMagnitude(value: ratingValue1, basisValue: basisRatingValue1, minValue: minRating, maxValue: maxRating, logBase: null);
+            float ratingMagnitude1 = AdjustmentFactorCalc.CalculateRelativeMagnitude(value: ratingValue1, basisValue: basisRatingValue1, minValue: minRating, maxValue: maxRating, logBase: null);
 
             decimal basisRatingValue2 = user1Rating2UserRatingValue;
             decimal ratingValue2 = user2Rating2UserRatingValue;
             decimal currentRatingValue2 = user4Rating2UserRatingValue;
-            //float adjustmentPercentage2 = PMAdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating2, enteredRating2, lastTrustedRating2, null);
-            //float ratingMagnitude2 = PMAdjustmentPercentages.GetRatingMagnitude(lastTrustedRating2, enteredRating2, null, minRating, maxRating);
-            float adjustmentPercentage2 = PMAdjustmentFactor.CalculateAdjustmentFactor(
+            //float adjustmentPercentage2 = AdjustmentPercentages.GetAdjustmentPctFromRatings(currentRating2, enteredRating2, lastTrustedRating2, null);
+            //float ratingMagnitude2 = AdjustmentPercentages.GetRatingMagnitude(lastTrustedRating2, enteredRating2, null, minRating, maxRating);
+            float adjustmentPercentage2 = AdjustmentFactorCalc.CalculateAdjustmentFactor(
                 laterValue: currentRatingValue2,
                 enteredValue: ratingValue2,
                 basisValue: basisRatingValue2,
                 logBase: null);
-            float ratingMagnitude2 = PMAdjustmentFactor.CalculateRelativeMagnitude(value: ratingValue2, basisValue: basisRatingValue2, minValue: minRating, maxValue: maxRating, logBase: null);
+            float ratingMagnitude2 = AdjustmentFactorCalc.CalculateRelativeMagnitude(value: ratingValue2, basisValue: basisRatingValue2, minValue: minRating, maxValue: maxRating, logBase: null);
 
             float ratingMagnitudesSumWeights = (float)(
                 // I'm not 100% sure that these are the correct variables to use in this calculation; they just fit the constants I replaced them with.
@@ -603,7 +603,7 @@ namespace TestProject1
         [TestMethod]
         public void TestTrustTracker_CalculatesUserInteractionCorrectly_WhereAdjPctIsGreaterThan1()
         {
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0; // for purpose of this test, do not start user with extra trust
+            TrustCalculations.NumPerfectScoresToGiveNewUser = 0; // for purpose of this test, do not start user with extra trust
 
             const decimal minRating = 0M;
             const decimal maxRating = 10M;
@@ -645,14 +645,14 @@ namespace TestProject1
             decimal basisRatingValue = user1RatingValue;
             decimal ratingValue = user2RatingValue;
             decimal currentRatingValue = user3RatingValue;
-            float unconstrainedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null, constrainForRetrospectiveAssessment: false);
+            float unconstrainedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null, constrainForRetrospectiveAssessment: false);
             unconstrainedAdjustmentFactor.Should().BeApproximately(2.0F, 0.01F, "because user 3 moved the rating twice as far as user 1 moved it");
-            float expectedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null, constrainForRetrospectiveAssessment:true);
+            float expectedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor(currentRatingValue, ratingValue, basisRatingValue, null, constrainForRetrospectiveAssessment: true);
             expectedAdjustmentFactor.Should().BeGreaterThan(1.0F, "because this test is specifically intended to test adjustment factors greater than 1F");
-            if (PMAdjustmentFactor.MaximumRetrospectiveAdjustmentFactor < 2.0)
-                expectedAdjustmentFactor.Should().BeApproximately(PMAdjustmentFactor.MaximumRetrospectiveAdjustmentFactor, 0.01F, "because a constrained adjustment factor should be no more than the maximum retrospective adjustment factor");
+            if (AdjustmentFactorCalc.MaximumRetrospectiveAdjustmentFactor < 2.0)
+                expectedAdjustmentFactor.Should().BeApproximately(AdjustmentFactorCalc.MaximumRetrospectiveAdjustmentFactor, 0.01F, "because a constrained adjustment factor should be no more than the maximum retrospective adjustment factor");
 
-            float ratingMagnitude = PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, basisRatingValue, minRating, maxRating, null);
+            float ratingMagnitude = AdjustmentFactorCalc.CalculateRelativeMagnitude(ratingValue, basisRatingValue, minRating, maxRating, null);
 
             List<float> expectedStats = new List<float>(TrustTrackerStatManager.NumStats);
             float expectedNoExtraWeightingStat1 = 1;
@@ -660,7 +660,7 @@ namespace TestProject1
             float expectedLargeDeltaRatingStat1 = ratingMagnitude >= TrustTrackerStatManager.MinThresholdToBeConsideredHighMagnitudeRating ? (float)Math.Pow(ratingMagnitude, 2)  : 0;
             expectedStats.Add(expectedLargeDeltaRatingStat1);
             expectedStats.Add(ratingMagnitude <= TrustTrackerStatManager.MaxThresholdToBeConsideredLowMagnitudeRating ? (float)Math.Pow(1 - ratingMagnitude, 2) : 0);
-            float expectedExtremeness = PMAdjustmentFactor.CalculateRelativeMagnitude(ratingValue, (maxRating - minRating) / 2, minRating, maxRating, null);
+            float expectedExtremeness = AdjustmentFactorCalc.CalculateRelativeMagnitude(ratingValue, (maxRating - minRating) / 2, minRating, maxRating, null);
             expectedStats.Add(expectedExtremeness);
 
             expectedStats.Add((float)volatilityObservedWeek.DistanceFromStart);
@@ -690,7 +690,7 @@ namespace TestProject1
                         String.Format("because stat {0} should have the expected value.", i));
 
             TrustTracker theTrustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.UserID == TestHelper.UserIds[2]);
-            theTrustTracker.OverallTrustLevel.Should().BeApproximately(PMAdjustmentFactor.MaximumRetrospectiveAdjustmentFactor, 0.0F, "because trust levels are constrained to being between " + PMAdjustmentFactor.MinimumRetrospectiveAdjustmentFactor + " and " + PMAdjustmentFactor.MaximumRetrospectiveAdjustmentFactor);
+            theTrustTracker.OverallTrustLevel.Should().BeApproximately(AdjustmentFactorCalc.MaximumRetrospectiveAdjustmentFactor, 0.0F, "because trust levels are constrained to being between " + AdjustmentFactorCalc.MinimumRetrospectiveAdjustmentFactor + " and " + AdjustmentFactorCalc.MaximumRetrospectiveAdjustmentFactor);
         }
 
         [TestMethod]
@@ -864,10 +864,10 @@ namespace TestProject1
             TestHelper.WaitIdleTasks();
 
             var theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[2]);
-            double correctWeightInCalculatingTrustTotal1 = PMTrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats[0], theUserInteraction1);
+            double correctWeightInCalculatingTrustTotal1 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats[0], theUserInteraction1);
             theUserInteraction1.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal1, 0.01F);
             var theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[3]);
-            double correctWeightInCalculatingTrustTotal2 = PMTrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats[0], theUserInteraction2);
+            double correctWeightInCalculatingTrustTotal2 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats[0], theUserInteraction2);
             theUserInteraction2.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal2, 0.01F);
             var theUserInteraction3 = _dataManipulation.DataContext.GetTable<UserInteraction>().SingleOrDefault(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[9]);
             theUserInteraction3.Should().BeNull(); // because the idle task should eliminate it
@@ -949,7 +949,7 @@ namespace TestProject1
             {
                 UserInteraction uiToAdd = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[2 + s]);
                 userInteractions.Add(uiToAdd);
-                uiToAdd.WeightInCalculatingTrustTotal.Should().BeApproximately(PMTrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(uiToAdd.UserInteractionStats[0], uiToAdd), 0.01F);
+                uiToAdd.WeightInCalculatingTrustTotal.Should().BeApproximately(TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(uiToAdd.UserInteractionStats[0], uiToAdd), 0.01F);
             }
 
             int numStats = TrustTrackerStatManager.NumStats;
@@ -988,7 +988,7 @@ namespace TestProject1
             bool applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue, 
             int? randomSeed = null)
         {
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true; // we want all the userratings to have adjustment factors of 1 for testing purposes. That is, if a user enters a userrating, the rating will be set to that userrating. But we can still see what the trust levels (i.e., retrospective adjustment factors are).
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0.0F; // this allows us to make calculations without adjusting for the fact that trust will be a little lower than it otherwise would be
             TrustTrackerStatManager.UseOverallTrustValueOnly = true; // so results aren't complicated by user interaction stats
@@ -1075,11 +1075,11 @@ namespace TestProject1
                     adjustmentFactorToApply = specialCaseAdjustmentFactorToApply;
                 }
 
-                //decimal valueToEnterByFirstUser = PMAdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
+                //decimal valueToEnterByFirstUser = AdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
                 decimal valueToEnterByFirstUser = initialValue + (correctValue - initialValue) / (decimal)adjustmentFactorToApply;
                 if (valueToEnterByFirstUser > 10 || valueToEnterByFirstUser < 0)
                     throw new Exception("Internal error: Test should be designed so that first user enters a value that is within range.");
-                valueToEnterByFirstUser = PMTrustCalculations.Constrain(valueToEnterByFirstUser, minRatingValue,
+                valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, minRatingValue,
                     maxRatingValue);
 
                 UserRatingResponse theResponse = new UserRatingResponse();
@@ -1139,7 +1139,7 @@ x.UserID == TestHelper.UserIds[1]);
             int ratingIndexToUse = numTblRows - 1;
             Rating theRating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
             UserRating lastUserRating = theRating2.UserRatings.Single(x => x.UserID == TestHelper.UserIds[1]);
-            float adjPctApplied = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
+            float adjPctApplied = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
             if (baselineAdjustmentFactorToApply == specialCaseAdjustmentFactorToApply)
                 adjPctApplied.Should().BeInRange(
                     baselineAdjustmentFactorToApply - tolerance, 
@@ -1152,7 +1152,7 @@ x.UserID == TestHelper.UserIds[1]);
                     ratingIndexToUse--;
                 Rating theRatingToAssess = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
                 lastUserRating = theRatingToAssess.UserRatings.Single(x => x.UserID == TestHelper.UserIds[1]);
-                adjPctApplied = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
+                adjPctApplied = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
                 (specialCaseAdjustmentFactorToApply < adjPctApplied == adjPctApplied < baselineAdjustmentFactorToApply)
                     .Should().BeTrue("because the applied adjustment percentage should be somewhere in the middle");
             }
@@ -1169,7 +1169,7 @@ x.UserID == TestHelper.UserIds[1]);
             //RandomGenerator.SeedOverride = 1; // 0 means use date & time
             Initialize(); 
             
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
             TrustTrackerTrustEveryone.LatestUserEgalitarianTrustAlways1 = true;
@@ -1240,7 +1240,7 @@ x.UserID == TestHelper.UserIds[1]);
             decimal ultimateBadValue = 3M;
             decimal eachBadUserContributionToUltimateBadValue = (initialValue - ultimateBadValue) / numBadUsers;
 
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
 
 
@@ -1342,10 +1342,10 @@ x.UserID == TestHelper.UserIds[1]);
             bool allowMonthToPass)
         {
 
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 0;
+            TrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
             RaterooDataManipulation.MinChangePromptingReview = 0.01F; // make the review super-precise for purpose of this test
-            PMTrustTrackingBackgroundTasks.MinChangeToLatestUserEgalitarianTrustBeforeUpdatingWeightInCalculatingTrustTotal = 0.01F; // ditto
+            TrustTrackingBackgroundTasks.MinChangeToLatestUserEgalitarianTrustBeforeUpdatingWeightInCalculatingTrustTotal = 0.01F; // ditto
             RaterooDataManipulation.HypotheticalAdjFactorsNotWorthImplementing = new Tuple<float, float>(0.99F, 1.01F); // ditto
 
             if (adjustmentFactorToApply == 0)
@@ -1401,8 +1401,8 @@ x.UserID == TestHelper.UserIds[1]);
             //  by the adjustment factor, and have two other users rate the correct value.
             for (int rowNum = 1; rowNum < numTblRows; rowNum++)
             {
-                decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // PMAdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
-                valueToEnterByFirstUser = PMTrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10);
+                decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // AdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
+                valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10);
                 UserRatingResponse theResponse = new UserRatingResponse();
                 Debug.WriteLine("Added rating to " + ratings[rowNum].RatingID);
                 TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, TestHelper.UserIds[0], ref theResponse);
@@ -1450,13 +1450,13 @@ x.UserID == TestHelper.UserIds[1]);
             Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
             UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == TestHelper.UserIds[0]);
             TrustTracker tt = firstUserRatingForFirstRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
-            float appliedAdjustmentFactor = PMAdjustmentFactor.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
+            float appliedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
 
             float tolerance = 0.02F;
             if (allowMonthToPass)
                 appliedAdjustmentFactor.Should().BeApproximately(1.0F, tolerance); // because we only review ratings for 30 days, so this one won't get changed
             else
-                appliedAdjustmentFactor.Should().BeApproximately((float) PMTrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance);
+                appliedAdjustmentFactor.Should().BeApproximately((float) TrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance);
 
             // second rating may get rerated a small distance, so the following doesn't apply.
             //// Check to make sure admin has not rerated the rating in the second tblrow
@@ -1758,7 +1758,7 @@ x.UserID == TestHelper.UserIds[1]);
                     //  (rating         - basisRating)
                     // I think the following is trying to fix the ratingValue so that the adjustment factor comes out correctly
                     decimal ratingValue = currentValue + (valueForUserToTarget - currentValue) * (decimal)(1 / desiredAdjustmentFactor);
-                    ratingValue = PMTrustCalculations.Constrain(ratingValue, 0M, 10m);
+                    ratingValue = TrustCalculations.Constrain(ratingValue, 0M, 10m);
                     UserRatingResponse theResponse = new UserRatingResponse();
                     TestHelper.ActionProcessor.UserRatingAdd(theRating.RatingID, ratingValue, TestHelper.UserIds[randomUserNum], ref theResponse);
                     FinishUserRatingAdd();

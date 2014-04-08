@@ -25,7 +25,7 @@ public partial class _Default : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
-        PMRoutingInfo theRoutingInfo = PMRouting.Incoming(Page.RouteData, theDataAccessModule.DataContext);
-        MainSlideshow.Setup(theRoutingInfo as PMRoutingInfoMainContent, theDataAccessModule.DataContext);
+        RoutingInfo theRoutingInfo = Routing.Incoming(Page.RouteData, theDataAccessModule.DataContext);
+        MainSlideshow.Setup(theRoutingInfo as RoutingInfoMainContent, theDataAccessModule.DataContext);
     }
 }

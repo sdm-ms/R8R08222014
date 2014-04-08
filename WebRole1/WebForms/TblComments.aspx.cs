@@ -14,13 +14,13 @@ namespace WebApplication1
         bool CanPredict;
         bool CanAdminister;
         bool CanEditFields;
-        PMRoutingInfoMainContent theLocation;
+        RoutingInfoMainContent theLocation;
         RaterooDataAccess DataAccess;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             DataAccess = new RaterooDataAccess();
-            theLocation = PMRouting.IncomingMainContent(Page.RouteData, null);
+            theLocation = Routing.IncomingMainContent(Page.RouteData, null);
             CommentsContent.theTblOrNullForRowOnly = theLocation.theTbl;
             ItemPath1.theTbl = theLocation.theTbl;
             DetermineUserRights();
@@ -38,7 +38,7 @@ namespace WebApplication1
                 int UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
                 bool canView = DataAccess.CheckUserRights(UserId, UserActionOldList.View, false, SubtopicId, theLocation.theTbl.TblID);
                 if (!canView)
-                    PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+                    Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 // Checking user rights to predict
                 CanPredict = DataAccess.CheckUserRights(UserId, UserActionOldList.Predict, false, SubtopicId, theLocation.theTbl.TblID);
                 CanAdminister = DataAccess.CheckUserRights(UserId, UserActionOldList.ResolveRatings, false, SubtopicId, theLocation.theTbl.TblID);
