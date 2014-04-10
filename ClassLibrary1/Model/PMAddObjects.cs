@@ -1823,6 +1823,7 @@ namespace ClassLibrary1.Model
                 {
                     TblColumnID = tblCol.TblColumnID,
                     NewValue = newUserRatingValue,
+                    OldValue = previousUserRating,
                     StringRepresentation = PMNumberandTableFormatter.FormatAsSpecified(newUserRatingValue, rating.RatingCharacteristic.DecimalPlaces, tblCol.TblColumnID),
                     RecentlyChanged = true,
                     CountNonNullEntries = tblRow.CountNonnullEntries,

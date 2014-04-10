@@ -66,6 +66,7 @@ namespace ClassLibrary1.Model
     public class FastAccessRatingUpdatingInfo : FastAccessCellUpdateInfo
     {
         public decimal? NewValue;
+        public decimal? OldValue;
         public string StringRepresentation;
         public int CountNonNullEntries;
         public decimal CountUserPoints;
