@@ -248,7 +248,6 @@ namespace ClassLibrary1.Model
                             {
                                 TblColumnID = tblColID,
                                 NewValue = z.Rating.CurrentValue,
-                                OldValue = previousValue,
                                 StringRepresentation = PMNumberandTableFormatter.FormatAsSpecified(z.Rating.CurrentValue, z.Rating.RatingCharacteristic.DecimalPlaces, tblColID),
                                 RecentlyChanged = true,
                                 CountNonNullEntries = resolution.TblRow.CountNonnullEntries,
