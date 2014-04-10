@@ -23,7 +23,7 @@ public partial class Admin_DollarSubsidy_DollarSubsidyInfo : System.Web.UI.UserC
       SubtopicId = universeid;
         int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
-        PMActionProcessor Obj = new PMActionProcessor();
+        ActionProcessor Obj = new ActionProcessor();
         var CheckRights = Obj.DataContext.GetTable<UsersRight>().SingleOrDefault(x => x.UserID == UserId && x.PointsManagerID == SubtopicId);
         //Checking for superuser
         bool CheckSuperUser = Obj.DataContext.GetTable<User>().SingleOrDefault(x => x.UserID == UserId).SuperUser;
@@ -46,7 +46,7 @@ public partial class Admin_DollarSubsidy_DollarSubsidyInfo : System.Web.UI.UserC
     }
     public void GridDataBind()
     {
-        PMActionProcessor Obj = new PMActionProcessor();
+        ActionProcessor Obj = new ActionProcessor();
          var GetInfo = Obj.DataContext.GetTable<PointsAdjustment>()
                                .Where(x => x.PointsManagerID == SubtopicId && x.CashValue > 0)
                                .Join(Obj.DataContext.GetTable<UserInfo>(), P => P.UserID, U => U.UserID, (P, U) => new { PointsManagerName = P.PointsManager.Name, UserName = U.FirstName + " " + U.LastName, Email = U.Email, Address = U.Address1 + " " + U.Address2, Amount = P.CashValue.ToString(), RecievedDate = P.WhenMade });

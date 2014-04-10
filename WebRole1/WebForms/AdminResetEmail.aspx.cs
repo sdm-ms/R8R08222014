@@ -17,11 +17,11 @@ namespace WebRole1.WebForms
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!(HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null))
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
             RaterooDataAccess myDataAccess = new RaterooDataAccess();
             User theUser = myDataAccess.RaterooDB.GetTable<User>().Single(x => x.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
             if (theUser.Username != "admin")
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
         }
 
         protected void SetEmailAddress_Click(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace WebRole1.WebForms
             else
             {
                 theUser.Email = NewEmailAddress.Text;
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
             }
         }
 
@@ -58,7 +58,7 @@ namespace WebRole1.WebForms
                 }
 
                 if (success)
-                    PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+                    Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
                 else
                 {
                     ErrorMsg.Text = "Unlock User failed.";

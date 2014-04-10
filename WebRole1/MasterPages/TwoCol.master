@@ -1,5 +1,5 @@
 ﻿<%@ Master Language="C#" MasterPageFile="~/MasterPages/PageFrameAndTop.master" AutoEventWireup="false" Inherits="TwoCol" Codebehind="MasterPages/TwoCol.master.cs" %>
-<%@ Register TagPrefix="Uc" TagName="InsertableContent" Src="~/CommonControl/PMInsertableContent.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="InsertableContent" Src="~/CommonControl/InsertableContent.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head1" Runat="Server">
     <asp:ContentPlaceHolder ID="head2" runat="server">
     </asp:ContentPlaceHolder>

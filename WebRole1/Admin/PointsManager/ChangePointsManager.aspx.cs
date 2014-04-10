@@ -17,14 +17,14 @@ using ClassLibrary1.Model;
 
 public partial class ChangePointsManager : System.Web.UI.Page
 {
-    PMActionProcessor Obj = new PMActionProcessor();
+    ActionProcessor Obj = new ActionProcessor();
     public int? SubtopicId;
 
     // Change PointsManager Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        PMRoutingInfoMainContent Location = PMRouting.IncomingMainContent(Page.RouteData, Obj.DataContext);
+        RoutingInfoMainContent Location = Routing.IncomingMainContent(Page.RouteData, Obj.DataContext);
         PointsManager thePointsManager = Location.lastItemInHierarchy.Tbl.PointsManager;
         int PointsManagerid = thePointsManager.PointsManagerID;
 
@@ -34,7 +34,7 @@ public partial class ChangePointsManager : System.Web.UI.Page
             Response.CacheControl = "no-cache";
             if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
             {
-                PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+                Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 return;
             }
 

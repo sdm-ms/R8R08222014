@@ -68,7 +68,7 @@ namespace TestProject1
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
-            PMCacheManagement.DisableCaching = true; 
+            CacheManagement.DisableCaching = true; 
 
             _testHelper = new TestHelper(true);
             _dataManipulation = new RaterooDataManipulation();
@@ -111,7 +111,7 @@ namespace TestProject1
         {
             UserRatingResponse theResponse = new UserRatingResponse();
             _testHelper.ActionProcessor.UserRatingAdd(1, 5.0M, 5, ref theResponse);
-            PMCacheManagement.ClearCache();
+            CacheManagement.ClearCache();
             _testHelper.FinishUserRatingAdd(_dataManipulation);
             if (waitIdleTasks)
                 _testHelper.WaitIdleTasks();

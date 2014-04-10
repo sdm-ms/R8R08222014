@@ -114,7 +114,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
 
                     string myCacheKey = "ViewCellMainUnselected" + theRatingGroupID.ToString() + "," + CanPredict.ToString() + "," + CheckJavaScriptHelper.IsJavascriptEnabled.ToString();
                     bool disableCaching = CanPredict && !CheckJavaScriptHelper.IsJavascriptEnabled; // We have a button we need to respond to, so no html caching.
-                    object cachedObject = PMCacheManagement.GetItemFromCache(myCacheKey);
+                    object cachedObject = CacheManagement.GetItemFromCache(myCacheKey);
                     if (!disableCaching && cachedObject != null)
                     {
                         LiteralControl myLiteral = new LiteralControl();
@@ -138,7 +138,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
                             string[] myDependencies = {
                                     "RatingGroupID" + theRatingGroupID.ToString()
                                                       };
-                            PMCacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
+                            CacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
                         }
                     }
 

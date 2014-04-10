@@ -2,8 +2,8 @@
     Inherits="Main_Table_WithCategorySelector" Codebehind="WithCategorySelector.ascx.cs" %>
 <%@ Reference VirtualPath="~/Main/Table/Table.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="Hover" Src="~/CommonControl/Hover.ascx" %>
-<%@ Register TagPrefix="Uc" TagName="PMFieldsBox" Src="~/Main/Field/PMFieldsBox.ascx" %>
-<%@ Reference Control="~/Main/Field/PMFieldsBox.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="FieldsBox" Src="~/Main/Field/FieldsBox.ascx" %>
+<%@ Reference Control="~/Main/Field/FieldsBox.ascx" %>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td>

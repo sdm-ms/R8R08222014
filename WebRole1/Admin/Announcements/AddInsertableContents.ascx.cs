@@ -16,7 +16,7 @@ using ClassLibrary1.Misc;
 
 public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.UserControl
 {
-    PMActionProcessor Obj = new PMActionProcessor();
+    ActionProcessor Obj = new ActionProcessor();
     public static int NumTable = 0;
     public int? TopicId = null;
     public int? SubtopicId = null;
@@ -167,7 +167,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
             PoPUp.MsgString = StringConstants.StringAnounceCreated;
             PoPUp.Show();
             Tbl theTbl = Obj.DataContext.GetTable<Tbl>().FirstOrDefault(x => x.TblID == TableId);
-            PMRouting.Redirect(Response, new PMRoutingInfoMainContent(theTbl, null, null, false, false, false, false, false, true, false));
+            Routing.Redirect(Response, new RoutingInfoMainContent(theTbl, null, null, false, false, false, false, false, true, false));
            
         }
         else if (SubtopicId != null)
@@ -176,7 +176,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
             PoPUp.MsgString = StringConstants.StringAnounceCreated;
             PoPUp.Show();
             Tbl theTbl = Obj.DataContext.GetTable<Tbl>().FirstOrDefault(x => x.PointsManagerID == SubtopicId && x.Name != "Changes");
-            PMRouting.Redirect(Response, new PMRoutingInfoMainContent(theTbl, null, null, false, false, false, false, false, false, true));
+            Routing.Redirect(Response, new RoutingInfoMainContent(theTbl, null, null, false, false, false, false, false, false, true));
                       
         }
         else if (TopicId != null)

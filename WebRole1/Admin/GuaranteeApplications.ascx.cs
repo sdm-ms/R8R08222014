@@ -19,7 +19,7 @@ namespace WebRole1.Admin
 
     public partial class GuaranteeApplications : System.Web.UI.UserControl
     {
-        PMRoutingInfoMainContent theLocation;
+        RoutingInfoMainContent theLocation;
         RaterooDataAccess theDataAccessModule;
 
         protected int? ColumnToSort;
@@ -30,7 +30,7 @@ namespace WebRole1.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            theLocation = PMRouting.IncomingMainContent(Page.RouteData, null);
+            theLocation = Routing.IncomingMainContent(Page.RouteData, null);
             theDataAccessModule = new RaterooDataAccess();
         }
 
@@ -76,7 +76,7 @@ namespace WebRole1.Admin
 
         public void Download_Click(object sender, EventArgs e)
         {
-            PMPaymentGuarantees.DownloadConditionalGuaranteeApplicationForNewUser(Response, GetPointsTotalFromClickEvent(sender));
+            PaymentGuarantees.DownloadConditionalGuaranteeApplicationForNewUser(Response, GetPointsTotalFromClickEvent(sender));
         }
 
         public void Approve_Click(object sender, EventArgs e)
@@ -86,7 +86,7 @@ namespace WebRole1.Admin
             try
             {
                 decimal amount = Convert.ToDecimal(amountTextBox.Text);
-                PMPaymentGuarantees.ApproveConditionalGuaranteeForNewUser(GetPointsTotalFromClickEvent(sender), amount);
+                PaymentGuarantees.ApproveConditionalGuaranteeForNewUser(GetPointsTotalFromClickEvent(sender), amount);
                 theDataAccessModule.RaterooDB.SubmitChanges();
             }
             catch
@@ -97,7 +97,7 @@ namespace WebRole1.Admin
 
         public void Reject_Click(object sender, EventArgs e)
         {
-            PMPaymentGuarantees.RejectConditionalGuaranteeForNewUser(GetPointsTotalFromClickEvent(sender));
+            PaymentGuarantees.RejectConditionalGuaranteeForNewUser(GetPointsTotalFromClickEvent(sender));
             theDataAccessModule.RaterooDB.SubmitChanges();
         }
 

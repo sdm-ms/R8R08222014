@@ -56,7 +56,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
                     //TblTab theTblTa2b;
                     //Tbl theTbl;
                     //PointsManager thePointsManager;
-                    //PMTableLoading.GetTblAndPointsManagerForTblTab(DataAccess, theTblTab.TblTabID, out theTblTab2, out theTbl, out thePointsManager);
+                    //TableLoading.GetTblAndPointsManagerForTblTab(DataAccess, theTblTab.TblTabID, out theTblTab2, out theTbl, out thePointsManager);
                     //bool userIsTrusted = DataAccess.UserCounts(thePointsManager.PointsManagerID, (int)userID);
                     theTableSortRule = new TableSortRuleNeedsRating(); // Doesn't matter for purpose of header row whether the user is untrusted
                 }
@@ -133,7 +133,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
     {
 
         // first, figure out whether to use vertical columns.
-        bool useVerticalColumns = PMNumberandTableFormatter.UseVerticalColumns(DataAccess, TblTabID, LimitToThisTblColumnID, false); 
+        bool useVerticalColumns = NumberandTableFormatter.UseVerticalColumns(DataAccess, TblTabID, LimitToThisTblColumnID, false); 
 
         // This seems to be called twice when the page first loads;
         // I'm not sure why. But it doesn't take long to run.

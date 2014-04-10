@@ -18,6 +18,6 @@ public partial class Default2 : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0))
-            PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+            Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
     }
 }

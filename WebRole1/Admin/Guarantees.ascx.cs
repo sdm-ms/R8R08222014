@@ -11,13 +11,13 @@ namespace WebRole1.Admin
 {
     public partial class Guarantees : System.Web.UI.UserControl
     {
-        public PMActionProcessor theActionProcessor;
+        public ActionProcessor theActionProcessor;
         public int pointsManagerID;
 
         public void Setup(int thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
-            theActionProcessor = new PMActionProcessor();
+            theActionProcessor = new ActionProcessor();
             PointsManager thePointsManager = theActionProcessor.DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == pointsManagerID);
             if (!Page.IsPostBack)
             {

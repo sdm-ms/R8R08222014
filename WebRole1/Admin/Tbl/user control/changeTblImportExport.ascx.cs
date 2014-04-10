@@ -31,7 +31,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        PMRoutingInfoMainContent Location = PMRouting.IncomingMainContent(Page.RouteData, DataAccess.RaterooDB);
+        RoutingInfoMainContent Location = Routing.IncomingMainContent(Page.RouteData, DataAccess.RaterooDB);
         Tbl theTbl = Location.lastItemInHierarchy.Tbl;
         TblID = theTbl.TblID;
         FieldsBox.Setup(TblID,null,FieldsBoxMode.filterWithoutButton);
@@ -98,7 +98,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
     {
         try
         {
-            PMActionProcessor Obj = new PMActionProcessor();
+            ActionProcessor Obj = new ActionProcessor();
             string fileLocation = "";
 
             if (XMLFileUpload.HasFile)

@@ -18,12 +18,12 @@ using ClassLibrary1.Model;
         bool ResetToTop = false;
 
 
-        public PMRoutingInfoMainContent theLocation;
+        public RoutingInfoMainContent theLocation;
         public IRaterooDataContext RaterooDB;
 
         public class SubtablesDataNeeded
         {
-            public PMRoutingInfoMainContent location { get; set; }
+            public RoutingInfoMainContent location { get; set; }
             public IRaterooDataContext theDataContext { get; set; }
         }
         public SubtablesDataNeeded subtablesDataNeeded { get; set; }
@@ -33,7 +33,7 @@ using ClassLibrary1.Model;
             Setup(subtablesDataNeeded.location, subtablesDataNeeded.theDataContext);
         }
 
-        public void Setup(PMRoutingInfoMainContent location, IRaterooDataContext theDataContext)
+        public void Setup(RoutingInfoMainContent location, IRaterooDataContext theDataContext)
         {
             theLocation = location;
             RaterooDB = theDataContext;
@@ -53,7 +53,7 @@ using ClassLibrary1.Model;
                 bool canViewPage = new RaterooDataAccess().CheckUserRights(UserID, UserActionOldList.View, false, firstPointsManager.PointsManagerID, null);
                 if (!canViewPage)
                 {
-                    PMRouting.Redirect(Response, new PMRoutingInfoLoginRedirect(PMRouting.Outgoing(theLocation)));
+                    Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(theLocation)));
                     return;
                 }
             };
@@ -94,7 +94,7 @@ using ClassLibrary1.Model;
 
                 DateTime? concludingDate;
                 decimal totalPrize;
-                PMHierarchyItems.GetPrizeInfoForHierarchyItem(theHierarchyItem, out totalPrize, out concludingDate);
+                HierarchyItems.GetPrizeInfoForHierarchyItem(theHierarchyItem, out totalPrize, out concludingDate);
                 string dollarsString;
                 const int decimalPlaces = 2;
                 dollarsString = MoreStrings.MoreStringManip.FormatToExactDecimalPlaces(totalPrize, decimalPlaces);

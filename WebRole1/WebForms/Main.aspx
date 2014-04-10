@@ -3,15 +3,15 @@ Inherits="ViewTbl" Title="Rateroo" Codebehind="Main.aspx.cs" %>
 <%@ OutputCache Duration="1200" VaryByParam="all" VaryByCustom="noPostbackMain" %>
 <%--<%@ OutputCache Duration="30" VaryByParam="TableId" %>--%>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
-<%@ Register TagPrefix="Uc" TagName="PMFieldsBox" Src="~/Main/Field/PMFieldsBox.ascx" %>
-<%@ Reference Control="~/Main/Field/PMFieldsBox.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="FieldsBox" Src="~/Main/Field/FieldsBox.ascx" %>
+<%@ Reference Control="~/Main/Field/FieldsBox.ascx" %>
 <%@ Reference Control="~/Main/Table/WithCategorySelector.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="TblRowView" Src="~/Main/Table/TblRowView.ascx" %>
 <%@ Reference Control="~/Main/Table/TblRowView.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="TableCellView" Src="~/Main/Table/TableCellView.ascx" %>
 <%@ Reference Control="~/Main/Table/TableCellView.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="Hover" Src="~/CommonControl/Hover.ascx" %>
-<%@ Register TagPrefix="Uc" TagName="InsertableContent" Src="~/CommonControl/PMInsertableContent.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="InsertableContent" Src="~/CommonControl/InsertableContent.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="ModalPopUp" Src="~/CommonControl/ModalPopUp.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="ItemPath" Src="~/CommonControl/ItemPath.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="SupplementalScripts" runat="Server">
@@ -21,18 +21,18 @@ Inherits="ViewTbl" Title="Rateroo" Codebehind="Main.aspx.cs" %>
 	</script>
     <asp:ScriptManagerProxy ID="MyScriptManagerProxy" runat="server">
         <Scripts>
-            <asp:ScriptReference Path="~/js/viewtbl.js?v=503" />
+            <asp:ScriptReference Path="~/js/viewtbl.js?v=504" />
         </Scripts>
         <Services>
-            <asp:ServiceReference Path="~/PMWebService.asmx" InlineScript="true" />
+            <asp:ServiceReference Path="~/WebService.asmx" InlineScript="true" />
         </Services>
     </asp:ScriptManagerProxy>
 </asp:Content>
 <asp:Content ID="ContentNarrowSearch" ContentPlaceHolderID="BoxTopLeftContentPlaceHolder"
     runat="server">
 <%--    <asp:PlaceHolder runat="server" ID="FieldsBoxPlaceHolder" />--%>
-        <% Response.WriteSubstitution(new HttpResponseSubstitutionCallback(ClassLibrary1.Model.PMCacheSubstitution.MyPointsSidebar)); %>
-    <Uc:PMFieldsBox runat="server" ID="FieldsBox" />
+        <% Response.WriteSubstitution(new HttpResponseSubstitutionCallback(ClassLibrary1.Model.CacheSubstitution.MyPointsSidebar)); %>
+    <Uc:FieldsBox runat="server" ID="FieldsBox" />
 </asp:Content>
 <asp:Content ID="HeadContent" runat="server" ContentPlaceHolderID="ContentHeadText">
     <Uc:ItemPath ID="ItemPath1" runat="server">

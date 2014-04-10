@@ -10,10 +10,10 @@ using ClassLibrary1.Model;
 
 public partial class Row : System.Web.UI.Page
 {
-    public PMRoutingInfoMainContent Location { get; set; }
+    public RoutingInfoMainContent Location { get; set; }
     public FieldsBoxMode Mode { get; set; }
     public Action<object, EventArgs> TheAction;
-    PMActionProcessor theActionProcessor = new PMActionProcessor();
+    ActionProcessor theActionProcessor = new ActionProcessor();
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -26,7 +26,7 @@ public partial class Row : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Location = PMRouting.IncomingMainContent(Page.RouteData, theActionProcessor.DataContext);
+        Location = Routing.IncomingMainContent(Page.RouteData, theActionProcessor.DataContext);
         if (Location.addMode)
             Mode = FieldsBoxMode.addTblRow;
         else if (Location.editMode)
@@ -39,12 +39,12 @@ public partial class Row : System.Web.UI.Page
         if (HttpContext.Current.Profile != null)
             UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserId == 0 || UserId == null)
-            PMRouting.Redirect(Response, new PMRoutingInfoLoginRedirect(PMRouting.OutgoingToCurrentRoute(Page.RouteData, DataAccess.RaterooDB)));
+            Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, DataAccess.RaterooDB)));
 
         bool someUsersHaveRights = DataAccess.CheckUserRights(UserId, UserActionOldList.ChangeTblRows, false, Location.thePointsManager.PointsManagerID, Location.theTbl.TblID);
         bool IsValidForAddTblRow = someUsersHaveRights && DataAccess.UserIsTrustedAtLeastSomewhatToEnterRatings(Location.thePointsManager.PointsManagerID, (int) UserId) && Location.theTbl.Name != "Changes";
         if (!IsValidForAddTblRow)
-            PMRouting.Redirect(Response,new PMRoutingInfo(PMRouteID.HomePage));
+            Routing.Redirect(Response,new RoutingInfo(RouteID.HomePage));
 
         int? anyUserID = null;
         if (HttpContext.Current.Profile != null)
@@ -54,7 +54,7 @@ public partial class Row : System.Web.UI.Page
         bool canChangeTblRows = theActionProcessor.CheckUserRights(anyUserID, UserActionOldList.ChangeTblRows, false, null, Location.theTbl.TblID);
         if (!canChangeTblRows)
         {
-            PMRouting.Redirect(Response, new PMRoutingInfoLoginRedirect(PMRouting.Outgoing(Location)));
+            Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(Location)));
             return;
         }
         
@@ -84,7 +84,7 @@ public partial class Row : System.Web.UI.Page
 
     public void ReturnToRowPage()
     {
-        PMRouting.Redirect(Response, new PMRoutingInfoMainContent( Location.theTbl, Location.theTblRow /* may be null */, null));
+        Routing.Redirect(Response, new RoutingInfoMainContent( Location.theTbl, Location.theTblRow /* may be null */, null));
     }
 
     public void AddTblRow(object sender, EventArgs e)

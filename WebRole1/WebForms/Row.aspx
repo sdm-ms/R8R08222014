@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Rateroo: Change Row Information" Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" ValidateRequest="false" AutoEventWireup="true" Inherits="Row" Codebehind="Row.aspx.cs" %>
-<%@ Register TagPrefix="Uc" TagName="PMFieldsBox" Src="~/Main/Field/PMFieldsBox.ascx" %>
-<%@ Reference Control="~/Main/Field/PMFieldsBox.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="FieldsBox" Src="~/Main/Field/FieldsBox.ascx" %>
+<%@ Reference Control="~/Main/Field/FieldsBox.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="ItemPath" Src="~/CommonControl/ItemPath.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">

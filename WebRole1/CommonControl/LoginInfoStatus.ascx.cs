@@ -32,7 +32,7 @@ public partial class LoginInfoStatus : System.Web.UI.UserControl
         else
         {
             RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
-            LoginLink.NavigateUrl = PMRouting.Outgoing(new PMRoutingInfoLoginRedirect(PMRouting.OutgoingToCurrentRoute(Page.RouteData, theDataAccessModule.DataContext)));
+            LoginLink.NavigateUrl = Routing.Outgoing(new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, theDataAccessModule.DataContext)));
             LogoutLink.Visible = false;
             CreateNewUserLink.Visible = true;
             loginSep2.Visible = true;

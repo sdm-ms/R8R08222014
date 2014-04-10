@@ -45,7 +45,7 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
 
     protected void HeaderLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
-        bool useVerticalColumns = PMNumberandTableFormatter.UseVerticalColumns(DataAccess, TblTabID, LimitToThisTblColumnID,true); 
+        bool useVerticalColumns = NumberandTableFormatter.UseVerticalColumns(DataAccess, TblTabID, LimitToThisTblColumnID,true); 
         var theQuery = DataAccess.RaterooDB.GetTable<TblColumn>()
                  .Where(x => x.TblTabID == TblTabID 
                      && (LimitToThisTblColumnID == null || LimitToThisTblColumnID == x.TblColumnID)

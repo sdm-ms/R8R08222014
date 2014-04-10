@@ -34,7 +34,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
     protected TblDimension TheTblDimensions;
     protected RaterooDataAccess DataAccess;
     TblRow TheTblRow;
-    PMActionProcessor Obj = new PMActionProcessor();
+    ActionProcessor Obj = new ActionProcessor();
     string SuppStyle;
     string SuppStyleHeader;
 
@@ -68,7 +68,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         FieldsDisplayPlaceHolder.Controls.Add(theMainFieldsDisplay);
 
         if (CanEditFields)
-            BtnChangeTblRow.Attributes.Add("href",PMRouting.Outgoing(new PMRoutingInfoMainContent(TheTblRow.Tbl,TheTblRow,null,true,false)));
+            BtnChangeTblRow.Attributes.Add("href",Routing.Outgoing(new RoutingInfoMainContent(TheTblRow.Tbl,TheTblRow,null,true,false)));
         else
             BtnChangeTblRow.Attributes.Add("style","display:none;");
 
@@ -124,11 +124,11 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") == 0)
             throw new Exception("You must be logged in to make changes.");
 
-        PMActionProcessor theActionProcessor = new PMActionProcessor();
+        ActionProcessor theActionProcessor = new ActionProcessor();
         theActionProcessor.TblRowDeleteOrUndelete(RowId, delete, true, (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         theActionProcessor.DataContext.SubmitChanges();
         TblRow theTblRow = DataAccess.RaterooDB.GetTable<TblRow>().Single(e => e.TblRowID == RowId);
-        PMRouting.Redirect(Response, new PMRoutingInfoMainContent( theTblRow.Tbl, theTblRow, null));
+        Routing.Redirect(Response, new RoutingInfoMainContent( theTblRow.Tbl, theTblRow, null));
         rebinding = true;
     }
 
@@ -177,7 +177,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 
             string myCacheKey = "MainTableBodyRow" + RowId.ToString() + "," + theTblTabID.ToString() + "," + CanPredict.ToString() + "," + CheckJavaScriptHelper.IsJavascriptEnabled.ToString();
             bool disableCaching = CanPredict && !CheckJavaScriptHelper.IsJavascriptEnabled && Page.IsPostBack; // We have a button we need to respond to, so no html caching.
-            object cachedObject = PMCacheManagement.GetItemFromCache(myCacheKey);
+            object cachedObject = CacheManagement.GetItemFromCache(myCacheKey);
             if (!disableCaching && cachedObject != null)
             {
                 LiteralControl myLiteral = new LiteralControl();
@@ -201,7 +201,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
                                     "RatingsForTblRowIDAndTblTabID" + RowId.ToString() + "," + theTblTabID.ToString(),
                                     "CategoriesForTblID" + TblID.ToString()
                                                       };
-                    PMCacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
+                    CacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
                 }
             }
 

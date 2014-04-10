@@ -210,7 +210,7 @@ div.column2 {
             Private Messaging</h2>
         <dl>
             <dt id="f50"><strong>I cannot send private messages!</strong></dt><dd>You are not registered
-            and/or not logged on. Please register and log in to be able to send PMs.</dd><dd><a href="#faqlinks">Top</a></dd></dl>
+            and/or not logged on. Please register and log in to be able to send s.</dd><dd><a href="#faqlinks">Top</a></dd></dl>
         <hr />
         <dl>
             <dt id="f52"><strong>I have received a spamming or abusive message from someone on this

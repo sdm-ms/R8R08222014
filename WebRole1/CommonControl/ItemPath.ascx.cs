@@ -32,7 +32,7 @@ public partial class CommonControl_ItemPath : System.Web.UI.UserControl
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        PMItemPath theItemPath = new PMItemPath();
+        ItemPath theItemPath = new ItemPath();
         if (theHierarchyItem != null)
             theItemPath.Setup(theHierarchyItem);
         else

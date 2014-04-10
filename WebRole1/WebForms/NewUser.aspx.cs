@@ -23,7 +23,7 @@ public partial class NewUser : System.Web.UI.Page
 
     protected void CreateUserWizard1_CreatedUser(object sender, EventArgs e)
     {
-            PMActionProcessor theActionProcessor = new PMActionProcessor();
+            ActionProcessor theActionProcessor = new ActionProcessor();
             TextBox UserNameTextBox = (TextBox)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("UserName");
             TextBox EmailTextBox = (TextBox)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("Email");
             IUserProfileInfo theUserProfileInfo = UserProfileCollection.LoadByUsername(UserNameTextBox.Text);
@@ -37,7 +37,7 @@ public partial class NewUser : System.Web.UI.Page
 
     protected void CompleteWizardStep1_Activate(object sender, EventArgs e)
     {
-        PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.HomePage));
+        Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
     }
         
 }

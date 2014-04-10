@@ -208,9 +208,9 @@
     <Content Include="CommonControl\MyPointsSidebarContainer.ascx" />
     <Content Include="CommonControl\PageButtons.ascx" />
     <Content Include="CommonControl\PaymentGuaranteeInfo.ascx" />
-    <Content Include="CommonControl\PMGoogleMap.ascx" />
-    <Content Include="CommonControl\PMInsertableContent.ascx" />
-    <Content Include="CommonControl\PMSlideshow.ascx" />
+    <Content Include="CommonControl\GoogleMap.ascx" />
+    <Content Include="CommonControl\InsertableContent.ascx" />
+    <Content Include="CommonControl\Slideshow.ascx" />
     <Content Include="CommonControl\RatingOverTimeGraph.ascx" />
     <Content Include="CommonControl\RatingsSummaryGraph.ascx" />
     <Content Include="CommonControl\RoundedCornerPageTop.ascx" />
@@ -838,17 +838,17 @@
     <Content Include="js\ui\ui.theme.css" />
     <Content Include="js\viewtbl.debug.js" />
     <Content Include="js\viewtbl.js" />
-    <Content Include="Main\Field\PMAddressField.ascx" />
-    <Content Include="Main\Field\PMAnyField.ascx" />
-    <Content Include="Main\Field\PMCategoryFilter.ascx" />
-    <Content Include="Main\Field\PMChoiceField.ascx" />
-    <Content Include="Main\Field\PMDateTimeField.ascx" />
-    <Content Include="Main\Field\PMFieldsBox.ascx" />
-    <Content Include="Main\Field\PMFieldsBoxHeading.ascx" />
-    <Content Include="Main\Field\PMNumberField.ascx" />
-    <Content Include="Main\Field\PMRatingTypeSelector.ascx" />
-    <Content Include="Main\Field\PMSearchWordsFilter.ascx" />
-    <Content Include="Main\Field\PMTextField.ascx" />
+    <Content Include="Main\Field\AddressField.ascx" />
+    <Content Include="Main\Field\AnyField.ascx" />
+    <Content Include="Main\Field\CategoryFilter.ascx" />
+    <Content Include="Main\Field\ChoiceField.ascx" />
+    <Content Include="Main\Field\DateTimeField.ascx" />
+    <Content Include="Main\Field\FieldsBox.ascx" />
+    <Content Include="Main\Field\FieldsBoxHeading.ascx" />
+    <Content Include="Main\Field\NumberField.ascx" />
+    <Content Include="Main\Field\RatingTypeSelector.ascx" />
+    <Content Include="Main\Field\SearchWordsFilter.ascx" />
+    <Content Include="Main\Field\TextField.ascx" />
     <Content Include="Main\Table\BodyRow.ascx" />
     <Content Include="Main\Table\Comments.ascx" />
     <Content Include="Main\Table\FieldsDisplay.ascx" />
@@ -900,7 +900,7 @@
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various.zh-cn1.designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various1.designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\Model.Rateroo1.designer.cs.dll" />
-    <Content Include="PMWebService.asmx" />
+    <Content Include="WebService.asmx" />
     <Content Include="RaterooDownload.aspx" />
     <Content Include="sourcedata\actors.xml" />
     <Content Include="sourcedata\hitters.xml" />
@@ -1293,26 +1293,26 @@
     <Compile Include="CommonControl\PaymentGuaranteeInfo.ascx.designer.cs">
       <DependentUpon>PaymentGuaranteeInfo.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CommonControl\PMGoogleMap.ascx.cs">
-      <DependentUpon>PMGoogleMap.ascx</DependentUpon>
+    <Compile Include="CommonControl\GoogleMap.ascx.cs">
+      <DependentUpon>GoogleMap.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CommonControl\PMGoogleMap.ascx.designer.cs">
-      <DependentUpon>PMGoogleMap.ascx</DependentUpon>
+    <Compile Include="CommonControl\GoogleMap.ascx.designer.cs">
+      <DependentUpon>GoogleMap.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CommonControl\PMInsertableContent.ascx.cs">
-      <DependentUpon>PMInsertableContent.ascx</DependentUpon>
+    <Compile Include="CommonControl\InsertableContent.ascx.cs">
+      <DependentUpon>InsertableContent.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CommonControl\PMInsertableContent.ascx.designer.cs">
-      <DependentUpon>PMInsertableContent.ascx</DependentUpon>
+    <Compile Include="CommonControl\InsertableContent.ascx.designer.cs">
+      <DependentUpon>InsertableContent.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CommonControl\PMSlideshow.ascx.cs">
-      <DependentUpon>PMSlideshow.ascx</DependentUpon>
+    <Compile Include="CommonControl\Slideshow.ascx.cs">
+      <DependentUpon>Slideshow.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CommonControl\PMSlideshow.ascx.designer.cs">
-      <DependentUpon>PMSlideshow.ascx</DependentUpon>
+    <Compile Include="CommonControl\Slideshow.ascx.designer.cs">
+      <DependentUpon>Slideshow.ascx</DependentUpon>
     </Compile>
     <Compile Include="CommonControl\RatingOverTimeGraph.ascx.cs">
       <DependentUpon>RatingOverTimeGraph.ascx</DependentUpon>
@@ -1359,82 +1359,82 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMAddressField.ascx.cs">
-      <DependentUpon>PMAddressField.ascx</DependentUpon>
+    <Compile Include="Main\Field\AddressField.ascx.cs">
+      <DependentUpon>AddressField.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMAddressField.ascx.designer.cs">
-      <DependentUpon>PMAddressField.ascx</DependentUpon>
+    <Compile Include="Main\Field\AddressField.ascx.designer.cs">
+      <DependentUpon>AddressField.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMAnyField.ascx.cs">
-      <DependentUpon>PMAnyField.ascx</DependentUpon>
+    <Compile Include="Main\Field\AnyField.ascx.cs">
+      <DependentUpon>AnyField.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMAnyField.ascx.designer.cs">
-      <DependentUpon>PMAnyField.ascx</DependentUpon>
+    <Compile Include="Main\Field\AnyField.ascx.designer.cs">
+      <DependentUpon>AnyField.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMCategoryFilter.ascx.cs">
-      <DependentUpon>PMCategoryFilter.ascx</DependentUpon>
+    <Compile Include="Main\Field\CategoryFilter.ascx.cs">
+      <DependentUpon>CategoryFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMCategoryFilter.ascx.designer.cs">
-      <DependentUpon>PMCategoryFilter.ascx</DependentUpon>
+    <Compile Include="Main\Field\CategoryFilter.ascx.designer.cs">
+      <DependentUpon>CategoryFilter.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMChoiceField.ascx.cs">
-      <DependentUpon>PMChoiceField.ascx</DependentUpon>
+    <Compile Include="Main\Field\ChoiceField.ascx.cs">
+      <DependentUpon>ChoiceField.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMChoiceField.ascx.designer.cs">
-      <DependentUpon>PMChoiceField.ascx</DependentUpon>
+    <Compile Include="Main\Field\ChoiceField.ascx.designer.cs">
+      <DependentUpon>ChoiceField.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMDateTimeField.ascx.cs">
-      <DependentUpon>PMDateTimeField.ascx</DependentUpon>
+    <Compile Include="Main\Field\DateTimeField.ascx.cs">
+      <DependentUpon>DateTimeField.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMDateTimeField.ascx.designer.cs">
-      <DependentUpon>PMDateTimeField.ascx</DependentUpon>
+    <Compile Include="Main\Field\DateTimeField.ascx.designer.cs">
+      <DependentUpon>DateTimeField.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMFieldsBox.ascx.cs">
-      <DependentUpon>PMFieldsBox.ascx</DependentUpon>
+    <Compile Include="Main\Field\FieldsBox.ascx.cs">
+      <DependentUpon>FieldsBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMFieldsBox.ascx.designer.cs">
-      <DependentUpon>PMFieldsBox.ascx</DependentUpon>
+    <Compile Include="Main\Field\FieldsBox.ascx.designer.cs">
+      <DependentUpon>FieldsBox.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMFieldsBoxHeading.ascx.cs">
-      <DependentUpon>PMFieldsBoxHeading.ascx</DependentUpon>
+    <Compile Include="Main\Field\FieldsBoxHeading.ascx.cs">
+      <DependentUpon>FieldsBoxHeading.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMFieldsBoxHeading.ascx.designer.cs">
-      <DependentUpon>PMFieldsBoxHeading.ascx</DependentUpon>
+    <Compile Include="Main\Field\FieldsBoxHeading.ascx.designer.cs">
+      <DependentUpon>FieldsBoxHeading.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMNumberField.ascx.cs">
-      <DependentUpon>PMNumberField.ascx</DependentUpon>
+    <Compile Include="Main\Field\NumberField.ascx.cs">
+      <DependentUpon>NumberField.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMNumberField.ascx.designer.cs">
-      <DependentUpon>PMNumberField.ascx</DependentUpon>
+    <Compile Include="Main\Field\NumberField.ascx.designer.cs">
+      <DependentUpon>NumberField.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMRatingTypeSelector.ascx.cs">
-      <DependentUpon>PMRatingTypeSelector.ascx</DependentUpon>
+    <Compile Include="Main\Field\RatingTypeSelector.ascx.cs">
+      <DependentUpon>RatingTypeSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMRatingTypeSelector.ascx.designer.cs">
-      <DependentUpon>PMRatingTypeSelector.ascx</DependentUpon>
+    <Compile Include="Main\Field\RatingTypeSelector.ascx.designer.cs">
+      <DependentUpon>RatingTypeSelector.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMSearchWordsFilter.ascx.cs">
-      <DependentUpon>PMSearchWordsFilter.ascx</DependentUpon>
+    <Compile Include="Main\Field\SearchWordsFilter.ascx.cs">
+      <DependentUpon>SearchWordsFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMSearchWordsFilter.ascx.designer.cs">
-      <DependentUpon>PMSearchWordsFilter.ascx</DependentUpon>
+    <Compile Include="Main\Field\SearchWordsFilter.ascx.designer.cs">
+      <DependentUpon>SearchWordsFilter.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\PMTextField.ascx.cs">
-      <DependentUpon>PMTextField.ascx</DependentUpon>
+    <Compile Include="Main\Field\TextField.ascx.cs">
+      <DependentUpon>TextField.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\PMTextField.ascx.designer.cs">
-      <DependentUpon>PMTextField.ascx</DependentUpon>
+    <Compile Include="Main\Field\TextField.ascx.designer.cs">
+      <DependentUpon>TextField.ascx</DependentUpon>
     </Compile>
     <Compile Include="Main\Table\BodyRow.ascx.cs">
       <DependentUpon>BodyRow.ascx</DependentUpon>
@@ -1632,7 +1632,7 @@
     <Compile Include="MasterPages\TwoCol.master.designer.cs">
       <DependentUpon>TwoCol.master</DependentUpon>
     </Compile>
-    <Compile Include="PMWebService.cs">
+    <Compile Include="WebService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RaterooDownload.aspx.cs">

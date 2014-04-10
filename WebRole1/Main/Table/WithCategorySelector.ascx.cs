@@ -23,7 +23,7 @@ public partial class Main_Table_WithCategorySelector : System.Web.UI.UserControl
     protected int TblID { get; set; }
     protected RaterooDataAccess DataAccess { get; set; }
     public Main_Table_Table MainTable;
-    public PMFieldsBox FieldsBox;
+    public FieldsBox FieldsBox;
     string SuppStyle, SuppStyleHeader;
 
     public void SetupBeforeFieldsBox(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, int theTblID, RaterooDataAccess dataAccess, string suppStyle, string suppStyleHeader)
@@ -37,7 +37,7 @@ public partial class Main_Table_WithCategorySelector : System.Web.UI.UserControl
         SuppStyleHeader = suppStyleHeader;
     }
 
-    public void SetupAfterFieldsBox(PMFieldsBox theFieldsBox)
+    public void SetupAfterFieldsBox(FieldsBox theFieldsBox)
     {
         FieldsBox = theFieldsBox;
         if (CheckJavaScriptHelper.IsJavascriptEnabled)
@@ -166,7 +166,7 @@ public partial class Main_Table_WithCategorySelector : System.Web.UI.UserControl
                 TblTab theTblTab;
                 Tbl theTbl;
                 PointsManager thePointsManager;
-                PMTableLoading.GetTblAndPointsManagerForTblTab(DataAccess, TblTabID, out theTblTab, out theTbl, out thePointsManager);
+                TableLoading.GetTblAndPointsManagerForTblTab(DataAccess, TblTabID, out theTblTab, out theTbl, out thePointsManager);
                 userIsTrusted = DataAccess.UserIsTrustedAtLeastSomewhatToEnterRatings(thePointsManager.PointsManagerID, (int) userID);
                 if (userIsTrusted)
                     theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule( new TableSortRuleNeedsRating());

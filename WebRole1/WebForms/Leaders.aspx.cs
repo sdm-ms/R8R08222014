@@ -18,7 +18,7 @@ public partial class Leaders : System.Web.UI.Page
 {
     internal int UserID;
 
-    PMRoutingInfoMainContent theLocation;
+    RoutingInfoMainContent theLocation;
     RaterooDataAccess DataAccess;
 
     protected int? ColumnToSort;
@@ -32,10 +32,10 @@ public partial class Leaders : System.Web.UI.Page
         if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
             UserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"); 
         DataAccess = new RaterooDataAccess();
-        theLocation = PMRouting.IncomingMainContent(Page.RouteData, null);
+        theLocation = Routing.IncomingMainContent(Page.RouteData, null);
         bool canView = DataAccess.CheckUserRights(UserID, UserActionOldList.Predict, false, theLocation.theTbl.PointsManagerID, theLocation.theTbl.TblID);
         if (!canView)
-            PMRouting.Redirect(Response, new PMRoutingInfo(PMRouteID.Login));
+            Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
         ItemPath1.theTbl = theLocation.theTbl;
     }
 

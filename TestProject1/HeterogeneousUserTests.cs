@@ -151,7 +151,7 @@ namespace TestProject1
             _testHelper.WaitIdleTasks();
 
             // This is not needed: TrustTrackerStatManager.UseOverallTrustValueOnly = true;
-            PMTrustCalculations.NumPerfectScoresToGiveNewUser = 2; // reduce this to get faster convergence
+            TrustCalculations.NumPerfectScoresToGiveNewUser = 2; // reduce this to get faster convergence
 
             Action skip1Hour = () => TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
             HeterogeneousUserPool pool = new HeterogeneousUserPool(_testHelper, quality,

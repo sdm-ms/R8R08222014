@@ -79,7 +79,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
     {
         RaterooDataManipulation DataAccess = new RaterooDataManipulation();
         RatingGroup theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == RatingGroupID);
-        PMRouting.Redirect(Response, new PMRoutingInfoMainContent(theRatingGroup.TblRow.Tbl, theRatingGroup.TblRow, theRatingGroup.TblColumn));
+        Routing.Redirect(Response, new RoutingInfoMainContent(theRatingGroup.TblRow.Tbl, theRatingGroup.TblRow, theRatingGroup.TblColumn));
     }
 
     protected void UndoConclude_Click(object sender, EventArgs e)
@@ -87,7 +87,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
         if (!CanResolve)
             return;
         RaterooDataManipulation DataAccess = new RaterooDataManipulation();
-        PMActionProcessor theActionProcessor = new PMActionProcessor();
+        ActionProcessor theActionProcessor = new ActionProcessor();
         RatingGroup theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == RatingGroupID);
         theActionProcessor.ResolveRatingGroup(theRatingGroup, true, true, false, TestableDateTime.Now, UserID, null);
         RefreshPage();
@@ -99,7 +99,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
             return;
         try
         {
-            PMActionProcessor theActionProcessor = new PMActionProcessor();
+            ActionProcessor theActionProcessor = new ActionProcessor();
             DateTime? timeOfResolution;
             if (TimingOptions.SelectedIndex == 0)
                 timeOfResolution = TestableDateTime.Now;

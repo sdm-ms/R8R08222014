@@ -19,12 +19,12 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
     protected bool rebinding = false;
     protected int rowBeingCreated = 0;
     bool ResetToTop = false;
-    protected PMRoutingInfoMainContent Location { get; set; }
+    protected RoutingInfoMainContent Location { get; set; }
     RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Location = PMRouting.IncomingMainContent(Page.RouteData, theDataAccessModule.DataContext);
+        Location = Routing.IncomingMainContent(Page.RouteData, theDataAccessModule.DataContext);
         if (Location.theTblColumn != null)
             RatingHeader.Visible = false;
     }
@@ -178,7 +178,7 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
             RecentRatingInfo theInfo = (RecentRatingInfo)dataItem.DataItem;
 
             HtmlAnchor theAnchor = (HtmlAnchor)e.Item.FindControl("UserLink");
-            theAnchor.HRef = PMRouting.Outgoing(new PMRoutingInfoRatings(theInfo.User.UserID));
+            theAnchor.HRef = Routing.Outgoing(new RoutingInfoRatings(theInfo.User.UserID));
             theAnchor.InnerText = theInfo.User.Username;
 
             Label theUserPointsLabel = (Label)e.Item.FindControl("UserPoints");

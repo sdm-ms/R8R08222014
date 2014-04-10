@@ -22,7 +22,7 @@ public partial class Main_Table_ViewCellMainUnselected : System.Web.UI.UserContr
         string theCSSClass = "mainCellMarker";
         if (theTradingStatus == TradingStatus.Ended)
             theCSSClass += " deletedTblRow ";
-        theCSSClass += " " + PMNumberandTableFormatter.GetSuppStyleMain(TblColumnID);
+        theCSSClass += " " + NumberandTableFormatter.GetSuppStyleMain(TblColumnID);
         tdTag.AddAttribute("class", theCSSClass);
         tdTag.RenderNow();
         tdTagClose.RenderNow();
