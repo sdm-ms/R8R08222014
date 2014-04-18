@@ -384,7 +384,7 @@ namespace ClassLibrary1.Model
 
             if (createRewardTbl)
             {
-                Action.RewardTblCreate(pointsManagerID, -10M, 10M, 60 * 60 * 24 * 2, 60 * 60 * 24 * 1, 0.05M, 20M, 1000, true, superUser, null);
+                Action.ChangeTblCreate(pointsManagerID, -10M, 10M, 60 * 60 * 24 * 2, 60 * 60 * 24 * 1, 0.05M, 20M, 1000, true, superUser, null);
                 if (visibleToPublic)
                     Action.UsersRightsCreate(null, pointsManagerID, true, true, false, true, true, false, false, false, false, false, false, "Partial administrative privileges", true, true, superUser, null);
                 else

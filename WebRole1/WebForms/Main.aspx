@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" 
 Inherits="ViewTbl" Title="Rateroo" Codebehind="Main.aspx.cs" %>
-<%@ OutputCache Duration="1200" VaryByParam="all" VaryByCustom="noPostbackMain" %>
+<%@ OutputCache Duration="10" VaryByParam="all" VaryByCustom="noPostbackMain" %>
 <%--<%@ OutputCache Duration="30" VaryByParam="TableId" %>--%>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
 <%@ Register TagPrefix="Uc" TagName="FieldsBox" Src="~/Main/Field/FieldsBox.ascx" %>

@@ -1989,7 +1989,9 @@
     <Content Include="App_LocalResources\en-US\updatedtopics.aspx.resx" />
     <Content Include="App_LocalResources\en-US\users.aspx.resx" />
     <Content Include="App_LocalResources\en-US\viewpostsbyuser.aspx.resx" />
-    <Content Include="App_LocalResources\en-US\viewprofile.aspx.resx" />
+    <Content Include="App_LocalResources\en-US\viewprofile.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_LocalResources\es-ES\activate.aspx.es-ES.resx" />
     <Content Include="App_LocalResources\es-ES\addpost.aspx.es-ES.resx" />
     <Content Include="App_LocalResources\es-ES\addprivatemsg.aspx.es-ES.resx" />

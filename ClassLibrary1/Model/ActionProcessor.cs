@@ -143,7 +143,7 @@ namespace ClassLibrary1.Model
             return (int) newObjectID;
         }
 
-        public int RewardTblCreate(int pointsManagerID, decimal worstCasePenalty, decimal bestCaseReward, int runTime, int halfLife, decimal probOfRewardEvaluation, decimal? multiplier, decimal subsidyLevel, bool doItNow, int userID, int? changesGroupID)
+        public int ChangeTblCreate(int pointsManagerID, decimal worstCasePenalty, decimal bestCaseReward, int runTime, int halfLife, decimal probOfRewardEvaluation, decimal? multiplier, decimal subsidyLevel, bool doItNow, int userID, int? changesGroupID)
         {
             DataManipulation.ConfirmObjectExists(pointsManagerID, TypeOfObject.PointsManager);
 
