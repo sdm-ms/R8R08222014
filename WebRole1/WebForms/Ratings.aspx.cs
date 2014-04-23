@@ -47,8 +47,11 @@ public partial class Ratings : System.Web.UI.Page
         if (UserIDOfBrowsingUser != null)
         {
             User browsingUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfBrowsingUser);
-            browsingUserIsAdmin = browsingUser.Username == "admin";
-            RevertTrusted.Visible = browsingUserIsAdmin;
+            if (browsingUser != null)
+            {
+                browsingUserIsAdmin = browsingUser.Username == "admin";
+                RevertTrusted.Visible = browsingUserIsAdmin;
+            }
         }
 
         if (theRatingsInfo.userID == null)

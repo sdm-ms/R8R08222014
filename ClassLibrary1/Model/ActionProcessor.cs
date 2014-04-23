@@ -143,7 +143,7 @@ namespace ClassLibrary1.Model
             return (int) newObjectID;
         }
 
-        public int ChangeTblCreate(int pointsManagerID, decimal worstCasePenalty, decimal bestCaseReward, int runTime, int halfLife, decimal probOfRewardEvaluation, decimal? multiplier, decimal subsidyLevel, bool doItNow, int userID, int? changesGroupID)
+        public int ChangesTblCreate(int pointsManagerID, decimal worstCasePenalty, decimal bestCaseReward, int runTime, int halfLife, decimal probOfRewardEvaluation, decimal? multiplier, decimal subsidyLevel, bool doItNow, int userID, int? changesGroupID)
         {
             DataManipulation.ConfirmObjectExists(pointsManagerID, TypeOfObject.PointsManager);
 
@@ -164,7 +164,7 @@ namespace ClassLibrary1.Model
                 theData.AddChoiceToGroup(StringEnum.GetStringValue(RewardableUserAction.AddRow));
                 theData.AddChoiceToGroup(StringEnum.GetStringValue(RewardableUserAction.DeleteRow));
                 theData.AddChoiceToGroup(StringEnum.GetStringValue(RewardableUserAction.UndeleteRow));
-                theData.AddChoiceToGroup(StringEnum.GetStringValue(RewardableUserAction.ChangeInfo));
+                theData.AddChoiceToGroup(StringEnum.GetStringValue(RewardableUserAction.ChangeFields));
                 theData.AddChoiceToGroup(StringEnum.GetStringValue(RewardableUserAction.ResolveTableCell));
                 theData.AddChoiceToGroup(StringEnum.GetStringValue(RewardableUserAction.CancelResolve));
                 int changeTypeChoiceGroup = ChoiceGroupCreate((int) pointsManagerID, theData, ChoiceGroupSettingsMask.GetStandardSetting(), null, true, true, userID, null, "Change choices"); 
@@ -754,7 +754,7 @@ namespace ClassLibrary1.Model
                 FieldSetDataInfo oldSettings = new FieldSetDataInfo(theSet.theTblRow, theSet.theTbl, new RaterooDataAccess());
                 oldSettings.LoadFromDatabase();
                 string changesList = theSet.GetComparison(oldSettings);
-                RewardRatingCreate((int)theSet.theTbl.TblID, RewardableUserAction.ChangeInfo, baseMultiplierOverride, 0.75M, userID, "Changed info: " + theSet.theEntityName, changesList);
+                RewardRatingCreate((int)theSet.theTbl.TblID, RewardableUserAction.ChangeFields, baseMultiplierOverride, 0.75M, userID, "Changed info: " + theSet.theEntityName, changesList);
             }
             //ProfileSimple.End("RewardRating");
             //ProfileSimple.End("FieldSetImplement");

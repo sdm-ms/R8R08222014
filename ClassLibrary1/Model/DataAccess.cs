@@ -60,7 +60,6 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public AddressField GetAddressField(int theID)
         {
-
             return RaterooDB.GetTable<AddressField>().Single(x => x.AddressFieldID == theID);
         }
 

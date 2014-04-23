@@ -16,8 +16,8 @@ namespace ClassLibrary1.Model
     {
         [StringValue("Add row")]
         AddRow = 1,
-        [StringValue("Change information")]
-        ChangeInfo,
+        [StringValue("Change fields")]
+        ChangeFields,
         [StringValue("Resolve table cell")]
         ResolveTableCell,
         [StringValue("Cancel resolution of table cell")]

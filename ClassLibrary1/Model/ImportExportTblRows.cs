@@ -445,7 +445,10 @@ namespace ClassLibrary1.Model
             XElement TblRowList;
             TblRowList = (XElement)CacheManagement.GetItemFromCache(fileLocCacheKey);
             if (TblRowList == null)
+            {
                 TblRowList = XElement.Load(storedFileLocation);
+                CacheManagement.AddItemToCache(fileLocCacheKey, new string[] { }, TblRowList);
+            }
             XDocument theLogListFile = XDocument.Load(storedLogLocation); // We don't cache this, since it may change and should be smallish.
 
 

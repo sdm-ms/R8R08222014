@@ -108,24 +108,12 @@ namespace ClassLibrary1.Model
 
         public static TblColumn GetTblColumn(RaterooDataAccess dataAccess, int TblColumnID, int domainID)
         {
-            TblColumn theCD = CacheManagement.GetItemFromCache("TblColumnID" + TblColumnID) as TblColumn;
-            if (theCD == null)
-            {
-                theCD = dataAccess.RaterooDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
-                CacheManagement.AddItemToCache("TblColumnID" + TblColumnID, new string[] { "DomainID" + domainID, "TblID" + theCD.TblTab.TblID }, theCD);
-            }
-            return theCD;
+            return dataAccess.GetTblColumn(TblColumnID);
         }
 
         public static void GetTblAndPointsManagerForTblTab(RaterooDataAccess dataAccess, int TblTabID, out TblTab theTblTab, out Tbl theTbl, out PointsManager thePointsManager)
         {
-            theTblTab = CacheManagement.GetItemFromCache("TblTab" + TblTabID) as TblTab;
-            bool addTblTabToCache = false;
-            if (theTblTab == null)
-            {
-                theTblTab = dataAccess.RaterooDB.GetTable<TblTab>().SingleOrDefault(x => x.TblTabID == TblTabID);
-                addTblTabToCache = true;
-            }
+            theTblTab = dataAccess.GetTblTab(TblTabID);
             theTbl = CacheManagement.GetItemFromCache("TblForTblTab" + TblTabID) as Tbl;
             bool addTblToCache = false;
             if (theTbl == null)
@@ -141,8 +129,6 @@ namespace ClassLibrary1.Model
                 thePointsManager = theTbl.PointsManager;
                 CacheManagement.AddItemToCache("PointsManagerForTbl" + theTbl.TblID, new string[] { "DomainID" + thePointsManager.DomainID, "TblID" + theTbl.TblID }, theTbl);
             }
-            if (addTblTabToCache)
-                CacheManagement.AddItemToCache("TblTab" + TblTabID, new string[] { "DomainID" + thePointsManager.DomainID, "TblID" + theTbl.TblID }, theTblTab);
             if (addTblToCache)
                 CacheManagement.AddItemToCache("TblForTblTab" + TblTabID, new string[] { "DomainID" + thePointsManager.DomainID, "TblID" + theTbl.TblID }, theTbl);
         }

@@ -1167,7 +1167,7 @@ namespace ClassLibrary1.Model
             CreateChoiceGroups(pointsManagerID); 
             myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
             //theTestHelper.Action.RewardTblCreate(pointsManagerID, -10M, 10M, 172800, 86400, 0.75M, null, 1000, true, theTestHelper.superUser, myChangesGroup); 
-            theTestHelper.ActionProcessor.ChangeTblCreate(pointsManagerID, -10M, 10M, 80, 30, 0.75M, 7.5M, 100, true, theTestHelper.SuperUserId, myChangesGroup);
+            theTestHelper.ActionProcessor.ChangesTblCreate(pointsManagerID, -10M, 10M, 80, 30, 0.75M, 7.5M, 100, true, theTestHelper.SuperUserId, myChangesGroup);
             theTestHelper.ActionProcessor.UsersRightsCreate(null, pointsManagerID, true, true, false, true, true, false, false, false, false, false, false, "Standard rights", true, true, theTestHelper.SuperUserId, null);
             return pointsManagerID;
         }

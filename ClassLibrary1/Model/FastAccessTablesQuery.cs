@@ -170,13 +170,7 @@ namespace ClassLibrary1.Model
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
-            string cacheString = "FieldDefinition" + fieldDefinitionID.ToString();
-            FieldDefinition fd = CacheManagement.GetItemFromCache(cacheString) as FieldDefinition;
-            if (fd == null)
-            {
-                fd = iDataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID);
-                CacheManagement.AddItemToCache(cacheString, new string[] { "FieldInfoForPointsManagerID" + fd.Tbl.PointsManagerID.ToString() }, fd, new TimeSpan(1, 0, 0));
-            }
+            FieldDefinition fd = iDataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID);
             return fd;
         }
 
@@ -186,14 +180,8 @@ namespace ClassLibrary1.Model
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
-            string cacheString = "FieldDefinition" + fieldDefinitionID.ToString();
-            ChoiceGroupFieldDefinition fd = CacheManagement.GetItemFromCache(cacheString) as ChoiceGroupFieldDefinition;
-            if (fd == null)
-            {
-                fd = iDataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID);
-                CacheManagement.AddItemToCache(cacheString, new string[] { "FieldInfoForPointsManagerID" + fd.FieldDefinition.Tbl.PointsManagerID.ToString() }, fd, new TimeSpan(1, 0, 0));
-            }
-            return fd;
+            ChoiceGroupFieldDefinition cgfd = iDataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID); // NOTE: This is a lookup based on a FieldDefinitionID, NOT a ChoiceGroupFieldDefinitionID
+            return cgfd;
         }
 
         internal static void GetStatementsForFiltering(FilterRules filters, List<ChoiceFullFieldDefinition> choiceFDs, int originalSqlTableIndex, ref int sqlTableIndex, DateTime? asOfDateTime, int tblID, ref int paramNumber, ref List<SqlParameter> parameters, out string whereString, out string joinString)
