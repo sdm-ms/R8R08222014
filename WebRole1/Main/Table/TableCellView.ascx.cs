@@ -89,10 +89,10 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         {
             int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
-            CanPredict = DataAccess.CheckUserRights(UserId, UserActionOldList.Predict, false, PointsManagerID, TblID);
-            CanAdminister = DataAccess.CheckUserRights(UserId, UserActionOldList.ResolveRatings, false, PointsManagerID, TblID);
-            CanEditFields = DataAccess.CheckUserRights(UserId, UserActionOldList.ChangeTblRows, false, PointsManagerID, TblID);
-            CanResolveRatings = DataAccess.CheckUserRights(UserId, UserActionOldList.ResolveRatings, false, PointsManagerID, TblID);
+            CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, PointsManagerID, TblID);
+            CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, PointsManagerID, TblID);
+            CanEditFields = DataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, PointsManagerID, TblID);
+            CanResolveRatings = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, PointsManagerID, TblID);
         }
 
         CommentsEnabled = false; // TO DO: Add Comments capability

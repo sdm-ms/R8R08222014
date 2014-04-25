@@ -90,9 +90,9 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         {
             int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
-            CanPredict = DataAccess.CheckUserRights(UserId, UserActionOldList.Predict, false, SubtopicId, TblID);
-            CanAdminister = DataAccess.CheckUserRights(UserId, UserActionOldList.ResolveRatings, false, SubtopicId, TblID);
-            CanEditFields = DataAccess.CheckUserRights(UserId, UserActionOldList.ChangeTblRows, false, SubtopicId, TblID);
+            CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, TblID);
+            CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, TblID);
+            CanEditFields = DataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, SubtopicId, TblID);
         }
     }
 

@@ -33,7 +33,7 @@ public partial class Leaders : System.Web.UI.Page
             UserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"); 
         DataAccess = new RaterooDataAccess();
         theLocation = Routing.IncomingMainContent(Page.RouteData, null);
-        bool canView = DataAccess.CheckUserRights(UserID, UserActionOldList.Predict, false, theLocation.theTbl.PointsManagerID, theLocation.theTbl.TblID);
+        bool canView = DataAccess.CheckUserRights(UserID, UserActionType.Predict, false, theLocation.theTbl.PointsManagerID, theLocation.theTbl.TblID);
         if (!canView)
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
         ItemPath1.theTbl = theLocation.theTbl;

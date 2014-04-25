@@ -1140,7 +1140,7 @@ namespace ClassLibrary1.Model
         /// <param name="pointsManagerID"></param>
         /// <param name="TblID"></param>
         /// <returns></returns>
-        public bool CheckUserRights(int? userID, UserActionOldList theAction, bool proposalOnly, int? pointsManagerID, int? TblID)
+        public bool CheckUserRights(int? userID, UserActionType theAction, bool proposalOnly, int? pointsManagerID, int? TblID)
         {
             if (AllowNullOrUserID0UserForTestingAndInitialBuild && (userID == null || userID == 0))
                 return true;
@@ -1160,7 +1160,7 @@ namespace ClassLibrary1.Model
             }
             if (userID == null || userID == 0)
             { // Anonymous user
-                if (theAction == UserActionOldList.View)
+                if (theAction == UserActionType.View)
                 {
                     UsersRight theRights = RaterooDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.PointsManagerID == pointsManagerID && ur.Status == (Byte) StatusOfObject.Active && ur.User == null);
                     if (theRights != null)
@@ -1181,40 +1181,40 @@ namespace ClassLibrary1.Model
                 // See if the user has the relevant right. Note that this would also entail the right to make a proposal.
                 switch (theAction)
                 {
-                    case UserActionOldList.View:
+                    case UserActionType.View:
                         returnVal = theRights.MayView;
                         break;
-                    case UserActionOldList.Predict:
+                    case UserActionType.Predict:
                         returnVal = theRights.MayPredict;
                         break;
-                    case UserActionOldList.AddTblsAndChangePointsManagers:
+                    case UserActionType.AddTblsAndChangePointsManagers:
                         returnVal = theRights.MayAddTbls;
                         break;
-                    case UserActionOldList.ResolveRatings:
+                    case UserActionType.ResolveRatings:
                         returnVal = theRights.MayResolveRatings;
                         break;
-                    case UserActionOldList.ChangeTblRows:
+                    case UserActionType.ChangeTblRows:
                         returnVal = theRights.MayChangeTblRows;
                         break;
-                    case UserActionOldList.ChangeChoiceGroups:
+                    case UserActionType.ChangeChoiceGroups:
                         returnVal = theRights.MayChangeChoiceGroups;
                         break;
-                    case UserActionOldList.ChangeCharacteristics:
+                    case UserActionType.ChangeCharacteristics:
                         returnVal = theRights.MayChangeCharacteristics;
                         break;
-                    case UserActionOldList.ChangeCategories:
+                    case UserActionType.ChangeCategories:
                         returnVal = theRights.MayChangeCategories;
                         break;
-                    case UserActionOldList.ChangeUsersRights:
+                    case UserActionType.ChangeUsersRights:
                         returnVal = theRights.MayChangeUsersRights;
                         break;
-                    case UserActionOldList.AdjustPoints:
+                    case UserActionType.AdjustPoints:
                         returnVal = theRights.MayAdjustPoints;
                         break;
-                    case UserActionOldList.ChangeProposalSettings:
+                    case UserActionType.ChangeProposalSettings:
                         returnVal = theRights.MayChangeProposalSettings;
                         break;
-                    case UserActionOldList.Other:
+                    case UserActionType.Other:
                         returnVal = false;
                         break;
                 }
@@ -1231,40 +1231,40 @@ namespace ClassLibrary1.Model
                         throw new Exception("Internal error -- rights to create proposals not specified in database.");
                     switch (theAction)
                     {
-                        case UserActionOldList.View:
+                        case UserActionType.View:
                             returnVal = false; // can't propose views
                             break;
-                        case UserActionOldList.Predict:
+                        case UserActionType.Predict:
                             returnVal = false; // can't propose predictions
                             break;
-                        case UserActionOldList.AddTblsAndChangePointsManagers:
+                        case UserActionType.AddTblsAndChangePointsManagers:
                             returnVal = theProposalSettings.UsersMayProposeAddingTbls;
                             break;
-                        case UserActionOldList.ResolveRatings:
+                        case UserActionType.ResolveRatings:
                             returnVal = theProposalSettings.UsersMayProposeResolvingRatings;
                             break;
-                        case UserActionOldList.ChangeTblRows:
+                        case UserActionType.ChangeTblRows:
                             returnVal = theProposalSettings.UsersMayProposeChangingTblRows;
                             break;
-                        case UserActionOldList.ChangeChoiceGroups:
+                        case UserActionType.ChangeChoiceGroups:
                             returnVal = theProposalSettings.UsersMayProposeChangingChoiceGroups;
                             break;
-                        case UserActionOldList.ChangeCharacteristics:
+                        case UserActionType.ChangeCharacteristics:
                             returnVal = theProposalSettings.UsersMayProposeChangingCharacteristics;
                             break;
-                        case UserActionOldList.ChangeCategories:
+                        case UserActionType.ChangeCategories:
                             returnVal = theProposalSettings.UsersMayProposeChangingCategories;
                             break;
-                        case UserActionOldList.ChangeUsersRights:
+                        case UserActionType.ChangeUsersRights:
                             returnVal = theProposalSettings.UsersMayProposeChangingUsersRights;
                             break;
-                        case UserActionOldList.AdjustPoints:
+                        case UserActionType.AdjustPoints:
                             returnVal = theProposalSettings.UsersMayProposeAdjustingPoints;
                             break;
-                        case UserActionOldList.ChangeProposalSettings:
+                        case UserActionType.ChangeProposalSettings:
                             returnVal = theProposalSettings.UsersMayProposeChangingProposalSettings;
                             break;
-                        case UserActionOldList.Other:
+                        case UserActionType.Other:
                             returnVal = false;
                             break;
                     } // switch on actions
@@ -1285,22 +1285,22 @@ namespace ClassLibrary1.Model
         {
             bool retval = false;
 
-            retval = CheckUserRights(userID, UserActionOldList.AddTblsAndChangePointsManagers, false, pointsManagerID, null);
+            retval = CheckUserRights(userID, UserActionType.AddTblsAndChangePointsManagers, false, pointsManagerID, null);
             if (retval == true)
             {
                 return retval;
             }
-            retval = CheckUserRights(userID, UserActionOldList.AdjustPoints, false, pointsManagerID, null);
+            retval = CheckUserRights(userID, UserActionType.AdjustPoints, false, pointsManagerID, null);
             if (retval == true)
             {
                 return retval;
             }
-            retval = CheckUserRights(userID, UserActionOldList.ChangeProposalSettings, false, pointsManagerID, null);
+            retval = CheckUserRights(userID, UserActionType.ChangeProposalSettings, false, pointsManagerID, null);
             if (retval == true)
             {
                 return retval;
             }
-            retval = CheckUserRights(userID, UserActionOldList.ChangeUsersRights, false, pointsManagerID, null);
+            retval = CheckUserRights(userID, UserActionType.ChangeUsersRights, false, pointsManagerID, null);
             if (retval == true)
             {
                 return retval;
@@ -1322,12 +1322,12 @@ namespace ClassLibrary1.Model
                 return false;
             int pointsManagerID = theTbl.PointsManagerID;
 
-            retval = CheckUserRights(userID, UserActionOldList.ChangeCategories, false, pointsManagerID, TblID);
+            retval = CheckUserRights(userID, UserActionType.ChangeCategories, false, pointsManagerID, TblID);
             if (retval == true)
             {
                 return retval;
             }
-            retval = CheckUserRights(userID, UserActionOldList.ChangeChoiceGroups, false, pointsManagerID, TblID);
+            retval = CheckUserRights(userID, UserActionType.ChangeChoiceGroups, false, pointsManagerID, TblID);
             if (retval == true)
             {
                 return retval;

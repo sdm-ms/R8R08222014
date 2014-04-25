@@ -41,7 +41,7 @@ public partial class Row : System.Web.UI.Page
         if (UserId == 0 || UserId == null)
             Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, DataAccess.RaterooDB)));
 
-        bool someUsersHaveRights = DataAccess.CheckUserRights(UserId, UserActionOldList.ChangeTblRows, false, Location.thePointsManager.PointsManagerID, Location.theTbl.TblID);
+        bool someUsersHaveRights = DataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, Location.thePointsManager.PointsManagerID, Location.theTbl.TblID);
         bool IsValidForAddTblRow = someUsersHaveRights && DataAccess.UserIsTrustedAtLeastSomewhatToEnterRatings(Location.thePointsManager.PointsManagerID, (int) UserId) && Location.theTbl.Name != "Changes";
         if (!IsValidForAddTblRow)
             Routing.Redirect(Response,new RoutingInfo(RouteID.HomePage));
@@ -51,7 +51,7 @@ public partial class Row : System.Web.UI.Page
             anyUserID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (anyUserID == 0)
             anyUserID = null;
-        bool canChangeTblRows = theActionProcessor.CheckUserRights(anyUserID, UserActionOldList.ChangeTblRows, false, null, Location.theTbl.TblID);
+        bool canChangeTblRows = theActionProcessor.CheckUserRights(anyUserID, UserActionType.ChangeTblRows, false, null, Location.theTbl.TblID);
         if (!canChangeTblRows)
         {
             Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(Location)));

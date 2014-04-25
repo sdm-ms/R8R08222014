@@ -73,7 +73,7 @@ namespace ClassLibrary1.Model
     /// This is used to specify the type of action the user wants to perform. This is passed to the CheckUserRights
     /// function to determine whether the user can do the relevant action.
     /// </summary>
-    public enum UserActionOldList
+    public enum UserActionType
     {
         View,
         Predict,

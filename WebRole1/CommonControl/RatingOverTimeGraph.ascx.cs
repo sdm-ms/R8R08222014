@@ -106,7 +106,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         if (theRatingGroup == null)
             return;
         
-        bool canViewPage = DataAccess.CheckUserRights((int?) (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionOldList.View, false, null, theRatingGroup.TblRow.TblID);
+        bool canViewPage = DataAccess.CheckUserRights((int?) (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
         if (!canViewPage)
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
 

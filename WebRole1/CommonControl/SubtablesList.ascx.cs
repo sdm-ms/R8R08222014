@@ -50,7 +50,7 @@ using ClassLibrary1.Model;
             }
             if (firstPointsManager != null)
             {
-                bool canViewPage = new RaterooDataAccess().CheckUserRights(UserID, UserActionOldList.View, false, firstPointsManager.PointsManagerID, null);
+                bool canViewPage = new RaterooDataAccess().CheckUserRights(UserID, UserActionType.View, false, firstPointsManager.PointsManagerID, null);
                 if (!canViewPage)
                 {
                     Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(theLocation)));

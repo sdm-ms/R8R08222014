@@ -82,9 +82,9 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             if (UserId == 0)
                 UserId = null;
             // Checking user rights to predict
-            CanPredict = dataAccess.CheckUserRights(UserId, UserActionOldList.Predict, false, SubtopicId, TblID);
-            CanAdminister = dataAccess.CheckUserRights(UserId, UserActionOldList.ResolveRatings, false, SubtopicId, TblID);
-            CanEditFields = dataAccess.CheckUserRights(UserId, UserActionOldList.ChangeTblRows, false, SubtopicId, TblID);
+            CanPredict = dataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, TblID);
+            CanAdminister = dataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, TblID);
+            CanEditFields = dataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, SubtopicId, TblID);
         }
 
         CommentsEnabled = true; // modify later if we turn off comments altogether for certain Tbls

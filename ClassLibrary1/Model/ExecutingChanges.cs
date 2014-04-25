@@ -533,7 +533,7 @@ namespace ClassLibrary1.Model
         /// <param name="pointsManagerID">The universe to which the changes will apply, or null (e.g., for changes to domain)</param>
         /// <param name="TblID">The Tbl to which the changes will apply, or null (e.g., for changes to universe)</param>
         /// <returns>True if we can proceed with the change, based on the users' rights and the status of the changes group</returns>
-        public bool ProceedWithChange(ref int? changesGroupID, int? userID, UserActionOldList theAction, bool proposalOnly, int? pointsManagerID, int? TblID, bool createChangesGroupIfNoneProvided)
+        public bool ProceedWithChange(ref int? changesGroupID, int? userID, UserActionType theAction, bool proposalOnly, int? pointsManagerID, int? TblID, bool createChangesGroupIfNoneProvided)
         {
             Tbl theTbl = null;
             string key = "Tbl" + TblID;
@@ -550,7 +550,7 @@ namespace ClassLibrary1.Model
             if (!userRightsOK)
                 return false;
 
-            if (TblID != null && theAction != UserActionOldList.Predict && theAction != UserActionOldList.View)
+            if (TblID != null && theAction != UserActionType.Predict && theAction != UserActionType.View)
             {
                 if (theTbl.Name == "Changes")
                 {

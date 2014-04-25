@@ -36,13 +36,13 @@ namespace WebApplication1
             if (ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
             {
                 int UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-                bool canView = DataAccess.CheckUserRights(UserId, UserActionOldList.View, false, SubtopicId, theLocation.theTbl.TblID);
+                bool canView = DataAccess.CheckUserRights(UserId, UserActionType.View, false, SubtopicId, theLocation.theTbl.TblID);
                 if (!canView)
                     Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 // Checking user rights to predict
-                CanPredict = DataAccess.CheckUserRights(UserId, UserActionOldList.Predict, false, SubtopicId, theLocation.theTbl.TblID);
-                CanAdminister = DataAccess.CheckUserRights(UserId, UserActionOldList.ResolveRatings, false, SubtopicId, theLocation.theTbl.TblID);
-                CanEditFields = DataAccess.CheckUserRights(UserId, UserActionOldList.ChangeTblRows, false, SubtopicId, theLocation.theTbl.TblID);
+                CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, theLocation.theTbl.TblID);
+                CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, theLocation.theTbl.TblID);
+                CanEditFields = DataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, SubtopicId, theLocation.theTbl.TblID);
                 CommentsContent.UserCanProposeComments = true;
                 CommentsContent.UserCanAddComments = CanPredict;
                 CommentsContent.UserCanDeleteComments = CanEditFields;

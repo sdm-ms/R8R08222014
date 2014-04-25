@@ -123,7 +123,7 @@ public partial class ViewTbl : System.Web.UI.Page
             }
             if (anyUserID == 0)
                 anyUserID = null;
-            bool canViewPage = DataAccess.CheckUserRights(anyUserID, UserActionOldList.View, false, null, theLocation.theTbl.TblID);
+            bool canViewPage = DataAccess.CheckUserRights(anyUserID, UserActionType.View, false, null, theLocation.theTbl.TblID);
             if (!canViewPage)
             {
                 Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(theLocation)));
@@ -139,7 +139,7 @@ public partial class ViewTbl : System.Web.UI.Page
                 //Session["UserId"] = UserId.ToString(); // to allow access in webmethod
 
                 // checking for the user right to add a entity
-                bool someUsersHaveRights = DataAccess.CheckUserRights(UserId, UserActionOldList.ChangeTblRows, false, theLocation.thePointsManager.PointsManagerID, theLocation.theTbl.TblID);
+                bool someUsersHaveRights = DataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, theLocation.thePointsManager.PointsManagerID, theLocation.theTbl.TblID);
                 bool IsValidForAddTblRow = someUsersHaveRights && DataAccess.UserIsTrustedToMakeDatabaseChanges(theLocation.thePointsManager.PointsManagerID, UserId) && theLocation.theTbl.Name != "Changes";
 
                 if (IsValidForAddTblRow == false)
