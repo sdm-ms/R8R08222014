@@ -72,17 +72,7 @@ namespace TestProject1
             primaryKey.Should().Be(5);
         }
 
-        [TestMethod]
-        [Category("InMemoryRepository")]
-        public void RepositoryItem_CanGetAndSetPrimaryKey_ForUserAction()
-        {
-            UserAction theUserAction = new UserAction();
-            int primaryKey = RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUserAction);
-            primaryKey.Should().Be(0);
-            RepositoryItemPrimaryKeys.SetPrimaryKeyFieldValue(theUserAction, 5);
-            primaryKey = RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUserAction);
-            primaryKey.Should().Be(5);
-        }
+        
         [TestMethod]
         [Category("InMemoryRepository")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToMany()

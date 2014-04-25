@@ -969,21 +969,7 @@ namespace ClassLibrary1.Model
 
             
         }
-        public AdministrationRightsGroup GetAdministrationRightsGroup(int theID)
-        {
-            return RaterooDB.GetTable<AdministrationRightsGroup>().Single(x => x.AdministrationRightsGroupID == theID);
-        }
 
-        public AdministrationRight GetAdministrationRight(int theID)
-        {
-            return RaterooDB.GetTable<AdministrationRight>().Single(x => x.AdministrationRightID == theID);
-        }
-
-
-        public UsersAdministrationRightsGroup GetUsersAdministrationRightsGroup(int theID)
-        {
-            return RaterooDB.GetTable<UsersAdministrationRightsGroup>().Single(x => x.UsersAdministrationRightsGroupID == theID);
-        }
 
 
         public ProposalEvaluationRatingSetting GetProposalEvaluationRatingSetting(int theID)

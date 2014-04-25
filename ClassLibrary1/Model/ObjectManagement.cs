@@ -179,17 +179,8 @@ namespace ClassLibrary1.Model
                     case TypeOfObject.UsersRights:
                         ObjDataAccess.GetUsersRights(objectID2);
                         break;
-                    case TypeOfObject.AdministrationRight: 
-                        ObjDataAccess.GetAdministrationRight(objectID2);
-                        break;
-                    case TypeOfObject.AdministrationRightsGroup: 
-                        ObjDataAccess.GetAdministrationRightsGroup(objectID2);
-                        break;
                     case TypeOfObject.UsersActions: 
                         ObjDataAccess.GetUserAction(objectID2);
-                        break;
-                    case TypeOfObject.UsersAdministrationRightsGroup: 
-                        ObjDataAccess.GetUsersAdministrationRightsGroup(objectID2);
                         break;
                     case TypeOfObject.ProposalEvaluationRatingSettings: 
                         ObjDataAccess.GetProposalEvaluationRatingSetting(objectID2);
@@ -526,12 +517,6 @@ namespace ClassLibrary1.Model
                     break;
                 case TypeOfObject.User:
                     DataContext.GetTable<User>().Single(x => x.UserID == objectID).Status = newValue;
-                    break;
-                case TypeOfObject.AdministrationRightsGroup: 
-                    DataContext.GetTable<AdministrationRightsGroup>().Single(x => x.AdministrationRightsGroupID == objectID).Status = newValue;
-                    break;
-                case TypeOfObject.AdministrationRight: 
-                    DataContext.GetTable<AdministrationRight>().Single(x => x.AdministrationRightID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RewardRatingSettings: 
                     DataContext.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Status = newValue;

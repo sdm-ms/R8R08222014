@@ -365,33 +365,13 @@ namespace ClassLibrary1.Model
 
 
         }
-        public void CreateUserActions()
-        {
-            int userActionsCount = (int)UserActionsList.PastLast - 1;
-            for (int i = 1; i <= userActionsCount; i++)
-            {
-                string theString = StringEnum.GetStringValue((UserActionsList)i);
-                bool superUserOnly = theString.Contains("SuperUser");
-                UserAction existingUserAction = RaterooDB.GetTable<UserAction>().SingleOrDefault(ua => ua.UserActionID == i);
-                if (existingUserAction != null)
-                {
-                    if (existingUserAction.Text != theString || existingUserAction.SuperUser != superUserOnly)
-                        throw new Exception("To replace a useraction with new useraction with different text, must first rebuild database.");
-                }
-                else
-                {
-                    int userActionID = Supporter.AddUserAction(i, theString, superUserOnly);
-                    SetStatusOfObjectInitialBuild(userActionID, TypeOfObject.UsersActions, StatusOfObject.Active);
-                }
-            }
-        }
+        
 
         public void CreateStandardStuff()
         {
             Supporter.AddDatabaseStatus();
             CreateEstablishedUsers();
             CreateCssTemplates();
-            CreateUserActions();
         }
 
 
