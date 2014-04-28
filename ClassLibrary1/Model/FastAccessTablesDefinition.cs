@@ -329,7 +329,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 #pragma warning restore 0649
         }
 
-        internal class FastTextRowsInfo
+        internal class FastAccessRowsInfo
         {
 #pragma warning disable 0649
             public int ID;
@@ -431,13 +431,13 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         }
 
-        internal List<FastTextRowsInfo> storedRows;
+        internal List<FastAccessRowsInfo> storedRows;
 
         internal void StoreRowsInfo(IEnumerable<TblRow> tblRows, bool omitRatings = false, bool omitFields = false)
         {
             if (omitRatings && omitFields)
             {
-                storedRows = tblRows.Select(x => new FastTextRowsInfo
+                storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name,199),
@@ -451,7 +451,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
             else if (!omitRatings && !omitFields)
             {
-                storedRows = tblRows.Select(x => new FastTextRowsInfo
+                storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name, 199),
@@ -517,7 +517,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
             else if (omitFields)
             {
-                storedRows = tblRows.Select(x => new FastTextRowsInfo
+                storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name,199),
@@ -546,7 +546,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
             else if (omitRatings)
             {
-                storedRows = tblRows.Select(x => new FastTextRowsInfo
+                storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name,199),
@@ -645,11 +645,11 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         public void AdjustRowCountForAddedRows(Tbl theTbl, List<TblColumn> tblColumns)
         {
             foreach (TblColumn tblColumn in tblColumns)
-                foreach (FastTextRowsInfo storedRow in storedRows)
+                foreach (FastAccessRowsInfo storedRow in storedRows)
                     AdjustRowCountForAddedRow(theTbl, storedRow, tblColumn);
         }
 
-        private void AdjustRowCountForAddedRow(Tbl tbl, FastTextRowsInfo ftri, TblColumn col)
+        private void AdjustRowCountForAddedRow(Tbl tbl, FastAccessRowsInfo ftri, TblColumn col)
         {
             FastRatingsInfo match = ftri.Ratings.SingleOrDefault(x => x.ColumnID == col.TblColumnID);
             bool isNull = (match.LastTrustedValue == null);

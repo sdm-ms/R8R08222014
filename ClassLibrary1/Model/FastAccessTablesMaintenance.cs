@@ -329,15 +329,5 @@ namespace ClassLibrary1.Model
             return !noMoreWork;
         }
 
-        public static void PlanDropTbl(IRaterooDataContext iDataContext, Tbl theTbl)
-        {
-            // DEBUG -- we must implement a substitute for this
-        }
-
-        public static void PlanDropTbls(IRaterooDataContext iDataContext, PointsManager pointsManager)
-        {
-            // DEBUG -- we must implement a substitute for this
-        }
-
     }
 }

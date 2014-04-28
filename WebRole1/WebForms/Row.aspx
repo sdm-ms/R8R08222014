@@ -18,7 +18,7 @@
         id="Table1" runat="server">
         <tr>
             <td>
-                <uc:pmfieldsbox runat="server" id="FieldsBox" />
+                <uc:fieldsbox runat="server" id="FieldsBox" />
             </td>
         </tr>
         <tr>

@@ -644,7 +644,6 @@ namespace ClassLibrary1.Model
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
                             theTblColumn.Abbreviation = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
-                            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblColumn.TblTab.Tbl);
                             changeMade = true;
                         }
                         else if (theChange.ChangeSetting1 && theChange.ChangeSetting2)
@@ -654,7 +653,6 @@ namespace ClassLibrary1.Model
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
                             theTblColumn.Name = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
-                            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblColumn.TblTab.Tbl);
                             changeMade = true;
                         }
                         else if (!theChange.ChangeSetting1 && !theChange.ChangeSetting2)
@@ -662,7 +660,6 @@ namespace ClassLibrary1.Model
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
                             theTblColumn.Explanation = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
-                            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblColumn.TblTab.Tbl);
                             changeMade = true;
                         }
 
@@ -670,7 +667,6 @@ namespace ClassLibrary1.Model
                         {
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(cd => cd.TblColumnID == theChange.ExistingObject);
                             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
-                            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblColumn.TblTab.Tbl);
                             bool useAsFilter = false, sortable = false, defaultSortOrderAscending = false;
                             int theNewValue = (int)theChange.NewValueInteger;
                             if (theNewValue >= 4)
@@ -697,7 +693,6 @@ namespace ClassLibrary1.Model
                         ChangeTblTabDefaultSort((int)theChange.ExistingObject, theChange.NewValueInteger);
                         var theTblTab = DataContext.GetTable<TblTab>().Single(cg => cg.TblTabID == theChange.ExistingObject);
                         CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblTab.TblID);
-                        FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblTab.Tbl);
                         changeMade = true;
                         break;
                     case TypeOfObject.ChoiceInGroup:
@@ -728,7 +723,6 @@ namespace ClassLibrary1.Model
                                 theChoiceInGroup.Status = (Byte)StatusOfObject.Unavailable;
                         }
                         CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + theChoiceInGroup.ChoiceGroup.PointsManagerID);
-                        FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == theChoiceInGroup.ChoiceGroup.PointsManagerID));
                         changeMade = true;
                         break;
 
@@ -761,7 +755,6 @@ namespace ClassLibrary1.Model
                             Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject);
                             theTbl.TblTabWord = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theChange.ExistingObject);
-                            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTbl);
                             changeMade = true;
                         }
                         else if (theChange.NewValueText != "" && theChange.ChangeSetting1 == false && theChange.ChangeSetting2 == true)
@@ -778,7 +771,6 @@ namespace ClassLibrary1.Model
                                 theTbl.SuppStylesHeader = theStrings[0];
                                 theTbl.SuppStylesMain = theStrings[1];
                                 CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theChange.ExistingObject);
-                                FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTbl);
                             }
                             catch
                             {
@@ -848,14 +840,12 @@ namespace ClassLibrary1.Model
                                 changeMade = true;
                             }
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + theFieldDefinition.Tbl.PointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == theFieldDefinition.Tbl.PointsManagerID));
                         }
                         else if (theChange.ChangeSetting2)
                         {
                             FieldDefinition theFieldDefinition = DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == theChange.ExistingObject);
                             var thePointsManagerID = theFieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + thePointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == thePointsManagerID));
                             if (theChange.NewValueText == "DisplayInTableSetting")
                             {
                                 DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (int)theChange.ExistingObject).DisplayInTableSettings = (int)theChange.NewValueInteger;
@@ -910,8 +900,6 @@ namespace ClassLibrary1.Model
                             TblTab theTab = DataContext.GetTable<TblColumn>().Single(a => a.TblColumnID == theChange.ExistingObject).TblTab;
                             int TblID = theTab.TblID;
                             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + TblID);
-                            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTab.Tbl);
-
                         }
                         break;
                     case TypeOfObject.TblTab:
@@ -919,7 +907,6 @@ namespace ClassLibrary1.Model
                             TblTab theTab = DataContext.GetTable<TblColumn>().Single(a => a.TblColumnID == theChange.ExistingObject).TblTab;
                             int TblID = theTab.TblID;
                             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + TblID);
-                            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTab.Tbl);
                         }
                         break;
                     case TypeOfObject.ChoiceField:
@@ -932,7 +919,6 @@ namespace ClassLibrary1.Model
                         {
                             int pointsManagerID = DataContext.GetTable<ChoiceGroup>().Single(a => a.ChoiceGroupID== theChange.ExistingObject).PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == pointsManagerID));
                         }
                         break;
 
@@ -940,7 +926,6 @@ namespace ClassLibrary1.Model
                         {
                             int pointsManagerID = DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(a => a.ChoiceGroupFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == pointsManagerID));
                         }
                         break;
                     case TypeOfObject.ChoiceInField:
@@ -978,7 +963,6 @@ namespace ClassLibrary1.Model
                         {
                             int pointsManagerID = DataContext.GetTable<DateTimeFieldDefinition>().Single(a => a.DateTimeFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == pointsManagerID));
                         }
                         break;
                     case TypeOfObject.Domain:
@@ -1003,7 +987,6 @@ namespace ClassLibrary1.Model
                         {
                             int pointsManagerID = DataContext.GetTable<FieldDefinition>().Single(a => a.FieldDefinitionID == theChange.ExistingObject).Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == pointsManagerID));
                         }
                         break;
                     case TypeOfObject.NumberField:
@@ -1016,7 +999,6 @@ namespace ClassLibrary1.Model
                         {
                             int pointsManagerID = DataContext.GetTable<NumberFieldDefinition>().Single(a => a.NumberFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == pointsManagerID));
                         }
                         break;
                     case TypeOfObject.TextField:
@@ -1029,7 +1011,6 @@ namespace ClassLibrary1.Model
                         {
                             int pointsManagerID = DataContext.GetTable<TextFieldDefinition>().Single(a => a.TextFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-                            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(f => f.PointsManagerID == pointsManagerID));
                         }
                         break;
                     case TypeOfObject.PointsManager:

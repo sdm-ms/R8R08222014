@@ -112,7 +112,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TblColumn>().InsertOnSubmit(theTblColumn);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + DataContext.GetTable<TblTab>().Single(f => f.TblTabID == TblTabID).TblID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<TblTab>().Single(f => f.TblTabID == TblTabID).Tbl);
             return theTblColumn.TblColumnID;
         }
 
@@ -134,7 +133,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TblColumnFormatting>().InsertOnSubmit(theTblColumnFormatting);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + DataContext.GetTable<TblColumn>().Single(f => f.TblColumnID == TblColumnID).TblTab.TblID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<TblColumn>().Single(f => f.TblColumnID == TblColumnID).TblTab.Tbl);
             return theTblColumnFormatting.TblColumnFormattingID;
         }
 
@@ -158,7 +156,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TblTab>().InsertOnSubmit(theTblTab);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + TblID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblTab.Tbl);
             return theTblTab.TblTabID;
         }
 
@@ -291,7 +288,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<ChoiceGroupFieldDefinition>().InsertOnSubmit(theChoiceGroupFieldDefinition);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theChoiceGroupFieldDefinition.ChoiceGroupFieldDefinitionID;
         }
 
@@ -342,7 +338,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<ChoiceGroup>().InsertOnSubmit(theChoiceGroup);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
-            FastAccessTablesMaintenance.PlanDropTbls(DataContext, DataContext.GetTable<PointsManager>().Single(p => p.PointsManagerID == pointsManagerID));
             return theChoiceGroup.ChoiceGroupID;
         }
 
@@ -512,7 +507,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<DateTimeFieldDefinition>().InsertOnSubmit(theDateTimeFieldDefinition);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theDateTimeFieldDefinition.DateTimeFieldDefinitionID;
         }
 
@@ -681,7 +675,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<FieldDefinition>().InsertOnSubmit(theFieldDefinition);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<Tbl>().Single(f => f.TblID == TblID).PointsManagerID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<Tbl>().Single(f => f.TblID == TblID));
             return theFieldDefinition.FieldDefinitionID;
         }
 
@@ -1195,6 +1188,7 @@ namespace ClassLibrary1.Model
                 RatingEndingTimeVaries=ratingEndingTimeVaries,
                 RatingsCanBeAutocalculated = ratingsCanBeAutoCalculated,
                 LongTermPointsWeight = longTermPointsWeight,
+                MinimumDaysToTrackLongTerm = 365,
                 Creator = creator,
                 Status = (Byte)StatusOfObject.Active
             };
@@ -1441,7 +1435,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<NumberFieldDefinition>().InsertOnSubmit(theNumberFieldDefinition);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theNumberFieldDefinition.NumberFieldDefinitionID;
         }
 
@@ -2314,7 +2307,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TextFieldDefinition>().InsertOnSubmit(theTextFieldDefinition);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl.PointsManagerID);
-            FastAccessTablesMaintenance.PlanDropTbl(DataContext, DataContext.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).Tbl);
             return theTextFieldDefinition.TextFieldDefinitionID;
         }
 

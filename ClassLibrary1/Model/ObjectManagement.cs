@@ -990,14 +990,11 @@ namespace ClassLibrary1.Model
                     var theTblColumn = DataContext.GetTable<TblColumn>().Single(x=>x.TblColumnID==objectID);
                     theTblColumn.Name = theName;
                     CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
-
-                    FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblColumn.TblTab.Tbl);
                     break;
                 case TypeOfObject.TblTab:
                     var theTblTab = DataContext.GetTable<TblTab>().Single(x => x.TblTabID==objectID);
                     theTblTab.Name = theName;
                     CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblTab.TblID);
-                    FastAccessTablesMaintenance.PlanDropTbl(DataContext, theTblTab.Tbl);
                     break;
                 case TypeOfObject.ChoiceGroup:
                     var theChoiceGroup = DataContext.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID==objectID);
