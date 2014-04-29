@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.Misc;
 
 namespace ClassLibrary1.Model
 {
@@ -122,7 +123,7 @@ namespace ClassLibrary1.Model
             : base(RouteID.MainContent)
         {
             string[] remainderOfHierarchy;
-            HierarchyItem theHierarchyItem = HierarchyItems.GetHierarchyFromStrings(hierarchyString.Split('/').Select(x => Routing.UrlTextDecode(x)).ToArray(), out remainderOfHierarchy, true);
+            HierarchyItem theHierarchyItem = HierarchyItems.GetHierarchyFromStrings(hierarchyString.Split('/').Select(x => PrettyURLEncode.UrlTextDecode(x)).ToArray(), out remainderOfHierarchy, true);
             if (theHierarchyItem == null)
             {
                 isValid = false;
@@ -172,7 +173,7 @@ namespace ClassLibrary1.Model
                     pointsSettingsMode = true;
                     return;
                 }
-                entityString = Routing.UrlTextDecode(remainderOfHierarchy[0]);
+                entityString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[0]);
                 int entityID = 0;
                 if (entityString != null && entityString != "")
                 {
@@ -195,7 +196,7 @@ namespace ClassLibrary1.Model
                         editMode = true;
                         return;
                     }
-                    categoryString = Routing.UrlTextDecode(remainderOfHierarchy[1]);
+                    categoryString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[1]);
                     int TblColumnID = 0;
                     try
                     {
@@ -218,12 +219,12 @@ namespace ClassLibrary1.Model
             {
                 if (i != 0)
                     theHierarchyString += "/";
-                theHierarchyString += Routing.UrlTextEncode(theRoutingHierarchy[i].HierarchyItemName);
+                theHierarchyString += PrettyURLEncode.UrlTextEncode(theRoutingHierarchy[i].HierarchyItemName);
             }
             if (theTblRow != null)
-                theHierarchyString += "/" + Routing.UrlTextEncode(theTblRow.TblRowID.ToString());
+                theHierarchyString += "/" + PrettyURLEncode.UrlTextEncode(theTblRow.TblRowID.ToString());
             if (theTblColumn != null)
-                theHierarchyString += "/" + Routing.UrlTextEncode(theTblColumn.TblColumnID.ToString());
+                theHierarchyString += "/" + PrettyURLEncode.UrlTextEncode(theTblColumn.TblColumnID.ToString());
             if (addMode)
                 theHierarchyString += "/Add";
             if (commentsMode)
@@ -525,21 +526,21 @@ namespace ClassLibrary1.Model
                 return "ratings";
             string userIDString = userID.ToString();
             string theRoute = "ratingsWithUser";
-            parameters.Add("userID", UrlTextEncode(userIDString));
+            parameters.Add("userID", PrettyURLEncode.UrlTextEncode(userIDString));
             return theRoute;
         }
 
         private static string OutgoingGetRouteLoginRedirect(RoutingInfo theRedirectInfo, RouteValueDictionary parameters)
         {
             string theRoute = "loginWithRedirect";
-            parameters.Add("redirectURL", UrlTextEncode(((RoutingInfoLoginRedirect)theRedirectInfo).redirectURL));
+            parameters.Add("redirectURL", PrettyURLEncode.UrlTextEncode(((RoutingInfoLoginRedirect)theRedirectInfo).redirectURL));
             return theRoute;
         }
 
         private static string OutgoingGetRouteSearchResults(RoutingInfo theSearchResults, RouteValueDictionary parameters)
         {
             string theRoute = "searchResults";
-            parameters.Add("searchTerms", UrlTextEncode(((RoutingInfoSearchResults)theSearchResults).searchTerms));
+            parameters.Add("searchTerms", PrettyURLEncode.UrlTextEncode(((RoutingInfoSearchResults)theSearchResults).searchTerms));
             return theRoute;
         }
 
@@ -668,7 +669,7 @@ namespace ClassLibrary1.Model
             string redirectURL = theRouteData.Values["redirectURL"] as string;
             if (redirectURL == null)
                 return new RoutingInfoLoginRedirect(Outgoing(new RoutingInfo(RouteID.HomePage)));
-            redirectURL = UrlTextDecode(redirectURL);
+            redirectURL = PrettyURLEncode.UrlTextDecode(redirectURL);
             RoutingInfoLoginRedirect theRedirectInfo = new RoutingInfoLoginRedirect(redirectURL);
             return theRedirectInfo;
         }
@@ -678,77 +679,11 @@ namespace ClassLibrary1.Model
             string searchTerms = theRouteData.Values["searchTerms"] as string;
             if (searchTerms == null)
                 throw new Exception("No search terms specified.");
-            searchTerms = UrlTextDecode(searchTerms);
+            searchTerms = PrettyURLEncode.UrlTextDecode(searchTerms);
             RoutingInfoSearchResults theResults = new RoutingInfoSearchResults(searchTerms);
             return theResults;
         }
 
-        public static string UrlTextEncode(string theString)
-        {
-            SuperEncode(ref theString);
-            Prettify(ref theString);
-            theString = System.Web.HttpUtility.UrlEncode(theString);
-            SuperEncode(ref theString);
-            return theString;
-        }
-
-        public static string UrlTextDecode(string theString)
-        {
-            SuperDecode(ref theString);
-            theString = System.Web.HttpUtility.UrlDecode(theString);
-            Prettify(ref theString);
-            SuperDecode(ref theString);
-            return theString;
-        }
-
-        private static void SuperEncode(ref string theString)
-        {
-            /* some characters will return bad requests even if urlencoded, */
-            /* when they are not part of a query string. */
-            /* for most complete results, do this before and after urlencoding, */
-            /* so that % character won't end up in URI. */
-            if (theString == null)
-                return;
-            theString = theString.Replace("!", "!!");
-            theString = theString.Replace(":", "!C");
-            theString = theString.Replace("'", "!A");
-            theString = theString.Replace("\"", "!Q");
-            theString = theString.Replace("<", "!L");
-            theString = theString.Replace(">", "!G");
-            theString = theString.Replace("&", "!N");
-            theString = theString.Replace("%", "!P");
-            theString = theString.Replace("*", "!S");
-            theString = theString.Replace("\\", "!B");
-        }
-
-        private static void SuperDecode(ref string theString)
-        {
-            /* some characters will return bad requests even if urlencoded. */
-            if (theString == null)
-                return;
-            theString = theString.Replace("!!", "%%%%");
-            theString = theString.Replace("!C", ":");
-            theString = theString.Replace("!A", "'");
-            theString = theString.Replace("!Q", "\"");
-            theString = theString.Replace("!L", "<");
-            theString = theString.Replace("!G", ">");
-            theString = theString.Replace("!N", "&");
-            theString = theString.Replace("!P", "%");
-            theString = theString.Replace("!S", "*");
-            theString = theString.Replace("!B", "\\");
-            theString = theString.Replace("%%%%", "!");
-        }
-
-
-        private static void Prettify(ref string theString)
-        {
-            /* swap space and underscore to make it prettier when urlencoded */
-            if (theString == null)
-                return;
-            theString = theString.Replace(" ", "%%%%");
-            theString = theString.Replace("_", " ");
-            theString = theString.Replace("%%%%", "_");
-        }
 
         public class TempHttpContext : HttpContextBase
         {

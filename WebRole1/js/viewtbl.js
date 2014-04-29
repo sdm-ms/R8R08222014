@@ -1837,7 +1837,7 @@ function viewtbl() {
         updateTableSort(instruction);
     }
 
-    /* updates the table to the specified category descriptor and sort direction */
+    /* updates the table to sort by the specified table column and sort direction */
 
     function updateTableSortedByCategory(TblColumnToSort, sortAsc) {
         var instruction;
