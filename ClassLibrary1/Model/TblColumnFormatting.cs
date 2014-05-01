@@ -120,11 +120,11 @@ namespace ClassLibrary1.Model
 
         public static bool UseVerticalColumns(RaterooDataAccess dataAccess, int TblTabID, int? limitToThisTblColumnID, bool isTblRowPage)
         {
-            var theDescriptorNames = dataAccess.RaterooDB.GetTable<TblColumn>()
+            var tblColumnNames = dataAccess.RaterooDB.GetTable<TblColumn>()
                .Where(x => x.TblTabID == TblTabID
                        && (limitToThisTblColumnID == null || x.TblColumnID == limitToThisTblColumnID)
                        && x.Status == (byte)StatusOfObject.Active).Select(x => ((x.Abbreviation == "") ? x.Name : x.Abbreviation).Trim()).ToList();
-            int approxTotalPixels = theDescriptorNames.Count * 20 + theDescriptorNames.Sum(x => x.Length) * 8;
+            int approxTotalPixels = tblColumnNames.Count * 20 + tblColumnNames.Sum(x => x.Length) * 8;
             return approxTotalPixels > (isTblRowPage ? 500 : 300);
         }
 

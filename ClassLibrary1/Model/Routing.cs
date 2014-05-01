@@ -356,7 +356,8 @@ namespace ClassLibrary1.Model
                     RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
                     theDataContext = theDataAccessModule.DataContext;
                 }
-                theRoutingInfo = new RoutingInfoMainContent(theDataContext, hierarchyString ?? ""); AddRoutingInfoToCache(cacheKey, theRoutingInfo);
+                theRoutingInfo = new RoutingInfoMainContent(theDataContext, hierarchyString ?? "");             
+                AddRoutingInfoToCache(cacheKey, theRoutingInfo);
             }
             return theRoutingInfo;
         }
