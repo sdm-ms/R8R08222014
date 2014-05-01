@@ -38,7 +38,7 @@ namespace ClassLibrary1.Model
             bool hasAddress = addressFieldDefinitions.Any();
             if (hasAddress)
             {
-                int fieldDefinitionID = addressFieldDefinitions.First().FieldDefinitionID;
+                int fieldDefinitionID = addressFieldDefinitions.OrderBy(x => x.FieldNum).First().FieldDefinitionID;
                 theSortMenu.Add(new SortMenuItem { M = "Distance From You", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(-1, -1, fieldDefinitionID, true)) });
                 theSortMenu.Add(new SortMenuItem { M = "Distance From Center of Map", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(-2, -2, fieldDefinitionID, true)) });
                 //theSortMenu.Add(new SortMenuItem { M = "Distance From Other Location...", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(0, 0, true)) });
