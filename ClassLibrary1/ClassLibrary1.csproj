@@ -226,6 +226,7 @@
     <Compile Include="Model\Email.cs" />
     <Compile Include="Model\ExecutingChanges.cs" />
     <Compile Include="Model\FastAccessRowUpdateInfo.cs" />
+    <Compile Include="Model\FastAccessRowUpdatePartialClasses.cs" />
     <Compile Include="Model\FastAccessTablesDefinition.cs" />
     <Compile Include="Model\FastAccessTablesMaintenance.cs" />
     <Compile Include="Model\FastAccessTablesQuery.cs" />

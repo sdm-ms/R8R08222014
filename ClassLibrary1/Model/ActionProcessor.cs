@@ -719,7 +719,7 @@ namespace ClassLibrary1.Model
                 {
                     FieldsDisplayCreator theFieldsDisplayCreator = new FieldsDisplayCreator();
                     theFieldsDisplayCreator.SetFieldDisplayHtml(theSet.theTblRow);      
-                    FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, theSet.theTbl, theSet.theTblRow, theSet.defaultTblVals != null, true); 
+                    FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, theSet.theTbl, theSet.theTblRow, theSet.defaultTblVals != null, true); 
                 }
                 else
                 {

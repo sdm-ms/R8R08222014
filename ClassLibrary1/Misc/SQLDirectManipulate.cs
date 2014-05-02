@@ -103,20 +103,202 @@ namespace ClassLibrary1.Misc
         string GetConnectionString();
     }
 
+    [Serializable]
     public class SQLParameterInfo
     {
-        public string paramname { get; set; }
+        public string fieldname { get; set; }
+        public int? rownum { get; set; }
+        public string tablename { get; set; }
+        public string paramname { get { if (rownum == null) return fieldname; if (tablename == null) return fieldname + rownum.ToString(); return fieldname + rownum.ToString() + "X" + tablename; } }
         public object value { get; set; }
         public SqlDbType dbtype { get; set; }
     }
 
-    public class SQLUpdateInfo
+    public static class SQLParameterInfoDistinct
     {
-        public string tableName;
-        public string nameOfColumnToMatch;
-        public string valueOfColumnToMatch;
-        public string nameOfColumnToSet;
-        public string valueOfColumnToSet;
+        public static void EliminateOverridenUpdates(this List<SQLParameterInfo> updates)
+        {
+            updates.Reverse(); // we reverse so that the last one will be included, but earlier ones won't
+            Dictionary<string, bool> itemsProcessed = new Dictionary<string, bool>();
+            List<int> itemsToRemove = new List<int>();
+            int totalUpdates = updates.Count();
+            for (int itemNum = 0; itemNum < totalUpdates; itemNum++)
+            {
+                SQLParameterInfo update = updates[itemNum];
+                if (!itemsProcessed.ContainsKey(update.paramname))
+                    itemsProcessed.Add(update.paramname, true);
+                else
+                    itemsToRemove.Add(itemNum);
+            }
+            updates.Reverse(); // reverse again
+            // because we've reversed again, the itemsToRemove refer to items near the back of the list first, so we remove those first (thus not affecting the formula for removing items earlier in the list). The index of each item has to be reversed.
+            foreach (int itemToRemove in itemsToRemove)
+                updates.RemoveAt(totalUpdates - 1 - itemToRemove); 
+        }
+    }
+
+    // For geography objects, place a SQLGeographyInfo in value of SQLParameterInfo
+    [Serializable]
+    public class SQLGeographyInfo
+    {
+        public decimal Longitude { get; set; }
+        public decimal Latitude { get; set; }
+    }
+
+    public class SQLUpdateRowInfo
+    {
+        public List<SQLParameterInfo> Parameters { get; set; }
+        int Rownum;
+        string Tablename;
+
+        public SQLUpdateRowInfo(int rownum, string tablename)
+        {
+            Rownum = rownum;
+            Tablename = tablename;
+            Parameters = new List<SQLParameterInfo>();
+        }
+
+        public void Add(string varname, object value, SqlDbType dbtype)
+        {
+            Parameters.Add(new SQLParameterInfo { fieldname = varname, rownum = Rownum, tablename = Tablename, value = value, dbtype = dbtype });
+        }
+
+        public void GetUpdateCommand(string tableName, out string updateCommand, out List<SQLParameterInfo> parameters)
+        {
+            // step 1: formulate the SQL statement
+            if (!Parameters.Any())
+            {
+                updateCommand = null;
+                parameters = null;
+                return;
+            }
+
+            Parameters.EliminateOverridenUpdates();
+
+            List<string> updateStringComponents = new List<string>();
+
+            updateStringComponents.AddRange(new string[] { "UPDATE ", tableName, " ", "SET " });
+            bool isFirst = true;
+            string idparamname = "";
+            foreach (var variable in Parameters)
+            {
+                if (variable.fieldname != "ID")
+                {
+                    if (!isFirst)
+                        updateStringComponents.Add(", ");
+                    isFirst = false;
+                    updateStringComponents.Add(variable.fieldname);
+                    if (variable.value == null)
+                        updateStringComponents.Add(" = NULL");
+                    else
+                    {
+                        if (variable.value is SQLGeographyInfo)
+                        {
+                            SQLGeographyInfo fastUpdateGeo = ((SQLGeographyInfo)variable.value);
+                            // we must construct the two variable parameter names that we will get once we convert this (see below)
+                            updateStringComponents.AddRange(new string[] { " = geography::STPointFromText('POINT(' + CAST(@", variable.fieldname, "LONG", variable.rownum.ToString(), " AS VARCHAR(20)) + ' ' + CAST(@", variable.fieldname, "LAT", variable.rownum.ToString(), " AS VARCHAR(20)) + ')', 4326)" });
+                        }
+                        else
+                        {
+                            updateStringComponents.AddRange(new string[] { " = @", variable.paramname });
+                        }
+                    }
+                }
+                else
+                    idparamname = variable.paramname;
+            }
+            updateStringComponents.AddRange(new string[] { " WHERE ID = @", idparamname, "; " });
+            StringBuilder sb = new StringBuilder();
+            foreach (string component in updateStringComponents)
+                sb.Append(component);
+            updateCommand = sb.ToString();
+
+            foreach (var p in Parameters)
+                if (p.value == null)
+                    p.value = DBNull.Value;
+
+            List<SQLParameterInfo> sqlParameters = Parameters.OrderBy(x => x.fieldname == "ID").ToList(); // put ID field last
+            parameters = ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(sqlParameters);
+        }
+
+        private static List<SQLParameterInfo> ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(List<SQLParameterInfo> parameters)
+        {
+            if (parameters.Any(x => x.value is SQLGeographyInfo))
+            {
+                List<SQLParameterInfo> parameters2 = new List<SQLParameterInfo>();
+                foreach (SQLParameterInfo p in parameters)
+                {
+                    if (p.value is SQLGeographyInfo)
+                    {
+                        SQLGeographyInfo fug = ((SQLGeographyInfo)(p.value));
+                        SQLParameterInfo longParam = new SQLParameterInfo() { dbtype = SqlDbType.Decimal, value = fug.Longitude, fieldname = p.fieldname + "LONG", rownum = p.rownum };
+                        parameters2.Add(longParam);
+                        SQLParameterInfo latParam = new SQLParameterInfo() { dbtype = SqlDbType.Decimal, value = fug.Latitude, fieldname = p.fieldname + "LAT", rownum = p.rownum };
+                        parameters2.Add(latParam);
+                    }
+                    else
+                        parameters2.Add(p);
+                }
+                return parameters2;
+            }
+            else
+                return parameters;
+        }
+    }
+
+    public class SQLUpdateRowsInfo
+    {
+        public string TableName { get; set; }
+        public List<SQLUpdateRowInfo> Rows = new List<SQLUpdateRowInfo>();
+
+        public void DoUpdate(ISQLDirectConnectionManager dta)
+        {
+            StringBuilder sb;
+            List<SQLParameterInfo> parameters;
+            GetUpdateCommands(out sb, out parameters);
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), parameters);
+        }
+
+        public void GetUpdateCommands(out StringBuilder sb, out List<SQLParameterInfo> parameters)
+        {
+            sb = new StringBuilder();
+            parameters = new List<SQLParameterInfo>();
+            foreach (var row in Rows)
+            {
+                string updateCommand;
+                List<SQLParameterInfo> partialParameters;
+                row.GetUpdateCommand(TableName, out updateCommand, out partialParameters);
+                sb.Append(updateCommand);
+                parameters.AddRange(partialParameters);
+            }
+        }
+    }
+
+    public class SQLUpdateTablesInfo
+    {
+        public List<SQLUpdateRowsInfo> UpdatesForSingleTable = new List<SQLUpdateRowsInfo>();
+
+        public void DoUpdate(ISQLDirectConnectionManager dta)
+        {
+            StringBuilder sb;
+            List<SQLParameterInfo> parameters;
+            GetUpdateCommands(out sb, out parameters);
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), parameters);
+        }
+
+        public void GetUpdateCommands(out StringBuilder sb, out List<SQLParameterInfo> parameters)
+        {
+            sb = new StringBuilder();
+            parameters = new List<SQLParameterInfo>();
+            foreach (var table in UpdatesForSingleTable)
+            {
+                StringBuilder sb2;
+                List<SQLParameterInfo> partialParameters;
+                table.GetUpdateCommands(out sb2, out partialParameters);
+                sb.Append(sb2);
+                parameters.AddRange(partialParameters);
+            }
+        }
     }
 
     public static class SQLDirectManipulate
@@ -129,18 +311,21 @@ namespace ClassLibrary1.Misc
                 // Create the Command and Parameter objects.
                 SqlCommand sqlCommand = new SqlCommand(command, connection);
                 if (parameters != null)
-                {
-                    foreach (SQLParameterInfo p in parameters)
-                    {
-                        string fullname = "@" + p.paramname;
-                        sqlCommand.Parameters.Add(fullname, p.dbtype);
-                        sqlCommand.Parameters[fullname].Value = p.value;
-                        if (p.dbtype == SqlDbType.Udt)
-                            sqlCommand.Parameters[fullname].UdtTypeName = "Geography";
-                    }
-                }
+                    AddSQLParametersToSqlCommand(parameters, sqlCommand);
                 sqlCommand.Connection.Open();
                 sqlCommand.ExecuteNonQuery();
+            }
+        }
+
+        private static void AddSQLParametersToSqlCommand(List<SQLParameterInfo> parameters, SqlCommand sqlCommand)
+        {
+            foreach (SQLParameterInfo p in parameters)
+            {
+                string fullname = "@" + p.paramname;
+                sqlCommand.Parameters.Add(fullname, p.dbtype);
+                sqlCommand.Parameters[fullname].Value = p.value;
+                if (p.dbtype == SqlDbType.Udt)
+                    sqlCommand.Parameters[fullname].UdtTypeName = "Geography";
             }
         }
 
@@ -155,7 +340,7 @@ namespace ClassLibrary1.Misc
                 {
                     foreach (SQLParameterInfo p in parameters)
                     {
-                        string fullname = "@" + p.paramname;
+                        string fullname = "@" + p.fieldname;
                         sqlCommand.Parameters.Add(fullname, p.dbtype);
                         sqlCommand.Parameters[fullname].Value = p.value;
                     }
@@ -191,65 +376,6 @@ namespace ClassLibrary1.Misc
         }
 
 
-        private static string GetUpdateCommand(string tableName, string nameOfColumnToMatch, string valueOfColumnToMatch, List<string> namesOfColumnsToSet, List<string> valuesOfColumnsToSet)
-        {
-            int columnsCount = namesOfColumnsToSet.Count();
-            if (columnsCount != valuesOfColumnsToSet.Count())
-                throw new Exception("Number of columns to set must equal number of column values to set.");
-            StringBuilder sb = new StringBuilder();
-            sb.Append(" UPDATE ");
-            sb.Append(tableName);
-            sb.Append(" SET ");
-            bool isFirstEntry = true;
-            for (int i = columnsCount - 1; i >= 0; i--) // go backward, so that last setting of column will control
-            {
-                bool alreadySet = false;
-                for (int j = columnsCount - 1; j > i; j--)
-                { // we can't set the column twice, so skip earlier settings of the columns
-                    if (namesOfColumnsToSet[j] == namesOfColumnsToSet[i])
-                    {
-                        alreadySet = true;
-                        break;
-                    }
-                }
-                if (alreadySet)
-                    continue;
-                if (!isFirstEntry)
-                    sb.Append(", "); // we add commas before the entry for all but the first (easier than tracking whether it's the last entry and adding comma afterward, because of the alreadySet logic).
-                else
-                    isFirstEntry = false;
-                sb.Append(namesOfColumnsToSet[i]);
-                sb.Append("=");
-                sb.Append(valuesOfColumnsToSet[i]);
-            }
-            sb.Append(" WHERE ");
-            sb.Append(nameOfColumnToMatch);
-            sb.Append("=");
-            sb.Append(valueOfColumnToMatch);
-            sb.Append(";");
-            return sb.ToString();
-        }
-
-        private static string GetUpdateCommands(List<SQLUpdateInfo> allUpdates)
-        {
-            StringBuilder sb = new StringBuilder();
-            var theUpdates = allUpdates.GroupBy(x => x.tableName + "/" + x.nameOfColumnToMatch + "/" + x.valueOfColumnToMatch);
-            foreach (var updateGroup in theUpdates)
-            {
-                List<SQLUpdateInfo> allInGroup = updateGroup.ToList();
-                SQLUpdateInfo firstInGroup = allInGroup.First();
-                sb.Append(GetUpdateCommand(firstInGroup.tableName, firstInGroup.nameOfColumnToMatch, firstInGroup.valueOfColumnToMatch, allInGroup.Select(x => x.nameOfColumnToSet).ToList(), allInGroup.Select(x => x.valueOfColumnToSet).ToList()));
-            }
-            return sb.ToString();
-        }
-
-        public static void ExecuteSpecifiedUpdates(ISQLDirectConnectionManager database, List<SQLUpdateInfo> allUpdates)
-        {
-            if (allUpdates == null || !allUpdates.Any())
-                return;
-            string updateCommands = GetUpdateCommands(allUpdates);
-            ExecuteSQLNonQuery(database, updateCommands);
-        }
 
         public static void AddIndicesForSpecifiedColumns(ISQLDirectConnectionManager database, SQLTableDescription table)
         {

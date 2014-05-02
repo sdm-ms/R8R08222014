@@ -858,7 +858,7 @@ namespace ClassLibrary1.Model
                 if (topRatingGroup != null)
                 {
                     theRatingGroup.TblRow.CountNonnullEntries++;
-                    var facnnei = new FastAccessCountNonNullEntriesInfo() { CountNonNullEntries = theRatingGroup.TblRow.CountNonnullEntries };
+                    var facnnei = new FastAccessCountNonNullEntriesUpdateInfo() { CountNonNullEntries = theRatingGroup.TblRow.CountNonnullEntries };
                     facnnei.AddToTblRow(ratingGroup.TblRow);
                 }
                 theRatingGroup.CurrentValueOfFirstRating = null; //  defaultUserRating;
@@ -1306,7 +1306,7 @@ namespace ClassLibrary1.Model
                     topRatingGroup.TblRow.ElevateOnMostNeedsRating = false;
                     topRatingGroup.TblRow.Tbl.PointsManager.HighStakesNoviceNumActive--;
                 }
-                FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, topRatingGroup.TblRow.Tbl, topRatingGroup.TblRow, false, false);
+                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, topRatingGroup.TblRow.Tbl, topRatingGroup.TblRow, false, false);
             }
             topRatingGroup.HighStakesKnown = false; /* may be changed later by background process */
 
@@ -1830,7 +1830,7 @@ namespace ClassLibrary1.Model
             CheckChangeGroupsLinkedToRating(rating); // See if there are any changes groups linked to this rating
 
             if (!simpleRatingType) // for multiple choice ratings, we can't use the simplified updating procedure
-                FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, tbl, tblRow, true, false);
+                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, tbl, tblRow, true, false);
 
             //Trace.TraceInformation("Added prediction " + theUserRating.UserRatingID + " at " + theUserRating.UserRatingGroup.WhenMade);
             return theUserRating;

@@ -298,6 +298,7 @@ namespace ClassLibrary1.Model
         public static int[] singleItem = { (int)RatingGroupTypes.probabilitySingleOutcome, (int)RatingGroupTypes.singleNumber, (int)RatingGroupTypes.singleDate };
         public static int[] singleItemNotDate = { (int)RatingGroupTypes.probabilitySingleOutcome, (int)RatingGroupTypes.singleNumber };
         public static int[] notSingleItem = { (int)RatingGroupTypes.hierarchyNumbersBelow, (int)RatingGroupTypes.probabilityHierarchyBelow, (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy, (int)RatingGroupTypes.hierarchyNumbersTop, (int)RatingGroupTypes.hierarchyNumbersBelow, (int) RatingGroupTypes.probabilityMultipleOutcomes };
+        public static int[] lowerHierarchy = { (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy, (int)RatingGroupTypes.probabilityHierarchyBelow, (int)RatingGroupTypes.hierarchyNumbersBelow };
     }
 
     /// <summary>

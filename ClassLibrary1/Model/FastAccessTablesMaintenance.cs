@@ -172,7 +172,7 @@ namespace ClassLibrary1.Model
 
         static bool useAzureQueuesToDesignateRowsToUpdate = false; // for now, we are disabling the azure approach, because querying based on tbl row ids identified by number seems to tax sql server
 
-        public static void IdentifyRowRequiringUpdate(IRaterooDataContext iDataContext, Tbl theTbl, TblRow theTblRow, bool updateRatings, bool updateFields)
+        public static void IdentifyRowRequiringBulkUpdate(IRaterooDataContext iDataContext, Tbl theTbl, TblRow theTblRow, bool updateRatings, bool updateFields)
         {
             if (useAzureQueuesToDesignateRowsToUpdate)
             {
@@ -304,28 +304,25 @@ namespace ClassLibrary1.Model
             if (rowsCount == numAtOnce)
                 noMoreWork = false;
 
-            List<SQLUpdateInfo> updateInfoList = new List<SQLUpdateInfo>();
-            foreach (TblRow tblRow in theRows)
-            {
-                List<FastAccessRowUpdateInfo> toUpdateList = FastAccessRowUpdateInfo.GetFastAccessRowUpdateInfoList(tblRow);
-                foreach (FastAccessRowUpdateInfo toUpdate in toUpdateList)
-                {
-                    List<Tuple<string, string>> columnUpdates = toUpdate.GetColumnNamesAndNewValues();
-                    foreach (var columnUpdate in columnUpdates)
-                        updateInfoList.Add(new SQLUpdateInfo()
-                        {
-                            tableName = "V" + tblRow.TblID,
-                            nameOfColumnToSet = columnUpdate.Item1,
-                            valueOfColumnToSet = columnUpdate.Item2,
-                            nameOfColumnToMatch = "ID",
-                            valueOfColumnToMatch = tblRow.TblRowID.ToString(),
+            var groupedRows = theRows.GroupBy(x => x.TblID);
 
-                        });
+            SQLUpdateTablesInfo allTables = new SQLUpdateTablesInfo();
+
+            foreach (var group in groupedRows)
+            {
+                string tableName = "V" + group.Key.ToString();
+                SQLUpdateRowsInfo sqlUpdateRowsInfo = new SQLUpdateRowsInfo() { TableName = tableName };
+                foreach (TblRow tblRow in theRows)
+                {
+                    List<SQLParameterInfo> toUpdateList = FastAccessRowUpdateInfo.GetFastAccessRowUpdateInfoList(tblRow);
+                    SQLUpdateRowInfo singleRow = new SQLUpdateRowInfo(tblRow.TblRowID, tableName) { Parameters = toUpdateList };
+                    sqlUpdateRowsInfo.Rows.Add(singleRow);
+                    tblRow.FastAccessUpdateSpecified = false;
+                    tblRow.FastAccessUpdated = null;
                 }
-                tblRow.FastAccessUpdateSpecified = false;
-                tblRow.FastAccessUpdated = null;
+                allTables.UpdatesForSingleTable.Add(sqlUpdateRowsInfo);
             }
-            SQLDirectManipulate.ExecuteSpecifiedUpdates(dta, updateInfoList);
+            allTables.DoUpdate(dta);
             return !noMoreWork;
         }
 

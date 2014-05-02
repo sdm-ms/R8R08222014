@@ -709,127 +709,10 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             
         }
 
-
-        internal class FastUpdateGeography
-        {
-            public decimal Longitude { get; set; }
-            public decimal Latitude { get; set; }
-        }
-
-        internal class FastUpdateRowInfo
-        {
-            public List<SQLParameterInfo> Parameters { get; set; }
-
-            public FastUpdateRowInfo()
-            {
-                Parameters = new List<SQLParameterInfo>();
-            }
-
-            public void Add(string varname, object value, SqlDbType dbtype)
-            {
-                Parameters.Add(new SQLParameterInfo { paramname = varname, value = value, dbtype = dbtype });
-            }
-
-            public void DoUpdate(DenormalizedTableAccess dta, string tableName)
-            {
-                // step 1: formulate the SQL statement
-                if (!Parameters.Any())
-                    return;
-
-
-                string updateString =
-                  "UPDATE " + tableName + " " + "SET ";
-                bool isFirst = true;
-                int varNum = 0;
-                int geoNum = 0;
-                foreach (var variable in Parameters)
-                {
-                    if (variable.paramname != "ID")
-                    {
-                        if (!isFirst)
-                            updateString += ", ";
-                        isFirst = false;
-                        //updateString += variable.varname + " = @" + variable.varname;
-                        updateString += variable.paramname;
-                        if (variable.value == null)
-                            updateString += " = NULL";
-                        else
-                        {
-                            if (variable.value is FastUpdateGeography)
-                            {
-                                FastUpdateGeography fastUpdateGeo = ((FastUpdateGeography)variable.value);
-                                int longVarNum = varNum;
-                                varNum++;
-                                int latVarNum = varNum;
-                                varNum++;
-                                updateString += " = geography::STPointFromText('POINT(' + CAST(@geo" + geoNum.ToString() + " AS VARCHAR(20)) + ' ' + CAST(@geo" + (geoNum + 1).ToString() + " AS VARCHAR(20)) + ')', 4326)";
-                                geoNum += 2;
-                            }
-                            else
-                            {
-                                updateString += " = @" + variable.paramname;
-                                varNum++;
-                            }
-                        }
-                    }
-                }
-                updateString += " WHERE ID = @ID";
-
-                foreach (var p in Parameters)
-                    if (p.value == null)
-                        p.value = DBNull.Value;
-
-                List<SQLParameterInfo> sqlParameters = Parameters.OrderBy(x => x.paramname == "ID").ToList(); // put ID field last
-                List<SQLParameterInfo> parameters2 = ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(sqlParameters);
-
-                // execute the command
-                SQLDirectManipulate.ExecuteSQLNonQuery(dta, updateString, parameters2);
-            }
-
-            private static List<SQLParameterInfo> ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(List<SQLParameterInfo> parameters)
-            {
-                int geoNum = 0;
-                if (parameters.Any(x => x.value is FastUpdateGeography))
-                {
-                    List<SQLParameterInfo> parameters2 = new List<SQLParameterInfo>();
-                    foreach (SQLParameterInfo p in parameters)
-                    {
-                        if (p.value is FastUpdateGeography)
-                        {
-                            FastUpdateGeography fug = ((FastUpdateGeography)(p.value));
-                            SQLParameterInfo longParam = new SQLParameterInfo() { dbtype = SqlDbType.Decimal, value = fug.Longitude, paramname = "geo" + geoNum.ToString() };
-                            geoNum++;
-                            parameters2.Add(longParam);
-                            SQLParameterInfo latParam = new SQLParameterInfo() { dbtype = SqlDbType.Decimal, value = fug.Latitude, paramname = "geo" + geoNum.ToString() };
-                            geoNum++;
-                            parameters2.Add(latParam);
-                        }
-                        else
-                            parameters2.Add(p);
-                    }
-                    return parameters2;
-                }
-                else
-                    return parameters;
-            }
-        }
-
-        internal class FastUpdateRowsInfo
-        {
-            public string TableName { get; set; }
-            public List<FastUpdateRowInfo> Rows {get; set;}
-
-            public void DoUpdate(DenormalizedTableAccess dta)
-            {
-                foreach (var row in Rows)
-                    row.DoUpdate(dta, TableName);
-            }
-        }
-
         public int UpdateRows(DenormalizedTableAccess dta, IQueryable<TblRow> tblRows, bool updateRatings = true, bool updateFields = true)
         {
             StoreRowsInfo(tblRows, !updateRatings, !updateFields);
-            FastUpdateRowsInfo allRows = GenerateFastUpdateRowsInfoForMainTable(updateRatings, updateFields);
+            SQLUpdateRowsInfo allRows = GenerateSQLUpdateRowsInfoForMainTable(updateRatings, updateFields);
             if (updateFields)
                 GenerateChangesForMCTables(dta);
             allRows.DoUpdate(dta);
@@ -855,7 +738,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         {
             string tableName = "dbo.VFMC" + fieldDefinitionID.ToString();
             string deleteString = "DELETE FROM " + tableName + " WHERE TRID = @trid ";
-            SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, paramname = "trid" } });
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, fieldname = "trid" } });
         }
 
         internal void AddChoicesToMCTable(DenormalizedTableAccess dta, int fieldDefinitionID, int tblRowID, List<int> choiceInGroupIDs)
@@ -864,16 +747,16 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             foreach (int choiceInGroupID in choiceInGroupIDs)
             {
                 string insertString = "INSERT INTO " + tableName + " (TRID, CHO) VALUES (@trid, @cigid) ";
-                SQLDirectManipulate.ExecuteSQLNonQuery(dta, insertString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, paramname = "trid" }, new SQLParameterInfo() { dbtype = SqlDbType.Int, value = choiceInGroupID, paramname = "cigid" } } );
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, insertString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, fieldname = "trid" }, new SQLParameterInfo() { dbtype = SqlDbType.Int, value = choiceInGroupID, fieldname = "cigid" } } );
             }
         }
 
-        internal FastUpdateRowsInfo GenerateFastUpdateRowsInfoForMainTable(bool updateRatings, bool updateFields)
+        internal SQLUpdateRowsInfo GenerateSQLUpdateRowsInfoForMainTable(bool updateRatings, bool updateFields)
         {
-            List<FastUpdateRowInfo> rows = new List<FastUpdateRowInfo>();
+            List<SQLUpdateRowInfo> rows = new List<SQLUpdateRowInfo>();
             foreach (var storedRow in storedRows)
             {
-                FastUpdateRowInfo rowInfo = new FastUpdateRowInfo();
+                SQLUpdateRowInfo rowInfo = new SQLUpdateRowInfo(storedRow.ID, "V" + TheTbl.TblID.ToString());
 
                 rowInfo.Add("ID", storedRow.ID, SqlDbType.Int);
                 rowInfo.Add("NME", storedRow.NME, SqlDbType.NVarChar);
@@ -888,15 +771,14 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     rowInfo.Add("RH", storedRow.RowHeading, SqlDbType.NVarChar);
                     foreach (var field in storedRow.AddressFields)
                     {
-                        rowInfo.Add("F" + field.FieldDefinitionID.ToString(), (field.Latitude == null || field.Longitude == null || (field.Longitude == 0 && field.Latitude == 0)) ? null : new FastUpdateGeography { Longitude = (decimal) field.Longitude, Latitude = (decimal) field.Latitude }, SqlDbType.Udt);
+                        rowInfo.Add("F" + field.FieldDefinitionID.ToString(), (field.Latitude == null || field.Longitude == null || (field.Longitude == 0 && field.Latitude == 0)) ? null : new SQLGeographyInfo { Longitude = (decimal) field.Longitude, Latitude = (decimal) field.Latitude }, SqlDbType.Udt);
                     }
                     foreach (var field in storedRow.ChoiceFields)
                     {
                         if (!field.MultipleChoices)
                         {
-                            rowInfo.Add("F" + field.FieldDefinitionID.ToString(), field.Choices.First().ChoiceInGroupID, SqlDbType.Int);
+                            rowInfo.Add("F" + field.FieldDefinitionID.ToString(), field.Choices.First().ChoiceInGroupID, SqlDbType.Int); // Just adding the first ChoiceInGroupID here, even if there are multiple rows
                         }
-                        //DEBUG -- check this
                     }
                     foreach (var field in storedRow.DateTimeFields)
                     {
@@ -928,7 +810,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
                 rows.Add(rowInfo);
             }
-            FastUpdateRowsInfo allRows = new FastUpdateRowsInfo { TableName = "dbo.V" + TheTbl.TblID.ToString(), Rows = rows };
+            SQLUpdateRowsInfo allRows = new SQLUpdateRowsInfo { TableName = "dbo.V" + TheTbl.TblID.ToString(), Rows = rows };
             return allRows;
         }
     }

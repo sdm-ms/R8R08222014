@@ -425,7 +425,7 @@ namespace ClassLibrary1.Model
                     TblRow theTblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID == objectID);
                     StatusOfObject originalStatus = (StatusOfObject)theTblRow.Status;
                     theTblRow.Status = newValue;
-                    FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, theTblRow.Tbl, theTblRow, false, false);
+                    FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, theTblRow.Tbl, theTblRow, false, false);
                     DataContext.SubmitChanges();
                     if (theStatus == StatusOfObject.Active) 
                     {
@@ -1016,7 +1016,7 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.TblRow:
                     TblRow theTblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID ==objectID);
                     theTblRow.Name = theName;
-                    FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, theTblRow.Tbl, theTblRow, false, true);
+                    FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, theTblRow.Tbl, theTblRow, false, true);
                     SetSearchWordsForEntityName(theTblRow, false);
                     CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + objectID);
                     break;

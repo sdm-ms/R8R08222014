@@ -256,7 +256,7 @@ namespace ClassLibrary1.Model
                             farui.AddToTblRow(resolution.TblRow);
                         }
                         else
-                            FastAccessTablesMaintenance.IdentifyRowRequiringUpdate(DataContext, resolution.Tbl, resolution.TblRow, true, false);
+                            FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, resolution.Tbl, resolution.TblRow, true, false);
                     }
 
                     //Trace.TraceInformation("3Setting rating to " + z.Rating.CurrentValue);
