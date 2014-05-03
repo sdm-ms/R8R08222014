@@ -331,6 +331,8 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         internal class FastAccessRowsInfo
         {
+            public TblRow TblRow;
+
 #pragma warning disable 0649
             public int ID;
             public string NME;
@@ -439,6 +441,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             {
                 storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
+                    TblRow = x,
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name,199),
                     DEL = x.Status == (int)(StatusOfObject.Unavailable),
@@ -453,6 +456,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             {
                 storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
+                    TblRow = x,
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name, 199),
                     RF = x.TblRowFieldDisplay.Row,
@@ -519,6 +523,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             {
                 storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
+                    TblRow = x,
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name,199),
                     DEL = x.Status == (int)(StatusOfObject.Unavailable),
@@ -548,6 +553,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             {
                 storedRows = tblRows.Select(x => new FastAccessRowsInfo
                 {
+                    TblRow = x,
                     ID = x.TblRowID,
                     NME = MoreStrings.MoreStringManip.TruncateString(x.Name,199),
                     RF = x.TblRowFieldDisplay.Row,
@@ -715,7 +721,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             SQLUpdateRowsInfo allRows = GenerateSQLUpdateRowsInfoForMainTable(updateRatings, updateFields);
             if (updateFields)
                 GenerateChangesForMCTables(dta);
-            allRows.DoUpdate(dta);
+            allRows.DoUpdate(SQLConstants.SQLMaxParameters, dta);
             return allRows.Rows.Count();
         }
 
@@ -738,7 +744,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         {
             string tableName = "dbo.VFMC" + fieldDefinitionID.ToString();
             string deleteString = "DELETE FROM " + tableName + " WHERE TRID = @trid ";
-            SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, fieldname = "trid" } });
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLUpdateInfo>() { new SQLUpdateInfo() { dbtype = SqlDbType.Int, value = tblRowID, fieldname = "trid" } });
         }
 
         internal void AddChoicesToMCTable(DenormalizedTableAccess dta, int fieldDefinitionID, int tblRowID, List<int> choiceInGroupIDs)
@@ -747,8 +753,14 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             foreach (int choiceInGroupID in choiceInGroupIDs)
             {
                 string insertString = "INSERT INTO " + tableName + " (TRID, CHO) VALUES (@trid, @cigid) ";
-                SQLDirectManipulate.ExecuteSQLNonQuery(dta, insertString, new List<SQLParameterInfo>() { new SQLParameterInfo() { dbtype = SqlDbType.Int, value = tblRowID, fieldname = "trid" }, new SQLParameterInfo() { dbtype = SqlDbType.Int, value = choiceInGroupID, fieldname = "cigid" } } );
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, insertString, new List<SQLUpdateInfo>() { new SQLUpdateInfo() { dbtype = SqlDbType.Int, value = tblRowID, fieldname = "trid" }, new SQLUpdateInfo() { dbtype = SqlDbType.Int, value = choiceInGroupID, fieldname = "cigid" } } );
             }
+        }
+
+        public void ResetBulkRatingsFlags(TblRow tblRow)
+        {
+            tblRow.FastAccessUpdateFields = false;
+            tblRow.FastAccessUpdateRatings = false;
         }
 
         internal SQLUpdateRowsInfo GenerateSQLUpdateRowsInfoForMainTable(bool updateRatings, bool updateFields)
@@ -756,7 +768,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             List<SQLUpdateRowInfo> rows = new List<SQLUpdateRowInfo>();
             foreach (var storedRow in storedRows)
             {
-                SQLUpdateRowInfo rowInfo = new SQLUpdateRowInfo(storedRow.ID, "V" + TheTbl.TblID.ToString());
+                SQLUpdateRowInfo rowInfo = new SQLUpdateRowInfo(storedRow.ID, "V" + TheTbl.TblID.ToString(), () => ResetBulkRatingsFlags(storedRow.TblRow), () => storedRow.TblRow.FastAccessUpdateFields == false && storedRow.TblRow.FastAccessUpdateRatings == false);
 
                 rowInfo.Add("ID", storedRow.ID, SqlDbType.Int);
                 rowInfo.Add("NME", storedRow.NME, SqlDbType.NVarChar);

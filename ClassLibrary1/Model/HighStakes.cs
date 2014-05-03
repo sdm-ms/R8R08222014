@@ -147,7 +147,6 @@ namespace ClassLibrary1.Model
                         rgps.RatingGroup.TblRow.Tbl.PointsManager.HighStakesNoviceNumActive++;
                         rgps.RatingGroup.TblRow.ElevateOnMostNeedsRating = true;
                     }
-                    FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, rgps.RatingGroup.TblRow.Tbl, rgps.RatingGroup.TblRow, false, false);
                 }
                 rgps.RatingGroup.HighStakesKnown = true; // really should be called HighStakesReflected
                 rgps.HighStakesReflected = true;
@@ -237,7 +236,6 @@ namespace ClassLibrary1.Model
                 rgp.RatingGroup.TblRow.ElevateOnMostNeedsRating = false;
                 rgp.RatingGroup.TblRow.Tbl.PointsManager.HighStakesNoviceNumActive--;
             }
-            FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, rgp.RatingGroup.TblRow.Tbl, rgp.RatingGroup.TblRow, false, false);
         }
 
         internal void TerminateHighStakesPrematurely(RatingGroupPhaseStatus rgp)

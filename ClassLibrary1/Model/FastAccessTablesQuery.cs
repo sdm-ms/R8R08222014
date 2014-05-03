@@ -503,10 +503,10 @@ namespace ClassLibrary1.Model
                         FirstRatingID = row["R" + colS] is System.DBNull ? 0 : (int)row["R" + colS],
                         DecPlaces = null, // ignored
                         ValueOfFirstRating = null, // ignored
-                        SingleNumberOnly = !(row["RS" + colS] as string).Contains("<"),
+                        SingleNumberOnly = !(row["RS" + colS] as string ?? "").Contains("<"),
                         Trusted = null, // ignored
                         Deleted = (bool)row["DEL"],
-                        PreformattedString = row["RS" + colS] as string
+                        PreformattedString = row["RS" + colS] as string ?? "--"
                     };
                     infoList.Add(info);
                 }

@@ -858,8 +858,6 @@ namespace ClassLibrary1.Model
                 if (topRatingGroup != null)
                 {
                     theRatingGroup.TblRow.CountNonnullEntries++;
-                    var facnnei = new FastAccessCountNonNullEntriesUpdateInfo() { CountNonNullEntries = theRatingGroup.TblRow.CountNonnullEntries };
-                    facnnei.AddToTblRow(ratingGroup.TblRow);
                 }
                 theRatingGroup.CurrentValueOfFirstRating = null; //  defaultUserRating;
             }
@@ -1099,6 +1097,7 @@ namespace ClassLibrary1.Model
             foreach (TblRow tblRow in theTblRowsToDo)
             {
                 AddMissingRatingsForTblRow(tblRow);
+                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, tblRow.Tbl, tblRow, true, false); // DEBUG -- this is the last thing we have to eliminate before being able to get rid of bulk updating, but we need to keep it (or a substitute) as long as we adding missing ratings. We can't just add a FastAccessRowUpdateInfo, because we don't have the RatingID and RatingGroupID.
                 //Trace.TraceInformation("Adding ratings for entity " + entity);
                 lastTblRowProcessed = tblRow.TblRowID;
             }
@@ -1306,7 +1305,6 @@ namespace ClassLibrary1.Model
                     topRatingGroup.TblRow.ElevateOnMostNeedsRating = false;
                     topRatingGroup.TblRow.Tbl.PointsManager.HighStakesNoviceNumActive--;
                 }
-                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, topRatingGroup.TblRow.Tbl, topRatingGroup.TblRow, false, false);
             }
             topRatingGroup.HighStakesKnown = false; /* may be changed later by background process */
 
@@ -1830,7 +1828,7 @@ namespace ClassLibrary1.Model
             CheckChangeGroupsLinkedToRating(rating); // See if there are any changes groups linked to this rating
 
             if (!simpleRatingType) // for multiple choice ratings, we can't use the simplified updating procedure
-                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, tbl, tblRow, true, false);
+                throw new NotImplementedException(); // when we add mult choice ratings, we must implement copying to fast access
 
             //Trace.TraceInformation("Added prediction " + theUserRating.UserRatingID + " at " + theUserRating.UserRatingGroup.WhenMade);
             return theUserRating;

@@ -61,7 +61,7 @@ namespace ClassLibrary1.Model
             decimal increase = currentPointsPerRating - formerPointsPerRating;
             row.CountUserPoints += increase;
             if (multipleRatingsInRatingGroup)
-                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(dataContext, row.Tbl, row, false, false);
+                throw new NotImplementedException(); // must copy to fast access once implementing this
         }
     }
 }

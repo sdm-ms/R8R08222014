@@ -256,7 +256,7 @@ namespace ClassLibrary1.Model
                             farui.AddToTblRow(resolution.TblRow);
                         }
                         else
-                            FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, resolution.Tbl, resolution.TblRow, true, false);
+                            throw new NotImplementedException(); // must implement copying to fast access for dates
                     }
 
                     //Trace.TraceInformation("3Setting rating to " + z.Rating.CurrentValue);

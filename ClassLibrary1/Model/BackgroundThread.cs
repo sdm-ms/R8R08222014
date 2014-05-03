@@ -117,8 +117,8 @@ namespace ClassLibrary1.Model
                     }
                     finally
                     {
-                        DatabaseAndAzureRoleStatus.CheckInRole(dataManipulation.DataContext);
                         dataManipulation.ResetDataContexts();
+                        DatabaseAndAzureRoleStatus.CheckInRole(dataManipulation.DataContext);
                         WeakReferenceTracker.CheckUncollected();
                     }
                     //Trace.TraceInformation("TaskNum " + i);

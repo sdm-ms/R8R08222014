@@ -174,14 +174,7 @@ namespace ClassLibrary1.Model
                 {
                     theOneToDelete.ratingGroupStatusRecord.RatingGroup.ValueRecentlyChanged = false;
 
-                    var farui = new FastAccessRecentlyChangedInfo()
-                    {
-                        TblColumnID = theOneToDelete.tblCol.TblColumnID,
-                        RecentlyChanged = false,
-                    };
-                    farui.AddToTblRow(theOneToDelete.tblRow);
                 }
-                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(theDataContext, theOneToDelete.tbl, theOneToDelete.tblRow, true, false); // will update the field indicating that there is a rating group status record. we can keep this for now only beause the top line of this method means that we're not executing this at all.
             }
             return false; // no more work to do for a while.
 

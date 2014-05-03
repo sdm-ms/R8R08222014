@@ -21,6 +21,8 @@ namespace ClassLibrary1.Model
 
         public static bool RecordRecentChangesInStatusRecords = false; // We are disabling this feature. If enabling it, we would need to copy the TblRowStatusRecords to the denormalized database.
 
+        public static bool DoBulkUpdating = true; // DEBUG -- once we get rid of automatically creating missing ratings, we can get rid of this
+
         public static int CountHighestRecord(DenormalizedTableAccess dta, string tableName)
         {
             // Note: We may not be able to rely on this if we change from numeric IDs.
@@ -30,7 +32,8 @@ namespace ClassLibrary1.Model
             else
                 return (int)result;
         }
-        
+
+
         public static bool ContinueFastAccessMaintenance(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
 
@@ -64,6 +67,8 @@ namespace ClassLibrary1.Model
 
         internal static bool ContinueAddingNewRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
+            if (!DoBulkUpdating)
+                return false;
 
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
@@ -260,6 +265,9 @@ namespace ClassLibrary1.Model
 
         internal static bool ContinueBulkUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
+            if (!DoBulkUpdating)
+                return false;
+
             if (useAzureQueuesToDesignateRowsToUpdate)
                 return ContinueUpdate_AzureVersion(iDataContext, dta); // seems to create more problems but we'll keep the code around for now in case we change our mind
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
@@ -290,12 +298,18 @@ namespace ClassLibrary1.Model
             return !noMoreWork;
         }
 
+        internal static void ResetIndividualUpdatingFlags(TblRow tblRow)
+        {
+            tblRow.FastAccessUpdateSpecified = false;
+            tblRow.FastAccessUpdated = null;
+        }
+
         internal static bool ContinueIndividualUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
-            const int numAtOnce = 200;
+            const int numAtOnce = 2000;
             bool noMoreWork = true; // assume for now
             List<TblRow> theRows = iDataContext.GetTable<TblRow>().Where(x => x.InitialFieldsDisplaySet == true && x.FastAccessUpdateSpecified).Take(numAtOnce).ToList();
             int rowsCount = theRows.Count();
@@ -314,13 +328,11 @@ namespace ClassLibrary1.Model
                 SQLUpdateRowsInfo sqlUpdateRowsInfo = new SQLUpdateRowsInfo() { TableName = tableName };
                 foreach (TblRow tblRow in theRows)
                 {
-                    List<SQLParameterInfo> toUpdateList = FastAccessRowUpdateInfo.GetFastAccessRowUpdateInfoList(tblRow);
-                    SQLUpdateRowInfo singleRow = new SQLUpdateRowInfo(tblRow.TblRowID, tableName) { Parameters = toUpdateList };
+                    List<SQLUpdateInfo> toUpdateList = FastAccessRowUpdateInfo.GetFastAccessRowUpdateInfoList(tblRow);
+                    SQLUpdateRowInfo singleRow = new SQLUpdateRowInfo(tblRow.TblRowID, tableName, () => ResetIndividualUpdatingFlags(tblRow), () => tblRow.FastAccessUpdateSpecified == false) { SQLUpdateInfos = toUpdateList };
                     sqlUpdateRowsInfo.Rows.Add(singleRow);
-                    tblRow.FastAccessUpdateSpecified = false;
-                    tblRow.FastAccessUpdated = null;
                 }
-                allTables.UpdatesForSingleTable.Add(sqlUpdateRowsInfo);
+                allTables.TablesContainingInformationToUpdate.Add(sqlUpdateRowsInfo);
             }
             allTables.DoUpdate(dta);
             return !noMoreWork;

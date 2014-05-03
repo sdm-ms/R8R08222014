@@ -718,8 +718,7 @@ namespace ClassLibrary1.Model
                 if (theSet.theTblRow.TblRowID != 0)
                 {
                     FieldsDisplayCreator theFieldsDisplayCreator = new FieldsDisplayCreator();
-                    theFieldsDisplayCreator.SetFieldDisplayHtml(theSet.theTblRow);      
-                    FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, theSet.theTbl, theSet.theTblRow, theSet.defaultTblVals != null, true); 
+                    theFieldsDisplayCreator.SetFieldDisplayHtml(theSet.theTblRow);
                 }
                 else
                 {

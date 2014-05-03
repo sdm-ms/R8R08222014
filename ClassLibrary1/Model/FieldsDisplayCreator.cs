@@ -62,7 +62,6 @@ namespace ClassLibrary1.Model
         public void SetFieldDisplayHtml(TblRow theTblRow)
         {
             var dataAccess = new RaterooDataAccess();
-            FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(dataAccess.RaterooDB, theTblRow.Tbl, theTblRow, false, true);
             TblDimensionAccess theCssAccess = new TblDimensionAccess(new RaterooDataAccess());
             TblDimension theTblDimension = theCssAccess.GetTblDimensionsForRegularTbl(theTblRow.TblID);
             FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow);
@@ -73,6 +72,12 @@ namespace ClassLibrary1.Model
             theTblRow.TblRowFieldDisplay.TblRowPage = entityPage.theMainHtml;
             theTblRow.TblRowFieldDisplay.ResetNeeded = false;
             theTblRow.InitialFieldsDisplaySet = true;
+
+            TblRowFieldDisplay trfd = theTblRow.TblRowFieldDisplay;
+            string newCompleteRowHeading = SQLFastAccessTableInfo.FastAccessRowsInfo.GetCombinedRowHeadingWithPopup(trfd.Row, trfd.PopUp, theTblRow.Name, theTblRow.TblRowID);
+            var faupdate = new FastAccessRowHeadingUpdateInfo() { RowHeading = newCompleteRowHeading };
+            faupdate.AddToTblRow(theTblRow);
+
             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + theTblRow.TblRowID.ToString());
         }
 
