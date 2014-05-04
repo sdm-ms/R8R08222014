@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
+using System.Globalization;
 
 public partial class TblRow_Date : System.Web.UI.UserControl
 {
@@ -17,16 +18,15 @@ public partial class TblRow_Date : System.Web.UI.UserControl
     {
         get
         {
-            try
-            {
-                if (TxtDate.Text == "")
-                    return null;
-                return Convert.ToDateTime(TxtDate.Text);
-            }
-            catch
-            {
+            if (TxtDate.Text == "")
                 return null;
-            }
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            DateTimeStyles styles = DateTimeStyles.None;
+            DateTime result;
+            bool success = DateTime.TryParse(TxtDate.Text, culture, styles, out result);
+            if (success)
+                return result;
+            return null;
         }
         set
         {
@@ -35,7 +35,8 @@ public partial class TblRow_Date : System.Web.UI.UserControl
             else
             {
                 DateTime theDateToSet = (DateTime)value;
-                TxtDate.Text = theDateToSet.ToString("d");
+                CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+                TxtDate.Text = theDateToSet.ToString("d", culture);
             }
         }
     }

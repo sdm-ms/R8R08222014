@@ -8,6 +8,7 @@ using System.Web.Caching;
 using System.Text.RegularExpressions;
 using System.Linq.Expressions;
 using ClassLibrary1.Model;
+using System.Threading;
 
 namespace ClassLibrary1.Model
 {
@@ -313,6 +314,7 @@ namespace ClassLibrary1.Model
                     break;
 
                 case FieldTypes.DateTimeField:
+                    Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                     if (theField.TheDateTimeField == null || theField.TheDateTimeField.DateTime == null)
                         includeThisOne = false;
                     else

@@ -118,6 +118,73 @@ namespace ClassLibrary1.Misc
         public object value { get; set; }
         public SqlDbType dbtype { get; set; }
         public bool rowNotYetInDatabase { get; set; }
+
+        public bool ParameterRequired()
+        {
+            bool usingParameter = false;
+            if (value == null)
+                return false;
+
+            switch (dbtype)
+            {
+                case SqlDbType.Bit:
+                case SqlDbType.Decimal:
+                case SqlDbType.Int:
+                case SqlDbType.BigInt:
+                case SqlDbType.SmallInt:
+                case SqlDbType.Udt:
+                    usingParameter = false;
+                    break;
+
+                case SqlDbType.NVarChar:
+                case SqlDbType.VarChar:
+                case SqlDbType.DateTime:
+                    usingParameter = true;
+                    break;
+
+            }
+            return usingParameter;
+        }
+
+        public string GetValueOrParameterName()
+        {
+            if (value == null)
+            {
+                return "NULL";
+            }
+
+            switch (dbtype)
+            {
+                case SqlDbType.Bit:
+                    if ((bool)value)
+                        return "1";
+                    else
+                        return "0";
+
+                case SqlDbType.Decimal:
+                case SqlDbType.Int:
+                case SqlDbType.BigInt:
+                case SqlDbType.SmallInt:
+                    return value.ToString();
+                    ;
+
+                case SqlDbType.NVarChar:
+                case SqlDbType.VarChar:
+                case SqlDbType.DateTime:
+                    return "@" + paramname;
+                    ;
+
+                case SqlDbType.Udt:
+                    SQLGeographyInfo geoInfo = (SQLGeographyInfo)value;
+                    string[] geographyComponents = new string[] { "geography::STPointFromText('POINT(' + CAST(", geoInfo.Longitude.ToString(), " AS VARCHAR(20)) + ' ' + CAST(", geoInfo.Latitude.ToString(), " AS VARCHAR(20)) + ')', 4326)" };
+                    StringBuilder sb = new StringBuilder();
+                    foreach (string gc in geographyComponents)
+                        sb.Append(gc);
+                    return sb.ToString();
+                    ;
+            }
+            throw new NotImplementedException();
+        }
     }
 
     public static class SQLParameterInfoDistinct
@@ -203,22 +270,26 @@ namespace ClassLibrary1.Misc
                 SQLUpdateInfo updateInfo = GetSQLUpdateInfoForFieldName(fieldName);
                 if (!isFirst)
                     sb.Append(",");
-                if (updateInfo.dbtype == SqlDbType.Udt)
-                {
-                    SQLGeographyInfo geoInfo = (SQLGeographyInfo)updateInfo.value;
-                    string[] geographyComponents = new string[] { " = geography::STPointFromText('POINT(' + CAST(", geoInfo.Longitude.ToString(), " AS VARCHAR(20)) + ' ' + CAST(", geoInfo.Latitude.ToString(), " AS VARCHAR(20)) + ')', 4326)" };
-                    //string[] geographyComponents = new string[] { " geography::STPointFromText('POINT(' + CAST(@", updateInfo.fieldname, "LONG", "R", updateInfo.rownum.ToString(), "T", updateInfo.tablename, " AS VARCHAR(20)) + ' ' + CAST(@", updateInfo.fieldname, "LAT", "R", updateInfo.rownum.ToString(), "X", updateInfo.tablename, " AS VARCHAR(20)) + ')', 4326)" };
-                    foreach (string gc in geographyComponents)
-                        sb.Append(gc);
-                }
+                if (updateInfo == null)
+                    sb.Append("DEFAULT");
                 else
-                {
-                    sb.Append("@");
-                    if (updateInfo == null)
-                        sb.Append("DEFAULT");
-                    else
-                        sb.Append(updateInfo.paramname);
-                }
+                    sb.Append(updateInfo.GetValueOrParameterName());
+                //if (updateInfo.dbtype == SqlDbType.Udt)
+                //{
+                //    SQLGeographyInfo geoInfo = (SQLGeographyInfo)updateInfo.value;
+                //    string[] geographyComponents = new string[] { "geography::STPointFromText('POINT(' + CAST(", geoInfo.Longitude.ToString(), " AS VARCHAR(20)) + ' ' + CAST(", geoInfo.Latitude.ToString(), " AS VARCHAR(20)) + ')', 4326)" };
+                //    //string[] geographyComponents = new string[] { " geography::STPointFromText('POINT(' + CAST(@", updateInfo.fieldname, "LONG", "R", updateInfo.rownum.ToString(), "T", updateInfo.tablename, " AS VARCHAR(20)) + ' ' + CAST(@", updateInfo.fieldname, "LAT", "R", updateInfo.rownum.ToString(), "X", updateInfo.tablename, " AS VARCHAR(20)) + ')', 4326)" };
+                //    foreach (string gc in geographyComponents)
+                //        sb.Append(gc);
+                //}
+                //else
+                //{
+                //    sb.Append("@");
+                //    if (updateInfo == null)
+                //        sb.Append("DEFAULT");
+                //    else
+                //        sb.Append(updateInfo.paramname);
+                //}
                 if (isFirst)
                     isFirst = false;
             }
@@ -226,13 +297,13 @@ namespace ClassLibrary1.Misc
             return sb.ToString();
         }
 
-        public void GetUpdateCommand(string tableName, out string updateCommand, out List<SQLUpdateInfo> parameters)
+        public void GetUpdateCommand(string tableName, out string updateCommand, out List<SQLUpdateInfo> updateInfos)
         {
             // step 1: formulate the SQL statement
             if (!SQLUpdateInfos.Any())
             {
                 updateCommand = null;
-                parameters = null;
+                updateInfos = null;
                 return;
             }
 
@@ -242,7 +313,7 @@ namespace ClassLibrary1.Misc
 
             updateStringComponents.AddRange(new string[] { "UPDATE ", tableName, " ", "SET " });
             bool isFirst = true;
-            string idparamname = "";
+            string idvalue = "";
             foreach (var variable in SQLUpdateInfos)
             {
                 if (variable.fieldname != "ID")
@@ -251,28 +322,13 @@ namespace ClassLibrary1.Misc
                         updateStringComponents.Add(", ");
                     isFirst = false;
                     updateStringComponents.Add(variable.fieldname);
-                    if (variable.value == null)
-                        updateStringComponents.Add(" = NULL");
-                    else
-                    {
-                        if (variable.value is SQLGeographyInfo)
-                        {
-                            SQLGeographyInfo fastUpdateGeo = ((SQLGeographyInfo)variable.value);
-                            // we must construct the two variable parameter names that we will get once we convert this (see below)
-                            string[] geographyComponents = new string[] { " = geography::STPointFromText('POINT(' + CAST(", fastUpdateGeo.Longitude.ToString(), " AS VARCHAR(20)) + ' ' + CAST(", fastUpdateGeo.Latitude.ToString(), " AS VARCHAR(20)) + ')', 4326)" };
-                            //string[] geographyComponents = new string[] { " = geography::STPointFromText('POINT(' + CAST(@", variable.fieldname, "LONG", "R", variable.rownum.ToString(), "T", variable.tablename, " AS VARCHAR(20)) + ' ' + CAST(@", variable.fieldname, "LAT", "R", variable.rownum.ToString(), "X", variable.tablename, " AS VARCHAR(20)) + ')', 4326)" };
-                            updateStringComponents.AddRange(geographyComponents);
-                        }
-                        else
-                        {
-                            updateStringComponents.AddRange(new string[] { " = @", variable.paramname });
-                        }
-                    }
+                    updateStringComponents.Add(" = ");
+                    updateStringComponents.Add(variable.GetValueOrParameterName());
                 }
                 else
-                    idparamname = variable.paramname;
+                    idvalue = variable.value.ToString();
             }
-            updateStringComponents.AddRange(new string[] { " WHERE ID = @", idparamname, "; " });
+            updateStringComponents.AddRange(new string[] { " WHERE ID = ", idvalue, "; " });
             StringBuilder sb = new StringBuilder();
             foreach (string component in updateStringComponents)
                 sb.Append(component);
@@ -282,32 +338,7 @@ namespace ClassLibrary1.Misc
                 if (p.value == null)
                     p.value = DBNull.Value;
 
-            List<SQLUpdateInfo> sqlParameters = SQLUpdateInfos.OrderBy(x => x.fieldname == "ID").ToList(); // put ID field last
-            parameters = ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(sqlParameters);
-        }
-
-        private static List<SQLUpdateInfo> ConvertGeographyParametersIntoSeparateLongitudeAndLatitudeParameters(List<SQLUpdateInfo> parameters)
-        {
-            if (parameters.Any(x => x.value is SQLGeographyInfo))
-            {
-                List<SQLUpdateInfo> parameters2 = new List<SQLUpdateInfo>();
-                foreach (SQLUpdateInfo p in parameters)
-                {
-                    if (p.value is SQLGeographyInfo)
-                    {
-                        SQLGeographyInfo fug = ((SQLGeographyInfo)(p.value));
-                        SQLUpdateInfo longParam = new SQLUpdateInfo() { dbtype = SqlDbType.Decimal, value = fug.Longitude, fieldname = p.fieldname + "LONG", rownum = p.rownum, rowNotYetInDatabase = p.rowNotYetInDatabase, tablename = p.tablename };
-                        parameters2.Add(longParam);
-                        SQLUpdateInfo latParam = new SQLUpdateInfo() { dbtype = SqlDbType.Decimal, value = fug.Latitude, fieldname = p.fieldname + "LAT", rownum = p.rownum, rowNotYetInDatabase = p.rowNotYetInDatabase, tablename = p.tablename };
-                        parameters2.Add(latParam);
-                    }
-                    else
-                        parameters2.Add(p);
-                }
-                return parameters2;
-            }
-            else
-                return parameters;
+            updateInfos = SQLUpdateInfos.OrderBy(x => x.fieldname == "ID").ToList(); // put ID field last
         }
     }
 
@@ -319,27 +350,27 @@ namespace ClassLibrary1.Misc
         public void DoUpdate(int maxParameters, ISQLDirectConnectionManager dta)
         {
             StringBuilder sb;
-            List<SQLUpdateInfo> parameters;
+            List<SQLUpdateInfo> updateInfos;
             bool moreToDo = true;
             while (moreToDo)
             {
-                GetUpdateCommands(maxParameters, out sb, out parameters, out moreToDo);
-                SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), parameters);
+                GetUpdateCommands(maxParameters, out sb, out updateInfos, out moreToDo);
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), updateInfos);
             }
         }
 
-        public void GetUpdateCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> parameters, out bool moreToDo)
+        public void GetUpdateCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> updateInfos, out bool moreToDo)
         {
             sb = new StringBuilder();
-            parameters = new List<SQLUpdateInfo>();
+            updateInfos = new List<SQLUpdateInfo>();
             int parametersUsed = 0;
             moreToDo = false;
             foreach (var row in Rows.Where(x => x.DataMayAlreadyBeInDatabase() && !x.IsAlreadyUpdated()))
             {
                 string updateCommand;
-                List<SQLUpdateInfo> partialParameters;
-                row.GetUpdateCommand(TableName, out updateCommand, out partialParameters);
-                parametersUsed += partialParameters.Count();
+                List<SQLUpdateInfo> partialUpdateInfos;
+                row.GetUpdateCommand(TableName, out updateCommand, out partialUpdateInfos);
+                parametersUsed += partialUpdateInfos.Where(x => x.ParameterRequired()).Count();
                 if (parametersUsed > maxParameters)
                 {
                     moreToDo = true;
@@ -347,14 +378,14 @@ namespace ClassLibrary1.Misc
                 }
                 row.ApplySuccessfulUpdateAction();
                 sb.Append(updateCommand);
-                parameters.AddRange(partialParameters);
+                updateInfos.AddRange(partialUpdateInfos);
             }
         }
 
-        public void GetUpsertCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> parameters, out bool moreToDo)
+        public void GetUpsertCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> updateInfos, out bool moreToDo)
         {
             // The format we're looking for is like the below. So, we'll create a string and then fill in the changeable parts.
-            // Note that we'll be using parameters instead of actual values in the Values clause.
+            // Note that we'll be using parameters instead of actual values in the Values clause where necessary
             //Merge VTemp AS tbl
             //USING
             //(
@@ -395,7 +426,7 @@ WHEN MATCHED THEN
 ";
 
             sb = new StringBuilder();
-            parameters = new List<SQLUpdateInfo>();
+            updateInfos = new List<SQLUpdateInfo>();
             moreToDo = false;
             var rowsStillToBeUpserted = Rows.Where(x => !x.DataMayAlreadyBeInDatabase() && !x.IsAlreadyUpdated());
             if (!rowsStillToBeUpserted.Any())
@@ -416,7 +447,7 @@ WHEN MATCHED THEN
                 {
                     SQLUpdateInfo updateInfo = row.GetSQLUpdateInfoForFieldName(fieldName);
                     if (updateInfo != null)
-                        parameters.Add(updateInfo);
+                        updateInfos.Add(updateInfo);
                 }
                 row.ApplySuccessfulUpdateAction();
             }
@@ -454,60 +485,60 @@ WHEN MATCHED THEN
         public void DoUpdate(ISQLDirectConnectionManager dta)
         {
             StringBuilder sb;
-            List<SQLUpdateInfo> parameters;
+            List<SQLUpdateInfo> updateInfos;
             bool moreToDo = true;
             while (moreToDo)
             {
-                GetUpdateCommands(SQLConstants.SQLMaxParameters, out sb, out parameters, out moreToDo);
-                if (parameters.Any())
-                    SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), parameters);
+                GetUpdateCommands(SQLConstants.SQLMaxParameters, out sb, out updateInfos, out moreToDo);
+                if (updateInfos.Any())
+                    SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), updateInfos);
             }
             moreToDo = true;
             while (moreToDo)
             {
-                GetUpsertCommands(SQLConstants.SQLMaxParameters, out sb, out parameters, out moreToDo);
-                if (parameters.Any())
-                    SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), parameters);
+                GetUpsertCommands(SQLConstants.SQLMaxParameters, out sb, out updateInfos, out moreToDo);
+                if (updateInfos.Any())
+                    SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), updateInfos);
             }
         }
 
-        public void GetUpdateCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> parameters, out bool moreToDo)
+        public void GetUpdateCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> updateInfos, out bool moreToDo)
         {
             sb = new StringBuilder();
-            parameters = new List<SQLUpdateInfo>();
+            updateInfos = new List<SQLUpdateInfo>();
             int parametersUsed = 0;
             moreToDo = false;
             foreach (var table in TablesContainingInformationToUpdate)
             {
                 StringBuilder sb2;
-                List<SQLUpdateInfo> partialParameters;
-                table.GetUpdateCommands(maxParameters - parametersUsed, out sb2, out partialParameters, out moreToDo);
-                parametersUsed += partialParameters.Count;
+                List<SQLUpdateInfo> partialUpdateInfos;
+                table.GetUpdateCommands(maxParameters - parametersUsed, out sb2, out partialUpdateInfos, out moreToDo);
+                parametersUsed += partialUpdateInfos.Where(x => x.ParameterRequired()).Count();
                 if (parametersUsed > maxParameters)
                     throw new Exception("Internal exception. Must not exceed parameter limit.");
                 sb.Append(sb2);
-                parameters.AddRange(partialParameters);
+                updateInfos.AddRange(partialUpdateInfos);
                 if (moreToDo)
                     break; // we're near the maximum number of parameters
             }
         }
 
-        public void GetUpsertCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> parameters, out bool moreToDo)
+        public void GetUpsertCommands(int maxParameters, out StringBuilder sb, out List<SQLUpdateInfo> updateInfos, out bool moreToDo)
         {
             sb = new StringBuilder();
-            parameters = new List<SQLUpdateInfo>();
+            updateInfos = new List<SQLUpdateInfo>();
             int parametersUsed = 0;
             moreToDo = false;
             foreach (var table in TablesContainingInformationToUpdate)
             {
                 StringBuilder sb2;
-                List<SQLUpdateInfo> partialParameters;
-                table.GetUpsertCommands(maxParameters - parametersUsed, out sb2, out partialParameters, out moreToDo);
-                parametersUsed += partialParameters.Count;
+                List<SQLUpdateInfo> partialUpdateInfos;
+                table.GetUpsertCommands(maxParameters - parametersUsed, out sb2, out partialUpdateInfos, out moreToDo);
+                parametersUsed += partialUpdateInfos.Count;
                 if (parametersUsed > maxParameters)
                     throw new Exception("Internal exception. Must not exceed parameter limit.");
                 sb.Append(sb2);
-                parameters.AddRange(partialParameters);
+                updateInfos.AddRange(partialUpdateInfos);
                 if (moreToDo)
                     break; // we're near the maximum number of parameters
             }
@@ -516,15 +547,15 @@ WHEN MATCHED THEN
 
     public static class SQLDirectManipulate
     {
-        internal static void ExecuteSQLNonQuery(ISQLDirectConnectionManager database, string command, List<SQLUpdateInfo> parameters = null)
+        internal static void ExecuteSQLNonQuery(ISQLDirectConnectionManager database, string command, List<SQLUpdateInfo> updateInfos = null)
         {
             using (SqlConnection connection =
                new SqlConnection(database.GetConnectionString()))
             {
                 // Create the Command and Parameter objects.
                 SqlCommand sqlCommand = new SqlCommand(command, connection);
-                if (parameters != null)
-                    AddSQLParametersToSqlCommand(parameters, sqlCommand);
+                if (updateInfos != null)
+                    AddSQLParametersToSqlCommand(updateInfos, sqlCommand);
                 sqlCommand.Connection.Open();
                 sqlCommand.ExecuteNonQuery();
             }
@@ -534,11 +565,14 @@ WHEN MATCHED THEN
         {
             foreach (SQLUpdateInfo p in parameters)
             {
-                string fullname = "@" + p.paramname;
-                sqlCommand.Parameters.Add(fullname, p.dbtype);
-                sqlCommand.Parameters[fullname].Value = p.value;
-                if (p.dbtype == SqlDbType.Udt)
-                    sqlCommand.Parameters[fullname].UdtTypeName = "Geography";
+                if (p.ParameterRequired())
+                {
+                    string fullname = "@" + p.paramname;
+                    sqlCommand.Parameters.Add(fullname, p.dbtype);
+                    sqlCommand.Parameters[fullname].Value = p.value ?? DBNull.Value;
+                    if (p.dbtype == SqlDbType.Udt)
+                        sqlCommand.Parameters[fullname].UdtTypeName = "Geography";
+                }
             }
         }
 
