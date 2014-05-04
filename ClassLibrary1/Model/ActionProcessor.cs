@@ -773,7 +773,7 @@ namespace ClassLibrary1.Model
             if (!theFieldData.MatchesDatabase())
             {
                 Field theField = null;
-                theField = FieldClearSubfield(true, theFieldData.TheGroup.theTblRow, theFieldData.TheFieldDefinition.FieldDefinitionID, userID);
+                theField = FieldClearSubfield(true, theFieldData.TheGroup.theTblRow, theFieldData.TheFieldDefinition.FieldDefinitionID, userID, true);
                 if (theField == null)
                     theField = DataManipulation.GetFieldForTblRow(theFieldData.TheGroup.theTblRow, theFieldData.TheFieldDefinition);
                 if (theFieldData is AddressFieldDataInfo)
@@ -824,25 +824,25 @@ namespace ClassLibrary1.Model
             Field theField = DataManipulation.GetFieldForTblRow(entity, theFieldDefinition);
             if (theField != null)
             {
-                FieldClearSubfield(false, entity, theFieldDefinition.FieldDefinitionID, userID);
+                FieldClearSubfield(false, entity, theFieldDefinition.FieldDefinitionID, userID, false);
                 theField.Status = (int)StatusOfObject.Unavailable;
             }
         }
 
-        internal Field FieldClearSubfield(bool addFieldIfNotExists, TblRow entity, int FieldDefinitionID, int userID)
+        internal Field FieldClearSubfield(bool addFieldIfNotExists, TblRow tblRow, int FieldDefinitionID, int userID, bool fieldIsBeingReplaced)
         {
             // We assume that change has already been approved and the changes group will be implemented by caller.
             Field field = null;
             object subfield = null;
             FieldTypes theFieldType = FieldTypes.AddressField; // must initialize before passing as ref below
-            if (entity.TblRowID != 0)
-                DataManipulation.GetFieldForTblRow(entity, FieldDefinitionID, ref field, ref subfield, ref theFieldType);
+            if (tblRow.TblRowID != 0)
+                DataManipulation.GetFieldForTblRow(tblRow, FieldDefinitionID, ref field, ref subfield, ref theFieldType);
             if (field == null)
             {
                 if (addFieldIfNotExists) // Create a new field
                 {
                     FieldDefinition theFieldDefinition = DataContext.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == FieldDefinitionID);
-                    field = DataManipulation.AddField(entity, theFieldDefinition);
+                    field = DataManipulation.AddField(tblRow, theFieldDefinition);
                 }
             }
             else
@@ -852,19 +852,19 @@ namespace ClassLibrary1.Model
                     switch (theFieldType)
                     {
                         case FieldTypes.AddressField:
-                            ((AddressField)subfield).Status = (int)StatusOfObject.Unavailable;
+                            ((AddressField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
                             break;
                         case FieldTypes.ChoiceField:
-                            ((ChoiceField)subfield).Status = (int)StatusOfObject.Unavailable;
+                            ((ChoiceField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
                             break;
                         case FieldTypes.DateTimeField:
-                            ((DateTimeField)subfield).Status = (int)StatusOfObject.Unavailable;
+                            ((DateTimeField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
                             break;
                         case FieldTypes.NumberField:
-                            ((NumberField)subfield).Status = (int)StatusOfObject.Unavailable;
+                            ((NumberField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
                             break;
                         case FieldTypes.TextField:
-                            ((TextField)subfield).Status = (int)StatusOfObject.Unavailable;
+                            ((TextField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
                             break;
                     }
 

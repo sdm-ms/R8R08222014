@@ -682,7 +682,7 @@ namespace ClassLibrary1.Model
             BackgroundThread.BriefPauseRequested = true;
             Thread.Sleep(5000);
 
-            /*
+            
             Government government = new Government();
             government.Create();
 
@@ -697,14 +697,14 @@ namespace ClassLibrary1.Model
 
             RealEstate realEstate = new RealEstate();
             realEstate.Create();
-            */ /* DEBUG */
 
             Restaurants restaurants = new Restaurants();
             restaurants.Create();
 
-            /* DEBUG Blogs blogs = new Blogs();
+            Blogs blogs = new Blogs();
             blogs.Create();
 
+            /* DEBUG 
             News news = new News();
             news.Create();
 

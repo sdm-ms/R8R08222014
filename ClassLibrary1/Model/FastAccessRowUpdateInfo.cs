@@ -50,14 +50,14 @@ namespace ClassLibrary1.Model
                 updates = new List<SQLUpdateInfo>();
             else
                 updates = BinarySerializer.Deserialize<List<SQLUpdateInfo>>(tblRow.FastAccessUpdated.ToArray());
-            if (tblRow.FastAccessInitialCopy)
+            bool idAlreadyExists = updates.Any(x => x.fieldname == "ID");
+            if (!idAlreadyExists && tblRow.TblRowID != 0) // once we execute this once, we have an ID field with a non-zero ID, so we don't have to do it again. Until TblRowID is non-zero, we won't execute it.
             {
-                bool idAlreadyExists = updates.Any(x => x.fieldname == "ID");
-                if (!idAlreadyExists && tblRow.TblRowID != 0) // once we execute this once, we have an ID field with a non-zero ID, so we don't have to do it again. Until TblRowID is non-zero, we won't execute it.
+
+                updates.Add(new SQLUpdateInfo() { fieldname = "ID", rownum = tblRow.TblRowID, tablename = "V" + tblRow.TblID.ToString(), value = tblRow.TblRowID, dbtype = SqlDbType.Int, rowNotYetInDatabase = false });
+
+                if (tblRow.FastAccessInitialCopy)
                 {
-
-                    updates.Add(new SQLUpdateInfo() { fieldname = "ID", rownum = tblRow.TblRowID, tablename = "V" + tblRow.TblID.ToString(), value = tblRow.TblRowID, dbtype = SqlDbType.Int, rowNotYetInDatabase = false });
-
                     // this has just been added to the database, so we previously did not have a TblRowID and so the rownum is wrong, and we must mark this as data that should be inserted
                     // update all the previous items
                     foreach (SQLUpdateInfo update in updates)
@@ -197,7 +197,7 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class FastAccessDateTimeFieldUpdateInfo : FastAccessFieldUpdateInfo
     {
-        public DateTime DateTimeInfo;
+        public DateTime? DateTimeInfo;
         public override List<SQLUpdateInfo> GetSQLParameterInfo()
         {
             return new List<SQLUpdateInfo>()
@@ -208,9 +208,9 @@ namespace ClassLibrary1.Model
     }
 
     [Serializable]
-    public class FastAccessChoiceFieldUpdateInfo : FastAccessFieldUpdateInfo
+    public class FastAccessChoiceFieldSingleSelectionUpdateInfo : FastAccessFieldUpdateInfo
     {
-        public int ChoiceInGroupID;
+        public int? ChoiceInGroupID;
         public override List<SQLUpdateInfo> GetSQLParameterInfo()
         {
             return new List<SQLUpdateInfo>()

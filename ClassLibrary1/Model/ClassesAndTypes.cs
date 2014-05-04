@@ -103,7 +103,8 @@ namespace ClassLibrary1.Model
         Proposed,
         Active,
         DerivativelyUnavailable, // higher in hierarchy object is inactive
-        Unavailable
+        Unavailable,
+        AboutToBeReplaced // temporary status to be changed to unavailable
     }
 
     /// <summary>

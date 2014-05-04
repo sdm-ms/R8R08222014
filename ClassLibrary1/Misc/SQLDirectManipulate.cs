@@ -114,7 +114,7 @@ namespace ClassLibrary1.Misc
         public string fieldname { get; set; }
         public int? rownum { get; set; }
         public string tablename { get; set; }
-        public string paramname { get { if (rownum == null) return fieldname; if (tablename == null) return fieldname + rownum.ToString(); return fieldname + rownum.ToString() + "X" + tablename; } }
+        public string paramname { get { if (rownum == null) return fieldname; if (tablename == null) return fieldname + rownum.ToString(); return fieldname + "R" + rownum.ToString() + "T" + tablename; } }
         public object value { get; set; }
         public SqlDbType dbtype { get; set; }
         public bool rowNotYetInDatabase { get; set; }
@@ -203,11 +203,22 @@ namespace ClassLibrary1.Misc
                 SQLUpdateInfo updateInfo = GetSQLUpdateInfoForFieldName(fieldName);
                 if (!isFirst)
                     sb.Append(",");
-                sb.Append("@");
-                if (updateInfo == null)
-                    sb.Append("DEFAULT");
+                if (updateInfo.dbtype == SqlDbType.Udt)
+                {
+                    SQLGeographyInfo geoInfo = (SQLGeographyInfo)updateInfo.value;
+                    string[] geographyComponents = new string[] { " = geography::STPointFromText('POINT(' + CAST(", geoInfo.Longitude.ToString(), " AS VARCHAR(20)) + ' ' + CAST(", geoInfo.Latitude.ToString(), " AS VARCHAR(20)) + ')', 4326)" };
+                    //string[] geographyComponents = new string[] { " geography::STPointFromText('POINT(' + CAST(@", updateInfo.fieldname, "LONG", "R", updateInfo.rownum.ToString(), "T", updateInfo.tablename, " AS VARCHAR(20)) + ' ' + CAST(@", updateInfo.fieldname, "LAT", "R", updateInfo.rownum.ToString(), "X", updateInfo.tablename, " AS VARCHAR(20)) + ')', 4326)" };
+                    foreach (string gc in geographyComponents)
+                        sb.Append(gc);
+                }
                 else
-                    sb.Append(updateInfo.paramname);
+                {
+                    sb.Append("@");
+                    if (updateInfo == null)
+                        sb.Append("DEFAULT");
+                    else
+                        sb.Append(updateInfo.paramname);
+                }
                 if (isFirst)
                     isFirst = false;
             }
@@ -248,7 +259,9 @@ namespace ClassLibrary1.Misc
                         {
                             SQLGeographyInfo fastUpdateGeo = ((SQLGeographyInfo)variable.value);
                             // we must construct the two variable parameter names that we will get once we convert this (see below)
-                            updateStringComponents.AddRange(new string[] { " = geography::STPointFromText('POINT(' + CAST(@", variable.fieldname, "LONG", variable.rownum.ToString(), " AS VARCHAR(20)) + ' ' + CAST(@", variable.fieldname, "LAT", variable.rownum.ToString(), " AS VARCHAR(20)) + ')', 4326)" });
+                            string[] geographyComponents = new string[] { " = geography::STPointFromText('POINT(' + CAST(", fastUpdateGeo.Longitude.ToString(), " AS VARCHAR(20)) + ' ' + CAST(", fastUpdateGeo.Latitude.ToString(), " AS VARCHAR(20)) + ')', 4326)" };
+                            //string[] geographyComponents = new string[] { " = geography::STPointFromText('POINT(' + CAST(@", variable.fieldname, "LONG", "R", variable.rownum.ToString(), "T", variable.tablename, " AS VARCHAR(20)) + ' ' + CAST(@", variable.fieldname, "LAT", "R", variable.rownum.ToString(), "X", variable.tablename, " AS VARCHAR(20)) + ')', 4326)" };
+                            updateStringComponents.AddRange(geographyComponents);
                         }
                         else
                         {
@@ -283,9 +296,9 @@ namespace ClassLibrary1.Misc
                     if (p.value is SQLGeographyInfo)
                     {
                         SQLGeographyInfo fug = ((SQLGeographyInfo)(p.value));
-                        SQLUpdateInfo longParam = new SQLUpdateInfo() { dbtype = SqlDbType.Decimal, value = fug.Longitude, fieldname = p.fieldname + "LONG", rownum = p.rownum };
+                        SQLUpdateInfo longParam = new SQLUpdateInfo() { dbtype = SqlDbType.Decimal, value = fug.Longitude, fieldname = p.fieldname + "LONG", rownum = p.rownum, rowNotYetInDatabase = p.rowNotYetInDatabase, tablename = p.tablename };
                         parameters2.Add(longParam);
-                        SQLUpdateInfo latParam = new SQLUpdateInfo() { dbtype = SqlDbType.Decimal, value = fug.Latitude, fieldname = p.fieldname + "LAT", rownum = p.rownum };
+                        SQLUpdateInfo latParam = new SQLUpdateInfo() { dbtype = SqlDbType.Decimal, value = fug.Latitude, fieldname = p.fieldname + "LAT", rownum = p.rownum, rowNotYetInDatabase = p.rowNotYetInDatabase, tablename = p.tablename };
                         parameters2.Add(latParam);
                     }
                     else

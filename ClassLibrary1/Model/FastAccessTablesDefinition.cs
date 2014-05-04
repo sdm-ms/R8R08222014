@@ -159,12 +159,12 @@ namespace ClassLibrary1.Model
             foreach (var col in tblColumns)
                 ratingInfo.Add(new SQLTableColumnInfo(col));
 
-            List<FieldDefinition> fieldDefinitions = iDataContext.GetTable<FieldDefinition>().Where(x => x.TblID == TheTbl.TblID && x.Status == (int)StatusOfObject.Active && x.UseAsFilter && (x.FieldType != (int) FieldTypes.ChoiceField || (x.ChoiceGroupFieldDefinitions.Any() && !x.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections))).ToList();
+            List<FieldDefinition> fieldDefinitions = iDataContext.GetTable<FieldDefinition>().Where(x => x.TblID == TheTbl.TblID && x.Status == (int)StatusOfObject.Active && (x.FieldType != (int) FieldTypes.ChoiceField || (x.ChoiceGroupFieldDefinitions.Any() && !x.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections))).ToList();
             filterableFields = new List<SQLTableFieldDefinition>();
             foreach (var field in fieldDefinitions)
                 filterableFields.Add(new SQLTableFieldDefinition(field));
 
-            List<FieldDefinition> fieldDefinitionsMultipleChoice = iDataContext.GetTable<FieldDefinition>().Where(x => x.TblID == TheTbl.TblID && x.Status == (int)StatusOfObject.Active && x.UseAsFilter && x.FieldType == (int)FieldTypes.ChoiceField && x.ChoiceGroupFieldDefinitions.Any() && x.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections).ToList();
+            List<FieldDefinition> fieldDefinitionsMultipleChoice = iDataContext.GetTable<FieldDefinition>().Where(x => x.TblID == TheTbl.TblID && x.Status == (int)StatusOfObject.Active &&  x.FieldType == (int)FieldTypes.ChoiceField && x.ChoiceGroupFieldDefinitions.Any() && x.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections).ToList();
             filterableMultipleChoiceFields = new List<SQLMultipleChoiceFieldTableInfo>();
             foreach (var fieldMC in fieldDefinitionsMultipleChoice)
                 filterableMultipleChoiceFields.Add(new SQLMultipleChoiceFieldTableInfo(iDataContext, fieldMC));
@@ -482,7 +482,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                                     RatingID = firstRating == null || !singleNumber ? null : (int?)y.Ratings.First().RatingID, 
                                     RecentlyChanged = y.ValueRecentlyChanged
                                 },
-                    AddressFields = x.Fields.SelectMany(z => z.AddressFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    AddressFields = x.Fields.SelectMany(z => z.AddressFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastAddressFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
@@ -491,26 +491,26 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                             Geo = (z.Latitude != null && z.Longitude != null && !(z.Latitude == 0 && z.Longitude == 0)) ? SqlGeography.Point((double) z.Latitude, (double) z.Longitude, 4326) : null
                             //FieldID = z.FieldID
                         }),
-                    ChoiceFields = x.Fields.SelectMany(z => z.ChoiceFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    ChoiceFields = x.Fields.SelectMany(z => z.ChoiceFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastChoiceFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
                             MultipleChoices = z.Field.FieldDefinition.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections,
                             Choices = z.ChoiceInFields.Where(w => true).ToList()
                         }),
-                    DateTimeFields = x.Fields.SelectMany(z => z.DateTimeFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int) StatusOfObject.Active).Select(
+                    DateTimeFields = x.Fields.SelectMany(z => z.DateTimeFields).Where(w => w.Status == (int) StatusOfObject.Active).Select(
                         z => new FastDateTimeFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
                             DateTime = z.DateTime
                         }),
-                    NumberFields = x.Fields.SelectMany(z => z.NumberFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    NumberFields = x.Fields.SelectMany(z => z.NumberFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastNumberFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
                             Number = z.Number
                         }),
-                    TextFields = x.Fields.SelectMany(z => z.TextFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    TextFields = x.Fields.SelectMany(z => z.TextFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastTextFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
@@ -564,7 +564,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     ELEV = x.ElevateOnMostNeedsRating,
                     HS = x.CountHighStakesNow > 0,
                     RC = x.StatusRecentlyChanged,
-                    AddressFields = x.Fields.SelectMany(z => z.AddressFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    AddressFields = x.Fields.SelectMany(z => z.AddressFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastAddressFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
@@ -573,26 +573,26 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                             Geo = (z.Latitude != null && z.Longitude != null && !(z.Latitude == 0 && z.Longitude == 0)) ? SqlGeography.Point((double) z.Latitude, (double) z.Longitude, 4326) : null
                             //FieldID = z.FieldID
                         }),
-                    ChoiceFields = x.Fields.SelectMany(z => z.ChoiceFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    ChoiceFields = x.Fields.SelectMany(z => z.ChoiceFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastChoiceFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
                             MultipleChoices = z.Field.FieldDefinition.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections,
                             Choices = z.ChoiceInFields.Where(w => true).ToList()
                         }),
-                    DateTimeFields = x.Fields.SelectMany(z => z.DateTimeFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    DateTimeFields = x.Fields.SelectMany(z => z.DateTimeFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastDateTimeFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
                             DateTime = z.DateTime
                         }),
-                    NumberFields = x.Fields.SelectMany(z => z.NumberFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    NumberFields = x.Fields.SelectMany(z => z.NumberFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastNumberFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,
                             Number = z.Number
                         }),
-                    TextFields = x.Fields.SelectMany(z => z.TextFields).Where(w => w.Field.FieldDefinition.UseAsFilter && w.Status == (int)StatusOfObject.Active).Select(
+                    TextFields = x.Fields.SelectMany(z => z.TextFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastTextFieldsInfo
                         {
                             FieldDefinitionID = z.Field.FieldDefinitionID,

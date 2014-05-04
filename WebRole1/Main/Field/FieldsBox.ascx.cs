@@ -127,7 +127,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         if (Mode == FieldsBoxMode.filterWithButton || Mode == FieldsBoxMode.filterWithoutButton || Mode == FieldsBoxMode.addTblRow)
         {
             LoadTblColumns();
-            LoadFieldDefinitions(true);
+            LoadFieldDefinitions(Mode != FieldsBoxMode.addTblRow);
         }
         else
         {
