@@ -403,7 +403,7 @@ namespace ClassLibrary1.Model
                     switch (theFieldDefinition.FieldType)
                     {
                         case (int)FieldTypes.AddressField:
-                            theInfo.AddFieldDataInfo(new AddressFieldDataInfo(theFieldDefinition, theField.Value, theInfo, DataAccess));
+                            theInfo.AddFieldDataInfo(new AddressFieldDataInfo(theFieldDefinition, theField.Value, null, null, theInfo, DataAccess));
                             break;
                         case (int)FieldTypes.ChoiceField:
                             if (theFieldDefinition.ChoiceGroupFieldDefinitions.Single().ChoiceGroup.AllowMultipleSelections)

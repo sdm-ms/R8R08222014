@@ -778,9 +778,10 @@ namespace ClassLibrary1.Model
                     theField = DataManipulation.GetFieldForTblRow(theFieldData.TheGroup.theTblRow, theFieldData.TheFieldDefinition);
                 if (theFieldData is AddressFieldDataInfo)
                 {
-                    decimal? latitude = null;
-                    decimal? longitude = null;
-                    string theAddress = ((AddressFieldDataInfo)theFieldData).TheAddress;
+                    AddressFieldDataInfo afdi = ((AddressFieldDataInfo)theFieldData);
+                    decimal? latitude = afdi.Latitude;
+                    decimal? longitude = afdi.Longitude;
+                    string theAddress = afdi.AddressShortText;
                     //Disable immediate geocoding, we'll geocode later
                     //Geocode theGeocoder = new Geocode();
                     //Coordinate theCoordinate = Geocode.GetCoordinatesAndReformatAddress(ref theAddress);

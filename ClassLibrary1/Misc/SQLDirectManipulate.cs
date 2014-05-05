@@ -117,14 +117,25 @@ namespace ClassLibrary1.Misc
         public string paramname { get { if (rownum == null) return fieldname; if (tablename == null) return fieldname + rownum.ToString(); return fieldname + "R" + rownum.ToString() + "T" + tablename; } }
         public object value { get; set; }
         public SqlDbType dbtype { get; set; }
-        public bool rowNotYetInDatabase { get; set; }
+        public bool upsert { get; set; }
         public bool delete { get; set; }
+        private bool? parameterRequired;
+        public bool AlreadyProcessed = false; // initialize to this
 
         public bool ParameterRequired()
+        {
+            if (parameterRequired == null)
+                parameterRequired = ParameterRequiredHelper();
+            return (bool)parameterRequired;
+        }
+
+        private readonly string[] problematicSequences = { ";", "'", "--", "/*", "*/", "xp_" };
+        private bool ParameterRequiredHelper()
         {
             bool usingParameter = false;
             if (value == null)
                 return false;
+
 
             switch (dbtype)
             {
@@ -134,13 +145,14 @@ namespace ClassLibrary1.Misc
                 case SqlDbType.BigInt:
                 case SqlDbType.SmallInt:
                 case SqlDbType.Udt:
+                case SqlDbType.DateTime:
                     usingParameter = false;
                     break;
 
                 case SqlDbType.NVarChar:
                 case SqlDbType.VarChar:
-                case SqlDbType.DateTime:
-                    usingParameter = true;
+                    string theString = value as string;
+                    usingParameter = problematicSequences.Any(x => theString.Contains(x));
                     break;
 
             }
@@ -153,6 +165,9 @@ namespace ClassLibrary1.Misc
             {
                 return "NULL";
             }
+
+            if (ParameterRequired())
+                return "@" + paramname;
 
             switch (dbtype)
             {
@@ -171,9 +186,11 @@ namespace ClassLibrary1.Misc
 
                 case SqlDbType.NVarChar:
                 case SqlDbType.VarChar:
-                case SqlDbType.DateTime:
-                    return "@" + paramname;
+                    return "'" + ((string)value).ToString() + "'";
                     ;
+
+                case SqlDbType.DateTime:
+                    return "'" + ((DateTime)value).Date.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 case SqlDbType.Udt:
                     SQLGeographyInfo geoInfo = (SQLGeographyInfo)value;
@@ -225,14 +242,14 @@ namespace ClassLibrary1.Misc
         int Rownum;
         string Tablename;
         private Action ActionToApplyAfterSuccessfulUpdating;
-        public Func<bool> IsAlreadyUpdated;
+        public Func<bool> IsAlreadyProcessed; // DEBUG: Get rid of this if possible.
 
-        public SQLUpdateRowInfo(int rownum, string tablename, Action actionToApplyAfterSuccessfulUpdating, Func<bool> isAlreadyUpdated)
+        public SQLUpdateRowInfo(int rownum, string tablename, Action actionToApplyAfterSuccessfulUpdating, Func<bool> isAlreadyProcessed)
         {
             Rownum = rownum;
             Tablename = tablename;
             ActionToApplyAfterSuccessfulUpdating = actionToApplyAfterSuccessfulUpdating;
-            IsAlreadyUpdated = isAlreadyUpdated;
+            IsAlreadyProcessed = isAlreadyProcessed;
             SQLUpdateInfos = new List<SQLUpdateInfo>();
         }
 
@@ -241,9 +258,9 @@ namespace ClassLibrary1.Misc
             ActionToApplyAfterSuccessfulUpdating(); // NOTE: We might apply this before the query is complete, but it should be submitted only after the update query is complete.
         }
 
-        public bool DataMayAlreadyBeInDatabase() // ==> do upsert instead of update
+        public bool UseUpsertInsteadOfUpdate()
         {
-            return SQLUpdateInfos.Any(x => !x.rowNotYetInDatabase);
+            return SQLUpdateInfos.Any(x => x.upsert); 
         }
 
         public bool OnlyDeletionCommands()
@@ -368,7 +385,7 @@ namespace ClassLibrary1.Misc
             updateInfos = new List<SQLUpdateInfo>();
             int parametersUsed = 0;
             moreToDo = false;
-            foreach (var row in Rows.Where(x => x.DataMayAlreadyBeInDatabase() && !x.IsAlreadyUpdated()))
+            foreach (var row in Rows.Where(x => !x.UseUpsertInsteadOfUpdate() && !x.OnlyDeletionCommands())) // !x.IsAlreadyProcessed()))
             {
                 string updateCommand;
                 List<SQLUpdateInfo> partialUpdateInfos;
@@ -432,7 +449,7 @@ WHEN MATCHED THEN
             sb = new StringBuilder();
             updateInfos = new List<SQLUpdateInfo>();
             moreToDo = false;
-            var rowsStillToBeUpserted = Rows.Where(x => !x.DataMayAlreadyBeInDatabase() && !x.IsAlreadyUpdated() && !x.OnlyDeletionCommands());
+            var rowsStillToBeUpserted = Rows.Where(x => x.UseUpsertInsteadOfUpdate() && !x.OnlyDeletionCommands()); // && !x.IsAlreadyProcessed()
             if (!rowsStillToBeUpserted.Any())
                 return;
             List<string> fieldNames = GetAffectedFieldNames(rowsStillToBeUpserted);
@@ -571,15 +588,17 @@ WHEN MATCHED THEN
 
     public static class SQLDirectManipulate
     {
-        internal static void ExecuteSQLNonQuery(ISQLDirectConnectionManager database, string command, List<SQLUpdateInfo> updateInfos = null)
+        internal static void ExecuteSQLNonQuery(ISQLDirectConnectionManager database, string command, List<SQLUpdateInfo> parameters = null)
         {
+            if (command == null || command == "")
+                return;
             using (SqlConnection connection =
                new SqlConnection(database.GetConnectionString()))
             {
                 // Create the Command and Parameter objects.
                 SqlCommand sqlCommand = new SqlCommand(command, connection);
-                if (updateInfos != null)
-                    AddSQLParametersToSqlCommand(updateInfos, sqlCommand);
+                if (parameters != null)
+                    AddSQLParametersToSqlCommand(parameters, sqlCommand);
                 sqlCommand.Connection.Open();
                 sqlCommand.ExecuteNonQuery();
             }

@@ -21,6 +21,7 @@ namespace ClassLibrary1.Model
 
         public static bool RecordRecentChangesInStatusRecords = false; // We are disabling this feature. If enabling it, we would need to copy the TblRowStatusRecords to the denormalized database.
 
+        public static bool DoBulkInserting = false; 
         public static bool DoBulkUpdating = true; // DEBUG -- once we get rid of automatically creating missing ratings, we can get rid of this
 
         public static int CountHighestRecord(DenormalizedTableAccess dta, string tableName)
@@ -67,7 +68,7 @@ namespace ClassLibrary1.Model
 
         internal static bool ContinueAddingNewRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
-            if (!DoBulkUpdating)
+            if (!DoBulkInserting)
                 return false;
 
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
@@ -265,7 +266,7 @@ namespace ClassLibrary1.Model
 
         internal static bool ContinueBulkUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
-            if (!DoBulkUpdating)
+            if (!DoBulkUpdating && !DoBulkInserting)
                 return false;
 
             if (useAzureQueuesToDesignateRowsToUpdate)
@@ -318,21 +319,51 @@ namespace ClassLibrary1.Model
             if (rowsCount == numAtOnce)
                 noMoreWork = false;
 
-            var groupedRows = theRows.GroupBy(x => x.TblID);
+            // Changes from a single TblRow in a single Tbl can require changes (upserts, updates, deletes) to more than one destination table,
+            // the primary table as well as any secondary tables containing data that we join with data from the primary table.
+            // We thus go through each primary table in the outer loop, by TblRow in the next loop, by destination table in the loop within that,
+            // and by destination row in the furthest inside loop. In that innermost loop, we can produce a SQLUpdateRowInfo for a row within that
+            // destination table. That can then be added to a SQLUpdateRowsInfo for a destination table.
+                
+
+            var rowsGroupedBySourceTable = theRows.GroupBy(x => x.TblID);
 
             SQLUpdateTablesInfo allTables = new SQLUpdateTablesInfo();
 
-            foreach (var group in groupedRows)
+            foreach (var groupOfUpdatesForSourceTable in rowsGroupedBySourceTable)
             {
-                string tableName = "V" + group.Key.ToString();
-                SQLUpdateRowsInfo sqlUpdateRowsInfo = new SQLUpdateRowsInfo() { TableName = tableName };
+                string primaryTableName = "V" + groupOfUpdatesForSourceTable.Key.ToString();
+                Dictionary<string, SQLUpdateRowsInfo> rowSetsByDestinationTable = new Dictionary<string, SQLUpdateRowsInfo>();
+                rowSetsByDestinationTable.Add(primaryTableName, new SQLUpdateRowsInfo() { TableName = primaryTableName });
                 foreach (TblRow tblRow in theRows)
                 {
                     List<SQLUpdateInfo> toUpdateList = FastAccessRowUpdateInfo.GetFastAccessRowUpdateInfoList(tblRow);
-                    SQLUpdateRowInfo singleRow = new SQLUpdateRowInfo(tblRow.TblRowID, tableName, () => ResetIndividualUpdatingFlags(tblRow), () => tblRow.FastAccessUpdateSpecified == false) { SQLUpdateInfos = toUpdateList };
-                    sqlUpdateRowsInfo.Rows.Add(singleRow);
+                    var updatesGroupedByDestinationTable = toUpdateList.GroupBy(x => x.tablename); // 
+                    foreach (var groupOfUpdatesForSingleDestinationTable in updatesGroupedByDestinationTable)
+                    {
+                        SQLUpdateRowsInfo rowsForPrimaryDestinationTable = rowSetsByDestinationTable[primaryTableName];
+                        SQLUpdateRowInfo singleRow = null;
+                        if (groupOfUpdatesForSingleDestinationTable.Key == primaryTableName)
+                        { // these are changes that will be reflected on the primary fast access table 
+                            singleRow = new SQLUpdateRowInfo(tblRow.TblRowID, primaryTableName, () => ResetIndividualUpdatingFlags(tblRow), () => tblRow.FastAccessUpdateSpecified == false) { SQLUpdateInfos = groupOfUpdatesForSingleDestinationTable.ToList() };
+                            rowSetsByDestinationTable[primaryTableName].Rows.Add(singleRow);
+                        }
+                        else
+                        { // these are changes that will be reflected on a secondary fast access table (e.g., where we store ChoiceInGroups for ChoiceGroups where AllowMultipleSelections == true)
+                            string destinationTableName = groupOfUpdatesForSingleDestinationTable.Key;
+                            if (!rowSetsByDestinationTable.ContainsKey(destinationTableName)) // it might already exist from a previous TblRow
+                                rowSetsByDestinationTable.Add(destinationTableName, new SQLUpdateRowsInfo() { TableName = destinationTableName });
+                            SQLUpdateRowsInfo rowsForDestinationTable = rowSetsByDestinationTable[destinationTableName];
+                            var updatesGroupedByRowInSecondaryTable = groupOfUpdatesForSingleDestinationTable.GroupBy(x => x.rownum);
+                            foreach (var updatesForSingleRow in updatesGroupedByRowInSecondaryTable)
+                            {
+                                singleRow = new SQLUpdateRowInfo((int) updatesForSingleRow.First().rownum, destinationTableName, () => {}, () => true );
+                                rowsForDestinationTable.Rows.Add(singleRow);
+                            }
+                        }
+                    }
                 }
-                allTables.TablesContainingInformationToUpdate.Add(sqlUpdateRowsInfo);
+                allTables.TablesContainingInformationToUpdate.AddRange(rowSetsByDestinationTable.Select(x => x.Value).AsEnumerable());
             }
             allTables.DoUpdate(dta);
             return !noMoreWork;

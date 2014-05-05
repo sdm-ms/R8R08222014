@@ -16,11 +16,11 @@ namespace ClassLibrary1.Model
         {
             List<SQLUpdateInfo> sqlUpdateInfos = null;
             sqlUpdateInfos = GetFastAccessRowUpdateInfoList(tblRow);
-            bool rowNotYetInDatabase;
+            bool upsert; // we will base this on the first item, because we will keep all items for an ID consistent
             if (sqlUpdateInfos != null && sqlUpdateInfos.Any())
-                rowNotYetInDatabase = sqlUpdateInfos.First().rowNotYetInDatabase;
+                upsert = sqlUpdateInfos.First().upsert;
             else
-                rowNotYetInDatabase = false; // we assume that the row IS in the database, until we explicitly specify that the row isn't (see GetFastAccessRowUpdateInfoList)
+                upsert = false; // we assume that the row IS in the database, so an update would be OK, until we explicitly specify that the row isn't (see GetFastAccessRowUpdateInfoList), at which point we change all upserts for this ID to TRUE
             List<SQLUpdateInfo> suis = GetSQLParameterInfo();
             for (int spi_index = 0; spi_index < suis.Count(); spi_index++)
             {
@@ -29,7 +29,7 @@ namespace ClassLibrary1.Model
                     sui.rownum = tblRow.TblRowID; // would be different if this was a secondary table
                 if (sui.tablename == null || sui.tablename == "")
                     sui.tablename = "V" + tblRow.TblID.ToString(); // this is the default, which we override for secondary tables)
-                sui.rowNotYetInDatabase = rowNotYetInDatabase;
+                sui.upsert = upsert;
                 string newparamname = sui.paramname;
                 var match = suis.Select((item, index) => new { Item = item, Index = index}).FirstOrDefault(x => x.Item.paramname == newparamname);
                 int? matchIndex = null;
@@ -56,7 +56,7 @@ namespace ClassLibrary1.Model
             if (!idAlreadyExists && tblRow.TblRowID != 0) // once we execute this once, we have an ID field with a non-zero ID, so we don't have to do it again. Until TblRowID is non-zero, we won't execute it.
             {
 
-                updates.Add(new SQLUpdateInfo() { fieldname = "ID", rownum = tblRow.TblRowID, tablename = "V" + tblRow.TblID.ToString(), value = tblRow.TblRowID, dbtype = SqlDbType.Int, rowNotYetInDatabase = false });
+                updates.Add(new SQLUpdateInfo() { fieldname = "ID", rownum = tblRow.TblRowID, tablename = "V" + tblRow.TblID.ToString(), value = tblRow.TblRowID, dbtype = SqlDbType.Int, upsert = false });
 
                 if (tblRow.FastAccessInitialCopy)
                 {
@@ -65,7 +65,8 @@ namespace ClassLibrary1.Model
                     foreach (SQLUpdateInfo update in updates)
                     {
                         update.rownum = tblRow.TblRowID;
-                        update.rowNotYetInDatabase = true;
+                        if (!update.delete)
+                            update.upsert = true;
                     }
                 }
             }
@@ -232,7 +233,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLUpdateInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = ChoiceInGroupID, dbtype = SqlDbType.Int, tablename = "VFMC" + FieldDefinitionID.ToString(), rownum = ChoiceInFieldID, delete = Delete, rowNotYetInDatabase = !Delete }
+                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = ChoiceInGroupID, dbtype = SqlDbType.Int, tablename = "VFMC" + FieldDefinitionID.ToString(), rownum = ChoiceInFieldID, delete = Delete, upsert = !Delete }
             };
         }
     }

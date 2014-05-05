@@ -23,6 +23,8 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
     public int? TblRowID { get; set; }
     public int FieldDefinitionOrTblColumnID {get; set;}
     public RaterooDataAccess DataAccess { get; set; }
+    public decimal? Latitude;
+    public decimal? Longitude;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -65,7 +67,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
         else
         {
             FieldDefinition theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
-            return new AddressFieldDataInfo(theFieldDefinition, addressText, theGroup, DataAccess);
+            return new AddressFieldDataInfo(theFieldDefinition, addressText, Latitude, Longitude, theGroup, DataAccess);
         }
     }
 
@@ -84,6 +86,8 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
         if (theAddress == "")
             return true;
         Coordinate myCoordinates = Geocode.GetCoordinates(theAddress);
+        Latitude = myCoordinates.Latitude;
+        Longitude = myCoordinates.Longitude;
         errorMessage = "Google could not find the address you specified. Please delete or correct the address."; // in case of error
         return !(myCoordinates.Latitude == 0 && myCoordinates.Latitude == 0);
     }

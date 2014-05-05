@@ -110,7 +110,7 @@ namespace ClassLibrary1.Model
             SQLGeographyInfo geoInfo = null;
             if (Status == (byte)StatusOfObject.Active && Latitude != 0 && Longitude != 0 && Latitude != null && Longitude != null)
                 geoInfo = new SQLGeographyInfo() { Latitude = (decimal) Latitude, Longitude = (decimal) Longitude };
-            var updater = new FastAccessAddressFieldUpdateInfo() { FieldDefinitionID = this.Field.FieldDefinitionID, GeoInfo = null };
+            var updater = new FastAccessAddressFieldUpdateInfo() { FieldDefinitionID = this.Field.FieldDefinitionID, GeoInfo = geoInfo };
 
             updater.AddToTblRow(this.Field.TblRow);
         }

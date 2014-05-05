@@ -90,7 +90,7 @@ namespace ClassLibrary1.Model
                 switch (FieldDefinition.FieldType)
                 {
                     case (int) FieldTypes.AddressField:
-                        AddressFieldDataInfo theInfo = new AddressFieldDataInfo(FieldDefinition, "", this, DataAccess);
+                        AddressFieldDataInfo theInfo = new AddressFieldDataInfo(FieldDefinition, "", null, null, this, DataAccess);
                         if (theInfo.LoadFromDatabase())
                             AddFieldDataInfo(theInfo);
                         break;
@@ -268,11 +268,15 @@ namespace ClassLibrary1.Model
 
     public class AddressFieldDataInfo : FieldDataInfo
     {
-        public string TheAddress { get; set; }
-        public AddressFieldDataInfo(FieldDefinition FieldDefinition, string theAddress, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public string AddressShortText { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
+        public AddressFieldDataInfo(FieldDefinition FieldDefinition, string theAddress, decimal? latitude, decimal? longitude, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
-            TheAddress = theAddress;
+            AddressShortText = theAddress;
+            Latitude = latitude;
+            Longitude = longitude;
         }
 
         public override bool LoadFromDatabase()
@@ -281,7 +285,11 @@ namespace ClassLibrary1.Model
             if (theField == null)
                 return false;
             else
-                TheAddress = theField.AddressString;
+            {
+                AddressShortText = theField.AddressString;
+                Latitude = theField.Latitude;
+                Longitude = theField.Longitude;
+            }
             return true;
         }
 
@@ -291,9 +299,9 @@ namespace ClassLibrary1.Model
             if (TheGroup.theTblRow.TblRowID != 0)
                 theField = DataAccess.RaterooDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int) StatusOfObject.Active);
             if (theField == null)
-                return (TheAddress == "");
+                return (AddressShortText == "");
             else
-                return (theField.AddressString == TheAddress);
+                return (theField.AddressString == AddressShortText && theField.Latitude == Latitude && theField.Longitude == Longitude); // it's possible that we're changing just the coordinates
         }
 
         public override string GetDescription()
@@ -301,7 +309,7 @@ namespace ClassLibrary1.Model
             if (descriptionLoaded)
                 return theDescription;
             descriptionLoaded = true;
-            theDescription = base.GetDescription() + TheAddress;
+            theDescription = base.GetDescription() + AddressShortText;
             return theDescription;
         }
     }
