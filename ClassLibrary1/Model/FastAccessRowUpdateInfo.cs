@@ -14,32 +14,34 @@ namespace ClassLibrary1.Model
         public abstract List<SQLUpdateInfo> GetSQLParameterInfo();
         public void AddToTblRow(TblRow tblRow)
         {
-            List<SQLUpdateInfo> sqlParamInfos = null;
-            sqlParamInfos = GetFastAccessRowUpdateInfoList(tblRow);
+            List<SQLUpdateInfo> sqlUpdateInfos = null;
+            sqlUpdateInfos = GetFastAccessRowUpdateInfoList(tblRow);
             bool rowNotYetInDatabase;
-            if (sqlParamInfos != null && sqlParamInfos.Any())
-                rowNotYetInDatabase = sqlParamInfos.First().rowNotYetInDatabase;
+            if (sqlUpdateInfos != null && sqlUpdateInfos.Any())
+                rowNotYetInDatabase = sqlUpdateInfos.First().rowNotYetInDatabase;
             else
                 rowNotYetInDatabase = false; // we assume that the row IS in the database, until we explicitly specify that the row isn't (see GetFastAccessRowUpdateInfoList)
-            List<SQLUpdateInfo> spis = GetSQLParameterInfo();
-            for (int spi_index = 0; spi_index < spis.Count(); spi_index++)
+            List<SQLUpdateInfo> suis = GetSQLParameterInfo();
+            for (int spi_index = 0; spi_index < suis.Count(); spi_index++)
             {
-                SQLUpdateInfo spi = spis[spi_index];
-                spi.rownum = tblRow.TblRowID;
-                spi.tablename = "V" + tblRow.TblID.ToString();
-                spi.rowNotYetInDatabase = rowNotYetInDatabase;
-                string newparamname = spi.paramname;
-                var match = spis.Select((item, index) => new { Item = item, Index = index}).FirstOrDefault(x => x.Item.paramname == newparamname);
+                SQLUpdateInfo sui = suis[spi_index];
+                if (sui.rownum == null)
+                    sui.rownum = tblRow.TblRowID; // would be different if this was a secondary table
+                if (sui.tablename == null || sui.tablename == "")
+                    sui.tablename = "V" + tblRow.TblID.ToString(); // this is the default, which we override for secondary tables)
+                sui.rowNotYetInDatabase = rowNotYetInDatabase;
+                string newparamname = sui.paramname;
+                var match = suis.Select((item, index) => new { Item = item, Index = index}).FirstOrDefault(x => x.Item.paramname == newparamname);
                 int? matchIndex = null;
                 if (match != null)
                     matchIndex = match.Index;
                 if (match == null)
-                    sqlParamInfos.Add(spi);
+                    sqlUpdateInfos.Add(sui);
                 else
-                    spis[(int)matchIndex] = spi;
+                    suis[(int)matchIndex] = sui;
             }
-            sqlParamInfos.AddRange(spis);
-            tblRow.FastAccessUpdated = BinarySerializer.Serialize<List<SQLUpdateInfo>>(sqlParamInfos);
+            sqlUpdateInfos.AddRange(suis);
+            tblRow.FastAccessUpdated = BinarySerializer.Serialize<List<SQLUpdateInfo>>(sqlUpdateInfos);
             tblRow.FastAccessUpdateSpecified = true;
         }
 
@@ -69,6 +71,7 @@ namespace ClassLibrary1.Model
             }
             return updates;
         }
+
     }
 
     [Serializable]
@@ -216,6 +219,20 @@ namespace ClassLibrary1.Model
             return new List<SQLUpdateInfo>()
             {
                 new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = ChoiceInGroupID, dbtype = SqlDbType.Int }
+            };
+        }
+    }
+
+    public class FastAccessChoiceFieldMultipleSelectionUpdateInfo : FastAccessFieldUpdateInfo
+    {
+        public int ChoiceInFieldID;
+        public int? ChoiceInGroupID;
+        public bool Delete;
+        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        {
+            return new List<SQLUpdateInfo>()
+            {
+                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = ChoiceInGroupID, dbtype = SqlDbType.Int, tablename = "VFMC" + FieldDefinitionID.ToString(), rownum = ChoiceInFieldID, delete = Delete, rowNotYetInDatabase = !Delete }
             };
         }
     }

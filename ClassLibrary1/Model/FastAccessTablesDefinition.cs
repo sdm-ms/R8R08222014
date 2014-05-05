@@ -112,7 +112,7 @@ namespace ClassLibrary1.Model
             TheFieldDefinition = theFieldDefinition;
             TheChoiceGroup = TheFieldDefinition.ChoiceGroupFieldDefinitions.First().ChoiceGroup;
 
-            idColumn = new SQLTableColumnDescription() { Name = "MCID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = true, NonclusteredIndex = false };
+            idColumn = new SQLTableColumnDescription() { Name = "ID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = false, NonclusteredIndex = false }; // to maintain uniqueness, we'll make the ID = ChoiceInFieldID in the normalized table
             tblRowIDColumn = new SQLTableColumnDescription() { Name = "TRID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             choiceColumn = new SQLTableColumnDescription() { Name = "CHO", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
         }
@@ -424,7 +424,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 foreach (var choice in theChoices)
                 {
                     var dataRow = dataTable.NewRow();
-                    // dataRow["MCID"] should be set automatically.
+                    dataRow["ID"] = choice.ChoiceInFieldID;
                     dataRow["CHO"] = choice.ChoiceInGroupID;
                     dataRow["TRID"] = ID; // the table row id
                     dataTable.Rows.Add(dataRow);

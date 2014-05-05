@@ -118,6 +118,7 @@ namespace ClassLibrary1.Misc
         public object value { get; set; }
         public SqlDbType dbtype { get; set; }
         public bool rowNotYetInDatabase { get; set; }
+        public bool delete { get; set; }
 
         public bool ParameterRequired()
         {
@@ -240,9 +241,24 @@ namespace ClassLibrary1.Misc
             ActionToApplyAfterSuccessfulUpdating(); // NOTE: We might apply this before the query is complete, but it should be submitted only after the update query is complete.
         }
 
-        public bool DataMayAlreadyBeInDatabase()
+        public bool DataMayAlreadyBeInDatabase() // ==> do upsert instead of update
         {
             return SQLUpdateInfos.Any(x => !x.rowNotYetInDatabase);
+        }
+
+        public bool OnlyDeletionCommands()
+        {
+            return SQLUpdateInfos.All(x => x.delete);
+        }
+
+        public bool ContainsDeletionCommands()
+        {
+            return SQLUpdateInfos.Any(x => x.delete);
+        }
+
+        public IQueryable<SQLUpdateInfo> GetDeletionInfos()
+        {
+            return SQLUpdateInfos.Where(x => x.delete).AsQueryable();
         }
 
         public void Add(string varname, object value, SqlDbType dbtype)
@@ -274,22 +290,6 @@ namespace ClassLibrary1.Misc
                     sb.Append("DEFAULT");
                 else
                     sb.Append(updateInfo.GetValueOrParameterName());
-                //if (updateInfo.dbtype == SqlDbType.Udt)
-                //{
-                //    SQLGeographyInfo geoInfo = (SQLGeographyInfo)updateInfo.value;
-                //    string[] geographyComponents = new string[] { "geography::STPointFromText('POINT(' + CAST(", geoInfo.Longitude.ToString(), " AS VARCHAR(20)) + ' ' + CAST(", geoInfo.Latitude.ToString(), " AS VARCHAR(20)) + ')', 4326)" };
-                //    //string[] geographyComponents = new string[] { " geography::STPointFromText('POINT(' + CAST(@", updateInfo.fieldname, "LONG", "R", updateInfo.rownum.ToString(), "T", updateInfo.tablename, " AS VARCHAR(20)) + ' ' + CAST(@", updateInfo.fieldname, "LAT", "R", updateInfo.rownum.ToString(), "X", updateInfo.tablename, " AS VARCHAR(20)) + ')', 4326)" };
-                //    foreach (string gc in geographyComponents)
-                //        sb.Append(gc);
-                //}
-                //else
-                //{
-                //    sb.Append("@");
-                //    if (updateInfo == null)
-                //        sb.Append("DEFAULT");
-                //    else
-                //        sb.Append(updateInfo.paramname);
-                //}
                 if (isFirst)
                     isFirst = false;
             }
@@ -299,8 +299,10 @@ namespace ClassLibrary1.Misc
 
         public void GetUpdateCommand(string tableName, out string updateCommand, out List<SQLUpdateInfo> updateInfos)
         {
+            var nonDeletionCommands = SQLUpdateInfos.Where(x => !x.delete).ToList();
+
             // step 1: formulate the SQL statement
-            if (!SQLUpdateInfos.Any())
+            if (!nonDeletionCommands.Any())
             {
                 updateCommand = null;
                 updateInfos = null;
@@ -314,7 +316,7 @@ namespace ClassLibrary1.Misc
             updateStringComponents.AddRange(new string[] { "UPDATE ", tableName, " ", "SET " });
             bool isFirst = true;
             string idvalue = "";
-            foreach (var variable in SQLUpdateInfos)
+            foreach (var variable in nonDeletionCommands)
             {
                 if (variable.fieldname != "ID")
                 {
@@ -334,11 +336,11 @@ namespace ClassLibrary1.Misc
                 sb.Append(component);
             updateCommand = sb.ToString();
 
-            foreach (var p in SQLUpdateInfos)
+            foreach (var p in nonDeletionCommands)
                 if (p.value == null)
                     p.value = DBNull.Value;
 
-            updateInfos = SQLUpdateInfos.OrderBy(x => x.fieldname == "ID").ToList(); // put ID field last
+            updateInfos = nonDeletionCommands.OrderBy(x => x.fieldname == "ID").ToList(); // put ID field last
         }
     }
 
@@ -355,7 +357,8 @@ namespace ClassLibrary1.Misc
             while (moreToDo)
             {
                 GetUpdateCommands(maxParameters, out sb, out updateInfos, out moreToDo);
-                SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), updateInfos);
+                if (sb.Length > 0)
+                    SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString(), updateInfos);
             }
         }
 
@@ -377,7 +380,8 @@ namespace ClassLibrary1.Misc
                     break;
                 }
                 row.ApplySuccessfulUpdateAction();
-                sb.Append(updateCommand);
+                if (updateCommand != null)
+                    sb.Append(updateCommand);
                 updateInfos.AddRange(partialUpdateInfos);
             }
         }
@@ -428,7 +432,7 @@ WHEN MATCHED THEN
             sb = new StringBuilder();
             updateInfos = new List<SQLUpdateInfo>();
             moreToDo = false;
-            var rowsStillToBeUpserted = Rows.Where(x => !x.DataMayAlreadyBeInDatabase() && !x.IsAlreadyUpdated());
+            var rowsStillToBeUpserted = Rows.Where(x => !x.DataMayAlreadyBeInDatabase() && !x.IsAlreadyUpdated() && !x.OnlyDeletionCommands());
             if (!rowsStillToBeUpserted.Any())
                 return;
             List<string> fieldNames = GetAffectedFieldNames(rowsStillToBeUpserted);
@@ -446,7 +450,7 @@ WHEN MATCHED THEN
                 foreach (string fieldName in fieldNames)
                 {
                     SQLUpdateInfo updateInfo = row.GetSQLUpdateInfoForFieldName(fieldName);
-                    if (updateInfo != null)
+                    if (updateInfo != null && !updateInfo.delete)
                         updateInfos.Add(updateInfo);
                 }
                 row.ApplySuccessfulUpdateAction();
@@ -476,16 +480,29 @@ WHEN MATCHED THEN
             }
             return fieldNames;
         }
+
+        internal void GetDeleteCommands(StringBuilder sb)
+        {
+            // find rows with fieldnames that we should be deleting and generate a delete statement for all rows together (per single fieldname).
+            var groupedDeletionCommands = Rows.Where(x => x.ContainsDeletionCommands()).SelectMany(x => x.GetDeletionInfos()).GroupBy(x => x.fieldname).ToList();
+            foreach (var group in groupedDeletionCommands)
+            {
+                string deleteCommand = SQLDirectManipulate.GetDeleteCommand(TableName, group.Key, group.Select(x => x.GetValueOrParameterName()).ToList());
+                sb.Append(deleteCommand);
+            }
+        }
     }
 
     public class SQLUpdateTablesInfo
     {
-        public List<SQLUpdateRowsInfo> TablesContainingInformationToUpdate = new List<SQLUpdateRowsInfo>();
+        public List<SQLUpdateRowsInfo> TablesContainingInformationToUpdate = new List<SQLUpdateRowsInfo>(); // each SQLUpdateRowsInfo refers to 1 or more rows in a single table, so the List allows us to have data on multiple tables. Note that each SQLUpdateRowsInfo can include upsert, update, and delete commands.
 
         public void DoUpdate(ISQLDirectConnectionManager dta)
         {
             StringBuilder sb;
             List<SQLUpdateInfo> updateInfos;
+            GetDeleteCommands(out sb);
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, sb.ToString());
             bool moreToDo = true;
             while (moreToDo)
             {
@@ -542,6 +559,13 @@ WHEN MATCHED THEN
                 if (moreToDo)
                     break; // we're near the maximum number of parameters
             }
+        }
+
+        public void GetDeleteCommands(out StringBuilder sb)
+        {
+            sb = new StringBuilder();
+            foreach (SQLUpdateRowsInfo suri in TablesContainingInformationToUpdate)
+                suri.GetDeleteCommands(sb);
         }
     }
 
@@ -614,11 +638,35 @@ WHEN MATCHED THEN
             ExecuteSQLNonQuery(database, addCommand);
         }
 
-        public static void DeleteMatchingItems(ISQLDirectConnectionManager database, string tableName, string fieldName, List<string> matchingValuesQuotedIfNecessary)
+        public static void DeleteMatchingItems(ISQLDirectConnectionManager database, string tableName, string fieldName, List<string> matchingValuesForItemsToDeleteQuotedIfNecessary, string condition=null)
         {
-            var individualMatches = matchingValuesQuotedIfNecessary.Select(x => fieldName + "=" + x);
+            string deleteCommand = GetDeleteCommand(tableName, fieldName, matchingValuesForItemsToDeleteQuotedIfNecessary, condition);
+            ExecuteSQLNonQuery(database, deleteCommand);
+        }
+
+        public static string GetDeleteCommand(string tableName, string fieldName, List<string> matchingValuesForItemsToDeleteQuotedIfNecessary, string condition = null)
+        {
+            if (!matchingValuesForItemsToDeleteQuotedIfNecessary.Any())
+                return "";
+            var individualMatches = matchingValuesForItemsToDeleteQuotedIfNecessary.Select(x => fieldName + "=" + x);
             string deleteStatement = String.Join(" OR ", individualMatches);
-            string deleteCommand = String.Format("DELETE FROM [dbo].[{0}] WHERE {1};", tableName, deleteStatement);
+            if (condition == null)
+                condition = "";
+            else
+                condition = " AND (" + condition + ")";
+            string deleteCommand = String.Format("DELETE FROM [dbo].[{0}] WHERE ({1}){2};", tableName, deleteStatement, condition);
+            return deleteCommand;
+        }
+
+        public static void DeleteDoublyMatchingItems(ISQLDirectConnectionManager database, string tableName, string fieldName1, List<string> matchingValuesFieldName1, string fieldName2, List<string> matchingValuesFieldName2, string condition)
+        {
+            var individualMatches = matchingValuesFieldName1.Zip(matchingValuesFieldName2, (f1, f2) => "((" + fieldName1 + " = " + f1 + ") AND (" + fieldName2 + " = " + f2 + "))");
+            string deleteStatement = String.Join(" OR ", individualMatches);
+            if (condition == null)
+                condition = "";
+            else
+                condition = " AND (" + condition + ")";
+            string deleteCommand = String.Format("DELETE FROM [dbo].[{0}] WHERE ({1}){2};", tableName, deleteStatement, condition);
             ExecuteSQLNonQuery(database, deleteCommand);
         }
 

@@ -216,8 +216,9 @@ namespace ClassLibrary1.Model
 
         public void UpdateFastAccessMultipleSelections()
         {
-            throw new NotImplementedException();
-            // Two tasks -- first update the junction table that identifies ChoiceInGroupIDs for each TblRow, and second (once we have a textual version) 
+            int? choice = ChoiceInGroupID;
+            var updater = new FastAccessChoiceFieldMultipleSelectionUpdateInfo() { FieldDefinitionID = this.ChoiceField.Field.FieldDefinitionID, ChoiceInFieldID = this.ChoiceInFieldID, ChoiceInGroupID = choice, Delete = Status == (byte) StatusOfObject.Unavailable };
+            updater.AddToTblRow(this.ChoiceField.Field.TblRow);
         }
     }
 }
