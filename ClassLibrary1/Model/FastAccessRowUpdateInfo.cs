@@ -232,7 +232,7 @@ namespace ClassLibrary1.Model
             return new List<SQLCellInfo>()
             {
                 new SQLCellInfo() { Fieldname = "CHO", Value = ChoiceInGroupID, DBtype = SqlDbType.Int, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = false },
-                new SQLCellInfo() { Fieldname = "TRID", Value = TblRowID, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = true /* in case TblRowID is null or 0 */, DBtype = SqlDbType.Int, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete }
+                new SQLCellInfo() { Fieldname = "TRID", Value = TblRowID, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = true /* in case TblRowID is null or 0 */, DBtype = SqlDbType.Int, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete, groupedWithNPreviousItems = 1 }
             };
         }
 

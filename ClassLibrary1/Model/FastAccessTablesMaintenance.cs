@@ -299,10 +299,11 @@ namespace ClassLibrary1.Model
             return !noMoreWork;
         }
 
+        static bool DisableIndividualUpdating = true; // DEBUG
         internal static bool ContinueIndividualUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
+            if (dataContext == null || DisableIndividualUpdating)
                 return false;
             const int numAtOnce = 2000;
             bool noMoreWork = true; // assume for now
