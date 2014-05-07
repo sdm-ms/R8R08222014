@@ -774,15 +774,7 @@ namespace ClassLibrary1.Model
             {
                 Field theField = null;
 
-                // special case: we need to know when changing choice fields what the new fields are going to be.
-                // this may seem unnecessary, since we always keep the old field and just set its status to Unavailable.
-                // but if we delete and then add a new set of choice fields, we end up with a problem in the 
-                List<ChoiceInGroup> newChoices = null;
-                if (theFieldData is ChoiceFieldDataInfo)
-                {
-                    ChoiceFieldDataInfo cfdi = ((ChoiceFieldDataInfo)theFieldData);
-                    newChoices = cfdi.TheChoices;
-                }
+                CopyChangesInChoicesInMultipleChoiceGroupsToFastAccess(theFieldData); // all other changes will be handled by FastAccessRowUpdatePartialClasses.cs
 
                 theField = FieldClearSubfield(true, theFieldData.TheGroup.theTblRow, theFieldData.TheFieldDefinition.FieldDefinitionID, userID, true);
                 if (theField == null)
@@ -812,7 +804,7 @@ namespace ClassLibrary1.Model
                 {
                     ChoiceField choiceField = DataManipulation.AddChoiceField(theField);
 
-                    foreach (ChoiceInGroup choiceInGroup in )
+                    foreach (ChoiceInGroup choiceInGroup in ((ChoiceFieldDataInfo)theFieldData).TheChoices)
                     {
                         DataManipulation.AddChoiceInField(choiceField, choiceInGroup);
                     }
@@ -826,7 +818,35 @@ namespace ClassLibrary1.Model
                     DataManipulation.AddNumberField(theField, ((NumericFieldDataInfo)theFieldData).TheNumber);
                 }
             }
+        }
 
+        private static void CopyChangesInChoicesInMultipleChoiceGroupsToFastAccess(FieldDataInfo theFieldData)
+        {
+            if (theFieldData is ChoiceFieldDataInfo)
+            {
+                ChoiceFieldDataInfo cfd = (ChoiceFieldDataInfo)theFieldData;
+                if (cfd.theCGFD.ChoiceGroup.AllowMultipleSelections)
+                {
+                    List<ChoiceInGroup> existingList = null, newList = null;
+                    existingList = cfd.GetDatabaseValues();
+                    newList = cfd.TheChoices;
+
+                    foreach (ChoiceInGroup deleted in existingList.Where(x => !newList.Contains(x)))
+                    {
+                        int choice = deleted.ChoiceInGroupID;
+                        TblRow tblRow = theFieldData.TheGroup.theTblRow;
+                        var updater = new FastAccessChoiceFieldMultipleSelectionUpdateInfo() { FieldDefinitionID = cfd.theCGFD.FieldDefinitionID, ChoiceInGroupID = choice, TblRowID = tblRow.TblRowID, Delete = true };
+                        updater.AddToTblRow(tblRow);
+                    }
+                    foreach (ChoiceInGroup inserted in newList.Where(x => !existingList.Contains(x)))
+                    {
+                        int choice = inserted.ChoiceInGroupID;
+                        TblRow tblRow = theFieldData.TheGroup.theTblRow;
+                        var updater = new FastAccessChoiceFieldMultipleSelectionUpdateInfo() { FieldDefinitionID = cfd.theCGFD.FieldDefinitionID, ChoiceInGroupID = choice, TblRowID = tblRow.TblRowID, Delete = false };
+                        updater.AddToTblRow(tblRow);
+                    }
+                }
+            }
         }
 
         internal void FieldDelete(TblRow entity, FieldDefinition theFieldDefinition, int userID)

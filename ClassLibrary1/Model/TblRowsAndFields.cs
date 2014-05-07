@@ -596,19 +596,29 @@ namespace ClassLibrary1.Model
             return true;
         }
 
+        public List<ChoiceInGroup> GetDatabaseValues()
+        {
+            string cacheKey = "CIG" + TheFieldDefinition.FieldDefinitionID + "," + TheGroup.theTblRow.TblRowID;
+            object inDB;
+            bool inCache = DataAccess.RaterooDB.TempCache.TryGetValue(cacheKey, out inDB);
+            if (inCache)
+                return (inDB as List<ChoiceInGroup>);
+            ChoiceField theField = DataAccess.RaterooDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+
+            List<ChoiceInGroup> existingList = null;
+            if (theField == null)
+                existingList = new List<ChoiceInGroup>();
+            else
+                existingList = DataAccess.RaterooDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField == theField && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceInGroupID).ToList();
+            DataAccess.RaterooDB.TempCache[cacheKey] = existingList;
+            return existingList;
+        }
+
         public override bool MatchesDatabase()
         {
             List<ChoiceInGroup> thisListOrdered = TheChoices.OrderBy(x => x.ChoiceInGroupID).ToList();
-            ChoiceField theField = null;
-            if (TheGroup.theTblRow.TblRowID != 0)
-                theField = DataAccess.RaterooDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
-            if (theField == null)
-                return (thisListOrdered.Count() == 0);
-            else
-            {
-                List<ChoiceInGroup> existingList = DataAccess.RaterooDB.GetTable<ChoiceInField>().Where(x => x.ChoiceFieldID == theField.ChoiceFieldID && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceInGroupID).ToList();
-                return (existingList.SequenceEqual(thisListOrdered));
-            }
+            List<ChoiceInGroup> existingList = GetDatabaseValues();
+            return (existingList.SequenceEqual(thisListOrdered));
         }
 
         public override string GetDescription()

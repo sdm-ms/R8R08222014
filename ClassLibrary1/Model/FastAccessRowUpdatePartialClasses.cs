@@ -216,15 +216,9 @@ namespace ClassLibrary1.Model
 
         public void UpdateFastAccessMultipleSelections()
         {
-            // NOTE: We do not actually make these changes here. The problem is that some ChoiceInFields are deleted and then readded, but we can't be sure whether something that has status AboutToBeReplaced 
+            // NOTE: We do not actually make these changes here. See FieldChange in ActionProcessor. The problem is that some ChoiceInFields are deleted and then readded, but we can't be sure whether something that has status AboutToBeReplaced 
             if (Status == (byte)StatusOfObject.AboutToBeReplaced)
-                Status = (byte)StatusOfObject.Unavailable; // with multiple selections, we must respond by deleting
-
-
-            int choice = ChoiceInGroupID;
-            TblRow tblRow = this.ChoiceField.Field.TblRow;
-            var updater = new FastAccessChoiceFieldMultipleSelectionUpdateInfo() { FieldDefinitionID = this.ChoiceField.Field.FieldDefinitionID, ChoiceInFieldID = this.ChoiceInFieldID, ChoiceInGroupID = choice, TblRowID = tblRow.TblRowID, Delete = Status == (byte) StatusOfObject.Unavailable };
-            updater.AddToTblRow(tblRow);
+                Status = (byte)StatusOfObject.Unavailable; 
         }
     }
 }

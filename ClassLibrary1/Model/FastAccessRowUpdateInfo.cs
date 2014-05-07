@@ -222,7 +222,6 @@ namespace ClassLibrary1.Model
 
     public class FastAccessChoiceFieldMultipleSelectionUpdateInfo : FastAccessFieldUpdateInfo
     {
-        public int ChoiceInFieldID;
         public int TblRowID;
         public int ChoiceInGroupID;
         public bool Delete;
