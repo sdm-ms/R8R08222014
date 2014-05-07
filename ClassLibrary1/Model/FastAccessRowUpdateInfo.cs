@@ -11,65 +11,61 @@ namespace ClassLibrary1.Model
     [Serializable]
     public abstract class FastAccessRowUpdateInfo
     {
-        public abstract List<SQLUpdateInfo> GetSQLParameterInfo();
-        public void AddToTblRow(TblRow tblRow)
+        public abstract List<SQLCellInfo> GetSQLParameterInfo();
+
+        public virtual void AddToTblRow(TblRow tblRow, SQLUpdateInfoTableSpecification tableSpec = null)
         {
-            List<SQLUpdateInfo> sqlUpdateInfos = null;
-            sqlUpdateInfos = GetFastAccessRowUpdateInfoList(tblRow);
-            bool upsert; // we will base this on the first item, because we will keep all items for an ID consistent
-            if (sqlUpdateInfos != null && sqlUpdateInfos.Any())
-                upsert = sqlUpdateInfos.First().upsert;
-            else
-                upsert = false; // we assume that the row IS in the database, so an update would be OK, until we explicitly specify that the row isn't (see GetFastAccessRowUpdateInfoList), at which point we change all upserts for this ID to TRUE
-            List<SQLUpdateInfo> suis = GetSQLParameterInfo();
-            for (int spi_index = 0; spi_index < suis.Count(); spi_index++)
+            bool dataIsAlreadyInDatabase = false;
+            if (tableSpec == null)
             {
-                SQLUpdateInfo sui = suis[spi_index];
-                if (sui.rownum == null)
-                    sui.rownum = tblRow.TblRowID; // would be different if this was a secondary table
-                if (sui.tablename == null || sui.tablename == "")
-                    sui.tablename = "V" + tblRow.TblID.ToString(); // this is the default, which we override for secondary tables)
-                sui.upsert = upsert;
-                string newparamname = sui.paramname;
-                var match = suis.Select((item, index) => new { Item = item, Index = index}).FirstOrDefault(x => x.Item.paramname == newparamname);
-                int? matchIndex = null;
-                if (match != null)
-                    matchIndex = match.Index;
-                if (match == null)
-                    sqlUpdateInfos.Add(sui);
-                else
-                    suis[(int)matchIndex] = sui;
+                tableSpec = GetMainSqlUpdateInfoTableSpecification(tblRow.TblID);
+                if (tblRow.TblRowID != 0)
+                    dataIsAlreadyInDatabase = true;
             }
-            sqlUpdateInfos.AddRange(suis);
-            tblRow.FastAccessUpdated = BinarySerializer.Serialize<List<SQLUpdateInfo>>(sqlUpdateInfos);
+            
+            SQLInfoForCellsInRow_MainAndSecondaryTables sqlUpdateInfos = null;
+            sqlUpdateInfos = GetFastAccessRowUpdateInfoList(tblRow);
+            List<SQLCellInfo> suis = GetSQLParameterInfo();
+            foreach (SQLCellInfo sui in suis)
+            {
+                sui.DataIsAlreadyInDatabase = dataIsAlreadyInDatabase;
+                sqlUpdateInfos.Add(sui, tableSpec);
+            }
+            //for (int spi_index = 0; spi_index < suis.Count(); spi_index++)
+            //{
+            //    SQLCellInfo sui = suis[spi_index];
+            //    var match = sqlUpdateInfos.SQLUpdateInfos.Select((item, index) => new { Item = item, Index = index}).FirstOrDefault(x => x.Item.Paramname == newparamname);
+            //    int? matchIndex = null;
+            //    if (match != null)
+            //        matchIndex = match.Index;
+            //    if (match == null)
+            //        sqlUpdateInfos.Add(sui);
+            //    else
+            //        sqlUpdateInfos[(int)matchIndex] = sui;
+            //}
+            tblRow.FastAccessUpdated = BinarySerializer.Serialize<SQLInfoForCellsInRow_MainAndSecondaryTables>(sqlUpdateInfos);
             tblRow.FastAccessUpdateSpecified = true;
         }
 
-        public static List<SQLUpdateInfo> GetFastAccessRowUpdateInfoList(TblRow tblRow)
+        public SQLUpdateInfoTableSpecification GetMainSqlUpdateInfoTableSpecification(int tblID)
         {
-            List<SQLUpdateInfo> updates;
+            return SQLFastAccessTableInfo.GetSpecification(tblID);
+        }
+
+        public SQLUpdateInfoTableSpecification GetMultipleChoicesTableSpecification(int fieldDefinitionID, int tblID)
+        {
+            return SQLMultipleChoiceFieldTableInfo.GetSpecification(fieldDefinitionID, tblID);
+        }
+
+        public static SQLInfoForCellsInRow_MainAndSecondaryTables GetFastAccessRowUpdateInfoList(TblRow tblRow)
+        {
+            SQLInfoForCellsInRow_MainAndSecondaryTables updates = null;
             if (tblRow.FastAccessUpdated == null)
-                updates = new List<SQLUpdateInfo>();
+                updates = new SQLInfoForCellsInRow_MainAndSecondaryTables();
             else
-                updates = BinarySerializer.Deserialize<List<SQLUpdateInfo>>(tblRow.FastAccessUpdated.ToArray());
-            bool idAlreadyExists = updates.Any(x => x.fieldname == "ID");
-            if (!idAlreadyExists && tblRow.TblRowID != 0) // once we execute this once, we have an ID field with a non-zero ID, so we don't have to do it again. Until TblRowID is non-zero, we won't execute it.
-            {
-
-                updates.Add(new SQLUpdateInfo() { fieldname = "ID", rownum = tblRow.TblRowID, tablename = "V" + tblRow.TblID.ToString(), value = tblRow.TblRowID, dbtype = SqlDbType.Int, upsert = false });
-
-                if (tblRow.FastAccessInitialCopy)
-                {
-                    // this has just been added to the database, so we previously did not have a TblRowID and so the rownum is wrong, and we must mark this as data that should be inserted
-                    // update all the previous items
-                    foreach (SQLUpdateInfo update in updates)
-                    {
-                        update.rownum = tblRow.TblRowID;
-                        if (!update.delete)
-                            update.upsert = true;
-                    }
-                }
-            }
+                updates = BinarySerializer.Deserialize<SQLInfoForCellsInRow_MainAndSecondaryTables>(tblRow.FastAccessUpdated.ToArray());
+            if (tblRow.TblRowID != 0)
+                updates.SetMainTablePrimaryKey(tblRow.TblRowID, true);
             return updates;
         }
 
@@ -79,11 +75,11 @@ namespace ClassLibrary1.Model
     public class FastAccessHighStakesKnownUpdateInfo : FastAccessRowUpdateInfo
     {
         public bool HighStakesKnown;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "HS", value = HighStakesKnown, dbtype = SqlDbType.Bit }
+                new SQLCellInfo() { Fieldname = "HS", Value = HighStakesKnown, DBtype = SqlDbType.Bit }
             };
         }
     }
@@ -92,11 +88,11 @@ namespace ClassLibrary1.Model
     public class FastAccessDeletedUpdateInfo : FastAccessRowUpdateInfo
     {
         public bool Deleted;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "DEL", value = Deleted, dbtype = SqlDbType.Bit }
+                new SQLCellInfo() { Fieldname = "DEL", Value = Deleted, DBtype = SqlDbType.Bit }
             };
         }
     }
@@ -105,11 +101,11 @@ namespace ClassLibrary1.Model
     public class FastAccessElevateOnMostNeedsRatingUpdateInfo : FastAccessRowUpdateInfo
     {
         public bool ElevateOnMostNeedsRating;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "ELEV", value = ElevateOnMostNeedsRating, dbtype = SqlDbType.Bit }
+                new SQLCellInfo() { Fieldname = "ELEV", Value = ElevateOnMostNeedsRating, DBtype = SqlDbType.Bit }
             };
         }
     }
@@ -118,11 +114,11 @@ namespace ClassLibrary1.Model
     public class FastAccessCountNonNullEntriesUpdateInfo : FastAccessRowUpdateInfo
     {
         public int CountNonNullEntries;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "CNNE", value = CountNonNullEntries, dbtype = SqlDbType.Int }
+                new SQLCellInfo() { Fieldname = "CNNE", Value = CountNonNullEntries, DBtype = SqlDbType.Int }
             };
         }
     }
@@ -131,11 +127,11 @@ namespace ClassLibrary1.Model
     public class FastAccessCountUserPointsUpdateInfo : FastAccessRowUpdateInfo
     {
         public decimal CountUserPoints;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "CUP", value = CountUserPoints, dbtype = SqlDbType.Decimal }
+                new SQLCellInfo() { Fieldname = "CUP", Value = CountUserPoints, DBtype = SqlDbType.Decimal }
             };
         }
     }
@@ -144,11 +140,11 @@ namespace ClassLibrary1.Model
     public class FastAccessRowHeadingUpdateInfo : FastAccessRowUpdateInfo
     {
         public string RowHeading;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "RH", value = RowHeading, dbtype = SqlDbType.NVarChar }
+                new SQLCellInfo() { Fieldname = "RH", Value = RowHeading, DBtype = SqlDbType.NVarChar }
             };
         }
     }
@@ -157,11 +153,11 @@ namespace ClassLibrary1.Model
     public class FastAccessTblRowNameUpdateInfo : FastAccessRowUpdateInfo
     {
         public string Name;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "NME", value = Name, dbtype = SqlDbType.NVarChar }
+                new SQLCellInfo() { Fieldname = "NME", Value = Name, DBtype = SqlDbType.NVarChar }
             };
         }
     }
@@ -176,11 +172,11 @@ namespace ClassLibrary1.Model
     public class FastAccessTextFieldUpdateInfo : FastAccessFieldUpdateInfo
     {
         public string Text;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = Text, dbtype = SqlDbType.NVarChar }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = Text, DBtype = SqlDbType.NVarChar }
             };
         }
     }
@@ -189,11 +185,11 @@ namespace ClassLibrary1.Model
     public class FastAccessNumberFieldUpdateInfo : FastAccessFieldUpdateInfo
     {
         public decimal? Number;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = Number, dbtype = SqlDbType.Decimal }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = Number, DBtype = SqlDbType.Decimal }
             };
         }
     }
@@ -202,11 +198,11 @@ namespace ClassLibrary1.Model
     public class FastAccessDateTimeFieldUpdateInfo : FastAccessFieldUpdateInfo
     {
         public DateTime? DateTimeInfo;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = DateTimeInfo, dbtype = SqlDbType.DateTime }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = DateTimeInfo, DBtype = SqlDbType.DateTime }
             };
         }
     }
@@ -215,11 +211,11 @@ namespace ClassLibrary1.Model
     public class FastAccessChoiceFieldSingleSelectionUpdateInfo : FastAccessFieldUpdateInfo
     {
         public int? ChoiceInGroupID;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = ChoiceInGroupID, dbtype = SqlDbType.Int }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = ChoiceInGroupID, DBtype = SqlDbType.Int }
             };
         }
     }
@@ -227,14 +223,24 @@ namespace ClassLibrary1.Model
     public class FastAccessChoiceFieldMultipleSelectionUpdateInfo : FastAccessFieldUpdateInfo
     {
         public int ChoiceInFieldID;
-        public int? ChoiceInGroupID;
+        public int TblRowID;
+        public int ChoiceInGroupID;
         public bool Delete;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            Guid g = Guid.NewGuid(); // will be used to group the items. We can't just use ChoiceInFieldID, because we don't have it until submission to the database, and we can't use TblRowID, because there could be multiple choices for this field for a TblRowID, and we can't use ChoiceInGroupID, because we need to group within the particular TblRow (otherwise we would be grouping items from different table rows)
+            string groupingKey = g.ToString();
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = ChoiceInGroupID, dbtype = SqlDbType.Int, tablename = "VFMC" + FieldDefinitionID.ToString(), rownum = ChoiceInFieldID, delete = Delete, upsert = !Delete }
+                new SQLCellInfo() { Fieldname = "CHO", Value = ChoiceInGroupID, DBtype = SqlDbType.Int, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = false },
+                new SQLCellInfo() { Fieldname = "TRID", Value = TblRowID, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = true /* in case TblRowID is null or 0 */, DBtype = SqlDbType.Int, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete }
             };
+        }
+
+        public override void AddToTblRow(TblRow tblRow, SQLUpdateInfoTableSpecification tableSpec = null)
+        {
+            SQLUpdateInfoTableSpecification tableSpec2 = GetMultipleChoicesTableSpecification(FieldDefinitionID, tblRow.TblID);
+            base.AddToTblRow(tblRow, tableSpec2);
         }
     }
 
@@ -242,11 +248,11 @@ namespace ClassLibrary1.Model
     public class FastAccessAddressFieldUpdateInfo : FastAccessFieldUpdateInfo
     {
         public SQLGeographyInfo GeoInfo;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "F" + FieldDefinitionID.ToString(), value = GeoInfo, dbtype = SqlDbType.Udt }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = GeoInfo, DBtype = SqlDbType.Udt }
             };
         }
     }
@@ -261,11 +267,11 @@ namespace ClassLibrary1.Model
     public class FastAccessRecentlyChangedInfo : FastAccessCellUpdateInfo
     {
         public bool RecentlyChanged;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "RC", value = RecentlyChanged, dbtype = SqlDbType.Bit }
+                new SQLCellInfo() { Fieldname = "RC", Value = RecentlyChanged, DBtype = SqlDbType.Bit }
             };
         }
     }
@@ -279,13 +285,13 @@ namespace ClassLibrary1.Model
         public int CountNonNullEntries;
         public decimal CountUserPoints;
         public bool RecentlyChanged; // we include this rather than rely solely on FastAccessRecentlyChangedInfo since we will generally want to change them together
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "RS" + TblColumnID.ToString(), value = StringRepresentation, dbtype = SqlDbType.NVarChar },
-                new SQLUpdateInfo() { fieldname = "RV" + TblColumnID.ToString(), value = NewValue, dbtype = SqlDbType.Decimal },
-                new SQLUpdateInfo() { fieldname = "RC" + TblColumnID.ToString(), value = RecentlyChanged, dbtype = SqlDbType.Bit },
+                new SQLCellInfo() { Fieldname = "RS" + TblColumnID.ToString(), Value = StringRepresentation, DBtype = SqlDbType.NVarChar },
+                new SQLCellInfo() { Fieldname = "RV" + TblColumnID.ToString(), Value = NewValue, DBtype = SqlDbType.Decimal },
+                new SQLCellInfo() { Fieldname = "RC" + TblColumnID.ToString(), Value = RecentlyChanged, DBtype = SqlDbType.Bit },
                 // The following are not necessary because we will automatically add these in FastAccessRowUpdatePartialClasses (so adding them again will just lead to redundancy and a need to eliminate them later)
                 //new SQLParameterInfo() { fieldname = "CNNE", value = CountNonNullEntries, dbtype = SqlDbType.Int },
                 //new SQLParameterInfo() { fieldname = "CUP", value = CountUserPoints, dbtype = SqlDbType.Decimal }
@@ -298,12 +304,12 @@ namespace ClassLibrary1.Model
     {
         public int RatingID;
         public int RatingGroupID;
-        public override List<SQLUpdateInfo> GetSQLParameterInfo()
+        public override List<SQLCellInfo> GetSQLParameterInfo()
         {
-            return new List<SQLUpdateInfo>()
+            return new List<SQLCellInfo>()
             {
-                new SQLUpdateInfo() { fieldname = "R" + TblColumnID.ToString(), value = RatingID, dbtype = SqlDbType.Int },
-                new SQLUpdateInfo() { fieldname = "RG" + TblColumnID.ToString(), value = RatingGroupID, dbtype = SqlDbType.Int }
+                new SQLCellInfo() { Fieldname = "R" + TblColumnID.ToString(), Value = RatingID, DBtype = SqlDbType.Int },
+                new SQLCellInfo() { Fieldname = "RG" + TblColumnID.ToString(), Value = RatingGroupID, DBtype = SqlDbType.Int }
             };
         }
     }

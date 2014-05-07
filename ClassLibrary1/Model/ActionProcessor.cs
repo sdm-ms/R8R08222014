@@ -773,6 +773,17 @@ namespace ClassLibrary1.Model
             if (!theFieldData.MatchesDatabase())
             {
                 Field theField = null;
+
+                // special case: we need to know when changing choice fields what the new fields are going to be.
+                // this may seem unnecessary, since we always keep the old field and just set its status to Unavailable.
+                // but if we delete and then add a new set of choice fields, we end up with a problem in the 
+                List<ChoiceInGroup> newChoices = null;
+                if (theFieldData is ChoiceFieldDataInfo)
+                {
+                    ChoiceFieldDataInfo cfdi = ((ChoiceFieldDataInfo)theFieldData);
+                    newChoices = cfdi.TheChoices;
+                }
+
                 theField = FieldClearSubfield(true, theFieldData.TheGroup.theTblRow, theFieldData.TheFieldDefinition.FieldDefinitionID, userID, true);
                 if (theField == null)
                     theField = DataManipulation.GetFieldForTblRow(theFieldData.TheGroup.theTblRow, theFieldData.TheFieldDefinition);
@@ -801,7 +812,7 @@ namespace ClassLibrary1.Model
                 {
                     ChoiceField choiceField = DataManipulation.AddChoiceField(theField);
 
-                    foreach (ChoiceInGroup choiceInGroup in ((ChoiceFieldDataInfo)theFieldData).TheChoices)
+                    foreach (ChoiceInGroup choiceInGroup in )
                     {
                         DataManipulation.AddChoiceInField(choiceField, choiceInGroup);
                     }
@@ -856,7 +867,10 @@ namespace ClassLibrary1.Model
                             ((AddressField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
                             break;
                         case FieldTypes.ChoiceField:
-                            ((ChoiceField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
+                            ChoiceField theChoiceField = ((ChoiceField)subfield);
+                            theChoiceField.Status = (byte)StatusOfObject.Unavailable; // only the ChoiceInField changes trigger an effect on the fast-access tables in FastAccessRowUpdatePartialClasses, so we don't need to intercept this change
+                            foreach (ChoiceInField theChoiceInField in theChoiceField.ChoiceInFields)
+                                theChoiceInField.Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;
                             break;
                         case FieldTypes.DateTimeField:
                             ((DateTimeField)subfield).Status = fieldIsBeingReplaced ? (byte)StatusOfObject.AboutToBeReplaced : (byte)StatusOfObject.Unavailable;

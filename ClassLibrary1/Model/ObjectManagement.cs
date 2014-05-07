@@ -397,8 +397,7 @@ namespace ClassLibrary1.Model
                         ResetTblRowFieldDisplay(entity);
                     break;
                 case TypeOfObject.Tbl:
-                    DataContext.GetTable<Tbl>().Single(x => x.TblID == objectID).Status =newValue;
-
+                    DataContext.GetTable<Tbl>().Single(x => x.TblID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.Comment:
                     Comment theComment = DataContext.GetTable<Comment>().Single(x => x.CommentsID == objectID);

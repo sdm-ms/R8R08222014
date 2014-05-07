@@ -328,44 +328,23 @@ namespace ClassLibrary1.Model
 
             var rowsGroupedBySourceTable = theRows.GroupBy(x => x.TblID);
 
-            SQLUpdateTablesInfo allTables = new SQLUpdateTablesInfo();
-
             foreach (var groupOfUpdatesForSourceTable in rowsGroupedBySourceTable)
             {
-                string primaryTableName = "V" + groupOfUpdatesForSourceTable.Key.ToString();
-                Dictionary<string, SQLUpdateRowsInfo> rowSetsByDestinationTable = new Dictionary<string, SQLUpdateRowsInfo>();
-                rowSetsByDestinationTable.Add(primaryTableName, new SQLUpdateRowsInfo() { TableName = primaryTableName });
+                SQLDatabaseChangeInfo dci = new SQLDatabaseChangeInfo();
                 foreach (TblRow tblRow in theRows)
                 {
-                    List<SQLUpdateInfo> toUpdateList = FastAccessRowUpdateInfo.GetFastAccessRowUpdateInfoList(tblRow);
-                    var updatesGroupedByDestinationTable = toUpdateList.GroupBy(x => x.tablename); // 
-                    foreach (var groupOfUpdatesForSingleDestinationTable in updatesGroupedByDestinationTable)
-                    {
-                        SQLUpdateRowsInfo rowsForPrimaryDestinationTable = rowSetsByDestinationTable[primaryTableName];
-                        SQLUpdateRowInfo singleRow = null;
-                        if (groupOfUpdatesForSingleDestinationTable.Key == primaryTableName)
-                        { // these are changes that will be reflected on the primary fast access table 
-                            singleRow = new SQLUpdateRowInfo(tblRow.TblRowID, primaryTableName, () => ResetIndividualUpdatingFlags(tblRow), () => tblRow.FastAccessUpdateSpecified == false) { SQLUpdateInfos = groupOfUpdatesForSingleDestinationTable.ToList() };
-                            rowSetsByDestinationTable[primaryTableName].Rows.Add(singleRow);
-                        }
-                        else
-                        { // these are changes that will be reflected on a secondary fast access table (e.g., where we store ChoiceInGroups for ChoiceGroups where AllowMultipleSelections == true)
-                            string destinationTableName = groupOfUpdatesForSingleDestinationTable.Key;
-                            if (!rowSetsByDestinationTable.ContainsKey(destinationTableName)) // it might already exist from a previous TblRow
-                                rowSetsByDestinationTable.Add(destinationTableName, new SQLUpdateRowsInfo() { TableName = destinationTableName });
-                            SQLUpdateRowsInfo rowsForDestinationTable = rowSetsByDestinationTable[destinationTableName];
-                            var updatesGroupedByRowInSecondaryTable = groupOfUpdatesForSingleDestinationTable.GroupBy(x => x.rownum);
-                            foreach (var updatesForSingleRow in updatesGroupedByRowInSecondaryTable)
-                            {
-                                singleRow = new SQLUpdateRowInfo((int) updatesForSingleRow.First().rownum, destinationTableName, () => {}, () => true );
-                                rowsForDestinationTable.Rows.Add(singleRow);
-                            }
-                        }
-                    }
+                    SQLInfoForCellsInRow_MainAndSecondaryTables toUpdateList = FastAccessRowUpdateInfo.GetFastAccessRowUpdateInfoList(tblRow);
+                    dci.Rows.Add(toUpdateList);
                 }
-                allTables.TablesContainingInformationToUpdate.AddRange(rowSetsByDestinationTable.Select(x => x.Value).AsEnumerable());
+                dci.ExecuteAllCommands(dta);
             }
-            allTables.DoUpdate(dta);
+
+            foreach (TblRow row in theRows)
+            {
+                row.FastAccessUpdateSpecified = false;
+                row.FastAccessUpdated = null;
+            }
+
             return !noMoreWork;
         }
 
