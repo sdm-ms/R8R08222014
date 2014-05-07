@@ -299,12 +299,6 @@ namespace ClassLibrary1.Model
             return !noMoreWork;
         }
 
-        internal static void ResetIndividualUpdatingFlags(TblRow tblRow)
-        {
-            tblRow.FastAccessUpdateSpecified = false;
-            tblRow.FastAccessUpdated = null;
-        }
-
         internal static bool ContinueIndividualUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();

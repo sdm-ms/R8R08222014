@@ -178,8 +178,8 @@ namespace ClassLibrary1.Misc
                 // NOTE: If we add support for primary key fields with name other than ID, we'll have to figure that out here.
                 Subgroups.Add(subgroup);
             }
-            // see if there is an earlier item to displace
-            int match = subgroup.SQLUpdateInfos.FindLastIndex(x => x.Fieldname == newItem.Fieldname && x.Delete == newItem.Delete && x.GroupingKey == newItem.GroupingKey);
+            // see if there is an earlier item to displace -- note that this might be a different command. If we have updated data and then deleted data, we want to remove the updating of the data, because the commands might execute in a different order.
+            int match = subgroup.SQLUpdateInfos.FindLastIndex(x => x.Fieldname == newItem.Fieldname && x.GroupingKey == newItem.GroupingKey);
             if (match != -1)
             {
                 var itemToRemove = subgroup.SQLUpdateInfos[match];
@@ -381,7 +381,8 @@ namespace ClassLibrary1.Misc
         public bool Update { get { return !Delete && !RowInfo.MayNeedToCreateDestinationTableRow; } }
         public bool AlreadyProcessed = false; // initialize to this
         public bool SetValueToPrimaryKeyIDOfMainTableOnceLoaded = false; // set this to true so that value will be TblRowID once that loads
-        public bool DataIsAlreadyInDatabase = false; 
+        public bool DataIsAlreadyInDatabase = false;
+        public DateTime? TimeOfGroupOfUpdates; // we will only process the earliest set of updates first, so this must be set to the same time for each group of updates
 
         public string Paramname() 
         {
