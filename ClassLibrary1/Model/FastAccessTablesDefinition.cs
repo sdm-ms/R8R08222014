@@ -729,7 +729,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         public int UpdateRows(DenormalizedTableAccess dta, IQueryable<TblRow> tblRows, bool updateRatings = true, bool updateFields = true)
         {
             StoreRowsInfo(tblRows, !updateRatings, !updateFields);
-            SQLDatabaseChangeInfo allRows = GenerateSQLUpdateRowsInfoForMainTable(updateRatings, updateFields);
+            SQLDatabaseChangeInfo allRows = GenerateSQLDatabaseChangeInfoForMainTable(updateRatings, updateFields);
             if (updateFields)
                 GenerateChangesForMCTables(dta);
             allRows.ExecuteAllCommands(dta);
@@ -774,7 +774,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             tblRow.FastAccessUpdateRatings = false;
         }
 
-        internal SQLDatabaseChangeInfo GenerateSQLUpdateRowsInfoForMainTable(bool updateRatings, bool updateFields)
+        internal SQLDatabaseChangeInfo GenerateSQLDatabaseChangeInfoForMainTable(bool updateRatings, bool updateFields)
         {
             SQLDatabaseChangeInfo dci = new SQLDatabaseChangeInfo();
 

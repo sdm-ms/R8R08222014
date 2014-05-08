@@ -22,7 +22,7 @@ namespace ClassLibrary1.Model
         public static bool RecordRecentChangesInStatusRecords = false; // We are disabling this feature. If enabling it, we would need to copy the TblRowStatusRecords to the denormalized database.
 
         public static bool DoBulkInserting = false; 
-        public static bool DoBulkUpdating = true; // DEBUG -- once we get rid of automatically creating missing ratings, we can get rid of this
+        public static bool DoBulkUpdating = false; // DEBUG -- once we get rid of automatically creating missing ratings, we can get rid of this
 
         public static int CountHighestRecord(DenormalizedTableAccess dta, string tableName)
         {
@@ -299,7 +299,7 @@ namespace ClassLibrary1.Model
             return !noMoreWork;
         }
 
-        static bool DisableIndividualUpdating = true; // DEBUG
+        static bool DisableIndividualUpdating = false;
         internal static bool ContinueIndividualUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();

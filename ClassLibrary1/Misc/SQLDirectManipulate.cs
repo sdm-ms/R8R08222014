@@ -703,21 +703,17 @@ WHEN MATCHED THEN
 
         public List<string> GetAffectedFieldNamesForUpsert(string tablename)
         {
-            List<string> fieldNames = new List<string>();
-            Dictionary<string, bool> included = new Dictionary<string, bool>(); // use a dictionary so we don't have to look at the list each time to see if it's already there
+            HashSet<string> included = new HashSet<string>(); // use so we don't have to look at the list each time to see if it's already there
             foreach (var row in Rows)
             {
                 List<string> fieldNamesForRow = row.GetTable(tablename).GetFieldNamesForUpsert();
                 foreach (string fieldName in fieldNamesForRow)
                 {
-                    if (!included.ContainsKey(fieldName))
-                    {
-                        fieldNames.Add(fieldName);
-                        included[fieldName] = true;
-                    }
+                    if (!included.Contains(fieldName))
+                        included.Add(fieldName);
                 }
             }
-            return fieldNames;
+            return included.ToList();
         }
 
         internal void GetDeleteCommands(string tablename, StringBuilder sb)
