@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.Linq;
 using System.Data;
 using System.Data.SqlClient;
+using System.ComponentModel;
 
 namespace ClassLibrary1.Misc
 {
@@ -31,6 +32,8 @@ namespace ClassLibrary1.Misc
         public bool PrimaryKey { get; set; }
         public bool AutoIncrement { get; set; }
         public bool NonclusteredIndex { get; set; }
+        [DefaultValue(false)]
+        public bool ClusteredIndex { get; set; }
         public bool Ascending { get; set; }
 
         public string ColTypeString()
@@ -859,7 +862,7 @@ WHEN MATCHED THEN
 
         public static void AddIndicesForSpecifiedColumns(ISQLDirectConnectionManager database, SQLTableDescription table)
         {
-            foreach (var col in table.Columns.Where(x => x.NonclusteredIndex))
+            foreach (var col in table.Columns.Where(x => x.NonclusteredIndex || x.ClusteredIndex))
             {
                 string cmd = "";
                 if (col.ColType == SQLColumnType.typeGeography)
@@ -876,7 +879,7 @@ CELLS_PER_OBJECT = 16, PAD_INDEX  = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = O
                 }
                 else
                 {
-                    cmd = "CREATE NONCLUSTERED INDEX IX_" + table.Name + "_" + col.Name + " ON " + table.Name + " (" + col.Name + (col.Ascending ? " ASC)" : " DESC)");
+                    cmd = "CREATE " + (col.ClusteredIndex ? "" : "NON") + "CLUSTERED INDEX IX_" + table.Name + "_" + col.Name + " ON " + table.Name + " (" + col.Name + (col.Ascending ? " ASC)" : " DESC)");
                 }
                 ExecuteSQLNonQuery(database, cmd);
             }
