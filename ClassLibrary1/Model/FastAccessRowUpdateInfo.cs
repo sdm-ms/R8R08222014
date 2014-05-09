@@ -79,7 +79,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "HS", Value = HighStakesKnownChange, DBtype = SqlDbType.Int }
+                new SQLCellInfo() { Fieldname = "HS", Value = HighStakesKnownChange, DBtype = SqlDbType.Int, DefaultToUseIfMissing = "0" }
             };
         }
     }
@@ -92,7 +92,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "DEL", Value = Deleted, DBtype = SqlDbType.Bit }
+                new SQLCellInfo() { Fieldname = "DEL", Value = Deleted, DBtype = SqlDbType.Bit, DefaultToUseIfMissing = "0" }
             };
         }
     }
@@ -105,7 +105,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "ELEV", Value = ElevateOnMostNeedsRating, DBtype = SqlDbType.Bit }
+                new SQLCellInfo() { Fieldname = "ELEV", Value = ElevateOnMostNeedsRating, DBtype = SqlDbType.Bit, DefaultToUseIfMissing = "0" }
             };
         }
     }
@@ -118,7 +118,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "CNNE", Value = CountNonNullEntries, DBtype = SqlDbType.Int }
+                new SQLCellInfo() { Fieldname = "CNNE", Value = CountNonNullEntries, DBtype = SqlDbType.Int, DefaultToUseIfMissing = "0" }
             };
         }
     }
@@ -131,7 +131,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "CUP", Value = CountUserPoints, DBtype = SqlDbType.Decimal }
+                new SQLCellInfo() { Fieldname = "CUP", Value = CountUserPoints, DBtype = SqlDbType.Decimal, DefaultToUseIfMissing = "0" }
             };
         }
     }
@@ -171,7 +171,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = SQLFastAccessTableInfo.GetVolatilityColumnNameForDuration(TimeFrame), Value = Value, DBtype = SqlDbType.Decimal }
+                new SQLCellInfo() { Fieldname = SQLFastAccessTableInfo.GetVolatilityColumnNameForDuration(TimeFrame), Value = Value, DBtype = SqlDbType.Decimal, DefaultToUseIfMissing = "0" }
             };
         }
     }

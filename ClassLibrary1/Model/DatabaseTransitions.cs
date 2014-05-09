@@ -102,7 +102,7 @@ namespace ClassLibrary1.Model
                 var ent = DataContext.GetTable<TblRow>().Where(x => !x.VolatilityTblRowTrackers.Any()).Take(200).Select(x => new { TblRow = x, RatingGroups = x.RatingGroups, VolatilityTblRowTrackers = x.VolatilityTblRowTrackers }).ToList();
                 moreToDo = ent.Any();
                 foreach (var e in ent)
-                    VolatilityTracking.AddVolatilityTracking(DataContext, e.TblRow);
+                    VolatilityTracking.AddVolatilityTracking(this, e.TblRow);
                 DataContext.SubmitChanges();
                 i += 200;
                 //Trace.TraceInformation("Adding volatility tracking " + i);

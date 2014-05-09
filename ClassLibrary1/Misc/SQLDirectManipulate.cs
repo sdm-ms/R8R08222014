@@ -89,7 +89,7 @@ namespace ClassLibrary1.Misc
         {
             if (ComputedColumnSpecification != null && ComputedColumnSpecification != "")
                 return Name + ComputedColumnSpecification;
-            return String.Format("[{0}] {1} {2} {3} {4} {5}{6}", Name, ColTypeString(), Nullable ? "NULL" : "NOT NULL", DefaultValue == "" ? "DEFAULT" + DefaultValue : "",  AutoIncrement ? "IDENTITY" : "", PrimaryKey && !ClusteredIndex ? "PRIMARY KEY NONCLUSTERED" : "", PrimaryKey && ClusteredIndex ? "PRIMARY KEY" : "");
+            return String.Format("[{0}] {1} {2} {3} {4} {5}{6}", Name, ColTypeString(), Nullable ? "NULL" : "NOT NULL", DefaultValue != "" ? "DEFAULT " + DefaultValue : "",  AutoIncrement ? "IDENTITY" : "", PrimaryKey && !ClusteredIndex ? "PRIMARY KEY NONCLUSTERED" : "", PrimaryKey && ClusteredIndex ? "PRIMARY KEY" : "");
         }
 
         public DataColumn GetDataColumn()
@@ -332,7 +332,7 @@ namespace ClassLibrary1.Misc
             return SQLUpdateInfos.LastOrDefault(x => x.Fieldname == fieldName && x.GroupingKey == groupingKey && x.Upsert); // if there is more than one, we take the last
         }
 
-        public List<string> GetParameterizedValuesLists(List<string> fieldNames)
+        public List<string> GetParameterizedValuesLists(List<string> fieldNames, Dictionary<string, string> defaultValues)
         {
             List<string> parameterizedValuesLists = new List<string>();
             List<string> groupingKeys = SQLUpdateInfos.Where(x => x.Upsert).Select(x => x.GroupingKey).Distinct().ToList();
@@ -343,11 +343,16 @@ namespace ClassLibrary1.Misc
                 bool isFirst = true;
                 foreach (string fieldName in fieldNames)
                 {
+                    string defaultValue = null;
                     SQLCellInfo updateInfo = GetSQLCellInfoForFieldNameForUpsert(fieldName, groupingKey);
                     if (!isFirst)
                         sb.Append(",");
                     if (updateInfo == null)
-                        sb.Append("NULL");
+                    {
+                        if (defaultValue == null)
+                            defaultValue = defaultValues[fieldName];
+                        sb.Append(defaultValue);
+                    }
                     else
                         sb.Append(updateInfo.GetValueOrParameterName());
                     if (isFirst)
@@ -419,6 +424,7 @@ namespace ClassLibrary1.Misc
         public string GroupingKey = null; // If a single row in the main table corresponds to multiple rows in secondary table, we separate out the rows in the secondary table by giving them separate grouping keys.
         public object Value = null;
         public SqlDbType DBtype = SqlDbType.Variant; // must override this
+        public string DefaultToUseIfMissing = "NULL";
         public bool Delete = false;
         public bool Upsert { get { return !Delete && RowInfo.MayNeedToCreateDestinationTableRow; } }
         public bool Update { get { return !Delete && !RowInfo.MayNeedToCreateDestinationTableRow; } }
@@ -675,6 +681,8 @@ WHEN MATCHED THEN
             List<string> fieldNames = GetAffectedFieldNamesForUpsert(tablename);
             if (!fieldNames.Any())
                 return;
+
+            Dictionary<string, string> defaultValuesForFieldNames = GetDefaultValuesForUpsert(tablename, fieldNames);
             int maxRows = (maxParameters / fieldNames.Count());
             List<SQLInfoForCellsInRow_MainAndSecondaryTables> rowsToProcess;
             if (maxRows < rowsStillToBeUpserted.Count())
@@ -684,6 +692,7 @@ WHEN MATCHED THEN
             }
             else
                 rowsToProcess = rowsStillToBeUpserted.ToList();
+
             SQLUpdateInfoTableSpecification tableSpec = null;
             foreach (var row in rowsToProcess)
             {
@@ -704,7 +713,8 @@ WHEN MATCHED THEN
                     }
                 }
             }
-            string parameterizedValuesList = String.Join(",", rowsToProcess.SelectMany(x => x.GetTable(tablename).GetParameterizedValuesLists(fieldNames)).ToArray()); // {1}
+           
+            string parameterizedValuesList = String.Join(",", rowsToProcess.SelectMany(x => x.GetTable(tablename).GetParameterizedValuesLists(fieldNames, defaultValuesForFieldNames)).ToArray()); // {1}
             string fieldNamesList = String.Join(",", fieldNames.ToArray()); // {2}
             string matchingStatement; // {3}
             if (fieldNames.Contains(tableSpec.PrimaryKeyFieldName))
@@ -732,6 +742,22 @@ WHEN MATCHED THEN
                 }
             }
             return included.ToList();
+        }
+
+        public Dictionary<string, string> GetDefaultValuesForUpsert(string tablename, List<string> fieldnames)
+        {
+            Dictionary<string, string> defaultValues = new Dictionary<string, string>();
+            foreach (string fieldname in fieldnames)
+                foreach (var row in Rows)
+                {
+                    SQLCellInfo withFieldname = row.GetTable(tablename).SQLUpdateInfos.FirstOrDefault(x => x.Fieldname == fieldname);
+                    if (withFieldname != null)
+                    {
+                        defaultValues.Add(fieldname, withFieldname.DefaultToUseIfMissing);
+                        break;
+                    }
+                }
+            return defaultValues;
         }
 
         internal void GetDeleteCommands(string tablename, StringBuilder sb)

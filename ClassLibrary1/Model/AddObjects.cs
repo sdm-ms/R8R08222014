@@ -575,10 +575,9 @@ namespace ClassLibrary1.Model
             SetSearchWordsForEntityName(theTblRow, false);
             //ProfileSimple.End("SearchWords");
             //ProfileSimple.Start("AddMissingRatings");
-            // AddMissingRatingsForTblRow(theTblRow); // We won't call this anymore -- we'll add ratings dynamically as needed
             //ProfileSimple.End("AddMissingRatings");
             //ProfileSimple.Start("AddVolatilityTracking");
-            VolatilityTracking.AddVolatilityTracking(DataContext, theTblRow);
+            VolatilityTracking.AddVolatilityTracking(this, theTblRow); // this adds the TblRow-level trackers, not the RatingGroup trackers, which we now add as needed
             //ProfileSimple.End("AddVolatilityTracking");
             AddTblRowStatusRecord(theTblRow, TestableDateTime.Now, false, true);
             CacheManagement.InvalidateCacheDependency("TblRowForTblID" + theTblRow.TblID);
@@ -956,6 +955,7 @@ namespace ClassLibrary1.Model
             if (isTopGroup)
             {
                 theRatingGroupPhaseStatus = AddRatingGroupPhaseStatus(ratingGroupAttributes.RatingCharacteristic.RatingPhaseGroup, theGroup);
+                VolatilityTracking.AddVolatilityTracking(this, theGroup);
             }
 
             return theGroup;
@@ -1010,14 +1010,21 @@ namespace ClassLibrary1.Model
                 // see if it might have been added already -- this could happen if the page hasn't been updated in a while or if a user is trying to mess with us
                 rating = DataContext.GetTable<Rating>().FirstOrDefault(x => x.RatingGroup.TblRowID == tblRowID && x.RatingGroup.TblColumnID == tblColumnID);
                 if (rating == null)
+                {
                     AddMissingRatingGroupAndRatings(tblRow, tblColumn);
+                    DataContext.SubmitChanges();
+                }
             }
             catch
             { // it may have failed because there was a simultaneous attempt to add the rating group and ratings (which we prevent), so let's see if it now exists in the database
             }
-            rating = DataContext.GetTable<Rating>().First(x => x.RatingGroup.TblRowID == tblRowID && x.RatingGroup.TblColumnID == tblColumnID);
+            rating = DataContext.GetTable<Rating>().FirstOrDefault(x => x.RatingGroup.TblRowID == tblRowID && x.RatingGroup.TblColumnID == tblColumnID);
             if (rating == null)
                 throw new Exception("Database error. The rating could not be added to the database.");
+            // update the fast-access tables; no tragedy if this fails (we'll just end up back here) or if this happens more than once (because we simultaneously attempt to add rating in two different places), but once the rating is created it should be unusual for us to end up in this method. If we were to change things so that we regularly used this method (to refer to ratings by table row and column instead of rating id and rating group id), we might want to change this to decrease redundant writes.
+            new FastAccessRatingIDUpdatingInfo() { RatingID = rating.RatingID, RatingGroupID = rating.RatingGroup.RatingGroupID, TblColumnID = tblColumn.TblColumnID }.AddToTblRow(tblRow);
+            DataContext.SubmitChanges();
+            ResetDataContexts();
             return new Tuple<int, int>(rating.RatingID, rating.RatingGroupID);
         }
 
@@ -1027,7 +1034,6 @@ namespace ClassLibrary1.Model
                 AddUniquenessLock(new TblRowIDAndTblColumnIDUniquenessGenerator() { TblRowID = tblRow.TblRowID, TblColumnID = tblColumn.TblColumnID }, TestableDateTime.Now + TimeSpan.FromDays(1)); // will prevent anyone else from adding to the same cell simultaneously (note that 1 day is a bit arbitrary -- key is that we want to avoid scenario where we check for ratings and don't find any, and add just an instant later than another web role doing the same thing)
             RatingGroup theRatingGroup = AddRatingGroupAndRatings(tblRow, tblColumn, ratingGroupAttributes, null, null);
             AdvanceRatingGroupToNextRatingPhase(theRatingGroup);
-            new FastAccessRatingIDUpdatingInfo() { RatingID = theRatingGroup.Ratings.First().RatingID, RatingGroupID = theRatingGroup.RatingGroupID, TblColumnID = tblColumn.TblColumnID }.AddToTblRow(tblRow);
             return theRatingGroup;
         }
 
@@ -1154,8 +1160,7 @@ namespace ClassLibrary1.Model
             foreach (TblRow tblRow in theTblRowsToDo)
             {
                 AddMissingRatingsForTblRow(tblRow);
-                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, tblRow.Tbl, tblRow, true, false); // DEBUG -- this is the last thing we have to eliminate before being able to get rid of bulk updating, but we need to keep it (or a substitute) as long as we adding missing ratings. We can't just add a FastAccessRowUpdateInfo, because we don't have the RatingID and RatingGroupID.
-                //Trace.TraceInformation("Adding ratings for entity " + entity);
+                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, tblRow.Tbl, tblRow, true, false); // note that this is not executed
                 lastTblRowProcessed = tblRow.TblRowID;
             }
             if (entityCount <= numToDo)
@@ -1206,7 +1211,6 @@ namespace ClassLibrary1.Model
                     AddMissingRatingGroupAndRatings(theTblRow, theCategory);
                 }
             }
-            FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, theTblRow.Tbl, theTblRow, true, false); // DEBUG -- as long as we are adding missing ratings in advance, we need to have this here, because TblRowID is 0 so the individual updating approach won't work. Also, we wouldn't have RatingID and RatingGroupID. We could add some way of signaling that we need to create the updating to RatingID -- e.g., a background task for newly acquired ratings. Then we can get rid of bulk updating (which doesn't work when the data hasn't been added anyway).
         }
 
         private void AddMissingRatingGroupAndRatings(TblRow theTblRow, TblColumn theColumn)

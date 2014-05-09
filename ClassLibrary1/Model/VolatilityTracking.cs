@@ -61,24 +61,16 @@ namespace ClassLibrary1.Model
             throw new Exception("Internal error: Unknown volatility timing span.");
         }
 
-        public static void AddVolatilityTracking(IRaterooDataContext theDataContext, TblRow theTblRow)
+        public static void AddVolatilityTracking(RaterooDataManipulation theDataAccessModule, TblRow theTblRow)
         {
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneHour);
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneDay);
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneWeek);
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneYear);
-            int[] excludedRatingGroupTypes = { (int) RatingGroupTypes.hierarchyNumbersBelow, (int) RatingGroupTypes.probabilityHierarchyBelow, (int) RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy };
-            foreach (var theRatingGroup in theTblRow.RatingGroups)
-            {
-                if (!excludedRatingGroupTypes.Contains(theRatingGroup.TypeOfRatingGroup))
-                    AddVolatilityTracking(theDataContext, theRatingGroup);
-            }
         }
 
-        public static void AddVolatilityTracking(IRaterooDataContext theDataContext, RatingGroup theRatingGroup)
+        public static void AddVolatilityTracking(RaterooDataManipulation theDataAccessModule, RatingGroup theRatingGroup)
         {
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneHour);
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneDay);
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneWeek);
