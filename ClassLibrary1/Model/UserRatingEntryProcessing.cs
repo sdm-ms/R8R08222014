@@ -13,6 +13,8 @@ namespace ClassLibrary1.Model
         public static bool AddRatingIDsToList(List<RatingAndUserRatingString> theUserRatingsString, List<int> theRatingIDs)
         {
             bool ratingIDsProperlyFormatted = true;
+            if (theUserRatingsString.Count() > 1)
+                throw new Exception("Must revise this for multiple ratings in rating group, since after adding the rating group we'll need to get each individual rating.");
             foreach (RatingAndUserRatingString theRatingAndUserRatingString in theUserRatingsString)
             {
                 int aRatingID = -1;

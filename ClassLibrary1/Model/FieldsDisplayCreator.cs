@@ -138,18 +138,18 @@ namespace ClassLibrary1.Model
 
 
 
-        public FieldDisplayHtml BuildFieldDisplayHtml(TblDimension theTblDimension, FieldsLocation theLocation, TblRow entity)
+        public FieldDisplayHtml BuildFieldDisplayHtml(TblDimension theTblDimension, FieldsLocation theLocation, TblRow tblRow)
         {
             TblRowPlusFieldInfoLoader theTblRowPlusFieldsInfoLoader = new TblRowPlusFieldInfoLoader();
             //ProfileSimple.Start("GetCompiledQuery");
-            TblRowPlusFieldInfos theTblRowPlusFieldInfos = theTblRowPlusFieldsInfoLoader.GetTblRowPlusFieldInfos(theLocation, entity);
+            TblRowPlusFieldInfos theTblRowPlusFieldInfos = theTblRowPlusFieldsInfoLoader.GetTblRowPlusFieldInfos(theLocation, tblRow);
             //ProfileSimple.End("GetCompiledQuery");
             //ProfileSimple.Start("AfterCompiledQuery");
 
-            return BuildFieldDisplayHtml(theTblDimension, theLocation, entity, theTblRowPlusFieldInfos);
+            return BuildFieldDisplayHtml(theTblDimension, theLocation, tblRow, theTblRowPlusFieldInfos);
         }
 
-        private FieldDisplayHtml BuildFieldDisplayHtml(TblDimension theTblDimension, FieldsLocation theLocation, TblRow entity, TblRowPlusFieldInfos theTblRowPlusFieldInfos)
+        private FieldDisplayHtml BuildFieldDisplayHtml(TblDimension theTblDimension, FieldsLocation theLocation, TblRow tblRow, TblRowPlusFieldInfos theTblRowPlusFieldInfos)
         {
             switch (theLocation)
             {
@@ -186,7 +186,7 @@ namespace ClassLibrary1.Model
                     if (theLocation == FieldsLocation.RowHeading)
                     {
                         initialContent.Append("<tr><td><a href=\"");
-                        initialContent.Append(Routing.Outgoing(new RoutingInfoMainContent(entity.Tbl, entity, null))); // The TblRowID might be 0, so we will need to replace that above
+                        initialContent.Append(Routing.Outgoing(new RoutingInfoMainContent(tblRow.Tbl, tblRow, null))); // The TblRowID might be 0, so we will need to replace that above
                         initialContent.Append("\">");
                         initialContent.Append(myFieldDisplayHtml.entityName);
                         initialContent.Append("</a></td></tr>");

@@ -849,14 +849,14 @@ namespace ClassLibrary1.Model
             }
         }
 
-        internal void FieldDelete(TblRow entity, FieldDefinition theFieldDefinition, int userID)
+        internal void FieldDelete(TblRow tblRow, FieldDefinition theFieldDefinition, int userID)
         {
-            if (entity.TblRowID == 0)
+            if (tblRow.TblRowID == 0)
                 return; // Shouldn't be a field to delete for entity that hasn't been added yet.
-            Field theField = DataManipulation.GetFieldForTblRow(entity, theFieldDefinition);
+            Field theField = DataManipulation.GetFieldForTblRow(tblRow, theFieldDefinition);
             if (theField != null)
             {
-                FieldClearSubfield(false, entity, theFieldDefinition.FieldDefinitionID, userID, false);
+                FieldClearSubfield(false, tblRow, theFieldDefinition.FieldDefinitionID, userID, false);
                 theField.Status = (int)StatusOfObject.Unavailable;
             }
         }
@@ -908,10 +908,10 @@ namespace ClassLibrary1.Model
             return field;
         }
 
-        public Field FieldCreateOrReplace(TblRow entity, int FieldDefinitionID, String textValue, String linkValue, int? singleChoice, List<int> multipleChoices, decimal? numericValue, decimal? latitude, decimal? longitude, DateTime? dateTimeValue, int userID, int? changesGroupID)
+        public Field FieldCreateOrReplace(TblRow tblRow, int FieldDefinitionID, String textValue, String linkValue, int? singleChoice, List<int> multipleChoices, decimal? numericValue, decimal? latitude, decimal? longitude, DateTime? dateTimeValue, int userID, int? changesGroupID)
         {
             Field theField = null;
-            int? TblID = entity.TblID;
+            int? TblID = tblRow.TblID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, false, null, TblID, false))
             {
                 FieldDefinition theFieldDefinition = DataManipulation.DataContext.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.FieldDefinitionID == FieldDefinitionID);
@@ -960,11 +960,11 @@ namespace ClassLibrary1.Model
                 bool fieldAlreadyExists = true; // if this stays true, we must delete the existing field
                 object subfield = null;
                 FieldTypes theFieldType = FieldTypes.AddressField; // must initialize
-                DataManipulation.GetFieldForTblRow(entity, theFieldDefinition.FieldDefinitionID, ref theField, ref subfield, ref theFieldType);             
+                DataManipulation.GetFieldForTblRow(tblRow, theFieldDefinition.FieldDefinitionID, ref theField, ref subfield, ref theFieldType);             
                 if (theField == null)
                 {
                     fieldAlreadyExists = false;
-                    theField = DataManipulation.AddField(entity, theFieldDefinition);
+                    theField = DataManipulation.AddField(tblRow, theFieldDefinition);
                 }
                 
                 if (fieldAlreadyExists)
@@ -1024,8 +1024,8 @@ namespace ClassLibrary1.Model
                 else
                     throw new Exception("Unknown field type.");
 
-                DataManipulation.ResetTblRowFieldDisplay(entity);
-                CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entity.TblRowID);
+                DataManipulation.ResetTblRowFieldDisplay(tblRow);
+                CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRow.TblRowID);
             }
             else
                 throw new Exception("Insufficient privileges");
@@ -1033,50 +1033,50 @@ namespace ClassLibrary1.Model
             return theField;
         }
 
-        public Field AddressFieldCreateOrReplace(TblRow entity, int FieldDefinitionID, String textValue, decimal latitude, decimal longitude, int userID, int? changesGroupID)
+        public Field AddressFieldCreateOrReplace(TblRow tblRow, int FieldDefinitionID, String textValue, decimal latitude, decimal longitude, int userID, int? changesGroupID)
         {
             List<int> multipleChoicesList = new List<int>();
-            return FieldCreateOrReplace(entity, FieldDefinitionID, textValue, "", null, multipleChoicesList, null, latitude, longitude, null,  userID, changesGroupID);
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, textValue, "", null, multipleChoicesList, null, latitude, longitude, null,  userID, changesGroupID);
         }
 
-        public Field TextFieldCreateOrReplace(TblRow entity, int FieldDefinitionID, String textValue, int userID, int? changesGroupID)
+        public Field TextFieldCreateOrReplace(TblRow tblRow, int FieldDefinitionID, String textValue, int userID, int? changesGroupID)
         {
             List<int> multipleChoicesList = new List<int>();
-            return FieldCreateOrReplace(entity, FieldDefinitionID, textValue, "", null, multipleChoicesList, null, null, null, null,  userID, changesGroupID);
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, textValue, "", null, multipleChoicesList, null, null, null, null,  userID, changesGroupID);
         }
 
-        public Field TextWithLinkFieldCreateOrReplace(TblRow entity, int FieldDefinitionID, String textValue, String linkValue,  int userID, int? changesGroupID)
+        public Field TextWithLinkFieldCreateOrReplace(TblRow tblRow, int FieldDefinitionID, String textValue, String linkValue,  int userID, int? changesGroupID)
         {
             List<int> multipleChoicesList = new List<int>();
-            return FieldCreateOrReplace(entity, FieldDefinitionID, textValue, linkValue, null, multipleChoicesList, null, null, null, null,  userID, changesGroupID);
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, textValue, linkValue, null, multipleChoicesList, null, null, null, null,  userID, changesGroupID);
         }
-        public Field TextFieldLinkOnlyCreateOrReplace(TblRow entity, int FieldDefinitionID, String linkValue, int userID, int? changesGroupID)
+        public Field TextFieldLinkOnlyCreateOrReplace(TblRow tblRow, int FieldDefinitionID, String linkValue, int userID, int? changesGroupID)
         {
             List<int> multipleChoicesList = new List<int>();
-            return FieldCreateOrReplace(entity, FieldDefinitionID, "Link", linkValue, null, multipleChoicesList, null, null, null, null, userID, changesGroupID);
-        }
-
-        public Field ChoiceFieldWithSingleChoiceCreateOrReplace(TblRow entity, int FieldDefinitionID, int? singleChoice, int userID, int? changesGroupID)
-        {
-            List<int> multipleChoicesList = new List<int>();
-            return FieldCreateOrReplace(entity, FieldDefinitionID, null, null, singleChoice, multipleChoicesList, null, null, null, null, userID, changesGroupID);
-
-        }
-       public Field ChoiceFieldWithMultipleChoicesCreateOrReplace(TblRow entity, int FieldDefinitionID, List<int> multipleChoices, int userID, int? changesGroupID)
-        {
-            return FieldCreateOrReplace(entity, FieldDefinitionID, null, null, null, multipleChoices, null, null, null, null,  userID, changesGroupID);
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, "Link", linkValue, null, multipleChoicesList, null, null, null, null, userID, changesGroupID);
         }
 
-        public Field NumericFieldCreateOrReplace(TblRow entity, int FieldDefinitionID, decimal? numericValue, int userID, int? changesGroupID)
+        public Field ChoiceFieldWithSingleChoiceCreateOrReplace(TblRow tblRow, int FieldDefinitionID, int? singleChoice, int userID, int? changesGroupID)
         {
             List<int> multipleChoicesList = new List<int>();
-            return FieldCreateOrReplace(entity, FieldDefinitionID, null, null, null, multipleChoicesList, numericValue, null, null, null, userID, changesGroupID);
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, null, null, singleChoice, multipleChoicesList, null, null, null, null, userID, changesGroupID);
+
+        }
+       public Field ChoiceFieldWithMultipleChoicesCreateOrReplace(TblRow tblRow, int FieldDefinitionID, List<int> multipleChoices, int userID, int? changesGroupID)
+        {
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, null, null, null, multipleChoices, null, null, null, null,  userID, changesGroupID);
         }
 
-        public Field DateTimeFieldCreateOrReplace(TblRow entity, int FieldDefinitionID, DateTime? dateTimeValue,  int userID, int? changesGroupID)
+        public Field NumericFieldCreateOrReplace(TblRow tblRow, int FieldDefinitionID, decimal? numericValue, int userID, int? changesGroupID)
         {
             List<int> multipleChoicesList = new List<int>();
-            return FieldCreateOrReplace(entity, FieldDefinitionID, null, null, null, multipleChoicesList, null, null, null, dateTimeValue, userID, changesGroupID);
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, null, null, null, multipleChoicesList, numericValue, null, null, null, userID, changesGroupID);
+        }
+
+        public Field DateTimeFieldCreateOrReplace(TblRow tblRow, int FieldDefinitionID, DateTime? dateTimeValue,  int userID, int? changesGroupID)
+        {
+            List<int> multipleChoicesList = new List<int>();
+            return FieldCreateOrReplace(tblRow, FieldDefinitionID, null, null, null, multipleChoicesList, null, null, null, dateTimeValue, userID, changesGroupID);
 
         }
 

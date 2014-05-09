@@ -65,10 +65,20 @@ namespace WebServices
             List<UserRatingResponse> theResponses = new List<UserRatingResponse>();
             UserRatingResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo); // null if no problem
             ActionProcessor actionProcessor = new ActionProcessor();
+            RaterooDataManipulation dataManipulation = new RaterooDataManipulation();
             actionProcessor.ResetDataContexts();
             List<int> specifiedRatingIDs = new List<int>();
+
             foreach (var userRatingsStringList in theUserRatings)
+            {
+                foreach (var rurs in userRatingsStringList)
+                    if (rurs.ratingID.Contains('/'))
+                    {
+                        Tuple<int,int> ratingIDAndRatingGroupID = dataManipulation.AddMissingRatingGroupAndRatings(rurs.ratingID);
+                        rurs.ratingID = ratingIDAndRatingGroupID.Item1.ToString();
+                    }
                 RatingAndUserRatingStringConverter.AddRatingIDsToList(userRatingsStringList, specifiedRatingIDs);
+            }
 
 
             User theUser = actionProcessor.DataContext.GetTable<User>().Single(u => u.Username == theUserAccessInfo.userName);

@@ -323,6 +323,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         internal class FastRatingsInfo
         {
 #pragma warning disable 0649
+            public int RowID;
             public int ColumnID;
             public decimal? Value;
             public decimal? LastTrustedValue;
@@ -434,7 +435,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     if (rating.SingleNumber)
                         theRatingString = NumberandTableFormatter.FormatAsSpecified(rating.Value, rating.DecimalPlaces, rating.ColumnID);
                     else
-                        theRatingString = TableLoading.GetHtmlStringForCell((int)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false);
+                        theRatingString = TableLoading.GetHtmlStringForCell((int)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false);
                     dataRow["RS" + rating.ColumnID.ToString()] = theRatingString;
                     dataRow["RV" + rating.ColumnID.ToString()] = (object)rating.Value ?? (object)System.DBNull.Value;
                     dataRow["R" + rating.ColumnID.ToString()] = (object)rating.RatingID ?? (object)System.DBNull.Value;
@@ -522,6 +523,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                                 where singleNumber || (y.RatingGroupAttribute.TypeOfRatingGroup != (int) RatingGroupTypes.hierarchyNumbersBelow && y.RatingGroupAttribute.TypeOfRatingGroup != (int) RatingGroupTypes.probabilityHierarchyBelow && y.RatingGroupAttribute.TypeOfRatingGroup != (int) RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy)
                                 select new FastRatingsInfo
                                 {
+                                    RowID = y.TblRowID,
                                     ColumnID = y.TblColumnID,
                                     Value = firstRating == null ? null : firstRating.CurrentValue,
                                     LastTrustedValue = firstRating == null ? null : firstRating.LastTrustedValue,
@@ -868,7 +870,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                         if (rating.SingleNumber)
                             row.Add("RS" + rating.ColumnID.ToString(), NumberandTableFormatter.FormatAsSpecified(rating.Value, rating.DecimalPlaces, rating.ColumnID) + (rating.LastTrustedValue == rating.Value ? "" : "*"), SqlDbType.NVarChar);
                         else
-                            row.Add("RS" + rating.ColumnID.ToString(), TableLoading.GetHtmlStringForCell((int)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false), SqlDbType.NVarChar);
+                            row.Add("RS" + rating.ColumnID.ToString(), TableLoading.GetHtmlStringForCell((int)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false), SqlDbType.NVarChar);
                         row.Add("RV" + rating.ColumnID.ToString(), rating.Value, SqlDbType.Decimal);
                         row.Add("RC" + rating.ColumnID.ToString(), rating.RecentlyChanged, SqlDbType.Bit);
                         //rowInfo.Add("R" + rating.ColumnID.ToString(), rating.RatingID); doesn't change -- no need to update

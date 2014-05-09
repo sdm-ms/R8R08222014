@@ -55,10 +55,10 @@ namespace ClassLibrary1.Model
         public List<TblVal> defaultTblVals { get; set; }
         internal bool isVerified = false;
 
-        public FieldSetDataInfo(TblRow entity, Tbl Tbl, RaterooDataAccess dataAccess)
+        public FieldSetDataInfo(TblRow tblRow, Tbl Tbl, RaterooDataAccess dataAccess)
         {
             DataAccess = dataAccess;
-            theTblRow = entity;
+            theTblRow = tblRow;
             theTbl = Tbl;
             if (theTbl == null && theTblRow == null)
                 throw new Exception("FieldSetDataInfo: TblID or entityID must be specified.");
@@ -687,9 +687,9 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public Field GetFieldForTblRow(TblRow entity, FieldDefinition FieldDefinition)
+        public Field GetFieldForTblRow(TblRow tblRow, FieldDefinition FieldDefinition)
         {
-            return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRow == entity && f.FieldDefinition == FieldDefinition && f.Status == (byte)StatusOfObject.Active);
+            return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRow == tblRow && f.FieldDefinition == FieldDefinition && f.Status == (byte)StatusOfObject.Active);
         }
 
         public Field GetFieldForTblRow(int? entityID, int? FieldDefinitionID)
@@ -749,14 +749,14 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void GetFieldForTblRow(TblRow entity, int? FieldDefinitionID, ref Field theField, ref object theSubfield, ref FieldTypes theFieldType)
+        public void GetFieldForTblRow(TblRow tblRow, int? FieldDefinitionID, ref Field theField, ref object theSubfield, ref FieldTypes theFieldType)
         {
             theField = null;
             theSubfield = null;
-            if (entity == null || FieldDefinitionID == null)
+            if (tblRow == null || FieldDefinitionID == null)
                 return;
 
-            theField = DataContext.NewOrSingleOrDefault<Field>(f => f.TblRow == entity && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
+            theField = DataContext.NewOrSingleOrDefault<Field>(f => f.TblRow == tblRow && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
 
 
             if (theField != null)

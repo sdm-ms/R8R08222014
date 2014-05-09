@@ -23,6 +23,9 @@ namespace ClassLibrary1.Model
             OnCountUserPointsChanging(this.CountUserPoints);
             OnNameChanging(this.Name);
             OnStatusChanging(this.Status);
+            // high stakes known is usually a property of the rating group -- DEBUG how is that?
+            var fhs = new FastAccessHighStakesKnownUpdateInfo() { HighStakesKnown = false };
+            fhs.AddToTblRow(this); asf
         }
 
         partial void OnElevateOnMostNeedsRatingChanging(bool value)

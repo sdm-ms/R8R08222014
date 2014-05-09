@@ -128,10 +128,10 @@ namespace ClassLibrary1.Model
         public FieldsLocation TheFieldsLocation;
         public TblRow TblRow;
 
-        public TblRowPlusFieldInfoLoaderRequest(FieldsLocation theFieldsLocation, TblRow entity)
+        public TblRowPlusFieldInfoLoaderRequest(FieldsLocation theFieldsLocation, TblRow tblRow)
         {
             TheFieldsLocation = theFieldsLocation;
-            TblRow = entity;
+            TblRow = tblRow;
         }
     }
 

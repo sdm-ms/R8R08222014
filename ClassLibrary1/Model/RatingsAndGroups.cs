@@ -146,14 +146,14 @@ namespace ClassLibrary1.Model
         /// <param name="entityID">The entity</param>
         /// <param name="TblColumnID">The category descriptor object</param>
         /// <returns>The topmost rating group</returns>
-        public RatingGroup GetTopRatingGroupForTblRowCategory(TblRow entity, TblColumn TblColumn)
+        public RatingGroup GetTopRatingGroupForTblRowCategory(TblRow tblRow, TblColumn TblColumn)
         {
-            var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow == entity && m.RatingGroup.TblColumn == TblColumn);
+            var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow == tblRow && m.RatingGroup.TblColumn == TblColumn);
             if (firstRating != null)
                 return firstRating.RatingGroup2;
 
             // otherwise, use longer method.
-            var theRatingGroups = DataContext.GetTable<RatingGroup>().Where(mg => mg.TblRow == entity && mg.TblColumn == TblColumn && mg.Status == (Byte)StatusOfObject.Active);
+            var theRatingGroups = DataContext.GetTable<RatingGroup>().Where(mg => mg.TblRow == tblRow && mg.TblColumn == TblColumn && mg.Status == (Byte)StatusOfObject.Active);
             foreach (RatingGroup aGroup in theRatingGroups)
             {
                 if (GetRatingGroupOwner(aGroup) == null)

@@ -575,7 +575,7 @@ namespace ClassLibrary1.Model
             SetSearchWordsForEntityName(theTblRow, false);
             //ProfileSimple.End("SearchWords");
             //ProfileSimple.Start("AddMissingRatings");
-            AddMissingRatingsForTblRow(theTblRow);
+            // AddMissingRatingsForTblRow(theTblRow); // We won't call this anymore -- we'll add ratings dynamically as needed
             //ProfileSimple.End("AddMissingRatings");
             //ProfileSimple.Start("AddVolatilityTracking");
             VolatilityTracking.AddVolatilityTracking(DataContext, theTblRow);
@@ -606,15 +606,15 @@ namespace ClassLibrary1.Model
         /// <param name="entityId">The referred entity</param>
         /// <param name="timeChanged">The time the entity was added</param>
         /// <param name="status">A character indicating the status of this record</param>
-        public TblRowStatusRecord AddTblRowStatusRecord(TblRow entity, DateTime timeChanged, bool deleting, bool adding)
+        public TblRowStatusRecord AddTblRowStatusRecord(TblRow tblRow, DateTime timeChanged, bool deleting, bool adding)
         {
             if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
                 return null;
-            StatusRecords.PrepareToRecordRowStatusChange(DataContext, entity.TblID);
-            entity.StatusRecentlyChanged = true;
+            StatusRecords.PrepareToRecordRowStatusChange(DataContext, tblRow.TblID);
+            tblRow.StatusRecentlyChanged = true;
             TblRowStatusRecord record = new TblRowStatusRecord
             {
-                TblRow = entity,
+                TblRow = tblRow,
                 TimeChanged = timeChanged,
                 Deleting = deleting,
                 Adding = adding
@@ -632,17 +632,17 @@ namespace ClassLibrary1.Model
         /// <param name="FieldDefinitionID">A description of the field being added.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public Field AddField(TblRow entity, FieldDefinition FieldDefinition)
+        public Field AddField(TblRow tblRow, FieldDefinition FieldDefinition)
         {
             Field theField = new Field
             {
-                TblRow = entity,
+                TblRow = tblRow,
                 FieldDefinition = FieldDefinition,
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<Field>().InsertOnSubmit(theField);
             DataContext.RegisterObjectToBeInserted(theField);
-            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entity.TblRowID);
+            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRow.TblRowID);
             return theField;
         }
 
@@ -936,12 +936,12 @@ namespace ClassLibrary1.Model
         /// <param name="ratingGroupAttributesID">The attributes of the rating group</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added rating group</returns>
-        public RatingGroup AddRatingGroup(TblRow entity, TblColumn TblColumn, RatingGroupAttribute ratingGroupAttributes, bool isTopGroup, ref RatingGroupPhaseStatus theRatingGroupPhaseStatus)
+        public RatingGroup AddRatingGroup(TblRow tblRow, TblColumn TblColumn, RatingGroupAttribute ratingGroupAttributes, bool isTopGroup, ref RatingGroupPhaseStatus theRatingGroupPhaseStatus)
         {
             byte? MType = ratingGroupAttributes.TypeOfRatingGroup;
             RatingGroup theGroup = new RatingGroup
             {
-                TblRow = entity,
+                TblRow = tblRow,
                 TblColumn = TblColumn,
                 RatingGroupAttribute = ratingGroupAttributes,
                 CurrentValueOfFirstRating = null,
@@ -978,12 +978,56 @@ namespace ClassLibrary1.Model
             public string Purpose = "GenerateUniqueID";
         }
 
-        public RatingGroup AddRatingGroupAndRatings(TblRow entity, TblColumn TblColumn, RatingGroupAttribute ratingGroupAttributes)
+        public Tuple<int,int> AddMissingRatingGroupAndRatings(string tblRowIDAndColumnIDSeparatedBySlash)
         {
-            if (!(entity.TblRowID == 0 || TblColumn.TblColumnID == 0)) // if 0's ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
-                AddUniquenessLock(new TblRowIDAndTblColumnIDUniquenessGenerator() { TblRowID = entity.TblRowID, TblColumnID = TblColumn.TblColumnID }, TestableDateTime.Now + TimeSpan.FromDays(1)); // will prevent anyone else from adding to the same cell simultaneously (note that 1 day is a bit arbitrary -- key is that we want to avoid scenario where we check for ratings and don't find any, and add just an instant later than another web role doing the same thing)
-            RatingGroup theRatingGroup = AddRatingGroupAndRatings(entity, TblColumn, ratingGroupAttributes, null, null);
+            string[] components = tblRowIDAndColumnIDSeparatedBySlash.Split('/');
+            if (!(components.Length == 2))
+                throw new Exception("Unexpected cell formatting error.");
+            TblRow tblRow = null;
+            TblColumn tblColumn = null;
+            int tblRowID = 0, tblColumnID = 0;
+            try
+            {
+                tblRowID = Convert.ToInt32(components[0]);
+                tblColumnID = Convert.ToInt32(components[1]);
+            }
+            catch
+            {
+                throw new Exception("Improper cell formatting of row or column ID.");
+            }
+            try
+            {
+                tblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID == tblRowID);
+                tblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == tblColumnID);
+            }
+            catch
+            {
+                throw new Exception("Database error. The rating information for that row and column could not be found.");
+            }
+            Rating rating = null;
+            try
+            {
+                // see if it might have been added already -- this could happen if the page hasn't been updated in a while or if a user is trying to mess with us
+                rating = DataContext.GetTable<Rating>().FirstOrDefault(x => x.RatingGroup.TblRowID == tblRowID && x.RatingGroup.TblColumnID == tblColumnID);
+                if (rating == null)
+                    AddMissingRatingGroupAndRatings(tblRow, tblColumn);
+            }
+            catch
+            { // it may have failed because there was a simultaneous attempt to add the rating group and ratings (which we prevent), so let's see if it now exists in the database
+            }
+            rating = DataContext.GetTable<Rating>().First(x => x.RatingGroup.TblRowID == tblRowID && x.RatingGroup.TblColumnID == tblColumnID);
+            if (rating == null)
+                throw new Exception("Database error. The rating could not be added to the database.");
+            return new Tuple<int, int>(rating.RatingID, rating.RatingGroupID);
+        }
+
+        public RatingGroup AddRatingGroupAndRatings(TblRow tblRow, TblColumn tblColumn, RatingGroupAttribute ratingGroupAttributes)
+        {
+            if (!(tblRow.TblRowID == 0 || tblColumn.TblColumnID == 0)) // if 0's ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
+                AddUniquenessLock(new TblRowIDAndTblColumnIDUniquenessGenerator() { TblRowID = tblRow.TblRowID, TblColumnID = tblColumn.TblColumnID }, TestableDateTime.Now + TimeSpan.FromDays(1)); // will prevent anyone else from adding to the same cell simultaneously (note that 1 day is a bit arbitrary -- key is that we want to avoid scenario where we check for ratings and don't find any, and add just an instant later than another web role doing the same thing)
+            RatingGroup theRatingGroup = AddRatingGroupAndRatings(tblRow, tblColumn, ratingGroupAttributes, null, null);
             AdvanceRatingGroupToNextRatingPhase(theRatingGroup);
+            new FastAccessRatingIDUpdatingInfo() { RatingID = theRatingGroup.Ratings.First().RatingID, RatingGroupID = theRatingGroup.RatingGroupID, TblColumnID = tblColumn.TblColumnID }.AddToTblRow(tblRow);
             return theRatingGroup;
         }
 
@@ -1096,6 +1140,8 @@ namespace ClassLibrary1.Model
 
         public int? AddMissingRatingsForSomeTblRows(int TblID, int? numToDo, int startingTblRowID)
         {
+            throw new Exception("Internal error. We should not be adding missing ratings for entire TblRows anymore. This code remains just in case it is needed in the future.");
+
             var theTblRows = DataContext.GetTable<TblRow>().Where(e => e.TblID == TblID &&
                    e.Status == (Byte)StatusOfObject.Active && e.TblRowID >= startingTblRowID);
             int entityCount = theTblRows.Count();
@@ -1118,8 +1164,12 @@ namespace ClassLibrary1.Model
                 return lastTblRowProcessed + 1;
         }
 
+        bool missingRatingsLongProcessedEnabled = false; // we don't want to do this any more because users may add larger numbers of columns, so we'll create ratings on an as-needed basis
         public void StartAddingMissingRatingsForTbl(int TblID)
         {
+            if (!missingRatingsLongProcessedEnabled)
+                return;
+
             // AddRatingsForSomeTblRowsInTblAndStartTrading(TblID, null, 0);
             bool entitiesExist = DataContext.GetTable<TblRow>().Any(x => x.TblID == TblID);
             if (entitiesExist)

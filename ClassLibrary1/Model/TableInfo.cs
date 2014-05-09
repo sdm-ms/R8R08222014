@@ -55,8 +55,8 @@ namespace ClassLibrary1.Model
         public string RowHeadingWithPopup; // only if data is loaded through fast tables
         public int TblRowID;
         public int TblColumnID;
-        public int TopRatingGroupID;
-        public int FirstRatingID;
+        public int? TopRatingGroupID;
+        public int? FirstRatingID;
         public int? DecPlaces; // null if preformatted string exists
         public decimal? ValueOfFirstRating; // null if preformatted string exists
         public bool SingleNumberOnly;

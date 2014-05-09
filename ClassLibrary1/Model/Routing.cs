@@ -95,20 +95,20 @@ namespace ClassLibrary1.Model
         {
         }
 
-        public RoutingInfoMainContent(HierarchyItem hierarchyItem, TblRow entity = null, TblColumn TblColumn = null)
+        public RoutingInfoMainContent(HierarchyItem hierarchyItem, TblRow tblRow = null, TblColumn TblColumn = null)
             : base(RouteID.MainContent)
         {
             theRoutingHierarchy = HierarchyItems.GetHierarchyAsList(hierarchyItem, true);
             theMenuHierarchy = HierarchyItems.GetHierarchyAsList(hierarchyItem, false);
-            theTblRow = entity;
+            theTblRow = tblRow;
             theTblColumn = TblColumn;
         }
 
-        public RoutingInfoMainContent(Tbl Tbl, TblRow entity, TblColumn TblColumn, bool isEditMode = false, bool isAddMode = false, bool isCommentsMode = false, bool isLeadersMode = false, bool isGuaranteesMode = false, bool isChangeTableMode = false, bool isPointsSettingsMode = false)
+        public RoutingInfoMainContent(Tbl Tbl, TblRow tblRow, TblColumn TblColumn, bool isEditMode = false, bool isAddMode = false, bool isCommentsMode = false, bool isLeadersMode = false, bool isGuaranteesMode = false, bool isChangeTableMode = false, bool isPointsSettingsMode = false)
             : base(RouteID.MainContent)
         {
             theRoutingHierarchy = HierarchyItems.GetHierarchyAsList(HierarchyItems.GetHierarchyItemForTbl(Tbl), true);
-            theTblRow = entity;
+            theTblRow = tblRow;
             theTblColumn = TblColumn;
             editMode = isEditMode;
             addMode = isAddMode;
@@ -287,15 +287,15 @@ namespace ClassLibrary1.Model
         public string GetOutgoingRoute(int hierarchyLevel)
         {
             int hierarchyLevels = theRoutingHierarchy.Count();
-            TblRow entityToInclude = null;
+            TblRow tblRow = null;
             TblColumn TblColumnToInclude = null;
             if (hierarchyLevel >= hierarchyLevels)
             {
-                entityToInclude = theTblRow;
+                tblRow = theTblRow;
                 if (hierarchyLevel >= hierarchyLevels + 1)
                     TblColumnToInclude = theTblColumn;
             }
-            RoutingInfoMainContent routingForLevel = RoutingInfoMainContentFactory.GetRoutingInfo(theRoutingHierarchy[hierarchyLevel], entityToInclude, TblColumnToInclude);
+            RoutingInfoMainContent routingForLevel = RoutingInfoMainContentFactory.GetRoutingInfo(theRoutingHierarchy[hierarchyLevel], tblRow, TblColumnToInclude);
             return routingForLevel.GetOutgoingRoute();
         }
 
@@ -362,27 +362,27 @@ namespace ClassLibrary1.Model
             return theRoutingInfo;
         }
 
-        public static RoutingInfoMainContent GetRoutingInfo(HierarchyItem hierarchyItem, TblRow entity = null, TblColumn TblColumn = null)
+        public static RoutingInfoMainContent GetRoutingInfo(HierarchyItem hierarchyItem, TblRow tblRow = null, TblColumn TblColumn = null)
         {
-            string cacheKey = "HierarchyRouting" + hierarchyItem.GetHashCode() + entity.GetHashString() + TblColumn.GetHashString();
+            string cacheKey = "HierarchyRouting" + hierarchyItem.GetHashCode() + tblRow.GetHashString() + TblColumn.GetHashString();
             RoutingInfoMainContent theRoutingInfo;
             theRoutingInfo = CacheManagement.GetItemFromCache(cacheKey) as RoutingInfoMainContent;
             if (theRoutingInfo == null)
             {
-                theRoutingInfo = new RoutingInfoMainContent(hierarchyItem, entity, TblColumn);
+                theRoutingInfo = new RoutingInfoMainContent(hierarchyItem, tblRow, TblColumn);
                 AddRoutingInfoToCache(cacheKey, theRoutingInfo);
             }
             return theRoutingInfo;
         }
 
-        public static RoutingInfoMainContent GetRoutingInfo(Tbl theTbl, TblRow entity = null, TblColumn TblColumn = null)
+        public static RoutingInfoMainContent GetRoutingInfo(Tbl theTbl, TblRow tblRow = null, TblColumn TblColumn = null)
         {
-            string cacheKey = "HierarchyRoutingTbl" + theTbl.GetHashString() + entity.GetHashString() + TblColumn.GetHashString();
+            string cacheKey = "HierarchyRoutingTbl" + theTbl.GetHashString() + tblRow.GetHashString() + TblColumn.GetHashString();
             RoutingInfoMainContent theRoutingInfo;
             theRoutingInfo = CacheManagement.GetItemFromCache(cacheKey) as RoutingInfoMainContent;
             if (theRoutingInfo == null)
             {
-                theRoutingInfo = new RoutingInfoMainContent(HierarchyItems.GetHierarchyItemForTbl(theTbl), entity, TblColumn);
+                theRoutingInfo = new RoutingInfoMainContent(HierarchyItems.GetHierarchyItemForTbl(theTbl), tblRow, TblColumn);
                 AddRoutingInfoToCache(cacheKey, theRoutingInfo);
             }
             return theRoutingInfo;

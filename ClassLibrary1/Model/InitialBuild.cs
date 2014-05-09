@@ -100,7 +100,14 @@ namespace ClassLibrary1.Model
         {
             ExecuteCommand("DELETE FROM " + tableName);
             string tablenameWithoutDBO = GetTableNameWithoutDBOPrefix(tableName);
-            ExecuteCommand("DBCC CHECKIDENT (" + tablenameWithoutDBO + ", RESEED, 0)");
+            try
+            {
+                ExecuteCommand("DBCC CHECKIDENT (" + tablenameWithoutDBO + ", RESEED, 0)");
+            }
+            catch
+            { // ignore failure -- the command is unnecessary if table has no identity column
+            }
+
 
         }
 

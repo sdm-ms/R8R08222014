@@ -119,7 +119,7 @@ namespace ClassLibrary1.Model
 
         public class TblRowsToIncludeOrExclude
         {
-            public TblRow entity;
+            public TblRow tblRow;
             public bool? include;
         }
 
