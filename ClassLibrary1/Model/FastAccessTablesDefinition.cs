@@ -165,15 +165,15 @@ namespace ClassLibrary1.Model
             nameShortenedForIndexingColumn = new SQLTableColumnDescription() { Name = "NS", ColType = SQLColumnType.typeString4Chars, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, Ascending = true, ComputedColumnSpecification = " AS CAST(LEFT(NME,4) AS NCHAR(4)) PERSISTED " };
             rowFieldDisplay = new SQLTableColumnDescription() { Name = "RH", ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
             deleted = new SQLTableColumnDescription() { Name = "DEL", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
-            countNullEntries = new SQLTableColumnDescription() { Name = "CNNE", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
-            countUserPoints = new SQLTableColumnDescription() { Name = "CUP", ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
-            elevateOnMostNeedsRating = new SQLTableColumnDescription() { Name = "ELEV", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
-            currentlyHighStakes = new SQLTableColumnDescription() { Name = "HS", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
-            recentlyChanged = new SQLTableColumnDescription() { Name = "RC", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
-            volatilityHour = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneHour), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
-            volatilityDay = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneDay), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
-            volatilityWeek = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneWeek), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
-            volatilityYear = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneYear), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            countNullEntries = new SQLTableColumnDescription() { Name = "CNNE", ColType = SQLColumnType.typeInt, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            countUserPoints = new SQLTableColumnDescription() { Name = "CUP", ColType = SQLColumnType.typeDecimal, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            elevateOnMostNeedsRating = new SQLTableColumnDescription() { Name = "ELEV", ColType = SQLColumnType.typeBit, Nullable = false, DefaultValue = "FALSE", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            currentlyHighStakes = new SQLTableColumnDescription() { Name = "HS", ColType = SQLColumnType.typeInt, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            recentlyChanged = new SQLTableColumnDescription() { Name = "RC", ColType = SQLColumnType.typeBit, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            volatilityHour = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneHour), ColType = SQLColumnType.typeDecimal, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            volatilityDay = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneDay), ColType = SQLColumnType.typeDecimal, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            volatilityWeek = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneWeek), ColType = SQLColumnType.typeDecimal, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            volatilityYear = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneYear), ColType = SQLColumnType.typeDecimal, Nullable = false, DefaultValue = "0", PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
             
 
             List<TblColumn> tblColumns = iDataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == TheTbl.TblID).ToList();
@@ -393,7 +393,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             public int CNNE;
             public decimal CUP;
             public bool ELEV;
-            public bool HS;
+            public int HS;
             public bool RC;
             public IEnumerable<FastRatingsInfo> Ratings;
             public IEnumerable<FastAddressFieldsInfo> AddressFields;
@@ -498,7 +498,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     CNNE = x.CountNonnullEntries,
                     CUP = x.CountUserPoints,
                     ELEV = x.ElevateOnMostNeedsRating,
-                    HS = x.CountHighStakesNow > 0,
+                    HS = x.CountHighStakesNow,
                     RC = x.StatusRecentlyChanged
                 }).ToList();
             }
@@ -515,7 +515,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     CNNE = x.CountNonnullEntries,
                     CUP = x.CountUserPoints,
                     ELEV = x.ElevateOnMostNeedsRating,
-                    HS = x.CountHighStakesNow > 0,
+                    HS = x.CountHighStakesNow,
                     RC = x.StatusRecentlyChanged,
                     Ratings =   from y in x.RatingGroups
                                 let firstRating = y.Ratings.OrderBy(z => z.NumInGroup).FirstOrDefault()
@@ -581,7 +581,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     CNNE = x.CountNonnullEntries,
                     CUP = x.CountUserPoints,
                     ELEV = x.ElevateOnMostNeedsRating,
-                    HS = x.CountHighStakesNow > 0,
+                    HS = x.CountHighStakesNow,
                     RC = x.StatusRecentlyChanged,
                     Ratings = from y in x.RatingGroups
                               let firstRating = y.Ratings.FirstOrDefault()
@@ -613,7 +613,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     CNNE = x.CountNonnullEntries,
                     CUP = x.CountUserPoints,
                     ELEV = x.ElevateOnMostNeedsRating,
-                    HS = x.CountHighStakesNow > 0,
+                    HS = x.CountHighStakesNow,
                     RC = x.StatusRecentlyChanged,
                     AddressFields = x.Fields.SelectMany(z => z.AddressFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
                         z => new FastAddressFieldsInfo

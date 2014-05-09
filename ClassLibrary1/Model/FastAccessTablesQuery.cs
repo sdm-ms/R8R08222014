@@ -312,7 +312,7 @@ namespace ClassLibrary1.Model
                     throw new Exception("Internal error: Unknown filter rule type in GetStatementsForFiltering.");
             }
             if (filters.HighStakesOnly)
-                whereClauses.Add("HS = 1");
+                whereClauses.Add("HS > 0");
             whereString = " ";
             if (whereClauses.Any() || asOfDateTime != null)
             {

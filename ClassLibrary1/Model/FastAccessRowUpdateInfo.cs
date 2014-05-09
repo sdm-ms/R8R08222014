@@ -74,12 +74,12 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class FastAccessHighStakesKnownUpdateInfo : FastAccessRowUpdateInfo
     {
-        public bool HighStakesKnown;
+        public int HighStakesKnownChange;
         public override List<SQLCellInfo> GetSQLParameterInfo()
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "HS", Value = HighStakesKnown, DBtype = SqlDbType.Bit }
+                new SQLCellInfo() { Fieldname = "HS", Value = HighStakesKnownChange, DBtype = SqlDbType.Int }
             };
         }
     }

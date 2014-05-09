@@ -37,6 +37,7 @@ namespace ClassLibrary1.Misc
         public bool ClusteredIndex { get; set; }
         public bool Ascending { get; set; }
         public string ComputedColumnSpecification { get; set; }
+        public string DefaultValue = "";
 
         public string ColTypeString()
         {
@@ -88,7 +89,7 @@ namespace ClassLibrary1.Misc
         {
             if (ComputedColumnSpecification != null && ComputedColumnSpecification != "")
                 return Name + ComputedColumnSpecification;
-            return String.Format("[{0}] {1} {2} {3} {4}{5}", Name, ColTypeString(), Nullable ? "NULL" : "NOT NULL", AutoIncrement ? "IDENTITY" : "", PrimaryKey && !ClusteredIndex ? "PRIMARY KEY NONCLUSTERED" : "", PrimaryKey && ClusteredIndex ? "PRIMARY KEY" : "");
+            return String.Format("[{0}] {1} {2} {3} {4} {5}{6}", Name, ColTypeString(), Nullable ? "NULL" : "NOT NULL", DefaultValue == "" ? "DEFAULT" + DefaultValue : "",  AutoIncrement ? "IDENTITY" : "", PrimaryKey && !ClusteredIndex ? "PRIMARY KEY NONCLUSTERED" : "", PrimaryKey && ClusteredIndex ? "PRIMARY KEY" : "");
         }
 
         public DataColumn GetDataColumn()
@@ -385,7 +386,10 @@ namespace ClassLibrary1.Misc
                         updateStringComponents.Add(", ");
                     isFirst = false;
                     updateStringComponents.Add(variable.Fieldname);
-                    updateStringComponents.Add(" = ");
+                    if (variable.ValueIsRelative)
+                        updateStringComponents.Add(" += ");
+                    else
+                        updateStringComponents.Add(" = ");
                     updateStringComponents.Add(variable.GetValueOrParameterName());
                 }
                 else
@@ -421,6 +425,7 @@ namespace ClassLibrary1.Misc
         public bool AlreadyProcessed = false; // initialize to this
         public bool SetValueToPrimaryKeyIDOfMainTableOnceLoaded = false; // set this to true so that value will be TblRowID once that loads
         public bool DataIsAlreadyInDatabase = false;
+        public bool ValueIsRelative = false; // use += to update after initial insertion if this is true
         public int groupedWithNPreviousItems = 0; // If there are two items being grouped, set this to 1 for the last one. If there are three, set this to 2 for the last one.
 
         public string Paramname() 
@@ -707,7 +712,10 @@ WHEN MATCHED THEN
             else
                 matchingStatement = String.Join(" AND ", fieldNames.Select(x => "tbl." + x + " = upsert2." + x).ToArray());
             string valuesStatement = String.Join(",", fieldNames.Select(x => "upsert2." + x).ToArray()); // {4}
-            string updateStatement = String.Join(",", fieldNames.Select(x => "tbl." + x + " = upsert2." + x).ToArray()); // {5}
+            List<Tuple<string, string>> fieldnameAndAssignmentOperator = new List<Tuple<string, string>>();
+            foreach (string fieldname in fieldNames)
+                fieldnameAndAssignmentOperator.Add(updateInfos.First(x => x.Fieldname == fieldname).ValueIsRelative ? new Tuple<string,string>(fieldname, " += ") : new Tuple<string,string>(fieldname, " = "));
+            string updateStatement = String.Join(",", fieldnameAndAssignmentOperator.Select(x => "tbl." + x.Item1 + x.Item2 + "upsert2." + x.Item1).ToArray()); // {5}
             sb.Append(String.Format(upsertTemplate, tablename, parameterizedValuesList, fieldNamesList, matchingStatement, valuesStatement, updateStatement));
         }
 

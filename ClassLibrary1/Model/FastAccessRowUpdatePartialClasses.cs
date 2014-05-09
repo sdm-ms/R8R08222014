@@ -23,9 +23,6 @@ namespace ClassLibrary1.Model
             OnCountUserPointsChanging(this.CountUserPoints);
             OnNameChanging(this.Name);
             OnStatusChanging(this.Status);
-            // high stakes known is usually a property of the rating group -- DEBUG how is that?
-            var fhs = new FastAccessHighStakesKnownUpdateInfo() { HighStakesKnown = false };
-            fhs.AddToTblRow(this); asf
         }
 
         partial void OnElevateOnMostNeedsRatingChanging(bool value)
@@ -78,7 +75,7 @@ namespace ClassLibrary1.Model
         {
             if (!RatingGroupTypesList.lowerHierarchy.Contains(this.TypeOfRatingGroup)) // i.e., if this is a top rating group
             {
-                var fa2 = new FastAccessHighStakesKnownUpdateInfo() { HighStakesKnown = value };
+                var fa2 = new FastAccessHighStakesKnownUpdateInfo() { HighStakesKnownChange = value ? 1 : -1}; // we keep track of the number of high stakes known per row, so this can go up or down
                 fa2.AddToTblRow(this.TblRow);
             }
         }
