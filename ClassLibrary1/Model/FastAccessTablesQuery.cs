@@ -64,11 +64,19 @@ namespace ClassLibrary1.Model
             joinString = " ";
             string ascOrDescString = (tableSortRule.Ascending) ? "ASC" : "DESC";
             if (tableSortRule is TableSortRuleEntityName)
-                orderByString = "ORDER BY NME " + ascOrDescString;
+                orderByString = "ORDER BY NS " + ascOrDescString + ", NME " + ascOrDescString; // we use the short name field (which has an index) and then the full NME field to break ties
             else if (tableSortRule is TableSortRuleNewestInDatabase)
                 orderByString = "ORDER BY ID " + ascOrDescString;
             else if (tableSortRule is TableSortRuleNeedsRating)
                 orderByString = String.Format("ORDER BY [t{0}].[DEL], [t{0}].[ELEV] DESC, [t{0}].[CNNE] DESC, [t{0}].[CUP]", sqlTblIndex);
+
+            else if (tableSortRule is TableSortRuleActivityLevel)
+            {
+                TableSortRuleActivityLevel activityLevelSortRule = (TableSortRuleActivityLevel)tableSortRule;
+                var timeFrame = activityLevelSortRule.TimeFrame;
+                string trackerString = SQLFastAccessTableInfo.GetVolatilityColumnNameForDuration(timeFrame);
+                orderByString = String.Format("ORDER BY {0} DESC", trackerString);
+            }
             else if (tableSortRule is TableSortRuleNeedsRatingUntrustedUser)
                 orderByString = String.Format("ORDER BY [t{0}].[DEL], [t{0}].[CNNE] DESC, [t{0}].[CUP]", sqlTblIndex);
             else if (tableSortRule is TableSortRuleTblColumn)
@@ -108,13 +116,6 @@ namespace ClassLibrary1.Model
          END) {5}, [t{0}].[NME]", originalTblIndex, subtableIndex1, subtableIndex2, subtableIndex3, tableSortRuleTblColumn.TblColumnToSortID, ascOrDescString, asOfDateTimeParamNum);
                 };
             }
-            else if (tableSortRule is TableSortRuleActivityLevel)
-            {
-                TableSortRuleActivityLevel activityLevelSortRule = (TableSortRuleActivityLevel)tableSortRule;
-                sqlTblIndex++;
-                int volatilityIndex = sqlTblIndex;
-                orderByString = String.Format(" ORDER BY (SELECT [t{1}].[Volatility] FROM [dbo].[VolatilityTblRowTrackers] AS [t{1}] WHERE ([t{1}].[DurationType] = {2}) AND ([t{1}].[TblRowID] = [t{0}].[ID])) {3} ", originalTblIndex, volatilityIndex, (int)activityLevelSortRule.TimeFrame, ascOrDescString);
-            }
             else if (tableSortRule is TableSortRuleDistance)
             {
                 TableSortRuleDistance distanceSortRule = (TableSortRuleDistance)tableSortRule;
@@ -127,6 +128,7 @@ namespace ClassLibrary1.Model
             else
                 throw new NotImplementedException();
         }
+
 
         internal class ChoiceFullFieldDefinition
         {

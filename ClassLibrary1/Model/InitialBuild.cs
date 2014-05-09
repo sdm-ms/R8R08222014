@@ -683,7 +683,7 @@ namespace ClassLibrary1.Model
             Thread.Sleep(5000);
 
             
-            Government government = new Government();
+            /*Government government = new Government();
             government.Create();
 
             Baseball baseball = new Baseball();
@@ -696,7 +696,7 @@ namespace ClassLibrary1.Model
             hockey.Create();
 
             RealEstate realEstate = new RealEstate();
-            realEstate.Create();
+            realEstate.Create(); */
 
             Restaurants restaurants = new Restaurants();
             restaurants.Create();

@@ -17,7 +17,8 @@ namespace ClassLibrary1.Misc
     public enum SQLColumnType
     {
         typeInt,
-        typeString,
+        typeStringUnlimited,
+        typeString4Chars,
         typeDecimal,
         typeGeography,
         typeDateTime,
@@ -35,6 +36,7 @@ namespace ClassLibrary1.Misc
         [DefaultValue(false)]
         public bool ClusteredIndex { get; set; }
         public bool Ascending { get; set; }
+        public string ComputedColumnSpecification { get; set; }
 
         public string ColTypeString()
         {
@@ -50,11 +52,12 @@ namespace ClassLibrary1.Misc
                     return "[geography]";
                 case SQLColumnType.typeInt:
                     return "[int]";
-                case SQLColumnType.typeString:
-                    if (NonclusteredIndex)
-                        return "[nvarchar](200)"; // MAX can't be used on indexed columns, so strings must be truncated to fit this.
-                    else
-                        return "[nvarchar](max)";
+                case SQLColumnType.typeStringUnlimited:
+                    if (NonclusteredIndex || ClusteredIndex)
+                        throw new Exception("Can't create an index on a string of unlimited size."); // MAX can't be used on indexed columns -- can create a smaller column and index on that. Then sort on that followed by this
+                    return "[nvarchar](MAX)";
+                case SQLColumnType.typeString4Chars:
+                    return "[nchar](4)";
                 default:
                     throw new Exception("Unknown ColType");
             }
@@ -74,7 +77,7 @@ namespace ClassLibrary1.Misc
                     return typeof(Microsoft.SqlServer.Types.SqlGeography);
                 case SQLColumnType.typeInt:
                     return System.Type.GetType("System.Int32");
-                case SQLColumnType.typeString:
+                case SQLColumnType.typeStringUnlimited:
                     return System.Type.GetType("System.String");
                 default:
                     throw new Exception("Unknown ColType");
@@ -83,7 +86,9 @@ namespace ClassLibrary1.Misc
 
         internal string ToSpecificationString()
         {
-            return String.Format("[{0}] {1} {2} {3}", Name, ColTypeString(), Nullable ? "NULL" : "NOT NULL", AutoIncrement ? "IDENTITY" : "");
+            if (ComputedColumnSpecification != null && ComputedColumnSpecification != "")
+                return Name + ComputedColumnSpecification;
+            return String.Format("[{0}] {1} {2} {3} {4}{5}", Name, ColTypeString(), Nullable ? "NULL" : "NOT NULL", AutoIncrement ? "IDENTITY" : "", PrimaryKey && !ClusteredIndex ? "PRIMARY KEY NONCLUSTERED" : "", PrimaryKey && ClusteredIndex ? "PRIMARY KEY" : "");
         }
 
         public DataColumn GetDataColumn()
@@ -501,6 +506,8 @@ namespace ClassLibrary1.Misc
 
                 case SqlDbType.NVarChar:
                 case SqlDbType.VarChar:
+                case SqlDbType.NChar:
+                case SqlDbType.Char:
                     return "'" + ((string)Value).ToString() + "'";
                     ;
 
@@ -815,8 +822,18 @@ WHEN MATCHED THEN
             string colNames = "";
             foreach (var col in table.Columns)
                 colNames += col.ToSpecificationString() + ", \n ";
+      
             string primaryKey = table.Columns.Single(x => x.PrimaryKey).Name;
-            string addCommand = String.Format("CREATE TABLE [dbo].[{0}]( \n {1} CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED \n ( \n [{2}] ASC \n )WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF \n ) ON [PRIMARY] \n ) ON [PRIMARY]", table.Name, colNames, primaryKey);
+            string closingStatement = "(" + primaryKey + "))";
+            //string clustered = primaryKey;
+            //var otherClustered = table.Columns.SingleOrDefault(x => x.ClusteredIndex && !x.PrimaryKey);
+            //if (otherClustered != null)
+            //{
+            //    clustered = otherClustered.Name;
+            //    closingStatement = "CLUSTERED \n ( \n [" + clustered + "] ASC \n )WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF \n ) \n ) ";
+            //}
+            //string addCommand = String.Format("CREATE TABLE [dbo].[{0}] ( \n {1} CONSTRAINT [PK_{0}] PRIMARY KEY {2}", table.Name, colNames, closingStatement);
+            string addCommand = String.Format("CREATE TABLE [dbo].[{0}] ( \n {1} )", table.Name, colNames);
             ExecuteSQLNonQuery(database, addCommand);
         }
 
@@ -862,7 +879,8 @@ WHEN MATCHED THEN
 
         public static void AddIndicesForSpecifiedColumns(ISQLDirectConnectionManager database, SQLTableDescription table)
         {
-            foreach (var col in table.Columns.Where(x => x.NonclusteredIndex || x.ClusteredIndex))
+            var indexedColumns = table.Columns.Where(x => x.NonclusteredIndex || x.ClusteredIndex).OrderBy(x => !x.ClusteredIndex).ToList();
+            foreach (var col in indexedColumns)
             {
                 string cmd = "";
                 if (col.ColType == SQLColumnType.typeGeography)
@@ -879,7 +897,14 @@ CELLS_PER_OBJECT = 16, PAD_INDEX  = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = O
                 }
                 else
                 {
-                    cmd = "CREATE " + (col.ClusteredIndex ? "" : "NON") + "CLUSTERED INDEX IX_" + table.Name + "_" + col.Name + " ON " + table.Name + " (" + col.Name + (col.Ascending ? " ASC)" : " DESC)");
+                    if (col.ClusteredIndex)
+                    {
+                        if (col.PrimaryKey)
+                            continue; // already created
+                        cmd = "CREATE CLUSTERED INDEX IX_" + table.Name + "_" + col.Name + " ON " + table.Name + " (" + col.Name + (col.Ascending ? " ASC)" : " DESC) ");
+                    }
+                    else
+                        cmd = "CREATE NONCLUSTERED INDEX IX_" + table.Name + "_" + col.Name + " ON " + table.Name + " (" + col.Name + (col.Ascending ? " ASC)" : " DESC) "); // if the index already existed, we would need to add " WITH (DROP_EXISTING = ON) ", but we get an error if we do that when the index doesn't already exist
                 }
                 ExecuteSQLNonQuery(database, cmd);
             }

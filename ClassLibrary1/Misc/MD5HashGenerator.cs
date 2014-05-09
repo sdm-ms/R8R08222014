@@ -117,4 +117,11 @@ public class MD5HashGenerator
 			return null;
 		}
 	}
+
+    public static Guid GetDeterministicGuid(Object objectToSerialize)
+    {
+        MD5 md5 = new MD5CryptoServiceProvider();
+        byte[] result = md5.ComputeHash(ObjectToByteArray(objectToSerialize));
+        return new Guid(result);
+    }
 }

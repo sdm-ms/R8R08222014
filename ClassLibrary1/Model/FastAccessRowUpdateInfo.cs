@@ -163,6 +163,20 @@ namespace ClassLibrary1.Model
     }
 
     [Serializable]
+    public class FastAccessVolatilityUpdateInfo : FastAccessRowUpdateInfo
+    {
+        public decimal Value;
+        public VolatilityDuration TimeFrame;
+        public override List<SQLCellInfo> GetSQLParameterInfo()
+        {
+            return new List<SQLCellInfo>()
+            {
+                new SQLCellInfo() { Fieldname = SQLFastAccessTableInfo.GetVolatilityColumnNameForDuration(TimeFrame), Value = Value, DBtype = SqlDbType.Decimal }
+            };
+        }
+    }
+
+    [Serializable]
     public abstract class FastAccessFieldUpdateInfo : FastAccessRowUpdateInfo
     {
         public int FieldDefinitionID;

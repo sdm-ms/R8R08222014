@@ -1663,6 +1663,12 @@
       <Association Name="Tbl_TblRow" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.UniquenessLocks" Member="UniquenessLocks">
+    <Type Name="UniquenessLock">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DeletionTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">
     <Parameter Name="Lat1" Parameter="lat1" Type="System.Single" DbType="Real" />
     <Parameter Name="Long1" Parameter="long1" Type="System.Single" DbType="Real" />

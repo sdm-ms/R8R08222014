@@ -43,7 +43,7 @@ namespace ClassLibrary1.Model
         {
             TheTblColumn = tblColumn;
             int tblColumnID = tblColumn.TblColumnID;
-            ratingStringColumn = new SQLTableColumnDescription() { Name = "RS" + tblColumnID.ToString(), ColType = SQLColumnType.typeString, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            ratingStringColumn = new SQLTableColumnDescription() { Name = "RS" + tblColumnID.ToString(), ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
             ratingValueColumn = new SQLTableColumnDescription() { Name = "RV" + tblColumnID.ToString(), ColType = SQLColumnType.typeDecimal, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
             ratingIDColumn = new SQLTableColumnDescription() { Name = "R" + tblColumnID.ToString(), ColType = SQLColumnType.typeInt, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
             ratingGroupIDColumn = new SQLTableColumnDescription() { Name = "RG" + tblColumnID.ToString(), ColType = SQLColumnType.typeInt, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
@@ -65,27 +65,33 @@ namespace ClassLibrary1.Model
         {
             TheFieldDefinition = theFieldDefinition;
             SQLColumnType colType = SQLColumnType.typeBit; // must set a default value
+            bool index = false;
             switch (theFieldDefinition.FieldType)
             {
                 case (int) FieldTypes.AddressField:
                     colType = SQLColumnType.typeGeography;
+                    index = true; // spatial index
                     break;
                 case (int) FieldTypes.ChoiceField:
                     colType = SQLColumnType.typeInt;
+                    index = true; // index of integers -- note that we never call this constructor if we are dealing with a choice group with AllowMultipleSelectios = TRUE (in which case we would not have a column here, but instead another table)
                     break;
                 case (int)FieldTypes.DateTimeField:
                     colType = SQLColumnType.typeDateTime;
+                    index = true;
                     break;
                 case (int)FieldTypes.NumberField:
                     colType = SQLColumnType.typeDecimal;
+                    index = true;
                     break;
                 case (int)FieldTypes.TextField:
-                    colType = SQLColumnType.typeString;
+                    colType = SQLColumnType.typeStringUnlimited;
+                    index = false; // can't index a text field that is a string of unlimited length -- so let's not filter or sort by text fields.
                     break;
                 default:
                     break;
             }
-            fieldColumn = new SQLTableColumnDescription() { Name = "F" + theFieldDefinition.FieldDefinitionID.ToString(), ColType = colType, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            fieldColumn = new SQLTableColumnDescription() { Name = "F" + theFieldDefinition.FieldDefinitionID.ToString(), ColType = colType, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = index, Ascending = true };
         }
 
         public SQLTableColumnDescription GetColumn()
@@ -112,7 +118,7 @@ namespace ClassLibrary1.Model
             TheFieldDefinition = theFieldDefinition;
             TheChoiceGroup = TheFieldDefinition.ChoiceGroupFieldDefinitions.First().ChoiceGroup;
 
-            idColumn = new SQLTableColumnDescription() { Name = "MCID" /* distinctive name avoids complication of ambiguous column names when querying */, ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = true, NonclusteredIndex = false }; 
+            idColumn = new SQLTableColumnDescription() { Name = "MCID" /* distinctive name avoids complication of ambiguous column names when querying */, ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = true, NonclusteredIndex = false, ClusteredIndex = false }; 
             tblRowIDColumn = new SQLTableColumnDescription() { Name = "TRID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             choiceColumn = new SQLTableColumnDescription() { Name = "CHO", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true, Ascending = true };
         }
@@ -134,6 +140,7 @@ namespace ClassLibrary1.Model
         Tbl TheTbl;
         public SQLTableColumnDescription idColumn { get; set; } // == tblRowID
         public SQLTableColumnDescription nameColumn { get; set; }
+        public SQLTableColumnDescription nameShortenedForIndexingColumn { get; set; }
         public SQLTableColumnDescription rowFieldDisplay { get; set; }
         //public SQLTableColumnDescription tblRowPageFieldDisplay { get; set; }
         public SQLTableColumnDescription deleted { get; set; }
@@ -142,6 +149,10 @@ namespace ClassLibrary1.Model
         public SQLTableColumnDescription elevateOnMostNeedsRating { get; set; }
         public SQLTableColumnDescription currentlyHighStakes { get; set; }
         public SQLTableColumnDescription recentlyChanged { get; set; }
+        public SQLTableColumnDescription volatilityHour { get; set; }
+        public SQLTableColumnDescription volatilityDay { get; set; }
+        public SQLTableColumnDescription volatilityWeek { get; set; }
+        public SQLTableColumnDescription volatilityYear { get; set; }
         public List<SQLTableColumnInfo> ratingInfo { get; set; }
         public List<SQLTableFieldDefinition> filterableFields { get; set; }
         public List<SQLMultipleChoiceFieldTableInfo> filterableMultipleChoiceFields { get; set; }
@@ -149,15 +160,20 @@ namespace ClassLibrary1.Model
         public SQLFastAccessTableInfo(IRaterooDataContext iDataContext, Tbl theTbl)
         {
             TheTbl = theTbl;
-            idColumn = new SQLTableColumnDescription() { Name = "ID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = false, NonclusteredIndex = false };
-            nameColumn = new SQLTableColumnDescription() { Name = "NME", ColType = SQLColumnType.typeString, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true, Ascending = true };
-            rowFieldDisplay = new SQLTableColumnDescription() { Name = "RH", ColType = SQLColumnType.typeString, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            idColumn = new SQLTableColumnDescription() { Name = "ID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true /* NOTE: Because we use a spatial index, the clustered index MUST be for the primary key */ };
+            nameColumn = new SQLTableColumnDescription() { Name = "NME", ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, Ascending = true };
+            nameShortenedForIndexingColumn = new SQLTableColumnDescription() { Name = "NS", ColType = SQLColumnType.typeString4Chars, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, Ascending = true, ComputedColumnSpecification = " AS CAST(LEFT(NME,4) AS NCHAR(4)) PERSISTED " };
+            rowFieldDisplay = new SQLTableColumnDescription() { Name = "RH", ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
             deleted = new SQLTableColumnDescription() { Name = "DEL", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             countNullEntries = new SQLTableColumnDescription() { Name = "CNNE", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             countUserPoints = new SQLTableColumnDescription() { Name = "CUP", ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             elevateOnMostNeedsRating = new SQLTableColumnDescription() { Name = "ELEV", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             currentlyHighStakes = new SQLTableColumnDescription() { Name = "HS", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             recentlyChanged = new SQLTableColumnDescription() { Name = "RC", ColType = SQLColumnType.typeBit, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            volatilityHour = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneHour), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            volatilityDay = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneDay), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            volatilityWeek = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneWeek), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            volatilityYear = new SQLTableColumnDescription() { Name = GetVolatilityColumnNameForDuration(VolatilityDuration.oneYear), ColType = SQLColumnType.typeDecimal, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
             
 
             List<TblColumn> tblColumns = iDataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == TheTbl.TblID).ToList();
@@ -181,9 +197,31 @@ namespace ClassLibrary1.Model
             return new SQLUpdateInfoTableSpecification() { IDIsAutogenerated = false, PrimaryKeyFieldName = "ID", Tablename = "V" + tblID.ToString() };
         }
 
+
+        public static string GetVolatilityColumnNameForDuration(VolatilityDuration timeFrame)
+        {
+            string trackerString = null;
+            switch (timeFrame)
+            {
+                case VolatilityDuration.oneHour:
+                    trackerString = "VTH";
+                    break;
+                case VolatilityDuration.oneDay:
+                    trackerString = "VTD";
+                    break;
+                case VolatilityDuration.oneWeek:
+                    trackerString = "VTW";
+                    break;
+                case VolatilityDuration.oneYear:
+                    trackerString = "VTY";
+                    break;
+            }
+            return trackerString;
+        }
+
         public List<SQLTableColumnDescription> GetColumns()
         {
-            List<SQLTableColumnDescription> theList = new List<SQLTableColumnDescription>() { idColumn, nameColumn, rowFieldDisplay, deleted, countNullEntries, countUserPoints, elevateOnMostNeedsRating, currentlyHighStakes, recentlyChanged };
+            List<SQLTableColumnDescription> theList = new List<SQLTableColumnDescription>() { idColumn, nameColumn, nameShortenedForIndexingColumn, rowFieldDisplay, deleted, countNullEntries, countUserPoints, elevateOnMostNeedsRating, currentlyHighStakes, recentlyChanged, volatilityHour, volatilityDay, volatilityWeek, volatilityYear };
             foreach (var rating in ratingInfo)
                 theList.AddRange(rating.GetColumns());
             foreach (var field in filterableFields)
@@ -778,20 +816,25 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         {
             SQLDatabaseChangeInfo dci = new SQLDatabaseChangeInfo();
 
+            bool DisableUpdateRowInfo = true; // DEBUG -- this is an interim measure until we set DisableBulkInserting = true DisableBulkUpdating = true, whereupon this code will not ordinarily get called anyway. 
+            bool DisableUpdateFields = true; // DEBUG
+            bool DisableUpdateRatings = false; // DEBUG -- we still need this, until we complete the adding missing ratings dynamically.
             foreach (var storedRow in storedRows)
             {
                 SQLInfoForCellsInRow_MainAndSecondaryTables row = new SQLInfoForCellsInRow_MainAndSecondaryTables();
                 row.DefaultTableSpec = GetSpecification(TheTbl.TblID);
-                if (storedRow.ID != null)
-                    row.Add("ID", storedRow.ID, SqlDbType.Int);
-                row.Add("NME", storedRow.NME, SqlDbType.NVarChar);
-                row.Add("DEL", storedRow.DEL.ToString(), SqlDbType.Bit);
-                row.Add("CNNE", storedRow.CNNE.ToString(), SqlDbType.Int);
-                row.Add("CUP", storedRow.CUP.ToString(), SqlDbType.Decimal);
-                row.Add("ELEV", storedRow.ELEV.ToString(), SqlDbType.Bit);
-                row.Add("HS", storedRow.HS.ToString(), SqlDbType.Bit);
-                row.Add("RC", storedRow.RC.ToString(), SqlDbType.Bit);
-                if (updateFields)
+                row.Add("ID", storedRow.ID, SqlDbType.Int);
+                if (!DisableUpdateRowInfo)
+                {
+                    row.Add("NME", storedRow.NME, SqlDbType.NVarChar); 
+                    row.Add("DEL", storedRow.DEL.ToString(), SqlDbType.Bit);
+                    row.Add("CNNE", storedRow.CNNE.ToString(), SqlDbType.Int);
+                    row.Add("CUP", storedRow.CUP.ToString(), SqlDbType.Decimal);
+                    row.Add("ELEV", storedRow.ELEV.ToString(), SqlDbType.Bit);
+                    row.Add("HS", storedRow.HS.ToString(), SqlDbType.Bit);
+                    row.Add("RC", storedRow.RC.ToString(), SqlDbType.Bit);
+                }
+                if (updateFields && !DisableUpdateFields)
                 {
                     row.Add("RH", storedRow.RowHeading, SqlDbType.NVarChar);
                     foreach (var field in storedRow.AddressFields)
@@ -818,7 +861,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                         row.Add("F" + field.FieldDefinitionID.ToString(), field.Text, SqlDbType.NVarChar);
                     }
                 }
-                if (updateRatings)
+                if (updateRatings && !DisableUpdateRatings)
                 {
                     foreach (var rating in storedRow.Ratings)
                     {

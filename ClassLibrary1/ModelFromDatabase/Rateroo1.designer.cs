@@ -360,6 +360,9 @@ namespace ClassLibrary1.Model
     partial void InsertTblRow(TblRow instance);
     partial void UpdateTblRow(TblRow instance);
     partial void DeleteTblRow(TblRow instance);
+    partial void InsertUniquenessLock(UniquenessLock instance);
+    partial void UpdateUniquenessLock(UniquenessLock instance);
+    partial void DeleteUniquenessLock(UniquenessLock instance);
     #endregion
 		
 		public RaterooDataContext() : 
@@ -1277,6 +1280,14 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<TblRow>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UniquenessLock> UniquenessLocks
+		{
+			get
+			{
+				return this.GetTable<UniquenessLock>();
 			}
 		}
 		
@@ -37989,6 +38000,92 @@ namespace ClassLibrary1.Model
 		{
 			this.SendPropertyChanging();
 			entity.TblRow = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UniquenessLocks")]
+	public partial class UniquenessLock : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private System.Nullable<System.DateTime> _DeletionTime;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnDeletionTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnDeletionTimeChanged();
+    #endregion
+		
+		public UniquenessLock()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeletionTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DeletionTime
+		{
+			get
+			{
+				return this._DeletionTime;
+			}
+			set
+			{
+				if ((this._DeletionTime != value))
+				{
+					this.OnDeletionTimeChanging(value);
+					this.SendPropertyChanging();
+					this._DeletionTime = value;
+					this.SendPropertyChanged("DeletionTime");
+					this.OnDeletionTimeChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

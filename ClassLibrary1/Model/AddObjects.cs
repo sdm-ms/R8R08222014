@@ -969,8 +969,19 @@ namespace ClassLibrary1.Model
         /// <param name="ratingGroupAttributesID">The attributes of the rating group</param>
         /// <returns>The id for the rating group object</returns>
         /// 
+
+        [Serializable]
+        private class TblRowIDAndTblColumnIDUniquenessGenerator
+        {
+            public int TblRowID;
+            public int TblColumnID;
+            public string Purpose = "GenerateUniqueID";
+        }
+
         public RatingGroup AddRatingGroupAndRatings(TblRow entity, TblColumn TblColumn, RatingGroupAttribute ratingGroupAttributes)
         {
+            if (!(entity.TblRowID == 0 || TblColumn.TblColumnID == 0)) // if 0's ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
+                AddUniquenessLock(new TblRowIDAndTblColumnIDUniquenessGenerator() { TblRowID = entity.TblRowID, TblColumnID = TblColumn.TblColumnID }, TestableDateTime.Now + TimeSpan.FromDays(1)); // will prevent anyone else from adding to the same cell simultaneously (note that 1 day is a bit arbitrary -- key is that we want to avoid scenario where we check for ratings and don't find any, and add just an instant later than another web role doing the same thing)
             RatingGroup theRatingGroup = AddRatingGroupAndRatings(entity, TblColumn, ratingGroupAttributes, null, null);
             AdvanceRatingGroupToNextRatingPhase(theRatingGroup);
             return theRatingGroup;
@@ -1145,20 +1156,21 @@ namespace ClassLibrary1.Model
                     AddMissingRatingGroupAndRatings(theTblRow, theCategory);
                 }
             }
+            FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, theTblRow.Tbl, theTblRow, true, false); // DEBUG -- as long as we are adding missing ratings in advance, we need to have this here, because TblRowID is 0 so the individual updating approach won't work. Also, we wouldn't have RatingID and RatingGroupID. We could add some way of signaling that we need to create the updating to RatingID -- e.g., a background task for newly acquired ratings. Then we can get rid of bulk updating (which doesn't work when the data hasn't been added anyway).
         }
 
-        private void AddMissingRatingGroupAndRatings(TblRow theTblRow, TblColumn theCategory)
+        private void AddMissingRatingGroupAndRatings(TblRow theTblRow, TblColumn theColumn)
         {
             RatingGroupAttribute theGroupAttributes;
             OverrideCharacteristic overrideCharacteristics = null;
-            if (theTblRow.TblRowID != 0 && theCategory.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
-                overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theCategory.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
+            if (theTblRow.TblRowID != 0 && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
+                overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theColumn.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
             if (overrideCharacteristics == null)
-                theGroupAttributes = theCategory.RatingGroupAttribute;
+                theGroupAttributes = theColumn.RatingGroupAttribute;
             else
                 theGroupAttributes = overrideCharacteristics.RatingGroupAttribute;
             //ProfileSimple.Start("AddRatingGroupAndRatings");
-            AddRatingGroupAndRatings(theTblRow, theCategory, theGroupAttributes);
+            AddRatingGroupAndRatings(theTblRow, theColumn, theGroupAttributes);
             //ProfileSimple.End("AddRatingGroupAndRatings");
         }
 
@@ -2493,6 +2505,17 @@ namespace ClassLibrary1.Model
             return ttu;
         }
 
+        public UniquenessLock AddUniquenessLock(object objectToHashIntoUniquenessLock, DateTime? deletionTime)
+        {
+            UniquenessLock ul = new UniquenessLock()
+            {
+                Id = MD5HashGenerator.GetDeterministicGuid(objectToHashIntoUniquenessLock),
+                DeletionTime = deletionTime
+            };
+            DataContext.GetTable<UniquenessLock>().InsertOnSubmit(ul);
+            return ul; 
+        }
+
         /// </summary>
         /// Add a new user 
         /// <param name="userName"></param>
@@ -2565,6 +2588,7 @@ namespace ClassLibrary1.Model
             };
             DataContext.GetTable<VolatilityTblRowTracker>().InsertOnSubmit(theTracker);
             DataContext.RegisterObjectToBeInserted(theTracker);
+            new FastAccessVolatilityUpdateInfo() { TimeFrame = (VolatilityDuration)theTracker.DurationType, Value = 0 }.AddToTblRow(theTblRow);
             return theTracker;
         }
 

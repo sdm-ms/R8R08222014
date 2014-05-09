@@ -123,16 +123,18 @@ namespace ClassLibrary1.Model
             decimal userRatingAbsMovementRelativeToDistance = Math.Abs(userRatingMovementRelativeToDistance);
             decimal multiplier = (addToVolatility) ? 1.0M : -1.0M;
             theTracker.TotalMovement += userRatingAbsMovementRelativeToDistance * multiplier;
-            theTracker.DistanceFromStart += userRatingMovementRelativeToDistance * multiplier;
+            theTracker.DistanceFromStart += userRatingMovementRelativeToDistance * multiplier; // note that this is not absolute value, so two moves in opposite directions will cancel one another out
             decimal originalPushback = theTracker.Pushback;
             decimal originalPushbackProportion = theTracker.PushbackProportion;
-            theTracker.Pushback = (theTracker.TotalMovement - Math.Abs(theTracker.DistanceFromStart));
+            theTracker.Pushback = (theTracker.TotalMovement - Math.Abs(theTracker.DistanceFromStart)); // So, if we've moved 100 but are back where we started, this is 100, meaning we're doing a lot of back and forth. 
             theTracker.PushbackProportion = theTracker.TotalMovement == 0 ? 0 : theTracker.Pushback / theTracker.TotalMovement;
 
             theTracker.VolatilityTblRowTracker.TotalMovement += userRatingAbsMovementRelativeToDistance * multiplier;
             theTracker.VolatilityTblRowTracker.DistanceFromStart += userRatingMovementRelativeToDistance * multiplier;
             theTracker.VolatilityTblRowTracker.Pushback += theTracker.Pushback - originalPushback;
             theTracker.VolatilityTblRowTracker.PushbackProportion += theTracker.PushbackProportion - originalPushbackProportion;
+
+            new FastAccessVolatilityUpdateInfo() { TimeFrame = (VolatilityDuration)theTracker.DurationType, Value = 0.2M * theTracker.VolatilityTblRowTracker.DistanceFromStart + 0.8M * theTracker.VolatilityTblRowTracker.Pushback }.AddToTblRow(theUserRating.Rating.RatingGroup.TblRow);
         }
 
         public static bool UpdateTrackers(IRaterooDataContext theDataContext, VolatilityDuration theTimeFrame)
@@ -148,8 +150,17 @@ namespace ClassLibrary1.Model
                     .Take(1000))
                 let volatilityTracker = y.Rating.RatingGroup.VolatilityTrackers.FirstOrDefault(z => z.DurationType == (byte) theTimeFrame)
                 where volatilityTracker != null
+                /* some of these must be projected so that we won't hit the database multiple times, even though we don't access the fields directly */
+                let rating = y.Rating
+                let ratingCharacteristic = rating.RatingCharacteristic
+                let ratingGroup = rating.RatingGroup
+                let tblRow = ratingGroup.TblRow
                 select new { 
                     UserRating = y, 
+                    Rating = rating,
+                    RatingCharacteristic = y.Rating.RatingCharacteristic,
+                    RatingGroup = ratingGroup,
+                    TblRow = tblRow,
                     VolatilityTracker = volatilityTracker, 
                     VolatilityTblRowTracker = volatilityTracker.VolatilityTblRowTracker
                 };
