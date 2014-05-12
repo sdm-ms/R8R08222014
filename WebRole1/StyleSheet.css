@@ -763,6 +763,12 @@ td.noRowsFound
 	border: 1px solid;
 }
 
+input[type=text]::-ms-clear { 
+    display: none; 
+    width: 0;
+    height: 0;
+}
+
 .rtg
 {
 	font-family: "Trebuchet MS", "Arial", "Helvetica", "Sans-Serif";

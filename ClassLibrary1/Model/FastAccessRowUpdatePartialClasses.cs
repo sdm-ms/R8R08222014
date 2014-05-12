@@ -67,8 +67,9 @@ namespace ClassLibrary1.Model
 
         public void AddFastAccessForNewData()
         {
-            OnHighStakesKnownChanging(this.HighStakesKnown);
-            OnValueRecentlyChangedChanging(this.ValueRecentlyChanged);
+            // We ideally don't want to do anything here. Since we're adding missing ratings in many web roles, adding fast access information here risks change conflicts. We don't get change conflicts if we only add the fast access information in the background processes, since those happen seriatim.
+            // OnHighStakesKnownChanging(this.HighStakesKnown); // Since we've now made this ValueIsRelative = true, we only need to note changes in this, and it will always start at its default value of 0.
+            //  OnValueRecentlyChangedChanging(this.ValueRecentlyChanged); // This will automatically be set once we actually set the RatingGroup to a value.
         }
 
         partial void OnHighStakesKnownChanging(bool value)

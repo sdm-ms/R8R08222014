@@ -558,6 +558,8 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<TblRow>().InsertOnSubmit(theTblRow);
             DataContext.RegisterObjectToBeInserted(theTblRow);
 
+            theTblRow.Tbl.NumTblRowsActive++; // increment number of table rows
+
             if (Tbl.FastTableSyncStatus == (int) (FastAccessTableStatus.apparentlySynchronized))
                 Tbl.FastTableSyncStatus = (int)(FastAccessTableStatus.newRowsMustBeCopied);
 
@@ -854,10 +856,6 @@ namespace ClassLibrary1.Model
             if (theRating.NumInGroup == 1)
             {
                 RatingGroup theRatingGroup = theRating.RatingGroup;
-                if (topRatingGroup != null)
-                {
-                    theRatingGroup.TblRow.CountNonnullEntries++;
-                }
                 theRatingGroup.CurrentValueOfFirstRating = null; //  defaultUserRating;
             }
 
@@ -1212,7 +1210,6 @@ namespace ClassLibrary1.Model
                 }
             }
         }
-
         private void AddMissingRatingGroupAndRatings(TblRow theTblRow, TblColumn theColumn)
         {
             RatingGroupAttribute theGroupAttributes;
@@ -1833,12 +1830,17 @@ namespace ClassLibrary1.Model
 
             // Invalidate the cache for the individual table cell and for the row of table cells.
             CacheManagement.InvalidateCacheDependency("RatingGroupID" + rating.TopmostRatingGroupID.ToString());
-            CacheManagement.InvalidateCacheDependency("RatingsForTblRowIDAndTblTabID" + rating.RatingGroup.TblRowID.ToString() + "," + rating.RatingGroup.TblColumn.TblTabID.ToString());
+            CacheManagement.InvalidateCacheDependency("RatingsForTblRowIDAndTblTabID" + rating.RatingGroup.TblRowID.ToString() + "," + tblCol.TblTabID.ToString());
 
             rating.TotalUserRatings++;
             //Trace.TraceInformation("2Setting current value to " + newUserRating);
             decimal? previousValue = rating.CurrentValue;
-            rating.CurrentValue = newUserRatingValue; 
+            rating.CurrentValue = newUserRatingValue;
+            if (previousValue == null && rating.CurrentValue != null)
+            {
+                tblCol.NumNonNull++;
+                tblCol.ProportionNonNull = (double)tblCol.NumNonNull / ((double)tbl.NumTblRowsActive + (double)tbl.NumTblRowsDeleted);
+            }
             rating.LastTrustedValue = newLastTrustedUserRating;
             if (rating.LastTrustedValue != rating.CurrentValue && rating.CurrentValue != null)
                 throw new Exception("Internal error: Trusted value should equal current value, since trust concept is eliminated.");

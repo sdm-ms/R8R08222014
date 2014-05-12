@@ -79,7 +79,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "HS", Value = HighStakesKnownChange, DBtype = SqlDbType.Int, DefaultToUseIfMissing = "0" }
+                new SQLCellInfo() { Fieldname = "HS", Value = HighStakesKnownChange, DBtype = SqlDbType.Int, DefaultToUseIfMissing = "0", ValueIsRelative = true }
             };
         }
     }
