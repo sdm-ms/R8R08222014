@@ -443,6 +443,7 @@ namespace ClassLibrary1.Model
                             theField2.FieldDefinition.NumNonNull++;
                         else
                             theField2.FieldDefinition.NumNonNull--;
+                        theField2.FieldDefinition.ProportionNonNull = (double)theField2.FieldDefinition.NumNonNull / ((double)theField2.TblRow.Tbl.NumTblRowsActive + (double)theField2.TblRow.Tbl.NumTblRowsDeleted);
                     }
                     theField2.Status = newValue;
                     ResetTblRowFieldDisplay(theField2.TblRow);

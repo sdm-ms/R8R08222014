@@ -645,6 +645,7 @@ namespace ClassLibrary1.Model
             DataContext.RegisterObjectToBeInserted(theField);
             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRow.TblRowID);
             FieldDefinition.NumNonNull++;
+            FieldDefinition.ProportionNonNull = (double)FieldDefinition.NumNonNull / ((double)tblRow.Tbl.NumTblRowsActive + (double)tblRow.Tbl.NumTblRowsDeleted);
             return theField;
         }
 

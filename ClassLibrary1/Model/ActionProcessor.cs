@@ -873,6 +873,7 @@ namespace ClassLibrary1.Model
                 if (theField.Status != (int)StatusOfObject.Unavailable)
                 {
                     theFieldDefinition.NumNonNull--;
+                    theFieldDefinition.ProportionNonNull = (double)theFieldDefinition.NumNonNull / ((double)tblRow.Tbl.NumTblRowsActive + (double)tblRow.Tbl.NumTblRowsDeleted);
                     theField.Status = (int)StatusOfObject.Unavailable;
                 }
             }
