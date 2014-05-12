@@ -699,40 +699,6 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             return dataTable;
         }
 
-        public void AdjustRowCountForAddedRows(Tbl theTbl, List<TblColumn> tblColumns)
-        {
-            foreach (TblColumn tblColumn in tblColumns)
-                foreach (FastAccessRowsInfo storedRow in storedRows)
-                    AdjustRowCountForAddedRow(theTbl, storedRow, tblColumn);
-        }
-
-        private void AdjustRowCountForAddedRow(Tbl tbl, FastAccessRowsInfo ftri, TblColumn col)
-        {
-            FastRatingsInfo match = ftri.Ratings.SingleOrDefault(x => x.ColumnID == col.TblColumnID);
-            bool isNull = (match.LastTrustedValue == null);
-            bool isDeleted = ftri.DEL;
-            if (isNull && isDeleted)
-            {
-                col.NumTblRowsDeletedNull++;
-                tbl.NumTblRowsDeletedNull++;
-            }
-            else if (isNull && !isDeleted)
-            {
-                col.NumTblRowsActiveNull++;
-                tbl.NumTblRowsActiveNull++;
-            }
-            else if (!isNull && isDeleted)
-            {
-                col.NumTblRowsDeletedNotNull++;
-                tbl.NumTblRowsDeletedNotNull++;
-            }
-            else // (!isNull && !isDeleted)
-            {
-                col.NumTblRowsActiveNotNull++;
-                tbl.NumTblRowsActiveNotNull++;
-            }
-        }
-
         public int BulkCopyRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, List<TblRow> tblRows, List<TblColumn> tblColumns)
         {
             RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();

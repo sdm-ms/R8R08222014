@@ -437,6 +437,13 @@ namespace ClassLibrary1.Model
                     break;
                 case TypeOfObject.Field:
                     Field theField2 = DataContext.GetTable<Field>().Single(x => x.FieldID == objectID);
+                    if (theField2.Status != (byte) newValue)
+                    {
+                        if (newValue == (byte) StatusOfObject.Active)
+                            theField2.FieldDefinition.NumNonNull++;
+                        else
+                            theField2.FieldDefinition.NumNonNull--;
+                    }
                     theField2.Status = newValue;
                     ResetTblRowFieldDisplay(theField2.TblRow);
                     break;

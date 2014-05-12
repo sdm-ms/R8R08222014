@@ -197,6 +197,7 @@ namespace ClassLibrary1.Model
                 let Ratings = RatingGroup.Ratings2
                 let UserRatings = Ratings.SelectMany(y => y.UserRatings)
                 let TblRow = RatingGroup.TblRow
+                let TblColumn = RatingGroup.TblColumn
                 let Tbl = TblRow.Tbl
                 let Users = UserRatings.Select(y => y.User).Distinct()
                 let PointsTotals = Users.SelectMany(y => y.PointsTotals.Where(z => z.PointsManager == x.RatingGroup.TblRow.Tbl.PointsManager)).Distinct()
@@ -212,6 +213,7 @@ namespace ClassLibrary1.Model
                         //    .FirstOrDefault(),
                         UserRatings = UserRatings.ToList(),
                         TblRow = TblRow,
+                        TblColumn = TblColumn,
                         Tbl = Tbl,
                         Users = Users.ToList(),
                         PointsTotals = PointsTotals.ToList()
@@ -226,6 +228,8 @@ namespace ClassLibrary1.Model
                     UpdatePointsForUserRating(z, resolution.PointsTotals.Single(w => w.User == z.User), currentTime);
                 var ratingsWithlastUserRatings = resolution.RatingResolution.RatingGroup.Ratings2.Select(x => new { 
                     Rating = x, 
+                    TblColumn = resolution.TblColumn,
+                    Tbl = resolution.Tbl,
                     ReferenceUserRating = x.UserRatings
                         .Where(y => y.UserRatingGroup.WhenMade < resolution.RatingResolution.EffectiveTime) 
                         .OrderByDescending(y => y.UserRatingGroup.WhenMade)
@@ -254,6 +258,11 @@ namespace ClassLibrary1.Model
                                 CountUserPoints = resolution.TblRow.CountUserPoints
                             };
                             farui.AddToTblRow(resolution.TblRow);
+                            if (z.Rating.CurrentValue == null)
+                                z.TblColumn.NumNonNull--;
+                            else
+                                z.TblColumn.NumNonNull++;
+                            z.TblColumn.ProportionNonNull = (double)z.TblColumn.NumNonNull / ((double)z.Tbl.NumTblRowsActive + (double)z.Tbl.NumTblRowsDeleted);
                         }
                         else
                             throw new NotImplementedException(); // must implement copying to fast access for dates

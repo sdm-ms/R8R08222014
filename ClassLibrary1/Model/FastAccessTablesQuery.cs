@@ -424,12 +424,18 @@ namespace ClassLibrary1.Model
             string rowCountInstruction = String.Format(", ( SELECT COUNT(ID) {0} {1} {2} {3} ) AS row_count ", fromInstruction, joinInstructionForOrdering, joinInstructionForFiltering, whereInstruction);
             string skipTakeInstruction = " seq where seq.rownum BETWEEN " + (skip + 1).ToString() + " and " + (skip + take).ToString();
             string entireQuery = String.Format("SELECT * {0} FROM ( {1} ) {2}", rowCountInstruction, coreQuery, skipTakeInstruction);
-            SqlDataAdapter adapter = new SqlDataAdapter(entireQuery, dta.GetConnectionString());
-            foreach (var whereParam in parameters)
-                adapter.SelectCommand.Parameters.Add(whereParam);
-            DataSet data = new DataSet();
-            adapter.Fill(data, tblName);
-            return data.Tables[tblName];
+            SqlConnection c = new SqlConnection(dta.GetConnectionString());
+            c.Open();
+            using (SqlTransaction t = c.BeginTransaction(IsolationLevel.ReadUncommitted))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter(entireQuery, dta.GetConnectionString());
+                foreach (var whereParam in parameters)
+                    adapter.SelectCommand.Parameters.Add(whereParam);
+                DataSet data = new DataSet();
+                adapter.Fill(data, tblName);
+                t.Commit();
+                return data.Tables[tblName];
+            }
         }
 
         private static string GetSeparatedList(List<string> variableList, string separator = ", ", string prefix = "", string suffix = "")
@@ -454,7 +460,7 @@ namespace ClassLibrary1.Model
             if (dataContext == null)
                 return;
 
-            System.Diagnostics.Trace.WriteLine("DoQuery cacheString " + cacheString + " firstRow: " + firstRowNum + " numRows: " + numRows);
+            //System.Diagnostics.Trace.WriteLine("DoQuery cacheString " + cacheString + " firstRow: " + firstRowNum + " numRows: " + numRows);
             DoQueryResults theResults = CacheManagement.GetItemFromCache(cacheString + "FastQueryResults") as DoQueryResults;
 
             if (theResults == null)

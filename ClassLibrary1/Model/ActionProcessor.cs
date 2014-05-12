@@ -660,7 +660,6 @@ namespace ClassLibrary1.Model
                     theUser = null;
 
                 TblRow theTblRow = DataManipulation.AddTblRow(theTbl, name, theRatingTypeOverrides);
-                theTblRow.Status = (int) (StatusOfObject.Active);
                 return theTblRow;
             }
             else
@@ -727,22 +726,7 @@ namespace ClassLibrary1.Model
                     // without the field display htmls, and then later recopy all the fields, plus the field display htmls that have been set.
                 }
 
-                if (theSet.defaultTblVals != null)
-                { // set the tbl vals to these values
-                    var ratingsList = theSet.theTblRow.RatingGroups.SelectMany(x => x.Ratings).ToList();
-                    foreach (TblVal tblVal in theSet.defaultTblVals)
-                    {
-                        Rating theRating = ratingsList.SingleOrDefault(x => x.RatingGroup.TblColumn.Name == tblVal.TblCol && x.NumInGroup == tblVal.NumInGroup);
-                        if (theRating != null)
-                        {
-                            //Trace.TraceInformation("1Setting current value to " + tblVal.CurrentValue);
-                            theRating.CurrentValue = theRating.LastTrustedValue = tblVal.CurrentValue;
-                            if (theRating.NumInGroup == 1)
-                                theRating.RatingGroup.CurrentValueOfFirstRating = theRating.CurrentValue;
-                            theRating.LastModifiedResolutionTimeOrCurrentValue = TestableDateTime.Now;
-                        }
-                    }
-                }
+                AssignDefaultRatingValues(theSet);
 
                 //ProfileSimple.End("FieldDelete and FieldChange");
             }
@@ -757,6 +741,35 @@ namespace ClassLibrary1.Model
             }
             //ProfileSimple.End("RewardRating");
             //ProfileSimple.End("FieldSetImplement");
+        }
+
+        private static void AssignDefaultRatingValues(FieldSetDataInfo theSet)
+        {
+            if (theSet.defaultTblVals != null)
+            { // set the tbl vals to these values
+                var ratingsList = theSet.theTblRow.RatingGroups.SelectMany(x => x.Ratings).ToList();
+                foreach (TblVal tblVal in theSet.defaultTblVals)
+                {
+                    Rating theRating = ratingsList.SingleOrDefault(x => x.RatingGroup.TblColumn.Name == tblVal.TblCol && x.NumInGroup == tblVal.NumInGroup);
+                    if (theRating != null)
+                    {
+                        //Trace.TraceInformation("1Setting current value to " + tblVal.CurrentValue);
+                        decimal? previousValue = theRating.CurrentValue;
+                        theRating.CurrentValue = theRating.LastTrustedValue = tblVal.CurrentValue;
+                        if (previousValue != theRating.CurrentValue)
+                        {
+                            if (theRating.CurrentValue == null)
+                                theRating.RatingGroup.TblColumn.NumNonNull--;
+                            else
+                                theRating.RatingGroup.TblColumn.NumNonNull++;
+                            theRating.RatingGroup.TblColumn.ProportionNonNull = (double)theRating.RatingGroup.TblColumn.NumNonNull / ((double)theSet.theTblRow.Tbl.NumTblRowsActive + (double)theSet.theTblRow.Tbl.NumTblRowsDeleted);
+                        }
+                        if (theRating.NumInGroup == 1)
+                            theRating.RatingGroup.CurrentValueOfFirstRating = theRating.CurrentValue;
+                        theRating.LastModifiedResolutionTimeOrCurrentValue = TestableDateTime.Now;
+                    }
+                }
+            }
         }
 
         internal void EntityNameChange(int entityID, string newName, int userID, int changesGroupID)
@@ -857,7 +870,11 @@ namespace ClassLibrary1.Model
             if (theField != null)
             {
                 FieldClearSubfield(false, tblRow, theFieldDefinition.FieldDefinitionID, userID, false);
-                theField.Status = (int)StatusOfObject.Unavailable;
+                if (theField.Status != (int)StatusOfObject.Unavailable)
+                {
+                    theFieldDefinition.NumNonNull--;
+                    theField.Status = (int)StatusOfObject.Unavailable;
+                }
             }
         }
 

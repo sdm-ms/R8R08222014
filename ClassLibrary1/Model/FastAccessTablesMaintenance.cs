@@ -122,7 +122,6 @@ namespace ClassLibrary1.Model
                 .ToList();
 
             int numRows = numToTake;
-            bool adjustRowCount = true;
             try
             {
                 numRows = tinfo.BulkCopyRows(iDataContext, dta, tblRowsToAdd, tblColumns);
@@ -131,12 +130,9 @@ namespace ClassLibrary1.Model
             }
             catch
             { // this could be because row has already been copied, or for some other reason. either way, we'll back up and try to delete the row before continuing.
-                adjustRowCount = false;
                 foreach (var tr in tblRowsToAdd)
                     tr.FastAccessDeleteThenRecopy = true;
             }
-            if (adjustRowCount)
-                tinfo.AdjustRowCountForAddedRows(theTbl, tblColumns);
             iDataContext.SubmitChanges(); // this will reduce the complication associated with handling change conflict exception if somewhere else we have set FastTableSyncStatus to indicate that new rows must be added -- it doesn't matter because we'll find the new rows eventually anyway
 
             if (numRows == 0 || numRows < numToTake)

@@ -549,7 +549,23 @@ namespace ClassLibrary1.Model
                     RaterooDB.GetTable<Domain>().Single(x => x.DomainID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.TblRow:
-                    RaterooDB.GetTable<TblRow>().Single(x => x.TblRowID == objectID).Status = newValue;
+                    TblRow tblRow = RaterooDB.GetTable<TblRow>().Single(x => x.TblRowID == objectID);
+                    var oldValue = tblRow.Status;
+                    tblRow.Status = newValue;
+                    Tbl tbl = tblRow.Tbl;
+                    if (oldValue != newValue)
+                    {
+                        if (newValue == (byte)StatusOfObject.Active)
+                        {
+                            tbl.NumTblRowsActive++;
+                            tbl.NumTblRowsDeleted--;
+                        }
+                        else
+                        {
+                            tbl.NumTblRowsDeleted++;
+                            tbl.NumTblRowsActive--;
+                        }
+                    }
                     break;
                 case TypeOfObject.Field:
                     RaterooDB.GetTable<Field>().Single(x => x.FieldID == objectID).Status = newValue;

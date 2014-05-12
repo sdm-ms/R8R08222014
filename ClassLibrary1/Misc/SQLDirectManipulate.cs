@@ -799,12 +799,16 @@ WHEN MATCHED THEN
             using (SqlConnection connection =
                new SqlConnection(database.GetConnectionString()))
             {
+                connection.Open();
                 // Create the Command and Parameter objects.
-                SqlCommand sqlCommand = new SqlCommand(command, connection);
-                if (parameters != null)
-                    AddSQLParametersToSqlCommand(parameters, sqlCommand);
-                sqlCommand.Connection.Open();
-                sqlCommand.ExecuteNonQuery();
+                using (SqlTransaction t = connection.BeginTransaction(IsolationLevel.ReadUncommitted))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(command, connection, t);
+                    if (parameters != null)
+                        AddSQLParametersToSqlCommand(parameters, sqlCommand);
+                    sqlCommand.ExecuteNonQuery();
+                    t.Commit();
+                }
             }
         }
 
@@ -828,19 +832,24 @@ WHEN MATCHED THEN
             using (SqlConnection connection =
                new SqlConnection(database.GetConnectionString()))
             {
-                // Create the Command and Parameter objects.
-                SqlCommand sqlCommand = new SqlCommand(command, connection);
-                if (parameters != null)
+                connection.Open();
+                using (SqlTransaction t = connection.BeginTransaction(IsolationLevel.ReadUncommitted))
                 {
-                    foreach (SQLCellInfo p in parameters)
+                    // Create the Command and Parameter objects.
+                    SqlCommand sqlCommand = new SqlCommand(command, connection, t);
+                    if (parameters != null)
                     {
-                        string fullname = "@" + p.Fieldname;
-                        sqlCommand.Parameters.Add(fullname, p.DBtype);
-                        sqlCommand.Parameters[fullname].Value = p.Value;
+                        foreach (SQLCellInfo p in parameters)
+                        {
+                            string fullname = "@" + p.Fieldname;
+                            sqlCommand.Parameters.Add(fullname, p.DBtype);
+                            sqlCommand.Parameters[fullname].Value = p.Value;
+                        }
                     }
+                    object result = sqlCommand.ExecuteScalar();
+                    t.Commit();
+                    return result;
                 }
-                sqlCommand.Connection.Open();
-                return sqlCommand.ExecuteScalar();
             }
         }
 

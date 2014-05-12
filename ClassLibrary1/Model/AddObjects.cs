@@ -644,6 +644,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<Field>().InsertOnSubmit(theField);
             DataContext.RegisterObjectToBeInserted(theField);
             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRow.TblRowID);
+            FieldDefinition.NumNonNull++;
             return theField;
         }
 

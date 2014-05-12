@@ -197,6 +197,8 @@ namespace ClassLibrary1.Model
                 UpdateRewardPointsBasedOnUpdatedRating(theRewardRatingTblRow.RewardPendingPointsTrackers.First(), TestableDateTime.Now, rawFinalPoints); // make pending points equal to final points, and adjust UpdateRewardPointsPotentialMaxLossNotYetPending if not already adjusted
                 UpdateRewardPoints(userID, pointsManagerID, theRewardRatingTblRow, rawFinalPoints, 0 - rawFinalPoints); // now deduct all pending points and add to final
                 theRewardRatingTblRow.Status = (int)StatusOfObject.Unavailable;
+                theRewardRatingTblRow.Tbl.NumTblRowsActive--;
+                theRewardRatingTblRow.Tbl.NumTblRowsDeleted++;
                 //SQLFastAccess.IdentifyRowRequiringUpdate(DataContext, theRewardRatingTblRow.Tbl, theRewardRatingTblRow, false, false);
                 AddTblRowStatusRecord(theRewardRatingTblRow, TestableDateTime.Now, true, false);
             }
