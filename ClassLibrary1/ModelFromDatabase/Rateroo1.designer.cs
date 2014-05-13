@@ -210,9 +210,6 @@ namespace ClassLibrary1.Model
     partial void InsertSearchWordChoice(SearchWordChoice instance);
     partial void UpdateSearchWordChoice(SearchWordChoice instance);
     partial void DeleteSearchWordChoice(SearchWordChoice instance);
-    partial void InsertSearchWord(SearchWord instance);
-    partial void UpdateSearchWord(SearchWord instance);
-    partial void DeleteSearchWord(SearchWord instance);
     partial void InsertSearchWordTblRowName(SearchWordTblRowName instance);
     partial void UpdateSearchWordTblRowName(SearchWordTblRowName instance);
     partial void DeleteSearchWordTblRowName(SearchWordTblRowName instance);
@@ -880,14 +877,6 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<SearchWordChoice>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SearchWord> SearchWords
-		{
-			get
-			{
-				return this.GetTable<SearchWord>();
 			}
 		}
 		
@@ -17057,8 +17046,6 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<ChoiceInGroup> _ChoiceInGroup;
 		
-		private EntityRef<SearchWord> _SearchWord;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -17074,7 +17061,6 @@ namespace ClassLibrary1.Model
 		public SearchWordChoice()
 		{
 			this._ChoiceInGroup = default(EntityRef<ChoiceInGroup>);
-			this._SearchWord = default(EntityRef<SearchWord>);
 			OnCreated();
 		}
 		
@@ -17133,10 +17119,6 @@ namespace ClassLibrary1.Model
 			{
 				if ((this._SearchWordID != value))
 				{
-					if (this._SearchWord.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnSearchWordIDChanging(value);
 					this.SendPropertyChanging();
 					this._SearchWordID = value;
@@ -17180,40 +17162,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordChoice", Storage="_SearchWord", ThisKey="SearchWordID", OtherKey="SearchWordID", IsForeignKey=true)]
-		public SearchWord SearchWord
-		{
-			get
-			{
-				return this._SearchWord.Entity;
-			}
-			set
-			{
-				SearchWord previousValue = this._SearchWord.Entity;
-				if (((previousValue != value) 
-							|| (this._SearchWord.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SearchWord.Entity = null;
-						previousValue.SearchWordChoices.Remove(this);
-					}
-					this._SearchWord.Entity = value;
-					if ((value != null))
-					{
-						value.SearchWordChoices.Add(this);
-						this._SearchWordID = value.SearchWordID;
-					}
-					else
-					{
-						this._SearchWordID = default(int);
-					}
-					this.SendPropertyChanged("SearchWord");
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -17232,204 +17180,6 @@ namespace ClassLibrary1.Model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SearchWords")]
-	public partial class SearchWord : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _SearchWordID;
-		
-		private string _TheWord;
-		
-		private EntitySet<SearchWordChoice> _SearchWordChoices;
-		
-		private EntitySet<SearchWordTblRowName> _SearchWordTblRowNames;
-		
-		private EntitySet<SearchWordTextField> _SearchWordTextFields;
-		
-		private EntitySet<SearchWordHierarchyItem> _SearchWordHierarchyItems;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSearchWordIDChanging(int value);
-    partial void OnSearchWordIDChanged();
-    partial void OnTheWordChanging(string value);
-    partial void OnTheWordChanged();
-    #endregion
-		
-		public SearchWord()
-		{
-			this._SearchWordChoices = new EntitySet<SearchWordChoice>(new Action<SearchWordChoice>(this.attach_SearchWordChoices), new Action<SearchWordChoice>(this.detach_SearchWordChoices));
-			this._SearchWordTblRowNames = new EntitySet<SearchWordTblRowName>(new Action<SearchWordTblRowName>(this.attach_SearchWordTblRowNames), new Action<SearchWordTblRowName>(this.detach_SearchWordTblRowNames));
-			this._SearchWordTextFields = new EntitySet<SearchWordTextField>(new Action<SearchWordTextField>(this.attach_SearchWordTextFields), new Action<SearchWordTextField>(this.detach_SearchWordTextFields));
-			this._SearchWordHierarchyItems = new EntitySet<SearchWordHierarchyItem>(new Action<SearchWordHierarchyItem>(this.attach_SearchWordHierarchyItems), new Action<SearchWordHierarchyItem>(this.detach_SearchWordHierarchyItems));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SearchWordID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int SearchWordID
-		{
-			get
-			{
-				return this._SearchWordID;
-			}
-			set
-			{
-				if ((this._SearchWordID != value))
-				{
-					this.OnSearchWordIDChanging(value);
-					this.SendPropertyChanging();
-					this._SearchWordID = value;
-					this.SendPropertyChanged("SearchWordID");
-					this.OnSearchWordIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TheWord", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string TheWord
-		{
-			get
-			{
-				return this._TheWord;
-			}
-			set
-			{
-				if ((this._TheWord != value))
-				{
-					this.OnTheWordChanging(value);
-					this.SendPropertyChanging();
-					this._TheWord = value;
-					this.SendPropertyChanged("TheWord");
-					this.OnTheWordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordChoice", Storage="_SearchWordChoices", ThisKey="SearchWordID", OtherKey="SearchWordID")]
-		public EntitySet<SearchWordChoice> SearchWordChoices
-		{
-			get
-			{
-				return this._SearchWordChoices;
-			}
-			set
-			{
-				this._SearchWordChoices.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordTblRowName", Storage="_SearchWordTblRowNames", ThisKey="SearchWordID", OtherKey="SearchWordID")]
-		public EntitySet<SearchWordTblRowName> SearchWordTblRowNames
-		{
-			get
-			{
-				return this._SearchWordTblRowNames;
-			}
-			set
-			{
-				this._SearchWordTblRowNames.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordTextField", Storage="_SearchWordTextFields", ThisKey="SearchWordID", OtherKey="SearchWordID")]
-		public EntitySet<SearchWordTextField> SearchWordTextFields
-		{
-			get
-			{
-				return this._SearchWordTextFields;
-			}
-			set
-			{
-				this._SearchWordTextFields.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordHierarchyItem", Storage="_SearchWordHierarchyItems", ThisKey="SearchWordID", OtherKey="SearchWordID")]
-		public EntitySet<SearchWordHierarchyItem> SearchWordHierarchyItems
-		{
-			get
-			{
-				return this._SearchWordHierarchyItems;
-			}
-			set
-			{
-				this._SearchWordHierarchyItems.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_SearchWordChoices(SearchWordChoice entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = this;
-		}
-		
-		private void detach_SearchWordChoices(SearchWordChoice entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = null;
-		}
-		
-		private void attach_SearchWordTblRowNames(SearchWordTblRowName entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = this;
-		}
-		
-		private void detach_SearchWordTblRowNames(SearchWordTblRowName entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = null;
-		}
-		
-		private void attach_SearchWordTextFields(SearchWordTextField entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = this;
-		}
-		
-		private void detach_SearchWordTextFields(SearchWordTextField entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = null;
-		}
-		
-		private void attach_SearchWordHierarchyItems(SearchWordHierarchyItem entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = this;
-		}
-		
-		private void detach_SearchWordHierarchyItems(SearchWordHierarchyItem entity)
-		{
-			this.SendPropertyChanging();
-			entity.SearchWord = null;
 		}
 	}
 	
@@ -17444,8 +17194,6 @@ namespace ClassLibrary1.Model
 		private int _TblRowID;
 		
 		private int _SearchWordID;
-		
-		private EntityRef<SearchWord> _SearchWord;
 		
 		private EntityRef<TblRow> _TblRow;
 		
@@ -17463,7 +17211,6 @@ namespace ClassLibrary1.Model
 		
 		public SearchWordTblRowName()
 		{
-			this._SearchWord = default(EntityRef<SearchWord>);
 			this._TblRow = default(EntityRef<TblRow>);
 			OnCreated();
 		}
@@ -17523,49 +17270,11 @@ namespace ClassLibrary1.Model
 			{
 				if ((this._SearchWordID != value))
 				{
-					if (this._SearchWord.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnSearchWordIDChanging(value);
 					this.SendPropertyChanging();
 					this._SearchWordID = value;
 					this.SendPropertyChanged("SearchWordID");
 					this.OnSearchWordIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordTblRowName", Storage="_SearchWord", ThisKey="SearchWordID", OtherKey="SearchWordID", IsForeignKey=true)]
-		public SearchWord SearchWord
-		{
-			get
-			{
-				return this._SearchWord.Entity;
-			}
-			set
-			{
-				SearchWord previousValue = this._SearchWord.Entity;
-				if (((previousValue != value) 
-							|| (this._SearchWord.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SearchWord.Entity = null;
-						previousValue.SearchWordTblRowNames.Remove(this);
-					}
-					this._SearchWord.Entity = value;
-					if ((value != null))
-					{
-						value.SearchWordTblRowNames.Add(this);
-						this._SearchWordID = value.SearchWordID;
-					}
-					else
-					{
-						this._SearchWordID = default(int);
-					}
-					this.SendPropertyChanged("SearchWord");
 				}
 			}
 		}
@@ -17637,8 +17346,6 @@ namespace ClassLibrary1.Model
 		
 		private int _SearchWordID;
 		
-		private EntityRef<SearchWord> _SearchWord;
-		
 		private EntityRef<TextField> _TextField;
 		
     #region Extensibility Method Definitions
@@ -17655,7 +17362,6 @@ namespace ClassLibrary1.Model
 		
 		public SearchWordTextField()
 		{
-			this._SearchWord = default(EntityRef<SearchWord>);
 			this._TextField = default(EntityRef<TextField>);
 			OnCreated();
 		}
@@ -17715,49 +17421,11 @@ namespace ClassLibrary1.Model
 			{
 				if ((this._SearchWordID != value))
 				{
-					if (this._SearchWord.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnSearchWordIDChanging(value);
 					this.SendPropertyChanging();
 					this._SearchWordID = value;
 					this.SendPropertyChanged("SearchWordID");
 					this.OnSearchWordIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordTextField", Storage="_SearchWord", ThisKey="SearchWordID", OtherKey="SearchWordID", IsForeignKey=true)]
-		public SearchWord SearchWord
-		{
-			get
-			{
-				return this._SearchWord.Entity;
-			}
-			set
-			{
-				SearchWord previousValue = this._SearchWord.Entity;
-				if (((previousValue != value) 
-							|| (this._SearchWord.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SearchWord.Entity = null;
-						previousValue.SearchWordTextFields.Remove(this);
-					}
-					this._SearchWord.Entity = value;
-					if ((value != null))
-					{
-						value.SearchWordTextFields.Add(this);
-						this._SearchWordID = value.SearchWordID;
-					}
-					else
-					{
-						this._SearchWordID = default(int);
-					}
-					this.SendPropertyChanged("SearchWord");
 				}
 			}
 		}
@@ -21975,8 +21643,6 @@ namespace ClassLibrary1.Model
 		
 		private EntityRef<HierarchyItem> _HierarchyItem;
 		
-		private EntityRef<SearchWord> _SearchWord;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -21992,7 +21658,6 @@ namespace ClassLibrary1.Model
 		public SearchWordHierarchyItem()
 		{
 			this._HierarchyItem = default(EntityRef<HierarchyItem>);
-			this._SearchWord = default(EntityRef<SearchWord>);
 			OnCreated();
 		}
 		
@@ -22051,10 +21716,6 @@ namespace ClassLibrary1.Model
 			{
 				if ((this._SearchWordID != value))
 				{
-					if (this._SearchWord.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnSearchWordIDChanging(value);
 					this.SendPropertyChanging();
 					this._SearchWordID = value;
@@ -22094,40 +21755,6 @@ namespace ClassLibrary1.Model
 						this._HierarchyItemID = default(int);
 					}
 					this.SendPropertyChanged("HierarchyItem");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SearchWord_SearchWordHierarchyItem", Storage="_SearchWord", ThisKey="SearchWordID", OtherKey="SearchWordID", IsForeignKey=true)]
-		public SearchWord SearchWord
-		{
-			get
-			{
-				return this._SearchWord.Entity;
-			}
-			set
-			{
-				SearchWord previousValue = this._SearchWord.Entity;
-				if (((previousValue != value) 
-							|| (this._SearchWord.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SearchWord.Entity = null;
-						previousValue.SearchWordHierarchyItems.Remove(this);
-					}
-					this._SearchWord.Entity = value;
-					if ((value != null))
-					{
-						value.SearchWordHierarchyItems.Add(this);
-						this._SearchWordID = value.SearchWordID;
-					}
-					else
-					{
-						this._SearchWordID = default(int);
-					}
-					this.SendPropertyChanged("SearchWord");
 				}
 			}
 		}

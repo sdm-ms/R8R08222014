@@ -1022,13 +1022,11 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.TblRow:
                     TblRow theTblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID ==objectID);
                     theTblRow.Name = theName;
-                    SetSearchWordsForEntityName(theTblRow, false);
                     CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + objectID);
                     break;
                 case TypeOfObject.HierarchyItem:
                     HierarchyItem theHierarchyItem = DataContext.GetTable<HierarchyItem>().Single(x => x.HierarchyItemID == objectID);
                     theHierarchyItem.HierarchyItemName = theName;
-                    SetSearchWordsForHierarchyItem(theHierarchyItem, false);
                     CacheManagement.InvalidateCacheDependency("TopicsMenu");
                     break;
                 case TypeOfObject.InsertableContent:

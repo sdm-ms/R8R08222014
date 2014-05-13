@@ -58,7 +58,6 @@ namespace ClassLibrary1.Model
         public static void PreSubmittingChangesTasks(this IRaterooDataContext theDataContext)
         {
             DatabaseAndAzureRoleStatus.CheckPreventChanges(theDataContext);
-            RaterooDataManipulation.BulkAddSearchWordsCorrect(theDataContext);
             FastAccessTablesMaintenance.PushRowsRequiringUpdateToAzureQueue(theDataContext);
             StatusRecords.RecordRememberedStatusRecordChanges(theDataContext);
             theDataContext.RegisteredToBeInserted = new List<object>();

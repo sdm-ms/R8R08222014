@@ -756,17 +756,6 @@
       <Column Name="ChoiceInGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SearchWordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="ChoiceInGroup_SearchWordChoice" Member="ChoiceInGroup" ThisKey="ChoiceInGroupID" OtherKey="ChoiceInGroupID" Type="ChoiceInGroup" IsForeignKey="true" />
-      <Association Name="SearchWord_SearchWordChoice" Member="SearchWord" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWord" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.SearchWords" Member="SearchWords">
-    <Type Name="SearchWord">
-      <Column Name="SearchWordID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TheWord" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="SearchWord_SearchWordChoice" Member="SearchWordChoices" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWordChoice" />
-      <Association Name="SearchWord_SearchWordTblRowName" Member="SearchWordTblRowNames" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWordTblRowName" />
-      <Association Name="SearchWord_SearchWordTextField" Member="SearchWordTextFields" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWordTextField" />
-      <Association Name="SearchWord_SearchWordHierarchyItem" Member="SearchWordHierarchyItems" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWordHierarchyItem" />
     </Type>
   </Table>
   <Table Name="dbo.SearchWordTblRowNames" Member="SearchWordTblRowNames">
@@ -774,7 +763,6 @@
       <Column Name="SearchWordTblRowNameID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="TblRowID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SearchWordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="SearchWord_SearchWordTblRowName" Member="SearchWord" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWord" IsForeignKey="true" />
       <Association Name="TblRow_SearchWordTblRowName" Member="TblRow" ThisKey="TblRowID" OtherKey="TblRowID" Type="TblRow" IsForeignKey="true" />
     </Type>
   </Table>
@@ -783,7 +771,6 @@
       <Column Name="SearchWordTextFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="TextFieldID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SearchWordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="SearchWord_SearchWordTextField" Member="SearchWord" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWord" IsForeignKey="true" />
       <Association Name="TextField_SearchWordTextField" Member="TextField" ThisKey="TextFieldID" OtherKey="TextFieldID" Type="TextField" IsForeignKey="true" />
     </Type>
   </Table>
@@ -982,7 +969,6 @@
       <Column Name="HierarchyItemID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SearchWordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="HierarchyItem_SearchWordHierarchyItem" Member="HierarchyItem" ThisKey="HierarchyItemID" OtherKey="HierarchyItemID" Type="HierarchyItem" IsForeignKey="true" />
-      <Association Name="SearchWord_SearchWordHierarchyItem" Member="SearchWord" ThisKey="SearchWordID" OtherKey="SearchWordID" Type="SearchWord" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Comments" Member="Comments">

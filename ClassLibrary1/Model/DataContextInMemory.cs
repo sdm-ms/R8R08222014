@@ -77,7 +77,6 @@ namespace ClassLibrary1.Model
 
         public override void BeforeSubmitChanges()
         {
-            this.InsertOnSubmitObjectsToBeInserted<SearchWord>();
             base.BeforeSubmitChanges();
         }
 

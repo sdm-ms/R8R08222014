@@ -621,20 +621,21 @@ namespace ClassLibrary1.Model
 
         public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
-            if (TheSearchWords == null || TheSearchWords.Trim() == "")
-                return querySoFar;
-            IQueryable<TblRow> theQuery = null;
-            IQueryable<TblRow> theSearchWordMatches = RaterooDataManipulation.GetTblRowsForPhrase(TheSearchWords, theDataContext, theID);
-            if (theSearchWordMatches == null)
-                return new List<TblRow>().AsQueryable();
-            if (predicate != null)
-                theSearchWordMatches = theSearchWordMatches.Where(predicate);
-            theQuery = querySoFar.Intersect(theSearchWordMatches);
+            throw new NotImplementedException("Searching by search word on the normalized database is no longer supported.");
+            //if (TheSearchWords == null || TheSearchWords.Trim() == "")
+            //    return querySoFar;
+            //IQueryable<TblRow> theQuery = null;
+            //IQueryable<TblRow> theSearchWordMatches = new List<TblRow>().AsQueryable(); // RaterooDataManipulation.GetTblRowsForPhrase(TheSearchWords, theDataContext, theID);
+            //if (theSearchWordMatches == null)
+            //    return new List<TblRow>().AsQueryable();
+            //if (predicate != null)
+            //    theSearchWordMatches = theSearchWordMatches.Where(predicate);
+            //theQuery = querySoFar.Intersect(theSearchWordMatches);
 
-            if (predicate != null)
-                theQuery = theQuery.Where(predicate);
+            //if (predicate != null)
+            //    theQuery = theQuery.Where(predicate);
 
-            return theQuery;
+            //return theQuery;
         }
     }
 

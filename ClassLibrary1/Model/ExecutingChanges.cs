@@ -711,7 +711,6 @@ namespace ClassLibrary1.Model
                             var entities = theChoiceInGroup.ChoiceInFields.Select(x => x.ChoiceField).Select(x => x.Field).Select(x => x.TblRow).Distinct().ToList();
                             foreach (var entity in entities)
                                 ResetTblRowFieldDisplay(entity);
-                            SetSearchWordsForChoiceInGroup(theChoiceInGroup, false);
                         }
                         else if (!theChange.ChangeSetting1 && !theChange.ChangeSetting2)
                         {

@@ -384,7 +384,6 @@ namespace ClassLibrary1.Model
                 Status = (Byte)StatusOfObject.Proposed
             };
             DataContext.GetTable<ChoiceInGroup>().InsertOnSubmit(theChoiceInGroup);
-            SetSearchWordsForChoiceInGroup(theChoiceInGroup, false);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + DataContext.GetTable<ChoiceGroup>().Single(f => f.ChoiceGroupID == choiceGroupID).PointsManagerID);
             return theChoiceInGroup.ChoiceInGroupID;
@@ -574,7 +573,6 @@ namespace ClassLibrary1.Model
             }
 
             //ProfileSimple.Start("SearchWords");
-            SetSearchWordsForEntityName(theTblRow, false);
             //ProfileSimple.End("SearchWords");
             //ProfileSimple.Start("AddMissingRatings");
             //ProfileSimple.End("AddMissingRatings");
@@ -700,7 +698,6 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<HierarchyItem>().InsertOnSubmit(theHierarchyItem);
             DataContext.RegisterObjectToBeInserted(theHierarchyItem);
             HierarchyItems.SetFullHierarchy(ref theHierarchyItem);
-            SetSearchWordsForHierarchyItem(theHierarchyItem, false);
             return theHierarchyItem;
         }
 
@@ -2017,68 +2014,6 @@ namespace ClassLibrary1.Model
             return theProposalSettings.ProposalSettingsID;
         }
 
-        
-        public SearchWord AddSearchWord(string theWord)
-        {
-            SearchWord theSearchWord = new SearchWord
-            {
-                TheWord = theWord
-            };
-            // We will not call InsertOnSubmit until later (when SubmitChanges is called), because we still may wish to change our minds and not insert this.
-            DataContext.RegisterObjectToBeInserted(theSearchWord);
-            return theSearchWord;
-        }
-
-        
-        public SearchWordChoice AddSearchWordChoice(SearchWord theSearchWord, ChoiceInGroup theChoiceInGroup)
-        {
-            SearchWordChoice theSearchWordChoice = new SearchWordChoice
-            {
-                SearchWord = theSearchWord,
-                ChoiceInGroup = theChoiceInGroup
-            };
-            DataContext.GetTable<SearchWordChoice>().InsertOnSubmit(theSearchWordChoice);
-            DataContext.RegisterObjectToBeInserted(theSearchWordChoice);
-            return theSearchWordChoice;
-        }
-
-
-        public SearchWordHierarchyItem AddSearchWordHierarchyItem(SearchWord theSearchWord, HierarchyItem theHierarchyItem)
-        {
-            SearchWordHierarchyItem theSearchWordHierarchyItem = new SearchWordHierarchyItem
-            {
-                SearchWord = theSearchWord,
-                HierarchyItem = theHierarchyItem
-            };
-            DataContext.GetTable<SearchWordHierarchyItem>().InsertOnSubmit(theSearchWordHierarchyItem);
-            DataContext.RegisterObjectToBeInserted(theSearchWordHierarchyItem);
-            return theSearchWordHierarchyItem;
-        }
-
-
-        public SearchWordTblRowName AddSearchWordTblRowName(SearchWord theSearchWord, TblRow theTblRow)
-        {
-            SearchWordTblRowName theSearchWordTblRowName = new SearchWordTblRowName
-            {
-                SearchWord = theSearchWord,
-                TblRow = theTblRow
-            };
-            DataContext.GetTable<SearchWordTblRowName>().InsertOnSubmit(theSearchWordTblRowName);
-            DataContext.RegisterObjectToBeInserted(theSearchWordTblRowName);
-            return theSearchWordTblRowName;
-        }
-
-        public SearchWordTextField AddSearchWordTextField(SearchWord theSearchWord, TextField theTextField)
-        {
-            SearchWordTextField theSearchWordTextField = new SearchWordTextField
-            {
-                SearchWord = theSearchWord,
-                TextField = theTextField
-            };
-            DataContext.GetTable<SearchWordTextField>().InsertOnSubmit(theSearchWordTextField);
-            DataContext.RegisterObjectToBeInserted(theSearchWordTextField);
-            return theSearchWordTextField;
-        }
 
 
         /// <summary>
@@ -2353,8 +2288,6 @@ namespace ClassLibrary1.Model
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<TextField>().InsertOnSubmit(theTextField);
-            if (indexSearchWords)
-                SetSearchWordsForTextField(theTextField, false);
             DataContext.RegisterObjectToBeInserted(theTextField);
             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + field.TblRowID);
             return theTextField;
