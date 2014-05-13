@@ -538,16 +538,12 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class TextFilterRule : FilterRule
     {
-        public string StartsWithText { get; set; }
-        public string FromText { get; set; }
-        public string ToText { get; set; }
+        public string TextTags { get; set; }
 
-        public TextFilterRule(int FieldDefinitionID, string containsText, string fromText, string toText)
+        public TextFilterRule(int FieldDefinitionID, string textTags)
             : base(FieldDefinitionID)
         {
-            StartsWithText = containsText;
-            FromText = fromText;
-            ToText = toText;
+            TextTags = textTags;
         }
 
         public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
@@ -556,19 +552,16 @@ namespace ClassLibrary1.Model
             IQueryable<TblRow> theQuery =
                 querySoFar;
 
-            if (StartsWithText != "")
+            if (TextTags != "")
             {
                 theQuery = querySoFar
                     .Where(y => y.Fields
                     .Any(z => z.FieldDefinitionID == theID && z.TextFields
-                    .Any(w => w.Text.StartsWith(StartsWithText))));
+                    .Any(w => w.Text.StartsWith(TextTags)))); // this isn't really what we want, but we're disabling this functionality anyway
             }
             else
             {
-                theQuery = querySoFar
-                    .Where(y => y.Fields
-                    .Any(z => z.FieldDefinitionID == theID && z.TextFields
-                    .Any(w => (FromText == "" || string.Compare(w.Text, FromText) >= 0) && (ToText == "" || string.Compare(w.Text, ToText) <= 0) && w.Text != null && w.Text != "")));
+                theQuery = querySoFar;
             }
 
             if (predicate != null)
@@ -692,9 +685,7 @@ namespace ClassLibrary1.Model
             if (theFilterRule is TextFilterRule)
             {
                 result.Add("type", "text");
-                result.Add("start", ((TextFilterRule)theFilterRule).StartsWithText);
-                result.Add("from", ((TextFilterRule)theFilterRule).FromText);
-                result.Add("to", ((TextFilterRule)theFilterRule).ToText);
+                result.Add("texttags", ((TextFilterRule)theFilterRule).TextTags);
             }
             if (theFilterRule is TblColumnFilterRule)
             {
@@ -752,7 +743,7 @@ namespace ClassLibrary1.Model
             }
             if (theType == "text")
             {
-                return new TextFilterRule((int)dictionary["id"], (string)dictionary["start"], (string)dictionary["from"], (string)dictionary["to"]);
+                return new TextFilterRule((int)dictionary["id"], (string)dictionary["texttags"]);
             }
             if (theType == "category")
             {

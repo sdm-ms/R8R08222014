@@ -230,19 +230,7 @@ namespace ClassLibrary1.Model
                 else if (filter is TextFilterRule)
                 {
                     TextFilterRule TextFilter = ((TextFilterRule)filter);
-                    if (TextFilter.FromText != null && TextFilter.FromText != "")
-                    {
-                        whereClauses.Add("F" + TextFilter.theID.ToString() + " >= @P" + paramNumber.ToString());
-                        parameters.Add(new SqlParameter("P" + paramNumber.ToString(), TextFilter.FromText));
-                        paramNumber++;
-                    }
-
-                    if (TextFilter.ToText != null)
-                    {
-                        whereClauses.Add("F" + TextFilter.theID.ToString() + " <= @P" + paramNumber.ToString());
-                        parameters.Add(new SqlParameter("P" + paramNumber.ToString(), TextFilter.ToText));
-                        paramNumber++;
-                    }
+                    throw new NotImplementedException(); // must implement along the same lines as AllowMultipleSelections
                 }
                 else if (filter is ChoiceFilterRule)
                 {

@@ -19,6 +19,7 @@ namespace ClassLibrary1.Misc
         typeInt,
         typeStringUnlimited,
         typeString4Chars,
+        typeString50Chars,
         typeDecimal,
         typeGeography,
         typeDateTime,
@@ -59,6 +60,8 @@ namespace ClassLibrary1.Misc
                     return "[nvarchar](MAX)";
                 case SQLColumnType.typeString4Chars:
                     return "[nchar](4)";
+                case SQLColumnType.typeString50Chars:
+                    return "[nvarchar](50)";
                 default:
                     throw new Exception("Unknown ColType");
             }

@@ -119,7 +119,7 @@ public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
             if (MainText == "")
                 return null;
             else
-                return new TextFilterRule(FieldDefinitionOrTblColumnID, MainText, "", "");
+                return new TextFilterRule(FieldDefinitionOrTblColumnID, MainText);
         }
 
     }
