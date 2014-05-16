@@ -1883,10 +1883,10 @@ function viewtbl() {
     /* produce a list of tabs that is scrollable if necessary, */
     /* converting from the drop down list that is passed in */
     function makeTableTabs() {
-        var theSelect = $('[id$=DdlCategory]'); /* convert from select used for non-js users */
+        var theSelect = $('[id$=DdlTab]'); /* convert from select used for non-js users */
         if (theSelect.length == 0)
             return;
-        var theOptions = $('[id$=DdlCategory] option');
+        var theOptions = $('[id$=DdlTab] option');
         var tabsString = "<ul class=\"css-tabs items\">";
         var panesString = "<div class=\"tabPanes\">";
         for (var i = 0; i < theOptions.length; i++) {

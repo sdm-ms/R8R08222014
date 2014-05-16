@@ -5,7 +5,7 @@ Inherits="ViewTbl" Title="Rateroo" Codebehind="Main.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
 <%@ Register TagPrefix="Uc" TagName="FieldsBox" Src="~/Main/Field/FieldsBox.ascx" %>
 <%@ Reference Control="~/Main/Field/FieldsBox.ascx" %>
-<%@ Reference Control="~/Main/Table/WithCategorySelector.ascx" %>
+<%@ Reference Control="~/Main/Table/WithTabSelector.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="TblRowView" Src="~/Main/Table/TblRowView.ascx" %>
 <%@ Reference Control="~/Main/Table/TblRowView.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="TableCellView" Src="~/Main/Table/TableCellView.ascx" %>
@@ -63,7 +63,7 @@ Inherits="ViewTbl" Title="Rateroo" Codebehind="Main.aspx.cs" %>
                                         <tr>
                                             <td colspan="2" >
                                                 <asp:PlaceHolder ID="MainContentPlaceHolder" runat="server"></asp:PlaceHolder>
-                                                <%-- <Uc:WithCategorySelector ID="MainTableWithCategorySelector" runat="server" />--%>
+                                                <%-- <Uc:WithTabSelector ID="MainTableWithTabSelector" runat="server" />--%>
                                             </td>
                                         </tr>
                                     </table>

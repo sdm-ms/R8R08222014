@@ -28,7 +28,7 @@ public partial class ViewTbl : System.Web.UI.Page
 {
     internal RaterooDataAccess DataAccess = new RaterooDataAccess();
     FilterRules theFilterRules;
-    Main_Table_WithCategorySelector MainTableWithCategorySelector = null;
+    Main_Table_WithTabSelector MainTableWithTabSelector = null;
     Main_Table_TblRowView MainTableTblRowView = null;
     Main_Table_TableCellView MainTableCellView = null;
     internal RoutingInfoMainContent theLocation;
@@ -42,6 +42,7 @@ public partial class ViewTbl : System.Web.UI.Page
         try
         {
             theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.RaterooDB);
+            theFilterRules = null; // When adding filtering in URL, should set theFilterRules here from theLocation.
         }
         catch
         {
@@ -66,23 +67,26 @@ public partial class ViewTbl : System.Web.UI.Page
         int? entityID = null;
         if (theLocation.theTblRow != null)
             entityID = theLocation.theTblRow.TblRowID;
+        bool includeFieldsBox = false; // We initially built this with the capability of showing narrow results on the left of the page, but decided tentatively it was too inefficient.
         if (theLocation.theTblRow == null)
         {
-            if (CheckJavaScriptHelper.IsJavascriptEnabled)
+            if (!includeFieldsBox)
                 FieldsBox.Visible = false; /* we'll still go through the logic, but it will load very fast after caching */
-            //ProfileSimple.Start("LoadTableWithCategorySelector");
-            MainTableWithCategorySelector = (Main_Table_WithCategorySelector)LoadControl("~/Main/Table/WithCategorySelector.ascx");
-            MainContentPlaceHolder.Controls.Add(MainTableWithCategorySelector);
-            //ProfileSimple.End("LoadTableWithCategorySelector");
-            theFilterRules = new FilterRules(theLocation.theTbl.TblID, true, false);
+            //ProfileSimple.Start("LoadTableWithTabSelector");
+            MainTableWithTabSelector = (Main_Table_WithTabSelector)LoadControl("~/Main/Table/WithTabSelector.ascx");
+            MainContentPlaceHolder.Controls.Add(MainTableWithTabSelector);
+            //ProfileSimple.End("LoadTableWithTabSelector");
+            if (theFilterRules == null)
+                theFilterRules = new FilterRules(theLocation.theTbl.TblID, true, false);
             //ProfileSimple.Start("SetupBeforeFieldsBox");
-            MainTableWithCategorySelector.SetupBeforeFieldsBox(GetFilteredAndSortedQuery, GetFilterRules, theLocation.theTbl.TblID, DataAccess, theLocation.theTbl.SuppStylesMain, theLocation.theTbl.SuppStylesHeader);
+            MainTableWithTabSelector.SetupBeforeFieldsBox(GetFilteredAndSortedQuery, GetFilterRules, theLocation.theTbl.TblID, DataAccess, theLocation.theTbl.SuppStylesMain, theLocation.theTbl.SuppStylesHeader);
             //ProfileSimple.End("SetupBeforeFieldsBox");
             //ProfileSimple.Start("FieldsBoxSetup");
-            FieldsBox.Setup(theLocation.theTbl.TblID, MainTableWithCategorySelector.GetTblTabID(), FieldsBoxMode.filterWithButton, BtnFilter_Click);
+            if (includeFieldsBox)
+                FieldsBox.Setup(theLocation.theTbl.TblID, MainTableWithTabSelector.GetTblTabID(), FieldsBoxMode.filterWithButton, BtnFilter_Click);
             //ProfileSimple.End("FieldsBoxSetup");
             //ProfileSimple.Start("SetupAfterFieldsBox");
-            MainTableWithCategorySelector.SetupAfterFieldsBox(FieldsBox);
+            MainTableWithTabSelector.SetupAfterFieldsBox(includeFieldsBox ? FieldsBox : null);
             //ProfileSimple.End("SetupAfterFieldsBox");
         }
         else
@@ -246,8 +250,8 @@ public partial class ViewTbl : System.Web.UI.Page
     {
         try
         {
-            if (MainTableWithCategorySelector != null)
-                MainTableWithCategorySelector.UpdateMainTable(true, false, false, false, true);
+            if (MainTableWithTabSelector != null)
+                MainTableWithTabSelector.UpdateMainTable(true, false, false, false, true);
         }
         catch (Exception ex)
         {

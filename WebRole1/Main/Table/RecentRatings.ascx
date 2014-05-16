@@ -88,11 +88,11 @@
                 </asp:Panel>
             </td>
         </tr>
-        <tr id="asteriskRow">
+        <%--<tr id="asteriskRow">
             <td colspan="99" class="asteriskRow">
                 <span><i>* Current rating, but by an untrusted user</i></span>
             </td>
-        </tr>
+        </tr>--%>
     </table>
     </ContentTemplate>
 </asp:UpdatePanel>

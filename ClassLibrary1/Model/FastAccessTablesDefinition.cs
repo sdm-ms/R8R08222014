@@ -154,8 +154,8 @@ namespace ClassLibrary1.Model
         public SQLTableColumnDescription volatilityWeek { get; set; }
         public SQLTableColumnDescription volatilityYear { get; set; }
         public List<SQLTableColumnInfo> ratingInfo { get; set; }
-        public List<SQLTableFieldDefinition> filterableFields { get; set; }
-        public List<SQLMultipleChoiceFieldTableInfo> filterableMultipleChoiceFields { get; set; }
+        public List<SQLTableFieldDefinition> fields { get; set; }
+        public List<SQLMultipleChoiceFieldTableInfo> multipleChoiceFields { get; set; }
 
         public SQLFastAccessTableInfo(IRaterooDataContext iDataContext, Tbl theTbl)
         {
@@ -182,14 +182,14 @@ namespace ClassLibrary1.Model
                 ratingInfo.Add(new SQLTableColumnInfo(col));
 
             List<FieldDefinition> fieldDefinitions = iDataContext.GetTable<FieldDefinition>().Where(x => x.TblID == TheTbl.TblID && x.Status == (int)StatusOfObject.Active && (x.FieldType != (int) FieldTypes.ChoiceField || (x.ChoiceGroupFieldDefinitions.Any() && !x.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections))).ToList();
-            filterableFields = new List<SQLTableFieldDefinition>();
+            fields = new List<SQLTableFieldDefinition>();
             foreach (var field in fieldDefinitions)
-                filterableFields.Add(new SQLTableFieldDefinition(field));
+                fields.Add(new SQLTableFieldDefinition(field));
 
             List<FieldDefinition> fieldDefinitionsMultipleChoice = iDataContext.GetTable<FieldDefinition>().Where(x => x.TblID == TheTbl.TblID && x.Status == (int)StatusOfObject.Active &&  x.FieldType == (int)FieldTypes.ChoiceField && x.ChoiceGroupFieldDefinitions.Any() && x.ChoiceGroupFieldDefinitions.First().ChoiceGroup.AllowMultipleSelections).ToList();
-            filterableMultipleChoiceFields = new List<SQLMultipleChoiceFieldTableInfo>();
+            multipleChoiceFields = new List<SQLMultipleChoiceFieldTableInfo>();
             foreach (var fieldMC in fieldDefinitionsMultipleChoice)
-                filterableMultipleChoiceFields.Add(new SQLMultipleChoiceFieldTableInfo(iDataContext, fieldMC));
+                multipleChoiceFields.Add(new SQLMultipleChoiceFieldTableInfo(iDataContext, fieldMC));
         }
 
         public static SQLUpdateInfoTableSpecification GetSpecification(int tblID)
@@ -224,7 +224,7 @@ namespace ClassLibrary1.Model
             List<SQLTableColumnDescription> theList = new List<SQLTableColumnDescription>() { idColumn, nameColumn, nameShortenedForIndexingColumn, rowFieldDisplay, deleted, countNullEntries, countUserPoints, elevateOnMostNeedsRating, currentlyHighStakes, recentlyChanged, volatilityHour, volatilityDay, volatilityWeek, volatilityYear };
             foreach (var rating in ratingInfo)
                 theList.AddRange(rating.GetColumns());
-            foreach (var field in filterableFields)
+            foreach (var field in fields)
                 theList.Add(field.GetColumn());
             return theList;
         }
@@ -302,7 +302,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToAddFunctionForNearestNeighbors(TheTbl.TblID, geocol.Name));
             }
 
-            foreach (var fieldMC in filterableMultipleChoiceFields)
+            foreach (var fieldMC in multipleChoiceFields)
             {
                 SQLTableDescription subTable = fieldMC.GetSQLTableDescription();
                 SQLDirectManipulate.AddTable(dta, subTable);
@@ -313,7 +313,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         public void DropTable(DenormalizedTableAccess dta)
         {
             SQLDirectManipulate.DropTable(dta, "V" + TheTbl.TblID);
-            foreach (var fieldMC in filterableMultipleChoiceFields)
+            foreach (var fieldMC in multipleChoiceFields)
             {
                 SQLTableDescription subTable = fieldMC.GetSQLTableDescription();
                 SQLDirectManipulate.DropTable(dta, subTable.Name);
@@ -718,7 +718,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             int numRecords = theDataTable.Rows.Count;
 
             // now, bulk copy data to the separate table created for each multiple choice field (if any)
-            foreach (var fieldMC in filterableMultipleChoiceFields)
+            foreach (var fieldMC in multipleChoiceFields)
             {
                 theDataTable = CreateDataTableForMultipleChoiceField(iDataContext, fieldMC);
                 SqlBulkCopy bulk2 = new SqlBulkCopy(denormalizedConnection);

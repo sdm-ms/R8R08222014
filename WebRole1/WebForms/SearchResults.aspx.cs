@@ -46,7 +46,7 @@ public partial class SearchResults : System.Web.UI.Page
     {
         RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
         string decodedPhrase = Routing.IncomingSearchResults(Page.RouteData, theDataAccessModule.DataContext).searchTerms;
-        IQueryable<string> theQuery = RaterooDataManipulation.GetItemPathStringsForPhrase(theDataAccessModule.DataContext,decodedPhrase, maxResults).AsQueryable();
+        IQueryable<string> theQuery = RaterooDataManipulation.GetItemPathStringsForPhrase(theDataAccessModule.DataContext,decodedPhrase, maxResults);
         e.Result = theQuery;
     }
 

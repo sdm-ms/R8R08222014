@@ -29,7 +29,7 @@ namespace ClassLibrary1.Model
             return phrase.Split(' ').ToList().Select(word => Regex.Replace(word, @"[^\w\.@-]", "").ToUpperInvariant()).Where(word => word != "").OrderBy(x => x).Distinct().ToList();
         }
 
-        public static List<string> GetItemPathStringsForPhrase(IRaterooDataContext theDataContext, string thePhrase, int maxToInclude)
+        public static IQueryable<string> GetItemPathStringsForPhrase(IRaterooDataContext theDataContext, string thePhrase, int maxToInclude)
         {
             throw new NotImplementedException();
         }

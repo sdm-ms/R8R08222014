@@ -126,21 +126,21 @@ namespace ClassLibrary1.Model
             SuppressRow = row;
         }
 
-        internal string AddColon(bool prefixColon, bool withHtml)
+        internal string AddSeparator(bool prefixColon, bool withHtml)
         {
             if (!prefixColon)
                 return "";
             if (withHtml)
-                return "&nbsp;:&nbsp;";
-            return " : ";
+                return "&nbsp;&gt;&nbsp;";
+            return " > ";
         }
 
         internal void AppendPathPart(StringBuilder theStringBuilder, string innerText, string virtualPath, bool prefixColon, bool withHtml)
         {
             if (withHtml)
-                theStringBuilder.Append(AddColon(prefixColon, withHtml) + "<a href=" + virtualPath + ">" + innerText + "</a>");
+                theStringBuilder.Append(AddSeparator(prefixColon, withHtml) + "<a href=" + virtualPath + ">" + innerText + "</a>");
             else
-                theStringBuilder.Append(AddColon(prefixColon, withHtml) + innerText);
+                theStringBuilder.Append(AddSeparator(prefixColon, withHtml) + innerText);
         }
 
         public void AppendSpecificRatingFromGroupToPath(StringBuilder SB, string routeToTblRow, bool withHtml)
@@ -154,6 +154,7 @@ namespace ClassLibrary1.Model
                 AppendPathPart(SB, theItemPathInfo.theLocation.theTblColumn.Name, routeToHere, !SuppressTable || !SuppressRow, withHtml);
         }
 
+        // Note that GetItemPath uses the hierarchy item's existing item path, while BuildItemPath builds it from the start
         public string GetItemPath(bool withHtml)
         {
             StringBuilder SB = new StringBuilder();

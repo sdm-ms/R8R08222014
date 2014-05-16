@@ -872,7 +872,7 @@
     <Content Include="Main\Table\ViewCellRowHeading.ascx" />
     <Content Include="Main\Table\ViewCellSingleOutcome.ascx" />
     <Content Include="Main\Table\ViewCellTopLeftCorner.ascx" />
-    <Content Include="Main\Table\WithCategorySelector.ascx" />
+    <Content Include="Main\Table\WithTabSelector.ascx" />
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various.ar-SA1.designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various.da-DK1.designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various.de-DE1.designer.cs.dll" />
@@ -1597,12 +1597,12 @@
     <Compile Include="Main\Table\ViewCellTopLeftCorner.ascx.designer.cs">
       <DependentUpon>ViewCellTopLeftCorner.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Table\WithCategorySelector.ascx.cs">
-      <DependentUpon>WithCategorySelector.ascx</DependentUpon>
+    <Compile Include="Main\Table\WithTabSelector.ascx.cs">
+      <DependentUpon>WithTabSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Table\WithCategorySelector.ascx.designer.cs">
-      <DependentUpon>WithCategorySelector.ascx</DependentUpon>
+    <Compile Include="Main\Table\WithTabSelector.ascx.designer.cs">
+      <DependentUpon>WithTabSelector.ascx</DependentUpon>
     </Compile>
     <Compile Include="MasterPages\PageFrameAndTop.master.cs">
       <DependentUpon>PageFrameAndTop.master</DependentUpon>

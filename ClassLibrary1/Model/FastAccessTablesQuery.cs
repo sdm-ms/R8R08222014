@@ -294,7 +294,7 @@ namespace ClassLibrary1.Model
                 }
                 else if (filter is SearchWordsFilterRule)
                 {
-                    throw new Exception("Internal error: Fast queries are not implemented for search words query."); // This would be difficult, as we would need to convert the logic of GetTblRowsForPhrase, or we would need to convert the IQueryable<TblRow> into a SQL query and work with that. Overall, not worth it. Note that we should never hit this code as we check for whether there are any SearchWordsFilterRules before calling for a fast query.
+                    throw new Exception("Internal error: Fast queries are not implemented for search words query."); 
                 }
                 else
                     throw new Exception("Internal error: Unknown filter rule type in GetStatementsForFiltering.");

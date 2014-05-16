@@ -609,7 +609,7 @@ namespace ClassLibrary1.Model
             else if (theUserRating.LongTermResolutionReflected && theUserRating.Rating.RatingGroup.ResolutionTime == null)
                 theUserRating.LongTermResolutionReflected = false; /* resolution was undone */
             if (theUserRating.Rating.RatingGroup.ResolutionTime != null && theUserRating.ShortTermResolutionReflected && theUserRating.LongTermResolutionReflected && theUserRating.ShortTermResolutionValue != null && theUserRating.LongTermResolutionValue != null && theUserRating.Rating.RatingGroup.ResolutionTime < theUserRating.RatingPhaseStatus.RatingGroupPhaseStatus.ShortTermResolveTime)
-                theUserRating.ShortTermResolutionReflected = false; // we've resolved BEFORE the short term resolution time
+                theUserRating.ShortTermResolutionReflected = false; // we've resolved BEFORE the short term resolution time, so we need to undo the short term resolution.
 
             theUserRating.LastModifiedTime = currentTime;
 

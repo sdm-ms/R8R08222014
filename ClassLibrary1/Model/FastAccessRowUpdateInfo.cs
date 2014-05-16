@@ -13,12 +13,17 @@ namespace ClassLibrary1.Model
     {
         public abstract List<SQLCellInfo> GetSQLParameterInfo();
 
+        public virtual SQLUpdateInfoTableSpecification GetTableSpecification(TblRow tblRow)
+        {
+            return GetMainSqlUpdateInfoTableSpecification(tblRow.TblID);
+        }
+
         public virtual void AddToTblRow(TblRow tblRow, SQLUpdateInfoTableSpecification tableSpec = null)
         {
             bool dataIsAlreadyInDatabase = false;
             if (tableSpec == null)
             {
-                tableSpec = GetMainSqlUpdateInfoTableSpecification(tblRow.TblID);
+                tableSpec = GetTableSpecification(tblRow);
                 if (tblRow.TblRowID != 0)
                     dataIsAlreadyInDatabase = true;
             }
@@ -250,10 +255,9 @@ namespace ClassLibrary1.Model
             };
         }
 
-        public override void AddToTblRow(TblRow tblRow, SQLUpdateInfoTableSpecification tableSpec = null)
+        public override SQLUpdateInfoTableSpecification GetTableSpecification(TblRow tblRow)
         {
-            SQLUpdateInfoTableSpecification tableSpec2 = GetMultipleChoicesTableSpecification(FieldDefinitionID, tblRow.TblID);
-            base.AddToTblRow(tblRow, tableSpec2);
+            return GetMultipleChoicesTableSpecification(FieldDefinitionID, tblRow.TblID);
         }
     }
 

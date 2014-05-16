@@ -1000,12 +1000,12 @@
       <Association Name="RatingGroup_RatingGroupResolution" Member="RatingGroupResolutions" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroupResolution" />
       <Association Name="RatingGroup_RatingGroupStatusRecord" Member="RatingGroupStatusRecords" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroupStatusRecord" />
       <Association Name="RatingGroup_UserRatingGroup" Member="UserRatingGroups" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="UserRatingGroup" />
-      <Association Name="RatingGroup_RatingGroupPhaseStatus" Member="RatingGroupPhaseStatus" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroupPhaseStatus" />
       <Association Name="RatingGroup_UserRatingsToAdd" Member="UserRatingsToAdds" ThisKey="RatingGroupID" OtherKey="TopRatingGroupID" Type="UserRatingsToAdd" />
       <Association Name="RatingGroup_Rating" Member="Ratings" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="Rating" />
       <Association Name="RatingGroup_Rating1" Member="Ratings1" ThisKey="RatingGroupID" OtherKey="OwnedRatingGroupID" Type="Rating" />
       <Association Name="RatingGroup_Rating2" Member="Ratings2" ThisKey="RatingGroupID" OtherKey="TopmostRatingGroupID" Type="Rating" />
       <Association Name="RatingGroup_VolatilityTracker" Member="VolatilityTrackers" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="VolatilityTracker" />
+      <Association Name="RatingGroup_RatingGroupPhaseStatus" Member="RatingGroupPhaseStatus" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroupPhaseStatus" />
       <Association Name="RatingGroupAttribute_RatingGroup" Member="RatingGroupAttribute" ThisKey="RatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
       <Association Name="TblRow_RatingGroup" Member="TblRow" ThisKey="TblRowID" OtherKey="TblRowID" Type="TblRow" IsForeignKey="true" />
       <Association Name="TblColumn_RatingGroup" Member="TblColumn" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
@@ -1032,32 +1032,6 @@
       <Column Name="CheckInTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="User_UserCheckIn" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.RatingGroupPhaseStatus" Member="RatingGroupPhaseStatus">
-    <Type Name="RatingGroupPhaseStatus">
-      <Column Name="RatingGroupPhaseStatusID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="RatingPhaseGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RatingPhaseID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RatingGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RoundNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RoundNumThisPhase" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="EarliestCompleteTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="ActualCompleteTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="ShortTermResolveTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="HighStakesSecret" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="HighStakesKnown" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="HighStakesReflected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="HighStakesNoviceUser" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="HighStakesBecomeKnown" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="HighStakesNoviceUserAfter" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="RatingGroupPhaseStatus_SubsidyAdjustment" Member="SubsidyAdjustments" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="SubsidyAdjustment" />
-      <Association Name="RatingGroupPhaseStatus_UserRatingGroup" Member="UserRatingGroups" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="UserRatingGroup" />
-      <Association Name="RatingGroupPhaseStatus_RatingPhaseStatus" Member="RatingPhaseStatus" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="RatingPhaseStatus" />
-      <Association Name="RatingGroup_RatingGroupPhaseStatus" Member="RatingGroup" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroup" IsForeignKey="true" />
-      <Association Name="RatingPhase_RatingGroupPhaseStatus" Member="RatingPhase" ThisKey="RatingPhaseID" OtherKey="RatingPhaseID" Type="RatingPhase" IsForeignKey="true" />
-      <Association Name="RatingPhaseGroup_RatingGroupPhaseStatus" Member="RatingPhaseGroup" ThisKey="RatingPhaseGroupID" OtherKey="RatingPhaseGroupID" Type="RatingPhaseGroup" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.RatingConditions" Member="RatingConditions">
@@ -1273,8 +1247,8 @@
       <Column Name="NumUserRatingsMadeDuringPhase" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TriggerUserRatingsUpdate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="RatingPhaseStatus_UserRating" Member="UserRatings" ThisKey="RatingPhaseStatusID" OtherKey="RatingPhaseStatusID" Type="UserRating" />
-      <Association Name="RatingGroupPhaseStatus_RatingPhaseStatus" Member="RatingGroupPhaseStatus" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="RatingGroupPhaseStatus" IsForeignKey="true" />
       <Association Name="Rating_RatingPhaseStatus" Member="Rating" ThisKey="RatingID" OtherKey="RatingID" Type="Rating" IsForeignKey="true" />
+      <Association Name="RatingGroupPhaseStatus_RatingPhaseStatus" Member="RatingGroupPhaseStatus" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="RatingGroupPhaseStatus" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Ratings" Member="Ratings">
@@ -1654,6 +1628,33 @@
       <Association Name="FieldDefinition_TextFieldDefinition" Member="TextFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="TextFieldDefinition" />
       <Association Name="FieldDefinition_ChoiceGroupFieldDefinition" Member="ChoiceGroupFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="ChoiceGroupFieldDefinition" />
       <Association Name="Tbl_FieldDefinition" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RatingGroupPhaseStatus" Member="RatingGroupPhaseStatus">
+    <Type Name="RatingGroupPhaseStatus">
+      <Column Name="RatingGroupPhaseStatusID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RatingPhaseGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RatingPhaseID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RatingGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoundNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoundNumThisPhase" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EarliestCompleteTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ActualCompleteTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ShortTermResolveTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="HighStakesSecret" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HighStakesKnown" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HighStakesReflected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HighStakesNoviceUser" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HighStakesBecomeKnown" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="HighStakesNoviceUserAfter" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DeletionTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="RatingGroupPhaseStatus_SubsidyAdjustment" Member="SubsidyAdjustments" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="SubsidyAdjustment" />
+      <Association Name="RatingGroupPhaseStatus_UserRatingGroup" Member="UserRatingGroups" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="UserRatingGroup" />
+      <Association Name="RatingGroupPhaseStatus_RatingPhaseStatus" Member="RatingPhaseStatus" ThisKey="RatingGroupPhaseStatusID" OtherKey="RatingGroupPhaseStatusID" Type="RatingPhaseStatus" />
+      <Association Name="RatingGroup_RatingGroupPhaseStatus" Member="RatingGroup" ThisKey="RatingGroupID" OtherKey="RatingGroupID" Type="RatingGroup" IsForeignKey="true" />
+      <Association Name="RatingPhase_RatingGroupPhaseStatus" Member="RatingPhase" ThisKey="RatingPhaseID" OtherKey="RatingPhaseID" Type="RatingPhase" IsForeignKey="true" />
+      <Association Name="RatingPhaseGroup_RatingGroupPhaseStatus" Member="RatingPhaseGroup" ThisKey="RatingPhaseGroupID" OtherKey="RatingPhaseGroupID" Type="RatingPhaseGroup" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">

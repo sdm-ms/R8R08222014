@@ -560,12 +560,13 @@ namespace ClassLibrary1.Model
 
             bool moreWorkToDo = false;
 
+            int maxAtOnce = 1000;
+
             // As soon as there's an indication that we've done something, we'll return so that this can be called again soon.
             for (int hierarchyComparisonToMake = 1; hierarchyComparisonToMake <= 6 && !moreWorkToDo; hierarchyComparisonToMake++)
             {
-                moreWorkToDo = FixStatusInconsistenciesHelper(true, hierarchyComparisonToMake);
-                if (!moreWorkToDo)
-                    FixStatusInconsistenciesHelper(false, hierarchyComparisonToMake);
+                moreWorkToDo = moreWorkToDo || FixStatusInconsistenciesHelper(true, hierarchyComparisonToMake, maxAtOnce);
+                moreWorkToDo = moreWorkToDo || FixStatusInconsistenciesHelper(false, hierarchyComparisonToMake, maxAtOnce);
             }
 
             return moreWorkToDo;
@@ -601,7 +602,7 @@ namespace ClassLibrary1.Model
         //    }
         //}
 
-        public bool FixStatusInconsistenciesHelper(bool checkingForImproperlyActive, int hierarchyComparison)
+        public bool FixStatusInconsistenciesHelper(bool checkingForImproperlyActive, int hierarchyComparison, int maxAtOnce)
         {
             
             //Expression<Func<StatusInconsistencyExistsArgs, bool>> StatusInconsistencyExistsExpression = x =>
@@ -623,9 +624,9 @@ namespace ClassLibrary1.Model
                         );
                     if (PointsManagersToCheck.Any())
                     {
-                        var PointsManagersToFix = PointsManagersToCheck.Take(5);
+                        var PointsManagersToFix = PointsManagersToCheck.Take(maxAtOnce);
                         foreach (var PointsManagerToFix in PointsManagersToFix)
-                            SetStatusOfObject(PointsManagerToFix.PointsManagerID, TypeOfObject.PointsManager, checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
+                            PointsManagerToFix.Status = (byte) (checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
                         return true;
                     }
                     break;
@@ -638,9 +639,9 @@ namespace ClassLibrary1.Model
                         );
                     if (TblsToCheck.Any())
                     {
-                        var TblsToFix = TblsToCheck.Take(5);
+                        var TblsToFix = TblsToCheck.Take(maxAtOnce);
                         foreach (var TblToFix in TblsToFix)
-                            SetStatusOfObject(TblToFix.TblID, TypeOfObject.Tbl, checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
+                            TblToFix.Status = (byte)(checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
                         return true;
                     }
                     break;
@@ -654,9 +655,9 @@ namespace ClassLibrary1.Model
                         );
                     if (TblRowsToCheck.Any())
                     {
-                        var TblRowsToFix = TblRowsToCheck.Take(5);
+                        var TblRowsToFix = TblRowsToCheck.Take(maxAtOnce);
                         foreach (var TblRowToFix in TblRowsToFix)
-                            SetStatusOfObject(TblRowToFix.TblRowID, TypeOfObject.TblRow, checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
+                            TblRowToFix.Status = (byte)(checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
                         return true;
                     }
                     break;
@@ -669,9 +670,9 @@ namespace ClassLibrary1.Model
                         );
                     if (TblTabsToCheck.Any())
                     {
-                        var TblTabsToFix = TblTabsToCheck.Take(5);
+                        var TblTabsToFix = TblTabsToCheck.Take(maxAtOnce);
                         foreach (var TblTabToFix in TblTabsToFix)
-                            SetStatusOfObject(TblTabToFix.TblTabID, TypeOfObject.TblTab, checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
+                            TblTabToFix.Status = (byte)(checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
                         return true;
                     }
                     break;
@@ -684,9 +685,9 @@ namespace ClassLibrary1.Model
                         );
                     if (TblColumnsToCheck.Any())
                     {
-                        var TblColumnsToFix = TblColumnsToCheck.Take(5);
+                        var TblColumnsToFix = TblColumnsToCheck.Take(maxAtOnce);
                         foreach (var TblColumnToFix in TblColumnsToFix)
-                            SetStatusOfObject(TblColumnToFix.TblColumnID, TypeOfObject.TblColumn, checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
+                            TblColumnToFix.Status = (byte)(checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
                         return true;
                     }
                     break;
@@ -696,12 +697,45 @@ namespace ClassLibrary1.Model
                         ((StatusOfObject)x.Status == StatusOfObject.Active && ( (StatusOfObject)x.TblColumn.Status != StatusOfObject.Active || (StatusOfObject)x.TblRow.Status != StatusOfObject.Active ) )
                         :
                         ((StatusOfObject)x.Status == StatusOfObject.DerivativelyUnavailable && (StatusOfObject)x.TblColumn.Status == StatusOfObject.Active && (StatusOfObject)x.TblRow.Status == StatusOfObject.Active)
-                        );
+                        )
+                        .Select(x => new { Item = x, RatingGroupPhaseStatus = x.RatingGroupPhaseStatus.OrderByDescending(y => y.ActualCompleteTime).FirstOrDefault() });
                     if (RatingGroupsToCheck.Any())
                     {
-                        var RatingGroupsToFix = RatingGroupsToCheck.Take(5);
+                        var RatingGroupsToFix = RatingGroupsToCheck.Take(maxAtOnce);
                         foreach (var RatingGroupToFix in RatingGroupsToFix)
-                            SetStatusOfObject(RatingGroupToFix.RatingGroupID, TypeOfObject.RatingGroup, checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
+                        {
+                            RatingGroupToFix.Item.Status = (byte)(checkingForImproperlyActive ? StatusOfObject.DerivativelyUnavailable : StatusOfObject.Active);
+                            if (RatingGroupToFix.RatingGroupPhaseStatus != null)
+                            {
+                                DateTime currentTime = TestableDateTime.Now;
+                                // If a rating group is undeleted, we want to ensure that short term expiration etc. does not happen right away, because then brief
+                                // undeletion (even if corrected by another user) could result in points being awarded. So we remember when deletion occurred and we
+                                // delay various future events by the time span elapsed when we set rating groups back to active.
+                                if (checkingForImproperlyActive)
+                                    RatingGroupToFix.RatingGroupPhaseStatus.DeletionTime = currentTime;
+                                else
+                                {
+                                    if (RatingGroupToFix.RatingGroupPhaseStatus.DeletionTime != null)
+                                    {
+                                        DateTime deletionTime = (DateTime)RatingGroupToFix.RatingGroupPhaseStatus.DeletionTime;
+                                        TimeSpan deletionSpan = deletionTime - currentTime;
+                                        if (RatingGroupToFix.RatingGroupPhaseStatus.ActualCompleteTime > deletionTime)
+                                            RatingGroupToFix.RatingGroupPhaseStatus.ActualCompleteTime += deletionSpan;
+                                        if (RatingGroupToFix.RatingGroupPhaseStatus.EarliestCompleteTime > deletionTime)
+                                            RatingGroupToFix.RatingGroupPhaseStatus.EarliestCompleteTime += deletionSpan;
+                                        if (RatingGroupToFix.RatingGroupPhaseStatus.HighStakesBecomeKnown > deletionTime)
+                                            RatingGroupToFix.RatingGroupPhaseStatus.HighStakesBecomeKnown += deletionSpan;
+                                        if (RatingGroupToFix.RatingGroupPhaseStatus.HighStakesNoviceUserAfter > deletionTime)
+                                            RatingGroupToFix.RatingGroupPhaseStatus.HighStakesNoviceUserAfter += deletionSpan;
+                                        if (RatingGroupToFix.RatingGroupPhaseStatus.ShortTermResolveTime > deletionTime)
+                                            RatingGroupToFix.RatingGroupPhaseStatus.ShortTermResolveTime += deletionSpan;
+                                        if (RatingGroupToFix.RatingGroupPhaseStatus.StartTime > deletionTime)
+                                            RatingGroupToFix.RatingGroupPhaseStatus.StartTime += deletionSpan;
+                                    }
+                                    RatingGroupToFix.RatingGroupPhaseStatus.DeletionTime = null;
+                                }
+                            }
+                        }
                         return true;
                     }
                     break;
