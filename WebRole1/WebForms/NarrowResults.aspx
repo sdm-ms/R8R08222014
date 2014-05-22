@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <link href="~/StyleSheet.css" type="text/css" rel="stylesheet" />
+    <link href="~/StyleSheet.css?v=101" type="text/css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">

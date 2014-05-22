@@ -364,7 +364,7 @@ namespace WebApplication1.CommonControl
             List<string> mergedContent = PickTblRows.MergeLists(new List<List<string>> { mostVolatileRatingsContent, ratingsOfBestContent});
             List<string> mergedContent2 = PickTblRows.MergeLists(new List<List<string>> { basicContent, mergedContent});
             StringBuilder myStringBuilder = new StringBuilder();
-            myStringBuilder.Append("<div class=\"slideshow slideshowInitialDisplay\">");
+            myStringBuilder.Append("<div class=\"slideshow slideshowInitialDisplay\" style=\"height: 450px;\">"); // the slideshow itself will use position: absolute in this, so we need a container that will push down things lower on the page
             foreach (var pieceOfContent in mergedContent2)
                 myStringBuilder.Append(pieceOfContent);
             myStringBuilder.Append("</div>");

@@ -8,7 +8,7 @@
 <asp:Content ID="previouscontent4" ContentPlaceHolderID="SupplementalScripts1" runat="server">
     <asp:ScriptManagerProxy ID="MyScriptManagerProxy" runat="server">
         <Scripts>
-            <asp:ScriptReference Path="~/js/resize.js" />
+            <asp:ScriptReference Path="~/js/resize.js?v=100" />
         </Scripts>
     </asp:ScriptManagerProxy>
     <asp:ContentPlaceHolder ID="SupplementalScripts" runat="server">

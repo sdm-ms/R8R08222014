@@ -1729,7 +1729,9 @@ namespace ClassLibrary1.Model
 
     public class Restaurants : CreateStandardBase
     {
-        int theCuisineChoiceGroupID;
+        int theCuisineChoiceGroupID; 
+        int theSubCuisineChoiceGroupID;
+        int theFeaturesChoiceGroupID;
 
         public Restaurants()
             : base()
@@ -1739,10 +1741,10 @@ namespace ClassLibrary1.Model
 
         protected void CreateMain(int ratingGroup, int myRatingPhase)
         {
-            //int overall = CreateRating("Overall", "Overall quality", "The overall quality of the restaurant, not taking into account price", ratingGroup, myRatingPhase, true, true, false);
-            //SetCategoryAsDefaultSort(ratingGroup, overall); NOTE: If adding back in, uncomment SetCategoryAsDefaultSort below.
+            int overall = CreateRating("Overall", "Overall quality", "The overall quality of the restaurant, not taking into account price", ratingGroup, myRatingPhase, true, true, false);
+            SetCategoryAsDefaultSort(ratingGroup, overall); //NOTE: If adding back in, uncomment SetCategoryAsDefaultSort below.
             int food = CreateRating("Food", "Quality of food", "The taste, creativity, and plating of the food", ratingGroup, myRatingPhase, false, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, food);
+            //SetCategoryAsDefaultSort(ratingGroup, food);
             //int taste = CreateRating("Taste", "Taste of food", "How good the food tastes", ratingGroup, myRatingPhase, false, true, false);
             //CreateRating("Creativity", "Creativity of food", "The overall creativity of the food, including plating and selection of dishes and ingredients", ratingGroup, myRatingPhase, false, true, false);
             //CreateRating("Service", "Quality of service", "The knowledge and attentiveness of the service.", ratingGroup, myRatingPhase, false, true, false);
@@ -1751,10 +1753,17 @@ namespace ClassLibrary1.Model
             //CreateStat("Speed", "Speed in minutes", "The average number of minutes that a diner will spend in the restaurant (dinner if different meals are served)", ratingGroup, myRatingPhase, 0, 0, 300, false, true, true, null);
         }
 
+        protected void CreateAdditional(int ratingGroup, int myRatingPhase)
+        {
+            int plating = CreateRating("Plating", "Presentation and plating", "The attractiveness of the dishes", ratingGroup, myRatingPhase, false, true, false);
+            int clientele = CreateRating("Clientele", "Clientele", "The quality of the clientele (taking into account friendliness, hipness, attractiveness, etc.)", ratingGroup, myRatingPhase, false, true, false);
+            CreateRating("Variety", "Choices and menu size", "The number and range of menu offerings", ratingGroup, myRatingPhase, false, true, false);
+            CreateStat("Speed", "Speed in minutes", "The average number of minutes that a diner will spend in the restaurant (dinner if different meals are served)", ratingGroup, myRatingPhase, 0, 0, 300, false, true, true, null);
+        }
+
         protected void CreateRestaurantChoiceGroups(int pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
-
             ChoiceGroupData theCuisineChoiceGroup = new ChoiceGroupData();
             theCuisineChoiceGroup.AddChoiceToGroup("American");
             theCuisineChoiceGroup.AddChoiceToGroup("Asian");
@@ -1808,7 +1817,50 @@ namespace ClassLibrary1.Model
             theCuisineChoiceGroup.AddChoiceToGroup("Vegetarian");
             theCuisineChoiceGroup.AddChoiceToGroup("Vietnamese");
             theCuisineChoiceGroupID = CreateChoiceGroup(pointsManagerID, theCuisineChoiceGroup, choiceGroupStandardSettings, null, "Cuisine");
+
+            int americanID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "American").ChoiceInGroupID;
+            int asianID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Asian").ChoiceInGroupID;
+            int latinAmericanID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Latin American").ChoiceInGroupID;
+            int indianPakistaniID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Indian / Pakistani").ChoiceInGroupID;
+
+            int choiceGroupDependentSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false, true, false, false, false, false, true, false);
+            ChoiceGroupData theSubCuisineChoiceGroup = new ChoiceGroupData();
+            theSubCuisineChoiceGroup.AddChoiceToGroup("New England", americanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("California", americanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Tex-Mex", americanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Midwestern", americanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Chinese", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Japanese", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Loatian", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Thai", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Vietnamese", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Sichuan", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Korean (South)", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Korean (North)", asianID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Brazilian", latinAmericanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Argentenian", latinAmericanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Peruvian", latinAmericanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Chilean", latinAmericanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Other Latin American", latinAmericanID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Indian (North)", indianPakistaniID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Indian (South)", indianPakistaniID);
+            theSubCuisineChoiceGroup.AddChoiceToGroup("Pakistani", indianPakistaniID);
+            theSubCuisineChoiceGroupID = CreateChoiceGroup(pointsManagerID, theSubCuisineChoiceGroup, choiceGroupDependentSettings, theCuisineChoiceGroupID, "Subcuisine");
+
+
+            int choiceGroupMultipleSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(true, true, false, false, false, false, true, false);
+            ChoiceGroupData theFeaturesChoiceGroup = new ChoiceGroupData();
+            theFeaturesChoiceGroup.AddChoiceToGroup("Accepts credit cards");
+            theFeaturesChoiceGroup.AddChoiceToGroup("Vegetarian-friendly");
+            theFeaturesChoiceGroup.AddChoiceToGroup("Independently owned");
+            theFeaturesChoiceGroup.AddChoiceToGroup("Open late");
+            theFeaturesChoiceGroup.AddChoiceToGroup("24 hours");
+            theFeaturesChoiceGroup.AddChoiceToGroup("Allows pets");
+            theFeaturesChoiceGroup.AddChoiceToGroup("Buffet-style");
+            theFeaturesChoiceGroupID = CreateChoiceGroup(pointsManagerID, theFeaturesChoiceGroup, choiceGroupMultipleSettings , null, "Features");
         }
+
+
 
         protected void CreateRestaurantFields(int TblID)
         {
@@ -1818,8 +1870,13 @@ namespace ClassLibrary1.Model
             CreateFieldDefinitionDisplaySettings(addressFD, doNotShowThisField, visibleWithNoNameFieldDisplay, visibleWithNoNameFieldDisplay);
             int cuisineCGFD = 0;
             int cuisineFD = CreateFieldDefinition(TblID, "Cuisine", FieldTypes.ChoiceField, true, theCuisineChoiceGroupID, null, ref cuisineCGFD);
+            int subcuisineCGFD = 0;
+            int subcuisineFD = CreateFieldDefinition(TblID, "Subcuisine", FieldTypes.ChoiceField, true, theSubCuisineChoiceGroupID, cuisineCGFD, ref subcuisineCGFD);
+            int featuresCGFD = 0;
+            int featuresID = CreateFieldDefinition(TblID, "Features", FieldTypes.ChoiceField, true, theFeaturesChoiceGroupID, null, ref featuresCGFD);
             int phoneFD = CreateFieldDefinition(TblID, "Phone", FieldTypes.TextField, false, true, false, false);
             int sourceFD = CreateFieldDefinition(TblID, "Source", FieldTypes.TextField, false, true, true, false);
+            int yearFD = CreateFieldDefinition(TblID, "Year Opened", FieldTypes.NumberField, true, 1750, 2050, 0);
         }
 
         public override void Create()
@@ -1832,8 +1889,10 @@ namespace ClassLibrary1.Model
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             HierarchyItem hierarchy = CreateHierarchyItem(consumerHierarchy, null, restaurantsTblID, true, "Restaurants");
             CreateRestaurantFields(restaurantsTblID);
-            int ratingGroup = CreateTblTab("Ratings", restaurantsTblID);
+            int ratingGroup = CreateTblTab("Main", restaurantsTblID);
             CreateMain(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
+            int ratingGroup2 = CreateTblTab("Additional", restaurantsTblID);
+            CreateAdditional(ratingGroup2, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
             BeginImport("restaurants.xml", restaurantsTblID);
         }
     }

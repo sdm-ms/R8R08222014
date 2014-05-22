@@ -75,7 +75,7 @@ public partial class MyAccount {
     protected global::System.Web.UI.WebControls.Label Label11;
     
     /// <summary>
-    /// EMailAddress control.
+    /// EmailAddress control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.

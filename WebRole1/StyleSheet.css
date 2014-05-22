@@ -430,7 +430,7 @@ a img
 
 .outerDivAroundMainTable
 {
-	position:absolute;
+	position:relative; 
 }
 
 
@@ -1213,7 +1213,7 @@ a.text1:hover {
 	font-weight:normal;
 	color: black;
 	position:relative;
-	top:525px;
+	top:15px; /* DEBUG STYLES -- used 525px when the other area was absolutely positioned */
 }
 .asteriskRowMain
 {
@@ -2653,12 +2653,6 @@ a.nextToTabs
 	padding:4px 4px 4px 4px;
 }
 
-.btnsInSlideshow
-{
-	position: relative;
-	top: 385px;
-	left: 220px;
-}
 
 html > body .picInSlideshow /* understood only by later browsers */
 {
@@ -2670,3 +2664,8 @@ html > body .picInSlideshow /* understood only by later browsers */
 	padding:4px 4px 4px 4px;
 }
 
+.btnsInSlideshow
+{
+	position: relative;
+	left: 220px;
+}

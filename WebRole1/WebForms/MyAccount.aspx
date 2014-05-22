@@ -29,7 +29,7 @@
                     <asp:Label ID="Label11" runat="server">Email Address</asp:Label>
                 </td>
                 <td>
-                    <asp:TextBox ID="EMailAddress" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="EmailAddress" runat="server"></asp:TextBox>
                 </td>
                 <td>
                     <span style="font-size:12px; font-weight:normal; font-style:italic;">This must be a valid address to receive payment through PayPal.</span>

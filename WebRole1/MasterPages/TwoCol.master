@@ -5,7 +5,7 @@
     </asp:ContentPlaceHolder>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="AllContentBelowHeader" Runat="Server">
-    <div id="mainPartOfPage" style="position: relative; width: 941px; height: 550px;
+    <div id="mainPartOfPage" style="position: relative; width: 941px; height: auto; /*DEBUG 550px;*/
         background-color: White; border-width: 1px; border-style: solid; border-color: Gray; ">
         <div id="leftPageColumn" class="possibleBottom" style="float: left; overflow: hidden;
             display: inline; position: relative; width: 268px; margin: 10px 5px 10px 10px;

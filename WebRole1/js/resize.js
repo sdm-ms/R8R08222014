@@ -17,14 +17,15 @@ function getBottomOfGroup(items) {
 
 var mainPartOfPage = null;
 function resizePageVertically() {
-    if (mainPartOfPage == null)
-        mainPartOfPage = $("#mainPartOfPage");
-    var candidates = $(".possibleBottom");
-    if (candidates.length > 0) {
-        var bottomOfContent = getBottomOfGroup(candidates);
-        var currentMainPartOfPageHeight = mainPartOfPage.height();
-        var bottomOfMainPartOfPage = getBottom(mainPartOfPage);
-        var increaseNeeded = (bottomOfContent + 30) - bottomOfMainPartOfPage;
-        mainPartOfPage.height(currentMainPartOfPageHeight + increaseNeeded);
-    }
+    //if (mainPartOfPage == null)
+    //    mainPartOfPage = $("#mainPartOfPage");
+    //var candidates = $(".possibleBottom");
+    //if (candidates.length > 0) {
+    //    var bottomOfContent = getBottomOfGroup(candidates);
+    //    var currentMainPartOfPageHeight = mainPartOfPage.height();
+    //    var bottomOfMainPartOfPage = getBottom(mainPartOfPage);
+    //    var increaseNeeded = (bottomOfContent + 30) - bottomOfMainPartOfPage;
+    //    mainPartOfPage.height(currentMainPartOfPageHeight + increaseNeeded);
+    //}
+    // DEBUG
 }
