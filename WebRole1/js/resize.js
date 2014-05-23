@@ -15,17 +15,16 @@ function getBottomOfGroup(items) {
     return bottom;
 }
 
-var mainPartOfPage = null;
+// If we restore this page, must delete similar line from viewtbl.js and uncomment here: var mainPartOfPage = null;
 function resizePageVertically() {
-    //if (mainPartOfPage == null)
-    //    mainPartOfPage = $("#mainPartOfPage");
-    //var candidates = $(".possibleBottom");
-    //if (candidates.length > 0) {
-    //    var bottomOfContent = getBottomOfGroup(candidates);
-    //    var currentMainPartOfPageHeight = mainPartOfPage.height();
-    //    var bottomOfMainPartOfPage = getBottom(mainPartOfPage);
-    //    var increaseNeeded = (bottomOfContent + 30) - bottomOfMainPartOfPage;
-    //    mainPartOfPage.height(currentMainPartOfPageHeight + increaseNeeded);
-    //}
-    // DEBUG
+    if (mainPartOfPage == null)
+        mainPartOfPage = $("#mainPartOfPage");
+    var candidates = $(".possibleBottom");
+    if (candidates.length > 0) {
+        var bottomOfContent = getBottomOfGroup(candidates);
+        var currentMainPartOfPageHeight = mainPartOfPage.height();
+        var bottomOfMainPartOfPage = getBottom(mainPartOfPage);
+        var increaseNeeded = (bottomOfContent + 30) - bottomOfMainPartOfPage;
+        mainPartOfPage.height(currentMainPartOfPageHeight + increaseNeeded);
+    }
 }

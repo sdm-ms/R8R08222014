@@ -2,6 +2,7 @@
 function viewtbl() {
 
     var badBrowser = false;
+    var mainPartOfPage = null;
     var mainTable = null;
     var mainTableBody = null;
     var divAroundMainTable = null;
@@ -87,7 +88,7 @@ function viewtbl() {
         divAroundMainTableOrigWidth = divAroundMainTable.innerWidth();
         rightPageColumnOrigWidth = rightPageColumn.innerWidth();
         mainPartOfPageOrigWidth = mainPartOfPage.innerWidth();
-        resizePageVertically();
+        // resizePageVertically();
 
 
 
@@ -1524,7 +1525,7 @@ function viewtbl() {
 
 
     function resizePageVerticallyHandler(sender, args) {
-        resizePageVertically(); /* in resize.js */
+        // resizePageVertically(); /* in resize.js -- note that we don't currently need this code, but have not eliminated all references to resizing pages vertically until we do a thorough cross-browser test */
     }
 
 
@@ -2080,7 +2081,7 @@ function viewtbl() {
     function createMap() {
         var mapArea = $("#GoogleMap");
         mapArea.show();
-        resizePageVertically();
+        //resizePageVertically();
         if (map != null)
             delete map;
         map = new google.maps.Map2(mapArea.get(0)); /* must use get, not eq */

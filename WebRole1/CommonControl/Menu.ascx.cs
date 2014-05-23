@@ -104,7 +104,6 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
         return shortStringBuilder.ToString();
     }
 
-    // DEBUG: We need to change the topics menu so that it loads dynamically. 
     protected string AddHierarchyItems(HierarchyItem higherItem)
     {
         IEnumerable<HierarchyItem> theHierarchyItems;

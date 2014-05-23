@@ -152,7 +152,7 @@ namespace ClassLibrary1.Model
                 // is this a big enough difference?
                 float hypotheticalAdjustmentFactorForLastUser = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)trackIdealRatingValue, actualFinalRating, urs[numUserRatings - 1].PreviousRatingOrVirtualRating);
                 bool bigEnoughDifference = (hypotheticalAdjustmentFactorForLastUser < HypotheticalAdjFactorsNotWorthImplementing.Item1 || hypotheticalAdjustmentFactorForLastUser > HypotheticalAdjFactorsNotWorthImplementing.Item2);
-                //Debug.WriteLine("DEBUG reviewing rating " + urSet.Rating.RatingID + " entered " + urs.Last().EnteredUserRating + " final " + actualFinalRating + " ideal " + trackIdealRatingValue + " hypo adj " + hypotheticalAdjustmentFactorForLastUser + " big enough? " + bigEnoughDifference);
+                //Debug.WriteLine(" reviewing rating " + urSet.Rating.RatingID + " entered " + urs.Last().EnteredUserRating + " final " + actualFinalRating + " ideal " + trackIdealRatingValue + " hypo adj " + hypotheticalAdjustmentFactorForLastUser + " big enough? " + bigEnoughDifference);
                 if (bigEnoughDifference)
                 { // add the new UserRating
                     UserRatingGroup urg = AddUserRatingGroup(urSet.Rating.RatingGroup2);

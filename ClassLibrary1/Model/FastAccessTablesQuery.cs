@@ -119,11 +119,18 @@ namespace ClassLibrary1.Model
             else if (tableSortRule is TableSortRuleDistance)
             {
                 TableSortRuleDistance distanceSortRule = (TableSortRuleDistance)tableSortRule;
-                sqlTblIndex++;
-                int nearestNeighborsIndex = sqlTblIndex;
                 // DEBUG: We should not need to use UDFNearestNeighbors here. Search for nearest neighbors SQL Server 2012 for some simpler code examples. We do need it in the normalized database, since Linq to SQL otherwise won't produce appropriate queries.
-                joinString = String.Format(" INNER JOIN [dbo].[UDFNearestNeighborsFor{0}]({1}, {2}, {3}) AS [t{5}] ON ([t{4}].[ID]) = [t{5}].[TblRowID] ", "F" + distanceSortRule.FieldDefinitionID.ToString(), distanceSortRule.Latitude, distanceSortRule.Longitude, 1000, originalTblIndex, nearestNeighborsIndex);
-                orderByString = String.Format(" ORDER BY [t{0}].TblRowID {1}", nearestNeighborsIndex, ascOrDescString);
+
+                int paramNum1, paramNum2;
+                paramNum1 = paramNumber;
+                parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (decimal)distanceSortRule.Latitude));
+                paramNumber++;
+                paramNum2 = paramNumber;
+                parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (decimal)distanceSortRule.Longitude));
+                paramNumber++;
+                string distanceFromPointString = String.Format("STDistance(geography::STPointFromText('POINT(' + CAST(@P{0} AS VARCHAR(20)) + ' ' + CAST(@P{1} AS VARCHAR(20)) + ')', 4326))", paramNum1, paramNum2);
+                string columnName = "F" + distanceSortRule.FieldDefinitionID.ToString();
+                orderByString = String.Format(" ORDER BY [t{0}].{1}.{2} {3}", sqlTblIndex, columnName, distanceFromPointString, ascOrDescString);
             }
             else
                 throw new NotImplementedException();

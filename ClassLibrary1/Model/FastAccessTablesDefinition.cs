@@ -784,9 +784,10 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         {
             SQLDatabaseChangeInfo dci = new SQLDatabaseChangeInfo();
 
-            bool DisableUpdateRowInfo = true; // DEBUG -- this is an interim measure until we set DisableBulkInserting = true DisableBulkUpdating = true, whereupon this code will not ordinarily get called anyway. 
-            bool DisableUpdateFields = true; // DEBUG
-            bool DisableUpdateRatings = false; // DEBUG -- we still need this, until we complete the adding missing ratings dynamically.
+            // Note: right now, this code should not get called. If we change that temporarily, set one or more of the following to false so that we can do bulk updating or adding.
+            bool DisableUpdateRowInfo = true; 
+            bool DisableUpdateFields = true; 
+            bool DisableUpdateRatings = true; 
             foreach (var storedRow in storedRows)
             {
                 SQLInfoForCellsInRow_MainAndSecondaryTables row = new SQLInfoForCellsInRow_MainAndSecondaryTables();

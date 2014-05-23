@@ -1799,7 +1799,7 @@ namespace ClassLibrary1.Model
             };
 
             if (theUserRating.NewUserRating - theUserRating.EnteredUserRating <= 0 != theUserRating.EnteredUserRating - theUserRating.PreviousDisplayedRating >= 0 && theUserRating.PreviousDisplayedRating != null && theUserRating.NewUserRating != theUserRating.EnteredUserRating && theUserRating.EnteredUserRating != theUserRating.PreviousDisplayedRating && theUserRating.NewUserRating != theUserRating.PreviousDisplayedRating)
-                throw new Exception("User rating moved in wrong direction. Internal error. DEBUG");
+                throw new Exception("User rating moved in wrong direction. Internal error.");
 
             UpdateUserRatingHighStakesKnownFields(theUserRating, ratingGroupPhaseStatus, userRatingGroup.WhenMade);
 

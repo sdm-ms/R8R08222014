@@ -721,13 +721,15 @@ namespace ClassLibrary1.Model
             RealEstate realEstate = new RealEstate();
             realEstate.Create(); */
 
+            // We've amended the Restaurants table so that it has various types of columns and fields.
             Restaurants restaurants = new Restaurants();
             restaurants.Create();
 
+            /*  
             Blogs blogs = new Blogs();
             blogs.Create();
 
-            /* DEBUG 
+            
             News news = new News();
             news.Create();
 

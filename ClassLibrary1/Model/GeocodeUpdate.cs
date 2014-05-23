@@ -15,7 +15,10 @@ namespace ClassLibrary1.Model
 
         public static bool DoUpdate(IRaterooDataContext theDataContext)
         {
-            return false; // DEBUG -- must update MapQuest Geocode account/code to conform to current API -- then uncomment the rest of this
+            return false; 
+            // for now, we are going to disable doing background worker geocoding. 
+            // If we do ever decide to do this again and to use MapQuest as we do here, we
+            // must update MapQuest Geocode account/code to conform to current API -- then uncomment the rest of this
             //DateTime recheckSince = TestableDateTime.Now - new TimeSpan(7, 0, 0, 0); // only check if it hasn't been checked in a week
             //var addressFieldsAndTblRowFieldDisplays = theDataContext.GetTable<AddressField>().Where(x => x.LastGeocode == null || (DateTime)x.LastGeocode < recheckSince).Take(100).Select(x => new { TheAddressField = x, TheTblRowFieldDisplay = x.Field.TblRow.TblRowFieldDisplay }).ToList();
             //List<AddressField> theAddressFieldsNeedingUpdating = addressFieldsAndTblRowFieldDisplays.Select(x => x.TheAddressField).ToList();
