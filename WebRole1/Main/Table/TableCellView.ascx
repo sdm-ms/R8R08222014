@@ -28,7 +28,7 @@
     <tr style="height:20px;">
     </tr>
 </table>
-<Ajax:TabContainer ID="TblManager" runat="Server" ActiveTabIndex="0" Width="600" OnClientActiveTabChanged="resizePageVertically">
+<Ajax:TabContainer ID="TblManager" runat="Server" ActiveTabIndex="0" Width="600" >
     <Ajax:TabPanel runat="Server" ID="General" HeaderText="Chart">
         <ContentTemplate>
             <table border="0" width="100%" cellspacing="1" cellpadding="3">

@@ -248,7 +248,6 @@ function viewtbl() {
         var lastRow = null;
         var firstRow = null;
         mainTable.append(mainRowsResult);
-        microAdjustColWidths();
         if (mainRowsResult.indexOf("treenew") != -1)
             $('div.treenew', mainTableBody).setupTree();
         var matchResult = mainRowsResult.match(/somerow/g);
@@ -885,20 +884,15 @@ function viewtbl() {
         tbody.before(colInfoList);
         /* resizePageToFitTableIfNecessary(); uncomment if we want to allow table to get bigger when there are a lot of columns */
     }
-    /* the following compensates for some cross-border incompatibilities -- a bit hacky */
-    function microAdjustColWidths() {
-        return; /* not currently implemented */
-    }
 
     function applyColWidthsToMainArea() {
         var existingInvHeaderRows = $(".invHeaderRow").length;
-        if (existingInvHeaderRows == 0)
+        if (existingInvHeaderRows == 0) /* invHeaderRow not added yet */
             applyColWidthsToMainAreaMethod2(false);
         else if (existingInvHeaderRows == 1)
             applyColWidthsToMainAreaMethod2(true);
         if ($("#maint > col").length == 0)
             applyColWidthsToMainAreaMethod1();
-        microAdjustColWidths();
         mainTableScrollArea = $("#mainTableScrollArea");
         setScrollAreaHeight();
         $(".rotatedColHeader").load(setScrollAreaHeight);
@@ -915,7 +909,6 @@ function viewtbl() {
         cols.eq(1).attr("width", (colWidths[1].Fixed) + "px");
         //cols.eq(0).css("max-width", (colWidths[0].Fixed) + "px");
         //cols.eq(1).css("max-width", (colWidths[1].Fixed) + "px");
-        microAdjustColWidths();
     }
 
     function increaseSizeOfNumberCellHelper(headerRows) {
@@ -1286,9 +1279,10 @@ function viewtbl() {
     }
 
     function getRatingGroupID(aCellOrOtherArea) {
-        var theInputField = $('input.mgID:first', aCellOrOtherArea);
-        var ratingGroupID = theInputField.val();
-        return ratingGroupID;
+        return $(aCellOrOtherArea).attr("data-rg");
+        //var theInputField = $('input.mgID:first', aCellOrOtherArea);
+        //var ratingGroupID = theInputField.val();
+        //return ratingGroupID;
     }
 
     function recordRatingIDs(aCellOrOtherArea) {

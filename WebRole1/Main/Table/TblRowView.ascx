@@ -11,8 +11,7 @@
 <table border="0" width="100%" cellspacing="1" cellpadding="3">
     <tr>
         <td class="possibleBottom">
-            <Ajax:TabContainer ID="TblManager" runat="Server" ActiveTabIndex="0" Width="600"
-                OnClientActiveTabChanged="resizePageVertically">
+            <Ajax:TabContainer ID="TblManager" runat="Server" ActiveTabIndex="0" Width="600">
                 <Ajax:TabPanel runat="Server" ID="CommentsTab" HeaderText="Comments">
                     <ContentTemplate>
                         <Uc:Comments runat="Server" ID="CommentsContent" />

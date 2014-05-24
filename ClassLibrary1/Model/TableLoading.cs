@@ -424,13 +424,13 @@ namespace ClassLibrary1.Model
         private static void BuildHtmlForCell(StringBuilder builder, int tblRowID, int? topRatingGroupID, decimal? valueOfFirstRating, int? decPlaces, int tblColumnID, int? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool? trusted, bool singleNumberOnly, bool includeOuterTD)
         {
             string topRatingIDString = topRatingGroupID == null ? tblRowID.ToString() + "/" + tblColumnID.ToString() : topRatingGroupID.ToString();
-            string nameAndTopRatingGroupID = "mg" + topRatingIDString + "grpC";
+            string nameAndTopRatingGroupID = "mg" + topRatingIDString;
             if (includeOuterTD)
-                builder.Append("<td class=\"mainCellMarker \">");
-            builder.Append("<input name=\"" + nameAndTopRatingGroupID + "\" type=\"hidden\" id=\"" + nameAndTopRatingGroupID + "\" class=\"mgID\" value=\"" + topRatingIDString + "\" />");
+                builder.Append("<td class=\"mainCellMarker \" data-rg=\"" + topRatingIDString + " \">");
+            // builder.Append("<input name=\"" + nameAndTopRatingGroupID + "\" type=\"hidden\" id=\"" + nameAndTopRatingGroupID + "\" class=\"mgID\" value=\"" + topRatingIDString + "\" />");
             if (singleNumberOnly)
             {
-                builder.Append(GetStringForRatingInput(valueOfFirstRating, decPlaces, tblRowID, tblColumnID, ratingIDIfSingleNumber, trusted, preformattedContentsIfAvailable, "rtgMult"));
+                builder.Append(GetStringForRatingInput(valueOfFirstRating, decPlaces, tblRowID, tblColumnID, ratingIDIfSingleNumber, preformattedContentsIfAvailable));
             }
             else
             {
@@ -461,15 +461,13 @@ namespace ClassLibrary1.Model
             builder.Append("</div>");
         }
 
-        private static string GetStringForRatingInput(decimal? value, int? decPlaces, int TblRowID, int TblColumnID, int? ratingID, bool? trusted, string theValuePreformatted, string suppClass = "")
+        private static string GetStringForRatingInput(decimal? value, int? decPlaces, int TblRowID, int TblColumnID, int? ratingID, string theValuePreformatted, string suppClass = "")
         {
             string ratingIDString = ratingID == null ? TblRowID.ToString() + "/" + TblColumnID.ToString() : ratingID.ToString();
             string theValue;
             if (theValuePreformatted == null || theValuePreformatted == "")
             {
                 theValue = NumberandTableFormatter.FormatAsSpecified(value, (int)decPlaces, TblColumnID);
-                if (!((bool)trusted) && value != null)
-                    theValue = theValue + "*";
             }
             else
                 theValue = theValuePreformatted;
@@ -498,7 +496,7 @@ namespace ClassLibrary1.Model
                 theStringBuilder.Append(item.RatingName);
                 theStringBuilder.Append("</a>");
 
-                theStringBuilder.Append(GetStringForRatingInput(item.Value, item.DecimalPlaces, TblRowID, TblColumnID, (int)item.RatingID, trusted, "", "rtgFixed"));
+                theStringBuilder.Append(GetStringForRatingInput(item.Value, item.DecimalPlaces, TblRowID, TblColumnID, (int)item.RatingID, "", "rtgFixed"));
                 if (theData.RatingHierarchyEntries.Any(x => x.Superior == item.EntryNum))
                     GetListForHierarchyLevel(theStringBuilder, TblRowID, TblColumnID, theData, hierarchyLevel + 1, item.EntryNum, trusted);
                 theStringBuilder.Append("</li>");
