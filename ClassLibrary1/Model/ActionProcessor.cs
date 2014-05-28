@@ -1913,20 +1913,20 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void UserRatingAdd(int aRatingID, decimal aUserRating, int userID, ref UserRatingResponse theResponse)
+        public void UserRatingAdd(int aRatingID, decimal aUserRating, int userID, ref UserEditResponse theResponse)
         {
             User theUser = DataContext.GetTable<User>().Single(u => u.UserID == userID);
             UserRatingAdd(aRatingID, aUserRating, theUser, ref theResponse);
         }
 
-        public void UserRatingAdd(int aRatingID, decimal aUserRating, User theUser, ref UserRatingResponse theResponse)
+        public void UserRatingAdd(int aRatingID, decimal aUserRating, User theUser, ref UserEditResponse theResponse)
         {
             List<RatingIdAndUserRatingValue> theList = new List<RatingIdAndUserRatingValue>();
             theList.Add(new RatingIdAndUserRatingValue { RatingID = aRatingID, UserRatingValue = aUserRating });
             UserRatingsAdd(theList, theUser, ref theResponse);
         }
 
-        public void UserRatingsAdd(List<RatingIdAndUserRatingValue> theUserRatings, User theUser, ref UserRatingResponse theResponse)
+        public void UserRatingsAdd(List<RatingIdAndUserRatingValue> theUserRatings, User theUser, ref UserEditResponse theResponse)
         {
             List<int> theRatingIDs = theUserRatings.Select(p => p.RatingID).ToList();
             int firstRatingID = theRatingIDs.First();
@@ -1938,9 +1938,9 @@ namespace ClassLibrary1.Model
             UserRatingsAdd(theUserRatings, theRatings, theRatingGroups, theUser, ref theResponse);
         }
 
-        public void UserRatingsAdd(List<RatingIdAndUserRatingValue> theUserRatings, List<Rating> theRatings, List<RatingGroup> theRatingGroups, User theUser, ref UserRatingResponse theResponse)
+        public void UserRatingsAdd(List<RatingIdAndUserRatingValue> theUserRatings, List<Rating> theRatings, List<RatingGroup> theRatingGroups, User theUser, ref UserEditResponse theResponse)
         {
-            theResponse = new UserRatingResponse();
+            theResponse = new UserEditResponse();
             if (!theUserRatings.Any())
             {
                 theResponse.result = new UserRatingResult("You have not entered any ratings.");
@@ -1986,9 +1986,9 @@ namespace ClassLibrary1.Model
                 DataManipulation.AddUserRatingsBasedOnOneOrMore(theUserRatings, theRatings, theRatingGroups, theUser, ref theResponse);
         }
 
-        public void UserRatingsAddFromService(List<Rating> allRatingsIfOneRatingPerCell, List<RatingAndUserRatingString> theUserRatingsString, User theUser, ref UserRatingResponse theResponse)
+        public void UserRatingsAddFromService(List<Rating> allRatingsIfOneRatingPerCell, List<RatingAndUserRatingString> theUserRatingsString, User theUser, ref UserEditResponse theResponse)
         {
-            theResponse = new UserRatingResponse();
+            theResponse = new UserEditResponse();
             int? topRatingGroupID = -1;
             int firstRaterooID = 0;
 
@@ -2130,9 +2130,9 @@ namespace ClassLibrary1.Model
 
         
 
-        public UserRatingResponse GetUpdatedRatings(string ratingGroupIDString)
+        public UserEditResponse GetUpdatedRatings(string ratingGroupIDString)
         {
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             TblColumnFormatting theFormatting = null;
             try
             {
@@ -2160,9 +2160,9 @@ namespace ClassLibrary1.Model
             return theResponse;
         }
 
-        public UserRatingResponse GetUpdatedRatingsMultiple(List<string> ratingIDStrings)
+        public UserEditResponse GetUpdatedRatingsMultiple(List<string> ratingIDStrings)
         {
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             TblColumnFormatting theFormatting = null;
             try
             {
@@ -2170,6 +2170,8 @@ namespace ClassLibrary1.Model
                 theResponse.result = new UserRatingResult();
                 foreach (string ratingIDString in ratingIDStrings)
                 {
+                    if (ratingIDString.Contains("/"))
+                        continue;
                     int ratingID = Convert.ToInt32(ratingIDString);
                     Rating theRating = DataManipulation.DataContext.GetTable<Rating>()
                         .Single(m => m.RatingID == ratingID);

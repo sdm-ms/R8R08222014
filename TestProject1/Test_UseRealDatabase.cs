@@ -109,7 +109,7 @@ namespace TestProject1
 
         private static long TestMemoryLeaks_Helper(TestHelper _testHelper, RaterooDataManipulation _dataManipulation, bool waitIdleTasks = false)
         {
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             _testHelper.ActionProcessor.UserRatingAdd(1, 5.0M, 5, ref theResponse);
             CacheManagement.ClearCache();
             _testHelper.FinishUserRatingAdd(_dataManipulation);

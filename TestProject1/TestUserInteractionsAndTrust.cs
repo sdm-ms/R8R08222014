@@ -84,7 +84,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(2); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             decimal userRatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, userRatingValue, TestHelper.UserIds[1], ref theResponse);
             TestHelper.WaitIdleTasks();
@@ -99,7 +99,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(3); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
             TestHelper.WaitIdleTasks();
@@ -118,7 +118,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(4);
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
             TestHelper.WaitIdleTasks();
@@ -144,7 +144,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(4); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
 
             decimal user0Rating1UserRatingValue = 5M;
             // Must ensure that this rating is trusted
@@ -227,7 +227,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1Rating1UserRatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
@@ -253,7 +253,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5);
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1UserRatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
@@ -345,7 +345,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5);
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1Rating1UserRatingValue = 1M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
@@ -504,7 +504,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5);
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1Rating1UserRatingValue = 1M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
@@ -611,7 +611,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(10);
             // we don't care about user 1 but will add a user rating just to get things started at a particular rating value
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
             FinishUserRatingAdd();
@@ -709,7 +709,7 @@ namespace TestProject1
             ratings[1].CurrentValue = ratings[1].LastTrustedValue = 5M;
             TestHelper.WaitIdleTasks();
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             Func<decimal> ran = () => (decimal) (RandomGenerator.GetRandom() * 10.0);
 
             // users 1 and 2 are rerated by user 3 (with adjustment percentage > 1), and user 1 is separately rerated by user 9 (adj perc = 0.5)
@@ -842,7 +842,7 @@ namespace TestProject1
             ratings[1].CurrentValue = ratings[1].LastTrustedValue = 5M;
             TestHelper.WaitIdleTasks();
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             Func<decimal> ran = () => (decimal) (RandomGenerator.GetRandom() * 10.0);
             TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, firstSequence[0], TestHelper.UserIds[1], ref theResponse);
             FinishUserRatingAdd();
@@ -925,7 +925,7 @@ namespace TestProject1
                 ratings[s].CurrentValue = ratings[s].LastTrustedValue = 5M;
             TestHelper.WaitIdleTasks();
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             Func<decimal> ran = () => (decimal)((new Random((int)DateTime.Now.Ticks)).NextDouble() * 10.0);
 
             // later rating users are 2 through 2 + numSequences - 1
@@ -1082,7 +1082,7 @@ namespace TestProject1
                 valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, minRatingValue,
                     maxRatingValue);
 
-                UserRatingResponse theResponse = new UserRatingResponse();
+                UserEditResponse theResponse = new UserEditResponse();
                 bool isLastEntry = rowNum == numTblRows - 1; // useful for setting conditional breakpoint
                 TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, TestHelper.UserIds[1], ref theResponse);
                 FinishUserRatingAdd();
@@ -1190,7 +1190,7 @@ x.UserID == TestHelper.UserIds[1]);
                 ratings[rowNum].LastTrustedValue = 5M;
             }
 
-            UserRatingResponse aResponse = new UserRatingResponse();
+            UserEditResponse aResponse = new UserEditResponse();
             TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 4.5M, TestHelper.UserIds[0], ref aResponse);
             FinishUserRatingAdd();
             decimal[] randomUserRatings = new decimal[20];
@@ -1267,7 +1267,7 @@ x.UserID == TestHelper.UserIds[1]);
             else
                 initialValue = 5M;
 
-            UserRatingResponse aResponse = new UserRatingResponse();
+            UserEditResponse aResponse = new UserEditResponse();
             foreach (Rating r in ratings)
             {
                 for (int i = 0; i < numBadUsers; i++)
@@ -1382,7 +1382,7 @@ x.UserID == TestHelper.UserIds[1]);
                 initialValue = 5M;
 
             // Rate the first rating
-            UserRatingResponse aResponse = new UserRatingResponse();
+            UserEditResponse aResponse = new UserEditResponse();
             TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, valueToWhichFirstUserSetsFirstRating, TestHelper.UserIds[0], ref aResponse);
             FinishUserRatingAdd();
 
@@ -1403,7 +1403,7 @@ x.UserID == TestHelper.UserIds[1]);
             {
                 decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // AdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
                 valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10);
-                UserRatingResponse theResponse = new UserRatingResponse();
+                UserEditResponse theResponse = new UserEditResponse();
                 Debug.WriteLine("Added rating to " + ratings[rowNum].RatingID);
                 TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, TestHelper.UserIds[0], ref theResponse);
                 FinishUserRatingAdd();
@@ -1497,7 +1497,7 @@ x.UserID == TestHelper.UserIds[1]);
             decimal targetRating = (decimal)((decimal)random.NextDouble() * (maxRatingValue - minRatingValue));
             Debug.WriteLine(String.Format("Target Rating: {0}", targetRating));
 
-            UserRatingResponse response = new UserRatingResponse();
+            UserEditResponse response = new UserEditResponse();
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, targetRating, user.UserID, ref response);
             TestHelper.WaitIdleTasks();
 
@@ -1512,7 +1512,7 @@ x.UserID == TestHelper.UserIds[1]);
             {
                 foreach (User otherUser in otherUsers)
                 {
-                    UserRatingResponse otherResponse = new UserRatingResponse();
+                    UserEditResponse otherResponse = new UserEditResponse();
                     TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, targetRating, otherUser.UserID, ref otherResponse);
                     FinishUserRatingAdd();
                     Debug.WriteLine(String.Format("Other User UserRating: {0}", targetRating));
@@ -1557,7 +1557,7 @@ x.UserID == TestHelper.UserIds[1]);
             decimal targetRating = (decimal)((decimal)random.NextDouble() * (maxRatingValue - minRatingValue));
             Debug.WriteLine(String.Format("Target Rating: {0}", targetRating));
 
-            UserRatingResponse response = new UserRatingResponse();
+            UserEditResponse response = new UserEditResponse();
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, targetRating, user.UserID, ref response);
             TestHelper.WaitIdleTasks();
 
@@ -1575,7 +1575,7 @@ x.UserID == TestHelper.UserIds[1]);
                     decimal error = -1 * otherUsersMaxError + (decimal)random.NextDouble() * (2 * otherUsersMaxError);
                     decimal erroredRating = targetRating + error;
 
-                    UserRatingResponse otherResponse = new UserRatingResponse();
+                    UserEditResponse otherResponse = new UserEditResponse();
                     TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, erroredRating, otherUser.UserID, ref otherResponse);
                     FinishUserRatingAdd();
                     Debug.WriteLine(String.Format("Other User UserRating: {0}", erroredRating));
@@ -1759,7 +1759,7 @@ x.UserID == TestHelper.UserIds[1]);
                     // I think the following is trying to fix the ratingValue so that the adjustment factor comes out correctly
                     decimal ratingValue = currentValue + (valueForUserToTarget - currentValue) * (decimal)(1 / desiredAdjustmentFactor);
                     ratingValue = TrustCalculations.Constrain(ratingValue, 0M, 10m);
-                    UserRatingResponse theResponse = new UserRatingResponse();
+                    UserEditResponse theResponse = new UserEditResponse();
                     TestHelper.ActionProcessor.UserRatingAdd(theRating.RatingID, ratingValue, TestHelper.UserIds[randomUserNum], ref theResponse);
                     FinishUserRatingAdd();
                 }
@@ -1923,7 +1923,7 @@ x.UserID == TestHelper.UserIds[1]);
                     // The following should achieve the desired AdjustmentFactor, I think.
                     decimal ratingValue = currentValue + (valueForUserToTarget - currentValue) * (decimal)(1 / desiredAdjustmentFactor);
                     ratingValue = Math.Min(Math.Max(ratingValue, 0M), 10m);
-                    UserRatingResponse theResponse = new UserRatingResponse();
+                    UserEditResponse theResponse = new UserEditResponse();
                     TestHelper.ActionProcessor.UserRatingAdd(theRating.RatingID, ratingValue, TestHelper.UserIds[randomUserNum], ref theResponse);
                     FinishUserRatingAdd();
                 }
@@ -1953,7 +1953,7 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(4);
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
             TestHelper.WaitIdleTasks();

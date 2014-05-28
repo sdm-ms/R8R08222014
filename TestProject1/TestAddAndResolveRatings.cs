@@ -64,7 +64,7 @@ namespace TestProject1
             else
                 TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(7);
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, isEvent ? 70M : 7M, TestHelper.UserIds[0], ref theResponse);
             TestHelper.WaitIdleTasks();
             Rating theRating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingID == TestHelper.Rating.RatingID);
@@ -76,7 +76,7 @@ namespace TestProject1
         {
             TestHelper.CreateSimpleEventTestTable();
             TestHelper.CreateUsers(7);
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             int numToAdd = 1100;
             decimal random = 0;
             for (int i = 1; i <= numToAdd; i++)
@@ -96,7 +96,7 @@ namespace TestProject1
             decimal random = (decimal)Math.Round(RandomGenerator.GetRandom(),3); 
             if (random == 0.7M)
                 random = 0.701M; // so it's not exactly same as first rating -- needed for our assertions to be correct
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             int userNumber = RandomGenerator.GetRandom(1, 6); // exclude first user who we are testing things about
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, isEvent ? random * 100 : random * 10, TestHelper.UserIds[userNumber], ref theResponse);
             Trace.TraceInformation("Trying to add another HERE after UserRatingAdd " + random + " response of " + theResponse.result.success + " " + theResponse.currentValues.First().theUserRating);
@@ -435,7 +435,7 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(10);
             // we don't care about user 1 but will add a user rating just to get things started at a particular rating value
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             decimal basis = 5M; // midpoint, in absence of ratings
             decimal user1RatingValue = 7M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);

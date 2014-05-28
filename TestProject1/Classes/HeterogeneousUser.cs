@@ -111,7 +111,7 @@ namespace TestProject1
                     (UserRatingEstimateWeight + previousUserRatingCount);
             }
             
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             TestHelper.ActionProcessor.UserRatingAdd(rating.RatingID, userRatingValue, UserId, ref theResponse);
             TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation);
             TestHelper.ActionProcessor.ResetDataContexts();

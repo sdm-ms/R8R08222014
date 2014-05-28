@@ -818,7 +818,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void AddUserRatingsBasedOnOneOrMore(List<RatingIdAndUserRatingValue> ratingIdAndUserRatingValues, List<Rating> theRatings, List<RatingGroup> theRatingGroups, User theUser, ref UserRatingResponse theResponse)
+        public void AddUserRatingsBasedOnOneOrMore(List<RatingIdAndUserRatingValue> ratingIdAndUserRatingValues, List<Rating> theRatings, List<RatingGroup> theRatingGroups, User theUser, ref UserEditResponse theResponse)
         {
             int numTries = 0;
         TryLabel:

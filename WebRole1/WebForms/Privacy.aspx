@@ -13,7 +13,7 @@ Privacy Policy
 Privacy Policy Statement
     <br>
     <br>
-    This is the web site of Rateroo LLC.
+    This is the web site of Collective Judgment LLC.
     <br>
     <br>
     <br>

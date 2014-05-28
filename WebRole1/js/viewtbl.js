@@ -67,7 +67,8 @@ function viewtbl() {
         tableInfo = $("#tableInfo");
 
         $("#btnsAboveMainTable").removeClass("btnsAboveMainTable");
-        $('[id*=RefreshPageStill]').show().bind('click', loadUpdatedValuesForPage).autoHilite();
+        $('[id*=RefreshPageStill]').hide(); /* for now, we are disabling the feature, but keeping the code in the comments should we wish to revise it */
+        /* $('[id*=RefreshPageStill]').show().bind('click', loadUpdatedValuesForPage).autoHilite(); */
         $('[id*=submitBulk]').bind('click', submitBulk).autoHilite();
         $('[id*=cancelBulk]').bind('click', cancelBulk).autoHilite();
         setupLiveEvents();
@@ -1109,7 +1110,7 @@ function viewtbl() {
         var theCellInfosArray = new Array();
         var activeCells = $('[id^=btnenternum]');
         for (var i = 0; i < activeCells.length; i++) {
-            var theCellInfo = getCellInfo($('input.mgID', activeCells.eq(i).parent().parent()).val());
+            var theCellInfo = getCellInfo(activeCells.eq(i).parent().parent().attr("data-rg"));
             Array.add(theCellInfosArray, theCellInfo);
         }
         submitBulkHelper(theCellInfosArray);
@@ -1464,34 +1465,36 @@ function viewtbl() {
     function enableEnterCancelLoad(theCellInfo) {
         $('img[id^=btnenternum]', theCellInfo.TheCell).show().css('opacity', 1.0).bind('click', theCellInfo, submitEntriesBasedOnEvent).autoHilite();
         $('img[id^=btncancelnum]', theCellInfo.TheCell).show().css('opacity', 1.0).bind('click', theCellInfo, cancelChangesToCellBasedOnEvent).autoHilite();
-        $('img[id^=btnloadnum]', theCellInfo.TheCell).show().css('opacity', 1.0).bind('click', theCellInfo, loadUpdatedValuesBasedOnEvent).autoHilite();
+        /* Feature disabled for now $('img[id^=btnloadnum]', theCellInfo.TheCell).show().css('opacity', 1.0).bind('click', theCellInfo, loadUpdatedValuesBasedOnEvent).autoHilite(); */
     }
 
     function disableEnterCancelLoad(theCellInfo) {
         $('img[id^=btnenternum]', theCellInfo.TheCell).show().css('opacity', 0.20).unbind();
         $('img[id^=btncancelnum]', theCellInfo.TheCell).show().css('opacity', 0.20).unbind();
-        $('img[id^=btnloadnum]', theCellInfo.TheCell).css('opacity', 0.20).unbind();
+        /* Feature disabled for now $('img[id^=btnloadnum]', theCellInfo.TheCell).css('opacity', 0.20).unbind(); */
         $('input.rtg', theCellInfo.TheCell).blur();
     }
 
     function refreshCellAnimate(theCell) {
-        $('img[id*=btnloadnum]', theCell).hide();
+        /* Feature disabled for now $('img[id*=btnloadnum]', theCell).hide(); */
         $('img[id*=ajaxprogress]', theCell).show();
     }
 
     function refreshCellStopAnimating(theCell) {
-        $('img[id*=btnloadnum]', theCell).show();
+        /* Feature disabled for now $('img[id*=btnloadnum]', theCell).show(); */
         $('img[id*=ajaxprogress]', theCell).hide();
     }
 
     function refreshPageAnimate() {
+        /* Disabled for now 
         $('img[id*=RefreshPageStill]').hide();
-        $('img[id*=RefreshPageMoving]').show();
+        $('img[id*=RefreshPageMoving]').show(); */
     }
 
     function refreshPageStopAnimating() {
+        /* Disabled for now 
         $('img[id*=RefreshPageMoving]').hide();
-        $('img[id*=RefreshPageStill]').show();
+        $('img[id*=RefreshPageStill]').show(); */
     }
 
     function removeButtonsFromCell(theCell) {

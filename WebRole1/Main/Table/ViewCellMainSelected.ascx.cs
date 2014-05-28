@@ -51,7 +51,7 @@ public partial class Main_Table_ViewCellMainSelected : System.Web.UI.UserControl
     {
         List<RatingIdAndUserRatingValue> theList = CellData.GetRatingsAndUserRatings();
         ActionProcessor theActionProcessor = new ActionProcessor();
-        UserRatingResponse theResponse = new UserRatingResponse();
+        UserEditResponse theResponse = new UserEditResponse();
         User theUser = theActionProcessor.DataContext.GetTable<User>().Single(u => u.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
         theActionProcessor.UserRatingsAdd(theList, theUser, ref theResponse);
         DeselectFn();

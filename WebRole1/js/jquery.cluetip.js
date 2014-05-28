@@ -124,8 +124,8 @@
       linkLeft = $this.offset().left;
       mouseX = event.pageX;
       mouseY = event.pageY;
-      if (!mouseX) mouseX = linkLeft; /* added by MBA */
-      if (!mouseY) mouseY = linkTop; /* added by MBA */
+      if (!mouseX) mouseX = linkLeft; /* added by MODIFIED */
+      if (!mouseY) mouseY = linkTop; /* added by MODIFIED */
       if (link.tagName.toLowerCase() != 'area') {
         sTop = $(document).scrollTop();
         winWidth = $(window).width();
@@ -261,7 +261,7 @@
 
 // get dimensions and options for cluetip and prepare it to be shown
     var cluetipShow = function(bpY) {
-        if (!bpY) bpY = $this.offset().top; /* added by MBA */
+        if (!bpY) bpY = $this.offset().top; /* added by MODIFIED */
       $cluetip.addClass('cluetip-' + ctClass);
       if (opts.truncate) { 
         var $truncloaded = $cluetipInner.text().slice(0,opts.truncate) + '...';
@@ -322,7 +322,7 @@
       $dropShadow.hide();
       $cluetip.hide()[opts.fx.open](opts.fx.openSpeed || 0);
       if (opts.dropShadow) { $dropShadow.css({height: tipHeight, width: tipInnerWidth, zIndex: $this.data('thisInfo').zIndex-1}).show(); }
-      if ($.fn.bgiframe) { try { $cluetip.bgiframe(); } catch(err) { } } // MBA: edited to add try-catch loop
+      if ($.fn.bgiframe) { try { $cluetip.bgiframe(); } catch(err) { } } // MODIFIED: edited to add try-catch loop
       // delayed close (not fully tested)
       if (opts.delayedClose > 0) {
         closeOnDelay = setTimeout(cluetipClose, opts.delayedClose);
@@ -371,7 +371,7 @@
           activate(event);
           return false;
         });
-  // activate manually when user is already hovering over it
+  // MODIFIED: activate manually when user is already hovering over it
         $this.bind('liveCluetip', function(event) {
             activate(event);
             $this.bind('mouseleave', function(event) {

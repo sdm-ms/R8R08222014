@@ -1246,6 +1246,7 @@ a.text1:hover {
 
 .pageRefreshBtn
 {
+    display: none;
 	float: right;
 	position: relative;
 	right : 0px;
@@ -2668,4 +2669,17 @@ html > body .picInSlideshow /* understood only by later browsers */
 {
 	position: relative;
 	left: 220px;
+}
+
+/*** Pseudoclasses -- do not delete ***/
+/* don't show the x for text inputs */
+input::-ms-clear {
+    width : 0;
+    height: 0;
+}
+
+/* don't show the eye for password inputs */
+input::-ms-reveal {
+    width : 0;
+    height: 0;
 }

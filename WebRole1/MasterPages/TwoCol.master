@@ -58,7 +58,7 @@
     </div>
     <%--end mainPartOfPage--%>
     <div id="belowMainPartOfPage" class="corporateInfo" style="position: relative;">
-        Rateroo™ is a product of Rateroo LLC, a Virginia company. All ratings are opinions, not facts. Please see our <a id="terms" runat="server" href="~/TermsOfService">Terms of Service</a> and <a id="A1" runat="server" href="~/Privacy">Privacy Policy</a>.
+        Rateroo™ is a product of Collective Judgment LLC, a Virginia company. All ratings are opinions, not facts. Please see our <a id="terms" runat="server" href="~/TermsOfService">Terms of Service</a> and <a id="A1" runat="server" href="~/Privacy">Privacy Policy</a>.
         <uc:insertablecontent runat="server" id="CorporateInfo" />
     </div>
     <%--end belowMainPartOfPage--%>

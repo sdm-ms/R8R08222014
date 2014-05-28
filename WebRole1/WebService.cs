@@ -41,18 +41,18 @@ namespace WebServices
             return TableLoading.PopulateTableSpecificRows(theTableInfoString, firstRow, numRows, visibleRowsEstimate, firstRowIfResetting);
         }
 
-        public UserRatingResponse ConfirmUserAccessInfo(UserAccessInfo theUserAccessInfo)
+        public UserEditResponse ConfirmUserAccessInfo(UserAccessInfo theUserAccessInfo)
         {
             IUserProfileInfo theUser = UserProfileCollection.LoadByUsername(theUserAccessInfo.userName);
             if (theUser == null)
             {
-                UserRatingResponse theResponse = new UserRatingResponse();
+                UserEditResponse theResponse = new UserEditResponse();
                 theResponse.result = new UserRatingResult("You must login before you can enter ratings.");
                 return theResponse;
             }
             if ((string)theUser.GetProperty("PasswordForWebService") != theUserAccessInfo.passwordForWebService)
             {
-                UserRatingResponse theResponse = new UserRatingResponse();
+                UserEditResponse theResponse = new UserEditResponse();
                 theResponse.result = new UserRatingResult("For security purposes, please reload the web page. If you continue to receive this error, please log out and log in again.");
                 return theResponse;
             }
@@ -60,10 +60,10 @@ namespace WebServices
         }
         
         [WebMethod]
-        public List<UserRatingResponse> ProcessRatingsBulk(UserAccessInfo theUserAccessInfo, List<List<RatingAndUserRatingString>> theUserRatings)
+        public List<UserEditResponse> ProcessRatingsBulk(UserAccessInfo theUserAccessInfo, List<List<RatingAndUserRatingString>> theUserRatings)
         {
-            List<UserRatingResponse> theResponses = new List<UserRatingResponse>();
-            UserRatingResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo); // null if no problem
+            List<UserEditResponse> theResponses = new List<UserEditResponse>();
+            UserEditResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo); // null if no problem
             ActionProcessor actionProcessor = new ActionProcessor();
             RaterooDataManipulation dataManipulation = new RaterooDataManipulation();
             actionProcessor.ResetDataContexts();
@@ -99,31 +99,31 @@ namespace WebServices
         }
 
         [WebMethod]
-        public UserRatingResponse ProcessRatings(UserAccessInfo theUserAccessInfo, List<RatingAndUserRatingString> theUserRatings)
+        public UserEditResponse ProcessRatings(UserAccessInfo theUserAccessInfo, List<RatingAndUserRatingString> theUserRatings)
         {
             return ProcessRatingsBulk(theUserAccessInfo, new List<List<RatingAndUserRatingString>>() { theUserRatings }).First();
         }
 
-        private UserRatingResponse AddRelatedUserRatings(ActionProcessor actionProcessor, User theUser, List<RatingAndUserRatingString> theUserRatings, List<Rating> allRatingsInAffectedCells = null)
+        private UserEditResponse AddRelatedUserRatings(ActionProcessor actionProcessor, User theUser, List<RatingAndUserRatingString> theUserRatings, List<Rating> allRatingsInAffectedCells = null)
         {
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             actionProcessor.UserRatingsAddFromService(allRatingsInAffectedCells, theUserRatings, theUser, ref theResponse);
             return theResponse;
         }
 
         [WebMethod]
-        public UserRatingResponse GetUpdatedRatings(string ratingGroupIDString)
+        public UserEditResponse GetUpdatedRatings(string ratingGroupIDString)
         {
             ActionProcessor myAction = new ActionProcessor();
-            UserRatingResponse theResponse = myAction.GetUpdatedRatings(ratingGroupIDString);
+            UserEditResponse theResponse = myAction.GetUpdatedRatings(ratingGroupIDString);
             return theResponse;
         }
 
         [WebMethod]
-        public UserRatingResponse GetUpdatedRatingsMultiple(List<string> ratingIDStrings)
+        public UserEditResponse GetUpdatedRatingsMultiple(List<string> ratingIDStrings)
         {
             ActionProcessor myAction = new ActionProcessor();
-            UserRatingResponse theResponse = myAction.GetUpdatedRatingsMultiple(ratingIDStrings);
+            UserEditResponse theResponse = myAction.GetUpdatedRatingsMultiple(ratingIDStrings);
             return theResponse;
         }
 
@@ -131,7 +131,7 @@ namespace WebServices
         public MyPointsSidebarInfo GetSidebarInfo(string pointsManagerIDString, UserAccessInfo theUserAccessInfo)
         {
             int pointsManagerID = Convert.ToInt32(pointsManagerIDString);
-            UserRatingResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo);
+            UserEditResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo);
             if (theResponse != null)
                 return null;
             ActionProcessor myAction = new ActionProcessor();

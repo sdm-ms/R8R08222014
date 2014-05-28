@@ -232,7 +232,7 @@ namespace ClassLibrary1.Model
             try
             {
                 numTries++;
-                UserRatingResponse theResponse = new UserRatingResponse();
+                UserEditResponse theResponse = new UserEditResponse();
                 ActionProcessor.UserRatingAdd(ratingID, theUserRating, useSuperUser ? SuperUserId : UserIds[theUserNumber], ref theResponse);
                 if (!theResponse.result.success)
                     throw new Exception("User rating add failed.");
@@ -398,7 +398,7 @@ namespace ClassLibrary1.Model
                     for (int i = 1; i <= numUserRatings; i++)
                     {
                         decimal randomUserRating = RandomGenerator.GetRandom(theRating.RatingCharacteristic.MinimumUserRating, theRating.RatingCharacteristic.MaximumUserRating);
-                        UserRatingResponse theResponse = new UserRatingResponse();
+                        UserEditResponse theResponse = new UserEditResponse();
                         ActionProcessor.UserRatingAdd(theRating.RatingID, randomUserRating, theAdmin.UserID, ref theResponse);
                         countSoFar++;
                         if (countSoFar % 1000 == 0)

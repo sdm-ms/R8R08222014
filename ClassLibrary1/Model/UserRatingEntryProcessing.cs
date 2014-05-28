@@ -116,7 +116,7 @@ namespace ClassLibrary1.Model
         }
     }
 
-    public class UserRatingResponse
+    public class UserEditResponse
     {
         public UserRatingResult result;
         public List<RatingAndUserRatingString> currentValues;

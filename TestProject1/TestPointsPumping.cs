@@ -53,7 +53,7 @@ namespace TestProject1
             TestHelper.CreateUsers(100 + 1);
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             int fakeUserNumber = 1;
             for (int i = 1; i <= numFakeUsers * 2; i++)
             {

@@ -276,7 +276,7 @@ public partial class ViewTbl : System.Web.UI.Page
     /// </summary>
     /// <returns></returns>
     [GenerateScriptType(typeof(RatingAndUserRatingString))]
-    [GenerateScriptType(typeof(UserRatingResponse))]
+    [GenerateScriptType(typeof(UserEditResponse))]
     [GenerateScriptType(typeof(UserAccessInfo))]
     [GenerateScriptType(typeof(TablePopulateResponse))]
     [System.Web.Services.WebMethod(EnableSession=true)]

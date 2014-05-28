@@ -151,7 +151,7 @@ namespace TestProject1
             _testHelper.CreateSimpleTestTable(true);
             _testHelper.CreateUsers(3); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
 
-            UserRatingResponse theResponse = new UserRatingResponse();
+            UserEditResponse theResponse = new UserEditResponse();
             decimal user1UserRatingValue = nextRandomRating();
             // Must ensure that this rating is trusted
             _testHelper.ActionProcessor.UserRatingAdd(_testHelper.Rating.RatingID, user1UserRatingValue, _testHelper.UserIds[1], ref theResponse);
