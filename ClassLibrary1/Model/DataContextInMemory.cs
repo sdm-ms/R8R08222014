@@ -9,7 +9,7 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 namespace ClassLibrary1.Model
 {
 
-    public class RaterooInMemoryDataContext : InMemoryContext, IRaterooDataContext
+    public class R8RInMemoryDataContext : InMemoryContext, IR8RDataContext
     {
         public System.IO.TextWriter Log
         {
@@ -33,7 +33,7 @@ namespace ClassLibrary1.Model
             return false;
         }
 
-        public RaterooDataContext GetRealDatabaseIfExists()
+        public R8RDataContext GetRealDatabaseIfExists()
         {
             return null;
         }
@@ -80,12 +80,12 @@ namespace ClassLibrary1.Model
             base.BeforeSubmitChanges();
         }
 
-        RaterooDataContext underlyingRaterooDataContext;
+        R8RDataContext underlyingR8RDataContext;
 
-        public RaterooInMemoryDataContext()
-            : base(new RaterooDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("RaterooConnectionString") */))
+        public R8RInMemoryDataContext()
+            : base(new R8RDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
         {
-            underlyingRaterooDataContext = (RaterooDataContext)UnderlyingDataContext;
+            underlyingR8RDataContext = (R8RDataContext)UnderlyingDataContext;
         }
 
 

@@ -29,7 +29,7 @@ namespace ClassLibrary1.Model
 
     public static class RatingsAndRelatedInfoLoader
     {
-        public static List<Rating> Load(IRaterooDataContext theDataContext, List<int> ratingIDs, User theUser)
+        public static List<Rating> Load(IR8RDataContext theDataContext, List<int> ratingIDs, User theUser)
         {
             
             var results = (from x in theDataContext.GetTable<Rating>()

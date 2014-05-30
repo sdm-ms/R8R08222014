@@ -30,7 +30,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
 
     internal bool SuppressDrilledInSeriesName = false;
 
-    internal RaterooDataAccess DataAccess = new RaterooDataAccess();
+    internal R8RDataAccess DataAccess = new R8RDataAccess();
     public int? RatingGroupID { get; set; }
     public int? SpecificRatingID { get; set; }
     public bool AxesBasedOnData;
@@ -42,7 +42,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         SpecificRatingID = specificRatingID;
         if (SpecificRatingID != null)
         {
-            Rating specificRatingRequested = DataAccess.RaterooDB.GetTable<Rating>().SingleOrDefault(m => m.RatingID == SpecificRatingID);
+            Rating specificRatingRequested = DataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.RatingID == SpecificRatingID);
             RatingGroupID = specificRatingRequested.RatingGroupID;
         }
         ViewState["RatingGroupID"] = RatingGroupID;
@@ -67,7 +67,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         if (ViewState["SpecificRatingID"] != null)
         {
             SpecificRatingID = Convert.ToInt32(ViewState["SpecificRatingID"]);
-            Rating specificRatingRequested = DataAccess.RaterooDB.GetTable<Rating>().SingleOrDefault(m => m.RatingID == SpecificRatingID);
+            Rating specificRatingRequested = DataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.RatingID == SpecificRatingID);
             RatingGroupID = specificRatingRequested.RatingGroupID;
             Further_Setup();
         }
@@ -102,7 +102,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         if (RatingGroupID == null)
             return;
 
-        RatingGroup theRatingGroup = DataAccess.RaterooDB.GetTable<RatingGroup>().SingleOrDefault(mg => mg.RatingGroupID == RatingGroupID);
+        RatingGroup theRatingGroup = DataAccess.R8RDB.GetTable<RatingGroup>().SingleOrDefault(mg => mg.RatingGroupID == RatingGroupID);
         if (theRatingGroup == null)
             return;
         
@@ -116,13 +116,13 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
     {
         if (SpecificRatingID != null)
         {
-            Rating theRating = DataAccess.RaterooDB.GetTable<Rating>().Single(m => m.RatingID == SpecificRatingID);
+            Rating theRating = DataAccess.R8RDB.GetTable<Rating>().Single(m => m.RatingID == SpecificRatingID);
             RatingGroupID = theRating.RatingGroupID;
             SpecificRatingID = null;
         }
         else
         {
-            Rating theRating = DataAccess.RaterooDB.GetTable<Rating>().SingleOrDefault(m => m.OwnedRatingGroupID == RatingGroupID);
+            Rating theRating = DataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.OwnedRatingGroupID == RatingGroupID);
             if (theRating != null)
             {
                 RatingGroupID = theRating.RatingGroupID;
@@ -169,7 +169,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         }
         else
         {
-            Rating theOwningRating = DataAccess.RaterooDB.GetTable<Rating>().SingleOrDefault(m => m.OwnedRatingGroupID == RatingGroupID);
+            Rating theOwningRating = DataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.OwnedRatingGroupID == RatingGroupID);
             if (theOwningRating == null)
                 BackButton.Visible = false;
             else
@@ -201,8 +201,8 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         DateTime lastDateTime = TestableDateTime.Now;
         if (numberSeconds == 5000 * 24 * 60 * 60)
         {
-            int topmostRatingGroupID = DataAccess.RaterooDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
-            RatingGroupResolution theResolution = DataAccess.RaterooDB.GetTable<RatingGroupResolution>()
+            int topmostRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
+            RatingGroupResolution theResolution = DataAccess.R8RDB.GetTable<RatingGroupResolution>()
                 .Where(mg => mg.RatingGroupID == topmostRatingGroupID)
                 .OrderByDescending(mg => mg.ExecutionTime)
                 .ThenByDescending(mg => mg.RatingGroupResolutionID)
@@ -211,7 +211,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
                 lastDateTime = theResolution.EffectiveTime;
         }
 
-        var theUserRatingData = DataAccess.RaterooDB.GetTable<UserRating>()
+        var theUserRatingData = DataAccess.R8RDB.GetTable<UserRating>()
             .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenMade >= firstDateTime)
             .Where(p => SpecificRatingID == null || p.RatingID == SpecificRatingID)
             .Where(p => lastDateTime == null || p.UserRatingGroup.WhenMade <= lastDateTime)
@@ -222,7 +222,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
 
         if (!theUserRatingData.Any())
         { // No predictions in this time -- add most recent one.
-            theUserRatingData = DataAccess.RaterooDB.GetTable<Rating>()
+            theUserRatingData = DataAccess.R8RDB.GetTable<Rating>()
                .Where(p => p.RatingGroupID == RatingGroupID)
                .Where(p => SpecificRatingID == null || p.RatingID == SpecificRatingID)
                .Select(p => new { RatingID = p.RatingID, NumInGroup = p.NumInGroup, SeriesName = p.Name, OwnedRatingGroupID = p.OwnedRatingGroupID, Date = firstDateTime, Value = p.CurrentValue ?? 0 })
@@ -237,7 +237,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
 
         if (!AxesBasedOnData)
         {
-            var theRatings = DataAccess.RaterooDB.GetTable<Rating>().Where(m => m.RatingGroupID == RatingGroupID);
+            var theRatings = DataAccess.R8RDB.GetTable<Rating>().Where(m => m.RatingGroupID == RatingGroupID);
             decimal minPermissibleValue = theRatings.Select(m => m.RatingCharacteristic.MinimumUserRating).Min();
             decimal maxPermissibleValue = theRatings.Select(m => m.RatingCharacteristic.MaximumUserRating).Max();
             Chart1.ChartAreas["ChartArea1"].AxisY.Minimum = (double)minPermissibleValue;
@@ -264,7 +264,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         {
             int theRatingID = aSeries.SeriesInfo.RatingID;
             decimal? theEarlierValue = null;
-            var theEarlierUserRatings = DataAccess.RaterooDB.GetTable<UserRating>()
+            var theEarlierUserRatings = DataAccess.R8RDB.GetTable<UserRating>()
                 .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenMade < firstDateTime)
                 .Where(p => p.RatingID == theRatingID)
                 .OrderByDescending(p => p.UserRatingGroup.WhenMade);

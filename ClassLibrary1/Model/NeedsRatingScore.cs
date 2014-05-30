@@ -9,7 +9,7 @@ namespace ClassLibrary1.Model
 {
     public static class NeedsRatingScore
     {
-        public static void SetNeedsRatingScoreFields(IRaterooDataContext dataContext, IQueryable<TblRow> rows)
+        public static void SetNeedsRatingScoreFields(IR8RDataContext dataContext, IQueryable<TblRow> rows)
         {
             int[] excludedRatingGroupTypes = { (int) RatingGroupTypes.hierarchyNumbersBelow, (int) RatingGroupTypes.probabilityHierarchyBelow, (int) RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy };
             DateTime now = TestableDateTime.Now;
@@ -47,7 +47,7 @@ namespace ClassLibrary1.Model
             dataContext.SubmitChanges();
         }
 
-        public static void SetCountUserPoints(IRaterooDataContext dataContext, TblRow row, User formerUser, User currentUser, bool multipleRatingsInRatingGroup)
+        public static void SetCountUserPoints(IR8RDataContext dataContext, TblRow row, User formerUser, User currentUser, bool multipleRatingsInRatingGroup)
         {
             decimal formerPointsPerRating = 0;
             decimal currentPointsPerRating;

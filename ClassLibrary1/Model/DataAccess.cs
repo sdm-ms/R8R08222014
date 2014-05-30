@@ -27,16 +27,16 @@ using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model
 {
 
-    public class RaterooDataAccess
+    public class R8RDataAccess
     {
         static DataContextManagement myDataContextManagement = null;
 
-        public RaterooDataAccess()
+        public R8RDataAccess()
         {
             myDataContextManagement = new DataContextManagement();
         }
 
-        public IRaterooDataContext RaterooDB
+        public IR8RDataContext R8RDB
         {
             get
             {
@@ -60,12 +60,12 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public AddressField GetAddressField(int theID)
         {
-            return RaterooDB.GetTable<AddressField>().Single(x => x.AddressFieldID == theID);
+            return R8RDB.GetTable<AddressField>().Single(x => x.AddressFieldID == theID);
         }
 
         public TblColumnFormatting GetTblColumnFormatting(int theID)
         {
-            return RaterooDB.GetTable<TblColumnFormatting>().Single(x => x.TblColumnFormattingID == theID);
+            return R8RDB.GetTable<TblColumnFormatting>().Single(x => x.TblColumnFormattingID == theID);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace ClassLibrary1.Model
         /// <returns>The specified TblColumn</returns>
         public TblColumn GetTblColumn(int theID)
         {
-            return RaterooDB.GetTable<TblColumn>().Single(x => x.TblColumnID == theID);
+            return R8RDB.GetTable<TblColumn>().Single(x => x.TblColumnID == theID);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public TblTab GetTblTab(int theID)
         {
-            return RaterooDB.GetTable<TblTab>().Single(x => x.TblTabID == theID);
+            return R8RDB.GetTable<TblTab>().Single(x => x.TblTabID == theID);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace ClassLibrary1.Model
         /// <returns>A changes group object (grouping together potential changes to the database)</returns>
         public ChangesGroup GetChangesGroup(int theID)
         {
-            return RaterooDB.GetTable<ChangesGroup>().Single(x => x.ChangesGroupID == theID);
+            return R8RDB.GetTable<ChangesGroup>().Single(x => x.ChangesGroupID == theID);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace ClassLibrary1.Model
         /// <returns>The changes resolve rating or group object</returns>
         //public ChangesResolveRatingOrGroup GetChangesResolveRatingOrGroup(int theID)
         //{
-        //    return RaterooDB.GetTable<ChangesResolveRatingOrGroup>().Single(x => x.ChangesResolveRatingOrGroupID == theID);
+        //    return R8RDB.GetTable<ChangesResolveRatingOrGroup>().Single(x => x.ChangesResolveRatingOrGroupID == theID);
         //}
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public ChangesStatusOfObject GetChangesStatusOfObject(int theID)
         {
-            return RaterooDB.GetTable<ChangesStatusOfObject>().Single(x => x.ChangesStatusOfObjectID == theID);
+            return R8RDB.GetTable<ChangesStatusOfObject>().Single(x => x.ChangesStatusOfObjectID == theID);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public ChoiceField GetChoiceField(int theID)
         {
-            return RaterooDB.GetTable<ChoiceField>().Single(x => x.ChoiceFieldID == theID);
+            return R8RDB.GetTable<ChoiceField>().Single(x => x.ChoiceFieldID == theID);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public ChoiceGroup GetChoiceGroup(int theID)
         {
-            return RaterooDB.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID == theID);
+            return R8RDB.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID == theID);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public ChoiceGroupFieldDefinition GetChoiceGroupFieldDefinition(int theID)
         {
-            return RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.ChoiceGroupFieldDefinitionID == theID);
+            return R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.ChoiceGroupFieldDefinitionID == theID);
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public ChoiceInField GetChoiceInField(int theID)
         {
-            return RaterooDB.GetTable<ChoiceInField>().Single(x => x.ChoiceInFieldID == theID);
+            return R8RDB.GetTable<ChoiceInField>().Single(x => x.ChoiceInFieldID == theID);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public ChoiceInGroup GetChoiceInGroup(int theID)
         {
-            return RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == theID);
+            return R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == theID);
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public Tbl GetTbl(int theID)
         {
-            return RaterooDB.GetTable<Tbl>().Single(x => x.TblID == theID);
+            return R8RDB.GetTable<Tbl>().Single(x => x.TblID == theID);
         }
     /// <summary>
     /// Returns a comment object
@@ -287,7 +287,7 @@ namespace ClassLibrary1.Model
     /// <returns></returns>
         public Comment GetComment(int theID)
         {
-            return RaterooDB.GetTable<Comment>().Single(x => x.CommentsID == theID);
+            return R8RDB.GetTable<Comment>().Single(x => x.CommentsID == theID);
 
         }
 
@@ -302,7 +302,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public DateTimeField GetDateTimeField(int theID)
         {
-            return RaterooDB.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID == theID);
+            return R8RDB.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID == theID);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public DateTimeFieldDefinition GetDateTimeFieldDefinition(int theID)
         {
-            return RaterooDB.GetTable<DateTimeFieldDefinition>().Single(x => x.DateTimeFieldDefinitionID == theID);
+            return R8RDB.GetTable<DateTimeFieldDefinition>().Single(x => x.DateTimeFieldDefinitionID == theID);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public Domain GetDomain(int theID)
         {
-            return RaterooDB.GetTable<Domain>().Single(x => x.DomainID == theID);
+            return R8RDB.GetTable<Domain>().Single(x => x.DomainID == theID);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public TblRow GetTblRow(int theID)
         {
-            return RaterooDB.GetTable<TblRow>().Single(x => x.TblRowID == theID);
+            return R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == theID);
         }
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public Field GetField(int theID)
         {
-            return RaterooDB.GetTable<Field>().Single(x => x.FieldID == theID);
+            return R8RDB.GetTable<Field>().Single(x => x.FieldID == theID);
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public FieldDefinition GetFieldDefinition(int theID)
         {
-            return RaterooDB.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == theID);
+            return R8RDB.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == theID);
         }
     /// <summary>
     /// 
@@ -393,7 +393,7 @@ namespace ClassLibrary1.Model
     /// <returns></returns>
         public InsertableContent GetInsertableContents(int theID)
         {
-            return RaterooDB.GetTable<InsertableContent>().Single(x => x.InsertableContentID == theID);
+            return R8RDB.GetTable<InsertableContent>().Single(x => x.InsertableContentID == theID);
         }
         /// <summary>
         /// return an InvitedUser object representing a Invited User detail
@@ -418,7 +418,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public InvitedUser GetInvitedUser(int activationNumber)
         {
-            return RaterooDB.GetTable<InvitedUser>().Single(x => x.ActivationNumber == activationNumber);
+            return R8RDB.GetTable<InvitedUser>().Single(x => x.ActivationNumber == activationNumber);
         }
         /// <summary>
         /// Returns an object representing a particular rating. A rating is always a member of a rating
@@ -446,7 +446,7 @@ namespace ClassLibrary1.Model
         
         public Rating GetRating(int theID)
         {
-            return RaterooDB.GetTable<Rating>().Single(x => x.RatingID == theID);
+            return R8RDB.GetTable<Rating>().Single(x => x.RatingID == theID);
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingCharacteristic GetRatingCharacteristic(int theID)
         {
-            return RaterooDB.GetTable<RatingCharacteristic>().Single(x => x.RatingCharacteristicsID == theID);
+            return R8RDB.GetTable<RatingCharacteristic>().Single(x => x.RatingCharacteristicsID == theID);
         }
 
         /// <summary>
@@ -489,7 +489,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingCondition GetRatingCondition(int theID)
         {
-            return RaterooDB.GetTable<RatingCondition>().Single(x => x.RatingConditionID == theID);
+            return R8RDB.GetTable<RatingCondition>().Single(x => x.RatingConditionID == theID);
         }
 
         /// <summary>
@@ -506,7 +506,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingGroup GetRatingGroup(int theID)
         {
-            return RaterooDB.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theID);
+            return R8RDB.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theID);
         }
 
         /// <summary>
@@ -525,7 +525,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingGroupAttribute GetRatingGroupAttributes(int theID)
         {
-            return RaterooDB.GetTable<RatingGroupAttribute>().Single(x => x.RatingGroupAttributesID == theID);
+            return R8RDB.GetTable<RatingGroupAttribute>().Single(x => x.RatingGroupAttributesID == theID);
         }
 
         /// <summary>
@@ -550,7 +550,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingPhase GetRatingPhase(int theID)
         {
-            return RaterooDB.GetTable<RatingPhase>().Single(x => x.RatingPhaseID == theID);
+            return R8RDB.GetTable<RatingPhase>().Single(x => x.RatingPhaseID == theID);
         }
 
         /// <summary>
@@ -564,7 +564,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingPhaseGroup GetRatingPhaseGroup(int theID)
         {
-            return RaterooDB.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == theID);
+            return R8RDB.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == theID);
         }
 
        
@@ -584,7 +584,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingPlan GetRatingPlan(int theID)
         {
-            return RaterooDB.GetTable<RatingPlan>().Single(x => x.RatingPlansID == theID);
+            return R8RDB.GetTable<RatingPlan>().Single(x => x.RatingPlansID == theID);
         }
 
 
@@ -601,7 +601,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public NumberField GetNumberField(int theID)
         {
-            return RaterooDB.GetTable<NumberField>().Single(x => x.NumberFieldID == theID);
+            return R8RDB.GetTable<NumberField>().Single(x => x.NumberFieldID == theID);
         }
         
         /// <summary>
@@ -616,7 +616,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public NumberFieldDefinition GetNumberFieldDefinition(int theID)
         {
-            return RaterooDB.GetTable<NumberFieldDefinition>().Single(x => x.NumberFieldDefinitionID == theID);
+            return R8RDB.GetTable<NumberFieldDefinition>().Single(x => x.NumberFieldDefinitionID == theID);
         }
 
         /// <summary>
@@ -632,7 +632,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public OverrideCharacteristic GetOverrideCharacteristics(int theID)
         {
-            return RaterooDB.GetTable<OverrideCharacteristic>().Single(x => x.OverrideCharacteristicsID == theID);
+            return R8RDB.GetTable<OverrideCharacteristic>().Single(x => x.OverrideCharacteristicsID == theID);
         }
 
         /// <summary>
@@ -652,7 +652,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public PointsAdjustment GetPointsAdjustment(int theID)
         {
-            return RaterooDB.GetTable<PointsAdjustment>().Single(x => x.PointsAdjustmentID == theID);
+            return R8RDB.GetTable<PointsAdjustment>().Single(x => x.PointsAdjustmentID == theID);
         }
 
         /// <summary>
@@ -673,7 +673,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public PointsTotal GetPointsTotal(int theID)
         {
-            return RaterooDB.GetTable<PointsTotal>().Single(x => x.PointsTotalID == theID);
+            return R8RDB.GetTable<PointsTotal>().Single(x => x.PointsTotalID == theID);
         }
 
         /// <summary>
@@ -706,7 +706,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public UserRating GetUserRating(int theID)
         {
-            return RaterooDB.GetTable<UserRating>().Single(x => x.UserRatingID == theID);
+            return R8RDB.GetTable<UserRating>().Single(x => x.UserRatingID == theID);
         }
 
         /// <summary>
@@ -726,7 +726,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public UserRatingGroup GetUserRatingGroup(int theID)
         {
-            return RaterooDB.GetTable<UserRatingGroup>().Single(x => x.UserRatingGroupID == theID);
+            return R8RDB.GetTable<UserRatingGroup>().Single(x => x.UserRatingGroupID == theID);
         }
 
         /// <summary>
@@ -772,7 +772,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public ProposalSetting GetProposalSettings(int theID)
         {
-            return RaterooDB.GetTable<ProposalSetting>().Single(x => x.ProposalSettingsID == theID);
+            return R8RDB.GetTable<ProposalSetting>().Single(x => x.ProposalSettingsID == theID);
         }
 
         /// <summary>
@@ -792,7 +792,7 @@ namespace ClassLibrary1.Model
         /// <returns>A subsidy adjustment objrct</returns>
         public SubsidyAdjustment GetSubsidyAdjustment(int theID)
         {
-            return RaterooDB.GetTable<SubsidyAdjustment>().Single(x => x.SubsidyAdjustmentID == theID);
+            return R8RDB.GetTable<SubsidyAdjustment>().Single(x => x.SubsidyAdjustmentID == theID);
         }
 
         /// <summary>
@@ -816,7 +816,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public SubsidyDensityRange GetSubsidyDensityRange(int theID)
         {
-            return RaterooDB.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID == theID);
+            return R8RDB.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID == theID);
         }
 
         /// <summary>
@@ -833,7 +833,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public SubsidyDensityRangeGroup GetSubsidyDensityRangeGroup(int theID)
         {
-            return RaterooDB.GetTable<SubsidyDensityRangeGroup>().Single(x => x.SubsidyDensityRangeGroupID == theID);
+            return R8RDB.GetTable<SubsidyDensityRangeGroup>().Single(x => x.SubsidyDensityRangeGroupID == theID);
         }
 
         /// <summary>
@@ -848,12 +848,12 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public TextField GetTextField(int theID)
         {
-            return RaterooDB.GetTable<TextField>().Single(x => x.TextFieldID == theID);
+            return R8RDB.GetTable<TextField>().Single(x => x.TextFieldID == theID);
         }
 
         public TextFieldDefinition GetTextFieldDefinition(int theID)
         {
-            return RaterooDB.GetTable<TextFieldDefinition>().Single(x => x.TextFieldDefinitionID == theID);
+            return R8RDB.GetTable<TextFieldDefinition>().Single(x => x.TextFieldDefinitionID == theID);
         }
 
         /// <summary>
@@ -887,7 +887,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public PointsManager GetPointsManager(int theID)
         {
-            return RaterooDB.GetTable<PointsManager>().Single(x => x.PointsManagerID == theID);
+            return R8RDB.GetTable<PointsManager>().Single(x => x.PointsManagerID == theID);
         }
 
         /// <summary>
@@ -902,7 +902,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public User GetUser(int theID)
         {
-            User theUser = RaterooDB.GetTable<User>().SingleOrDefault(x => x.UserID == theID);
+            User theUser = R8RDB.GetTable<User>().SingleOrDefault(x => x.UserID == theID);
             if (theUser == null)
                 throw new Exception("Your user account could not be found in the database. Please try logging in again.");
             return theUser;
@@ -933,7 +933,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public UsersRight GetUsersRights(int theID)
         {
-            return RaterooDB.GetTable<UsersRight>().Single(x => x.UsersRightsID == theID);
+            return R8RDB.GetTable<UsersRight>().Single(x => x.UsersRightsID == theID);
         }
 
 
@@ -965,7 +965,7 @@ namespace ClassLibrary1.Model
         public UserInfo GetUserInfo(int theID)
         {
 
-            return RaterooDB.GetTable<UserInfo>().Single(x => x.UserID == theID);
+            return R8RDB.GetTable<UserInfo>().Single(x => x.UserID == theID);
 
             
         }
@@ -974,18 +974,18 @@ namespace ClassLibrary1.Model
 
         public ProposalEvaluationRatingSetting GetProposalEvaluationRatingSetting(int theID)
         {
-            return RaterooDB.GetTable<ProposalEvaluationRatingSetting>().Single(x => x.ProposalEvaluationRatingSettingsID == theID);
+            return R8RDB.GetTable<ProposalEvaluationRatingSetting>().Single(x => x.ProposalEvaluationRatingSettingsID == theID);
         }
 
 
         public RewardRatingSetting GetRewardRatingSetting(int theID)
         {
-            return RaterooDB.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == theID);
+            return R8RDB.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == theID);
         }
 
         public UserAction GetUserAction(int theID)
         {
-            return RaterooDB.GetTable<UserAction>().Single(x => x.UserActionID == theID);
+            return R8RDB.GetTable<UserAction>().Single(x => x.UserActionID == theID);
         }
 
 
@@ -1002,7 +1002,7 @@ namespace ClassLibrary1.Model
         public ChoiceGroupData GetChoiceGroupData(int choiceGroupID, bool availableChoicesOnly, int? determiningGroupValue)
         {
             ChoiceGroupData theData = new ChoiceGroupData();
-            var theChoicesInGroup = RaterooDB.GetTable<ChoiceInGroup>()
+            var theChoicesInGroup = R8RDB.GetTable<ChoiceInGroup>()
                 .Where(cig => cig.ChoiceGroupID == choiceGroupID
                     && ((availableChoicesOnly && (StatusOfObject)cig.Status == StatusOfObject.Active)
                         || (!availableChoicesOnly && (StatusOfObject)cig.Status != StatusOfObject.Proposed))
@@ -1021,7 +1021,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public UserLoginResult CheckValidUser(string username, string password)
         {
-            UserInfo theUserInfo = RaterooDB.GetTable<UserInfo>().SingleOrDefault(user => user.User.Username == username);
+            UserInfo theUserInfo = R8RDB.GetTable<UserInfo>().SingleOrDefault(user => user.User.Username == username);
 
             if (theUserInfo == null)
                 return UserLoginResult.UsernameUnknown;
@@ -1038,9 +1038,9 @@ namespace ClassLibrary1.Model
             UsersRight theUserRight = CacheManagement.GetItemFromCache(cacheKey) as UsersRight;
             if (theUserRight == null)
             {
-                theUserRight = RaterooDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.UserID == userID && ur.PointsManagerID == pointsManagerID && ur.Status == (Byte)StatusOfObject.Active);
+                theUserRight = R8RDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.UserID == userID && ur.PointsManagerID == pointsManagerID && ur.Status == (Byte)StatusOfObject.Active);
                 if (theUserRight == null)
-                    theUserRight = RaterooDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.User == null && ur.PointsManagerID == pointsManagerID && ur.Status == (Byte)StatusOfObject.Active);
+                    theUserRight = R8RDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.User == null && ur.PointsManagerID == pointsManagerID && ur.Status == (Byte)StatusOfObject.Active);
                 CacheManagement.AddItemToCache(cacheKey, new string[] { }, theUserRight, new TimeSpan(0, 10, 0));
             }
             return theUserRight;
@@ -1061,9 +1061,9 @@ namespace ClassLibrary1.Model
                 return new UserRatingResult("You do not have privileges to enter this rating.");
             //if (!UserCounts(pointsManagerID, (int) userID))
             //{ // See if user has already made predictions here.
-            //    bool priorUserRatingExists = RaterooDB.GetTable<UserRating>().Any(p => p.UserID == userID && p.Rating.TopmostRatingGroupID == topRatingGroup.RatingGroupID && p.NewUserRating != p.EnteredUserRating);
+            //    bool priorUserRatingExists = R8RDB.GetTable<UserRating>().Any(p => p.UserID == userID && p.Rating.TopmostRatingGroupID == topRatingGroup.RatingGroupID && p.NewUserRating != p.EnteredUserRating);
             //    if (priorUserRatingExists)
-            //        return new UserRatingResult("You cannot make another rating on this table cell until Rateroo trusts your changes on this table or until the points for that rating have been resolved.");
+            //        return new UserRatingResult("You cannot make another rating on this table cell until R8R trusts your changes on this table or until the points for that rating have been resolved.");
             //}
             return new UserRatingResult();
         }
@@ -1136,11 +1136,11 @@ namespace ClassLibrary1.Model
             if (pointsManagerID == null && TblID != null)
             {
                 string key = "Tbl" + TblID;
-                Tbl theTbl = RaterooDB.TempCacheGet(key) as Tbl;
+                Tbl theTbl = R8RDB.TempCacheGet(key) as Tbl;
                 if (theTbl == null)
                 {
-                    theTbl = RaterooDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
-                    RaterooDB.TempCacheAdd(key, theTbl);
+                    theTbl = R8RDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
+                    R8RDB.TempCacheAdd(key, theTbl);
                 }
                 pointsManagerID = theTbl.PointsManagerID;
             }
@@ -1148,7 +1148,7 @@ namespace ClassLibrary1.Model
             { // Anonymous user
                 if (theAction == UserActionType.View)
                 {
-                    UsersRight theRights = RaterooDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.PointsManagerID == pointsManagerID && ur.Status == (Byte) StatusOfObject.Active && ur.User == null);
+                    UsersRight theRights = R8RDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.PointsManagerID == pointsManagerID && ur.Status == (Byte) StatusOfObject.Active && ur.User == null);
                     if (theRights != null)
                         returnVal = theRights.MayView;
                 }
@@ -1158,9 +1158,9 @@ namespace ClassLibrary1.Model
             else
             {
                 // See if there are user rights for this particular user; otherwise, get generic user rights for universe.
-                UsersRight theRights = RaterooDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.UserID == userID && ur.PointsManagerID == pointsManagerID && ur.Status == (Byte)StatusOfObject.Active);
+                UsersRight theRights = R8RDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.UserID == userID && ur.PointsManagerID == pointsManagerID && ur.Status == (Byte)StatusOfObject.Active);
                 if (theRights == null)
-                    theRights = RaterooDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.UserID == null && ur.PointsManagerID == pointsManagerID && ur.Status == (byte)StatusOfObject.Active);
+                    theRights = R8RDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.UserID == null && ur.PointsManagerID == pointsManagerID && ur.Status == (byte)StatusOfObject.Active);
 
                 if (theRights == null)
                     throw new Exception("Internal error -- user rights are not specified for universe " + pointsManagerID);
@@ -1210,9 +1210,9 @@ namespace ClassLibrary1.Model
                         return false;
                     ProposalSetting theProposalSettings = null;
                     if (TblID != null)
-                        theProposalSettings = RaterooDB.GetTable<ProposalSetting>().SingleOrDefault(ps => ps.TblID == TblID);
+                        theProposalSettings = R8RDB.GetTable<ProposalSetting>().SingleOrDefault(ps => ps.TblID == TblID);
                     if (theProposalSettings == null)
-                        theProposalSettings = RaterooDB.GetTable<ProposalSetting>().SingleOrDefault(ps => ps.PointsManagerID == pointsManagerID);
+                        theProposalSettings = R8RDB.GetTable<ProposalSetting>().SingleOrDefault(ps => ps.PointsManagerID == pointsManagerID);
                     if (theProposalSettings == null)
                         throw new Exception("Internal error -- rights to create proposals not specified in database.");
                     switch (theAction)
@@ -1303,7 +1303,7 @@ namespace ClassLibrary1.Model
         public bool TblAdministrationLinkVisible(int userID, int TblID)
         {
             bool retval = false;
-            Tbl theTbl = RaterooDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
+            Tbl theTbl = R8RDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
             if (theTbl.Name == "Changes")
                 return false;
             int pointsManagerID = theTbl.PointsManagerID;
@@ -1357,8 +1357,8 @@ namespace ClassLibrary1.Model
         public int GetRatingGroupAttributesForTblRowAndColumn(int theTblRowID, int theTblColumnID)
         {
             throw new NotImplementedException(); // we have disabled this functionality for now.
-            //TblColumn tblColumn = RaterooDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == theTblColumnID); // TODO: Check Cache
-            //var overrideCharacteristics = RaterooDB.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRowID == theTblRowID && oc.TblColumnID == theTblColumnID && oc.Status == (Byte)StatusOfObject.Active);
+            //TblColumn tblColumn = R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == theTblColumnID); // TODO: Check Cache
+            //var overrideCharacteristics = R8RDB.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRowID == theTblRowID && oc.TblColumnID == theTblColumnID && oc.Status == (Byte)StatusOfObject.Active);
             //if (overrideCharacteristics == null)
             //    return tblColumn.DefaultRatingGroupAttributesID;
             //else
@@ -1372,7 +1372,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public int? GetRatingGroupForTblRowCategory(int theTblRowID, int theTblColumnID)
         {
-            var theRatingGroups = RaterooDB.GetTable<RatingGroup>().Where(mg => (mg.Status == (Byte)StatusOfObject.Active || mg.Status == (Byte)StatusOfObject.DerivativelyUnavailable) &&
+            var theRatingGroups = R8RDB.GetTable<RatingGroup>().Where(mg => (mg.Status == (Byte)StatusOfObject.Active || mg.Status == (Byte)StatusOfObject.DerivativelyUnavailable) &&
                                             mg.TblRowID == theTblRowID && mg.TblColumnID == theTblColumnID
                                             && (mg.TypeOfRatingGroup == (Byte)RatingGroupTypes.probabilitySingleOutcome || mg.TypeOfRatingGroup == (Byte)RatingGroupTypes.singleDate || mg.TypeOfRatingGroup == (Byte)RatingGroupTypes.singleNumber
                                                 || mg.TypeOfRatingGroup == (Byte)RatingGroupTypes.probabilityHierarchyTop || mg.TypeOfRatingGroup == (Byte)RatingGroupTypes.hierarchyNumbersTop || mg.TypeOfRatingGroup == (Byte)RatingGroupTypes.probabilityMultipleOutcomes));
@@ -1391,7 +1391,7 @@ namespace ClassLibrary1.Model
         /// <param name="hierarchyLevel">The level at which this rating group should be added.</param>
         public void AddRatingGroupToRatingHierarchyData(int ratingGroupID, ref RatingHierarchyData theData, int hierarchyLevel)
         {
-            var theRatings = RaterooDB.GetTable<Rating>().Where(m => m.RatingGroupID == ratingGroupID).Select(m => new
+            var theRatings = R8RDB.GetTable<Rating>().Where(m => m.RatingGroupID == ratingGroupID).Select(m => new
             {
                 Name = m.Name,
                 RatingID = m.RatingID,
@@ -1413,12 +1413,12 @@ namespace ClassLibrary1.Model
 
         public void GetDefaultSortForTblTab(int TblTabID, ref int? TblColumnToSort, ref bool sortOrderAscending)
         {
-            TblTab theTblTab = RaterooDB.GetTable<TblTab>().Single(cg => cg.TblTabID == TblTabID);
+            TblTab theTblTab = R8RDB.GetTable<TblTab>().Single(cg => cg.TblTabID == TblTabID);
             TblColumnToSort = theTblTab.DefaultSortTblColumnID;
             if (TblColumnToSort != null)
             {
                 int? theTblColumnToSort = TblColumnToSort;
-                TblColumn theSortCD = RaterooDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == theTblColumnToSort && cd.TblTabID == TblTabID && cd.Status == (Byte)StatusOfObject.Active);
+                TblColumn theSortCD = R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == theTblColumnToSort && cd.TblTabID == TblTabID && cd.Status == (Byte)StatusOfObject.Active);
                 if (theSortCD == null)
                     TblColumnToSort = null;
                 else

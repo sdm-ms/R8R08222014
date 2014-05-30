@@ -19,12 +19,12 @@ using ClassLibrary1.Model;
 
 
         public RoutingInfoMainContent theLocation;
-        public IRaterooDataContext RaterooDB;
+        public IR8RDataContext R8RDB;
 
         public class SubtablesDataNeeded
         {
             public RoutingInfoMainContent location { get; set; }
-            public IRaterooDataContext theDataContext { get; set; }
+            public IR8RDataContext theDataContext { get; set; }
         }
         public SubtablesDataNeeded subtablesDataNeeded { get; set; }
 
@@ -33,10 +33,10 @@ using ClassLibrary1.Model;
             Setup(subtablesDataNeeded.location, subtablesDataNeeded.theDataContext);
         }
 
-        public void Setup(RoutingInfoMainContent location, IRaterooDataContext theDataContext)
+        public void Setup(RoutingInfoMainContent location, IR8RDataContext theDataContext)
         {
             theLocation = location;
-            RaterooDB = theDataContext;
+            R8RDB = theDataContext;
 
             int? UserID = null;
             if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
@@ -44,13 +44,13 @@ using ClassLibrary1.Model;
             PointsManager firstPointsManager = null;
             if (location != null)
             {
-                Tbl aTable = RaterooDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && location.theMenuHierarchy.Contains(x.HierarchyItems.First()));
+                Tbl aTable = R8RDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && location.theMenuHierarchy.Contains(x.HierarchyItems.First()));
                 if (aTable != null)
                     firstPointsManager = aTable.PointsManager;
             }
             if (firstPointsManager != null)
             {
-                bool canViewPage = new RaterooDataAccess().CheckUserRights(UserID, UserActionType.View, false, firstPointsManager.PointsManagerID, null);
+                bool canViewPage = new R8RDataAccess().CheckUserRights(UserID, UserActionType.View, false, firstPointsManager.PointsManagerID, null);
                 if (!canViewPage)
                 {
                     Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(theLocation)));
@@ -62,7 +62,7 @@ using ClassLibrary1.Model;
 
         public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
-            var theQuery = RaterooDB.GetTable<HierarchyItem>()
+            var theQuery = R8RDB.GetTable<HierarchyItem>()
                 .Where(x => x.HigherHierarchyItemID == theLocation.lastItemInHierarchy.HierarchyItemID);
 
             e.Result = theQuery;

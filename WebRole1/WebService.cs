@@ -65,7 +65,7 @@ namespace WebServices
             List<UserEditResponse> theResponses = new List<UserEditResponse>();
             UserEditResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo); // null if no problem
             ActionProcessor actionProcessor = new ActionProcessor();
-            RaterooDataManipulation dataManipulation = new RaterooDataManipulation();
+            R8RDataManipulation dataManipulation = new R8RDataManipulation();
             actionProcessor.ResetDataContexts();
             List<int> specifiedRatingIDs = new List<int>();
 
@@ -84,7 +84,7 @@ namespace WebServices
             User theUser = actionProcessor.DataContext.GetTable<User>().Single(u => u.Username == theUserAccessInfo.userName);
             List<Rating> ratingsEntered = RatingsAndRelatedInfoLoader.Load(actionProcessor.DataContext, specifiedRatingIDs, theUser);
             bool oneRatingPerRatingGroup = ratingsEntered.First().RatingGroup.TblRow.Tbl.OneRatingPerRatingGroup;
-            //actionProcessor.RaterooDB.GetTable<SetUserRatingAddingLoadOption>();
+            //actionProcessor.R8RDB.GetTable<SetUserRatingAddingLoadOption>();
             if (theResponse != null)
             {
                 foreach (var ur in theUserRatings)

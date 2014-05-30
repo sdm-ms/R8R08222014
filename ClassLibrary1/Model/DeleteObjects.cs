@@ -26,9 +26,9 @@ using MoreStrings;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         // Methods for deletion of objects.
 
@@ -53,30 +53,30 @@ namespace ClassLibrary1.Model
         //    switch (objectType)
         //    {
         //        case TypeOfObject.AddressField:
-        //            var theField = RaterooDB.GetTable<AddressField>().Single(x => x.AddressFieldID == objectID);
-        //            RaterooDB.GetTable<AddressField>().DeleteOnSubmit(theField);
+        //            var theField = R8RDB.GetTable<AddressField>().Single(x => x.AddressFieldID == objectID);
+        //            R8RDB.GetTable<AddressField>().DeleteOnSubmit(theField);
         //            break;
         //        case TypeOfObject.ChoiceField:
-        //            var theChoiceInFields = RaterooDB.GetTable<ChoiceInField>().Where(cif => cif.Status == (byte)StatusOfObject.Active && cif.ChoiceFieldID == objectID);
+        //            var theChoiceInFields = R8RDB.GetTable<ChoiceInField>().Where(cif => cif.Status == (byte)StatusOfObject.Active && cif.ChoiceFieldID == objectID);
         //            foreach (var theChoiceInField in theChoiceInFields)
-        //                RaterooDB.GetTable<ChoiceInField>().DeleteOnSubmit(theChoiceInField);
-        //            var theField2 = RaterooDB.GetTable<ChoiceField>().Single(x => x.ChoiceFieldID == objectID);
-        //            RaterooDB.GetTable<ChoiceField>().DeleteOnSubmit(theField2);
+        //                R8RDB.GetTable<ChoiceInField>().DeleteOnSubmit(theChoiceInField);
+        //            var theField2 = R8RDB.GetTable<ChoiceField>().Single(x => x.ChoiceFieldID == objectID);
+        //            R8RDB.GetTable<ChoiceField>().DeleteOnSubmit(theField2);
         //            break;
         //        case TypeOfObject.DateTimeField:
-        //            var theField3 = RaterooDB.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID == objectID);
-        //            RaterooDB.GetTable<DateTimeField>().DeleteOnSubmit(theField3);
+        //            var theField3 = R8RDB.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID == objectID);
+        //            R8RDB.GetTable<DateTimeField>().DeleteOnSubmit(theField3);
         //            break;
         //        case TypeOfObject.NumberField:
-        //            var theField4 = RaterooDB.GetTable<NumberField>().Single(x => x.NumberFieldID == objectID);
-        //            RaterooDB.GetTable<NumberField>().DeleteOnSubmit(theField4);
+        //            var theField4 = R8RDB.GetTable<NumberField>().Single(x => x.NumberFieldID == objectID);
+        //            R8RDB.GetTable<NumberField>().DeleteOnSubmit(theField4);
         //            break;
         //        case TypeOfObject.TextField:
-        //            var theField5 = RaterooDB.GetTable<TextField>().Single(x => x.TextFieldID == objectID);
-        //            RaterooDB.GetTable<TextField>().DeleteOnSubmit(theField5);
+        //            var theField5 = R8RDB.GetTable<TextField>().Single(x => x.TextFieldID == objectID);
+        //            R8RDB.GetTable<TextField>().DeleteOnSubmit(theField5);
         //            break;
         //    }
-        //    RaterooDB.SubmitChanges();
+        //    R8RDB.SubmitChanges();
         //}
 
         /// <summary>
@@ -89,38 +89,38 @@ namespace ClassLibrary1.Model
     //        switch ((FieldTypes)theField.FieldDefinition.FieldType)
     //        {
     //            case FieldTypes.AddressField:
-    //                var referringAddressFields = RaterooDB.GetTable<AddressField>().Where(nf => nf.FieldID == fieldID);
+    //                var referringAddressFields = R8RDB.GetTable<AddressField>().Where(nf => nf.FieldID == fieldID);
     //                foreach (var theReferringField in referringAddressFields)
-    //                    RaterooDB.GetTable<AddressField>().DeleteOnSubmit(theReferringField);
+    //                    R8RDB.GetTable<AddressField>().DeleteOnSubmit(theReferringField);
     //                break;
     //            case FieldTypes.ChoiceField:
-    //                var referringChoiceFields = RaterooDB.GetTable<ChoiceField>().Where(cf => cf.FieldID == fieldID);
+    //                var referringChoiceFields = R8RDB.GetTable<ChoiceField>().Where(cf => cf.FieldID == fieldID);
     //                foreach (var theReferringField in referringChoiceFields)
     //                {
-    //                    var choicesInField = RaterooDB.GetTable<ChoiceInField>().Where(cf => cf.ChoiceFieldID == theReferringField.ChoiceFieldID);
+    //                    var choicesInField = R8RDB.GetTable<ChoiceInField>().Where(cf => cf.ChoiceFieldID == theReferringField.ChoiceFieldID);
     //                    foreach (var theChoiceInField in choicesInField)
-    //                        RaterooDB.GetTable<ChoiceInField>().DeleteOnSubmit(theChoiceInField);
-    //                    RaterooDB.GetTable<ChoiceField>().DeleteOnSubmit(theReferringField);
+    //                        R8RDB.GetTable<ChoiceInField>().DeleteOnSubmit(theChoiceInField);
+    //                    R8RDB.GetTable<ChoiceField>().DeleteOnSubmit(theReferringField);
     //                }
     //                break;
     //            case FieldTypes.DateTimeField:
-    //                var referringDateTimeFields = RaterooDB.GetTable<DateTimeField>().Where(dtf => dtf.FieldID == fieldID);
+    //                var referringDateTimeFields = R8RDB.GetTable<DateTimeField>().Where(dtf => dtf.FieldID == fieldID);
     //                foreach (var theReferringField in referringDateTimeFields)
-    //                    RaterooDB.GetTable<DateTimeField>().DeleteOnSubmit(theReferringField);
+    //                    R8RDB.GetTable<DateTimeField>().DeleteOnSubmit(theReferringField);
     //                break;
     //            case FieldTypes.NumberField:
-    //                var referringNumberFields = RaterooDB.GetTable<NumberField>().Where(nf => nf.FieldID == fieldID);
+    //                var referringNumberFields = R8RDB.GetTable<NumberField>().Where(nf => nf.FieldID == fieldID);
     //                foreach (var theReferringField in referringNumberFields)
-    //                    RaterooDB.GetTable<NumberField>().DeleteOnSubmit(theReferringField);
+    //                    R8RDB.GetTable<NumberField>().DeleteOnSubmit(theReferringField);
     //                break;
     //            case FieldTypes.TextField:
-    //                var referringTextFields = RaterooDB.GetTable<TextField>().Where(tf => tf.FieldID == fieldID);
+    //                var referringTextFields = R8RDB.GetTable<TextField>().Where(tf => tf.FieldID == fieldID);
     //                foreach (var theReferringField in referringTextFields)
-    //                    RaterooDB.GetTable<TextField>().DeleteOnSubmit(theReferringField);
+    //                    R8RDB.GetTable<TextField>().DeleteOnSubmit(theReferringField);
     //                break;
     //        }
-    //        RaterooDB.GetTable<Field>().DeleteOnSubmit(theField);
-    //        RaterooDB.SubmitChanges();
+    //        R8RDB.GetTable<Field>().DeleteOnSubmit(theField);
+    //        R8RDB.SubmitChanges();
     //    }
 
     }

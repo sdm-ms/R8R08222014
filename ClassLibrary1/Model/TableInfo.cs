@@ -24,7 +24,7 @@ namespace ClassLibrary1.Model
 
     public class LoadRowHeadingInfo
     {
-        public RaterooDataAccess dataAccess;
+        public R8RDataAccess dataAccess;
         public int theTblID;
         public int thePointsManagerID;
         public int theTblRowID;
@@ -33,7 +33,7 @@ namespace ClassLibrary1.Model
 
     public class LoadBodyRowInfo
     {
-        public RaterooDataAccess dataAccess;
+        public R8RDataAccess dataAccess;
         public int theTblID;
         public int theTblRowID;
         public int TblTabID;
@@ -42,7 +42,7 @@ namespace ClassLibrary1.Model
 
     public class LoadHeaderRowInfo
     {
-        public RaterooDataAccess dataAccess;
+        public R8RDataAccess dataAccess;
         public int TblTabID;
         public int? TblColumnToSortID;
         public bool SortByEntityName; // only if there is no column to sort by

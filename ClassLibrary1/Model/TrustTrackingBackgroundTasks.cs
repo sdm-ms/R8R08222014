@@ -23,7 +23,7 @@ namespace ClassLibrary1.Model
                 _CurrentTask = 1;
         }
 
-        internal static Func<IRaterooDataContext, bool> GetTask()
+        internal static Func<IR8RDataContext, bool> GetTask()
         {
             // Trace.TraceInformation("Currently executing trust tracking task: " + currentTask); 
 
@@ -38,15 +38,15 @@ namespace ClassLibrary1.Model
             throw new Exception("Internal error: Unrecognized trust tracking background task.");
         }
 
-        public static bool DoTrustTrackingBackgroundTasks(IRaterooDataContext RaterooDB)
+        public static bool DoTrustTrackingBackgroundTasks(IR8RDataContext R8RDB)
         {
             int tasksToDo = _NumBackgroundTasks; // this might be the same background task six times, or each background task separately. this function will return false (no more work to do) only if each background task returns this. (That is why the number is equal to the total number of background tasks, even though some may not be executed in situations in which at least one background task returns true.)
             bool moreWorkToDoOnSomeTask = false;
             for (int i = 1; i <= tasksToDo; i++)
             {
-                Func<IRaterooDataContext, bool> theTask = GetTask();
-                bool moreWorkToDoOnThisTask = theTask(RaterooDB);
-                RaterooDB.SubmitChanges();
+                Func<IR8RDataContext, bool> theTask = GetTask();
+                bool moreWorkToDoOnThisTask = theTask(R8RDB);
+                R8RDB.SubmitChanges();
                 if (moreWorkToDoOnThisTask)
                     moreWorkToDoOnSomeTask = true;
                 else
@@ -63,13 +63,13 @@ namespace ClassLibrary1.Model
 #pragma warning restore 0649
         }
 
-        internal static bool FindAndCorrectUserInteractionLatestUserEgalitarianTrust(IRaterooDataContext RaterooDB)
+        internal static bool FindAndCorrectUserInteractionLatestUserEgalitarianTrust(IR8RDataContext R8RDB)
         {
             const int numToDoAtOnceEachQuery = 1000;
 
             // Looking for UserInteractions where the LatestUserEgalitarianTrust is not up to date.
             var query = 
-                from x in RaterooDB.GetTable<UserInteraction>()
+                from x in R8RDB.GetTable<UserInteraction>()
                 let trustTracker = x.TrustTrackerUnit.TrustTrackers.SingleOrDefault(y => y.UserID == x.LatestRatingUserID)
                 where trustTracker.MustUpdateUserInteractionEgalitarianTrustLevel
                 select new TrustTrackerAndUserInteraction { TrustTracker = trustTracker, UserInteraction = x };
@@ -108,7 +108,7 @@ namespace ClassLibrary1.Model
             theUserInteraction.WeightInCalculatingTrustTotal = TrustCalculations.GetUserInteractionWeightInCalculatingTrustTotal(ratingMagnitudeStat, theUserInteraction);
         }
 
-        public static TrustTracker AddTrustTracker(IRaterooDataContext RaterooDB, User theUser, TrustTrackerUnit theTrustTrackerUnit)
+        public static TrustTracker AddTrustTracker(IR8RDataContext R8RDB, User theUser, TrustTrackerUnit theTrustTrackerUnit)
         {
             TrustTracker theTrustTracker = new TrustTracker
             {
@@ -122,13 +122,13 @@ namespace ClassLibrary1.Model
                 DeltaOverallTrustLevel = 0,
                 SumUserInteractionWeights = 0
             };
-            RaterooDB.GetTable<TrustTracker>().InsertOnSubmit(theTrustTracker);
-            RaterooDB.RegisterObjectToBeInserted(theTrustTracker);
-            AddTrustTrackerStatsForTrustTracker(RaterooDB, theTrustTracker);
+            R8RDB.GetTable<TrustTracker>().InsertOnSubmit(theTrustTracker);
+            R8RDB.RegisterObjectToBeInserted(theTrustTracker);
+            AddTrustTrackerStatsForTrustTracker(R8RDB, theTrustTracker);
             return theTrustTracker;
         }
 
-        internal static TrustTracker[] AddTrustTrackerStatsForTrustTracker(IRaterooDataContext RaterooDB, TrustTracker theTrustTracker)
+        internal static TrustTracker[] AddTrustTrackerStatsForTrustTracker(IR8RDataContext R8RDB, TrustTracker theTrustTracker)
         {
             TrustTracker[] tt = new TrustTracker[TrustTrackerStatManager.NumStats];
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
@@ -141,13 +141,13 @@ namespace ClassLibrary1.Model
                     Trust_Numer = 0,
                     Trust_Denom = 0
                 };
-                RaterooDB.GetTable<TrustTrackerStat>().InsertOnSubmit(theTrustTrackerStat);
-                RaterooDB.RegisterObjectToBeInserted(theTrustTrackerStat);
+                R8RDB.GetTable<TrustTrackerStat>().InsertOnSubmit(theTrustTrackerStat);
+                R8RDB.RegisterObjectToBeInserted(theTrustTrackerStat);
             }
             return tt;
         }
 
-        internal static UserInteractionStat[] AddUserInteractionStatsForUserInteraction(IRaterooDataContext RaterooDB, UserInteraction theUserInteraction, TrustTrackerStat[] originalUserTrustTrackerStats)
+        internal static UserInteractionStat[] AddUserInteractionStatsForUserInteraction(IR8RDataContext R8RDB, UserInteraction theUserInteraction, TrustTrackerStat[] originalUserTrustTrackerStats)
         {
             UserInteractionStat[] uis = new UserInteractionStat[TrustTrackerStatManager.NumStats];
             for (int i = 0; i < TrustTrackerStatManager.NumStats; i++)
@@ -162,14 +162,14 @@ namespace ClassLibrary1.Model
                     AvgAdjustmentPctWeighted = 0
                 };
                 // we won't change the Egalitarian_Denom yet -- only when the SumWeights > 0.
-                RaterooDB.GetTable<UserInteractionStat>().InsertOnSubmit(theUserInteractionStat);
-                RaterooDB.RegisterObjectToBeInserted(theUserInteractionStat);
+                R8RDB.GetTable<UserInteractionStat>().InsertOnSubmit(theUserInteractionStat);
+                R8RDB.RegisterObjectToBeInserted(theUserInteractionStat);
             }
             return uis;
         }
 
         public static void AdjustUserInteraction(
-            IRaterooDataContext RaterooDB, 
+            IR8RDataContext R8RDB, 
             UserInteraction theUserInteraction, 
             UserRating originalUserRating, 
             TrustTrackerStat[] originalUserTrustTrackerStats, 
@@ -185,13 +185,13 @@ namespace ClassLibrary1.Model
 
             if (theUserInteraction == null)
             { // it could have been created earlier in this background process
-                theUserInteraction = RaterooDB.RegisteredToBeInserted.OfType<UserInteraction>().SingleOrDefault(ui => ui.User == originalUserRating.User && ui.User1 == latestUserRating.User && ui.TrustTrackerUnit == latestUserRating.TrustTrackerUnit);
+                theUserInteraction = R8RDB.RegisteredToBeInserted.OfType<UserInteraction>().SingleOrDefault(ui => ui.User == originalUserRating.User && ui.User1 == latestUserRating.User && ui.TrustTrackerUnit == latestUserRating.TrustTrackerUnit);
             }
 
             if (theUserInteraction == null)
             {
                 if (mostRecentUserTrustTracker == null) // usually trust trackers are added before the userrating is added, but this might not happen in some circumstances, such as when the user is a superuser
-                    mostRecentUserTrustTracker = AddTrustTracker(RaterooDB, latestUserRating.User, latestUserRating.TrustTrackerUnit);
+                    mostRecentUserTrustTracker = AddTrustTracker(R8RDB, latestUserRating.User, latestUserRating.TrustTrackerUnit);
 
                 theUserInteraction = new UserInteraction 
                 { 
@@ -201,9 +201,9 @@ namespace ClassLibrary1.Model
                     LatestUserEgalitarianTrust = (float) (TrustTrackerTrustEveryone.LatestUserEgalitarianTrustAlways1 ? 1.0F : mostRecentUserTrustTracker.EgalitarianTrustLevel),
                     LatestUserEgalitarianTrustAtLastWeightUpdate = (float) mostRecentUserTrustTracker.EgalitarianTrustLevel
                 };
-                RaterooDB.GetTable<UserInteraction>().InsertOnSubmit(theUserInteraction);
-                RaterooDB.RegisterObjectToBeInserted(theUserInteraction);
-                AddUserInteractionStatsForUserInteraction(RaterooDB, theUserInteraction, originalUserTrustTrackerStats);
+                R8RDB.GetTable<UserInteraction>().InsertOnSubmit(theUserInteraction);
+                R8RDB.RegisterObjectToBeInserted(theUserInteraction);
+                AddUserInteractionStatsForUserInteraction(R8RDB, theUserInteraction, originalUserTrustTrackerStats);
             }
 
             // We don't want any one instance to have a huge effect on the adjustment percentage, so we need to constrain the adjustment factor to a range of -1.25, 1.25
@@ -332,7 +332,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public static void UpdateUserInteractionsAfterNewUserRatingIsEntered(IRaterooDataContext RaterooDB, UserInteraction oldUserInteraction, 
+        public static void UpdateUserInteractionsAfterNewUserRatingIsEntered(IR8RDataContext R8RDB, UserInteraction oldUserInteraction, 
             UserInteraction newUserInteraction, UserRating originalUserRating, TrustTrackerStat[] originalUserTrustTrackerStats, 
             UserRating previousLatestUserRating, UserRating latestUserRating, DateTime whenOriginalMade, RatingGroupAttribute theRatingGroupAttribute, 
             RatingCharacteristic ratingCharacteristic, TrustTracker mostRecentUserTrustTracker)
@@ -343,8 +343,8 @@ namespace ClassLibrary1.Model
             {
                 if (oldUserInteraction != newUserInteraction || previousLatestUserRating != latestUserRating)
                 {
-                    AdjustUserInteraction(RaterooDB, oldUserInteraction, originalUserRating, originalUserTrustTrackerStats, previousLatestUserRating, ratingCharacteristic, true, mostRecentUserTrustTracker);
-                    AdjustUserInteraction(RaterooDB, newUserInteraction, originalUserRating, originalUserTrustTrackerStats, latestUserRating, ratingCharacteristic, false, mostRecentUserTrustTracker);
+                    AdjustUserInteraction(R8RDB, oldUserInteraction, originalUserRating, originalUserTrustTrackerStats, previousLatestUserRating, ratingCharacteristic, true, mostRecentUserTrustTracker);
+                    AdjustUserInteraction(R8RDB, newUserInteraction, originalUserRating, originalUserTrustTrackerStats, latestUserRating, ratingCharacteristic, false, mostRecentUserTrustTracker);
                     originalUserRating.UserRating1 = latestUserRating;
                 }
             }
@@ -371,7 +371,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="dataContext"></param>
         /// <returns></returns>
-        internal static bool DeleteZereodUserInteractions(IRaterooDataContext dataContext)
+        internal static bool DeleteZereodUserInteractions(IR8RDataContext dataContext)
         {
             const int numToDoAtOnce = 1000;
 

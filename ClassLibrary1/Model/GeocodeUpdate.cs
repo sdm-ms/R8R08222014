@@ -13,7 +13,7 @@ namespace ClassLibrary1.Model
     public static class GeocodeUpdate
     {
 
-        public static bool DoUpdate(IRaterooDataContext theDataContext)
+        public static bool DoUpdate(IR8RDataContext theDataContext)
         {
             return false; 
             // for now, we are going to disable doing background worker geocoding. 
@@ -44,7 +44,7 @@ namespace ClassLibrary1.Model
             //return false;
         }
 
-        public static bool DoUpdateOneAtATime(IRaterooDataContext theDataContext)
+        public static bool DoUpdateOneAtATime(IR8RDataContext theDataContext)
         {
             DateTime recheckSince = TestableDateTime.Now - new TimeSpan(7, 0, 0, 0); // only check if it hasn't been checked in a week
             IQueryable<AddressField> theAddressFieldsNeedingUpdating = theDataContext.GetTable<AddressField>().Where(x => x.LastGeocode == null || (DateTime)x.LastGeocode < recheckSince).Take(100);

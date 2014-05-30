@@ -54,11 +54,11 @@ namespace ClassLibrary1.Model
             return allColumns;
         }
 
-        internal static void GetOrderBy(IRaterooDataContext iDataContext, TableSortRule tableSortRule, int tblID, int originalTblIndex, ref int sqlTblIndex, DateTime asOfDateTime, ref int paramNumber, List<SqlParameter> parameters, out string orderByString, out string joinString)
+        internal static void GetOrderBy(IR8RDataContext iDataContext, TableSortRule tableSortRule, int tblID, int originalTblIndex, ref int sqlTblIndex, DateTime asOfDateTime, ref int paramNumber, List<SqlParameter> parameters, out string orderByString, out string joinString)
         {
             joinString = "";
             orderByString = "";
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
             joinString = " ";
@@ -144,9 +144,9 @@ namespace ClassLibrary1.Model
             public ChoiceGroup cg { get; set; }
         }
 
-        internal static List<ChoiceFullFieldDefinition> GetChoiceFullFieldDefinitions(IRaterooDataContext iDataContext, Tbl tbl)
+        internal static List<ChoiceFullFieldDefinition> GetChoiceFullFieldDefinitions(IR8RDataContext iDataContext, Tbl tbl)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             string cacheString = "ChoiceFullFieldDefinition" + tbl.TblID.ToString();
@@ -159,9 +159,9 @@ namespace ClassLibrary1.Model
             return fd;
         }
 
-        internal static List<FieldDefinition> GetAddressFieldDefinitions(IRaterooDataContext iDataContext, Tbl tbl)
+        internal static List<FieldDefinition> GetAddressFieldDefinitions(IR8RDataContext iDataContext, Tbl tbl)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             string cacheString = "AddressFieldDefinition" + tbl.TblID.ToString();
@@ -174,9 +174,9 @@ namespace ClassLibrary1.Model
             return fd;
         }
 
-        internal static FieldDefinition GetFieldDefinition(IRaterooDataContext iDataContext, int fieldDefinitionID)
+        internal static FieldDefinition GetFieldDefinition(IR8RDataContext iDataContext, int fieldDefinitionID)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             FieldDefinition fd = iDataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID);
@@ -184,9 +184,9 @@ namespace ClassLibrary1.Model
         }
 
 
-        internal static ChoiceGroupFieldDefinition GetChoiceGroupFieldDefinition(IRaterooDataContext iDataContext, int fieldDefinitionID)
+        internal static ChoiceGroupFieldDefinition GetChoiceGroupFieldDefinition(IR8RDataContext iDataContext, int fieldDefinitionID)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             ChoiceGroupFieldDefinition cgfd = iDataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID); // NOTE: This is a lookup based on a FieldDefinitionID, NOT a ChoiceGroupFieldDefinitionID
@@ -368,22 +368,22 @@ namespace ClassLibrary1.Model
             return returnVal;
         }
 
-        internal static DataTable GetDataTable(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, List<string> variableList, TableSortRule tableSortRule, FilterRules filters, List<ChoiceFullFieldDefinition> choiceFieldDefinitions, int tblID, int skip, int take)
+        internal static DataTable GetDataTable(IR8RDataContext iDataContext, DenormalizedTableAccess dta, List<string> variableList, TableSortRule tableSortRule, FilterRules filters, List<ChoiceFullFieldDefinition> choiceFieldDefinitions, int tblID, int skip, int take)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             // SAMPLE -- this produces query results somewhat like this and adds the rowcount (indicating the total number of results without skip & take
             //SELECT *
             //, (
             //    SELECT COUNT(NME)
-            //    FROM [Rateroo].dbo.V244
+            //    FROM [R8R].dbo.V244
             //  ) AS row_count
             //FROM
             //(
             //SELECT ID, NME, DEL, RH, RS617, RV617, R617, RG617, RS618, RV618, R618, RG618, RS619, RV619, R619, RG619, RS620, RV620, R620, RG620, RS621, RV621, R621, RG621, RS622, RV622, R622, RG622, RS623, RV623, R623, RG623 
             //, ROW_NUMBER() OVER (ORDER BY R617 ASC) rownum
-            //FROM [Rateroo].dbo.V244
+            //FROM [R8R].dbo.V244
             //) seq
             //where seq.rownum BETWEEN 6 and 10
             string tblName = "V" + tblID.ToString();
@@ -447,11 +447,11 @@ namespace ClassLibrary1.Model
             return stringList;
         }
 
-        public static void DoQuery(DenormalizedTableAccess dta, int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, IRaterooDataContext iDataContext, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, Tbl theTbl, out List<InfoForBodyRows> bodyRowList, out int? rowCount)
+        public static void DoQuery(DenormalizedTableAccess dta, int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, IR8RDataContext iDataContext, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, Tbl theTbl, out List<InfoForBodyRows> bodyRowList, out int? rowCount)
         {
             bodyRowList = null;
             rowCount = null;
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
 

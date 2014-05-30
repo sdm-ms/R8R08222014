@@ -30,15 +30,15 @@ namespace ClassLibrary1.Model
 {    
     public class ActionProcessor
     {
-        RaterooDataManipulation _dataManipulation = null;
+        R8RDataManipulation _dataManipulation = null;
 
-        public RaterooDataManipulation DataManipulation
+        public R8RDataManipulation DataManipulation
         {
             get
             {
                 if (null == _dataManipulation)
                 {
-                    _dataManipulation = new RaterooDataManipulation();
+                    _dataManipulation = new R8RDataManipulation();
                 }
 
                 return _dataManipulation;
@@ -46,27 +46,27 @@ namespace ClassLibrary1.Model
         }
 
 
-        RaterooDataAccess _dataAccess = null;
-        public RaterooDataAccess DataAccess
+        R8RDataAccess _dataAccess = null;
+        public R8RDataAccess DataAccess
         {
             get
             {
                 if (null == _dataAccess)
                 {
-                    _dataAccess = new RaterooDataAccess();
+                    _dataAccess = new R8RDataAccess();
                 }
                 return _dataAccess;
             }
         }
 
 
-        public IRaterooDataContext DataContext
+        public IR8RDataContext DataContext
         {
             get
             {
                 if (null == _dataManipulation)
                 {
-                    _dataManipulation = new RaterooDataManipulation();
+                    _dataManipulation = new R8RDataManipulation();
                 }
                 return _dataManipulation.DataContext;
             }
@@ -734,7 +734,7 @@ namespace ClassLibrary1.Model
             decimal? baseMultiplierOverride;
             if (considerCreatingRewardRating && DataManipulation.ShouldCreateRewardRating(theSet.theTbl.TblID, userID, out baseMultiplierOverride))
             {
-                FieldSetDataInfo oldSettings = new FieldSetDataInfo(theSet.theTblRow, theSet.theTbl, new RaterooDataAccess());
+                FieldSetDataInfo oldSettings = new FieldSetDataInfo(theSet.theTblRow, theSet.theTbl, new R8RDataAccess());
                 oldSettings.LoadFromDatabase();
                 string changesList = theSet.GetComparison(oldSettings);
                 RewardRatingCreate((int)theSet.theTbl.TblID, RewardableUserAction.ChangeFields, baseMultiplierOverride, 0.75M, userID, "Changed info: " + theSet.theEntityName, changesList);
@@ -1018,7 +1018,7 @@ namespace ClassLibrary1.Model
                     
                     foreach (int choiceInGroupID in ((List<int>) multipleChoices))
                     {
-                        //int choiceInGroupID = DataAccessModule.RaterooDB.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceGroupID == theChoiceGroupFieldDefinition.ChoiceGroup.ChoiceGroupID && cig.ChoiceNum == theChoice).ChoiceInGroupID;
+                        //int choiceInGroupID = DataAccessModule.R8RDB.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceGroupID == theChoiceGroupFieldDefinition.ChoiceGroup.ChoiceGroupID && cig.ChoiceNum == theChoice).ChoiceInGroupID;
                         ChoiceInGroup choiceInGroup = DataContext.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == choiceInGroupID);
                         ChoiceInField choiceInField = DataManipulation.AddChoiceInField(theChoiceField, choiceInGroup);
                     }
@@ -1182,7 +1182,7 @@ namespace ClassLibrary1.Model
 
         public int TblColumnFormattingCreate(int TblColumnID, string prefix, string suffix, bool omitLeadingZero, decimal? extraDecimalPlaceAbove, decimal? extraDecimalPlace2Above, decimal? extraDecimalPlace3Above, string suppStylesHeader, string suppStylesMain, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID)
         {
-            int TblID = DataAccess.RaterooDB.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.TblID;
+            int TblID = DataAccess.R8RDB.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.TblID;
             DataManipulation.ConfirmObjectExists(TblColumnID, TypeOfObject.TblColumn);
             int newObjectID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !makeActiveNow, null, TblID, true))
@@ -1876,7 +1876,7 @@ namespace ClassLibrary1.Model
             if (DataManipulation.TblIsRewardTbl(ratingGroup.TblRow.Tbl))
                 throw new Exception("You cannot resolve a table cell in Changes.");
             RatingGroupResolution currentRatingGroupResolution = 
-                DataAccess.RaterooDB.GetTable<RatingGroupResolution>().Where
+                DataAccess.R8RDB.GetTable<RatingGroupResolution>().Where
                     (mr => mr.RatingGroup == ratingGroup)
                     .OrderByDescending(mr => mr.ExecutionTime)
                     .ThenByDescending(mr => mr.RatingGroupResolutionID)
@@ -1990,7 +1990,7 @@ namespace ClassLibrary1.Model
         {
             theResponse = new UserEditResponse();
             int? topRatingGroupID = -1;
-            int firstRaterooID = 0;
+            int firstR8RID = 0;
 
             int numTries = 0;
             TryLabel:
@@ -2052,8 +2052,8 @@ namespace ClassLibrary1.Model
                     double aUserRating = (double)-1;
                     if (i == 0)
                     {
-                        firstRaterooID = aRatingID;
-                        Rating theRating = theRatings.Single(m => m.RatingID == firstRaterooID);
+                        firstR8RID = aRatingID;
+                        Rating theRating = theRatings.Single(m => m.RatingID == firstR8RID);
                         if (DataManipulation.TblIsRewardTbl(theRating.RatingGroup.TblRow.Tbl))
                         {
                             if (theUser.UserID == DataManipulation.GetUserWhoMadeDatabaseChange(theRating.RatingGroup.TblRow))
@@ -2121,7 +2121,7 @@ namespace ClassLibrary1.Model
                     }
                     else
                     {
-                        theResponse.result = new UserRatingResult("Sorry, an error occurred. Rateroo may be busy processing other ratings. Please try again.");
+                        theResponse.result = new UserRatingResult("Sorry, an error occurred. R8R may be busy processing other ratings. Please try again.");
                         return;
                     }
                 }
@@ -2410,7 +2410,7 @@ namespace ClassLibrary1.Model
 
                
                // Deleting the active contents for selected domain or universe or Tbl or everywhere 
-                //var ObjInsertableContent = RaterooDB.GetTable<InsertableContent>().Where(x => int.Equals(x.DomainID,domainID)  && int.Equals(x.TblID, TblID) && int.Equals(x.PointsManagerID, pointsManagerID) && x.Location == location && x.Status==(byte)StatusOfObject.Active).Select(X => new { InsertableContentID=X.InsertableContentID });
+                //var ObjInsertableContent = R8RDB.GetTable<InsertableContent>().Where(x => int.Equals(x.DomainID,domainID)  && int.Equals(x.TblID, TblID) && int.Equals(x.PointsManagerID, pointsManagerID) && x.Location == location && x.Status==(byte)StatusOfObject.Active).Select(X => new { InsertableContentID=X.InsertableContentID });
                 
                 //if (ObjInsertableContent.Count() > 0)
                 //{
@@ -2509,7 +2509,7 @@ namespace ClassLibrary1.Model
         //public void CommentForTblRowDelete(int CommentId, int userId, ref int? changesGroupID)
         //{
         //    DataAccessModule.ConfirmObjectExists(CommentId, TypeOfObject.Comment);
-        //    int? TableId = ObjDataAccess.RaterooDB.GetTable<Comment>().Single(c => c.CommentsID == CommentId).TblRow.TblID;
+        //    int? TableId = ObjDataAccess.R8RDB.GetTable<Comment>().Single(c => c.CommentsID == CommentId).TblRow.TblID;
         //    if (DataAccessModule.ProceedWithChange(ref changesGroupID,userId,UserActionOldList.ChangeTblRows,false,null,TableId))
         //    {
         //        int theChange = DataAccessModule.AddChangesStatusOfObject((int)changesGroupID,TypeOfObject.Comment,false,true,false,false,false,false,false,false,"",CommentId,null,null,null,null,"",null);
@@ -2589,10 +2589,10 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public int TblDimensionCreate(int widthOfRowHeaderColumn, int maxWidthOfImageInRowHeaderCell, int maxHeightOfImageInRowHeaderCell, int maxWidthOfImageInTblRowPopUpWindow, int maxHeightOfImageInTblRowPopUpWindow, int widthOfTblRowPopUpWindow)
+        public int TblDimensionCreate( int maxWidthOfImageInRowHeaderCell, int maxHeightOfImageInRowHeaderCell, int maxWidthOfImageInTblRowPopUpWindow, int maxHeightOfImageInTblRowPopUpWindow, int widthOfTblRowPopUpWindow)
         {
 
-            int theTblDimensionId = DataManipulation.AddTblDimensions(widthOfRowHeaderColumn, maxWidthOfImageInRowHeaderCell, maxHeightOfImageInRowHeaderCell, maxWidthOfImageInTblRowPopUpWindow, maxHeightOfImageInTblRowPopUpWindow, widthOfTblRowPopUpWindow);
+            int theTblDimensionId = DataManipulation.AddTblDimensions( maxWidthOfImageInRowHeaderCell, maxHeightOfImageInRowHeaderCell, maxWidthOfImageInTblRowPopUpWindow, maxHeightOfImageInTblRowPopUpWindow, widthOfTblRowPopUpWindow);
             return theTblDimensionId;
         }
 

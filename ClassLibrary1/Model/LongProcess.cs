@@ -48,9 +48,9 @@ namespace ClassLibrary1.Model
     //    {
     //        if (currentUserRatingID == null)
     //            currentUserRatingID = startingAtUserRatingID;
-    //        RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
-    //        Rating theRating = theDataAccessModule.RaterooDB.GetTable<Rating>().Single(m => m.RatingID == ratingID);
-    //        RatingGroupPhaseStatus ratingPhaseStatus = theDataAccessModule.RaterooDB.GetTable<RatingGroupPhaseStatus>().Single(mps => mps.RatingGroupPhaseStatusID == ratingPhaseStatusID);
+    //        R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
+    //        Rating theRating = theDataAccessModule.R8RDB.GetTable<Rating>().Single(m => m.RatingID == ratingID);
+    //        RatingGroupPhaseStatus ratingPhaseStatus = theDataAccessModule.R8RDB.GetTable<RatingGroupPhaseStatus>().Single(mps => mps.RatingGroupPhaseStatusID == ratingPhaseStatusID);
     //        return theDataAccessModule.UpdatePointsForUserRatings(theRating, ratingPhaseStatus, referenceUserRating, referenceTime, theResolutionType, updateUserRatingGroup);
 
     //    }
@@ -75,7 +75,7 @@ namespace ClassLibrary1.Model
             if (currentTblRowID == null)
                 currentTblRowID = startingAtTblRowID; 
             //Trace.TraceInformation("Continuing missing ratings long process starting at " + currentTblRowID);
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             int? returnVal = theDataAccessModule.AddMissingRatingsForSomeTblRows(TblID, numberToDoEachTime, (int)currentTblRowID);
             //Trace.TraceInformation("Finishing continuation with return value of " + returnVal);
             return returnVal;
@@ -110,7 +110,7 @@ namespace ClassLibrary1.Model
 
         public int? Continue(int? elementNumber)
         {
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             if (elementNumber == null)
                 elementNumber = startingAtNumber;
             ImportExport myImporter = new ImportExport(theDataAccessModule.DataContext.GetTable<Tbl>().Single(x => x.TblID == TblID));
@@ -129,7 +129,7 @@ namespace ClassLibrary1.Model
         }
     }
 
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
 
 
@@ -222,7 +222,7 @@ namespace ClassLibrary1.Model
         //        binFormat.Serialize(mStream, myUpdateInfo);
         //        byte[] theData = mStream.GetBuffer();
                 
-        //        RaterooDB.SubmitChanges();
+        //        R8RDB.SubmitChanges();
         //        int returnVal = AddOrResetLongProcess(typeOfProcess,  delayBeforeReset, object1ID, object2ID, priority, theData);
 
 
@@ -270,7 +270,7 @@ namespace ClassLibrary1.Model
                     )
                 .OrderByDescending(lp => lp.Priority)
                 .FirstOrDefault();
-            //var test = RaterooDB.GetTable<LongProcesse>().Where(
+            //var test = R8RDB.GetTable<LongProcesse>().Where(
             //        lp => (!lp.Complete || lp.ResetWhenComplete)
             //            && (lp.EarliestRestart == null || lp.EarliestRestart < currentTime)
             //        ).ToList();

@@ -15,7 +15,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
 {
     public Tbl theTblOrNullForRowOnly;
     public TblRow theTblRowOrNullForEntireTable;
-    RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+    R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
     public bool UserCanProposeComments { get; set; }
     public bool UserCanAddComments { get; set; }
     public bool UserCanDeleteComments { get; set; }

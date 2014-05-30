@@ -39,9 +39,9 @@ namespace ClassLibrary1.Model
     }
 
         /// <summary>
-        /// Summary description for RaterooSupport
+        /// Summary description for R8RSupport
         /// </summary>
-        public partial class RaterooDataManipulation
+        public partial class R8RDataManipulation
         {
 
             internal decimal GetNoviceRewardRatingProbability(PointsManager thePointsManager, PointsTotal thePointsTotal)
@@ -84,7 +84,7 @@ namespace ClassLibrary1.Model
             public FieldSetDataInfo CreateFieldSetDataForRewardRating(Tbl originalTbl, Tbl userChangesTbl, RewardableUserAction changeType, decimal? baseMultiplierOverride, decimal? supplementalMultiplier, int userID, string changeName, string changeDescription)
             {
 
-                RaterooDataAccess theDataAccess = new RaterooDataAccess();
+                R8RDataAccess theDataAccess = new R8RDataAccess();
                 FieldSetDataInfo theFieldSetDataInfo = new FieldSetDataInfo(null, userChangesTbl, theDataAccess);
                 theFieldSetDataInfo.theEntityName = changeName;
                 User theUser = DataContext.GetTable<User>().Single(u => u.UserID == userID);

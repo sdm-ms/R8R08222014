@@ -33,17 +33,17 @@ namespace TestProject1
     public class TestAddAndResolveRatings
     {
         public TestHelper TestHelper;
-        public RaterooDataManipulation DataAccess;
+        public R8RDataManipulation DataAccess;
 
         [TestInitialize()]
         public void Initialize()
         {
-            GetIRaterooDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
             UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             TestHelper = new TestHelper();
-            DataAccess = new RaterooDataManipulation();
+            DataAccess = new R8RDataManipulation();
         }
 
         [TestMethod]

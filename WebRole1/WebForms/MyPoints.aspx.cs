@@ -24,11 +24,11 @@ public partial class MyPoints : System.Web.UI.Page
     protected bool rebinding = false;
     protected int rowBeingCreated = 0;
     bool ResetToTop = false;
-    internal RaterooDataManipulation theDataAccessModule;
+    internal R8RDataManipulation theDataAccessModule;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        theDataAccessModule = new RaterooDataManipulation();
+        theDataAccessModule = new R8RDataManipulation();
         if (HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
             UserID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     }

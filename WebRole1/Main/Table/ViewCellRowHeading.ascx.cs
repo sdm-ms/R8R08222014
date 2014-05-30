@@ -27,18 +27,18 @@ public partial class Main_Table_ViewCellRowHeading : System.Web.UI.UserControl
         }
     }
 
-    public void Setup(RaterooDataAccess theDataAccess, TblDimension theTblDimension, int theTblID, int theTblRowID, bool commentsEnabled, bool canEditFields, bool doRebind)
+    public void Setup(R8RDataAccess theDataAccess, TblDimension theTblDimension, int theTblID, int theTblRowID, bool commentsEnabled, bool canEditFields, bool doRebind)
     {
         FieldDisplayHtml mainFieldDisplayHtml = new FieldDisplayHtml();
         Main_Table_FieldsDisplay theMainFieldsDisplay = (Main_Table_FieldsDisplay) LoadControl("~/Main/Table/FieldsDisplay.ascx");
-        mainFieldDisplayHtml = theMainFieldsDisplay.Setup(theDataAccess.RaterooDB, theTblDimension, FieldsLocation.RowHeading, theTblRowID, true);
+        mainFieldDisplayHtml = theMainFieldsDisplay.Setup(theDataAccess.R8RDB, theTblDimension, FieldsLocation.RowHeading, theTblRowID, true);
         FieldsDisplayPlaceHolder.Controls.Add(theMainFieldsDisplay);
 
         if (CheckJavaScriptHelper.IsJavascriptEnabled)
         {
             FieldDisplayHtml popupFieldDisplayHtml = new FieldDisplayHtml();
             Main_Table_FieldsDisplay thePopUpFieldsDisplay = (Main_Table_FieldsDisplay)LoadControl("~/Main/Table/FieldsDisplay.ascx");
-            popupFieldDisplayHtml = thePopUpFieldsDisplay.Setup(theDataAccess.RaterooDB, theTblDimension, FieldsLocation.RowPopup, theTblRowID, false);
+            popupFieldDisplayHtml = thePopUpFieldsDisplay.Setup(theDataAccess.R8RDB, theTblDimension, FieldsLocation.RowPopup, theTblRowID, false);
             PopUpFieldsDisplayPlaceHolder.Controls.Add(thePopUpFieldsDisplay);
 
             FieldsDisplayDiv.AddAttribute("title", mainFieldDisplayHtml.entityName);

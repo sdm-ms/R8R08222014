@@ -22,7 +22,7 @@ public partial class SearchWordsFilter : System.Web.UI.UserControl, IFilterField
     public FieldsBoxMode Mode { get; set; }
     public int? TblRowID { get; set; }
     public int FieldDefinitionOrTblColumnID { get; set; }
-    public RaterooDataAccess DataAccess { get; set; }
+    public R8RDataAccess DataAccess { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {

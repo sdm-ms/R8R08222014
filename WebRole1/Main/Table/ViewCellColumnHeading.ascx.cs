@@ -18,7 +18,7 @@ using ClassLibrary1.Model;
 public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserControl
 {
     protected int? TblColumnID; 
-    protected RaterooDataAccess DataAccess;
+    protected R8RDataAccess DataAccess;
     protected string Abbreviation;
     protected string Name;
     protected string WidthStyle;
@@ -31,7 +31,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
     protected int? TblRowIDForChartButton;
     protected Action<int?, bool> SortFn;
 
-    public void Setup(RaterooDataAccess dataAccess, Action<int?, bool> sortFn, int? tblColumnID, int? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
+    public void Setup(R8RDataAccess dataAccess, Action<int?, bool> sortFn, int? tblColumnID, int? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
     {
         DataAccess = dataAccess;
         SortFn = sortFn;
@@ -167,8 +167,8 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
                     int? RatingGroupID = DataAccess.GetRatingGroupForTblRowCategory((int)TblRowIDForChartButton, (int)TblColumnID);
                     if (RatingGroupID != null)
                     {
-                        TblColumn theCD = DataAccess.RaterooDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnID);
-                        TblRow theTblRow = DataAccess.RaterooDB.GetTable<TblRow>().SingleOrDefault(e => e.TblRowID == TblRowIDForChartButton);
+                        TblColumn theCD = DataAccess.R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnID);
+                        TblRow theTblRow = DataAccess.R8RDB.GetTable<TblRow>().SingleOrDefault(e => e.TblRowID == TblRowIDForChartButton);
                         href = "href=\"" + Routing.Outgoing(new RoutingInfoMainContent(theTblRow.Tbl, theTblRow, theCD)) + "\"";
                     }
                 }
@@ -197,7 +197,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
     {
         if (CheckJavaScriptHelper.IsJavascriptEnabled && TblColumnID != null)
         {
-            TblColumn theCD = DataAccess.RaterooDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
+            TblColumn theCD = DataAccess.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
             string headingText = "";
             string bodyText = "";
             if ((theCD.Name == "" || theCD.Name == theCD.Abbreviation) && theCD.Explanation == "")

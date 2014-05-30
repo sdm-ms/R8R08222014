@@ -16,11 +16,11 @@ namespace WebApplication1.CommonControl
     public partial class Slideshow : System.Web.UI.UserControl
     {
         public RoutingInfoMainContent theLocation;
-        public IRaterooDataContext RaterooDB;
-        public void Setup(RoutingInfoMainContent location, IRaterooDataContext theDataContext)
+        public IR8RDataContext R8RDB;
+        public void Setup(RoutingInfoMainContent location, IR8RDataContext theDataContext)
         {
             theLocation = location ;
-            RaterooDB = theDataContext;
+            R8RDB = theDataContext;
         }
 
         public class TblRowRatingSummary
@@ -31,7 +31,7 @@ namespace WebApplication1.CommonControl
 
         protected List<TblRowRatingSummary> GetRatingsOfBestData()
         {
-            List<TblRow> theTblRows = PickTblRows.GetMostHighlyRatedTblRowsFromVariousTbls(RaterooDB,theLocation, 7, 8, 4);
+            List<TblRow> theTblRows = PickTblRows.GetMostHighlyRatedTblRowsFromVariousTbls(R8RDB,theLocation, 7, 8, 4);
             if (theTblRows == null || !theTblRows.Any())
                 return new List<TblRowRatingSummary>();
             List<TblRowRatingSummary> entityRatingSummary =
@@ -63,8 +63,8 @@ namespace WebApplication1.CommonControl
 
         protected List<RatingGroup> GetRatingOverTimesData()
         {
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
-            List<TblRow> theTblRows = PickTblRows.GetMostActiveTblRowsFromVariousTbls(RaterooDB, VolatilityDuration.oneDay, theLocation, 7, 8, 2);
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
+            List<TblRow> theTblRows = PickTblRows.GetMostActiveTblRowsFromVariousTbls(R8RDB, VolatilityDuration.oneDay, theLocation, 7, 8, 2);
             if (theTblRows == null || !theTblRows.Any())
                 return new List<RatingGroup>();
             List<RatingGroup> ratingGroupList = 
@@ -243,7 +243,7 @@ namespace WebApplication1.CommonControl
             string step2 = "To enter your own ratings, log in. Then, click on any rating, enter your rating, and click the check mark.";
             string step3 = "If others agree with your ratings, you&rsquo;ll win points, making you eligible for specified cash prizes.";
             string threeStep = GetThreeStepString(step1, step2, step3);
-            return GetCombinedItemString("Welcome to Rateroo!", threeStep);
+            return GetCombinedItemString("Welcome to R8R!", threeStep);
         }
 
 
@@ -260,9 +260,9 @@ namespace WebApplication1.CommonControl
         {
             string step1 = "Find a topic that interests you. Points you earn make you eligible for cash!";
             string step2 = "You can earn points by entering accurate ratings that other users agree with.";
-            string step3 = "Once Rateroo trusts you, you can also earn points by improving the database and rating others' changes.";
+            string step3 = "Once R8R trusts you, you can also earn points by improving the database and rating others' changes.";
             string threeStep = GetThreeStepString(step1, step2, step3);
-            return GetCombinedItemString("How to Earn Money on Rateroo", threeStep);
+            return GetCombinedItemString("How to Earn Money on R8R", threeStep);
         }
 
 
@@ -272,10 +272,10 @@ namespace WebApplication1.CommonControl
             string step2 = "If the later rating is closer to your rating than to the rating before yours, you win points.";
             string step3 = "Untrusted ratings do not count in determining whether you win points.";
             string threeStep = GetThreeStepString("images/yellow_star.jpg", step1, "images/yellow_star.jpg", step2, "images/yellow_star.jpg", step3);
-            return GetCombinedItemString("Understanding Rateroo Points", threeStep);
+            return GetCombinedItemString("Understanding R8R Points", threeStep);
         }
 
-        public string UnderstandingRaterooTrust()
+        public string UnderstandingR8RTrust()
         {
             string step1 = "Ratings with an asterisk (*) are by untrusted users.";
             string step2 = "When trusted users enters the same or a similar rating, the asterisk disappears, and both may win points if the rating sticks.";
@@ -305,21 +305,21 @@ namespace WebApplication1.CommonControl
 
         public string ImproveDatabaseInstructions()
         {
-            string step1 = "Once Rateroo trusts you, you'll see buttons for adding new rows or changing information on existing ones.";
+            string step1 = "Once R8R trusts you, you'll see buttons for adding new rows or changing information on existing ones.";
             string step2 = "Some changes you make will be randomly selected for other users to rate in the Changes table.";
             string step3 = "Those ratings determine how many points you'll earn or lose for the changes you've made.";
             string threeStep = GetThreeStepString("images/yellow_star.jpg", step1, "images/yellow_star.jpg", step2, "images/yellow_star.jpg", step3);
-            return GetCombinedItemString("How to Improve the Rateroo Database", threeStep);
+            return GetCombinedItemString("How to Improve the R8R Database", threeStep);
         }
 
         public List<string> GetAllInstructions()
         {
-            return new List<string>() { GetImageMain(), EnterRatingsInstructions(), RatingTips(), MakeMoneyInstructions(), UnderstandingPointsInstructions(), HighStakesRatings(), UnderstandingRaterooTrust(), ImproveDatabaseInstructions() };
+            return new List<string>() { GetImageMain(), EnterRatingsInstructions(), RatingTips(), MakeMoneyInstructions(), UnderstandingPointsInstructions(), HighStakesRatings(), UnderstandingR8RTrust(), ImproveDatabaseInstructions() };
         }
 
         public string GetImageMain()
         {
-            return GetImageWithHeading("Welcome to Rateroo!", "images/logolarge.png");
+            return GetImageWithHeading("Welcome to R8R!", "images/logolarge.png");
         }
 
         public List<string> GetImages()
@@ -329,7 +329,7 @@ namespace WebApplication1.CommonControl
 
         public string GetSubtablesList()
         {
-            string renderedControl = MoreStrings.MoreStringManip.RenderUnloadedUserControl("~/CommonControl/SubtablesList.ascx", "subtablesDataNeeded", new SubtablesList.SubtablesDataNeeded { location = theLocation, theDataContext = RaterooDB });
+            string renderedControl = MoreStrings.MoreStringManip.RenderUnloadedUserControl("~/CommonControl/SubtablesList.ascx", "subtablesDataNeeded", new SubtablesList.SubtablesDataNeeded { location = theLocation, theDataContext = R8RDB });
             return GetCombinedItemString(theLocation.lastItemInHierarchy.FullHierarchyWithHtml, renderedControl);
         }
 

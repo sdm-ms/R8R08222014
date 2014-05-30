@@ -7,108 +7,108 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BoxTopLeftContentPlaceHolder" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="ContentHeadText" Runat="Server">
-Rateroo Terms of Service
+R8R Terms of Service
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="ContentMain" Runat="Server">
-By accessing and using Rateroo, you accept and agree to be bound by the terms and
+By accessing and using R8R, you accept and agree to be bound by the terms and
     provision of the Terms of Service, as well as to any other rules posted on particular
-    parts of Rateroo website or affiliated websites that you use.<br>
+    parts of R8R website or affiliated websites that you use.<br>
     <br>
     You represent that you are of legal age to form a binding contract and are not a
-    person barred from using Rateroo under the laws of the United States or other applicable
+    person barred from using R8R under the laws of the United States or other applicable
     jurisdiction. You also agree to: (a) provide true, accurate, current and complete
-    information about yourself as prompted by Rateroo registration form (the "Registration
+    information about yourself as prompted by R8R registration form (the "Registration
     Data") and (b) maintain and promptly update the Registration Data to keep it true,
     accurate, current and complete. If you provide any information that is untrue, inaccurate,
-    not current or incomplete, or Rateroo has reasonable grounds to suspect that such
-    information is untrue, inaccurate, not current or incomplete, Rateroo has the right
+    not current or incomplete, or R8R has reasonable grounds to suspect that such
+    information is untrue, inaccurate, not current or incomplete, R8R has the right
     to suspend or terminate your account and refuse any and all current or future use
-    of Rateroo (or any portion thereof).<br>
+    of R8R (or any portion thereof).<br>
     <br>
-    You agree that you will sign up for no more than 1 Rateroo account. You further
+    You agree that you will sign up for no more than 1 R8R account. You further
     agree that you will not transfer your account to another, with or without compensation.<br>
     <br>
     You agree that you will in no way try to manipulate or defraud the rating and prediction
-    system established by Rateroo. This includes, but is not limited to, entering false
+    system established by R8R. This includes, but is not limited to, entering false
     or incomplete account information, using a misleading username, using multiple accounts
     and/or computers to enter ratings or predictions, engaging in collusion with other
-    Rateroo participants, disseminating false or misleading information, disseminating
-    information outside of Rateroo website in a manner designed to influence participants
-    on Rateroo, entering ratings or predictions without basis in fact, and attempting
+    R8R participants, disseminating false or misleading information, disseminating
+    information outside of R8R website in a manner designed to influence participants
+    on R8R, entering ratings or predictions without basis in fact, and attempting
     to time your ratings and predictions so that others will not have the chance to
-    review them. You further agree that if Rateroo believes that there is any chance
-    that you have engaged in any manipulation or fraud, Rateroo may suspend or terminate
-    your account and refuse any and all current or future use of Rateroo (or any portion
+    review them. You further agree that if R8R believes that there is any chance
+    that you have engaged in any manipulation or fraud, R8R may suspend or terminate
+    your account and refuse any and all current or future use of R8R (or any portion
     thereof).<br>
     <br>
-    You further agree that Rateroo may suspend or terminate your account for any reason
+    You further agree that R8R may suspend or terminate your account for any reason
     whatsoever, including caprice, negligence, recklessness, request from law enforcement
     services, unexpected technical or security issues, bandwidth limitations, or financial
-    problems at Rateroo. In addition, you agree that Rateroo may, when suspending or
+    problems at R8R. In addition, you agree that R8R may, when suspending or
     terminating your account or without doing so, change your point totals or ensure
     that you do not receive any cash payments or other prizes based on points already
     or in the future accumulated. You agree that the decision to take these actions
-    is solely Rateroo’s and that you shall have no cause of action based on decisions
+    is solely R8R’s and that you shall have no cause of action based on decisions
     to change point totals or to prevent you from having a chance to win any cash or
-    other prize offered on Rateroo.<br>
+    other prize offered on R8R.<br>
     <br>
-    You agree that by using Rateroo or by entering ratings and predictions on the site,
-    or by making changes to Rateroo database tables, you retain no legal right, interest,
+    You agree that by using R8R or by entering ratings and predictions on the site,
+    or by making changes to R8R database tables, you retain no legal right, interest,
     or ownership, to any ratings or data entered on the site, or to any points or prizes
-    that Rateroo represents that you might win as a result of entering ratings or predictions
-    on the site. You agree that Rateroo is not bound to continue to follow the rules
+    that R8R represents that you might win as a result of entering ratings or predictions
+    on the site. You agree that R8R is not bound to continue to follow the rules
     on its site governing the distribution of points and/or cash and/or other prizes,
     and that it may change them at any time, with or without warning, and that it may
-    do so retroactively. For example, Rateroo may decide to adopt new formulas for determining
+    do so retroactively. For example, R8R may decide to adopt new formulas for determining
     the points to be allocated to those who have entered ratings or predictions, or
-    to those who have made database changes. In addition, Rateroo may decide, for example
+    to those who have made database changes. In addition, R8R may decide, for example
     because of technical failure, unavailability of funds, or legal restrictions or
     concerns, not to give prizes that it indicated on its site that it would give.<br>
     <br>
     You agree that if you enter ratings or predictions, that does not provide you with
-    a legal right to receipt of any payment or prizes from Rateroo. You further agree
+    a legal right to receipt of any payment or prizes from R8R. You further agree
     that you have no right to have points for ratings or forecasts you enter calculated
-    with any accuracy, and Rateroo reserves the right to use any approach that it chooses
+    with any accuracy, and R8R reserves the right to use any approach that it chooses
     to calculate points and to determine the correct outcome of events that have been
-    occurred and that have been rated, even if Rateroo’s determinations are manifestly
+    occurred and that have been rated, even if R8R’s determinations are manifestly
     unreasonable. Any taxes that you are subject to are your responsibility. Further,
-    you agree to provide any tax forms that Rateroo requires before any cash or prizes
-    are paid to you, and that Rateroo may cancel any prizes provided to you if these
-    are not provided according to a timetable to be set by Rateroo. Finally, you agree
-    that Rateroo may decide not to make any payments to individuals below a certain
-    age, or outside the United States; even if Rateroo has not made such a decision
+    you agree to provide any tax forms that R8R requires before any cash or prizes
+    are paid to you, and that R8R may cancel any prizes provided to you if these
+    are not provided according to a timetable to be set by R8R. Finally, you agree
+    that R8R may decide not to make any payments to individuals below a certain
+    age, or outside the United States; even if R8R has not made such a decision
     yet, it may do so retroactively.<br>
     <br>
     Registration Data and certain other information about you are subject to our applicable
-    privacy policy. You understand that through your use of Rateroo, you consent to
+    privacy policy. You understand that through your use of R8R, you consent to
     the Tbl and use (as set forth in the applicable privacy policy) of this information,
     including the transfer of this information to the United States and/or other countries
-    for storage, processing and use by Rateroo and its affiliates.
+    for storage, processing and use by R8R and its affiliates.
     <br>
     <br>
-    You will receive a password and account designation upon completing Rateroo’s registration
+    You will receive a password and account designation upon completing R8R’s registration
     process. You are responsible for maintaining the confidentiality of the password
     and account and are fully responsible for all activities that occur under your password
-    or account. You agree to immediately notify Rateroo of any unauthorized use of your
+    or account. You agree to immediately notify R8R of any unauthorized use of your
     password or account or any other breach of security, and ensure that you exit from
-    your account at the end of each session. Rateroo cannot and will not be liable for
+    your account at the end of each session. R8R cannot and will not be liable for
     any loss or damage arising from your failure to comply with this section.<br>
     <br>
     You understand that all information, ratings, predictions, data, text, photographs,
     tags, or other materials ("Content"), whether publicly posted or privately transmitted,
     are the sole responsibility of the person from whom such Content originated. This
-    means that you, and not Rateroo, are entirely responsible for all Content that you
-    upload, post, email, transmit or otherwise make available via Rateroo.
+    means that you, and not R8R, are entirely responsible for all Content that you
+    upload, post, email, transmit or otherwise make available via R8R.
     <br>
     <br>
-    Rateroo does not guarantee the accuracy, integrity or quality of its content. You
-    understand that by using Rateroo, you may be exposed to Content that is offensive,
-    indecent or objectionable. Under no circumstances will Rateroo be liable in any
+    R8R does not guarantee the accuracy, integrity or quality of its content. You
+    understand that by using R8R, you may be exposed to Content that is offensive,
+    indecent or objectionable. Under no circumstances will R8R be liable in any
     way for any Content, including, but not limited to, any errors or omissions in any
     Content, or any loss or damage of any kind incurred as a result of the use of any
-    Content posted, emailed, transmitted or otherwise made available via Rateroo.<br>
+    Content posted, emailed, transmitted or otherwise made available via R8R.<br>
     <br>
-    You agree to not use Rateroo to:<br>
+    You agree to not use R8R to:<br>
     <br>
     a. upload, post, email, transmit or otherwise make available any Content that is
     unlawful, harmful, threatening, abusive, harassing, tortious, defamatory, vulgar,
@@ -117,12 +117,12 @@ By accessing and using Rateroo, you accept and agree to be bound by the terms an
     <br>
     b. harm minors in any way;<br>
     <br>
-    c. impersonate any person or entity, including, but not limited to, a Rateroo official,
+    c. impersonate any person or entity, including, but not limited to, a R8R official,
     forum leader, guide or host, or falsely state or otherwise misrepresent your affiliation
     with a person or entity;<br>
     <br>
     d. forge headers or otherwise manipulate identifiers in order to disguise the origin
-    of any Content transmitted through Rateroo;<br>
+    of any Content transmitted through R8R;<br>
     <br>
     e. upload, post, email, transmit via rating, prediction, or other means, or otherwise
     make available any Content that you do not have a right to make available under
@@ -139,9 +139,9 @@ By accessing and using Rateroo, you accept and agree to be bound by the terms an
     "pyramid schemes," or any other form of solicitation, except in those areas (such
     as shopping) that are designated for such purpose<br>
     <br>
-    h. interfere with or disrupt Rateroo or servers or networks connected to Rateroo,
+    h. interfere with or disrupt R8R or servers or networks connected to R8R,
     or disobey any requirements, procedures, policies or regulations of networks connected
-    to Rateroo, including using any device, software or routine to bypass our robot
+    to R8R, including using any device, software or routine to bypass our robot
     exclusion headers;<br>
     <br>
     i. intentionally or unintentionally violate any applicable local, state, national
@@ -162,111 +162,111 @@ By accessing and using Rateroo, you accept and agree to be bound by the terms an
     l. collect or store personal data about other users in connection with the prohibited
     conduct and activities set forth in the paragraphs above; and/or<br>
     <br>
-    m. run programs and/or bots that will connect to Rateroo to enter ratings, predictions,
+    m. run programs and/or bots that will connect to R8R to enter ratings, predictions,
     or other data in an automated way.<br>
     <br>
-    Rateroo does not claim ownership of Content you submit or make available for inclusion
-    on Rateroo. However, with respect to Content you submit or make available for inclusion
-    on publicly accessible areas of Rateroo, you grant Rateroo the following worldwide,
+    R8R does not claim ownership of Content you submit or make available for inclusion
+    on R8R. However, with respect to Content you submit or make available for inclusion
+    on publicly accessible areas of R8R, you grant R8R the following worldwide,
     royalty-free and non-exclusive license(s), as applicable:<br>
     <br>
     a. With respect to Content you submit or make available for inclusion on publicly
-    accessible areas of Rateroo, the license to use, distribute, reproduce, modify,
-    adapt, publicly perform and publicly display such Content on Rateroo solely for
-    the purposes of providing and promoting the specific Rateroo table to which such
+    accessible areas of R8R, the license to use, distribute, reproduce, modify,
+    adapt, publicly perform and publicly display such Content on R8R solely for
+    the purposes of providing and promoting the specific R8R table to which such
     Content was submitted or made available.
     <br>
     <br>
     b. With respect to photos, graphics, audio or video you submit or make available
-    for inclusion on publicly accessible areas of Rateroo other than Rateroo Groups,
+    for inclusion on publicly accessible areas of R8R other than R8R Groups,
     the license to use, distribute, reproduce, modify, adapt, publicly perform and publicly
-    display such Content on Rateroo solely for the purpose for which such Content was
+    display such Content on R8R solely for the purpose for which such Content was
     submitted or made available.
     <br>
     <br>
     c. With respect to Content other than photos, graphics, audio or video you submit
-    or make available for inclusion on publicly accessible areas of Rateroo other than
-    Rateroo Groups, the perpetual, irrevocable and fully sublicensable license to use,
+    or make available for inclusion on publicly accessible areas of R8R other than
+    R8R Groups, the perpetual, irrevocable and fully sublicensable license to use,
     distribute, reproduce, modify, adapt, publish, translate, publicly perform and publicly
     display such Content (in whole or in part) and to incorporate such Content into
     other works in any format or medium now known or later developed.<br>
     <br>
-    "Publicly accessible" areas of Rateroo are those areas of Rateroo network of properties
-    that are intended by Rateroo to be available to the general public. You agree not
-    to attempt to access areas of Rateroo that are not intended to be publicly accessible,
-    or otherwise to circumvent Rateroo’s password or securities systems.<br>
+    "Publicly accessible" areas of R8R are those areas of R8R network of properties
+    that are intended by R8R to be available to the general public. You agree not
+    to attempt to access areas of R8R that are not intended to be publicly accessible,
+    or otherwise to circumvent R8R’s password or securities systems.<br>
     <br>
     By submitting ideas, suggestions, documents, and/or proposals ("Contributions")
-    to Rateroo through its suggestion or feedback webpages, you acknowledge and agree
+    to R8R through its suggestion or feedback webpages, you acknowledge and agree
     that: (a) your Contributions do not contain confidential or proprietary information;
-    (b) Rateroo is not under any obligation of confidentiality, express or implied,
-    with respect to the Contributions; (c) Rateroo shall be entitled to use or disclose
+    (b) R8R is not under any obligation of confidentiality, express or implied,
+    with respect to the Contributions; (c) R8R shall be entitled to use or disclose
     (or choose not to use or disclose) such Contributions for any purpose, in any way,
-    in any media worldwide; (d) Rateroo may have something similar to the Contributions
+    in any media worldwide; (d) R8R may have something similar to the Contributions
     already under consideration or in development; (e) your Contributions automatically
-    become the property of Rateroo without any obligation of Rateroo to you; and (f)
-    you are not entitled to any compensation or reimbursement of any kind from Rateroo
+    become the property of R8R without any obligation of R8R to you; and (f)
+    you are not entitled to any compensation or reimbursement of any kind from R8R
     under any circumstances.<br>
     <br>
     <br>
     <br>
-    • You agree to indemnify and hold Rateroo and its subsidiaries, affiliates, officers,
+    • You agree to indemnify and hold R8R and its subsidiaries, affiliates, officers,
     agents, employees, partners and licensors harmless from any claim or demand, including
     reasonable attorneys' fees, made by any third party due to or arising out of Content
-    you submit, post, transmit, modify or otherwise make available through Rateroo,
-    your use of Rateroo, your connection to Rateroo, your violation of the TOS, or your
+    you submit, post, transmit, modify or otherwise make available through R8R,
+    your use of R8R, your connection to R8R, your violation of the TOS, or your
     violation of any rights of another.<br>
     <br>
     • NO COMMERCIAL REUSE OF RATEROO<br>
     <br>
     You agree not to reproduce, duplicate, copy, sell, trade, resell or exploit for
-    any commercial purposes, any portion or use of, or access to, Rateroo (including
-    Content, advertisements, Software and your Rateroo ID).<br>
+    any commercial purposes, any portion or use of, or access to, R8R (including
+    Content, advertisements, Software and your R8R ID).<br>
     <br>
-    Rateroo reserves the right at any time and from time to time to modify or discontinue,
-    temporarily or permanently, Rateroo (or any part thereof) with or without notice.
-    You agree that Rateroo shall not be liable to you or to any third party for any
-    modification, suspension or discontinuance of Rateroo (or any part thereof).<br>
+    R8R reserves the right at any time and from time to time to modify or discontinue,
+    temporarily or permanently, R8R (or any part thereof) with or without notice.
+    You agree that R8R shall not be liable to you or to any third party for any
+    modification, suspension or discontinuance of R8R (or any part thereof).<br>
     <br>
     Your correspondence or business dealings with, or participation in promotions of,
-    advertisers found on or through Rateroo, including payment and delivery of related
+    advertisers found on or through R8R, including payment and delivery of related
     goods or services, and any other terms, conditions, warranties or representations
     associated with such dealings, are solely between you and such advertiser. You agree
-    that Rateroo shall not be responsible or liable for any loss or damage of any sort
+    that R8R shall not be responsible or liable for any loss or damage of any sort
     incurred as the result of any such dealings or as the result of the presence of
-    such advertisers on Rateroo.<br>
+    such advertisers on R8R.<br>
     <br>
-    Rateroo may provide, or third parties may provide, links to other World Wide Web
-    sites or resources. You acknowledge and agree that Rateroo is not responsible for
+    R8R may provide, or third parties may provide, links to other World Wide Web
+    sites or resources. You acknowledge and agree that R8R is not responsible for
     the availability of such external sites or resources, and does not endorse and is
     not responsible or liable for any Content, advertising, products or other materials
     on or available from such sites or resources. You further acknowledge and agree
-    that Rateroo shall not be responsible or liable, directly or indirectly, for any
+    that R8R shall not be responsible or liable, directly or indirectly, for any
     damage or loss caused or alleged to be caused by or in connection with use of or
     reliance on any such Content, goods or services available on or through any such
     site or resource.<br>
     <br>
-    You acknowledge and agree that Rateroo and any necessary software used in connection
-    with Rateroo ("Software") contain proprietary and confidential information that
+    You acknowledge and agree that R8R and any necessary software used in connection
+    with R8R ("Software") contain proprietary and confidential information that
     is protected by applicable intellectual property and other laws. You further acknowledge
     and agree that Content contained in advertisements or information presented to you
-    through Rateroo or by advertisers is protected by copyrights, trademarks, service
+    through R8R or by advertisers is protected by copyrights, trademarks, service
     marks, patents or other proprietary rights and laws. Except as expressly permitted
-    by applicable law or as authorized by Rateroo or the applicable licensor (such as
+    by applicable law or as authorized by R8R or the applicable licensor (such as
     an advertiser), you agree not to modify, rent, lease, loan, sell, distribute, transmit,
-    broadcast, publicly perform or create derivative works based on Rateroo, such Content
+    broadcast, publicly perform or create derivative works based on R8R, such Content
     or the Software, in whole or in part.<br>
     <br>
-    Rateroo grants you a personal, non-transferable and non-exclusive right and license
+    R8R grants you a personal, non-transferable and non-exclusive right and license
     to use the object code of its Software on a single computer; provided that you do
     not (and do not allow any third party to) copy, modify, create a derivative work
     from, reverse engineer, reverse assemble or otherwise attempt to discover any source
     code, sell, assign, sublicense, grant a security interest in or otherwise transfer
     any right in the Software. You agree not to modify the Software in any manner or
     form, nor to use modified versions of the Software, including (without limitation)
-    for the purpose of obtaining unauthorized access to Rateroo. You agree not to access
-    Rateroo by any means other than through the interface that is provided by Rateroo
-    for use in accessing Rateroo.<br>
+    for the purpose of obtaining unauthorized access to R8R. You agree not to access
+    R8R by any means other than through the interface that is provided by R8R
+    for use in accessing R8R.<br>
     <br>
     DISCLAIMER OF WARRANTIES<br>
     <br>
@@ -326,12 +326,12 @@ By accessing and using Rateroo, you accept and agree to be bound by the terms an
     SOME OF THE ABOVE LIMITATIONS OF SECTIONS 19 AND 20 MAY NOT APPLY TO YOU.<br>
     <br>
     If you intend to create or join any service, buy or sell any good, enter into a
-    contract, or take any other action based on a rating or prediction on Rateroo, the
-    disclaimer of warranties above remains fully and completely applicable. Rateroo
-    is provided for informational purposes only, and no Content included in Rateroo
-    is intended for trading, investing, or other commercial purposes. Rateroo and its
+    contract, or take any other action based on a rating or prediction on R8R, the
+    disclaimer of warranties above remains fully and completely applicable. R8R
+    is provided for informational purposes only, and no Content included in R8R
+    is intended for trading, investing, or other commercial purposes. R8R and its
     licensors shall not be responsible or liable for the accuracy, usefulness or availability
-    of any information transmitted or made available via Rateroo, and shall not be responsible
+    of any information transmitted or made available via R8R, and shall not be responsible
     or liable for any trading or investment decisions based on such information.<br>
     <br>
     You agree that, except as otherwise expressly provided in this TOS, there shall
@@ -339,40 +339,40 @@ By accessing and using Rateroo, you accept and agree to be bound by the terms an
     <br>
     NOTICE<br>
     <br>
-    Rateroo may provide you with notices, including those regarding changes to the TOS,
+    R8R may provide you with notices, including those regarding changes to the TOS,
     including by but not limited to email, regular mail, SMS, MMS, text message, postings
-    on Rateroo, or other reasonable means now known or hereafter developed. Such notices
-    may not be received if you violate this TOS by accessing Rateroo in an unauthorized
+    on R8R, or other reasonable means now known or hereafter developed. Such notices
+    may not be received if you violate this TOS by accessing R8R in an unauthorized
     manner. Your agreement to this TOS constitutes your agreement that you are deemed
     to have received any and all notices that would have been delivered had you accessed
-    Rateroo in an authorized manner.
+    R8R in an authorized manner.
     <br>
     <br>
-    You agree that all of Rateroo’s trademarks, trade names, service marks and other
-    Rateroo logos and brand features, and product and service names are trademarks and
-    the property of Rateroo Inc. (the "Rateroo Marks"). Without Rateroo's prior permission,
-    you agree not to display or use in any manner Rateroo Marks.<br>
+    You agree that all of R8R’s trademarks, trade names, service marks and other
+    R8R logos and brand features, and product and service names are trademarks and
+    the property of R8R Inc. (the "R8R Marks"). Without R8R's prior permission,
+    you agree not to display or use in any manner R8R Marks.<br>
     <br>
     <br>
     <br>
-    Entire Agreement. The TOS constitutes the entire agreement between you and Rateroo
-    and governs your use of Rateroo, superseding any prior version of this TOS between
-    you and Rateroo with respect to Rateroo. You also may be subject to additional terms
-    and conditions that may apply when you use or purchase certain other Rateroo, affiliate
+    Entire Agreement. The TOS constitutes the entire agreement between you and R8R
+    and governs your use of R8R, superseding any prior version of this TOS between
+    you and R8R with respect to R8R. You also may be subject to additional terms
+    and conditions that may apply when you use or purchase certain other R8R, affiliate
     services, third-party content or third-party software.<br>
     <br>
-    Choice of Law and Forum. You and Rateroo each agree that the TOS and the relationship
+    Choice of Law and Forum. You and R8R each agree that the TOS and the relationship
     between the parties shall be governed by the laws of the State of Virginia without
     regard to its conflict of law provisions and that any and all claims, causes of
     action or disputes (regardless of theory) arising out of or relating to the TOS,
-    or the relationship between you and Rateroo, shall be brought exclusively in the
+    or the relationship between you and R8R, shall be brought exclusively in the
     courts located in the county of Arlington, Virginia or the U.S. District Court for
     the Eastern District of Virginia. You agree to submit to the personal jurisdiction
     of the courts located within the county of Arlington, Virginia or the Eastern District
     of Virginia, and agree to waive any and all objections to the exercise of jurisdiction
     over the parties by such courts and to venue in such courts.<br>
     <br>
-    Waiver and Severability of Terms. The failure of Rateroo to exercise or enforce
+    Waiver and Severability of Terms. The failure of R8R to exercise or enforce
     any right or provision of the TOS shall not constitute a waiver of such right or
     provision. If any provision of the TOS is found by a court of competent jurisdiction
     to be invalid, the parties nevertheless agree that the court should endeavor to
@@ -380,15 +380,15 @@ By accessing and using Rateroo, you accept and agree to be bound by the terms an
     provisions of the TOS remain in full force and effect.<br>
     <br>
     Interpretation. Any ambiguity in this agreement shall be interpreted in favor of
-    Rateroo, and in any event not against Rateroo.<br>
+    R8R, and in any event not against R8R.<br>
     <br>
-    No Right of Survivorship and Non-Transferability. You agree that your Rateroo account
-    is non-transferable and any rights to your Rateroo ID or contents within your account
+    No Right of Survivorship and Non-Transferability. You agree that your R8R account
+    is non-transferable and any rights to your R8R ID or contents within your account
     terminate upon your death. Upon receipt of a copy of a death certificate, your account
     may be terminated and all contents therein permanently deleted.<br>
     <br>
     Statute of Limitations. You agree that regardless of any statute or law to the contrary,
-    any claim or cause of action arising out of or related to use of Rateroo or the
+    any claim or cause of action arising out of or related to use of R8R or the
     TOS must be filed within one (1) year after such claim or cause of action arose
     or be forever barred.<br>
     <br>

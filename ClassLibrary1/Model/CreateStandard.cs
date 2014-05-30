@@ -339,7 +339,7 @@ namespace ClassLibrary1.Model
 
         protected void BeginImport(string filename, int TblID)
         {
-            //ImportExport myImportExport = new ImportExport(Action.RaterooDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
+            //ImportExport myImportExport = new ImportExport(Action.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
             //string sourceFileLoc = Server.MapPath("~/sourcedata/" + filename);
             //string errorMessage = "";
             //if (System.IO.File.Exists(sourceFileLoc))
@@ -407,11 +407,11 @@ namespace ClassLibrary1.Model
             superUser = Action.DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
             myChangesGroup = Action.ChangesGroupCreate(null, null, superUser, null, null, null, null);
 
-            standardDomain = Action.DataContext.GetTable<Domain>().SingleOrDefault(d => d.Name == "RaterooStandard");
+            standardDomain = Action.DataContext.GetTable<Domain>().SingleOrDefault(d => d.Name == "R8RStandard");
             if (standardDomain == null)
             { // all this will only run once
-                int domainID = Action.DomainCreate(true, true, false, true, true, superUser, null, "RaterooStandard");
-                standardDomain = Action.DataContext.GetTable<Domain>().Single(d => d.Name == "RaterooStandard");
+                int domainID = Action.DomainCreate(true, true, false, true, true, superUser, null, "R8RStandard");
+                standardDomain = Action.DataContext.GetTable<Domain>().Single(d => d.Name == "R8RStandard");
                 sportsHierarchy = CreateHierarchyItem(null, null, null, true, "Sports");
                 entertainmentHierarchy = CreateHierarchyItem(null, null, null, true, "Entertainment");
                 internetHierarchy = CreateHierarchyItem(null, null, null, true, "Internet");
@@ -421,7 +421,7 @@ namespace ClassLibrary1.Model
             }
             else
             {
-                standardDomain = Action.DataContext.GetTable<Domain>().Single(d => d.Name == "RaterooStandard");
+                standardDomain = Action.DataContext.GetTable<Domain>().Single(d => d.Name == "R8RStandard");
                 sportsHierarchy = Action.DataContext.GetTable<HierarchyItem>().Single(h => h.HierarchyItemName == "Sports");
                 entertainmentHierarchy = Action.DataContext.GetTable<HierarchyItem>().Single(h => h.HierarchyItemName == "Entertainment");
                 internetHierarchy = Action.DataContext.GetTable<HierarchyItem>().Single(h => h.HierarchyItemName == "Internet");
@@ -1008,7 +1008,7 @@ namespace ClassLibrary1.Model
             int thePointsManagerID = CreatePointsManager("Real Estate For Sale", null, null, standardDomain.DomainID, true);
             int defaultType = standardObjectsForPointsManager[thePointsManagerID].ratingRGA;
             CreateRealEstateChoiceGroups(thePointsManagerID);
-            int forSaleTblID = CreateTbl("For Sale", "Property", "Any property that is on the rating in the regions covered by Rateroo is eligible to be added.", defaultType, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID, null, null, thePointsManagerID);
+            int forSaleTblID = CreateTbl("For Sale", "Property", "Any property that is on the rating in the regions covered by R8R is eligible to be added.", defaultType, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID, null, null, thePointsManagerID);
             HierarchyItem hierarchy = CreateHierarchyItem(realEstateHierarchy, realEstateHierarchy, forSaleTblID, true, "For Sale");
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             CreateRealEstateFields(forSaleTblID);
@@ -1018,7 +1018,7 @@ namespace ClassLibrary1.Model
 
             thePointsManagerID = CreatePointsManager("Real Estate For Rent", null, null, standardDomain.DomainID, true);
             CreateRealEstateChoiceGroups(thePointsManagerID);
-            int forRentTblID = CreateTbl("For Rent", "Property", "Any property that is available for rent in the regions covered by Rateroo is eligible to be added.", defaultType, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID, null, null, thePointsManagerID);
+            int forRentTblID = CreateTbl("For Rent", "Property", "Any property that is available for rent in the regions covered by R8R is eligible to be added.", defaultType, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID, null, null, thePointsManagerID);
             hierarchy = CreateHierarchyItem(realEstateHierarchy, realEstateHierarchy, forRentTblID, true, "For Rent");
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             CreateRealEstateFields(forRentTblID);
@@ -1818,10 +1818,10 @@ namespace ClassLibrary1.Model
             theCuisineChoiceGroup.AddChoiceToGroup("Vietnamese");
             theCuisineChoiceGroupID = CreateChoiceGroup(pointsManagerID, theCuisineChoiceGroup, choiceGroupStandardSettings, null, "Cuisine");
 
-            int americanID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "American").ChoiceInGroupID;
-            int asianID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Asian").ChoiceInGroupID;
-            int latinAmericanID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Latin American").ChoiceInGroupID;
-            int indianPakistaniID = Action.DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Indian / Pakistani").ChoiceInGroupID;
+            int americanID = Action.DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "American").ChoiceInGroupID;
+            int asianID = Action.DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Asian").ChoiceInGroupID;
+            int latinAmericanID = Action.DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Latin American").ChoiceInGroupID;
+            int indianPakistaniID = Action.DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceGroupID == theCuisineChoiceGroupID && x.ChoiceText == "Indian / Pakistani").ChoiceInGroupID;
 
             int choiceGroupDependentSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false, true, false, false, false, false, true, false);
             ChoiceGroupData theSubCuisineChoiceGroup = new ChoiceGroupData();
@@ -1885,7 +1885,7 @@ namespace ClassLibrary1.Model
             int thePointsManagerID = CreatePointsManager("Restaurants", null, null, standardDomain.DomainID, true);
             int defaultType = standardObjectsForPointsManager[thePointsManagerID].ratingRGA;
             CreateRestaurantChoiceGroups(thePointsManagerID);
-            int restaurantsTblID = CreateTbl("Restaurants", "Restaurant", "Any restaurant in the region covered by Rateroo is eligible to be added.", defaultType, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID, null, null, thePointsManagerID);
+            int restaurantsTblID = CreateTbl("Restaurants", "Restaurant", "Any restaurant in the region covered by R8R is eligible to be added.", defaultType, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID, null, null, thePointsManagerID);
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             HierarchyItem hierarchy = CreateHierarchyItem(consumerHierarchy, null, restaurantsTblID, true, "Restaurants");
             CreateRestaurantFields(restaurantsTblID);

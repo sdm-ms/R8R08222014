@@ -21,7 +21,7 @@ public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
     public FieldsBoxMode Mode { get; set; }
     public int? TblRowID { get; set; }
     public int FieldDefinitionOrTblColumnID {get; set;}
-    public RaterooDataAccess DataAccess { get; set; }
+    public R8RDataAccess DataAccess { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -29,7 +29,7 @@ public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
         {
             if (Mode == FieldsBoxMode.modifyFields)
             {
-                TextField theTextField = DataAccess.RaterooDB.GetTable<TextField>().SingleOrDefault(a =>
+                TextField theTextField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(a =>
                             a.Field.FieldDefinitionID == FieldDefinitionOrTblColumnID
                             && a.Field.TblRowID == TblRowID && a.Status == (Byte)StatusOfObject.Active);
                 if (theTextField != null)
@@ -40,7 +40,7 @@ public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
             }
             TxtMain.CssClass = "setFieldsTextBox";
             LinkTextBox.CssClass = "setFieldsTextBox";
-            TextFieldDefinition theTextFieldDefinition = DataAccess.RaterooDB.GetTable<TextFieldDefinition>().Single(t => t.FieldDefinitionID == FieldDefinitionOrTblColumnID);
+            TextFieldDefinition theTextFieldDefinition = DataAccess.R8RDB.GetTable<TextFieldDefinition>().Single(t => t.FieldDefinitionID == FieldDefinitionOrTblColumnID);
             if (!theTextFieldDefinition.IncludeText)
             {
                 TextRowOpening.AddAttribute("style", "display:none;");
@@ -132,7 +132,7 @@ public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
             return new TextFieldDataInfo(theFieldDefinition, MainText, LinkText, theGroup, DataAccess);
         }
     }

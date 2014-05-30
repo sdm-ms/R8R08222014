@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="MyPoints" Title="Rateroo: My Points and Winnings" Codebehind="MyPoints.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="MyPoints" Title="R8R: My Points and Winnings" Codebehind="MyPoints.aspx.cs" %>
 
 <%@ Register TagPrefix="SNFWC" Namespace="SqlNetFrameworkWebControls"
     Assembly="ClassLibrary1" %>

@@ -15,9 +15,9 @@ namespace WebRole1
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             string thePhrase = HttpUtility.HtmlDecode(context.Request.QueryString["q"] as string);
-            List<AutoCompleteData> theData = RaterooDataManipulation.GetAutoCompleteData(theDataAccessModule.DataContext, thePhrase).Take(15).ToList();
+            List<AutoCompleteData> theData = R8RDataManipulation.GetAutoCompleteData(theDataAccessModule.DataContext, thePhrase).Take(15).ToList();
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             var theOutput = serializer.Serialize(theData);
             context.Response.Write(theOutput);

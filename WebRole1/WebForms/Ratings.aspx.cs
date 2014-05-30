@@ -28,7 +28,7 @@ public partial class Ratings : System.Web.UI.Page
     protected bool rebinding = false;
     protected int rowBeingCreated = 0;
     bool ResetToTop = false;
-    RaterooDataManipulation theDataAccessModule;
+    R8RDataManipulation theDataAccessModule;
 
     bool notHighStakesRatings ;
     bool highStakesKnownRatings ;
@@ -36,7 +36,7 @@ public partial class Ratings : System.Web.UI.Page
 
     protected void Page_Init(object sender, EventArgs e)
     {
-        theDataAccessModule = new RaterooDataManipulation();
+        theDataAccessModule = new R8RDataManipulation();
     }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -297,10 +297,11 @@ public partial class Ratings : System.Web.UI.Page
 
     protected void MimicOrRevert(bool mimic, bool untrustedOnly = true)
     {
-        if (browsingUserIsTrusted && UserIDOfBrowsingUser != null)
-            theDataAccessModule.RevertOrMimicRatings((int)UserIDOfRatingsBeingViewed, (int)UserIDOfBrowsingUser, mimic,untrustedOnly);
-        mimicRow.Visible = false;
-        ReBind(true);
+        throw new NotImplementedException();
+        //if (browsingUserIsTrusted && UserIDOfBrowsingUser != null)
+        //    theDataAccessModule.RevertOrMimicRatings((int)UserIDOfRatingsBeingViewed, (int)UserIDOfBrowsingUser, mimic,untrustedOnly);
+        //mimicRow.Visible = false;
+        //ReBind(true);
     }
 
     protected void Mimic_Click(object sender, EventArgs e)

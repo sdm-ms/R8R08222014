@@ -25,9 +25,9 @@ namespace ClassLibrary1.Model
             theFormatting = (TblColumnFormatting)CacheManagement.GetItemFromCache(cacheKey, out isInCacheButNull);
             if (theFormatting == null && !isInCacheButNull)
             {
-                RaterooDataAccess theDataAccessModule = new RaterooDataAccess();
-                theFormatting = theDataAccessModule.RaterooDB.GetTable<TblColumnFormatting>().SingleOrDefault(cdf => cdf.TblColumnID == TblColumnID);
-                int theTblID = theDataAccessModule.RaterooDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID).TblTab.TblID;
+                R8RDataAccess theDataAccessModule = new R8RDataAccess();
+                theFormatting = theDataAccessModule.R8RDB.GetTable<TblColumnFormatting>().SingleOrDefault(cdf => cdf.TblColumnID == TblColumnID);
+                int theTblID = theDataAccessModule.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID).TblTab.TblID;
                 string[] myDependencies = {
                                     "CategoriesForTblID" + theTblID.ToString()
                                                       };
@@ -118,9 +118,9 @@ namespace ClassLibrary1.Model
             return initialString;
         }
 
-        public static bool UseVerticalColumns(RaterooDataAccess dataAccess, int TblTabID, int? limitToThisTblColumnID, bool isTblRowPage)
+        public static bool UseVerticalColumns(R8RDataAccess dataAccess, int TblTabID, int? limitToThisTblColumnID, bool isTblRowPage)
         {
-            var tblColumnNames = dataAccess.RaterooDB.GetTable<TblColumn>()
+            var tblColumnNames = dataAccess.R8RDB.GetTable<TblColumn>()
                .Where(x => x.TblTabID == TblTabID
                        && (limitToThisTblColumnID == null || x.TblColumnID == limitToThisTblColumnID)
                        && x.Status == (byte)StatusOfObject.Active).Select(x => ((x.Abbreviation == "") ? x.Name : x.Abbreviation).Trim()).ToList();

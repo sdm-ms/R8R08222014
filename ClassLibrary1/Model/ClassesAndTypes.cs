@@ -265,7 +265,7 @@ namespace ClassLibrary1.Model
     // interface defines a method that returns a filter rule.
     public interface IFilterField
     {
-        RaterooDataAccess DataAccess { get; set; }
+        R8RDataAccess DataAccess { get; set; }
         FieldsBoxMode Mode { get; set; }
         int? TblRowID { get; set; }
         int FieldDefinitionOrTblColumnID { get; set; }

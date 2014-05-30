@@ -31,18 +31,18 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
     protected bool CanResolveRatings;
     protected bool CommentsEnabled;
     protected TblDimension TheTblDimensions;
-    protected RaterooDataAccess DataAccess;
+    protected R8RDataAccess DataAccess;
     ActionProcessor Obj = new ActionProcessor();
 
     public void Setup(int entityID, int tblColumnID)
     {
-        DataAccess = new RaterooDataAccess();
+        DataAccess = new R8RDataAccess();
         TblRowID = entityID;
         TblColumnID = tblColumnID;
-        TblColumn theTblColumn = DataAccess.RaterooDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
+        TblColumn theTblColumn = DataAccess.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
         RatingGroupID = (int) DataAccess.GetRatingGroupForTblRowCategory(entityID, TblColumnID);
-        int topRatingGroupID = DataAccess.RaterooDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
-        Tbl theTbl = DataAccess.RaterooDB.GetTable<TblRow>().Single(x => x.TblRowID == TblRowID).Tbl;
+        int topRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
+        Tbl theTbl = DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == TblRowID).Tbl;
         TblID = theTbl.TblID;
         PointsManagerID = theTbl.PointsManagerID;
         DetermineUserRights();
@@ -55,7 +55,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
 
         FieldDisplayHtml mainFieldDisplayHtml = new FieldDisplayHtml();
         Main_Table_FieldsDisplay theMainFieldsDisplay = (Main_Table_FieldsDisplay)LoadControl("~/Main/Table/FieldsDisplay.ascx");
-        mainFieldDisplayHtml = theMainFieldsDisplay.Setup(DataAccess.RaterooDB, TheTblDimensions, FieldsLocation.TblRowPage, TblRowID, true);
+        mainFieldDisplayHtml = theMainFieldsDisplay.Setup(DataAccess.R8RDB, TheTblDimensions, FieldsLocation.TblRowPage, TblRowID, true);
         FieldsDisplayPlaceHolder.Controls.Add(theMainFieldsDisplay);
 
         RatingOverTimeGraph theRatingOverTimeGraph = (RatingOverTimeGraph)LoadControl("~/CommonControl/RatingOverTimeGraph.ascx");

@@ -61,7 +61,7 @@ namespace ClassLibrary1.Model
             throw new Exception("Internal error: Unknown volatility timing span.");
         }
 
-        public static void AddVolatilityTracking(RaterooDataManipulation theDataAccessModule, TblRow theTblRow)
+        public static void AddVolatilityTracking(R8RDataManipulation theDataAccessModule, TblRow theTblRow)
         {
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneHour);
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneDay);
@@ -69,7 +69,7 @@ namespace ClassLibrary1.Model
             theDataAccessModule.AddVolatilityTblRowTracker(theTblRow, VolatilityDuration.oneYear);
         }
 
-        public static void AddVolatilityTracking(RaterooDataManipulation theDataAccessModule, RatingGroup theRatingGroup)
+        public static void AddVolatilityTracking(R8RDataManipulation theDataAccessModule, RatingGroup theRatingGroup)
         {
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneHour);
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneDay);
@@ -77,7 +77,7 @@ namespace ClassLibrary1.Model
             theDataAccessModule.AddVolatilityTracker(theRatingGroup, VolatilityDuration.oneYear);
         }
 
-        public static bool UpdateTrackers(IRaterooDataContext theDataContext)
+        public static bool UpdateTrackers(IR8RDataContext theDataContext)
         {
             bool[] moreWorkToDo = new bool[4];
             moreWorkToDo[0] = UpdateTrackers(theDataContext, VolatilityDuration.oneHour);
@@ -129,7 +129,7 @@ namespace ClassLibrary1.Model
             new FastAccessVolatilityUpdateInfo() { TimeFrame = (VolatilityDuration)theTracker.DurationType, Value = 0.2M * theTracker.VolatilityTblRowTracker.DistanceFromStart + 0.8M * theTracker.VolatilityTblRowTracker.Pushback }.AddToTblRow(theUserRating.Rating.RatingGroup.TblRow);
         }
 
-        public static bool UpdateTrackers(IRaterooDataContext theDataContext, VolatilityDuration theTimeFrame)
+        public static bool UpdateTrackers(IR8RDataContext theDataContext, VolatilityDuration theTimeFrame)
         {
 
             var cutoffTime = TestableDateTime.Now - GetTimeSpanForVolatilityTiming(theTimeFrame);
@@ -179,7 +179,7 @@ namespace ClassLibrary1.Model
             return moreWork;
         }
 
-        public static bool UpdateTrackersOldMethod(IRaterooDataContext theDataContext, VolatilityDuration theTimeFrame)
+        public static bool UpdateTrackersOldMethod(IR8RDataContext theDataContext, VolatilityDuration theTimeFrame)
         {
             DateTime newEndTime = TestableDateTime.Now;
             DateTime newStartTime = newEndTime - GetTimeSpanForVolatilityTiming(theTimeFrame);

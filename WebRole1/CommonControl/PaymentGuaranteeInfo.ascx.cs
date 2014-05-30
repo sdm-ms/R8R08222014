@@ -16,7 +16,7 @@ namespace WebRole1.CommonControl
         public PointsManager ThePointsManager;
         public PaymentGuaranteeInfoLocation Location;
         public PointsTotal ThePointsTotal;
-        public RaterooDataManipulation TheDataAccess;
+        public R8RDataManipulation TheDataAccess;
 
         public enum PaymentGuaranteeInfoLocation
         {
@@ -58,7 +58,7 @@ namespace WebRole1.CommonControl
             {
                 case PaymentGuaranteeInfoLocation.GuaranteePage:
                     useThisIfGuaranteesNotAvailable = "Guaranteed payments are not currently available for this table.";
-                    useThisIfUserNotTrusted = "You are not yet trusted enough to receive guaranteed payments. You may, however, work on the table to earn Rateroo's trust.";
+                    useThisIfUserNotTrusted = "You are not yet trusted enough to receive guaranteed payments. You may, however, work on the table to earn R8R's trust.";
                     prefix = "Guaranteed payment: ";
                     break;
                 case PaymentGuaranteeInfoLocation.MyPointsPage:
@@ -89,14 +89,14 @@ namespace WebRole1.CommonControl
                     //RouteValueDictionary parameters;
                     //Routing.OutgoingGetRoute(new RoutingInfoMainContent(ThePointsManager.Tbls.First(), null, null, false, false, false, false, true), out urlString, out parameters );
                     //Apply.PostBackUrl = "/" + new RoutingInfoMainContent(ThePointsManager.Tbls.First(x => x.Name != "Changes"), null, null, false, false, false, false, true).GetHierarchyRoutingParameterString(); // "~/Guarantees";
-                    RoutingInfoMainContent route = Routing.IncomingMainContent(Page.RouteData, GetIRaterooDataContext.New(false, false));
+                    RoutingInfoMainContent route = Routing.IncomingMainContent(Page.RouteData, GetIR8RDataContext.New(false, false));
                     Apply.PostBackUrl = route.lastItemInHierarchy.RouteToHere + "/Guarantees";
                 }
                 if (Location == PaymentGuaranteeInfoLocation.GuaranteePage)
                 {
                     DocumentationUpload.Visible = Location == PaymentGuaranteeInfoLocation.GuaranteePage && status == ConditionalGuaranteeUserCanApplyStatus.canApplyWithDocumentation;
                     DocumentationUploadInstructions.Visible = true;
-                    DocumentationUploadInstructions.Text = "<br/><span>To apply for a guaranteed payment, please submit a resume or other information about yourself, and your application will be considered. If you prefer not to do so, you can also earn money simply by entering ratings. Once enough time has passed for Rateroo to evaluate your performance, you will be eligible for available payment guarantees without documentation.</span><br/>";
+                    DocumentationUploadInstructions.Text = "<br/><span>To apply for a guaranteed payment, please submit a resume or other information about yourself, and your application will be considered. If you prefer not to do so, you can also earn money simply by entering ratings. Once enough time has passed for R8R to evaluate your performance, you will be eligible for available payment guarantees without documentation.</span><br/>";
                 }
                 else
                 {

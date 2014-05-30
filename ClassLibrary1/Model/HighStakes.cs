@@ -30,9 +30,9 @@ using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
 
         // High stakes known means that at some point in this rating period (after HighStakesBecomeKnown), this row will show up as being known.

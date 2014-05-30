@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="MyAccount" Title="Rateroo: My Account" Codebehind="MyAccount.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="MyAccount" Title="R8R: My Account" Codebehind="MyAccount.aspx.cs" %>
 
 <asp:Content ID="MyContentHead" ContentPlaceHolderID="ContentHeadText" runat="Server">
     My Account

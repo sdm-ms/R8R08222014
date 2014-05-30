@@ -20,7 +20,7 @@ namespace WebRole1.Admin
     public partial class GuaranteeApplications : System.Web.UI.UserControl
     {
         RoutingInfoMainContent theLocation;
-        RaterooDataAccess theDataAccessModule;
+        R8RDataAccess theDataAccessModule;
 
         protected int? ColumnToSort;
         protected bool SortOrderAscending = true;
@@ -31,12 +31,12 @@ namespace WebRole1.Admin
         protected void Page_Load(object sender, EventArgs e)
         {
             theLocation = Routing.IncomingMainContent(Page.RouteData, null);
-            theDataAccessModule = new RaterooDataAccess();
+            theDataAccessModule = new R8RDataAccess();
         }
 
         public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
-            var theQuery = theDataAccessModule.RaterooDB.GetTable<PointsTotal>().Where(x => x.PointsManager == theLocation.thePointsManager && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserID });
+            var theQuery = theDataAccessModule.R8RDB.GetTable<PointsTotal>().Where(x => x.PointsManager == theLocation.thePointsManager && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserID });
             e.Result = theQuery;
         }
 
@@ -63,7 +63,7 @@ namespace WebRole1.Admin
         public GuaranteeApplicationsItem GetGuaranteeApplicationsItemFromCommandArgument(string commandArgument)
         {
             string[] split = commandArgument.Split('$');
-            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = Convert.ToInt32(split[1]), Username = theDataAccessModule.RaterooDB.GetTable<User>().Single(x => x.UserID == Convert.ToInt32(split[1])).Username };
+            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = Convert.ToInt32(split[1]), Username = theDataAccessModule.R8RDB.GetTable<User>().Single(x => x.UserID == Convert.ToInt32(split[1])).Username };
             return item;
         }
 
@@ -71,7 +71,7 @@ namespace WebRole1.Admin
         {
             Button button = (Button)sender;
             GuaranteeApplicationsItem item = GetGuaranteeApplicationsItemFromCommandArgument(button.CommandArgument);
-            return theDataAccessModule.RaterooDB.GetTable<PointsTotal>().SingleOrDefault(x => x.PointsManager == theLocation.thePointsManager && x.UserID == item.UserID);
+            return theDataAccessModule.R8RDB.GetTable<PointsTotal>().SingleOrDefault(x => x.PointsManager == theLocation.thePointsManager && x.UserID == item.UserID);
         }
 
         public void Download_Click(object sender, EventArgs e)
@@ -87,7 +87,7 @@ namespace WebRole1.Admin
             {
                 decimal amount = Convert.ToDecimal(amountTextBox.Text);
                 PaymentGuarantees.ApproveConditionalGuaranteeForNewUser(GetPointsTotalFromClickEvent(sender), amount);
-                theDataAccessModule.RaterooDB.SubmitChanges();
+                theDataAccessModule.R8RDB.SubmitChanges();
             }
             catch
             {
@@ -98,7 +98,7 @@ namespace WebRole1.Admin
         public void Reject_Click(object sender, EventArgs e)
         {
             PaymentGuarantees.RejectConditionalGuaranteeForNewUser(GetPointsTotalFromClickEvent(sender));
-            theDataAccessModule.RaterooDB.SubmitChanges();
+            theDataAccessModule.R8RDB.SubmitChanges();
         }
 
 

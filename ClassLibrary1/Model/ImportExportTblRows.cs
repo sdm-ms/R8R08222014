@@ -32,9 +32,9 @@ namespace ClassLibrary1.Model
         internal bool dictionariesInitialized = false;
         internal Dictionary<string, int> dictionaryNameToID;
         internal Dictionary<int, string> dictionaryIDToName;
-        internal RaterooDataAccess DataAccess;
+        internal R8RDataAccess DataAccess;
 
-        public ImportExport(Tbl theTbl, RaterooDataAccess theDataAccess)
+        public ImportExport(Tbl theTbl, R8RDataAccess theDataAccess)
         {
             TheTbl = theTbl;
             DataAccess = theDataAccess;
@@ -43,7 +43,7 @@ namespace ClassLibrary1.Model
         public ImportExport(Tbl theTbl)
         {
             TheTbl = theTbl;
-            DataAccess = new RaterooDataAccess();
+            DataAccess = new R8RDataAccess();
         }
 
         public bool IsXmlValid(string xml, ref string errorMessage)
@@ -105,7 +105,7 @@ namespace ClassLibrary1.Model
         {
             if (!dictionariesInitialized)
             {
-                var theFieldDefinitions = DataAccess.RaterooDB.GetTable<FieldDefinition>().Where(fd => fd.Tbl == TheTbl);
+                var theFieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.Tbl == TheTbl);
                 dictionaryIDToName = new Dictionary<int, string>();
                 dictionaryNameToID = new Dictionary<string, int>();
                 foreach (var fd in theFieldDefinitions)
@@ -153,18 +153,18 @@ namespace ClassLibrary1.Model
         public int GetFieldNum(string abbreviatedFieldName)
         {
             int FieldDefinitionID = GetFieldDefinitionID(abbreviatedFieldName);
-            return DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).FieldNum;
+            return DataAccess.R8RDB.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).FieldNum;
         }
 
         public FieldTypes GetFieldType(string abbreviatedFieldName, ref bool allowsMultipleSelections)
         {
             int theFieldDefinitionID = GetFieldDefinitionID(abbreviatedFieldName);
-            FieldDefinition theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == theFieldDefinitionID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == theFieldDefinitionID);
             if (theFieldDefinition.FieldType != (int)FieldTypes.ChoiceField)
                 allowsMultipleSelections = false;
             else
             {
-                ChoiceGroupFieldDefinition theCGFD = DataAccess.RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == theFieldDefinitionID);
+                ChoiceGroupFieldDefinition theCGFD = DataAccess.R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == theFieldDefinitionID);
                 allowsMultipleSelections = theCGFD.ChoiceGroup.AllowMultipleSelections;
             }
             return (FieldTypes)theFieldDefinition.FieldType;
@@ -392,11 +392,11 @@ namespace ClassLibrary1.Model
                 else
                 {
                     int FieldDefinitionID = dictionaryNameToID[theField.Name.ToString()];
-                    FieldDefinition theFieldDefinition = DataAccess.RaterooDB.TempCacheGet("FieldDefinition" + FieldDefinitionID) as FieldDefinition;
+                    FieldDefinition theFieldDefinition = DataAccess.R8RDB.TempCacheGet("FieldDefinition" + FieldDefinitionID) as FieldDefinition;
                     if (theFieldDefinition == null)
                     {
-                        theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.FieldDefinitionID == FieldDefinitionID);
-                        DataAccess.RaterooDB.TempCacheAdd("FieldDefinition" + FieldDefinitionID, theFieldDefinition);
+                        theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.FieldDefinitionID == FieldDefinitionID);
+                        DataAccess.R8RDB.TempCacheAdd("FieldDefinition" + FieldDefinitionID, theFieldDefinition);
                     }
                     if (theFieldDefinition == null)
                         throw new Exception("Field descriptor not found for " + theElement.Name);
@@ -436,9 +436,9 @@ namespace ClassLibrary1.Model
 
         public void PerformImportHelper(string storedFileName, string storedLogName, string entityType, int UserId, int startingRecord, int lastRecord, bool copyValuesIntoTbl)
         {
-            RaterooFile storedFile = new RaterooFile("import", storedFileName);
+            R8RFile storedFile = new R8RFile("import", storedFileName);
             string storedFileLocation = storedFile.LoadPreviouslyStored();
-            RaterooFile storedLog = new RaterooFile("importlog", storedFileName);
+            R8RFile storedLog = new R8RFile("importlog", storedFileName);
             string storedLogLocation = storedLog.LoadPreviouslyStored();
 
             string fileLocCacheKey = "IMPORT" + storedFileLocation;
@@ -495,7 +495,7 @@ namespace ClassLibrary1.Model
                             AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "TblRowID was not in correct format for an existing entity");
                             continue;
                         }
-                        theTblRow = DataAccess.RaterooDB.GetTable<TblRow>().SingleOrDefault(x => x.TblRowID == ExistingTblRowID && x.Tbl == TheTbl);
+                        theTblRow = DataAccess.R8RDB.GetTable<TblRow>().SingleOrDefault(x => x.TblRowID == ExistingTblRowID && x.Tbl == TheTbl);
                         if (theTblRow == null)
                         {
                             AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "'RowId' of entity given by user " + ExistingTblRowID + " does not exist for this Tbl.");
@@ -542,8 +542,8 @@ namespace ClassLibrary1.Model
             storedLog.StorePermanently();
         }
 
-        RaterooFile mainFile;
-        RaterooFile logFile;
+        R8RFile mainFile;
+        R8RFile logFile;
         public void ChooseImportFileNames()
         {
             if (mainFile == null || logFile == null)
@@ -551,8 +551,8 @@ namespace ClassLibrary1.Model
                 DateTime theTime = TestableDateTime.Now;
                 string theFullTimeString = TestableDateTime.Now.ToString("yyMMdd HHmmss");
                 string idName = "Table " + TheTbl.TblID.ToString() + " " + theFullTimeString;
-                mainFile = new RaterooFile("import", idName);
-                logFile = new RaterooFile("importlog", idName); 
+                mainFile = new R8RFile("import", idName);
+                logFile = new R8RFile("importlog", idName); 
             }
         }
 
@@ -575,10 +575,10 @@ namespace ClassLibrary1.Model
             int elementCount = TblRowList.Descendants(entityType).Count();
 
             // initiate a long process to actually perform the upload
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             const int numToImportAtATime = 100;
             UploadTblRowsInfo theInfo = new UploadTblRowsInfo(TheTbl.TblID, 1, elementCount, numToImportAtATime, mainFile.FileName, logFile.FileName, entityType, UserId, copyValuesIntoTbl);
-            theDataAccessModule.AddOrResetLongProcess(RaterooDataManipulation.LongProcessTypes.uploadTblRows, 120, null, null, RaterooDataManipulation.GetBasePriorityLevelForLongProcess(RaterooDataManipulation.LongProcessTypes.uploadTblRows), theInfo);
+            theDataAccessModule.AddOrResetLongProcess(R8RDataManipulation.LongProcessTypes.uploadTblRows, 120, null, null, R8RDataManipulation.GetBasePriorityLevelForLongProcess(R8RDataManipulation.LongProcessTypes.uploadTblRows), theInfo);
 
             mainFile.StorePermanently();
             logFile.StorePermanently();
@@ -590,14 +590,14 @@ namespace ClassLibrary1.Model
 
         }
 
-        public RaterooFile GetXSDFileReference()
+        public R8RFile GetXSDFileReference()
         {
-            return new RaterooFile("xsd", "Tbl" + TheTbl.TblID + ".xsd");
+            return new R8RFile("xsd", "Tbl" + TheTbl.TblID + ".xsd");
         }
 
         public void CreateXSDFile()
         {
-            RaterooFile theFile = GetXSDFileReference();
+            R8RFile theFile = GetXSDFileReference();
             theFile.DeletePermanently();
             theFile.CreateTemporary();
             CreateXSDFile(theFile.GetPathToLocalFile());
@@ -879,7 +879,7 @@ namespace ClassLibrary1.Model
 
                 theTblRowElement.Add(new XElement("EntityName", E.Name));
 
-                var theFields = DataAccess.RaterooDB.GetTable<Field>().Where(f => f.TblRowID == E.TblRowID).OrderBy(f => f.FieldDefinition.FieldNum).ThenBy(f => f.FieldDefinition.FieldDefinitionID);
+                var theFields = DataAccess.R8RDB.GetTable<Field>().Where(f => f.TblRowID == E.TblRowID).OrderBy(f => f.FieldDefinition.FieldNum).ThenBy(f => f.FieldDefinition.FieldDefinitionID);
                 foreach (var theField in theFields)
                 {
                     XElement theFieldElement = null;
@@ -906,7 +906,7 @@ namespace ClassLibrary1.Model
                             var theChoiceField = theField.ChoiceFields.SingleOrDefault(x => x.Status == (int)StatusOfObject.Active);
                             if (theChoiceField != null)
                             {
-                                var choicesInFields = DataAccess.RaterooDB.GetTable<ChoiceInField>().Where(cif => cif.ChoiceFieldID == theChoiceField.ChoiceFieldID && cif.Status == (int)StatusOfObject.Active);
+                                var choicesInFields = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(cif => cif.ChoiceFieldID == theChoiceField.ChoiceFieldID && cif.Status == (int)StatusOfObject.Active);
                                 var theChoiceGroupFieldDefinition = theChoiceField.Field.FieldDefinition.ChoiceGroupFieldDefinitions.Single();
                                 if (theChoiceGroupFieldDefinition.ChoiceGroup.AllowMultipleSelections)
                                 {

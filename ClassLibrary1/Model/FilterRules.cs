@@ -48,7 +48,7 @@ namespace ClassLibrary1.Model
             FilterOn = true;
         }
 
-        public abstract IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate);
+        public abstract IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate);
     }
 
     public static class FilterRulesSerializer
@@ -110,7 +110,7 @@ namespace ClassLibrary1.Model
             theFilterRules.Add(theFilterRule);
         }
 
-        public IQueryable<int> GetFilteredQuery(IRaterooDataContext theDataContext, int? maxNumResults)
+        public IQueryable<int> GetFilteredQuery(IR8RDataContext theDataContext, int? maxNumResults)
         {
             IQueryable<TblRow> theQuery = GetFilteredQueryAsTblRows(theDataContext, maxNumResults);
             var theQueryInt = theQuery.Select(x => x.TblRowID);
@@ -123,7 +123,7 @@ namespace ClassLibrary1.Model
             public bool? include;
         }
 
-        public IQueryable<TblRow> GetFilteredQueryAsTblRows(IRaterooDataContext theDataContext, int? maxNumResults)
+        public IQueryable<TblRow> GetFilteredQueryAsTblRows(IR8RDataContext theDataContext, int? maxNumResults)
         {
             IQueryable<TblRow> theQuery = null;
 
@@ -184,7 +184,7 @@ namespace ClassLibrary1.Model
             return theQuery;
         }
 
-        public TblRowsToPopulatePage GetQueryForSpecificRows(IRaterooDataContext theDataContext, int? maxNumResults, TableSortRule theSortRule, bool sortByNameAfterTakingTop, bool nameAscending, int firstRowNum, int numRows, bool returnRowNumForBaseQuery)
+        public TblRowsToPopulatePage GetQueryForSpecificRows(IR8RDataContext theDataContext, int? maxNumResults, TableSortRule theSortRule, bool sortByNameAfterTakingTop, bool nameAscending, int firstRowNum, int numRows, bool returnRowNumForBaseQuery)
         {
             if (numRows > 30)
                 numRows = 30;
@@ -203,7 +203,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public TblRowsToPopulatePage GetQueryToPopulatePageInitially(IRaterooDataContext theDataContext, int? maxNumResults, TableSortRule theSortRule, bool sortByNameAfterTakingTop, bool nameAscending, int numRows, int rowsToSkip)
+        public TblRowsToPopulatePage GetQueryToPopulatePageInitially(IR8RDataContext theDataContext, int? maxNumResults, TableSortRule theSortRule, bool sortByNameAfterTakingTop, bool nameAscending, int numRows, int rowsToSkip)
         {
             int theRowCount = 0;
             if (numRows > 75)
@@ -220,7 +220,7 @@ namespace ClassLibrary1.Model
             return theTblRowsToReturn;
         }
 
-        public IQueryable<TblRow> GetFilteredAndSortedQuery(IRaterooDataContext theDataContext, int? maxNumResults, TableSortRule theSortRule, bool sortByNameAfterTakingTop, bool nameAscending)
+        public IQueryable<TblRow> GetFilteredAndSortedQuery(IR8RDataContext theDataContext, int? maxNumResults, TableSortRule theSortRule, bool sortByNameAfterTakingTop, bool nameAscending)
         {
             IQueryable<TblRow> theTblRowsWithRatings = null;
             if (theSortRule is TableSortRuleEntityName)
@@ -248,7 +248,7 @@ namespace ClassLibrary1.Model
             return theTblRowsWithRatings;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByCategory(IRaterooDataContext theDataContext, int? maxNumResults, int TblColumnToSort, bool ascending)
+        public IQueryable<TblRow> GetFilteredQuerySortedByCategory(IR8RDataContext theDataContext, int? maxNumResults, int TblColumnToSort, bool ascending)
         {
 
 
@@ -278,7 +278,7 @@ namespace ClassLibrary1.Model
             return theFilteredQueryWithSortValues;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByName(IRaterooDataContext theDataContext, int? maxNumResults, bool ascending)
+        public IQueryable<TblRow> GetFilteredQuerySortedByName(IR8RDataContext theDataContext, int? maxNumResults, bool ascending)
         {
             IQueryable<TblRow> theFilteredQuery = GetFilteredQueryAsTblRows(theDataContext, null);
 
@@ -303,7 +303,7 @@ namespace ClassLibrary1.Model
             return theFilteredAndSortedQuery;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByAddress(IRaterooDataContext theDataContext, int? maxNumResults, float latitude, float longitude, int tblID)
+        public IQueryable<TblRow> GetFilteredQuerySortedByAddress(IR8RDataContext theDataContext, int? maxNumResults, float latitude, float longitude, int tblID)
         {
             IQueryable<TblRow> theFilteredQueryWithSortValues = null;
 
@@ -330,7 +330,7 @@ namespace ClassLibrary1.Model
             return theFilteredQueryWithSortValues;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByNeedsRating(IRaterooDataContext theDataContext, int? maxNumResults)
+        public IQueryable<TblRow> GetFilteredQuerySortedByNeedsRating(IR8RDataContext theDataContext, int? maxNumResults)
         {
 
 
@@ -346,7 +346,7 @@ namespace ClassLibrary1.Model
             return theFilteredQueryWithSortValues;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByNeedsRatingUntrustedUser(IRaterooDataContext theDataContext, int? maxNumResults)
+        public IQueryable<TblRow> GetFilteredQuerySortedByNeedsRatingUntrustedUser(IR8RDataContext theDataContext, int? maxNumResults)
         {
 
 
@@ -362,7 +362,7 @@ namespace ClassLibrary1.Model
             return theFilteredQueryWithSortValues;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByNewest(IRaterooDataContext theDataContext, int? maxNumResults, bool ascending)
+        public IQueryable<TblRow> GetFilteredQuerySortedByNewest(IR8RDataContext theDataContext, int? maxNumResults, bool ascending)
         {
 
 
@@ -383,7 +383,7 @@ namespace ClassLibrary1.Model
             return theFilteredQueryWithSortValues;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByActivityLevel(IRaterooDataContext theDataContext, VolatilityDuration theTimeFrame, int? maxNumResults, bool mostActiveFirst)
+        public IQueryable<TblRow> GetFilteredQuerySortedByActivityLevel(IR8RDataContext theDataContext, VolatilityDuration theTimeFrame, int? maxNumResults, bool mostActiveFirst)
         {
 
 
@@ -422,7 +422,7 @@ namespace ClassLibrary1.Model
                 Mile = maximumMilesDistance;
         }
 
-        public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
+        public override IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
 
             Coordinate ObjCod = new Coordinate();
@@ -461,7 +461,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
+        public override IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
 
             IQueryable<TblRow> theQuery =
@@ -490,7 +490,7 @@ namespace ClassLibrary1.Model
             MaxValue = maxValue;
         }
 
-        public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
+        public override IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
 
 
@@ -520,7 +520,7 @@ namespace ClassLibrary1.Model
             MaxValue = maxValue;
         }
 
-        public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
+        public override IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
 
             IQueryable<TblRow> theQuery =
@@ -546,7 +546,7 @@ namespace ClassLibrary1.Model
             TextTags = textTags;
         }
 
-        public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
+        public override IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
 
             IQueryable<TblRow> theQuery =
@@ -586,7 +586,7 @@ namespace ClassLibrary1.Model
             MaxValue = maxValue;
         }
 
-        public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
+        public override IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
 
             IQueryable<TblRow> theQuery =
@@ -612,13 +612,13 @@ namespace ClassLibrary1.Model
             TheSearchWords = theSearchWords;
         }
 
-        public override IQueryable<TblRow> GetFilteredQuery(IRaterooDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
+        public override IQueryable<TblRow> GetFilteredQuery(IR8RDataContext theDataContext, IQueryable<TblRow> querySoFar, System.Linq.Expressions.Expression<Func<TblRow, bool>> predicate)
         {
             throw new NotImplementedException("Searching by search word on the normalized database is no longer supported.");
             //if (TheSearchWords == null || TheSearchWords.Trim() == "")
             //    return querySoFar;
             //IQueryable<TblRow> theQuery = null;
-            //IQueryable<TblRow> theSearchWordMatches = new List<TblRow>().AsQueryable(); // RaterooDataManipulation.GetTblRowsForPhrase(TheSearchWords, theDataContext, theID);
+            //IQueryable<TblRow> theSearchWordMatches = new List<TblRow>().AsQueryable(); // R8RDataManipulation.GetTblRowsForPhrase(TheSearchWords, theDataContext, theID);
             //if (theSearchWordMatches == null)
             //    return new List<TblRow>().AsQueryable();
             //if (predicate != null)

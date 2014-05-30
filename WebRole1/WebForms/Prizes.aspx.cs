@@ -57,7 +57,7 @@ public partial class Prizes : System.Web.UI.Page
 
     public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
-        RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+        R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
         User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
         if (theUser != null && theUser.SuperUser)
             userIsSuperUser = true;

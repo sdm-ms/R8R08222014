@@ -14,7 +14,7 @@ using ClassLibrary1.Model;
 public partial class CommonControl_Menu : System.Web.UI.UserControl
 {
     StringBuilder myStringBuilder;
-    RaterooDataAccess myDataAccess;
+    R8RDataAccess myDataAccess;
 
     bool OpenAllInitially = false;
     RoutingInfoMainContent theLocation;
@@ -31,10 +31,10 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
 
     protected void Page_Init(object sender, EventArgs e)
     {
-        myDataAccess = new RaterooDataAccess();
+        myDataAccess = new R8RDataAccess();
         try
         {
-            theLocation = Routing.IncomingMainContent(Page.RouteData, myDataAccess.RaterooDB);
+            theLocation = Routing.IncomingMainContent(Page.RouteData, myDataAccess.R8RDB);
         }
         catch
         {
@@ -108,9 +108,9 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
     {
         IEnumerable<HierarchyItem> theHierarchyItems;
         if (higherItem == null)
-            theHierarchyItems = myDataAccess.RaterooDB.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == null && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName);
+            theHierarchyItems = myDataAccess.R8RDB.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == null && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName);
         else
-            theHierarchyItems = myDataAccess.RaterooDB.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == higherItem.HierarchyItemID && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName);
+            theHierarchyItems = myDataAccess.R8RDB.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == higherItem.HierarchyItemID && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName);
         string listItems = "";
         foreach (var item in theHierarchyItems)
         {

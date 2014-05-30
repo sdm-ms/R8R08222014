@@ -24,7 +24,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
     protected bool rebinding = false;
     protected int? LimitToThisTblColumn; // if not null, we'll show only the one cell
     protected int? TblColumnToSort;
-    protected RaterooDataAccess DataAccess; // don't make this a property -- we don't want to persist viewstate on this or we'll get stale values
+    protected R8RDataAccess DataAccess; // don't make this a property -- we don't want to persist viewstate on this or we'll get stale values
     protected int TblID { get; set; }
     protected int TblTabID { get; set; }
     protected int TblRowID { get; set; }
@@ -48,7 +48,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         }
     }
 
-    public void Setup(RaterooDataAccess theDataAccess, int tblID, int tblTabID, int? limitToThisTblColumn, int? tblColumnToSort, int entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<int?, int?> theParentSelectionChangedHandler, string suppStyle)
+    public void Setup(R8RDataAccess theDataAccess, int tblID, int tblTabID, int? limitToThisTblColumn, int? tblColumnToSort, int entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<int?, int?> theParentSelectionChangedHandler, string suppStyle)
     {
         if (doRebind)
             ActivateRebinding();
@@ -73,7 +73,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
 
     protected void BodyRowLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
-        e.Result = DataAccess.RaterooDB.GetTable<TblColumn>().Where(x => x.TblTabID == TblTabID 
+        e.Result = DataAccess.R8RDB.GetTable<TblColumn>().Where(x => x.TblTabID == TblTabID 
             && (LimitToThisTblColumn == null || x.TblColumnID == LimitToThisTblColumn)
             && x.Status == (byte)StatusOfObject.Active).Select(x => new { TblColumnID = x.TblColumnID });
     }
@@ -91,10 +91,10 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
             if (theRatingGroupID != null)
             {
                 bool multipleOutcomes = true;
-                RatingGroupTypes theType = (RatingGroupTypes) DataAccess.RaterooDB.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == theRatingGroupID).RatingGroupAttribute.TypeOfRatingGroup;
+                RatingGroupTypes theType = (RatingGroupTypes) DataAccess.R8RDB.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == theRatingGroupID).RatingGroupAttribute.TypeOfRatingGroup;
                 if (theType == RatingGroupTypes.probabilitySingleOutcome || theType == RatingGroupTypes.singleDate || theType == RatingGroupTypes.singleNumber)
                     multipleOutcomes = false;
-                //TradingStatus theTradingStatus = (TradingStatus) DataAccess.RaterooDB.GetTable<RatingGroup>().Single(m => m.RatingGroupID == theRatingGroupID).TradingStatus;
+                //TradingStatus theTradingStatus = (TradingStatus) DataAccess.R8RDB.GetTable<RatingGroup>().Single(m => m.RatingGroupID == theRatingGroupID).TradingStatus;
                 int columnNumber = dataItem.DisplayIndex;
 
                 PlaceHolder thePlaceHolder = (PlaceHolder)e.Item.FindControl("CellMainPlaceholder");
@@ -159,7 +159,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
     protected void ReBind()
     {
         rebinding = true;
-        DataAccess = new RaterooDataAccess(); // reset data contexts so we get fresh data
+        DataAccess = new R8RDataAccess(); // reset data contexts so we get fresh data
         BodyRowListView.DataBind();
     }
 

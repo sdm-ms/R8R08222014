@@ -12,7 +12,7 @@ using ClassLibrary1.Misc;
 
 namespace ClassLibrary1.Model
 {
-    public static class RaterooBlobAccess
+    public static class R8RBlobAccess
     {
         public static CloudBlobClient GetBlobClient()
         {
@@ -94,12 +94,12 @@ namespace ClassLibrary1.Model
     /// Allows creation of temporary files that can then be stored permanently and later access.
     /// The creation and access uses Azure local storage, while the permanent storage uses an Azure blob.
     /// </summary>
-    public class RaterooFile
+    public class R8RFile
     {
         public string ContainerName;
         public string FileName;
 
-        public RaterooFile(string containerName, string fileName)
+        public R8RFile(string containerName, string fileName)
         {
             ContainerName = containerName;
             FileName = fileName;
@@ -125,8 +125,8 @@ namespace ClassLibrary1.Model
         public void StorePermanently()
         {
             string path = GetPathToLocalFile();
-            RaterooBlobAccess.DeleteBlobIfExists(ContainerName, FileName);
-            RaterooBlobAccess.UploadBlob(ContainerName, FileName, path);
+            R8RBlobAccess.DeleteBlobIfExists(ContainerName, FileName);
+            R8RBlobAccess.UploadBlob(ContainerName, FileName, path);
         }
 
         public void DeleteTemporary()
@@ -139,7 +139,7 @@ namespace ClassLibrary1.Model
         public void DeletePermanently()
         {
             DeleteTemporary();
-            RaterooBlobAccess.DeleteBlobIfExists(ContainerName, FileName);
+            R8RBlobAccess.DeleteBlobIfExists(ContainerName, FileName);
         }
 
         public string LoadPreviouslyStored()
@@ -147,9 +147,9 @@ namespace ClassLibrary1.Model
             string path = GetPathToLocalFile();
             if (File.Exists(path))
                 return path;
-            if (!RaterooBlobAccess.BlobExists(ContainerName, FileName))
+            if (!R8RBlobAccess.BlobExists(ContainerName, FileName))
                 throw new Exception("File does not exist.");
-            RaterooBlobAccess.DownloadBlob(ContainerName, FileName, path);
+            R8RBlobAccess.DownloadBlob(ContainerName, FileName, path);
             return path;
         }
 

@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true"
-    Inherits="NewUser" Title="Rateroo: Create New Account" Codebehind="NewUser.aspx.cs" %>
+    Inherits="NewUser" Title="R8R: Create New Account" Codebehind="NewUser.aspx.cs" %>
 
 <asp:Content ID="MyContentHead" ContentPlaceHolderID="ContentHeadText" runat="Server">
     Create New Account
@@ -116,7 +116,7 @@
                             </tr>
                             <tr>
                                 <td style="font-size: 12px;">
-                                    <i>By using or creating an account on Rateroo, you agree to be bound by the <a runat="server" id="TermsAndCond"
+                                    <i>By using or creating an account on R8R, you agree to be bound by the <a runat="server" id="TermsAndCond"
                                         href="~/TermsOfService">Terms of Service</a>. </i>
                                 </td>
                             </tr>

@@ -231,7 +231,7 @@ namespace ClassLibrary1.Model
             if (TheData.Count != 0)
                 throw new Exception("To load from choice group id, start with an empty choice group.");
             ActionProcessor Obj = new ActionProcessor();
-            //  RaterooSupport dataAccessModule = new RaterooSupport();
+            //  R8RSupport dataAccessModule = new R8RSupport();
             var ChoicesInGroup = Obj.DataContext.GetTable<ChoiceInGroup>().Where(cig => cig.ChoiceGroupID == choiceGroupID && cig.Status != (Byte)StatusOfObject.Proposed).OrderBy(cig => cig.ChoiceNum);
             foreach (var theChoice in ChoicesInGroup)
             {
@@ -274,8 +274,8 @@ namespace ClassLibrary1.Model
         public static List<ChoiceMenuItem> GetChoiceMenuItemsForIndependentGroup(int choiceGroupID)
         {
             List<int> determiningGroupValues = new List<int>();
-            RaterooDataAccess Obj = new RaterooDataAccess();
-            ChoiceGroup theChoiceGroup = Obj.RaterooDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
+            R8RDataAccess Obj = new R8RDataAccess();
+            ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
             bool orderAlphabetically = theChoiceGroup.Alphabetize;
             return GetChoiceMenuItemsHelper(determiningGroupValues, choiceGroupID, orderAlphabetically);
         }
@@ -310,16 +310,16 @@ namespace ClassLibrary1.Model
 
         public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelections(List<int> determiningGroupValues, int choiceGroupID)
         {
-            RaterooDataAccess Obj = new RaterooDataAccess();
-            ChoiceGroup theChoiceGroup = Obj.RaterooDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
+            R8RDataAccess Obj = new R8RDataAccess();
+            ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
             bool orderAlphabetically = theChoiceGroup.Alphabetize;
             return GetChoiceMenuItemsHelper(determiningGroupValues, choiceGroupID, orderAlphabetically);
         }
 
         public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(List<int> availableOptionsInDependee, int choiceGroupID)
         {
-            RaterooDataAccess Obj = new RaterooDataAccess();
-            ChoiceGroup theChoiceGroup = Obj.RaterooDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
+            R8RDataAccess Obj = new R8RDataAccess();
+            ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
             bool showAllPossibilities = theChoiceGroup.ShowAllPossibilitiesIfNoDependentChoice;
             if (showAllPossibilities && availableOptionsInDependee != null && availableOptionsInDependee.Count() > 100)
                 showAllPossibilities = false;
@@ -341,7 +341,7 @@ namespace ClassLibrary1.Model
         {
             if (determiningGroupValues == null)
                 determiningGroupValues = new List<int>();
-            RaterooDataAccess Obj = new RaterooDataAccess();
+            R8RDataAccess Obj = new R8RDataAccess();
             var myPredicateAllowableDeterminingGroupChoices = PredicateBuilder.False<ChoiceInGroup>();
 
             var myPredicate = PredicateBuilder.True<ChoiceInGroup>();
@@ -355,7 +355,7 @@ namespace ClassLibrary1.Model
             List<ChoiceMenuItem> theChoices = new List<ChoiceMenuItem>();
             if (orderAlphabetically)
             {
-                var temp = Obj.RaterooDB.GetTable<ChoiceInGroup>()
+                var temp = Obj.R8RDB.GetTable<ChoiceInGroup>()
                  .Where(myPredicate);
                 if (temp.Any())
                     theChoices = temp
@@ -365,7 +365,7 @@ namespace ClassLibrary1.Model
             }
             else
             {
-                var temp = Obj.RaterooDB.GetTable<ChoiceInGroup>()
+                var temp = Obj.R8RDB.GetTable<ChoiceInGroup>()
                  .Where(myPredicate);
                 if (temp.Any())
                     theChoices = temp
@@ -395,13 +395,13 @@ namespace ClassLibrary1.Model
     //    {
     //        try
     //        {
-    //            ChoiceGroupFieldDefinition theCGFD = RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == FieldDefinitionID);
+    //            ChoiceGroupFieldDefinition theCGFD = R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == FieldDefinitionID);
     //            ChoiceGroup theChoiceGroup = theCGFD.ChoiceGroup;
     //            ChoiceGroupFieldDefinition theCGFDThisDependsOn = null;
     //            ChoiceGroup theChoiceGroupThisDependsOn = null;
     //            if (theCGFD.DependentOnChoiceGroupFieldDefinitionID != null)
     //            {
-    //                theCGFDThisDependsOn = RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == theCGFD.DependentOnChoiceGroupFieldDefinitionID);
+    //                theCGFDThisDependsOn = R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == theCGFD.DependentOnChoiceGroupFieldDefinitionID);
     //                theChoiceGroupThisDependsOn = theCGFDThisDependsOn.ChoiceGroup;
     //            }
     //            foreach (var choice in multipleChoices)

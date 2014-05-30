@@ -13,7 +13,7 @@ namespace ClassLibrary1.Model
     /// <summary>
     /// Summary description for DatabaseTransitions
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
 
         public void Transition1()
@@ -132,7 +132,7 @@ namespace ClassLibrary1.Model
                           join f0 in DataContext.GetTable<TextField>().Where(x => x.Field.FieldDefinitionID == 1300) on tblRows.TblRowID equals f0.Field.TblRowID
                           join f1 in DataContext.GetTable<TextField>().Where(x => x.Field.FieldDefinitionID == 1303) on tblRows.TblRowID equals f1.Field.TblRowID
                           select new { Name = r0.TblRow.Name, C660 = r0.CurrentValueOfFirstRating, C661 = r1.CurrentValueOfFirstRating, C662 = r2.CurrentValueOfFirstRating, TV1300 = f0.Text, TL1300 = f0.Link, TV1303 = f1.Text, TL1303 = f1.Link, FDRow = tblRows.TblRowFieldDisplay.Row, FDPopUp = tblRows.TblRowFieldDisplay.PopUp, FDTblRowPage = tblRows.TblRowFieldDisplay.TblRowPage };
-                // RaterooDB.GetTable<RatingGroup>().Where(x => x.TblColumn.TblID == 254).GroupBy(x => x.TblColumnID).
+                // R8RDB.GetTable<RatingGroup>().Where(x => x.TblColumn.TblID == 254).GroupBy(x => x.TblColumnID).
             Trace.TraceInformation(ActorsTable.TblID + " " + ActorsColumns + " " + TextFields);
         }
 
@@ -255,9 +255,9 @@ namespace ClassLibrary1.Model
             DeleteAllOfType<OverrideCharacteristic>(items17);
             IQueryable<TblColumnFormatting> items18 = DataContext.GetTable<TblColumnFormatting>().Where(x => x.TblColumn.TblTab.TblID == tblID);
             DeleteAllOfType<TblColumnFormatting>(items18);
-            //IQueryable<TblColumn> items19 = RaterooDB.GetTable<TblColumn>().Where(x => x.TblTab.TblID == tblID);
+            //IQueryable<TblColumn> items19 = R8RDB.GetTable<TblColumn>().Where(x => x.TblTab.TblID == tblID);
             //DeleteAllOfType<TblColumn>(items19);
-            //IQueryable<TblTab> items20 = RaterooDB.GetTable<TblTab>().Where(x => x.TblID == tblID);
+            //IQueryable<TblTab> items20 = R8RDB.GetTable<TblTab>().Where(x => x.TblID == tblID);
             //DeleteAllOfType<TblTab>(items20);
             IQueryable<SearchWordChoice> items21 = DataContext.GetTable<SearchWordChoice>().Where(x => x.ChoiceInGroup.ChoiceGroup.PointsManagerID == pmID);
             DeleteAllOfType<SearchWordChoice>(items21);

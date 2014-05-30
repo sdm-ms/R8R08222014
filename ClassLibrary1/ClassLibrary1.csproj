@@ -165,25 +165,24 @@
     <Compile Include="Misc\ButtonDropDownList.cs" />
     <Compile Include="Misc\ButtonTextBox.cs" />
     <Compile Include="Misc\CheckJavaScriptHelper.cs" />
-    <Compile Include="Misc\ControlFinder.cs" />
     <Compile Include="Misc\DataContextExtensions.cs" />
     <Compile Include="Misc\DataContextRepositories.cs" />
     <Compile Include="Misc\DataContextRepositoriesInMemory.cs" />
     <Compile Include="Misc\DataContextRepositoriesSQL.cs" />
     <Compile Include="Misc\DataContextRepositoryExtensions.cs" />
+    <Compile Include="Misc\DateTimeManip.cs" />
     <Compile Include="Misc\GeoCalc.cs" />
     <Compile Include="Misc\GoogleGeocode.cs" />
     <Compile Include="Misc\GooglePagerField.cs" />
-    <Compile Include="Misc\IUserProfileInfo.cs" />
     <Compile Include="Misc\LinqExcelProvider.cs" />
     <Compile Include="Misc\MapquestGeocode.cs" />
     <Compile Include="Misc\MD5HashGenerator.cs" />
-    <Compile Include="Misc\Median.cs" />
     <Compile Include="Misc\MoreStrings.cs" />
     <Compile Include="Misc\PredicateBuilder.cs" />
     <Compile Include="Misc\PrettyURLEncode.cs" />
     <Compile Include="Misc\ProfielBase.cs" />
     <Compile Include="Misc\ProfileSimple.cs" />
+    <Compile Include="Misc\RandomGenerator.cs" />
     <Compile Include="Misc\Serialization.cs" />
     <Compile Include="Misc\SQLDirectManipulate.cs" />
     <Compile Include="Misc\StringEnum.cs" />
@@ -191,18 +190,18 @@
     <Compile Include="Misc\UserProfileInfo.cs" />
     <Compile Include="Misc\WeakReferenceTracker.cs" />
     <Compile Include="Misc\IEnumerableExtensions.cs" />
-    <Compile Include="ModelFromDatabase\Rateroo.cs">
-      <DependentUpon>Rateroo.dbml</DependentUpon>
+    <Compile Include="ModelFromDatabase\R8R.cs">
+      <DependentUpon>R8R.dbml</DependentUpon>
     </Compile>
-    <Compile Include="ModelFromDatabase\Rateroo1.designer.cs">
-      <DependentUpon>Rateroo.dbml</DependentUpon>
+    <Compile Include="ModelFromDatabase\R8R.designer.cs">
+      <DependentUpon>R8R.dbml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="ModelFromDatabase\Partials\Rating.cs" />
-    <Compile Include="ModelFromDatabase\Partials\TrustTracker.cs" />
     <Compile Include="ModelFromDatabase\Partials\TrustTrackerUnit.cs" />
     <Compile Include="Misc\TimeSpanExtensions.cs" />
+    <Compile Include="ModelFromDatabase\Partials\UserRating.cs" />
     <Compile Include="Model\ActionProcessor.cs" />
     <Compile Include="Model\AddObjects.cs" />
     <Compile Include="Model\AdjustmentFactorCalc.cs" />
@@ -210,7 +209,7 @@
     <Compile Include="Model\BlobFiles.cs" />
     <Compile Include="Model\CacheManagement.cs" />
     <Compile Include="Model\CacheSubstitution.cs" />
-    <Compile Include="Model\Categories.cs" />
+    <Compile Include="Model\TblColumns.cs" />
     <Compile Include="Model\ChoiceGroups.cs" />
     <Compile Include="Model\ClassesAndTypes.cs" />
     <Compile Include="Model\ConditionalRatings.cs" />
@@ -241,7 +240,6 @@
     <Compile Include="Model\InsertableContentManage.cs" />
     <Compile Include="Model\ItemPath.cs" />
     <Compile Include="Model\LongProcess.cs" />
-    <Compile Include="Model\Misc.cs" />
     <Compile Include="Model\MyPointsSidebar.cs" />
     <Compile Include="Model\NeedsRatingScore.cs" />
     <Compile Include="Model\ObjectManagement.cs" />
@@ -254,7 +252,6 @@
     <Compile Include="Model\RatingsAndGroups.cs" />
     <Compile Include="Model\RatingsReview.cs" />
     <Compile Include="Model\RecencyUpdates.cs" />
-    <Compile Include="Model\ResolveRatings.cs" />
     <Compile Include="Model\Rewards.cs" />
     <Compile Include="Model\Routing.cs" />
     <Compile Include="Model\SearchWords.cs" />
@@ -271,7 +268,6 @@
     <Compile Include="Model\TrustCalculations.cs" />
     <Compile Include="Model\TrustTrackerStatManager.cs" />
     <Compile Include="Model\TrustTrackingBackgroundTasks.cs" />
-    <Compile Include="Model\UntrustedRatings.cs" />
     <Compile Include="Model\UserManagement.cs" />
     <Compile Include="Model\UserRatingEntryProcessing.cs" />
     <Compile Include="Model\UserRatingHierarchy.cs" />
@@ -288,13 +284,13 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ModelFromDatabase\Rateroo.dbml">
+    <None Include="ModelFromDatabase\R8R.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Rateroo1.designer.cs</LastGenOutput>
+      <LastGenOutput>R8R.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
     <None Include="ModelFromDatabase\Rateroo.dbml.views">
-      <DependentUpon>Rateroo.dbml</DependentUpon>
+      <DependentUpon>R8R.dbml</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -303,8 +299,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ModelFromDatabase\Rateroo.dbml.layout">
-      <DependentUpon>Rateroo.dbml</DependentUpon>
+    <None Include="ModelFromDatabase\R8R.dbml.layout">
+      <DependentUpon>R8R.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -338,7 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ModelFromDatabase\Rateroo.dbml.views_def.layout">
-      <DependentUpon>Rateroo.dbml</DependentUpon>
+      <DependentUpon>R8R.dbml</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

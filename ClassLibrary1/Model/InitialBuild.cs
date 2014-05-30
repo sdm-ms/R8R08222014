@@ -35,16 +35,16 @@ using System.Threading;
 
 namespace ClassLibrary1.Model
 {
-    public class RaterooBuilder
+    public class R8RBuilder
     {
-        private RaterooDataManipulation theDataAccessModule = null;
-        public RaterooDataManipulation Supporter
+        private R8RDataManipulation theDataAccessModule = null;
+        public R8RDataManipulation Supporter
         {
             get
             {
                 if (null == theDataAccessModule)
                 {
-                    theDataAccessModule = new RaterooDataManipulation();
+                    theDataAccessModule = new R8RDataManipulation();
                 }
 
                 return theDataAccessModule;
@@ -53,7 +53,7 @@ namespace ClassLibrary1.Model
 
         DataContextManagement myDataContextManagement = null;
 
-        public RaterooBuilder()
+        public R8RBuilder()
         {
             myDataContextManagement = new DataContextManagement();
         }
@@ -62,7 +62,7 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// Returns the DataContext used to access objects, creating it if necessary.
         /// </summary>
-        private IRaterooDataContext RaterooDB
+        private IR8RDataContext R8RDB
         {
             get
             {
@@ -83,7 +83,7 @@ namespace ClassLibrary1.Model
             {
                 SqlCommand myCommand = new SqlCommand();
                 myCommand.CommandText = commandText;
-                String strConnection = AzureSetup.GetConfigurationSetting("RaterooConnectionString"); // ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
+                String strConnection = AzureSetup.GetConfigurationSetting("R8RConnectionString"); // ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
                 myConnection.ConnectionString = strConnection;
                 myConnection.Open();
                 myCommand.Connection = myConnection;
@@ -122,13 +122,13 @@ namespace ClassLibrary1.Model
 
         public void ResetDatabaseAlt()
         {
-            RaterooDataContext dataContext = RaterooDB.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = R8RDB.GetRealDatabaseIfExists();
             if (dataContext != null)
             {
                 dataContext.ExecuteCommand("EXEC [sp_MSforeachtable] 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'");
-                //RaterooDB.ExecuteCommand("exec [sp_MSforeachtable] 'truncate table ?'");
-                //RaterooDB.ExecuteCommand("EXEC [sp_MSforeachtable] @command1='DBCC CHECKIDENT (?, RESEED, 100)'");
-                //RaterooDB.ExecuteCommand("EXEC [sp_MSforeachtable] @command1='DBCC DBREINDEX('?')'");
+                //R8RDB.ExecuteCommand("exec [sp_MSforeachtable] 'truncate table ?'");
+                //R8RDB.ExecuteCommand("EXEC [sp_MSforeachtable] @command1='DBCC CHECKIDENT (?, RESEED, 100)'");
+                //R8RDB.ExecuteCommand("EXEC [sp_MSforeachtable] @command1='DBCC DBREINDEX('?')'");
                 dataContext.ExecuteCommand("EXEC [sp_MSforeachtable] 'ALTER TABLE ? CHECK CONSTRAINT ALL'");
             }
         }
@@ -166,12 +166,12 @@ namespace ClassLibrary1.Model
         //    // paths, so we set the rule governing the item that seems most clearly to create the circularity (e.g.,
         //    // the MostRecentUserRating in Rating.
         //    //// we need to avoid a circular reference problem -- so set to null all DefaultSortTblColumnID's.
-        //    ////String strConnection = ConfigurationManager.ConnectionStrings["RaterooConnectionString"].ConnectionString;
+        //    ////String strConnection = ConfigurationManager.ConnectionStrings["R8RConnectionString"].ConnectionString;
         //    //ResetDataContexts();
-        //    //var someTblTabs = RaterooDB.GetTable<TblTab>().Where(cg => cg.DefaultSortTblColumnID != null);
+        //    //var someTblTabs = R8RDB.GetTable<TblTab>().Where(cg => cg.DefaultSortTblColumnID != null);
         //    //foreach (var theTblTab in someTblTabs)
         //    //    theTblTab.DefaultSortTblColumnID = null;
-        //    //RaterooDB.SubmitChanges();
+        //    //R8RDB.SubmitChanges();
         //    //ResetDataContexts();
 
         //    DeleteAllRecords("OverrideCharacteristics");
@@ -246,7 +246,7 @@ namespace ClassLibrary1.Model
 
         public void DeleteTempImportExportFiles()
         {
-            RaterooBlobAccess.DeleteAllBlobs();
+            R8RBlobAccess.DeleteAllBlobs();
                 //string tempFileLoc = Server.MapPath("~/ImportExportTemp");
                 //string[] filePaths = Directory.GetFiles(tempFileLoc);
                 //foreach (string filePath in filePaths)
@@ -328,29 +328,29 @@ namespace ClassLibrary1.Model
         public void CreateStandardDefaultRatingCharacteristics()
         {
             CreateStandardRatingPhaseGroups();
-            RatingPhaseGroup theRatingPhaseGroup = RaterooDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "Thirty day phases");
+            RatingPhaseGroup theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "Thirty day phases");
             CreateStandardSubsidyDensityRangeGroups();
             int? theSubsidyDensityRangeGroupID = null;
             SubsidyDensityRangeGroup theSubsidyDensityRangeGroup = null;
             // Use the following to use varied subsidy density: 
-            //RaterooDB.GetTable<SubsidyDensityRangeGroup>().Single(g => g.Name == "Extra subsidy near middle of spectrum");
+            //R8RDB.GetTable<SubsidyDensityRangeGroup>().Single(g => g.Name == "Extra subsidy near middle of spectrum");
             if (theSubsidyDensityRangeGroup != null)
                 theSubsidyDensityRangeGroupID = theSubsidyDensityRangeGroup.SubsidyDensityRangeGroupID;
             int defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "Thirty-day phase 0 to 100 rating", null);
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
-            theRatingPhaseGroup = RaterooDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "One minute phases");
+            theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "One minute phases");
             defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "One-minute phase 0 to 100 rating", null);
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
-            theRatingPhaseGroup = RaterooDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "One hour phases");
+            theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "One hour phases");
             defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "One-hour phase 0 to 100 rating", null);
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
-            theRatingPhaseGroup = RaterooDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "One day phases");
+            theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "One day phases");
             defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "One-day phase 0 to 100 rating", null);
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
-            theRatingPhaseGroup = RaterooDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "Indefinite duration");
+            theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "Indefinite duration");
             defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "Indefinite duration 0 to 100 rating", null);
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
-            theRatingPhaseGroup = RaterooDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "Short initial phases, followed by one week phases");
+            theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "Short initial phases, followed by one week phases");
             defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "Default characteristics", null);
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
         }
@@ -368,7 +368,7 @@ namespace ClassLibrary1.Model
         public void CreateCssTemplates()
         {
 
-            int theTblDimensionId1 = Supporter.AddTblDimensions(10, 150, 250, 100, 175, 275); /* note: last number is currently ignored; we would need to put it in the html and have it read by jquery */
+            int theTblDimensionId1 = Supporter.AddTblDimensions( 150, 250, 100, 175, 275); /* note: last number is currently ignored; we would need to put it in the html and have it read by jquery */
 
 
         }
@@ -392,7 +392,7 @@ namespace ClassLibrary1.Model
 
         List<MetaTable> successfulOrder = new List<MetaTable>();
 
-        public void DeleteAllTablesSql(IRaterooDataContext dataContext)
+        public void DeleteAllTablesSql(IR8RDataContext dataContext)
         {
             if (!dataContext.IsRealDatabase())
                 return;
@@ -443,7 +443,7 @@ namespace ClassLibrary1.Model
         {
             //int numTries = 0;
 
-            RaterooDataManipulation manipulator = new RaterooDataManipulation();
+            R8RDataManipulation manipulator = new R8RDataManipulation();
             if (manipulator.DataContext.IsRealDatabase())
             {
                 //manipulator.DropFastAccessTables();
@@ -479,17 +479,17 @@ namespace ClassLibrary1.Model
             switch (theObjectType)
             {
                 case TypeOfObject.AddressField:
-                    RaterooDB.GetTable<AddressField>().Single(x => x.AddressFieldID == objectID).Status = newValue;
+                    R8RDB.GetTable<AddressField>().Single(x => x.AddressFieldID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.TblColumn:
-                    TblColumn theTblColumn = RaterooDB.GetTable<TblColumn>().Single(x => x.TblColumnID == objectID);
+                    TblColumn theTblColumn = R8RDB.GetTable<TblColumn>().Single(x => x.TblColumnID == objectID);
                     //if (theStatus == StatusOfObject.Active && theTblColumn.Status != (Byte)StatusOfObject.Active)
                     //{
                     //    bool keepLooking = true;
 
                     //    do
                     //    {
-                    //        TblColumn match = RaterooDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.Status == (Byte)StatusOfObject.Active
+                    //        TblColumn match = R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.Status == (Byte)StatusOfObject.Active
                     //                                       && cd.TblTabID == theTblColumn.TblTabID
                     //                                       && cd.CategoryNum == theTblColumn.CategoryNum);
                     //        if (match == null)
@@ -502,14 +502,14 @@ namespace ClassLibrary1.Model
                     theTblColumn.Status = newValue;
                     break;
                 case TypeOfObject.TblTab:
-                    TblTab theTblTab = RaterooDB.GetTable<TblTab>().Single(x => x.TblTabID == objectID);
+                    TblTab theTblTab = R8RDB.GetTable<TblTab>().Single(x => x.TblTabID == objectID);
                     if (theStatus == StatusOfObject.Active && theTblTab.Status != (Byte)StatusOfObject.Active)
                         //{
                         //    bool keepLooking = true;
 
                         //    do
                         //    {
-                        //        TblTab match = RaterooDB.GetTable<TblTab>().SingleOrDefault(cg => cg.Status == (Byte)StatusOfObject.Active
+                        //        TblTab match = R8RDB.GetTable<TblTab>().SingleOrDefault(cg => cg.Status == (Byte)StatusOfObject.Active
                         //                                       && cg.TblID == theTblTab.TblID
                         //                                       && cg.NumInTbl == theTblTab.NumInTbl);
                         //        if (match == null)
@@ -522,34 +522,34 @@ namespace ClassLibrary1.Model
                         theTblTab.Status = newValue;
                     break;
                 case TypeOfObject.ChoiceField:
-                    RaterooDB.GetTable<ChoiceField>().Single(x => x.ChoiceFieldID == objectID).Status = newValue;
+                    R8RDB.GetTable<ChoiceField>().Single(x => x.ChoiceFieldID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.ChoiceGroup:
-                    RaterooDB.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID == objectID).Status = newValue;
+                    R8RDB.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.ChoiceGroupFieldDefinition:
-                    RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.ChoiceGroupFieldDefinitionID == objectID).Status = newValue;
+                    R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.ChoiceGroupFieldDefinitionID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.ChoiceInField:
-                    RaterooDB.GetTable<ChoiceInField>().Single(x => x.ChoiceInFieldID == objectID).Status = newValue;
+                    R8RDB.GetTable<ChoiceInField>().Single(x => x.ChoiceInFieldID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.ChoiceInGroup:
-                    RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == objectID).Status = newValue;
+                    R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.Tbl:
-                    RaterooDB.GetTable<Tbl>().Single(x => x.TblID == objectID).Status = newValue;
+                    R8RDB.GetTable<Tbl>().Single(x => x.TblID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.DateTimeField:
-                    RaterooDB.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID == objectID).Status = newValue;
+                    R8RDB.GetTable<DateTimeField>().Single(x => x.DateTimeFieldID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.DateTimeFieldDefinition:
-                    RaterooDB.GetTable<DateTimeFieldDefinition>().Single(x => x.DateTimeFieldDefinitionID == objectID).Status = newValue;
+                    R8RDB.GetTable<DateTimeFieldDefinition>().Single(x => x.DateTimeFieldDefinitionID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.Domain:
-                    RaterooDB.GetTable<Domain>().Single(x => x.DomainID == objectID).Status = newValue;
+                    R8RDB.GetTable<Domain>().Single(x => x.DomainID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.TblRow:
-                    TblRow tblRow = RaterooDB.GetTable<TblRow>().Single(x => x.TblRowID == objectID);
+                    TblRow tblRow = R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == objectID);
                     var oldValue = tblRow.Status;
                     tblRow.Status = newValue;
                     Tbl tbl = tblRow.Tbl;
@@ -568,11 +568,11 @@ namespace ClassLibrary1.Model
                     }
                     break;
                 case TypeOfObject.Field:
-                    RaterooDB.GetTable<Field>().Single(x => x.FieldID == objectID).Status = newValue;
-                    //Field theField = RaterooDB.GetTable<Field>().Single(x => x.FieldID == objectID);
+                    R8RDB.GetTable<Field>().Single(x => x.FieldID == objectID).Status = newValue;
+                    //Field theField = R8RDB.GetTable<Field>().Single(x => x.FieldID == objectID);
                     //if (theStatus == StatusOfObject.Active && theField.Status != (Byte)StatusOfObject.Active)
                     //{
-                    //    Field match = RaterooDB.GetTable<Field>().SingleOrDefault(f => f.Status == (Byte)StatusOfObject.Active
+                    //    Field match = R8RDB.GetTable<Field>().SingleOrDefault(f => f.Status == (Byte)StatusOfObject.Active
                     //                                                    && f.FieldDefinitionID == theField.FieldDefinitionID
                     //                                                    && f.TblRowID == theField.TblRowID);
                     //    if (match != null)
@@ -581,14 +581,14 @@ namespace ClassLibrary1.Model
                     //theField.Status = newValue;
                     break;
                 case TypeOfObject.FieldDefinition:
-                    FieldDefinition theFieldDefinition = RaterooDB.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == objectID);
+                    FieldDefinition theFieldDefinition = R8RDB.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == objectID);
                     //if (theStatus == StatusOfObject.Active && theFieldDefinition.Status != (Byte)StatusOfObject.Active)
                     //{
                     //    bool keepLooking = true;
 
                     //    do
                     //    {
-                    //        FieldDefinition match = RaterooDB.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.Status == (Byte)StatusOfObject.Active
+                    //        FieldDefinition match = R8RDB.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.Status == (Byte)StatusOfObject.Active
                     //                                        && fd.TblID == theFieldDefinition.TblID
                     //                                        && fd.FieldNum == theFieldDefinition.FieldNum);
                     //        if (match == null)
@@ -600,107 +600,107 @@ namespace ClassLibrary1.Model
                     theFieldDefinition.Status = newValue;
                     break;
                 case TypeOfObject.InsertableContent:
-                    RaterooDB.GetTable<InsertableContent>().Single(x => x.InsertableContentID == objectID).Status = newValue;
+                    R8RDB.GetTable<InsertableContent>().Single(x => x.InsertableContentID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingCharacteristics:
-                    RaterooDB.GetTable<RatingCharacteristic>().Single(x => x.RatingCharacteristicsID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingCharacteristic>().Single(x => x.RatingCharacteristicsID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingCondition:
-                    RaterooDB.GetTable<RatingCondition>().Single(x => x.RatingConditionID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingCondition>().Single(x => x.RatingConditionID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingGroup:
-                    RaterooDB.GetTable<RatingGroup>().Single(x => x.RatingGroupID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingGroup>().Single(x => x.RatingGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingGroupAttributes:
-                    RaterooDB.GetTable<RatingGroupAttribute>().Single(x => x.RatingGroupAttributesID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingGroupAttribute>().Single(x => x.RatingGroupAttributesID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingPhase:
-                    RaterooDB.GetTable<RatingPhase>().Single(x => x.RatingPhaseID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingPhase>().Single(x => x.RatingPhaseID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingPhaseGroup:
-                    RaterooDB.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingPlan:
-                    RaterooDB.GetTable<RatingPlan>().Single(x => x.RatingPlansID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingPlan>().Single(x => x.RatingPlansID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.NumberField:
-                    RaterooDB.GetTable<NumberField>().Single(x => x.NumberFieldID == objectID).Status = newValue;
+                    R8RDB.GetTable<NumberField>().Single(x => x.NumberFieldID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.NumberFieldDefinition:
-                    RaterooDB.GetTable<NumberFieldDefinition>().Single(x => x.NumberFieldDefinitionID == objectID).Status = newValue;
+                    R8RDB.GetTable<NumberFieldDefinition>().Single(x => x.NumberFieldDefinitionID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.OverrideCharacteristics:
-                    RaterooDB.GetTable<OverrideCharacteristic>().Single(x => x.OverrideCharacteristicsID == objectID).Status = newValue;
+                    R8RDB.GetTable<OverrideCharacteristic>().Single(x => x.OverrideCharacteristicsID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.PointsAdjustment:
-                    RaterooDB.GetTable<PointsAdjustment>().Single(x => x.PointsAdjustmentID == objectID).Status = newValue;
+                    R8RDB.GetTable<PointsAdjustment>().Single(x => x.PointsAdjustmentID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.ProposalSettings:
-                    ProposalSetting theSettings = RaterooDB.GetTable<ProposalSetting>().Single(x => x.ProposalSettingsID == objectID);
-                    ProposalSetting oldSettings = RaterooDB.GetTable<ProposalSetting>().SingleOrDefault(ps => ps.Status == (Byte)StatusOfObject.Active
+                    ProposalSetting theSettings = R8RDB.GetTable<ProposalSetting>().Single(x => x.ProposalSettingsID == objectID);
+                    ProposalSetting oldSettings = R8RDB.GetTable<ProposalSetting>().SingleOrDefault(ps => ps.Status == (Byte)StatusOfObject.Active
                                                                                           && ps.PointsManagerID == theSettings.PointsManagerID
                                                                                           && ps.TblID == theSettings.TblID);
                     if (oldSettings != null)
-                        RaterooDB.GetTable<ProposalSetting>().DeleteOnSubmit(oldSettings);
-                    RaterooDB.GetTable<ProposalSetting>().Single(x => x.ProposalSettingsID == objectID).Status = newValue;
+                        R8RDB.GetTable<ProposalSetting>().DeleteOnSubmit(oldSettings);
+                    R8RDB.GetTable<ProposalSetting>().Single(x => x.ProposalSettingsID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.SubsidyAdjustment:
-                    RaterooDB.GetTable<SubsidyAdjustment>().Single(x => x.SubsidyAdjustmentID == objectID).Status = newValue;
+                    R8RDB.GetTable<SubsidyAdjustment>().Single(x => x.SubsidyAdjustmentID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.SubsidyDensityRange:
-                    RaterooDB.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID == objectID).Status = newValue;
+                    R8RDB.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.SubsidyDensityRangeGroup:
-                    RaterooDB.GetTable<SubsidyDensityRangeGroup>().Single(x => x.SubsidyDensityRangeGroupID == objectID).Status = newValue;
+                    R8RDB.GetTable<SubsidyDensityRangeGroup>().Single(x => x.SubsidyDensityRangeGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.TextField:
-                    RaterooDB.GetTable<TextField>().Single(x => x.TextFieldID == objectID).Status = newValue; break;
+                    R8RDB.GetTable<TextField>().Single(x => x.TextFieldID == objectID).Status = newValue; break;
 
                 case TypeOfObject.TextFieldDefinition:
-                    RaterooDB.GetTable<TextFieldDefinition>().Single(x => x.TextFieldDefinitionID == objectID).Status = newValue;
+                    R8RDB.GetTable<TextFieldDefinition>().Single(x => x.TextFieldDefinitionID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.PointsManager:
-                    RaterooDB.GetTable<PointsManager>().Single(x => x.PointsManagerID == objectID).Status = newValue;
+                    R8RDB.GetTable<PointsManager>().Single(x => x.PointsManagerID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.User:
-                    RaterooDB.GetTable<User>().Single(x => x.UserID == objectID).Status = newValue;
+                    R8RDB.GetTable<User>().Single(x => x.UserID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.AdministrationRightsGroup:
-                    RaterooDB.GetTable<AdministrationRightsGroup>().Single(x => x.AdministrationRightsGroupID == objectID).Status = newValue;
+                    R8RDB.GetTable<AdministrationRightsGroup>().Single(x => x.AdministrationRightsGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.AdministrationRight:
-                    RaterooDB.GetTable<AdministrationRight>().Single(x => x.AdministrationRightID == objectID).Status = newValue;
+                    R8RDB.GetTable<AdministrationRight>().Single(x => x.AdministrationRightID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RewardRatingSettings:
-                    RaterooDB.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Status = newValue;
+                    R8RDB.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.ProposalEvaluationRatingSettings:
-                    RaterooDB.GetTable<ProposalEvaluationRatingSetting>().Single(x => x.ProposalEvaluationRatingSettingsID == objectID).Status = newValue;
+                    R8RDB.GetTable<ProposalEvaluationRatingSetting>().Single(x => x.ProposalEvaluationRatingSettingsID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.UsersAdministrationRightsGroup:
-                    RaterooDB.GetTable<UsersAdministrationRightsGroup>().Single(x => x.UsersAdministrationRightsGroupID == objectID).Status = newValue;
+                    R8RDB.GetTable<UsersAdministrationRightsGroup>().Single(x => x.UsersAdministrationRightsGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.UsersActions:
                     break;
                 case TypeOfObject.UsersRights:
-                    UsersRight theRights = RaterooDB.GetTable<UsersRight>().Single(x => x.UsersRightsID == objectID);
-                    UsersRight oldRights = RaterooDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.Status == (Byte)StatusOfObject.Active
+                    UsersRight theRights = R8RDB.GetTable<UsersRight>().Single(x => x.UsersRightsID == objectID);
+                    UsersRight oldRights = R8RDB.GetTable<UsersRight>().SingleOrDefault(ur => ur.Status == (Byte)StatusOfObject.Active
                                                                               && ur.PointsManagerID == theRights.PointsManagerID
                                                                               && ur.UserID == theRights.UserID);
                     if (oldRights != null)
-                        RaterooDB.GetTable<UsersRight>().DeleteOnSubmit(oldRights);
+                        R8RDB.GetTable<UsersRight>().DeleteOnSubmit(oldRights);
                     theRights.Status = newValue;
                     break;
                 default:
                     throw new Exception("Internal error -- trying to activate or deactivate unknown object type");
             }
 
-            RaterooDB.SubmitChanges();
+            R8RDB.SubmitChanges();
         }
 
         public void CreateStandard()
         {
-            RaterooDataAccess.AllowNullOrUserID0UserForTestingAndInitialBuild = true;
+            R8RDataAccess.AllowNullOrUserID0UserForTestingAndInitialBuild = true;
             BackgroundThread.BriefPauseRequestNumberSeconds = 30000;
             BackgroundThread.BriefPauseRequested = true;
             Thread.Sleep(5000);

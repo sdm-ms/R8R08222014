@@ -49,7 +49,7 @@ namespace ClassLibrary1.Model
                         return cachedResponse;
                 }
 
-                RaterooDataAccess theDataAccess = new RaterooDataAccess();
+                R8RDataAccess theDataAccess = new R8RDataAccess();
                 TableInfo theTableInfo = TableInfoToStringConversion.GetTableInfoFromString(theTableInfoString);
                 string tableInfoForReset = "";
                 CheckTableLoadingResetNeeded(theTableInfoString, ref firstRowNum, ref numRows, firstRowIfResetting, theDataAccess, theTableInfo, ref tableInfoForReset, populatingInitially);
@@ -106,12 +106,12 @@ namespace ClassLibrary1.Model
         }
 
 
-        public static TblColumn GetTblColumn(RaterooDataAccess dataAccess, int TblColumnID, int domainID)
+        public static TblColumn GetTblColumn(R8RDataAccess dataAccess, int TblColumnID, int domainID)
         {
             return dataAccess.GetTblColumn(TblColumnID);
         }
 
-        public static void GetTblAndPointsManagerForTblTab(RaterooDataAccess dataAccess, int TblTabID, out TblTab theTblTab, out Tbl theTbl, out PointsManager thePointsManager)
+        public static void GetTblAndPointsManagerForTblTab(R8RDataAccess dataAccess, int TblTabID, out TblTab theTblTab, out Tbl theTbl, out PointsManager thePointsManager)
         {
             theTblTab = dataAccess.GetTblTab(TblTabID);
             theTbl = CacheManagement.GetItemFromCache("TblForTblTab" + TblTabID) as Tbl;
@@ -135,7 +135,7 @@ namespace ClassLibrary1.Model
 
 
 
-        private static TablePopulateResponse GetTablePopulateResponse(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
+        private static TablePopulateResponse GetTablePopulateResponse(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, R8RDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
         {
             TablePopulateResponse theResponse = null;
             try
@@ -157,12 +157,12 @@ namespace ClassLibrary1.Model
             return theResponse;
         }
 
-        private static TablePopulateResponse GetTablePopulateResponseWithFastQueries(DenormalizedTableAccess dta, int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
+        private static TablePopulateResponse GetTablePopulateResponseWithFastQueries(DenormalizedTableAccess dta, int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, R8RDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
         {
             //ProfileSimple.Start("FastQueries intro"); // QUERYTIMING
             List<InfoForBodyRows> theInfoForBodyRows;
             int? rowCountFromQuery = null;
-            FastAccessTablesQuery.DoQuery(dta, firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess.RaterooDB, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, theTbl, out theInfoForBodyRows, out rowCountFromQuery);
+            FastAccessTablesQuery.DoQuery(dta, firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess.R8RDB, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, theTbl, out theInfoForBodyRows, out rowCountFromQuery);
 
             int? rowCount = rowCountOverride ?? rowCountFromQuery;
 
@@ -171,7 +171,7 @@ namespace ClassLibrary1.Model
             return theResponse;
         }
 
-        private static TablePopulateResponse GetTablePopulateResponseWithNormalizedQueries(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
+        private static TablePopulateResponse GetTablePopulateResponseWithNormalizedQueries(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, R8RDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCountOverride)
         {
             //ProfileSimple.Start("NormalizedQuery");
             TblRowsToPopulatePage theInfoToPopulatePage = GetTblRowsToPopulatePage(firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule);
@@ -182,7 +182,7 @@ namespace ClassLibrary1.Model
             return theResponse;
         }
 
-        private static TablePopulateResponse CompleteGetTablePopulateResponse(RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCount, int numRowOfFirstTblRow, TblRowsToPopulatePage theInfoToPopulatePage = null, List<InfoForBodyRows> bodyRowInfoList = null)
+        private static TablePopulateResponse CompleteGetTablePopulateResponse(R8RDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, PointsManager thePointsManager, Tbl theTbl, string headerRow, int? rowCount, int numRowOfFirstTblRow, TblRowsToPopulatePage theInfoToPopulatePage = null, List<InfoForBodyRows> bodyRowInfoList = null)
         {
             //ProfileSimple.Start("CompleteTablePopulateResponse"); // QUERYTIMING
             if (theInfoToPopulatePage == null && bodyRowInfoList == null)
@@ -209,7 +209,7 @@ namespace ClassLibrary1.Model
             return theResponse;
         }
 
-        private static TblDimension GetTblDimension(RaterooDataAccess theDataAccess, Tbl theTbl)
+        private static TblDimension GetTblDimension(R8RDataAccess theDataAccess, Tbl theTbl)
         {
             TblDimension theTblDimension = null;
             TblDimensionAccess theCssAccess = new TblDimensionAccess(theDataAccess);
@@ -217,7 +217,7 @@ namespace ClassLibrary1.Model
             return theTblDimension;
         }
 
-        private static string GetMainRowsString(RaterooDataAccess theDataAccess, TableInfo theTableInfo, PointsManager thePointsManager, Tbl theTbl, TblDimension theTblDimension, int numRowOfFirstTblRow, TblRowsToPopulatePage theInfoToPopulatePage = null, List<InfoForBodyRows> bodyRowInfoList = null)
+        private static string GetMainRowsString(R8RDataAccess theDataAccess, TableInfo theTableInfo, PointsManager thePointsManager, Tbl theTbl, TblDimension theTblDimension, int numRowOfFirstTblRow, TblRowsToPopulatePage theInfoToPopulatePage = null, List<InfoForBodyRows> bodyRowInfoList = null)
         {
             //ProfileSimple.Start("GetMainRowsString beginning");
             StringBuilder theMainRows = new StringBuilder();
@@ -252,7 +252,7 @@ namespace ClassLibrary1.Model
             return mainRowsString;
         }
 
-        private static TblRowsToPopulatePage GetTblRowsToPopulatePage(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, RaterooDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule)
+        private static TblRowsToPopulatePage GetTblRowsToPopulatePage(int firstRowNum, int numRows, bool populatingInitially, string cacheString, string[] myDependencies, R8RDataAccess theDataAccess, TableInfo theTableInfo, string tableInfoForReset, int? maxNumResults, TableSortRule theTableSortRule)
         {
             TblRowsToPopulatePage theInfoToPopulatePage = null;
 
@@ -265,12 +265,12 @@ namespace ClassLibrary1.Model
                 bool nameAscending = true;
                 if (populatingInitially)
                 {
-                    theInfoToPopulatePage = theTableInfo.Filters.GetQueryToPopulatePageInitially(theDataAccess.RaterooDB, maxNumResults,
+                    theInfoToPopulatePage = theTableInfo.Filters.GetQueryToPopulatePageInitially(theDataAccess.R8RDB, maxNumResults,
                 theTableSortRule, sortByNameAfterTakingTop, nameAscending, numRows, firstRowNum - 1);
                 }
                 else
                 {
-                    theInfoToPopulatePage = theTableInfo.Filters.GetQueryForSpecificRows(theDataAccess.RaterooDB, maxNumResults, theTableSortRule, sortByNameAfterTakingTop, nameAscending, (int)firstRowNum, (int)numRows, tableInfoForReset != "");
+                    theInfoToPopulatePage = theTableInfo.Filters.GetQueryForSpecificRows(theDataAccess.R8RDB, maxNumResults, theTableSortRule, sortByNameAfterTakingTop, nameAscending, (int)firstRowNum, (int)numRows, tableInfoForReset != "");
                 }
                 if (firstRowNum == 1)
                     CacheManagement.AddItemToCache(cacheString + "TblRowsOnly", myDependencies, theInfoToPopulatePage, new TimeSpan(0, 1, 0));
@@ -278,7 +278,7 @@ namespace ClassLibrary1.Model
             return theInfoToPopulatePage;
         }
 
-        private static void TableLoadingCalculateMaxNumResults(int firstRowNum, int numRows, RaterooDataAccess theDataAccess, TableInfo theTableInfo, out int? maxNumResults, out int? rowCountOverride, out TableSortRule theTableSortRule)
+        private static void TableLoadingCalculateMaxNumResults(int firstRowNum, int numRows, R8RDataAccess theDataAccess, TableInfo theTableInfo, out int? maxNumResults, out int? rowCountOverride, out TableSortRule theTableSortRule)
         {
             maxNumResults = null;
             rowCountOverride = null;
@@ -293,7 +293,7 @@ namespace ClassLibrary1.Model
                         maxNumResults = firstRowNum + (int)numRows - 1;
                     else
                         maxNumResults = numRows;
-                    rowCountOverride = theDataAccess.RaterooDB.GetTable<TblRow>().Where(t => t.InitialFieldsDisplaySet && t.TblID == theTableInfo.TblID).Count();
+                    rowCountOverride = theDataAccess.R8RDB.GetTable<TblRow>().Where(t => t.InitialFieldsDisplaySet && t.TblID == theTableInfo.TblID).Count();
                     if (rowCountOverride > 1000)
                         rowCountOverride = 1000;
                 }
@@ -306,7 +306,7 @@ namespace ClassLibrary1.Model
                 maxNumResults = 5000;
         }
 
-        private static void CheckTableLoadingResetNeeded(string theTableInfoString, ref int firstRowNum, ref int numRows, int? firstRowIfResetting, RaterooDataAccess theDataAccess, TableInfo theTableInfo, ref string tableInfoForReset, bool populatingInitially)
+        private static void CheckTableLoadingResetNeeded(string theTableInfoString, ref int firstRowNum, ref int numRows, int? firstRowIfResetting, R8RDataAccess theDataAccess, TableInfo theTableInfo, ref string tableInfoForReset, bool populatingInitially)
         {
             bool sortingAnew = (populatingInitially && TestableDateTime.Now - theTableInfo.Filters.AsOfDateTime < new TimeSpan(0, 0, 10));
             if (sortingAnew || theTableInfo.Filters.GetNewDateTime == true || theTableInfo.Filters.AsOfDateTime < TestableDateTime.Now - new TimeSpan(0, 29, 30))
@@ -320,7 +320,7 @@ namespace ClassLibrary1.Model
                 }
             }
             bool trustedUser = theTableInfo.SortMenu.Any(x => x.I == "R" /* TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleNeedsRating()) */);
-            var theSortMenu = SortMenuGenerator.GetSortMenuForTblTab(theDataAccess.RaterooDB, theTableInfo.TblTabID, trustedUser);
+            var theSortMenu = SortMenuGenerator.GetSortMenuForTblTab(theDataAccess.R8RDB, theTableInfo.TblTabID, trustedUser);
             theTableInfo.SortMenu = theSortMenu;
             string potentialTableInfoForReset = TableInfoToStringConversion.GetStringFromTableInfo(theTableInfo);
             if (potentialTableInfoForReset != theTableInfoString)
@@ -329,7 +329,7 @@ namespace ClassLibrary1.Model
 
 
 
-        public static string GetBodyRowString(RaterooDataAccess theDataAccess, int rowNumber, int theTblRowID, bool tblRowDeleted, int theTblID, PointsManager thePointsManager, int theTblTabID, string suppStyle, TblDimension theTblDimension, List<InfoForBodyRows> bodyRowInfoList)
+        public static string GetBodyRowString(R8RDataAccess theDataAccess, int rowNumber, int theTblRowID, bool tblRowDeleted, int theTblID, PointsManager thePointsManager, int theTblTabID, string suppStyle, TblDimension theTblDimension, List<InfoForBodyRows> bodyRowInfoList)
         {
             int thePointsManagerID = thePointsManager.PointsManagerID;
 
@@ -376,9 +376,9 @@ namespace ClassLibrary1.Model
             return theBodyOfRow;
         }
 
-        private static List<InfoForBodyRows> GetBodyRowsInfoListFromDatabase(RaterooDataAccess theDataAccess, int theTblTabID, List<int> theTblRowIDs)
+        private static List<InfoForBodyRows> GetBodyRowsInfoListFromDatabase(R8RDataAccess theDataAccess, int theTblTabID, List<int> theTblRowIDs)
         {
-            return theDataAccess.RaterooDB.GetTable<RatingGroup>()
+            return theDataAccess.R8RDB.GetTable<RatingGroup>()
                                                 .Where(mg =>
                                                     theTblRowIDs.Contains(mg.TblRowID) &&
                                                     (mg.TypeOfRatingGroup != (int)RatingGroupTypes.hierarchyNumbersBelow && mg.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityHierarchyBelow) &&
@@ -449,7 +449,7 @@ namespace ClassLibrary1.Model
 
         private static void BuildHtmlForComplexCellFromDatabase(StringBuilder builder, int topRatingGroupID, int tblRowID, int tblColumnID, bool trusted)
         {
-            RaterooDataAccess DataAccess = new RaterooDataAccess();
+            R8RDataAccess DataAccess = new R8RDataAccess();
             RatingHierarchyData theData = DataAccess.GetRatingHierarchyDataForRatingGroup(topRatingGroupID);
             bool multipleLevels = theData.RatingHierarchyEntries.Any(x => x.HierarchyLevel == 2);
             if (multipleLevels)
@@ -519,7 +519,7 @@ namespace ClassLibrary1.Model
         //    return theBodyOfRow;
         //}
 
-        private static string GetBodyRowHeading(RaterooDataAccess theDataAccess, TblDimension theTblDimension, int theTblRowID, int theTblID, int thePointsManagerID)
+        private static string GetBodyRowHeading(R8RDataAccess theDataAccess, TblDimension theTblDimension, int theTblRowID, int theTblID, int thePointsManagerID)
         {
             string theRowHeading;
             string myCacheKeyRowHeading = "RowHeading" + theTblRowID.ToString();
@@ -543,7 +543,7 @@ namespace ClassLibrary1.Model
             return theRowHeading;
         }
 
-        private static string LoadHeaderRowFromWebService(RaterooDataAccess theDataAccess, int TblTabID, int? TblColumnToSortID, bool sortByEntityName, bool ascending, int theTblID)
+        private static string LoadHeaderRowFromWebService(R8RDataAccess theDataAccess, int TblTabID, int? TblColumnToSortID, bool sortByEntityName, bool ascending, int theTblID)
         {
             string theHeaderRow;
             string myCacheKeyHeaderRow = "HeaderRow" + TblTabID + TblColumnToSortID + ascending;

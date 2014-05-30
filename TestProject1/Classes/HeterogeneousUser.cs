@@ -64,7 +64,7 @@ namespace TestProject1
 
         public void PrintOutInfo()
         {
-            RaterooDataManipulation dc = new RaterooDataManipulation();
+            R8RDataManipulation dc = new R8RDataManipulation();
             User theUser = dc.DataContext.GetTable<User>().Single(x => x.UserID == UserId);
             TrustTracker theTrustTracker = theUser.TrustTrackers.First();
             Debug.WriteLine("UserID: " + UserId + " Subversive: " + (Type == HeterogeneousUserType.Subversive) + " Quality: " + Quality + " EstimateWeight: " + UserRatingEstimateWeight + " Overall trust: " + theTrustTracker.OverallTrustLevel + " at last review: " + theTrustTracker.OverallTrustLevelAtLastReview);

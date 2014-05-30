@@ -29,7 +29,7 @@ namespace ClassLibrary1.Model
     {
 
         [ThreadStaticAttribute]
-        static IRaterooDataContext _ThreadDataContext;
+        static IR8RDataContext _ThreadDataContext;
 
         internal void ResetMyDataContext(string key)
         {
@@ -38,7 +38,7 @@ namespace ClassLibrary1.Model
             {
                 if (HttpContext.Current.Items[key] != null)
                 {
-                    IRaterooDataContext iDataContext = ((IRaterooDataContext)HttpContext.Current.Items[key]);
+                    IR8RDataContext iDataContext = ((IR8RDataContext)HttpContext.Current.Items[key]);
                     iDataContext.Reset();
                     HttpContext.Current.Items[key] = null;
                 }
@@ -47,14 +47,14 @@ namespace ClassLibrary1.Model
             {
                 if (_ThreadDataContext != null)
                 {
-                    IRaterooDataContext iDataContext = ((IRaterooDataContext)_ThreadDataContext);
+                    IR8RDataContext iDataContext = ((IR8RDataContext)_ThreadDataContext);
                     iDataContext.Reset();
                     _ThreadDataContext = null;
                 }
                 //LocalDataStoreSlot threadData = Thread.GetNamedDataSlot(key);
                 //if (threadData != null)
                 //{
-                //    ((IRaterooDataContext)Thread.GetData(threadData)).Dispose();
+                //    ((IR8RDataContext)Thread.GetData(threadData)).Dispose();
                 //    Thread.FreeNamedDataSlot(key);
                 //}
             }
@@ -72,18 +72,18 @@ namespace ClassLibrary1.Model
             ResetMyDataContext(key);
         }
 
-        internal IRaterooDataContext GetDataContext(string key, bool doAllowChangeData, bool enableObjectTracking)
+        internal IR8RDataContext GetDataContext(string key, bool doAllowChangeData, bool enableObjectTracking)
         {
-            IRaterooDataContext dataContext = null;
+            IR8RDataContext dataContext = null;
             if (HttpContext.Current != null)
             {
                 if (HttpContext.Current.Items[key] != null)
                 {
-                    dataContext = (IRaterooDataContext)HttpContext.Current.Items[key];
+                    dataContext = (IR8RDataContext)HttpContext.Current.Items[key];
                     if (dataContext != null && dataContext.IsRealDatabase())
                     {
-                        RaterooDataContext realDatabase = dataContext.GetRealDatabaseIfExists();
-                        if ( realDatabase != null && (((RaterooSQLDataContext)dataContext).AllowChangeData == false && doAllowChangeData == true)
+                        R8RDataContext realDatabase = dataContext.GetRealDatabaseIfExists();
+                        if ( realDatabase != null && (((R8RSQLDataContext)dataContext).AllowChangeData == false && doAllowChangeData == true)
                             || (realDatabase.ObjectTrackingEnabled != enableObjectTracking))
                         { // We only reset the data context if we want to write data and we can't do so.
                             ResetMyDataContext(key);
@@ -93,7 +93,7 @@ namespace ClassLibrary1.Model
                 }
                 else
                 {
-                    dataContext = GetIRaterooDataContext.New(doAllowChangeData, enableObjectTracking);
+                    dataContext = GetIR8RDataContext.New(doAllowChangeData, enableObjectTracking);
                     if (dataContext != null)
                         HttpContext.Current.Items[key] = dataContext;
                 }
@@ -102,13 +102,13 @@ namespace ClassLibrary1.Model
             {
                 if (_ThreadDataContext == null)
                 {
-                    _ThreadDataContext = GetIRaterooDataContext.New(doAllowChangeData, enableObjectTracking);
+                    _ThreadDataContext = GetIR8RDataContext.New(doAllowChangeData, enableObjectTracking);
                 }
                 dataContext = _ThreadDataContext;
                 //LocalDataStoreSlot threadData = Thread.GetNamedDataSlot(key);
                 //if (threadData != null)
                 //{
-                //    myDataContext = (IRaterooDataContext)Thread.GetData(threadData);
+                //    myDataContext = (IR8RDataContext)Thread.GetData(threadData);
                 //    if (myDataContext.AllowChangeData != doAllowChangeData || myDataContext.ObjectTrackingEnabled != enableObjectTracking)
                 //    {
                 //        ResetMyDataContext(key);
@@ -117,7 +117,7 @@ namespace ClassLibrary1.Model
                 //}
                 //else
                 //{
-                //    myDataContext = GetIRaterooDataContext.New(doAllowChangeData,enableObjectTracking);
+                //    myDataContext = GetIR8RDataContext.New(doAllowChangeData,enableObjectTracking);
                 //    if (myDataContext != null)
                 //    {
                 //        threadData = Thread.AllocateNamedDataSlot(key);
@@ -133,7 +133,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public IRaterooDataContext GetDataContext(bool doAllowChangeData, bool enableObjectTracking)
+        public IR8RDataContext GetDataContext(bool doAllowChangeData, bool enableObjectTracking)
         {
             string key = GetThreadKey();
             //Trace.TraceInformation("GetDataContext " + key);

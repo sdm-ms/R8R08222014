@@ -21,20 +21,20 @@ namespace ClassLibrary1.Model
     /// </summary>
     public class TblDimensionAccess
     {
-        protected RaterooDataAccess DataAccess;
+        protected R8RDataAccess DataAccess;
 
-        public TblDimensionAccess(RaterooDataAccess dataAccess)
+        public TblDimensionAccess(R8RDataAccess dataAccess)
         {
             DataAccess = dataAccess;
         }
 
         public int GetTblDimensionsIDForRegularTbl(int theTblID)
         {
-            int? x = DataAccess.RaterooDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).TblDimensionsID;
+            int? x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).TblDimensionsID;
             if (x == null)
-                x = DataAccess.RaterooDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).PointsManager.Domain.TblDimensionsID;
+                x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).PointsManager.Domain.TblDimensionsID;
             if (x == null)
-                x = DataAccess.RaterooDB.GetTable<TblDimension>().FirstOrDefault().TblDimensionsID;
+                x = DataAccess.R8RDB.GetTable<TblDimension>().FirstOrDefault().TblDimensionsID;
             return (int)x;
         }
 
@@ -44,7 +44,7 @@ namespace ClassLibrary1.Model
             if (theTblDimension != null)
                 return theTblDimension;
 
-            theTblDimension = DataAccess.RaterooDB.GetTable<TblDimension>().Single(t => t.TblDimensionsID == GetTblDimensionsIDForRegularTbl(theTblID));
+            theTblDimension = DataAccess.R8RDB.GetTable<TblDimension>().Single(t => t.TblDimensionsID == GetTblDimensionsIDForRegularTbl(theTblID));
             string[] theDependency = { }; // no cache dependency needed since this is very short lived and not operation-critical.
             CacheManagement.AddItemToCache("TableDim" + theTblID, theDependency, theTblDimension, new TimeSpan(0, 5, 0));
             return theTblDimension;

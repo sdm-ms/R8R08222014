@@ -24,7 +24,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
     protected int? TblColumnToSortID;
     protected bool SortByEntityName = false;
     protected bool  DoSortOrderAscending;
-    protected RaterooDataAccess DataAccess { get; set; }
+    protected R8RDataAccess DataAccess { get; set; }
     protected bool rebinding = false;
     public LoadHeaderRowInfo theHeaderRowInfo { get; set; }
 
@@ -34,13 +34,13 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         {
             int? TblColumnToSort;
             bool SortOrderAscending = true; // may change below
-            TblTab theTblTab = theHeaderRowInfo.dataAccess.RaterooDB.GetTable<TblTab>().Single(cg => cg.TblTabID == theHeaderRowInfo.TblTabID);
+            TblTab theTblTab = theHeaderRowInfo.dataAccess.R8RDB.GetTable<TblTab>().Single(cg => cg.TblTabID == theHeaderRowInfo.TblTabID);
             TblColumnToSort = theHeaderRowInfo.TblColumnToSortID;
             SortByEntityName = theHeaderRowInfo.SortByEntityName;
             SortOrderAscending = theHeaderRowInfo.ascending;
             //if (TblColumnToSort != null)
             //{
-            //    TblColumn theSortCD = theHeaderRowInfo.dataAccess.RaterooDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnToSort && cd.Status == (Byte)StatusOfObject.Active);
+            //    TblColumn theSortCD = theHeaderRowInfo.dataAccess.R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnToSort && cd.Status == (Byte)StatusOfObject.Active);
             //    if (theSortCD == null)
             //        TblColumnToSort = null;
             //    else
@@ -68,7 +68,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         }
     }
 
-    public void Setup(RaterooDataAccess dataAccess, int tblTabID, int? limitToThisTblColumnID, Action<int?, bool>resortCateDesFn, TableSortRule theTableSortRule)
+    public void Setup(R8RDataAccess dataAccess, int tblTabID, int? limitToThisTblColumnID, Action<int?, bool>resortCateDesFn, TableSortRule theTableSortRule)
     {
        
         DataAccess = dataAccess;
@@ -137,7 +137,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 
         // This seems to be called twice when the page first loads;
         // I'm not sure why. But it doesn't take long to run.
-       var theQuery = DataAccess.RaterooDB.GetTable<TblColumn>()
+       var theQuery = DataAccess.R8RDB.GetTable<TblColumn>()
                 .Where(x => x.TblTabID == TblTabID 
                         && (LimitToThisTblColumnID == null || x.TblColumnID == LimitToThisTblColumnID)
                         && x.Status == (byte)StatusOfObject.Active)
@@ -153,7 +153,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
                     VerticalText = useVerticalColumns
 
                 });
-       Tbl theTbl = DataAccess.RaterooDB.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
+       Tbl theTbl = DataAccess.R8RDB.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
        HeaderRowInfoType numColumnHeader = new HeaderRowInfoType
        {
            TblColumnID = 0,

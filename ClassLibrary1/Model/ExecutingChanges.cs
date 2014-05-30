@@ -31,9 +31,9 @@ using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
 
 
@@ -228,7 +228,7 @@ namespace ClassLibrary1.Model
         //            // And now we must figure out the time at which being on track will be realized.
         //            DateTime currentTime = TestableDateTime.Now;
         //            DateTime beginningOfPeriod = TestableDateTime.Now - new TimeSpan(0, 0, theSettings.MinTimePastThreshold);
-        //            var predictionsInTimePeriod = RaterooDB.GetTable<UserRating>().Where(p => p.RatingID == theGroup.MakeChangeRatingID
+        //            var predictionsInTimePeriod = R8RDB.GetTable<UserRating>().Where(p => p.RatingID == theGroup.MakeChangeRatingID
         //                                                               && p.UserRatingGroup.WhenMade >= beginningOfPeriod)
         //                                                        .Select(p => new
         //                                                        {
@@ -309,7 +309,7 @@ namespace ClassLibrary1.Model
         //            theGroup.ScheduleApprovalOrRejection = earliestTime;
 
         //        } // we're on track region
-        //        RaterooDB.SubmitChanges();
+        //        R8RDB.SubmitChanges();
 
 
         //    }
@@ -351,7 +351,7 @@ namespace ClassLibrary1.Model
 
         //    bool didWork = false;
 
-        //    ChangesGroup theGroup = RaterooDB.GetTable<ChangesGroup>().Where(g => g.ScheduleImplementation != null)
+        //    ChangesGroup theGroup = R8RDB.GetTable<ChangesGroup>().Where(g => g.ScheduleImplementation != null)
         //                                            .FirstOrDefault(g => g.ScheduleImplementation < TestableDateTime.Now);
         //    if (theGroup != null)
         //    {
@@ -359,7 +359,7 @@ namespace ClassLibrary1.Model
         //        didWork = true;
         //    }
 
-        //    theGroup = RaterooDB.GetTable<ChangesGroup>().Where(g => g.ScheduleApprovalOrRejection != null)
+        //    theGroup = R8RDB.GetTable<ChangesGroup>().Where(g => g.ScheduleApprovalOrRejection != null)
         //                                            .FirstOrDefault(g => g.ScheduleApprovalOrRejection < TestableDateTime.Now);
         //    if (theGroup != null)
         //    {
@@ -383,7 +383,7 @@ namespace ClassLibrary1.Model
             if (theSettings.HalfLifeForResolvingAtFinalValue > 0)
             {
                 // See if this change group includes a change to a rating, in which case we'll schedule it.
-                int directResolution = 0; // This feature currently disabled. To enable, change to: RaterooDB.GetTable<ChangesResolveRatingOrGroup>().Where(c => c.ChangeGroupID == theGroup.ChangesGroupID).Count();
+                int directResolution = 0; // This feature currently disabled. To enable, change to: R8RDB.GetTable<ChangesResolveRatingOrGroup>().Where(c => c.ChangeGroupID == theGroup.ChangesGroupID).Count();
                 if (directResolution > 0)
                     implementImmediately = false;
                 else
@@ -1054,7 +1054,7 @@ namespace ClassLibrary1.Model
                         //}
                         //else
                         //{
-                        //    var theTbls = RaterooDB.GetTable<Tbl>().Where(c => c.PointsManagerID == theChange.ChangesGroup.PointsManagerID && c.Status == (Byte)StatusOfObject.Active && c.TradingStatus != (Byte)TradingStatus.Ended);
+                        //    var theTbls = R8RDB.GetTable<Tbl>().Where(c => c.PointsManagerID == theChange.ChangesGroup.PointsManagerID && c.Status == (Byte)StatusOfObject.Active && c.TradingStatus != (Byte)TradingStatus.Ended);
                         //    foreach (Tbl theTbl in theTbls)
                         //        EndRatingsForTblAtCurrentValues(theTbl.TblID);
                         //    theChange.ChangesGroup.PointsManager.DefaultRatingGroupAttributesID = (int)theChange.NewObject;

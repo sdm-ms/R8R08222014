@@ -29,9 +29,9 @@ using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         /// <summary>
         /// Sets the rating group attributes corresponding to a rating group below a rating plan in the hierarchy.
@@ -114,7 +114,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroup theCurrentRatingGroup = prediction.Rating.RatingGroup;
             UserRatingGroup theUserRatingGroup = prediction.UserRatingGroup;
-            Rating theRatingOwner = ObjDataAccess.RaterooDB.NewOrSingle<Rating>(m => m.RatingGroup1 == theCurrentRatingGroup);
+            Rating theRatingOwner = ObjDataAccess.R8RDB.NewOrSingle<Rating>(m => m.RatingGroup1 == theCurrentRatingGroup);
             if (theRatingOwner == null)
                 return null;
             else
@@ -219,22 +219,22 @@ namespace ClassLibrary1.Model
         //        switch (theType)
         //        {
         //            case TypeOfObject.Rating:
-        //                 RaterooDB.NewOrSingle<Rating>(x=>x.RatingID==objectID).RatingStatus.TradingStatus = (Byte)newStatus;
+        //                 R8RDB.NewOrSingle<Rating>(x=>x.RatingID==objectID).RatingStatus.TradingStatus = (Byte)newStatus;
         //                break;
         //            case TypeOfObject.RatingGroup:
-        //                RaterooDB.GetTable<RatingGroup>().Single(x=>x.RatingGroupID==objectID).TradingStatus = (Byte)newStatus;
+        //                R8RDB.GetTable<RatingGroup>().Single(x=>x.RatingGroupID==objectID).TradingStatus = (Byte)newStatus;
         //                break;
         //            case TypeOfObject.TblRow:
-        //               RaterooDB.GetTable<TblRow>().Single(x=>x.TblRowID==objectID).TradingStatus = (Byte)newStatus;
+        //               R8RDB.GetTable<TblRow>().Single(x=>x.TblRowID==objectID).TradingStatus = (Byte)newStatus;
         //                break;
         //            case TypeOfObject.Tbl:
-        //               RaterooDB.GetTable<Tbl>().Single(x=>x.TblID==objectID).TradingStatus = (Byte)newStatus;
+        //               R8RDB.GetTable<Tbl>().Single(x=>x.TblID==objectID).TradingStatus = (Byte)newStatus;
         //                break;
         //            case TypeOfObject.PointsManager:
-        //                RaterooDB.GetTable<PointsManager>().Single(x=>x.PointsManagerID==objectID).TradingStatus = (Byte)newStatus;
+        //                R8RDB.GetTable<PointsManager>().Single(x=>x.PointsManagerID==objectID).TradingStatus = (Byte)newStatus;
         //                break;
         //        }
-        //        RaterooDB.SubmitChanges();
+        //        R8RDB.SubmitChanges();
         //    }
         //}
 
@@ -299,23 +299,23 @@ namespace ClassLibrary1.Model
         //        switch (theType)
         //        {
         //            case TypeOfObject.Rating:
-        //                allowActive = RaterooDB.GetTable<RatingGroup>().Single(x=>x.RatingGroupID==ObjDataAccess.GetRating(objectID).RatingGroupID).TradingStatus == (Byte)TradingStatus.Active;
+        //                allowActive = R8RDB.GetTable<RatingGroup>().Single(x=>x.RatingGroupID==ObjDataAccess.GetRating(objectID).RatingGroupID).TradingStatus == (Byte)TradingStatus.Active;
         //                break;
         //            case TypeOfObject.RatingGroup:
         //                RatingGroup theRatingGroup = ObjDataAccess.GetRatingGroup(objectID);
         //                oldStatus = (TradingStatus) theRatingGroup.TradingStatus;
         //                ratingGroupOwner = GetRatingGroupOwner(theRatingGroup.RatingGroupID);
         //                if (ratingGroupOwner != null)
-        //                    allowActive = RaterooDB.NewOrSingle<Rating>(x=>x.RatingID==(int)ratingGroupOwner).RatingStatus.TradingStatus == (Byte)TradingStatus.Active;
+        //                    allowActive = R8RDB.NewOrSingle<Rating>(x=>x.RatingID==(int)ratingGroupOwner).RatingStatus.TradingStatus == (Byte)TradingStatus.Active;
         //                else
-        //                    allowActive = RaterooDB.GetTable<RatingGroup>().Single(x => x.RatingGroupID == objectID).TblRow.TradingStatus == (Byte)TradingStatus.Active;
+        //                    allowActive = R8RDB.GetTable<RatingGroup>().Single(x => x.RatingGroupID == objectID).TblRow.TradingStatus == (Byte)TradingStatus.Active;
         //                break;
         //            case TypeOfObject.TblRow:
-        //                allowActive = RaterooDB.GetTable<TblRow>().Single(x=>x.TblRowID==objectID).Tbl.TradingStatus == (Byte)TradingStatus.Active;
+        //                allowActive = R8RDB.GetTable<TblRow>().Single(x=>x.TblRowID==objectID).Tbl.TradingStatus == (Byte)TradingStatus.Active;
         //                break;
         //            case TypeOfObject.Tbl:
-        //                allowActive = RaterooDB.GetTable<Tbl>().Single(x=>x.TblID==objectID).PointsManager.TradingStatus == (Byte)TradingStatus.Active;
-        //                oldStatus = (TradingStatus) RaterooDB.GetTable<Tbl>().Single(x => x.TblID == objectID).TradingStatus;
+        //                allowActive = R8RDB.GetTable<Tbl>().Single(x=>x.TblID==objectID).PointsManager.TradingStatus == (Byte)TradingStatus.Active;
+        //                oldStatus = (TradingStatus) R8RDB.GetTable<Tbl>().Single(x => x.TblID == objectID).TradingStatus;
         //                break;
         //        }
         //        if (!allowActive)
@@ -348,10 +348,10 @@ namespace ClassLibrary1.Model
         //    //        break;
         //    //    case TypeOfObject.TblRow:
         //    //        TblRow theTblRow = ObjDataAccess.GetTblRow(objectID);
-        //    //        var TblTabs = RaterooDB.GetTable<TblTab>().Where(cg => cg.TblID == theTblRow.TblID && cg.Status == (Byte)StatusOfObject.Active);
+        //    //        var TblTabs = R8RDB.GetTable<TblTab>().Where(cg => cg.TblID == theTblRow.TblID && cg.Status == (Byte)StatusOfObject.Active);
         //    //        foreach (TblTab theTblTab in TblTabs)
         //    //        {
-        //    //            var theCategories = RaterooDB.GetTable<TblColumn>().Where(c => c.TblTabID == theTblTab.TblTabID && c.Status == (Byte)StatusOfObject.Active);
+        //    //            var theCategories = R8RDB.GetTable<TblColumn>().Where(c => c.TblTabID == theTblTab.TblTabID && c.Status == (Byte)StatusOfObject.Active);
         //    //            foreach (TblColumn theCategory in theCategories)
         //    //            {
         //    //                int? theRatingGroupID = GetTopRatingGroupForTblRowCategory(objectID, theCategory.TblColumnID);
@@ -362,14 +362,14 @@ namespace ClassLibrary1.Model
         //    //        break;
         //    //    case TypeOfObject.Tbl:  
                     
-        //    //        var theTblRows = RaterooDB.GetTable<TblRow>().Where(e => e.TblID == objectID && e.Status == (Byte)StatusOfObject.Active).Select(e => e.TblRowID);
+        //    //        var theTblRows = R8RDB.GetTable<TblRow>().Where(e => e.TblID == objectID && e.Status == (Byte)StatusOfObject.Active).Select(e => e.TblRowID);
         //    //        foreach (int entityID in theTblRows)
         //    //            SetTradingStatusHierarchical(entityID, TypeOfObject.TblRow, newStatus);
         //    //        break;
 
         //    //    case TypeOfObject.PointsManager:
                     
-        //    //        var theTbls = RaterooDB.GetTable<Tbl>().Where(c => c.PointsManagerID == objectID && c.Status == (Byte)StatusOfObject.Active).Select(c => c.TblID);
+        //    //        var theTbls = R8RDB.GetTable<Tbl>().Where(c => c.PointsManagerID == objectID && c.Status == (Byte)StatusOfObject.Active).Select(c => c.TblID);
         //    //        foreach (int TblID in theTbls)
         //    //            SetTradingStatusHierarchical(TblID, TypeOfObject.Tbl, newStatus);
         //    //        break;
@@ -380,7 +380,7 @@ namespace ClassLibrary1.Model
         //{
         //    bool moreToDo = false;
 
-        //    var TblsToPause = RaterooDB.GetTable<Tbl>().Where(x => 
+        //    var TblsToPause = R8RDB.GetTable<Tbl>().Where(x => 
         //            x.TradingStatus == (Byte) TradingStatus.Active
         //            && x.PointsManager.TradingStatus != (Byte) TradingStatus.Active);
         //    if (TblsToPause.Any())
@@ -391,7 +391,7 @@ namespace ClassLibrary1.Model
         //        return true; // may be more work to do
         //    }
 
-        //    //var TblColumnsToPause = RaterooDB.GetTable<TblColumn>().Where(x =>
+        //    //var TblColumnsToPause = R8RDB.GetTable<TblColumn>().Where(x =>
         //    //        x.TradingStatus == (Byte)TradingStatus.Active
         //    //        && x.PointsManager.TradingStatus != (Byte)TradingStatus.Active);
         //    //if (TblColumnsToPause.Any())

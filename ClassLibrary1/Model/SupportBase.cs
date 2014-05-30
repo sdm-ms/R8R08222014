@@ -29,17 +29,17 @@ namespace ClassLibrary1.Model
 {
 
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         DataContextManagement _dataContextManagement = null;
-        RaterooDataAccess _dataAccess = null;
+        R8RDataAccess _dataAccess = null;
         
 
         // Misc. methods (random number generation, dealing with data contexts)
 
-        public RaterooDataManipulation()
+        public R8RDataManipulation()
         {
             _dataContextManagement = new DataContextManagement();
         }
@@ -52,7 +52,7 @@ namespace ClassLibrary1.Model
         // code that have a right to make changes, we will only use the read/write datacontext.
 
 
-        public IRaterooDataContext DataContext
+        public IR8RDataContext DataContext
         {
             get
             {
@@ -63,13 +63,13 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// 
         /// </summary>
-        public RaterooDataAccess ObjDataAccess
+        public R8RDataAccess ObjDataAccess
         {
             get
             {
                 if (null == _dataAccess)
                 {
-                    _dataAccess = new RaterooDataAccess();
+                    _dataAccess = new R8RDataAccess();
                 }
                 return _dataAccess;
             }

@@ -19,7 +19,7 @@ public partial class Main_Table_ViewCellRatingValue : System.Web.UI.UserControl
     // Main_Table_ViewCellRatingValueDateSelected theSelectedRatingValueDate;
     // Main_Table_ViewCellRatingValueDateUnselected theSelectedRatingValueDatUselected;
 
-    public void Setup(RaterooDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, bool isDate, string description, int TblColumnID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, bool isDate, string description, int TblColumnID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
     {
         if (selected)
         {

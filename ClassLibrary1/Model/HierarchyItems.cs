@@ -18,7 +18,7 @@ namespace ClassLibrary1.Model
             remainderOfHierarchy = null;
             if (theStrings.Count() == 1 && theStrings[0] == "")
                 return null;
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             int i = 0;
             int length = theStrings.Count();
             HierarchyItem higherItem = null;
@@ -87,7 +87,7 @@ namespace ClassLibrary1.Model
                     return null;
                 targetHierarchyItemID = (int)theItem.HigherHierarchyItemID;
             }
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Single(x => x.HierarchyItemID == targetHierarchyItemID);
         }
 
@@ -96,7 +96,7 @@ namespace ClassLibrary1.Model
         {
             /* Note: Because of extensive problems, we're not using automatic association properties on this table. */
 
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation(); 
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation(); 
             if (useRoutingHierarchy)
                 return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemForRoutingID == theItem.HierarchyItemID);
             else
@@ -134,12 +134,12 @@ namespace ClassLibrary1.Model
             return theItem;
         }
 
-        public static List<Tbl> GetTblsUnderneathHierarchyItem(IRaterooDataContext theDataContext, HierarchyItem theItem)
+        public static List<Tbl> GetTblsUnderneathHierarchyItem(IR8RDataContext theDataContext, HierarchyItem theItem)
         {
             return GetHierarchyUnderneathHierarchyItem(theDataContext, theItem).AsQueryable().Where(x => x.Tbl != null).Select(x => x.Tbl).ToList();
         }
 
-        public static List<HierarchyItem> GetHierarchyUnderneathHierarchyItem(IRaterooDataContext theDataContext, HierarchyItem theItem)
+        public static List<HierarchyItem> GetHierarchyUnderneathHierarchyItem(IR8RDataContext theDataContext, HierarchyItem theItem)
         { 
             string cacheKey = "HierarchyUnderneath" + theItem.GetHashString();
             List<HierarchyItem> theList = CacheManagement.GetItemFromCache(cacheKey) as List<HierarchyItem>;

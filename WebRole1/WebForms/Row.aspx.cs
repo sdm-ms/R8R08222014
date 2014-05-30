@@ -34,12 +34,12 @@ public partial class Row : System.Web.UI.Page
         else
             throw new Exception("Internal error: Invalid mode for Row page.");
         
-        RaterooDataAccess DataAccess = new RaterooDataAccess();
+        R8RDataAccess DataAccess = new R8RDataAccess();
         int? UserId = null;
         if (HttpContext.Current.Profile != null)
             UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserId == 0 || UserId == null)
-            Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, DataAccess.RaterooDB)));
+            Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, DataAccess.R8RDB)));
 
         bool someUsersHaveRights = DataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, Location.thePointsManager.PointsManagerID, Location.theTbl.TblID);
         bool IsValidForAddTblRow = someUsersHaveRights && DataAccess.UserIsTrustedAtLeastSomewhatToEnterRatings(Location.thePointsManager.PointsManagerID, (int) UserId) && Location.theTbl.Name != "Changes";

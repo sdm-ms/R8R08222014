@@ -6,7 +6,7 @@
         </td>
     </tr>
 </table>
-<asp:LinqDataSource ID="MainLinqDataSource" runat="server" ContextTypeName="RaterooDB"
+<asp:LinqDataSource ID="MainLinqDataSource" runat="server" ContextTypeName="R8RDB"
     OnSelecting="MainLinqDataSource_Selecting">
 </asp:LinqDataSource>
 <table id="maint" width="100%" class="mainTable mainTableWithBorders" cellspacing="0"

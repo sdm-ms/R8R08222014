@@ -1,7 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="Default2" Title="Rateroo: Change Password" Codebehind="ChangePwd.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="Default2" Title="R8R: Change Password" Codebehind="ChangePwd.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-    Rateroo: Change Password
+    R8R: Change Password
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="ContentHeadText" Runat="Server">
     Change Password

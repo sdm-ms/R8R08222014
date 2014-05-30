@@ -21,12 +21,12 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
     protected Func<int?, TableSortRule, bool, IQueryable<TblRow>> GetFilteredAndSortedQueryFn { get; set; }
     protected Func<bool, bool, FilterRules> GetFilterRulesFn { get; set; }
     protected int TblID { get; set; }
-    protected RaterooDataAccess DataAccess { get; set; }
+    protected R8RDataAccess DataAccess { get; set; }
     public Main_Table_Table MainTable;
     public FieldsBox FieldsBox;
     string SuppStyle, SuppStyleHeader;
 
-    public void SetupBeforeFieldsBox(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, int theTblID, RaterooDataAccess dataAccess, string suppStyle, string suppStyleHeader)
+    public void SetupBeforeFieldsBox(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, int theTblID, R8RDataAccess dataAccess, string suppStyle, string suppStyleHeader)
     {
         GetFilteredAndSortedQueryFn = getFilteredAndSortedQueryFn;
         GetFilterRulesFn = getFilterRulesFn;
@@ -97,7 +97,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
     protected void FillTblTabMenu()
     {        
         //Fetching category Group and binding it to drop down list
-        var GetTblTab = DataAccess.RaterooDB.GetTable<TblTab>()
+        var GetTblTab = DataAccess.R8RDB.GetTable<TblTab>()
                                .Where(x => x.TblID == TblID && x.Status == Convert.ToByte(StatusOfObject.Active))
                                .OrderBy(x => x.NumInTbl)
                                .ThenBy(x => x.TblTabID)
@@ -179,7 +179,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
                 theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleEntityName(true));
             else
                 theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleTblColumn((int)TblColumnToSort, SortOrderAscending));
-            theInfo.SortMenu = SortMenuGenerator.GetSortMenuForTblTab(DataAccess.RaterooDB, TblTabID, userIsTrusted);
+            theInfo.SortMenu = SortMenuGenerator.GetSortMenuForTblTab(DataAccess.R8RDB, TblTabID, userIsTrusted);
             theInfo.SuppStyle = SuppStyle;
             theInfo.Filters = GetFilterRulesFn(false, false);
 

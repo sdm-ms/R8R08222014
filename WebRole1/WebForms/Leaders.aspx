@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="Leaders" Title="Rateroo: Leaderboard" Codebehind="Leaders.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="Leaders" Title="R8R: Leaderboard" Codebehind="Leaders.aspx.cs" %>
 <%@ Register TagPrefix="Uc" TagName="ItemPath" Src="~/CommonControl/ItemPath.ascx" %>
 <%@ Register TagPrefix="SNFWC" Namespace="SqlNetFrameworkWebControls"
     Assembly="ClassLibrary1" %>

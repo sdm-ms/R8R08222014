@@ -20,7 +20,7 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
     protected int rowBeingCreated = 0;
     bool ResetToTop = false;
     protected RoutingInfoMainContent Location { get; set; }
-    RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+    R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
 
     protected void Page_Load(object sender, EventArgs e)
     {

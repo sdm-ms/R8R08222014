@@ -21,7 +21,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
     public FieldsBoxMode Mode { get; set; }
     public int? TblRowID { get; set; }
     public int FieldDefinitionOrTblColumnID {get; set;}
-    public RaterooDataAccess DataAccess { get; set; }
+    public R8RDataAccess DataAccess { get; set; }
     public bool AllowMultipleSelections;
     List<ChoiceMenuItem> theChoices = null;
     public int ChoiceGroupID { get; set; }
@@ -49,7 +49,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
     {
         if (theChoices == null)
             theChoices = new List<ChoiceMenuItem>();
-        ChoiceGroupFieldDefinition theCGFD = DataAccess.RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == FieldDefinitionOrTblColumnID);
+        ChoiceGroupFieldDefinition theCGFD = DataAccess.R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == FieldDefinitionOrTblColumnID);
         ChoiceGroup theChoiceGroup = theCGFD.ChoiceGroup;
         ChoiceGroupID = theChoiceGroup.ChoiceGroupID;
         AllowMultipleSelections = theChoiceGroup.AllowMultipleSelections;
@@ -58,12 +58,12 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
         {
             if (Mode == FieldsBoxMode.modifyFields)
             {
-                ChoiceField theChoiceField = DataAccess.RaterooDB.GetTable<ChoiceField>().SingleOrDefault(a =>
+                ChoiceField theChoiceField = DataAccess.R8RDB.GetTable<ChoiceField>().SingleOrDefault(a =>
                             a.Field.FieldDefinitionID == FieldDefinitionOrTblColumnID
                             && a.Field.TblRowID == TblRowID && a.Status == (Byte)StatusOfObject.Active);
                 if (theChoiceField != null)
                 {
-                    theChoices = DataAccess.RaterooDB.GetTable<ChoiceInField>().Where(
+                    theChoices = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(
                         a => a.ChoiceFieldID == theChoiceField.ChoiceFieldID && a.Status == (Byte)StatusOfObject.Active).Select(a => new ChoiceMenuItem { Value = a.ChoiceInGroupID.ToString(), Text = a.ChoiceInGroup.ChoiceText }).ToList(); 
                 }
             }
@@ -338,9 +338,9 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
 
             List<ChoiceInGroup> theChoiceInGroups = new List<ChoiceInGroup>();
             foreach (var choiceInGroupID in theChoiceInGroupIDs)
-                theChoiceInGroups.Add(DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceInGroupID == choiceInGroupID) );
+                theChoiceInGroups.Add(DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceInGroupID == choiceInGroupID) );
 
-            FieldDefinition theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
             return new ChoiceFieldDataInfo(theFieldDefinition, theChoiceInGroups, theGroup, DataAccess);
         }
         else
@@ -349,8 +349,8 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
                 return null;
             else
             {
-                FieldDefinition theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
-                ChoiceInGroup choiceInGroup = DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == Convert.ToInt32(DdlChoice.SelectedValue));
+                FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+                ChoiceInGroup choiceInGroup = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == Convert.ToInt32(DdlChoice.SelectedValue));
                 return new ChoiceFieldDataInfo(theFieldDefinition, choiceInGroup, theGroup, DataAccess);
             }
         }

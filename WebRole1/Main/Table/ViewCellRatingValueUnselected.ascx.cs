@@ -21,9 +21,9 @@ public partial class Main_Table_ViewCellRatingValueUnselected : System.Web.UI.Us
     decimal? Value;
     string Description;
     bool CanPredict;
-    RaterooDataAccess DataAccess;
+    R8RDataAccess DataAccess;
 
-    public void Setup(RaterooDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, string description, int TblColumnID, TradingStatus theTradingStatus, bool canPredict, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, string description, int TblColumnID, TradingStatus theTradingStatus, bool canPredict, string suppStyle)
     {
         Value = value;
         Description = description;

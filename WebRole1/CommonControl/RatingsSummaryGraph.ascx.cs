@@ -28,7 +28,7 @@ public partial class RatingsSummaryGraph : System.Web.UI.UserControl
 {
     public List<CategoryAndRating> TheInfo { get; set; }
 
-    internal RaterooDataAccess DataAccess = new RaterooDataAccess();
+    internal R8RDataAccess DataAccess = new R8RDataAccess();
 
     protected void Page_Load(object sender, EventArgs e)
     {

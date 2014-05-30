@@ -28,7 +28,7 @@ namespace ClassLibrary1.Model
         NewUser,
         Privacy,
         Prizes,
-        RaterooDownload,
+        R8RDownload,
         Rules,
         SearchResults,
         TermsOfService
@@ -41,7 +41,7 @@ namespace ClassLibrary1.Model
         public string Pattern;
         public string PhysicalFile;
         public IRouteConstraint Constraint;
-        public Func<RouteData, IRaterooDataContext, RoutingInfo> Incoming;
+        public Func<RouteData, IR8RDataContext, RoutingInfo> Incoming;
         public RoutingMap(RouteID routeID, string physicalFile) // for a routing with no routedata
         {
             RouteID = routeID;
@@ -50,7 +50,7 @@ namespace ClassLibrary1.Model
             PhysicalFile = physicalFile;
             Incoming = Routing.IncomingNoParameters;
         }
-        public RoutingMap(RouteID routeID, string name, string pattern, string physicalFile, IRouteConstraint theConstraint, Func<RouteData, IRaterooDataContext, RoutingInfo> incomingFunction)
+        public RoutingMap(RouteID routeID, string name, string pattern, string physicalFile, IRouteConstraint theConstraint, Func<RouteData, IR8RDataContext, RoutingInfo> incomingFunction)
         {
             RouteID = routeID;
             Name = name;
@@ -119,7 +119,7 @@ namespace ClassLibrary1.Model
             commentsMode = isCommentsMode;
         }
 
-        public RoutingInfoMainContent(IRaterooDataContext theDataContext, string hierarchyString)
+        public RoutingInfoMainContent(IR8RDataContext theDataContext, string hierarchyString)
             : base(RouteID.MainContent)
         {
             string[] remainderOfHierarchy;
@@ -344,7 +344,7 @@ namespace ClassLibrary1.Model
 
     public static class RoutingInfoMainContentFactory
     {
-        public static RoutingInfoMainContent GetRoutingInfo(IRaterooDataContext theDataContext, string hierarchyString)
+        public static RoutingInfoMainContent GetRoutingInfo(IR8RDataContext theDataContext, string hierarchyString)
         {
             string cacheKey = "HierarchyRoutingString" + hierarchyString;
             RoutingInfoMainContent theRoutingInfo;
@@ -353,7 +353,7 @@ namespace ClassLibrary1.Model
             {
                 if (theDataContext == null)
                 {
-                    RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+                    R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
                     theDataContext = theDataAccessModule.DataContext;
                 }
                 theRoutingInfo = new RoutingInfoMainContent(theDataContext, hierarchyString ?? "");             
@@ -452,7 +452,7 @@ namespace ClassLibrary1.Model
         new RoutingMap(RouteID.NewUser, "WebForms/NewUser.aspx"),
         new RoutingMap(RouteID.Privacy, "WebForms/Privacy.aspx"),
         new RoutingMap(RouteID.Prizes, "WebForms/Prizes.aspx"),
-        new RoutingMap(RouteID.RaterooDownload, "RaterooDownload.aspx"),
+        new RoutingMap(RouteID.R8RDownload, "R8RDownload.aspx"),
         new RoutingMap(RouteID.Rules, "WebForms/Rules.aspx"),
         new RoutingMap(RouteID.SearchResults, "searchResults", "Search/{searchTerms}", "WebForms/SearchResults.aspx", null, IncomingSearchResults),
         new RoutingMap(RouteID.TermsOfService, "WebForms/TermsOfService.aspx"),
@@ -607,7 +607,7 @@ namespace ClassLibrary1.Model
 
 
 
-        public static string OutgoingToCurrentRoute(RouteData theRouteData, IRaterooDataContext theDataContext)
+        public static string OutgoingToCurrentRoute(RouteData theRouteData, IR8RDataContext theDataContext)
         {
             return Outgoing(Incoming(theRouteData, theDataContext));
         }
@@ -627,7 +627,7 @@ namespace ClassLibrary1.Model
             return GetRoutingMap(theRoute.GetRouteData(httpContext));
         }
 
-        public static RoutingInfo Incoming(RouteData theRouteData, IRaterooDataContext theDataContext)
+        public static RoutingInfo Incoming(RouteData theRouteData, IR8RDataContext theDataContext)
         {
             RoutingMap currentRoutingMap = GetRoutingMap(theRouteData);
             if (currentRoutingMap != null)
@@ -636,20 +636,20 @@ namespace ClassLibrary1.Model
                 return null;
         }
 
-        public static RoutingInfo IncomingNoParameters(RouteData theRouteData, IRaterooDataContext theDataContext)
+        public static RoutingInfo IncomingNoParameters(RouteData theRouteData, IR8RDataContext theDataContext)
         {
             RoutingMap theRoutingMap = GetRoutingMap(theRouteData);
             return new RoutingInfo(theRoutingMap.RouteID);
         }
 
-        public static RoutingInfoMainContent IncomingMainContent(RouteData theRouteData, IRaterooDataContext theDataContext)
+        public static RoutingInfoMainContent IncomingMainContent(RouteData theRouteData, IR8RDataContext theDataContext)
         {
             string hierarchyString = theRouteData.Values["hierarchy"] as string;
             RoutingInfoMainContent theLocation = RoutingInfoMainContentFactory.GetRoutingInfo(theDataContext, hierarchyString);
             return theLocation;
         }
 
-        public static RoutingInfoRatings IncomingRatings(RouteData theRouteData, IRaterooDataContext theDataContext)
+        public static RoutingInfoRatings IncomingRatings(RouteData theRouteData, IR8RDataContext theDataContext)
         {
             string userIDString = theRouteData.Values["userID"] as string;
             if (userIDString == null)
@@ -665,7 +665,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public static RoutingInfoLoginRedirect IncomingLoginRedirect(RouteData theRouteData, IRaterooDataContext theDataContext)
+        public static RoutingInfoLoginRedirect IncomingLoginRedirect(RouteData theRouteData, IR8RDataContext theDataContext)
         {
             string redirectURL = theRouteData.Values["redirectURL"] as string;
             if (redirectURL == null)
@@ -675,7 +675,7 @@ namespace ClassLibrary1.Model
             return theRedirectInfo;
         }
 
-        public static RoutingInfoSearchResults IncomingSearchResults(RouteData theRouteData, IRaterooDataContext theDataContext)
+        public static RoutingInfoSearchResults IncomingSearchResults(RouteData theRouteData, IR8RDataContext theDataContext)
         {
             string searchTerms = theRouteData.Values["searchTerms"] as string;
             if (searchTerms == null)

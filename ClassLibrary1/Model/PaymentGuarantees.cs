@@ -23,7 +23,7 @@ namespace ClassLibrary1.Model
         canApplyWithoutDocumentation
     }
 
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
 
         public void GuaranteeSettings(int pointsManagerID, decimal dollarValuePerPoint, decimal discountForGuarantees, decimal maximumTotalGuarantees, bool conditionalGuaranteesAvailableForNewUsers, bool allowApplicationsWhenNoConditionalGuaranteesAvailable, bool conditionalGuaranteesAvailableForExistingUsers, int conditionalGuaranteeTimeBlockInHours, decimal maximumGuaranteePaymentPerHour)
@@ -179,7 +179,7 @@ namespace ClassLibrary1.Model
                 return theTuple.Item2;
         }
 
-        public static void UploadConditionalGuaranteeApplicationForNewUser(RaterooDataManipulation dataAccess, User theUser, PointsManager thePointsManager, FileUpload fileUpload)
+        public static void UploadConditionalGuaranteeApplicationForNewUser(R8RDataManipulation dataAccess, User theUser, PointsManager thePointsManager, FileUpload fileUpload)
         {
             if (!fileUpload.HasFile)
                 throw new Exception("No file was uploaded.");
@@ -208,7 +208,7 @@ namespace ClassLibrary1.Model
                 string filename = applicationNumber.ToString() + "_" + fileUpload.PostedFile.FileName;
                 thePointsTotal.PendingConditionalGuaranteeApplication = filename;
 
-                RaterooFile storedFile = new RaterooFile("guaranteeapplications", filename);
+                R8RFile storedFile = new R8RFile("guaranteeapplications", filename);
                 storedFile.CreateTemporary();
                 string fileLocation = storedFile.GetPathToLocalFile();
                 fileUpload.SaveAs(fileLocation);
@@ -228,7 +228,7 @@ namespace ClassLibrary1.Model
             if (thePointsTotal == null || thePointsTotal.PendingConditionalGuaranteeApplication == null)
                 throw new Exception("This user does not have a pending conditional guarantee application.");
 
-            RaterooFile storedFile = new RaterooFile("guaranteeapplications", thePointsTotal.PendingConditionalGuaranteeApplication);
+            R8RFile storedFile = new R8RFile("guaranteeapplications", thePointsTotal.PendingConditionalGuaranteeApplication);
             string contentType = GetContentTypeForFileExtension(Path.GetExtension(storedFile.GetPathToLocalFile()));
             storedFile.DownloadToUserBrowser(theResponse, contentType);
         }
@@ -237,7 +237,7 @@ namespace ClassLibrary1.Model
         {
             if (thePointsTotal == null)
                 throw new Exception("User does not have a pending conditional guarantee application.");
-            RaterooFile storedFile = new RaterooFile("guaranteeapplications", thePointsTotal.PendingConditionalGuaranteeApplication);
+            R8RFile storedFile = new R8RFile("guaranteeapplications", thePointsTotal.PendingConditionalGuaranteeApplication);
             storedFile.DeletePermanently();
             NotifyUserConditionalGuaranteeHasBeenRejected(thePointsTotal);
         }
@@ -248,7 +248,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("User does not have a pending conditional guarantee application.");
             if (UserCanApplyForConditionalGuarantee(thePointsTotal,thePointsTotal.PointsManager) != ConditionalGuaranteeUserCanApplyStatus.conditionalGuaranteeApplicationAlreadyPending)
                 throw new Exception("No advance guarantee application is pending.");
-            RaterooFile storedFile = new RaterooFile("guaranteeapplications", thePointsTotal.PendingConditionalGuaranteeApplication);
+            R8RFile storedFile = new R8RFile("guaranteeapplications", thePointsTotal.PendingConditionalGuaranteeApplication);
             storedFile.DeletePermanently();
             StartConditionalGuarantee(thePointsTotal, approvedPaymentSubjectToReduction);
             NotifyUserConditionalGuaranteeHasBeenGranted(thePointsTotal);
@@ -258,7 +258,7 @@ namespace ClassLibrary1.Model
         public static void RequestConditionalGuaranteeWhenAvailable(PointsTotal thePointsTotal)
         {
             if (thePointsTotal == null)
-                throw new Exception("Rateroo cannot grant guarantees when available for brand new users.");
+                throw new Exception("R8R cannot grant guarantees when available for brand new users.");
             if (thePointsTotal.RequestConditionalGuaranteeWhenAvailableTimeRequestMade == null)
                 thePointsTotal.RequestConditionalGuaranteeWhenAvailableTimeRequestMade = TestableDateTime.Now;
         }
@@ -266,7 +266,7 @@ namespace ClassLibrary1.Model
         public static bool InitiateConditionalGuaranteeForExistingUser(PointsTotal thePointsTotal)
         {
             if (thePointsTotal == null)
-                throw new Exception("Rateroo cannot initiate conditional guarantee for brand new user without documentation.");
+                throw new Exception("R8R cannot initiate conditional guarantee for brand new user without documentation.");
             ConditionalGuaranteeUserCanApplyStatus canApplyStatus = UserCanApplyForConditionalGuarantee(thePointsTotal, thePointsTotal.PointsManager);
             if (canApplyStatus != ConditionalGuaranteeUserCanApplyStatus.canApplyWithoutDocumentation)
             {
@@ -332,7 +332,7 @@ namespace ClassLibrary1.Model
                 decimal amountPaidOverPriorGuarantees = amountBeingPaidToUser - thePointsTotal.GuaranteedPaymentsEarnedThisRewardPeriod;
                 decimal remainingSizeOfConditionalGuarantee = (decimal)thePointsTotal.PendingConditionalGuaranteePayment - (thePointsTotal.PendingConditionalGuaranteePaymentAlreadyMade ?? 0);
                 if (amountPaidOverPriorGuarantees >= remainingSizeOfConditionalGuarantee)
-                    CancelConditionalGuarantee(thePointsTotal); // Rateroo's obligation is ended
+                    CancelConditionalGuarantee(thePointsTotal); // R8R's obligation is ended
                 else
                 {
                     decimal amountRemaining = remainingSizeOfConditionalGuarantee - amountPaidOverPriorGuarantees;
@@ -358,7 +358,7 @@ namespace ClassLibrary1.Model
             string itemPath = ItemPathWrapper.GetItemPath(firstTable, true);
             string hoursRequired = thePointsTotal.PointsManager.ConditionalGuaranteeTimeBlockInHours.ToString();
             string dollarsPromised = (thePointsTotal.PendingConditionalGuaranteePayment ?? 0).ToString();
-            string theString = String.Format("Rateroo.com has approved your application for a guaranteed payment. If you work for {0} hours on http://rateroo.com{1}, then you will receive at least ${2}. To see how much time you must still work, please visit http://rateroo.com/MyPoints.", hoursRequired, itemPath, dollarsPromised);
+            string theString = String.Format("R8R.com has approved your application for a guaranteed payment. If you work for {0} hours on http://rateroo.com{1}, then you will receive at least ${2}. To see how much time you must still work, please visit http://rateroo.com/MyPoints.", hoursRequired, itemPath, dollarsPromised);
             return theString;
         }
 
@@ -378,7 +378,7 @@ namespace ClassLibrary1.Model
                 else
                     additionalOpportunity = "You may, however, work on that page to try to win a prize, and you can then visit http://rateroo.com/MyPoints to see if you've won.";
             }
-            string theString = String.Format("Rateroo.com cannot approve a guaranteed payment for you to work on {0}. {1}", itemPath, additionalOpportunity);
+            string theString = String.Format("R8R.com cannot approve a guaranteed payment for you to work on {0}. {1}", itemPath, additionalOpportunity);
             return theString;
         }
 
@@ -393,12 +393,12 @@ namespace ClassLibrary1.Model
 
         public static void NotifyUserConditionalGuaranteeHasBeenGranted(PointsTotal thePointsTotal)
         {
-            SendEmail(thePointsTotal, "Your Rateroo.com payment application", GetUserConditionalGuaranteeHasBeenGrantedString(thePointsTotal));
+            SendEmail(thePointsTotal, "Your R8R.com payment application", GetUserConditionalGuaranteeHasBeenGrantedString(thePointsTotal));
         }
 
         public static void NotifyUserConditionalGuaranteeHasBeenRejected(PointsTotal thePointsTotal)
         {
-            SendEmail(thePointsTotal, "Your Rateroo.com payment application", GetUserConditionalGuaranteeHasBeenRejectedString(thePointsTotal));
+            SendEmail(thePointsTotal, "Your R8R.com payment application", GetUserConditionalGuaranteeHasBeenRejectedString(thePointsTotal));
         }
 
     }

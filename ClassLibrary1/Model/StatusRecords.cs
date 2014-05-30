@@ -16,40 +16,40 @@ namespace ClassLibrary1.Model
 #pragma warning restore 0649
         }
 
-        internal static void RememberChangeForLater(IRaterooDataContext RaterooDB, string changeType, int changeNum)
+        internal static void RememberChangeForLater(IR8RDataContext R8RDB, string changeType, int changeNum)
         {
-            List<int> theList = RaterooDB.TempCacheGet(changeType) as List<int>;
+            List<int> theList = R8RDB.TempCacheGet(changeType) as List<int>;
             if (theList == null)
                 theList = new List<int>();
             if (!theList.Contains(changeNum))
             {
                 theList.Add(changeNum);
-                RaterooDB.TempCacheAdd(changeType, theList);
+                R8RDB.TempCacheAdd(changeType, theList);
             }
         }
 
-        internal static void RecordRememberedChangesOfType(IRaterooDataContext RaterooDB, string changeType, Action<int> theAction)
+        internal static void RecordRememberedChangesOfType(IR8RDataContext R8RDB, string changeType, Action<int> theAction)
         {
-            List<int> theList = RaterooDB.TempCacheGet(changeType) as List<int>;
+            List<int> theList = R8RDB.TempCacheGet(changeType) as List<int>;
             if (theList != null)
                 foreach (var item in theList)
                     theAction(item);
         }
 
-        public static void RecordRememberedStatusRecordChanges(IRaterooDataContext RaterooDB)
+        public static void RecordRememberedStatusRecordChanges(IR8RDataContext R8RDB)
         {
-            RecordRememberedChangesOfType(RaterooDB, "TblStatusChangeList", RecordRowStatusChange);
-            RecordRememberedChangesOfType(RaterooDB, "LastTblColumnRatingChange", RecordRatingChange);
+            RecordRememberedChangesOfType(R8RDB, "TblStatusChangeList", RecordRowStatusChange);
+            RecordRememberedChangesOfType(R8RDB, "LastTblColumnRatingChange", RecordRatingChange);
         }
 
-        public static void PrepareToRecordRowStatusChange(IRaterooDataContext RaterooDB, int tblID)
+        public static void PrepareToRecordRowStatusChange(IR8RDataContext R8RDB, int tblID)
         {
-            RememberChangeForLater(RaterooDB, "TblStatusChangeList", tblID);
+            RememberChangeForLater(R8RDB, "TblStatusChangeList", tblID);
         }
 
-        public static void PrepareToRecordRatingChange(IRaterooDataContext RaterooDB, int tblColumnID)
+        public static void PrepareToRecordRatingChange(IR8RDataContext R8RDB, int tblColumnID)
         {
-            RememberChangeForLater(RaterooDB, "LastTblColumnRatingChange", tblColumnID);
+            RememberChangeForLater(R8RDB, "LastTblColumnRatingChange", tblColumnID);
         }
 
         internal static void RecordRowStatusChange(int tblID)
@@ -100,23 +100,23 @@ namespace ClassLibrary1.Model
                 return (theLastDateTime > earliestTimeToConsider);
         }
 
-        public static bool TblRowStatusRecordsExistSince(IRaterooDataContext rdc, DateTime asOfDateTime)
+        public static bool TblRowStatusRecordsExistSince(IR8RDataContext rdc, DateTime asOfDateTime)
         {
             return rdc.GetTable<TblRowStatusRecord>().Any(x => x.TimeChanged > asOfDateTime);
         }
 
 
-        public static bool RatingGroupStatusRecordsExistSince(IRaterooDataContext rdc, DateTime asOfDateTime)
+        public static bool RatingGroupStatusRecordsExistSince(IR8RDataContext rdc, DateTime asOfDateTime)
         {
             return rdc.GetTable<RatingGroupStatusRecord>().Any(x => x.NewValueTime > asOfDateTime);
         }
 
-        public static bool DeleteOldStatusRecords(IRaterooDataContext theDataContext)
+        public static bool DeleteOldStatusRecords(IR8RDataContext theDataContext)
         {
             return DeleteOldTblRowStatusRecords(theDataContext) || DeleteOldRatingGroupStatusRecords(theDataContext);
         }
 
-        public static bool DeleteOldTblRowStatusRecords(IRaterooDataContext theDataContext)
+        public static bool DeleteOldTblRowStatusRecords(IR8RDataContext theDataContext)
         {
             // We delete the old entity status records that we no longer need
             // to track in an effort to keep search results current. We must
@@ -152,7 +152,7 @@ namespace ClassLibrary1.Model
 #pragma warning restore 0649
         }
 
-        public static bool DeleteOldRatingGroupStatusRecords(IRaterooDataContext theDataContext)
+        public static bool DeleteOldRatingGroupStatusRecords(IR8RDataContext theDataContext)
         {
             if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
                 return false;

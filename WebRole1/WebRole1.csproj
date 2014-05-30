@@ -899,9 +899,9 @@
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various.tr1.designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various.zh-cn1.designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\App_GlobalResources.various1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\Model.Rateroo1.designer.cs.dll" />
+    <Content Include="obj\Debug\TempPE\Model.R8R1.designer.cs.dll" />
+    <Content Include="WebForms\R8RDownload.aspx" />
     <Content Include="WebService.asmx" />
-    <Content Include="RaterooDownload.aspx" />
     <Content Include="sourcedata\actors.xml" />
     <Content Include="sourcedata\hitters.xml" />
     <Content Include="StyleSheet.css" />
@@ -1632,15 +1632,15 @@
     <Compile Include="MasterPages\TwoCol.master.designer.cs">
       <DependentUpon>TwoCol.master</DependentUpon>
     </Compile>
-    <Compile Include="WebService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RaterooDownload.aspx.cs">
-      <DependentUpon>RaterooDownload.aspx</DependentUpon>
+    <Compile Include="WebForms\R8RDownload.aspx.cs">
+      <DependentUpon>R8RDownload.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="RaterooDownload.aspx.designer.cs">
-      <DependentUpon>RaterooDownload.aspx</DependentUpon>
+    <Compile Include="WebForms\R8RDownload.aspx.designer.cs">
+      <DependentUpon>R8RDownload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebService.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RotatedTextHandler.ashx.cs">
       <DependentUpon>RotatedTextHandler.ashx</DependentUpon>
@@ -1844,7 +1844,7 @@
     <Content Include="Forums\addpostajax.ashx" />
     <Content Include="Forums\ajaxutils.ashx" />
     <Content Include="Forums\AspNetForumMaster.Master" />
-    <Content Include="Forums\AspNetForumMasterRaterooTheme.Master" />
+    <Content Include="Forums\AspNetForumMasterR8RTheme.Master" />
     <Content Include="Forums\captchaimage.ashx" />
     <Content Include="Forums\getattachment.ashx" />
     <None Include="bin\Forum\Compile.bat" />

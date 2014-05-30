@@ -29,9 +29,9 @@ using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         /// <summary>
         /// Generates an exception if a specified object doesn't exist.

@@ -24,7 +24,7 @@ namespace ClassLibrary1.Misc
         {
             SetConfigurationSettingPublisher();
             return RoleEnvironment.IsAvailable ? RoleEnvironment.GetConfigurationSettingValue(configName)
-                : "Data Source=PC2012;Initial Catalog=Rateroo10;Integrated Security=True;Connect Timeout=300";
+                : "Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300";
                      // : ConfigurationManager.AppSettings[configName];
         }
 

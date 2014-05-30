@@ -30,11 +30,11 @@ namespace ClassLibrary1.Model
 
         public void SetFieldDisplayHtmlForSomeNeedingResetting()
         {
-            var dataAccess = new RaterooDataAccess();
+            var dataAccess = new R8RDataAccess();
             TblRowPlusFieldInfoLoader theTblRowPlusFieldsInfoLoader = new TblRowPlusFieldInfoLoader();
             //ProfileSimple.Start("GetCompiledQuery");
             // Note that we use the following to load the data into a list, but we don't actually use the field info from the list. Because it's loaded in, it won't be loaded in again.
-            List<TblRowPlusFieldInfos> theTblRowPlusFieldInfos = theTblRowPlusFieldsInfoLoader.GetTblRowPlusFieldInfos(dataAccess.RaterooDB);
+            List<TblRowPlusFieldInfos> theTblRowPlusFieldInfos = theTblRowPlusFieldsInfoLoader.GetTblRowPlusFieldInfos(dataAccess.R8RDB);
             //ProfileSimple.End("GetCompiledQuery");
             //ProfileSimple.Start("AfterCompiledQuery");
 
@@ -48,8 +48,8 @@ namespace ClassLibrary1.Model
 
         public void SetFieldDisplayHtmlWithoutFieldsForNow(TblRow theTblRow)
         {
-            var dataAccess = new RaterooDataAccess();
-            TblDimensionAccess theCssAccess = new TblDimensionAccess(new RaterooDataAccess());
+            var dataAccess = new R8RDataAccess();
+            TblDimensionAccess theCssAccess = new TblDimensionAccess(new R8RDataAccess());
             TblDimension theTblDimension = theCssAccess.GetTblDimensionsForRegularTbl(theTblRow.TblID);
             TblRowPlusFieldInfos tblRowInfo = TblRowPlusFieldInfoLoader.GetTblRowPlusFieldInfosWithoutFieldInfos(theTblRow);
             FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow, tblRowInfo);
@@ -62,8 +62,8 @@ namespace ClassLibrary1.Model
 
         public void SetFieldDisplayHtml(TblRow theTblRow)
         {
-            var dataAccess = new RaterooDataAccess();
-            TblDimensionAccess theCssAccess = new TblDimensionAccess(new RaterooDataAccess());
+            var dataAccess = new R8RDataAccess();
+            TblDimensionAccess theCssAccess = new TblDimensionAccess(new R8RDataAccess());
             TblDimension theTblDimension = theCssAccess.GetTblDimensionsForRegularTbl(theTblRow.TblID);
             FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow);
             FieldDisplayHtml rowPopup = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowPopup, theTblRow);
@@ -82,7 +82,7 @@ namespace ClassLibrary1.Model
             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + theTblRow.TblRowID.ToString());
         }
 
-        public FieldDisplayHtml GetFieldDisplayHtml(IRaterooDataContext theDataContextToUse, int entityID, FieldsLocation theLocation)
+        public FieldDisplayHtml GetFieldDisplayHtml(IR8RDataContext theDataContextToUse, int entityID, FieldsLocation theLocation)
         {
 
             string myCacheKey = "FieldDisplay" + entityID.ToString() + "," + ((int)theLocation).ToString();
@@ -130,7 +130,7 @@ namespace ClassLibrary1.Model
             return theDisplayHtml;
         }
 
-        //public FieldDisplayHtml BuildFieldDisplayHtml(IRaterooDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, int entityID)
+        //public FieldDisplayHtml BuildFieldDisplayHtml(IR8RDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, int entityID)
         //{
         //    TblRow theTblRow = theDataContextToUse.TblRows.Single(e => e.TblRowID == entityID);
         //    return BuildFieldDisplayHtml(theDataContextToUse, theTblDimension, theLocation, theTblRow);

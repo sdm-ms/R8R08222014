@@ -28,9 +28,9 @@ using MoreStrings;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         /// <summary>
         /// 
@@ -57,7 +57,7 @@ namespace ClassLibrary1.Model
 
 
 
-        //    var registrationsNeeded = RaterooDB.GetTable<RatingCondition>().Where(mc => mc.Status == (Byte)StatusOfObject.Active
+        //    var registrationsNeeded = R8RDB.GetTable<RatingCondition>().Where(mc => mc.Status == (Byte)StatusOfObject.Active
         //                                        && (mc.ConditionalRatingPlanID == ratingPlanID || mc.ConditionRatingPlanID == ratingPlanID));
         //    foreach (RatingCondition theCondition in registrationsNeeded)
         //    {
@@ -77,7 +77,7 @@ namespace ClassLibrary1.Model
 
         //    }
 
-        //    RaterooDB.SubmitChanges();
+        //    R8RDB.SubmitChanges();
         //}
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace ClassLibrary1.Model
             
             bool returnVal = true;
             RatingCondition MCondition = theRating.RatingGroup.RatingGroupAttribute.RatingCondition;
-            // var conditionsToCheck = RaterooDB.GetTable<RatingCondition>().Where(mc => mc.Status == (Byte)StatusOfObject.Active
+            // var conditionsToCheck = R8RDB.GetTable<RatingCondition>().Where(mc => mc.Status == (Byte)StatusOfObject.Active
             //                                     && mc.ConditionalRatingID == ratingID && mc.ConditionRatingID != null);
 
             if (MCondition != null)
@@ -121,7 +121,7 @@ namespace ClassLibrary1.Model
             }
             //foreach (RatingCondition theCondition in conditionsToCheck)
             //{
-            //    decimal? currentValue = RaterooDB.NewOrSingle<Rating>(m => m.RatingID == theCondition.ConditionRatingID).RatingStatu.CurrentUserRatingOrFinalValue;
+            //    decimal? currentValue = R8RDB.NewOrSingle<Rating>(m => m.RatingID == theCondition.ConditionRatingID).RatingStatu.CurrentUserRatingOrFinalValue;
             //    if (currentValue == null)
             //        returnVal = false;
             //    else

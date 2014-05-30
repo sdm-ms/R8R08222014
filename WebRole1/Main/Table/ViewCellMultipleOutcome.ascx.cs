@@ -18,7 +18,7 @@ using ClassLibrary1.Model;
 
 public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserControl
 {
-    RaterooDataAccess DataAccess;
+    R8RDataAccess DataAccess;
     Action<int> SelectFn;
     int ColumnNumber;
     int TblColumnID;
@@ -35,7 +35,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
         rebinding = true;
     }
 
-    public void Setup(RaterooDataAccess dataAccess, Action<int> selectFn, int columnNumber, int tblColumnID, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, int tblColumnID, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
     {
         SuppStyle = suppStyle;
         if (doRebind)

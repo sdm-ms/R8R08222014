@@ -23,8 +23,8 @@ namespace WorkerRole1
             while (true)
             {
 
-                var theTask = new MyBackgroundTask();
-                RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+                var theTask = new R8RBackgroundTask();
+                R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
                 theTask.BackgroundTasksRunner(theDataAccessModule);
                 //Thread.Sleep(10000);
                 //Trace.TraceInformationLine("Working", "Information");

@@ -83,7 +83,7 @@ namespace ClassLibrary1.Model
         /// Use this constructor before we have created the UserRating object. This allows us to calculate the adjustment percentage that we
         /// should give for a new UserRating.
         /// </summary>
-        /// <param name="RaterooDB"></param>
+        /// <param name="R8RDB"></param>
         /// <param name="theRating"></param>
         /// <param name="theUser"></param>
         /// <param name="enteredRating"></param>
@@ -91,7 +91,7 @@ namespace ClassLibrary1.Model
         /// <param name="otherChoiceInFieldIDs"></param>
         /// <param name="additionalInfo"></param>
         public TrustTrackerStatManager(
-            IRaterooDataContext RaterooDB, 
+            IR8RDataContext R8RDB, 
             Rating theRating, User theUser, PointsTotal pointsTotal,
             decimal enteredRating, 
             List<TrustTrackerChoiceSummary> trustTrackerForChoiceFieldsSummary, 
@@ -106,7 +106,7 @@ namespace ClassLibrary1.Model
             if (theRating.CurrentValue != null)
                 currentRatingOrBasisOfCalc = (decimal)theRating.CurrentValue;
             else
-                currentRatingOrBasisOfCalc = RaterooDataManipulation.GetAlternativeBasisForCalcIfNoPreviousUserRating(RaterooDB, theRating, theRating.RatingGroup.RatingGroupAttribute);
+                currentRatingOrBasisOfCalc = R8RDataManipulation.GetAlternativeBasisForCalcIfNoPreviousUserRating(R8RDB, theRating, theRating.RatingGroup.RatingGroupAttribute);
             VolatilityTracker oneWeekVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int) VolatilityDuration.oneWeek);
             VolatilityTracker oneYearVolatility = theRating.RatingGroup.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int)VolatilityDuration.oneYear);
             bool isFirstUserRating = theRating.TotalUserRatings == 0; // this may turn out to be wrong once we finally process it, but it doesn't matter; right now, we're just making a forecast
@@ -114,7 +114,7 @@ namespace ClassLibrary1.Model
 
             TrustTracker theTrustTracker = theUser.TrustTrackers.FirstOrDefault(x => x.TrustTrackerUnit == (theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit));
             if (theTrustTracker == null)
-                theTrustTracker = TrustTrackingBackgroundTasks.AddTrustTracker(RaterooDB, theUser, theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit);
+                theTrustTracker = TrustTrackingBackgroundTasks.AddTrustTracker(R8RDB, theUser, theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit);
             TrustTrackerStat[] theTrustTrackerStats = theTrustTracker.TrustTrackerStats.ToArray();
             SetStats(theRating.LastTrustedValue ?? currentRatingOrBasisOfCalc, theRating.CurrentValue, currentRatingOrBasisOfCalc, enteredRating, oneWeekVolatility.DistanceFromStart, oneWeekVolatility.Pushback, oneYearVolatility.Pushback, isFirstUserRating, isUsersFirstWeek, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null ? null : theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase);
             SetAdjustmentFactor(theRating.CurrentValue, theTrustTrackerStats);

@@ -36,7 +36,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     protected bool CanEditFields;
     protected bool CommentsEnabled;
     protected TblDimension TheTblDimensions;
-    protected RaterooDataAccess DataAccess;
+    protected R8RDataAccess DataAccess;
     bool resetToTop=true;
     bool resetSortToDefaultSettings = false;
     string SuppStyle, SuppStyleHeader;
@@ -44,11 +44,11 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
 
     public void Setup(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, int tblID, int tblTabID, string suppStyle, string suppStyleHeader)
     {
-        DataAccess = new RaterooDataAccess();
+        DataAccess = new R8RDataAccess();
         GetFilteredAndSortedQueryFn = getFilteredAndSortedQueryFn;
         GetFilterRulesFn = getFilterRulesFn;
         TblID = tblID;
-        Tbl theTbl = DataAccess.RaterooDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
+        Tbl theTbl = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
         // We can't just set attributes on a table element itself, because then the whole table must be an htmltableTbl, which
         // you can't do if you have "td" inside a template. So we use a literal, through the LiteralElement user control.
         SuppStyle = suppStyle;
@@ -69,9 +69,9 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         TheTblDimensions = theCssAccess.GetTblDimensionsForRegularTbl(TblID);
     }
 
-    protected void DetermineUserRights(RaterooDataAccess dataAccess)
+    protected void DetermineUserRights(R8RDataAccess dataAccess)
     {
-        int SubtopicId = dataAccess.RaterooDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
+        int SubtopicId = dataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
 
         CanPredict = false;
         CanAdminister = false;
@@ -211,7 +211,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         }
         resetSortToDefaultSettings = resetSortToDefault;
         TblTabID = tblTabID;
-        DataAccess = new RaterooDataAccess(); // Reset data context references, since there may have been additions to the database.
+        DataAccess = new R8RDataAccess(); // Reset data context references, since there may have been additions to the database.
     }
 
     public void SetDefaultSort()

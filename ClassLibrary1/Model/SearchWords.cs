@@ -20,7 +20,7 @@ using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model
 {
 
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         public static List<string> ConvertPhraseToStringList(string phrase)
         {
@@ -29,14 +29,14 @@ namespace ClassLibrary1.Model
             return phrase.Split(' ').ToList().Select(word => Regex.Replace(word, @"[^\w\.@-]", "").ToUpperInvariant()).Where(word => word != "").OrderBy(x => x).Distinct().ToList();
         }
 
-        public static IQueryable<string> GetItemPathStringsForPhrase(IRaterooDataContext theDataContext, string thePhrase, int maxToInclude)
+        public static IQueryable<string> GetItemPathStringsForPhrase(IR8RDataContext theDataContext, string thePhrase, int maxToInclude)
         {
             throw new NotImplementedException();
         }
 
 
 
-        public static List<AutoCompleteData> GetAutoCompleteData(IRaterooDataContext theDataContext, string thePhrase)
+        public static List<AutoCompleteData> GetAutoCompleteData(IR8RDataContext theDataContext, string thePhrase)
         {
             throw new NotImplementedException();
         }

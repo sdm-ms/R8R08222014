@@ -14,7 +14,7 @@ namespace WebRole1.CommonControl
     public partial class MyPointsSidebarContainer : System.Web.UI.UserControl
     {
         internal RoutingInfoMainContent theLocation;
-        internal RaterooDataManipulation theDataAccess;
+        internal R8RDataManipulation theDataAccess;
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -23,7 +23,7 @@ namespace WebRole1.CommonControl
 
             MyPointsSidebar sidebar = (MyPointsSidebar)Page.LoadControl("~/CommonControl/MyPointsSidebar.ascx");
 
-            theDataAccess = new RaterooDataManipulation();
+            theDataAccess = new R8RDataManipulation();
 
             PointsManager thePointsManager = null;
             IUserProfileInfo theUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();

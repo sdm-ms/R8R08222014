@@ -19,7 +19,7 @@ using ClassLibrary1.Model;
 
 public partial class FieldsBox : System.Web.UI.UserControl
 {
-    protected RaterooDataAccess DataAccess;
+    protected R8RDataAccess DataAccess;
     public FieldsBoxMode Mode { get; set; }
     protected bool rebinding = false;
     protected int TblID { get; set; }
@@ -61,7 +61,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         Mode = mode;
         TblID = theTblID;
         TblTabID = theTblTabID;
-        DataAccess = new RaterooDataAccess();
+        DataAccess = new R8RDataAccess();
         if (Mode == FieldsBoxMode.filterWithButton || Mode == FieldsBoxMode.filterWithoutButton)
         {
             EntityNameSelector.AddAttribute("style", "display:none;"); // We don't use the entity name selector when filtering; instead we use SearchWordsFilter
@@ -89,7 +89,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         }
         else if (Mode == FieldsBoxMode.modifyFields || Mode == FieldsBoxMode.addTblRow)
         {
-            string typeOfTblRow = DataAccess.RaterooDB.GetTable<Tbl>().Single(c => c.TblID == TblID).TypeOfTblRow;
+            string typeOfTblRow = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == TblID).TypeOfTblRow;
             BtnCancel.Visible = true;
             BtnAction.Visible = true;
             Literal theDiv = new Literal();
@@ -267,7 +267,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         fieldsDescriptors = CacheManagement.GetItemFromCache(cacheKey) as List<FieldDefinitionInfo>;
         if (fieldsDescriptors == null)
         {
-            fieldsDescriptors = DataAccess.RaterooDB.GetTable<FieldDefinition>()
+            fieldsDescriptors = DataAccess.R8RDB.GetTable<FieldDefinition>()
                              .Where(fd => fd.TblID == TblID && fd.Status == Convert.ToByte(StatusOfObject.Active)
                                             && (!limitToUseAsFilters || fd.UseAsFilter == true))
                              .OrderBy(fd => fd.FieldNum)
@@ -291,7 +291,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         if (TblColumns == null)
         {
             if (Mode == FieldsBoxMode.addTblRow)
-                TblColumns = DataAccess.RaterooDB.GetTable<TblColumn>()
+                TblColumns = DataAccess.R8RDB.GetTable<TblColumn>()
                              .Where(cd => cd.TblTab.TblID == TblID
                                  && cd.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
                              .OrderBy(cd => cd.CategoryNum)
@@ -304,7 +304,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
                                  Sortable = cd.Sortable
                              }).ToList();
             else
-                TblColumns = DataAccess.RaterooDB.GetTable<TblColumn>()
+                TblColumns = DataAccess.R8RDB.GetTable<TblColumn>()
                              .Where(cd => cd.TblTab.TblID == TblID
                                  && (cd.TblTabID == TblTabID || cd.TblTabID == null)
                                  && cd.Status == Convert.ToByte(StatusOfObject.Active)
@@ -375,12 +375,12 @@ public partial class FieldsBox : System.Web.UI.UserControl
         }
     }
 
-    internal IRaterooDataContext lastDataContext = null;
+    internal IR8RDataContext lastDataContext = null;
     public void LoadFieldSetDataInfo()
     {
-        if (TheFieldSetDataInfo == null || lastDataContext != DataAccess.RaterooDB)
+        if (TheFieldSetDataInfo == null || lastDataContext != DataAccess.R8RDB)
         {
-            TheFieldSetDataInfo = new FieldSetDataInfo(TheTblRow == null ? null : DataAccess.RaterooDB.GetTable<TblRow>().Single(x => x.TblRowID == TheTblRow.TblRowID), DataAccess.RaterooDB.GetTable<Tbl>().Single(x => x.TblID==TblID), DataAccess); // Reload, since data context may have changed. We must use current data context so that any changes are persisted to the database.
+            TheFieldSetDataInfo = new FieldSetDataInfo(TheTblRow == null ? null : DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == TheTblRow.TblRowID), DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID==TblID), DataAccess); // Reload, since data context may have changed. We must use current data context so that any changes are persisted to the database.
             TheFieldSetDataInfo.theEntityName = MoreStringManip.StripHtml(EntityName.Text);
             foreach (var f in fieldsControls)
             {
@@ -388,7 +388,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
                 if (theFieldData != null)
                     TheFieldSetDataInfo.AddFieldDataInfo(theFieldData);
             }
-            lastDataContext = DataAccess.RaterooDB;
+            lastDataContext = DataAccess.R8RDB;
         }
     }
 
@@ -475,7 +475,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
 
     public void BtnCancel_Click(object sender, EventArgs e)
     {
-        Tbl theTbl = DataAccess.RaterooDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
+        Tbl theTbl = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == TblID);
         Routing.Redirect(Response, new RoutingInfoMainContent( theTbl, null, null));
     }
 

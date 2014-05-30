@@ -30,18 +30,18 @@ namespace TestProject1
     {
 
         TestHelper _testHelper;
-        RaterooDataManipulation _dataManipulation;
+        R8RDataManipulation _dataManipulation;
 
         [TestInitialize()]
         public void Initialize()
         {
-            GetIRaterooDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
             UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             _testHelper = new TestHelper();
-            _dataManipulation = new RaterooDataManipulation();
+            _dataManipulation = new R8RDataManipulation();
         }
 
         static float CalculateProportionWithinTolerance(IEnumerable<Rating> ratings, decimal target, decimal tolerance)

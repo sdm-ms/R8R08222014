@@ -317,7 +317,7 @@ namespace ClassLibrary1.Model
             public RatingGroup RatingGroup { get; set; }
         }
 
-        public void GetRatingsAndGroups(IRaterooDataContext theDataContext, UserRatingsToAdd theUserRatings, out List<Rating> theRatings, out List<RatingGroup> theRatingGroups, out RatingGroup topRatingGroup)
+        public void GetRatingsAndGroups(IR8RDataContext theDataContext, UserRatingsToAdd theUserRatings, out List<Rating> theRatings, out List<RatingGroup> theRatingGroups, out RatingGroup topRatingGroup)
         {
 
             List<RatingAndGroup> loadedData;
@@ -644,9 +644,9 @@ namespace ClassLibrary1.Model
 
 
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         // Methods related to making predictions in prediction groups
 
@@ -711,7 +711,7 @@ namespace ClassLibrary1.Model
                 );
             foreach (var theRating in theRatings2)
             {
-                decimal lastTrustedValueOrBasisOfCalc = theRating.LastTrustedValue ?? RaterooDataManipulation.GetAlternativeBasisForCalcIfNoPreviousUserRating(DataContext, theRating.Rating, theRatingGroup.RatingGroupAttribute);
+                decimal lastTrustedValueOrBasisOfCalc = theRating.LastTrustedValue ?? R8RDataManipulation.GetAlternativeBasisForCalcIfNoPreviousUserRating(DataContext, theRating.Rating, theRatingGroup.RatingGroupAttribute);
                 theData.Add(theRating.RatingID, theRating.RatingGroupID, theRating.LastTrustedValue, theRating.CurrentUserRatingOrFinalValue, lastTrustedValueOrBasisOfCalc, null, false, !theRatingGroup.RatingGroupAttribute.RatingsCanBeAutocalculated, hierarchyLevel);
                 if (theRating.OwnedRatingGroupID != null)
                     AddRatingGroupToUserRatingHierarchy(theRatingGroups.Single(mg => mg.RatingGroupID == (int)theRating.OwnedRatingGroupID), theRatings, theRatingGroups, ref theData, hierarchyLevel + 1);
@@ -814,7 +814,7 @@ namespace ClassLibrary1.Model
                     }
                 }
                 if (dataIncludesNullLeafValues)
-                    throw new UserRatingDataException("The ratings you have entered are incomplete. Please rate each item, or wait until Rateroo has completely processed a complete list of ratings.");
+                    throw new UserRatingDataException("The ratings you have entered are incomplete. Please rate each item, or wait until R8R has completely processed a complete list of ratings.");
             }
         }
 
@@ -827,7 +827,7 @@ namespace ClassLibrary1.Model
                 numTries++;
                 // we're only doing this now on second try BackgroundThread.Instance.RequestPauseAndWait();
                 //Trace.TraceInformation("Starting to add predictions.");
-                //RaterooDB.GetTable<SetUserRatingAddOption>(); doesn't seem to work
+                //R8RDB.GetTable<SetUserRatingAddOption>(); doesn't seem to work
                 Rating firstRating = theRatings.Single(m => m.RatingID == ratingIdAndUserRatingValues[0].RatingID);
                 RatingGroup topRatingGroup = firstRating.RatingGroup2;
                 decimal? constrainedSum = topRatingGroup.RatingGroupAttribute.ConstrainedSum;
@@ -894,7 +894,7 @@ namespace ClassLibrary1.Model
                     BackgroundThread.Instance.RequestBriefPauseAndWaitForPauseToBegin();
                     goto TryLabel;
                 }
-                else throw new Exception("Sorry, Rateroo is busy processing other ratings. Try again soon.");
+                else throw new Exception("Sorry, R8R is busy processing other ratings. Try again soon.");
             }
             catch (TransactionException)
             {
@@ -903,7 +903,7 @@ namespace ClassLibrary1.Model
                     BackgroundThread.Instance.RequestBriefPauseAndWaitForPauseToBegin();
                     goto TryLabel;
                 }
-                else throw new Exception("Sorry, Rateroo is busy processing other ratings. Try again soon.");
+                else throw new Exception("Sorry, R8R is busy processing other ratings. Try again soon.");
             }
         }
 
@@ -991,14 +991,14 @@ namespace ClassLibrary1.Model
             // On the one hand, we would like to use rating.CurrentValue as the previous rating.
             // This ensures that our volatility statistics are correct, and also avoids giving
             // multiple users the benefit of a sudden change in information.
-            // But this has the side effect of creating anomalies where it seems that Rateroo is
+            // But this has the side effect of creating anomalies where it seems that R8R is
             // overshooting. For example, if the rating is originally 3 and then is moved simultaneously
             // up to 7 (which is processed first) and then an entered value of 6 with a new value of 5,
-            // it will appear that the previous rating was 7 and Rateroo chose 5 based on a value of 6,
+            // it will appear that the previous rating was 7 and R8R chose 5 based on a value of 6,
             // when someone else had simultaneously said 7.
             // Perhaps the simplest thing to do will be to respond by setting rating.CurrentValue as the
             // previous rating, but using an adjustment percentage of 0. Thus, the user rating will appear
-            // in the list, but Rateroo will not have trusted it. That makes sense
+            // in the list, but R8R will not have trusted it. That makes sense
             bool changeInRatingHasOccurred = false;
             Rating theRating = null;
             foreach (UserRatingHierarchyEntry theEntry in userRatingHierarchyData.UserRatingHierarchyEntries)

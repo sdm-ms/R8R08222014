@@ -47,7 +47,7 @@ namespace TestProject1
         {
             if (!Test_UseRealDatabase.UseReal())
                 return;
-            RaterooBuilder theBuilder = new RaterooBuilder();
+            R8RBuilder theBuilder = new R8RBuilder();
             theBuilder.DeleteAndRebuild();
             theBuilder.CreateStandard();
         }
@@ -61,9 +61,9 @@ namespace TestProject1
             // before switching to NUnit, this test was failing, with dramatic increases in memory, even though we were not getting the same result when running the same test through a console application. It's not clear why using MSTest should make a difference, particularly since we are using the same vstest execution engine with NUnit, but it appears to make a difference.
 
             TestHelper _testHelper;
-            RaterooDataManipulation _dataManipulation;
+            R8RDataManipulation _dataManipulation;
 
-            GetIRaterooDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
             UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
@@ -71,7 +71,7 @@ namespace TestProject1
             CacheManagement.DisableCaching = true; 
 
             _testHelper = new TestHelper(true);
-            _dataManipulation = new RaterooDataManipulation();
+            _dataManipulation = new R8RDataManipulation();
             _testHelper.CreateSimpleTestTable(true);
             _testHelper.CreateUsers(20); 
 
@@ -107,7 +107,7 @@ namespace TestProject1
             avgMemory.Should().BeLessThan(10000.0); // it's hard to settle on a value here, since memory goes up and down even when using GC.Collect. With many repetitions, we can use a lower number.
         }
 
-        private static long TestMemoryLeaks_Helper(TestHelper _testHelper, RaterooDataManipulation _dataManipulation, bool waitIdleTasks = false)
+        private static long TestMemoryLeaks_Helper(TestHelper _testHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
         {
             UserEditResponse theResponse = new UserEditResponse();
             _testHelper.ActionProcessor.UserRatingAdd(1, 5.0M, 5, ref theResponse);
@@ -126,7 +126,7 @@ namespace TestProject1
 
         private static void AddUser()
         {
-            RaterooDataContext myDataContext = new RaterooDataContext(AzureSetup.GetConfigurationSetting("RaterooConnectionString"));
+            R8RDataContext myDataContext = new R8RDataContext(AzureSetup.GetConfigurationSetting("R8RConnectionString"));
 
             User newUser =  new User {
                 Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),
@@ -145,7 +145,7 @@ namespace TestProject1
             if (!Test_UseRealDatabase.UseReal())
                 return;
 
-            string connectionString = AzureSetup.GetConfigurationSetting("RaterooConnectionString"); //  "Data Source=PC2012;Initial Catalog=Rateroo10;Integrated Security=true";
+            string connectionString = AzureSetup.GetConfigurationSetting("R8RConnectionString"); //  "Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=true";
 
             // Provide the query string with a parameter placeholder. 
             string queryString =

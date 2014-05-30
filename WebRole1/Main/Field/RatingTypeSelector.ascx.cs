@@ -13,7 +13,7 @@ using ClassLibrary1.Model;
     public partial class RatingTypeSelector : System.Web.UI.UserControl, IFilterField
     {
         // The following are required to implement IFilterField
-        public RaterooDataAccess DataAccess { get; set; }
+        public R8RDataAccess DataAccess { get; set; }
         public FieldsBoxMode Mode { get; set; }
         public int? TblRowID { get; set; }
         public int FieldDefinitionOrTblColumnID { get; set; }

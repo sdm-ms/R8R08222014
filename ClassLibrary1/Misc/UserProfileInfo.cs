@@ -84,7 +84,7 @@ namespace ClassLibrary1.Misc
 
     public static class UseFakeUserProfileInfo 
     {
-        public static bool UseFake { get { return !GetIRaterooDataContext.UseRealDatabase; } } //  !RoleEnvironment.IsAvailable; } } // i.e., are we unit testing?
+        public static bool UseFake { get { return !GetIR8RDataContext.UseRealDatabase; } } //  !RoleEnvironment.IsAvailable; } } // i.e., are we unit testing?
     }
 
     public static class UserProfileCollection

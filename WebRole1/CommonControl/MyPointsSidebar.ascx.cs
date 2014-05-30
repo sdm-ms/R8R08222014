@@ -16,7 +16,7 @@ namespace WebRole1.CommonControl
     {
         public PointsTotal ThePointsTotal;
         public PointsManager ThePointsManager;
-        public RaterooDataManipulation TheDataAccess;
+        public R8RDataManipulation TheDataAccess;
 
         protected void Page_Load(object sender, EventArgs e)
         {

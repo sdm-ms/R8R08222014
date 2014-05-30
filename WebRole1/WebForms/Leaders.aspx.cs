@@ -19,7 +19,7 @@ public partial class Leaders : System.Web.UI.Page
     internal int UserID;
 
     RoutingInfoMainContent theLocation;
-    RaterooDataAccess DataAccess;
+    R8RDataAccess DataAccess;
 
     protected int? ColumnToSort;
     protected bool SortOrderAscending = true;
@@ -31,7 +31,7 @@ public partial class Leaders : System.Web.UI.Page
     {
         if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
             UserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"); 
-        DataAccess = new RaterooDataAccess();
+        DataAccess = new R8RDataAccess();
         theLocation = Routing.IncomingMainContent(Page.RouteData, null);
         bool canView = DataAccess.CheckUserRights(UserID, UserActionType.Predict, false, theLocation.theTbl.PointsManagerID, theLocation.theTbl.TblID);
         if (!canView)
@@ -73,7 +73,7 @@ public partial class Leaders : System.Web.UI.Page
 
     public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
-        RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+        R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
         var thePointsQuery = from p in theDataAccessModule.DataContext.GetTable<PointsTotal>()
                              where p.PointsManager == theLocation.thePointsManager
                              let allUserPendingPoints = p.PendingPoints + p.NotYetPendingPoints

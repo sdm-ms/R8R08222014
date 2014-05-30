@@ -44,9 +44,9 @@ public partial class SearchResults : System.Web.UI.Page
 
     public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
-        RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+        R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
         string decodedPhrase = Routing.IncomingSearchResults(Page.RouteData, theDataAccessModule.DataContext).searchTerms;
-        IQueryable<string> theQuery = RaterooDataManipulation.GetItemPathStringsForPhrase(theDataAccessModule.DataContext,decodedPhrase, maxResults);
+        IQueryable<string> theQuery = R8RDataManipulation.GetItemPathStringsForPhrase(theDataAccessModule.DataContext,decodedPhrase, maxResults);
         e.Result = theQuery;
     }
 

@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true"
-    Inherits="Ratings" Title="Rateroo: Ratings" Codebehind="Ratings.aspx.cs" %>
+    Inherits="Ratings" Title="R8R: Ratings" Codebehind="Ratings.aspx.cs" %>
 
 <%@ Register TagPrefix="SNFWC" Namespace="SqlNetFrameworkWebControls"
     Assembly="ClassLibrary1" %>

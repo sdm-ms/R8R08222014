@@ -19,7 +19,7 @@ public partial class DateTimeFieldFilter : System.Web.UI.UserControl, IFilterFie
     public FieldsBoxMode Mode { get; set; }
     public int? TblRowID { get; set; }
     public int FieldDefinitionOrTblColumnID {get; set;}
-    public RaterooDataAccess DataAccess { get; set; }
+    public R8RDataAccess DataAccess { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -31,7 +31,7 @@ public partial class DateTimeFieldFilter : System.Web.UI.UserControl, IFilterFie
             TD2b.AddAttribute("style", "display:none;");
             if (Mode == FieldsBoxMode.modifyFields)
             {
-                DateTimeField theDateTimeField = DataAccess.RaterooDB.GetTable<DateTimeField>().SingleOrDefault(a =>
+                DateTimeField theDateTimeField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(a =>
                             a.Field.FieldDefinitionID == FieldDefinitionOrTblColumnID
                             && a.Field.TblRowID == TblRowID && a.Status == (Byte)StatusOfObject.Active);
                 if (theDateTimeField != null)
@@ -59,7 +59,7 @@ public partial class DateTimeFieldFilter : System.Web.UI.UserControl, IFilterFie
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
             return new DateTimeFieldDataInfo(theFieldDefinition, (DateTime)ToDate.theDate, theGroup, DataAccess);
         }
     }

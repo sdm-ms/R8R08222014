@@ -27,19 +27,19 @@ namespace TestProject1
     {
         const float Precision = 0.0001f;
 
-        RaterooDataManipulation _dataManipulation;
+        R8RDataManipulation _dataManipulation;
         TestHelper TestHelper;
         Random _random;
 
         public void Initialize()
         {
-            GetIRaterooDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
             UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds());
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             TestHelper = new TestHelper();
-            _dataManipulation = new RaterooDataManipulation();
+            _dataManipulation = new R8RDataManipulation();
 
             _random = new Random();
         }
@@ -133,7 +133,7 @@ namespace TestProject1
                 pt.PointsPumpingProportionAvg_Denom = 0;
                 ptList.Add(pt);
             }
-            RaterooDataManipulation.SetPointsPumpingProportion(urList, ptList);
+            R8RDataManipulation.SetPointsPumpingProportion(urList, ptList);
             for (int i = 0; i < n; i++)
             {
                 if (urList[i].MaxGain == 0)

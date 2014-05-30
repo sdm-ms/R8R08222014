@@ -22,7 +22,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
     public FieldsBoxMode Mode { get; set; }
     public int? TblRowID { get; set; }
     public int FieldDefinitionOrTblColumnID {get; set;}
-    public RaterooDataAccess DataAccess { get; set; }
+    public R8RDataAccess DataAccess { get; set; }
     public decimal? Latitude;
     public decimal? Longitude;
 
@@ -33,7 +33,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
             WithinMile.AddAttribute("style", "display:none;");
             if (Mode == FieldsBoxMode.modifyFields)
             {
-                AddressField theAddressField = DataAccess.RaterooDB.GetTable<AddressField>().SingleOrDefault(a =>
+                AddressField theAddressField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(a =>
                             a.Field.FieldDefinitionID == FieldDefinitionOrTblColumnID
                             && a.Field.TblRowID == TblRowID && a.Status == (Byte) StatusOfObject.Active);
                 if (theAddressField != null)
@@ -66,7 +66,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.RaterooDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
             return new AddressFieldDataInfo(theFieldDefinition, addressText, Latitude, Longitude, theGroup, DataAccess);
         }
     }

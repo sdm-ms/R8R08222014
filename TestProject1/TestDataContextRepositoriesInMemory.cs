@@ -26,8 +26,9 @@ namespace TestProject1
     [TestClass]
     public class TestDataContextRepositoriesInMemory
     {
-        internal const string raterooConnectionString = "Data Source=PC2012;Initial Catalog=Rateroo10;Integrated Security=True;Connect Timeout=300";
-        internal RaterooDataContext UnderlyingRaterooDataContext;
+        internal const string r8rConnectionString
+            = "Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300";
+        internal R8RDataContext UnderlyingR8RDataContext;
         internal List<RepositoryItemAssociationInfo> repositoryList;
         internal RepositoryItemAssociationInfo fieldToAddressField;
         internal RepositoryItemAssociationInfo addressFieldToField;
@@ -41,9 +42,9 @@ namespace TestProject1
         [TestInitialize()]
         public void Initialize()
         {
-            GetIRaterooDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
-            UnderlyingRaterooDataContext = new RaterooDataContext(raterooConnectionString); 
-            repositoryList = MappingInfoProcessor.ProcessDataContextMappingInfo(UnderlyingRaterooDataContext);
+            GetIR8RDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
+            UnderlyingR8RDataContext = new R8RDataContext(r8rConnectionString); 
+            repositoryList = MappingInfoProcessor.ProcessDataContextMappingInfo(UnderlyingR8RDataContext);
             fieldToAddressField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(Field) && x.TypeOfForeignItem == typeof(AddressField));
             addressFieldToField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(AddressField) && x.TypeOfForeignItem == typeof(Field));
             userToUserInfo = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(User) && x.TypeOfForeignItem == typeof(UserInfo));
@@ -196,7 +197,7 @@ namespace TestProject1
 
         public void InitializeInMemoryRepositoryList()
         {
-            repoList = new InMemoryRepositoryList(UnderlyingRaterooDataContext);
+            repoList = new InMemoryRepositoryList(UnderlyingR8RDataContext);
             theInMemoryRepositoryAddressField = repoList.GetRepository<AddressField>() as InMemoryRepository<AddressField>;
             theInMemoryRepositoryField = repoList.GetRepository<Field>() as InMemoryRepository<Field>;
         }
@@ -373,7 +374,7 @@ namespace TestProject1
         [Category("InMemoryRepository")]
         public void RepositoryItemAssociationInfo_CompleteInsertOnSubmit_WhereMultipleSimilarPropertiesExist()
         {
-            var repoList2 = new InMemoryRepositoryList(UnderlyingRaterooDataContext);
+            var repoList2 = new InMemoryRepositoryList(UnderlyingR8RDataContext);
             var theInMemoryRepositoryRating = repoList2.GetRepository<Rating>() as InMemoryRepository<Rating>;
             var theInMemoryRepositoryRatingGroup = repoList2.GetRepository<RatingGroup>() as InMemoryRepository<RatingGroup>;
 
@@ -400,7 +401,7 @@ namespace TestProject1
         //[Category("InMemoryRepository")]
         //public void RepositoryItemAssociationInfo_CompleteInsertOnSubmit_WhereMultipleSimilarPropertiesExist2()
         //{
-        //    var repoList2 = new InMemoryRepositoryList(UnderlyingRaterooDataContext);
+        //    var repoList2 = new InMemoryRepositoryList(UnderlyingR8RDataContext);
         //    var theInMemoryRepositoryRatingPlan = repoList2.GetRepository<RatingPlan>() as InMemoryRepository<RatingPlan>;
         //    var theInMemoryRepositoryRatingGroupAttributes = repoList2.GetRepository<RatingGroupAttribute>() as InMemoryRepository<RatingGroupAttribute>;
 
@@ -485,7 +486,7 @@ namespace TestProject1
 
             repoList.GetRepositories().Count().Should().Be(2);
 
-            InMemoryRepositoryList repoList2 = new InMemoryRepositoryList(UnderlyingRaterooDataContext, repoList);
+            InMemoryRepositoryList repoList2 = new InMemoryRepositoryList(UnderlyingR8RDataContext, repoList);
             InMemoryRepository<AddressField> repoAddress2 = repoList2.GetRepository<AddressField>() as InMemoryRepository<AddressField>;
             InMemoryRepository<Field> repoField2 = repoList2.GetRepository<Field>() as InMemoryRepository<Field>;
 
@@ -504,23 +505,23 @@ namespace TestProject1
         [Category("InMemoryRepository")]
         public void SimulatedPermanentStorageTest()
         {
-            var thePermanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingRaterooDataContext);
+            var thePermanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext);
             thePermanentStorage.Should().NotBeNull();
-            SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingRaterooDataContext).Should().Equals(thePermanentStorage);
+            SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext).Should().Equals(thePermanentStorage);
             SimulatedPermanentStorage.Reset();
-            SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingRaterooDataContext).Should().NotBe(thePermanentStorage);
+            SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext).Should().NotBe(thePermanentStorage);
         }
 
         [TestMethod]
         [Category("InMemoryRepository")]
         public void InMemoryContextTest()
         {
-            InMemoryContext theInMemoryContext = new InMemoryContext(UnderlyingRaterooDataContext);
+            InMemoryContext theInMemoryContext = new InMemoryContext(UnderlyingR8RDataContext);
             IRepository<AddressField> theRepository = theInMemoryContext.GetTable<AddressField>();
             AddressField theAddressField = new AddressField();
             theRepository.InsertAllOnSubmit(new AddressField[] { theAddressField}); // test insert all at same time
             theInMemoryContext.SubmitChanges();
-            var thePermanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingRaterooDataContext);
+            var thePermanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext);
             thePermanentStorage.GetItemByTypeAndID(typeof(AddressField), 1).Should().Equals(theAddressField);
         }
 

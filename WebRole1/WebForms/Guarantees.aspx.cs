@@ -14,12 +14,12 @@ namespace WebRole1.WebForms
     public partial class Guarantees : System.Web.UI.Page
     {
         RoutingInfoMainContent theLocation;
-        RaterooDataManipulation DataAccess;
+        R8RDataManipulation DataAccess;
         User TheUser;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataAccess = new RaterooDataManipulation();
+            DataAccess = new R8RDataManipulation();
             theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.DataContext);
             ItemPath1.theHierarchyItem = theLocation.lastItemInHierarchy;
             if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)

@@ -16,7 +16,7 @@ namespace ClassLibrary1.Model
 
     public static class SortMenuGenerator
     {
-        public static List<SortMenuItem> GetSortMenuForTblTab(IRaterooDataContext theDataContext, int theTblTabID, bool trustedUser)
+        public static List<SortMenuItem> GetSortMenuForTblTab(IR8RDataContext theDataContext, int theTblTabID, bool trustedUser)
         {
             string cacheKey = "SortMenu" + theTblTabID + "," + trustedUser.ToString();
             List<SortMenuItem> theSortMenu = CacheManagement.GetItemFromCache(cacheKey) as List<SortMenuItem>;
@@ -58,7 +58,7 @@ namespace ClassLibrary1.Model
             theSortMenu.Add(new SortMenuItem { M = "Most Active (Last Week)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleActivityLevel(VolatilityDuration.oneWeek, false)) });
             theSortMenu.Add(new SortMenuItem { M = "Most Active (Last Year)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleActivityLevel(VolatilityDuration.oneYear, false)) });
 
-            theSortMenu.Add(new SortMenuItem { M = "Newest in Rateroo", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleNewestInDatabase(false)) });
+            theSortMenu.Add(new SortMenuItem { M = "Newest in R8R", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleNewestInDatabase(false)) });
 
             if (trustedUser)
                 theSortMenu.Add(new SortMenuItem { M = "Most Needs Rating", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleNeedsRating()) });

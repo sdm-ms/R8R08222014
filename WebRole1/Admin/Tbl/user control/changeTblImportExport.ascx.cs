@@ -26,12 +26,12 @@ using ClassLibrary1.Model;
 public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.UI.UserControl
 {
     internal int TblID;
-    internal RaterooDataAccess DataAccess = new RaterooDataAccess();
+    internal R8RDataAccess DataAccess = new R8RDataAccess();
     FilterRules theFilterRules;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        RoutingInfoMainContent Location = Routing.IncomingMainContent(Page.RouteData, DataAccess.RaterooDB);
+        RoutingInfoMainContent Location = Routing.IncomingMainContent(Page.RouteData, DataAccess.R8RDB);
         Tbl theTbl = Location.lastItemInHierarchy.Tbl;
         TblID = theTbl.TblID;
         FieldsBox.Setup(TblID,null,FieldsBoxMode.filterWithoutButton);
@@ -43,7 +43,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
 
     public IQueryable<TblRow> GetFilteredQuery()
     {
-        return theFilterRules.GetFilteredQueryAsTblRows(DataAccess.RaterooDB, null);
+        return theFilterRules.GetFilteredQueryAsTblRows(DataAccess.R8RDB, null);
     }
 
     public void LoadFilterRules()
@@ -59,9 +59,9 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
             DateTime theTime = TestableDateTime.Now;
             string theFullTimeString = TestableDateTime.Now.ToString("yyMMdd HHmmss");
             string idName = "Table " + TblID.ToString() + " " + theFullTimeString;
-            RaterooFile excelFile = new RaterooFile("convert", idName + ".xls");
+            R8RFile excelFile = new R8RFile("convert", idName + ".xls");
             excelFile.CreateTemporary();
-            RaterooFile xmlFile = new RaterooFile("convert", idName + ".xml");
+            R8RFile xmlFile = new R8RFile("convert", idName + ".xml");
             xmlFile.CreateTemporary();
 
             if (ConvertFileUpload.HasFile)
@@ -81,7 +81,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
                 TblRowPopUp.Show();
                 return;
             }
-            ImportExport myImportExport = new ImportExport(DataAccess.RaterooDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
+            ImportExport myImportExport = new ImportExport(DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
             myImportExport.ConvertExcelFileToXML(excelFile.GetPathToLocalFile(), xmlFile.GetPathToLocalFile());
             xmlFile.DownloadToUserBrowser(Response);
 
@@ -112,7 +112,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
                 DateTime theTime = TestableDateTime.Now;
                 string theFullTimeString = TestableDateTime.Now.ToString("yyMMdd HHmmss");
                 string idName = "Table " + TblID.ToString() + " " + theFullTimeString;
-                RaterooFile tempFile = new RaterooFile("temporary", idName + ".xml");
+                R8RFile tempFile = new R8RFile("temporary", idName + ".xml");
                 tempFile.CreateTemporary();
                 fileLocation = tempFile.GetPathToLocalFile();
                 XMLFileUpload.SaveAs(fileLocation);
@@ -123,7 +123,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
                 TblRowPopUp.Show();
                 return;
             }
-            ImportExport myImportExport = new ImportExport(DataAccess.RaterooDB.GetTable<Tbl>().Single(x => x.TblID ==TblID));
+            ImportExport myImportExport = new ImportExport(DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID ==TblID));
             string errorMessage = "";
             bool IsValid = myImportExport.IsXmlValid(fileLocation, ref errorMessage);
             if (IsValid == false)
@@ -134,7 +134,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
             }
 
             int userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-            User theUser = DataAccess.RaterooDB.GetTable<User>().Single(x => x.UserID == userID);
+            User theUser = DataAccess.R8RDB.GetTable<User>().Single(x => x.UserID == userID);
 
             myImportExport.PerformImport(fileLocation, userID, ChkIncValues.Checked && theUser.SuperUser);
             
@@ -152,9 +152,9 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
     {
         try
         {
-            ImportExport myImportExport = new ImportExport(DataAccess.RaterooDB.GetTable<Tbl>().Single(c => c.TblID == TblID));
+            ImportExport myImportExport = new ImportExport(DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == TblID));
             myImportExport.CreateXSDFile();
-            RaterooFile xsdFile = myImportExport.GetXSDFileReference();
+            R8RFile xsdFile = myImportExport.GetXSDFileReference();
             xsdFile.DownloadToUserBrowser(Response);
         }
         catch (Exception ex)
@@ -175,10 +175,10 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
         DateTime theTime = TestableDateTime.Now;
         string theFullTimeString = TestableDateTime.Now.ToString("yyMMdd HHmmss");
         string idName = "Table " + TblID.ToString() + " " + theFullTimeString;
-        RaterooFile exportFile = new RaterooFile("export", idName + ".xml");
+        R8RFile exportFile = new R8RFile("export", idName + ".xml");
         exportFile.CreateTemporary();
         string xmlFileName = exportFile.GetPathToLocalFile();
-        ImportExport myImportExport = new ImportExport(DataAccess.RaterooDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
+        ImportExport myImportExport = new ImportExport(DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
         myImportExport.PerformExport(xmlFileName, theQuery, ChkIncValues.Checked);
         exportFile.DownloadToUserBrowser(Response);
         exportFile.DeleteTemporary();

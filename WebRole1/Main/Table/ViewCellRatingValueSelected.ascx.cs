@@ -22,7 +22,7 @@ public partial class Main_Table_ViewCellRatingValueSelected : System.Web.UI.User
     decimal? MaxVal;
     string Description;
 
-    public void Setup(RaterooDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, string description, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, string description, string suppStyle)
     {
         RatingID = ratingID;
         Value = value;

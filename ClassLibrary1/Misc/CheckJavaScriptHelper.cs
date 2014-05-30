@@ -10,7 +10,7 @@ public class CheckJavaScriptHelper
         get
         {
             if (HttpContext.Current.Session == null)
-                return true; // this is Rateroo-specific. This will only be true if we call this from the web service, which will only happen if we are using Javascript.
+                return true; // this is R8R-specific. This will only be true if we call this from the web service, which will only happen if we are using Javascript.
 
             if (HttpContext.Current.Session["JS"] == null)
                 HttpContext.Current.Session["JS"] = true;

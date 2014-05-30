@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" CodeBehind="Guarantees.aspx.cs" Title="Rateroo: Guaranteed Payments" Inherits="WebRole1.WebForms.Guarantees" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" CodeBehind="Guarantees.aspx.cs" Title="R8R: Guaranteed Payments" Inherits="WebRole1.WebForms.Guarantees" %>
 <%@ Register TagPrefix="Uc" TagName="ItemPath" Src="~/CommonControl/ItemPath.ascx" %>
 <%@ Register TagPrefix="Uc" TagName="PaymentGuaranteeInfo" Src="~/CommonControl/PaymentGuaranteeInfo.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

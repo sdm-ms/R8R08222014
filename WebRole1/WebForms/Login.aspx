@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true"
-    Inherits="Login" Title="Rateroo: Login" Codebehind="Login.aspx.cs" %>
+    Inherits="Login" Title="R8R: Login" Codebehind="Login.aspx.cs" %>
 
 <asp:Content ID="MyContentHead" ContentPlaceHolderID="ContentHeadText" runat="Server">
     Log In
@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <td style="font-size:12px;">
-                <i>By using Rateroo, you agree to be bound by the <a runat="server" id="TermsAndCond"
+                <i>By using R8R, you agree to be bound by the <a runat="server" id="TermsAndCond"
                     href="~/TermsOfService">Terms of Service</a>. </i>
             </td>
         </tr>

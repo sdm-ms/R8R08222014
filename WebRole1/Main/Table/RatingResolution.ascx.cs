@@ -27,7 +27,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
 
     protected void Setup()
     {
-        RaterooDataManipulation DataAccess = new RaterooDataManipulation();
+        R8RDataManipulation DataAccess = new R8RDataManipulation();
 
         if (RatingGroupID == 0)
             throw new Exception("Rating group must be specified before rating resolution can be shown.");
@@ -77,7 +77,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
 
     protected void RefreshPage()
     {
-        RaterooDataManipulation DataAccess = new RaterooDataManipulation();
+        R8RDataManipulation DataAccess = new R8RDataManipulation();
         RatingGroup theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == RatingGroupID);
         Routing.Redirect(Response, new RoutingInfoMainContent(theRatingGroup.TblRow.Tbl, theRatingGroup.TblRow, theRatingGroup.TblColumn));
     }
@@ -86,7 +86,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
     {
         if (!CanResolve)
             return;
-        RaterooDataManipulation DataAccess = new RaterooDataManipulation();
+        R8RDataManipulation DataAccess = new R8RDataManipulation();
         ActionProcessor theActionProcessor = new ActionProcessor();
         RatingGroup theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == RatingGroupID);
         theActionProcessor.ResolveRatingGroup(theRatingGroup, true, true, false, TestableDateTime.Now, UserID, null);
@@ -113,7 +113,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
                 timeOfResolution = (DateTime)timeOfResolution;
             }
             bool assignPoints = PointsRule.SelectedIndex == 0;
-            RaterooDataManipulation DataAccess = new RaterooDataManipulation();
+            R8RDataManipulation DataAccess = new R8RDataManipulation();
             RatingGroup theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == RatingGroupID);
             theActionProcessor.ResolveRatingGroup(theRatingGroup, true, false, !assignPoints, timeOfResolution, UserID, null);
             RefreshPage();

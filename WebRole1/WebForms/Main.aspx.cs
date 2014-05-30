@@ -26,7 +26,7 @@ using ClassLibrary1.Misc;
 
 public partial class ViewTbl : System.Web.UI.Page
 {
-    internal RaterooDataAccess DataAccess = new RaterooDataAccess();
+    internal R8RDataAccess DataAccess = new R8RDataAccess();
     FilterRules theFilterRules;
     Main_Table_WithTabSelector MainTableWithTabSelector = null;
     Main_Table_TblRowView MainTableTblRowView = null;
@@ -38,10 +38,10 @@ public partial class ViewTbl : System.Web.UI.Page
     protected void Page_Init(object sender, EventArgs e)
     {
         CacheManagement.DisablePageCaching(); // No browser caching (we will use server caching)
-        DataAccess.RaterooDB.SetPageLoadOptions();
+        DataAccess.R8RDB.SetPageLoadOptions();
         try
         {
-            theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.RaterooDB);
+            theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.R8RDB);
             theFilterRules = null; // When adding filtering in URL, should set theFilterRules here from theLocation.
         }
         catch
@@ -163,7 +163,7 @@ public partial class ViewTbl : System.Web.UI.Page
                 else
                 {
                     BtnViewChanges.Visible = true;
-                    BtnAddTblRow.Text = "Add " + DataAccess.RaterooDB.GetTable<Tbl>().Single(c => c.TblID == theLocation.theTbl.TblID).TypeOfTblRow;
+                    BtnAddTblRow.Text = "Add " + DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theLocation.theTbl.TblID).TypeOfTblRow;
                 }
                 bool IsValidForTblAdministration = DataAccess.TblAdministrationLinkVisible(UserId, theLocation.theTbl.TblID);
                 if (IsValidForTblAdministration == true && theLocation.theTblRow == null)
@@ -186,11 +186,11 @@ public partial class ViewTbl : System.Web.UI.Page
             if (theLocation.theTblRow == null)
             {
                 string TblName = theLocation.theTbl.Name;
-                Page.Title = "Rateroo: " + TblName;
+                Page.Title = "R8R: " + TblName;
             }
             else
             {
-                Page.Title = "Rateroo: " + theLocation.theTblRow.Name;
+                Page.Title = "R8R: " + theLocation.theTblRow.Name;
             }
 
         }
@@ -205,7 +205,7 @@ public partial class ViewTbl : System.Web.UI.Page
     public IQueryable<TblRow> GetFilteredAndSortedQuery(int? maxNumResults, TableSortRule theTableSortRule, bool showDeletedItems)
     {
         LoadFilterRules(showDeletedItems);
-        return theFilterRules.GetFilteredAndSortedQuery(DataAccess.RaterooDB, maxNumResults, theTableSortRule, false, true);
+        return theFilterRules.GetFilteredAndSortedQuery(DataAccess.R8RDB, maxNumResults, theTableSortRule, false, true);
        
     }
 
@@ -282,7 +282,7 @@ public partial class ViewTbl : System.Web.UI.Page
     [System.Web.Services.WebMethod(EnableSession=true)]
     public static UserAccessInfo GetUserAccessInfo()
     {
-        return RaterooDataManipulation.GetUserAccessInfoForCurrentUser();
+        return R8RDataManipulation.GetUserAccessInfoForCurrentUser();
     }
 
 }

@@ -13,7 +13,7 @@ Privacy Policy
 Privacy Policy Statement
     <br>
     <br>
-    This is the web site of Collective Judgment LLC.
+    This is a web site of Collective Judgment LLC.
     <br>
     <br>
     <br>
@@ -21,7 +21,7 @@ Privacy Policy Statement
     Our postal address is
     <br>
     <br>
-    5215 Washington Blvd
+    1146 N. Ivanhoe St.
     <br>
     <br>
     Arlington, VA 22205

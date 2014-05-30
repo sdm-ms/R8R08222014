@@ -24,9 +24,9 @@ public partial class User_Control_InsertableContent : System.Web.UI.UserControl
     InsertableLocation Location { get; set; }
     public bool ContainsContent { get; internal set; }
 
-    internal RaterooDataAccess DataAccess;
+    internal R8RDataAccess DataAccess;
 
-    public void Setup(int? domainID, int? pointsManagerID, int? tblID, InsertableLocation location, RaterooDataAccess theDataAccess)
+    public void Setup(int? domainID, int? pointsManagerID, int? tblID, InsertableLocation location, R8RDataAccess theDataAccess)
     {
         DomainID = domainID;
         PointsManagerID = pointsManagerID;
@@ -44,7 +44,7 @@ public partial class User_Control_InsertableContent : System.Web.UI.UserControl
         if (theContent == null)
         {
             if (DataAccess == null)
-                DataAccess = new RaterooDataAccess();
+                DataAccess = new R8RDataAccess();
             theContent = GetContentString();
             string[] dependencies = { "InsertableContent" };
             CacheManagement.AddItemToCache(cacheKey, dependencies, theContent);
@@ -57,24 +57,24 @@ public partial class User_Control_InsertableContent : System.Web.UI.UserControl
     internal List<InsertableContent> GetInsertableContents()
     {
         int totalSoFar = 0;
-        var TblContent = DataAccess.RaterooDB.GetTable<InsertableContent>().Where(
+        var TblContent = DataAccess.R8RDB.GetTable<InsertableContent>().Where(
                 x => x.TblID == TblID
                 && x.Location == (short) this.Location
                 && x.Status == (byte)StatusOfObject.Active).ToList();
         totalSoFar += TblContent.Count();
-        var universeContent = DataAccess.RaterooDB.GetTable<InsertableContent>().Where(
+        var universeContent = DataAccess.R8RDB.GetTable<InsertableContent>().Where(
                 x => x.PointsManagerID == PointsManagerID
                 && (!x.Overridable || totalSoFar == 0)
                 && x.Location == (short) this.Location
                 && x.Status == (byte)StatusOfObject.Active).ToList();
         totalSoFar += universeContent.Count();
-        var domainContent = DataAccess.RaterooDB.GetTable<InsertableContent>().Where(
+        var domainContent = DataAccess.R8RDB.GetTable<InsertableContent>().Where(
                 x => x.DomainID == DomainID
                 && (!x.Overridable || totalSoFar == 0)
                 && x.Location == (short) this.Location
                 && x.Status == (byte)StatusOfObject.Active).ToList();
         totalSoFar += domainContent.Count();
-        var everywhereContent = DataAccess.RaterooDB.GetTable<InsertableContent>().Where(
+        var everywhereContent = DataAccess.R8RDB.GetTable<InsertableContent>().Where(
                 x => x.TblID == null && x.PointsManagerID == null && x.DomainID == null
                 && (!x.Overridable || totalSoFar == 0)
                 && x.Location == (short) this.Location

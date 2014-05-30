@@ -18,7 +18,7 @@ using ClassLibrary1.Model;
 
 public partial class Main_Table_FieldsDisplay : System.Web.UI.UserControl
 {
-    public FieldDisplayHtml Setup(IRaterooDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, int entityID, bool includeEntityName)
+    public FieldDisplayHtml Setup(IR8RDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, int entityID, bool includeEntityName)
     {
         FieldsDisplayCreator theCreator = new FieldsDisplayCreator();
         //ProfileSimple.Start("FieldDisplayHtml");

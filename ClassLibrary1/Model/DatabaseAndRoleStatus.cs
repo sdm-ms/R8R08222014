@@ -40,7 +40,7 @@ namespace ClassLibrary1.Model
 
     public static class DatabaseAndAzureRoleStatus
     {
-        public static DatabaseStatus GetStatus(IRaterooDataContext theDataContext)
+        public static DatabaseStatus GetStatus(IR8RDataContext theDataContext)
         {
             /* We've disabled caching, because SubmitChanges doesn't work properly on a cached object. */
             var theStatus = theDataContext.GetTable<DatabaseStatus>().Where(x => true).FirstOrDefault();
@@ -60,7 +60,7 @@ namespace ClassLibrary1.Model
             return false;
         }
 
-        public static void KillExistingBackgroundProcess(IRaterooDataContext theDataContext)
+        public static void KillExistingBackgroundProcess(IR8RDataContext theDataContext)
         {
             if (!RoleEnvironment.IsAvailable)
                 return;
@@ -76,7 +76,7 @@ namespace ClassLibrary1.Model
         }
 
         static bool temporarilyAllowChanges = false; // change briefly when calling SetPreventChanges.
-        public static bool ShouldPreventChanges(IRaterooDataContext theDataContext)
+        public static bool ShouldPreventChanges(IR8RDataContext theDataContext)
         {
             if (!RoleEnvironment.IsAvailable)
                 return false;
@@ -88,13 +88,13 @@ namespace ClassLibrary1.Model
             return theStatus.PreventChanges;
         }
 
-        public static void CheckPreventChanges(IRaterooDataContext theDataContext)
+        public static void CheckPreventChanges(IR8RDataContext theDataContext)
         {
             if (ShouldPreventChanges(theDataContext))
                 throw new RoutineMaintenanceException("Sorry, the database is currently undergoing routine maintenance. Please try again later.");
         }
 
-        public static void SetPreventChanges(IRaterooDataContext theDataContext, bool doPrevent)
+        public static void SetPreventChanges(IR8RDataContext theDataContext, bool doPrevent)
         {
             temporarilyAllowChanges = true; // otherwise, we won't be able to submit this change!
             DatabaseStatus theStatus = GetStatus(theDataContext);
@@ -108,7 +108,7 @@ namespace ClassLibrary1.Model
             temporarilyAllowChanges = false;
         }
 
-        public static List<RoleStatus> UpdateRoleStatusInfo(IRaterooDataContext theDataContext)
+        public static List<RoleStatus> UpdateRoleStatusInfo(IR8RDataContext theDataContext)
         {
             if (!RoleEnvironment.IsAvailable)
                 return new List<RoleStatus>();
@@ -179,7 +179,7 @@ namespace ClassLibrary1.Model
             return (performingBackgroundWork == true) || BackgroundThread.BriefPauseRequested;
             //if (currentRoleIsBackgroundProcessing != null && lastCurrentRoleIsBackgroundProcessingCheck > TestableDateTime.Now - new TimeSpan(0, 1, 0))
             //    return (bool)currentRoleIsBackgroundProcessing;
-            //IRaterooDataContext theDataContext = GetIRaterooDataContext.New(false, false); // make this read-only so that MSDTC is not required if there is already an open data context
+            //IR8RDataContext theDataContext = GetIR8RDataContext.New(false, false); // make this read-only so that MSDTC is not required if there is already an open data context
             //RoleStatus matchingRole = theDataContext.GetTable<RoleStatus>().FirstOrDefault(x => x.RoleID == RoleEnvironment.CurrentRoleInstance.Id);
             //if (matchingRole == null)
             //    currentRoleIsBackgroundProcessing = false;
@@ -189,7 +189,7 @@ namespace ClassLibrary1.Model
             //return (bool) currentRoleIsBackgroundProcessing;
         }
 
-        public static RoleStatus CheckInRole(IRaterooDataContext theDataContext)
+        public static RoleStatus CheckInRole(IR8RDataContext theDataContext)
         {
             if (!RoleEnvironment.IsAvailable)
                 return null;
@@ -225,7 +225,7 @@ namespace ClassLibrary1.Model
         // static string webRoleName = "WebRole1";
         static bool? performingBackgroundWork = null;
         static TimeSpan maximumTimeForBackgroundTasks = TimeSpan.FromMinutes((double)2);
-        public static bool PerformBackgroundProcess(IRaterooDataContext theDataContext)
+        public static bool PerformBackgroundProcess(IR8RDataContext theDataContext)
         {
             if (ForceBackgroundTaskNotToProcess())
                 return false;
@@ -250,7 +250,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        private static bool ShouldPerformBackgroundProcess(IRaterooDataContext theDataContext)
+        private static bool ShouldPerformBackgroundProcess(IR8RDataContext theDataContext)
         {
             RoleStatus thisRole = CheckInRole(theDataContext);
             if (disableProcessingUntil != null && TestableDateTime.Now < (DateTime)disableProcessingUntil)

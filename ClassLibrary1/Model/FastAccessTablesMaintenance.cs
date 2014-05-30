@@ -35,10 +35,10 @@ namespace ClassLibrary1.Model
         }
 
 
-        public static bool ContinueFastAccessMaintenance(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        public static bool ContinueFastAccessMaintenance(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
 
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null || !RoleEnvironment.IsAvailable)
                 return false;
 
@@ -54,7 +54,7 @@ namespace ClassLibrary1.Model
             return moreTableCreationToDo || moreBulkCopyingToDo || moreBulkUpdatingToDo || moreIndividualUpdatingToDo;
         }
 
-        internal static bool ContinueCreatingFastAccessTables(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        internal static bool ContinueCreatingFastAccessTables(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
             int numToProcess = 5;
             List<Tbl> tblsToBeCopied = iDataContext.GetTable<Tbl>().Where(x => x.FastTableSyncStatus == (int)FastAccessTableStatus.fastAccessNotCreated).Take(numToProcess).ToList();
@@ -66,12 +66,12 @@ namespace ClassLibrary1.Model
             return tblsToBeCopied.Count() == numToProcess; // if so, there may be more work to do.
         }
 
-        internal static bool ContinueAddingNewRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        internal static bool ContinueAddingNewRows(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
             if (!DoBulkInserting)
                 return false;
 
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
 
@@ -174,11 +174,11 @@ namespace ClassLibrary1.Model
 
         static bool useAzureQueuesToDesignateRowsToUpdate = false; // for now, we are disabling the azure approach, because querying based on tbl row ids identified by number seems to tax sql server
 
-        public static void IdentifyRowRequiringBulkUpdate(IRaterooDataContext iDataContext, Tbl theTbl, TblRow theTblRow, bool updateRatings, bool updateFields)
+        public static void IdentifyRowRequiringBulkUpdate(IR8RDataContext iDataContext, Tbl theTbl, TblRow theTblRow, bool updateRatings, bool updateFields)
         {
             if (useAzureQueuesToDesignateRowsToUpdate)
             {
-                RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+                R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
                 if (dataContext == null)
                     return;
                 RowRequiringUpdate row = new RowRequiringUpdate("V" + theTbl.TblID.ToString(), theTblRow.TblRowID, updateRatings, updateFields);
@@ -199,12 +199,12 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public static void PushRowsRequiringUpdateToAzureQueue(IRaterooDataContext iDataContext)
+        public static void PushRowsRequiringUpdateToAzureQueue(IR8RDataContext iDataContext)
         {
             if (!useAzureQueuesToDesignateRowsToUpdate)
                 return;
 
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
             List<RowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<RowRequiringUpdate>;
@@ -217,10 +217,10 @@ namespace ClassLibrary1.Model
             iDataContext.TempCacheAdd("fasttablerowupdate", null);
         }
 
-        internal static bool ContinueUpdate_AzureVersion(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        internal static bool ContinueUpdate_AzureVersion(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
             // We should probably not resurrect this, as the AzureQueueWithErrorRecovery simply drops the entire table and rebuilds if it runs into trouble.
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
             const int numAtOnce = 25; // 100 produced an error for too many parameters, presumably because we enumerate the tbl rows we want and then query for the fields. 
@@ -259,14 +259,14 @@ namespace ClassLibrary1.Model
             return theRows.Count() == numAtOnce; // more work to do
         }
 
-        internal static bool ContinueBulkUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        internal static bool ContinueBulkUpdating(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
             if (!DoBulkUpdating && !DoBulkInserting)
                 return false;
 
             if (useAzureQueuesToDesignateRowsToUpdate)
                 return ContinueUpdate_AzureVersion(iDataContext, dta); // seems to create more problems but we'll keep the code around for now in case we change our mind
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
             const int numAtOnce = 100;
@@ -295,9 +295,9 @@ namespace ClassLibrary1.Model
         }
 
         static bool DisableIndividualUpdating = false;
-        internal static bool ContinueIndividualUpdating(IRaterooDataContext iDataContext, DenormalizedTableAccess dta)
+        internal static bool ContinueIndividualUpdating(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null || DisableIndividualUpdating)
                 return false;
             const int numAtOnce = 2000;

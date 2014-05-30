@@ -139,7 +139,7 @@ namespace ClassLibrary1.Model
     {
         static bool initialized = false;
         static Func<TblRowPlusFieldInfoLoaderRequest, TblRowPlusFieldInfos> theQueryForSingleTblRow;
-        static Func<RaterooDataContext, IQueryable<TblRowPlusFieldInfos>>  theQueryForMultipleNeedingResetting;
+        static Func<R8RDataContext, IQueryable<TblRowPlusFieldInfos>>  theQueryForMultipleNeedingResetting;
 
         public TblRowPlusFieldInfoLoader()
         {
@@ -195,7 +195,7 @@ namespace ClassLibrary1.Model
             // load the relevant data into the database, so that we can use the single query above in memory
             // for each entity needing updating.
             const int maxAtOnce = 500;
-            theQueryForMultipleNeedingResetting = CompiledQuery.Compile((RaterooDataContext CurrentDataContext) =>                               
+            theQueryForMultipleNeedingResetting = CompiledQuery.Compile((R8RDataContext CurrentDataContext) =>                               
                     CurrentDataContext.GetTable<Field>()
                     .Join<Field,TblRow,TblRow,Field>(
                         CurrentDataContext.GetTable<TblRow>().Where(x => x.TblRowFieldDisplay.ResetNeeded).OrderBy(x => x.InitialFieldsDisplaySet).Take(50),
@@ -234,7 +234,7 @@ namespace ClassLibrary1.Model
 
         }
 
-        public List<TblRowPlusFieldInfos> GetTblRowPlusFieldInfosWithoutCompiledQuery(IRaterooDataContext dataContextToUse)
+        public List<TblRowPlusFieldInfos> GetTblRowPlusFieldInfosWithoutCompiledQuery(IR8RDataContext dataContextToUse)
         {
             return dataContextToUse.GetTable<Field>()
                     .Join<Field,TblRow,TblRow,Field>(
@@ -283,7 +283,7 @@ namespace ClassLibrary1.Model
             return theQueryForSingleTblRow(theRequest);
         }
 
-        public List<TblRowPlusFieldInfos> GetTblRowPlusFieldInfos(IRaterooDataContext dataContextToUse)
+        public List<TblRowPlusFieldInfos> GetTblRowPlusFieldInfos(IR8RDataContext dataContextToUse)
         {
             FieldsDisplaySettingsMask bitMask = new FieldsDisplaySettingsMask();
             int visibleMask = bitMask.Visible;

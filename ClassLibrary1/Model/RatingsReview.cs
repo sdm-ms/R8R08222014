@@ -31,9 +31,9 @@ using System.Diagnostics;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         public static float MinChangePromptingReview = 0.2F;
         const int NumUsersWhoseRatingsShouldBeFlaggedAtOnce = 30;

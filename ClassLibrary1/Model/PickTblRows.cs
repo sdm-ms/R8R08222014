@@ -34,7 +34,7 @@ namespace ClassLibrary1.Model
     public static class PickTblRows
     {
 
-        public static List<TblRow> GetMostActiveTblRowsFromVariousTbls(IRaterooDataContext theDataContext, VolatilityDuration theTimeFrame,  RoutingInfoMainContent theLocation, int numTbls, int numToConsiderPerTbl, int numToReturnPerTbl)
+        public static List<TblRow> GetMostActiveTblRowsFromVariousTbls(IR8RDataContext theDataContext, VolatilityDuration theTimeFrame,  RoutingInfoMainContent theLocation, int numTbls, int numToConsiderPerTbl, int numToReturnPerTbl)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public static List<TblRow> GetMostHighlyRatedTblRowsFromVariousTbls(IRaterooDataContext theDataContext, RoutingInfoMainContent theLocation, int numTbls, int numToConsiderPerTbl, int numToReturnPerTbl)
+        public static List<TblRow> GetMostHighlyRatedTblRowsFromVariousTbls(IR8RDataContext theDataContext, RoutingInfoMainContent theLocation, int numTbls, int numToConsiderPerTbl, int numToReturnPerTbl)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace ClassLibrary1.Model
             return finalList;
         }
 
-        public static List<Tbl> GetRandomizedListOfTbls(IRaterooDataContext theDataContext, int numTbls, Expression<Func<Tbl, bool>> thePredicate, HierarchyItem fromBelowThisItem = null)
+        public static List<Tbl> GetRandomizedListOfTbls(IR8RDataContext theDataContext, int numTbls, Expression<Func<Tbl, bool>> thePredicate, HierarchyItem fromBelowThisItem = null)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace ClassLibrary1.Model
             return randomizedList;
         }
 
-        public static List<TblRow> GetMostActiveTblRows(IRaterooDataContext theDataContext, Tbl theTbl, VolatilityDuration theTimeFrame, int numToConsider, int numToReturn)
+        public static List<TblRow> GetMostActiveTblRows(IR8RDataContext theDataContext, Tbl theTbl, VolatilityDuration theTimeFrame, int numToConsider, int numToReturn)
         {
             bool disableCaching = false; 
             string cacheString = "MostActiveTblRows" + theTbl.GetHashString() + theTimeFrame.ToString();
@@ -203,7 +203,7 @@ namespace ClassLibrary1.Model
             return queryToReturn;
         }
 
-        public static List<TblRow> GetMostHighlyRatedTblRows(IRaterooDataContext theDataContext, Tbl theTbl, int numToConsider, int numToReturn)
+        public static List<TblRow> GetMostHighlyRatedTblRows(IR8RDataContext theDataContext, Tbl theTbl, int numToConsider, int numToReturn)
         {
             bool disableCaching = false; 
             string cacheString = "MostHighlyRatedTblRows" + theTbl.TblID.ToString();

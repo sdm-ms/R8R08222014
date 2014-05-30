@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="SearchResults" Title="Rateroo: Search Results" Codebehind="SearchResults.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="SearchResults" Title="R8R: Search Results" Codebehind="SearchResults.aspx.cs" %>
 
 <%@ Register TagPrefix="SNFWC" Namespace="SqlNetFrameworkWebControls"
     Assembly="ClassLibrary1" %>

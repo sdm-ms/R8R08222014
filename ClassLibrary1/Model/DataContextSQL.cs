@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace ClassLibrary1.Model
 {
-    public partial class RaterooDataContext
+    public partial class R8RDataContext
     {
         //public new void Dispose() // Note: Because this hides Dispose() from the base class it won't get called when Dispose is called on IDataContext. Tried to implement standard Dispose(bool disposing) pattern, but it seems that the DataContext base class is not set up properly for that. So, we must make sure to close the connection state when resetting the data context, and we must remember to do that.
         //{
@@ -43,23 +43,23 @@ namespace ClassLibrary1.Model
 
     }
 
-    public class RaterooSQLDataContext : SQLDataContext, IRaterooDataContext
+    public class R8RSQLDataContext : SQLDataContext, IR8RDataContext
     {
         public System.IO.TextWriter Log
         {
             get
             {
-                return _underlyingRaterooDataContext.Log;
+                return _underlyingR8RDataContext.Log;
             }
             set
             {
-                _underlyingRaterooDataContext.Log = value;
+                _underlyingR8RDataContext.Log = value;
             }
         }
 
         public System.Data.Common.DbCommand GetCommand(IQueryable query)
         {
-            return _underlyingRaterooDataContext.GetCommand(query);
+            return _underlyingR8RDataContext.GetCommand(query);
         }
 
         public bool IsRealDatabase()
@@ -67,9 +67,9 @@ namespace ClassLibrary1.Model
             return true;
         }
 
-        public RaterooDataContext GetRealDatabaseIfExists()
+        public R8RDataContext GetRealDatabaseIfExists()
         {
-            return _underlyingRaterooDataContext;
+            return _underlyingR8RDataContext;
         }
 
 
@@ -122,24 +122,24 @@ namespace ClassLibrary1.Model
         {
         }
 
-        RaterooDataContext _underlyingRaterooDataContext;
+        R8RDataContext _underlyingR8RDataContext;
 
-        public RaterooSQLDataContext(bool doAllowChangeData, bool enableObjectTracking) : 
-            base( new RaterooDataContext(AzureSetup.GetConfigurationSetting("RaterooConnectionString")))
+        public R8RSQLDataContext(bool doAllowChangeData, bool enableObjectTracking) : 
+            base( new R8RDataContext(AzureSetup.GetConfigurationSetting("R8RConnectionString")))
         {
-            _underlyingRaterooDataContext = (RaterooDataContext) UnderlyingDataContext;
+            _underlyingR8RDataContext = (R8RDataContext) UnderlyingDataContext;
             _allowChangeData = doAllowChangeData;
             if (!enableObjectTracking)
-                _underlyingRaterooDataContext.ObjectTrackingEnabled = false;
+                _underlyingR8RDataContext.ObjectTrackingEnabled = false;
         }
 
 
 
         public bool ResolveConflictsIfPossible()
         {
-            if (!_underlyingRaterooDataContext.ChangeConflicts.Any())
+            if (!_underlyingR8RDataContext.ChangeConflicts.Any())
                 return false; // conflicts not listed here (probably won't happen)
-            foreach (ObjectChangeConflict occ in _underlyingRaterooDataContext.ChangeConflicts)
+            foreach (ObjectChangeConflict occ in _underlyingR8RDataContext.ChangeConflicts)
             {
                 if (!occ.MemberConflicts.Any())
                     return false; // member conflicts not listed here (probably won't happen)
@@ -194,13 +194,13 @@ namespace ClassLibrary1.Model
         public void SetUserRatingAddOptions()
         {
             //Connection.Open();
-            _underlyingRaterooDataContext.ExecuteCommand("SET DEADLOCK_PRIORITY HIGH;");
+            _underlyingR8RDataContext.ExecuteCommand("SET DEADLOCK_PRIORITY HIGH;");
         }
 
         public void SetPageLoadOptions()
         {
             //Connection.Open();
-            _underlyingRaterooDataContext.ExecuteCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;");
+            _underlyingR8RDataContext.ExecuteCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;");
             return;
             // Experimentation seems to indicate that using eager loading, even only a bit, slows things down on the main page a lot. This may be because I keep calling the database multiple times anyway, instead of using properties based on initial calls.
             //if (PageDataLoadOptions == null)
@@ -231,7 +231,7 @@ namespace ClassLibrary1.Model
             DataLoadOptions dl = new DataLoadOptions();
             dl.LoadWith<TrustTracker>(x => x.TrustTrackerStats);
             dl.LoadWith<UserInteraction>(x => x.UserInteractionStats);
-            _underlyingRaterooDataContext.LoadOptions = dl;
+            _underlyingR8RDataContext.LoadOptions = dl;
             TooLateToSetPageLoadOptions = true;
         }
 
@@ -250,7 +250,7 @@ namespace ClassLibrary1.Model
             dl.LoadWith<TblRow>(x => x.Tbl);
             dl.LoadWith<Tbl>(x => x.PointsManager);
 
-            _underlyingRaterooDataContext.LoadOptions = dl;
+            _underlyingR8RDataContext.LoadOptions = dl;
             TooLateToSetPageLoadOptions = true;
         }
 
@@ -279,18 +279,18 @@ namespace ClassLibrary1.Model
             dl.LoadWith<RatingCharacteristic>(x => x.SubsidyDensityRangeGroup);
             dl.LoadWith<SubsidyDensityRangeGroup>(x => x.SubsidyDensityRanges);
 
-            _underlyingRaterooDataContext.LoadOptions = dl;
+            _underlyingR8RDataContext.LoadOptions = dl;
             TooLateToSetPageLoadOptions = true;
         }
 
         public IQueryable<TblRow> UDFNearestNeighborsForTbl(float? latitude, float? longitude, int? maxNumResults, int? tblID)
         {
-            return _underlyingRaterooDataContext.UDFNearestNeighborsForTbl(latitude, longitude, maxNumResults, tblID).Cast<TblRow>();
+            return _underlyingR8RDataContext.UDFNearestNeighborsForTbl(latitude, longitude, maxNumResults, tblID).Cast<TblRow>();
         }
 
         public IQueryable<AddressField> UDFDistanceWithin(float? latitude, float? longitude, float? distance)
         {
-            return _underlyingRaterooDataContext.UDFDistanceWithin(latitude, longitude, distance).Cast<AddressField>();
+            return _underlyingR8RDataContext.UDFDistanceWithin(latitude, longitude, distance).Cast<AddressField>();
         }
     }
 }

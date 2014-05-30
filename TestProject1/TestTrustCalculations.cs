@@ -29,7 +29,7 @@ namespace TestProject1
         const decimal MinRating = 0M;
         const float Precision = 0.0001f;
 
-        RaterooDataManipulation _dataManipulation;
+        R8RDataManipulation _dataManipulation;
         TestHelper _testHelper;
         Random _random;
 
@@ -43,13 +43,13 @@ namespace TestProject1
         [TestInitialize()]
         public void Initialize()
         {
-            GetIRaterooDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
             UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds());
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             _testHelper = new TestHelper();
-            _dataManipulation = new RaterooDataManipulation();
+            _dataManipulation = new R8RDataManipulation();
 
             _random = new Random();
         }
@@ -129,7 +129,7 @@ namespace TestProject1
         }
         //public void WeightedAverageAdjustmentFactorCalculatesCorrectlyForRandomRatingByTwoUsers()
         //{
-        //    RaterooDataManipulation dataManipulation = new RaterooDataManipulation();
+        //    R8RDataManipulation dataManipulation = new R8RDataManipulation();
 
         //    RatingGroup ratingGroup = dataManipulation.AddRatingGroup()
         //    RatingPlan ratingPlan;

@@ -15,11 +15,11 @@ namespace WebApplication1
         bool CanAdminister;
         bool CanEditFields;
         RoutingInfoMainContent theLocation;
-        RaterooDataAccess DataAccess;
+        R8RDataAccess DataAccess;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataAccess = new RaterooDataAccess();
+            DataAccess = new R8RDataAccess();
             theLocation = Routing.IncomingMainContent(Page.RouteData, null);
             CommentsContent.theTblOrNullForRowOnly = theLocation.theTbl;
             ItemPath1.theTbl = theLocation.theTbl;

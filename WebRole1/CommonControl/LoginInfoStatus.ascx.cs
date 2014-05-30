@@ -26,12 +26,12 @@ public partial class LoginInfoStatus : System.Web.UI.UserControl
             LoginLink.Visible = false;
             CreateNewUserLink.Visible = false;
             loginSep2.Visible = false;
-            accessInfo = RaterooDataManipulation.GetUserAccessInfoForCurrentUser();
+            accessInfo = R8RDataManipulation.GetUserAccessInfoForCurrentUser();
             
         }
         else
         {
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             LoginLink.NavigateUrl = Routing.Outgoing(new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, theDataAccessModule.DataContext)));
             LogoutLink.Visible = false;
             CreateNewUserLink.Visible = true;

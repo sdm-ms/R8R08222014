@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="Help" Title="Rateroo: Help" Codebehind="Help.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="Help" Title="R8R: Help" Codebehind="Help.aspx.cs" %>
 
 
 <asp:Content ID="MyContentHead" ContentPlaceHolderID="ContentHeadText" runat="Server">
@@ -6,20 +6,20 @@
 </asp:Content>
 <asp:Content ID="MyContentMain" ContentPlaceHolderID="ContentMain" runat="server">
     <ul>
-        <li><a href="#01">What is Rateroo?</a></li>
-        <li><a href="#02">How is Rateroo different from other ratings websites?</a></li>
+        <li><a href="#01">What is R8R?</a></li>
+        <li><a href="#02">How is R8R different from other ratings websites?</a></li>
         <li><a href="#04">What does a rating on a 0 to 10.0 scale mean? </a></li>
         <li><a href="#05">What does a rating on a 0% to a 100% scale mean? </a></li>
         <li><a href="#06">What other kind of ratings are there?</a></li>
     </ul>
     <br />
     <ul>
-        <li><a href="#07">How can I make money using Rateroo? </a></li>
+        <li><a href="#07">How can I make money using R8R? </a></li>
         <li><a href="#08">How do I get started entering ratings? </a></li>
         <li><a href="#09">Do you have any tips on entering ratings that will earn points? </a>
         </li>
         <li><a href="#10">Why are some ratings untrusted and have an asterisk next to them?</a></li>
-        <li><a href="#13">How can I earn points by making changes to Rateroo’s database? </a>
+        <li><a href="#13">How can I earn points by making changes to R8R’s database? </a>
         </li>
     </ul>
     <br />
@@ -40,27 +40,27 @@
     </ul>
     <br />
     <ul>
-        <li><a href="#18">How can I report problems I’ve found in using Rateroo, or make suggestions
+        <li><a href="#18">How can I report problems I’ve found in using R8R, or make suggestions
             for improvement? </a></li>
     </ul>
     <br />
     <ul>
-        <li><a name="01"><b>What is Rateroo?</b> Rateroo is a website for aggregating ratings
+        <li><a name="01"><b>What is R8R?</b> R8R is a website for aggregating ratings
             on a number of topics. Ratings can be purely subjective assessments, or they can
             be forecasts of the future. Any user can create an account and then enter his or her
-            own ratings. Rateroo will incorporate users’ ratings into the tables if Rateroo
+            own ratings. R8R will incorporate users’ ratings into the tables if R8R
             has come to trust the users making them. Users can earn trust, points, and, for
             some topics, cash prizes) by making ratings that tend to stick over time and tend
             to be accurate in forecasting events.</li>
-        <li><a name="02"><b>How is Rateroo different from other ratings websites?</b> Most ratings
+        <li><a name="02"><b>How is R8R different from other ratings websites?</b> Most ratings
             websites work by simply averaging ratings from a large number of users. A problem
             with many other ratings websites is that their data tend to be useful only if a
             very large number of people enter ratings on any topic. Another problem is that
             these websites tend to give little incentive for raters to be accurate, or to put
-            aside their own idiosyncratic views. Rateroo gives incentives for raters to anticipate
+            aside their own idiosyncratic views. R8R gives incentives for raters to anticipate
             what others will think and what will actually happen, rather than just to report
             their opinions. As a result, its ratings may be useful after only a relatively small
-            number of individuals have entered ratings. Rateroo doesn’t guarantee the accuracy
+            number of individuals have entered ratings. R8R doesn’t guarantee the accuracy
             of its ratings, though, and urges users to recognize that the information provided
             through the ratings is subjective. </li>
         <li><a name="04"><b>What does a rating on a 0 to 10.0 scale mean?</b> A rating on a
@@ -83,17 +83,17 @@
     </ul>
     <br />
     <ul>
-        <li><a name="07"><b>How can I make money using Rateroo?</b> Above some tables is reported
-            a “prize pool,” an amount of money that Rateroo plans to distribute to users based
+        <li><a name="07"><b>How can I make money using R8R?</b> Above some tables is reported
+            a “prize pool,” an amount of money that R8R plans to distribute to users based
             on points earned in the prize period, which ends on the date specified. You can try
-            to earn points by entering ratings. Once you are trusted by Rateroo, your ratings
-            will change the values reported to all users. But don’t worry – even before Rateroo
+            to earn points by entering ratings. Once you are trusted by R8R, your ratings
+            will change the values reported to all users. But don’t worry – even before R8R
             trusts you, your ratings can earn you points if other trusted users’ ratings move
             in the direction of your rating, or if you are accurate in forecasting later events.
             Trusted users are encouraged to look at the ratings of untrusted users and enter them
             as their own ratings, and if those ratings stick, both the trusted and untrusted users
             get points. Once you are trusted, you may also be able to earn points on some tables
-            by making changes to Rateroo’s database, as described <a href="#13">below</a>. </li>
+            by making changes to R8R’s database, as described <a href="#13">below</a>. </li>
         <li><a name="08"><b>How can I get started entering ratings?</b> Easy. Just create an
             account, log in, and go to the tables in which you want to enter ratings. Click
             on a number, and enter your rating (or ratings). If your rating is trusted, the rating
@@ -124,8 +124,8 @@
             click on the username of another user to view all of that user's ratings, and you can
             then choose to mimic or revert back those ratings. (See <a href="#16a">below</a> for
             information on how to get a list of all users for a table.)</li>
-        <li><a name="13"><b>How can I earn points by making changes to Rateroo’s database?</b>
-            Once you are trusted by Rateroo, buttons may appear that allow you to add a row
+        <li><a name="13"><b>How can I earn points by making changes to R8R’s database?</b>
+            Once you are trusted by R8R, buttons may appear that allow you to add a row
             to a table. Also, after you click on an item in a particular row, you will be able 
             to change information about that row, including deleting the row (or undeleting an
             inappropriately deleted row); deleting an inappropriate comment, such as one that
@@ -145,7 +145,7 @@
     </ul>
     <br />
     <ul>
-        <li><a name="14"><b>How are points calculated?</b> The exact mechanisms that Rateroo
+        <li><a name="14"><b>How are points calculated?</b> The exact mechanisms that R8R
             uses to calculate points are our trade secret. There are, however, a few general
             principles. Your rating will tend to win points if you improve on the previous rating
             and if your rating sticks. If you move a rating in the right direction but overshoot,
@@ -174,7 +174,7 @@
             words, a rater's score may depend as much on the very small number of cases in which
             a table row is randomly selected for peer review review a short while after a rating 
             as on the much larger number of cases in which it is not so selected. The reason
-            that Rateroo works this way is that it prevents users from earning lots of points by
+            that R8R works this way is that it prevents users from earning lots of points by
             entering large number of ratings that don't make sense but that other users don't
             scrutinize. A rater who adopts this strategy may win small amounts of points on most
             ratings, but lose large amounts of points on a few ratings. </li>
@@ -190,10 +190,10 @@
             of prizes is given, then the prize pool will be divided among all players who earn
             enough points to earn at least a certain amount of money. </li>
         <li><a name="16"><b>How will prizes be paid?</b> Prizes may be paid through PayPal.
-            Rateroo reserves the right to provide you with tax forms or other documents that
-            you must fill out before any prize money can be paid. Rateroo also reserves the
+            R8R reserves the right to provide you with tax forms or other documents that
+            you must fill out before any prize money can be paid. R8R also reserves the
             right to make payments by check instead of PayPal. You can consult the “Prize Board”
-            or “My Points And Winnings” to see how much you have won, but Rateroo is not responsible
+            or “My Points And Winnings” to see how much you have won, but R8R is not responsible
             for technical errors, and is not legally bound to pay prizes listed there. </li>
         <li><a name="16a"><b>How can I tell how I am doing?</b> Click on “My Points And Winnings,” 
             This will show you how much you've won and how many points you can expect to win.
@@ -213,7 +213,7 @@
             to http://rateroo.com/Actors/Leaders to see users who have made ratings in the Actors
             category.)</li>
         <li><a name="17"><b>What if the correct rating for an event isn’t clear even after an
-            event has concluded?</b> Rateroo may resolve such a situation in its discretion.
+            event has concluded?</b> R8R may resolve such a situation in its discretion.
             For example, we may resolve the ambiguity as we see fit, we may enact some compromise,
             or we may use the community ratings as the basis for our decision. We provide no
             assurances or guarantee that our decisions on resolving ratings will accord with
@@ -223,7 +223,7 @@
     <br />
     <ul>
         <li><a name="11"><b>Can’t someone just manipulate the system to earn points?</b> We’ve
-            engineered Rateroo to make it difficult, perhaps even impossible, for manipulation
+            engineered R8R to make it difficult, perhaps even impossible, for manipulation
             to succeed. For example, the exact time at which points based on ratings will be
             determined is randomized, so you can’t enter a rating just before you know that
             a previous rating you made will be assessed. An additional protection is that untrusted 
@@ -234,7 +234,7 @@
         <li><a name="12"><b>Can’t someone manipulate the system to ensure that ratings will
             put them in a good light?</b> This is to some extent a danger of any ratings system.
             For example, a restaurant owner might give his own restaurant good ratings, or her
-            competitors bad ratings. Rateroo can’t prevent that completely. But Rateroo will
+            competitors bad ratings. R8R can’t prevent that completely. But R8R will
             incorporate only the ratings of users who are trusted. You can become trusted by
             fixing other ratings that don’t make sense. So, with many people trying to make
             sure that any given rating makes sense, it will be difficult for any one person’s
@@ -242,7 +242,7 @@
     </ul>
     <br />
     <ul>
-        <li><a name="18"><b>How can I report problems I’ve found in using Rateroo, or make suggestions
+        <li><a name="18"><b>How can I report problems I’ve found in using R8R, or make suggestions
             for improvement?</b> Please put a post in our forums section. </li>
     </ul>
 </asp:Content>

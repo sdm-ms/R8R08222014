@@ -48,14 +48,14 @@ namespace ClassLibrary1.Model
     {
         public TblRow theTblRow { get; set; }
         public Tbl theTbl { get; set; }
-        public RaterooDataAccess DataAccess { get; set; }
+        public R8RDataAccess DataAccess { get; set; }
         public string theEntityName { get; set; }
         public List<FieldDataInfo> theFieldDataInfos { get; set; }
         public List<FieldDefinition> theEmptyFieldDefinitions { get; set; }
         public List<TblVal> defaultTblVals { get; set; }
         internal bool isVerified = false;
 
-        public FieldSetDataInfo(TblRow tblRow, Tbl Tbl, RaterooDataAccess dataAccess)
+        public FieldSetDataInfo(TblRow tblRow, Tbl Tbl, R8RDataAccess dataAccess)
         {
             DataAccess = dataAccess;
             theTblRow = tblRow;
@@ -84,7 +84,7 @@ namespace ClassLibrary1.Model
         public void LoadFromDatabase()
         {
             theEntityName = theTblRow.Name;
-            List<FieldDefinition> FieldDefinitions = DataAccess.RaterooDB.GetTable<FieldDefinition>().Where(fd => fd.TblID == theTblRow.TblID).OrderBy(fd => fd.FieldNum).ThenBy(fd => fd.FieldName).ToList();
+            List<FieldDefinition> FieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.TblID == theTblRow.TblID).OrderBy(fd => fd.FieldNum).ThenBy(fd => fd.FieldName).ToList();
             foreach (var FieldDefinition in FieldDefinitions)
             {
                 switch (FieldDefinition.FieldType)
@@ -237,11 +237,11 @@ namespace ClassLibrary1.Model
     {
         public FieldDefinition TheFieldDefinition { get; set; }
         public FieldSetDataInfo TheGroup { get; protected set; }
-        internal RaterooDataAccess DataAccess;
+        internal R8RDataAccess DataAccess;
         public bool descriptionLoaded = false;
         public string theDescription = "";
 
-        public FieldDataInfo(FieldDefinition theFieldDefinition, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public FieldDataInfo(FieldDefinition theFieldDefinition, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
         {
             TheGroup = theGroup;
             DataAccess = theDataAccess;
@@ -271,7 +271,7 @@ namespace ClassLibrary1.Model
         public string AddressShortText { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
-        public AddressFieldDataInfo(FieldDefinition FieldDefinition, string theAddress, decimal? latitude, decimal? longitude, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public AddressFieldDataInfo(FieldDefinition FieldDefinition, string theAddress, decimal? latitude, decimal? longitude, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             AddressShortText = theAddress;
@@ -281,7 +281,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            AddressField theField = DataAccess.RaterooDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            AddressField theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return false;
             else
@@ -297,7 +297,7 @@ namespace ClassLibrary1.Model
         {
             AddressField theField = null;
             if (TheGroup.theTblRow.TblRowID != 0)
-                theField = DataAccess.RaterooDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int) StatusOfObject.Active);
+                theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int) StatusOfObject.Active);
             if (theField == null)
                 return (AddressShortText == "");
             else
@@ -317,7 +317,7 @@ namespace ClassLibrary1.Model
     public class DateTimeFieldDataInfo : FieldDataInfo
     {
         public DateTime TheDateTime { get; set; }
-        public DateTimeFieldDataInfo(FieldDefinition FieldDefinition, DateTime theDateTime, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public DateTimeFieldDataInfo(FieldDefinition FieldDefinition, DateTime theDateTime, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             TheDateTime = theDateTime;
@@ -325,7 +325,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            DateTimeField theField = DataAccess.RaterooDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            DateTimeField theField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField != null && theField.DateTime != null)
             {
                 TheDateTime = (DateTime)theField.DateTime;
@@ -338,7 +338,7 @@ namespace ClassLibrary1.Model
         {
             DateTimeField theField = null;
             if (TheGroup.theTblRow.TblRowID != 0)
-                theField = DataAccess.RaterooDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+                theField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (TheDateTime == null);
             else
@@ -359,7 +359,7 @@ namespace ClassLibrary1.Model
     {
         public string TheText { get; set; }
         public string TheLink { get; set; }
-        public TextFieldDataInfo(FieldDefinition FieldDefinition, string theText, string theLink, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public TextFieldDataInfo(FieldDefinition FieldDefinition, string theText, string theLink, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             TheText = theText;
@@ -368,7 +368,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            TextField theField = DataAccess.RaterooDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            TextField theField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
             {
                 return false;
@@ -385,7 +385,7 @@ namespace ClassLibrary1.Model
         {
             TextField theField = null;
             if (TheGroup.theTblRow.TblRowID != 0)
-                theField = DataAccess.RaterooDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+                theField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (TheText == "" && TheLink == "");
             else /* Note that if we already have html in the database and that html is not changed, then we want to leave the database alone. */
@@ -409,7 +409,7 @@ namespace ClassLibrary1.Model
     public class NumericFieldDataInfo : FieldDataInfo
     {
         public decimal TheNumber { get; set; }
-        public NumericFieldDataInfo(FieldDefinition FieldDefinition, decimal theNumber, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public NumericFieldDataInfo(FieldDefinition FieldDefinition, decimal theNumber, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             TheNumber = theNumber;
@@ -419,11 +419,11 @@ namespace ClassLibrary1.Model
         {
             base.VerifyCanBeAdded();
             string key = "NFD" + TheFieldDefinition.GetHashCode();
-            NumberFieldDefinition theNFD = DataAccess.RaterooDB.TempCacheGet(key) as NumberFieldDefinition;
+            NumberFieldDefinition theNFD = DataAccess.R8RDB.TempCacheGet(key) as NumberFieldDefinition;
             if (theNFD == null)
             {
-                theNFD = DataAccess.RaterooDB.GetTable<NumberFieldDefinition>().SingleOrDefault(nfd => nfd.FieldDefinition == TheFieldDefinition);
-                DataAccess.RaterooDB.TempCacheAdd(key, theNFD);
+                theNFD = DataAccess.R8RDB.GetTable<NumberFieldDefinition>().SingleOrDefault(nfd => nfd.FieldDefinition == TheFieldDefinition);
+                DataAccess.R8RDB.TempCacheAdd(key, theNFD);
             }
             if (theNFD == null)
                 throw new Exception("The number field descriptor is missing.");
@@ -435,7 +435,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            NumberField theField = DataAccess.RaterooDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            NumberField theField = DataAccess.R8RDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null || theField.Number == null)
                 return false;
             else
@@ -447,7 +447,7 @@ namespace ClassLibrary1.Model
         {
             NumberField theField = null;
             if (TheGroup.theTblRow.TblRowID != 0)
-                theField = DataAccess.RaterooDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+                theField = DataAccess.R8RDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (false);
             else
@@ -472,11 +472,11 @@ namespace ClassLibrary1.Model
         internal void Setup()
         {
             string key = "CGFD" + TheFieldDefinition.GetHashCode();
-            theCGFD = DataAccess.RaterooDB.TempCacheGet(key) as ChoiceGroupFieldDefinition;
+            theCGFD = DataAccess.R8RDB.TempCacheGet(key) as ChoiceGroupFieldDefinition;
             if (theCGFD == null)
             {
-                theCGFD = DataAccess.RaterooDB.GetTable<ChoiceGroupFieldDefinition>().SingleOrDefault(cgfd => cgfd.FieldDefinition == TheFieldDefinition);
-                DataAccess.RaterooDB.TempCacheAdd(key, theCGFD);
+                theCGFD = DataAccess.R8RDB.GetTable<ChoiceGroupFieldDefinition>().SingleOrDefault(cgfd => cgfd.FieldDefinition == TheFieldDefinition);
+                DataAccess.R8RDB.TempCacheAdd(key, theCGFD);
             }
             if (theCGFD == null)
                 throw new Exception("The choice group field descriptor is missing.");
@@ -485,11 +485,11 @@ namespace ClassLibrary1.Model
         public ChoiceInGroup GetChoiceInGroupIDForChoiceText(string theChoiceInGroupText)
         { // Note: Assumes Setup() has already been called.
             string key = "CIG" + theCGFD.ChoiceGroupID + theChoiceInGroupText;
-            List<ChoiceInGroup> candidateChoiceInGroups = DataAccess.RaterooDB.TempCacheGet(key) as List<ChoiceInGroup>;
+            List<ChoiceInGroup> candidateChoiceInGroups = DataAccess.R8RDB.TempCacheGet(key) as List<ChoiceInGroup>;
             if (candidateChoiceInGroups == null)
             {
-                candidateChoiceInGroups = DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Where(cig => cig.ChoiceGroupID == theCGFD.ChoiceGroupID && cig.ChoiceText == theChoiceInGroupText).ToList(); // must convert to list for code below to work
-                DataAccess.RaterooDB.TempCacheAdd(key, candidateChoiceInGroups);
+                candidateChoiceInGroups = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Where(cig => cig.ChoiceGroupID == theCGFD.ChoiceGroupID && cig.ChoiceText == theChoiceInGroupText).ToList(); // must convert to list for code below to work
+                DataAccess.R8RDB.TempCacheAdd(key, candidateChoiceInGroups);
             }
             
             if (!candidateChoiceInGroups.Any())
@@ -528,14 +528,14 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, List<ChoiceInGroup> theChoiceInGroups, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, List<ChoiceInGroup> theChoiceInGroups, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             Setup();
             TheChoices = theChoiceInGroups;
         }
 
-        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, ChoiceInGroup theChoiceInGroup, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, ChoiceInGroup theChoiceInGroup, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             Setup();
@@ -543,7 +543,7 @@ namespace ClassLibrary1.Model
             TheChoices.Add(theChoiceInGroup);
         }
 
-        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, List<string> theChoiceInGroupStrings, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, List<string> theChoiceInGroupStrings, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             Setup();
@@ -555,7 +555,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, string theChoiceInGroupString, FieldSetDataInfo theGroup, RaterooDataAccess theDataAccess)
+        public ChoiceFieldDataInfo(FieldDefinition FieldDefinition, string theChoiceInGroupString, FieldSetDataInfo theGroup, R8RDataAccess theDataAccess)
             : base(FieldDefinition, theGroup, theDataAccess)
         {
             Setup();
@@ -586,10 +586,10 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            ChoiceField theField = DataAccess.RaterooDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            ChoiceField theField = DataAccess.R8RDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return false;
-            List<ChoiceInGroup> existingList = DataAccess.RaterooDB.GetTable<ChoiceInField>().Where(x => x.ChoiceFieldID == theField.ChoiceFieldID && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceNum).ThenBy(x => x.ChoiceText).ToList();
+            List<ChoiceInGroup> existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceFieldID == theField.ChoiceFieldID && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceNum).ThenBy(x => x.ChoiceText).ToList();
             if (!existingList.Any())
                 return false;
             TheChoices = existingList;
@@ -600,17 +600,17 @@ namespace ClassLibrary1.Model
         {
             string cacheKey = "CIG" + TheFieldDefinition.FieldDefinitionID + "," + TheGroup.theTblRow.TblRowID;
             object inDB;
-            bool inCache = DataAccess.RaterooDB.TempCache.TryGetValue(cacheKey, out inDB);
+            bool inCache = DataAccess.R8RDB.TempCache.TryGetValue(cacheKey, out inDB);
             if (inCache)
                 return (inDB as List<ChoiceInGroup>);
-            ChoiceField theField = DataAccess.RaterooDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            ChoiceField theField = DataAccess.R8RDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
 
             List<ChoiceInGroup> existingList = null;
             if (theField == null)
                 existingList = new List<ChoiceInGroup>();
             else
-                existingList = DataAccess.RaterooDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField == theField && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceInGroupID).ToList();
-            DataAccess.RaterooDB.TempCache[cacheKey] = existingList;
+                existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField == theField && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceInGroupID).ToList();
+            DataAccess.R8RDB.TempCache[cacheKey] = existingList;
             return existingList;
         }
 
@@ -629,7 +629,7 @@ namespace ClassLibrary1.Model
             if (TheChoices.Count == 0)
                 return "";
             theDescription = base.GetDescription();
-            List<string> descriptions = DataAccess.RaterooDB.GetTable<ChoiceInGroup>().Where(x => TheChoices.Contains(x)).Select(x => x.ChoiceText).OrderBy(x => x).ToList();
+            List<string> descriptions = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Where(x => TheChoices.Contains(x)).Select(x => x.ChoiceText).OrderBy(x => x).ToList();
             for (int i = 0; i < TheChoices.Count; i++)
             {
                 theDescription += descriptions[i];
@@ -642,9 +642,9 @@ namespace ClassLibrary1.Model
 
 
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         // Methods related to entities and fields.
 
@@ -657,11 +657,11 @@ namespace ClassLibrary1.Model
         //public FieldDefinition GetFieldDefinitionForTblRow(int? entityID, int fieldNum)
         //{
         //    throw new Exception("This is no longer supported.");
-        //    TblRow theTblRow = RaterooDB.GetTable<TblRow>().SingleOrDefault(e => e.TblRowID == entityID);
+        //    TblRow theTblRow = R8RDB.GetTable<TblRow>().SingleOrDefault(e => e.TblRowID == entityID);
         //    if (theTblRow == null)
         //        return null;
         //    int TblID = theTblRow.TblID;
-        //    FieldDefinition theFieldDefinition = RaterooDB.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.TblID == TblID && fd.FieldNum == fieldNum);
+        //    FieldDefinition theFieldDefinition = R8RDB.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.TblID == TblID && fd.FieldNum == fieldNum);
         //    if (theFieldDefinition == null)
         //        return null;
         //    return theFieldDefinition;

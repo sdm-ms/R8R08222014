@@ -109,9 +109,9 @@ namespace ClassLibrary1.Model
         public SQLTableColumnDescription tblRowIDColumn { get; set; } // == idColumn on SQLFastAccessTableInfo
         public SQLTableColumnDescription choiceColumn { get; set; }
 
-        public SQLMultipleChoiceFieldTableInfo(IRaterooDataContext iDataContext, FieldDefinition theFieldDefinition)
+        public SQLMultipleChoiceFieldTableInfo(IR8RDataContext iDataContext, FieldDefinition theFieldDefinition)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
 
@@ -157,7 +157,7 @@ namespace ClassLibrary1.Model
         public List<SQLTableFieldDefinition> fields { get; set; }
         public List<SQLMultipleChoiceFieldTableInfo> multipleChoiceFields { get; set; }
 
-        public SQLFastAccessTableInfo(IRaterooDataContext iDataContext, Tbl theTbl)
+        public SQLFastAccessTableInfo(IR8RDataContext iDataContext, Tbl theTbl)
         {
             TheTbl = theTbl;
             idColumn = new SQLTableColumnDescription() { Name = "ID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true /* NOTE: Because we use a spatial index, the clustered index MUST be for the primary key */ };
@@ -654,9 +654,9 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             }
         }
 
-        internal DataTable CreateDataTable(IRaterooDataContext iDataContext, List<TblRow> tblRows)
+        internal DataTable CreateDataTable(IR8RDataContext iDataContext, List<TblRow> tblRows)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             // assumes that row info has already been stored. 
@@ -679,9 +679,9 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             return dataTable;
         }
 
-        internal DataTable CreateDataTableForMultipleChoiceField(IRaterooDataContext iDataContext, SQLMultipleChoiceFieldTableInfo subtableInfo)
+        internal DataTable CreateDataTableForMultipleChoiceField(IR8RDataContext iDataContext, SQLMultipleChoiceFieldTableInfo subtableInfo)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
 
@@ -699,9 +699,9 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             return dataTable;
         }
 
-        public int BulkCopyRows(IRaterooDataContext iDataContext, DenormalizedTableAccess dta, List<TblRow> tblRows, List<TblColumn> tblColumns)
+        public int BulkCopyRows(IR8RDataContext iDataContext, DenormalizedTableAccess dta, List<TblRow> tblRows, List<TblColumn> tblColumns)
         {
-            RaterooDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return 0;
 

@@ -32,7 +32,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
     protected bool CanEditFields;
     protected bool MultipleTblTabs;
     protected TblDimension TheTblDimensions;
-    protected RaterooDataAccess DataAccess;
+    protected R8RDataAccess DataAccess;
     TblRow TheTblRow;
     ActionProcessor Obj = new ActionProcessor();
     string SuppStyle;
@@ -41,10 +41,10 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 
     public void Setup(int entityId, string suppStyle, string suppStyleHeader)
     {
-        DataAccess = new RaterooDataAccess();
+        DataAccess = new R8RDataAccess();
 
         RowId = entityId;
-        TheTblRow = DataAccess.RaterooDB.GetTable<TblRow>().Single(x => x.TblRowID == RowId);
+        TheTblRow = DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == RowId);
         CommentsContent.theTblRowOrNullForEntireTable = TheTblRow;
         TblID = TheTblRow.TblID;
         SuppStyle = suppStyle;
@@ -64,7 +64,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 
         FieldDisplayHtml mainFieldDisplayHtml = new FieldDisplayHtml();
         Main_Table_FieldsDisplay theMainFieldsDisplay = (Main_Table_FieldsDisplay)LoadControl("~/Main/Table/FieldsDisplay.ascx");
-        mainFieldDisplayHtml = theMainFieldsDisplay.Setup(DataAccess.RaterooDB, TheTblDimensions, FieldsLocation.TblRowPage, RowId, true);
+        mainFieldDisplayHtml = theMainFieldsDisplay.Setup(DataAccess.R8RDB, TheTblDimensions, FieldsLocation.TblRowPage, RowId, true);
         FieldsDisplayPlaceHolder.Controls.Add(theMainFieldsDisplay);
 
         if (CanEditFields)
@@ -81,7 +81,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 
     protected void DetermineUserRights()
     {
-        int SubtopicId = DataAccess.RaterooDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
+        int SubtopicId = DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
 
         CanPredict = false;
         CanAdminister = false;
@@ -127,7 +127,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         ActionProcessor theActionProcessor = new ActionProcessor();
         theActionProcessor.TblRowDeleteOrUndelete(RowId, delete, true, (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         theActionProcessor.DataContext.SubmitChanges();
-        TblRow theTblRow = DataAccess.RaterooDB.GetTable<TblRow>().Single(e => e.TblRowID == RowId);
+        TblRow theTblRow = DataAccess.R8RDB.GetTable<TblRow>().Single(e => e.TblRowID == RowId);
         Routing.Redirect(Response, new RoutingInfoMainContent( theTblRow.Tbl, theTblRow, null));
         rebinding = true;
     }

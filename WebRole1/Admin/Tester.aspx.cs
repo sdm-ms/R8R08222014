@@ -22,11 +22,11 @@ public partial class Tester : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        //RaterooSupport DataTransitions = new RaterooSupport();
+        //R8RSupport DataTransitions = new R8RSupport();
         //DataTransitions.AddMissingVolatilityTrackers();
 
-        RaterooDataAccess theDataAccess = new RaterooDataAccess();
-        if (theDataAccess.RaterooDB.GetTable<User>().SingleOrDefault(u => u.Username == "admin") != null)
+        R8RDataAccess theDataAccess = new R8RDataAccess();
+        if (theDataAccess.R8RDB.GetTable<User>().SingleOrDefault(u => u.Username == "admin") != null)
         { // database has been created -- make sure this is admin
             bool allowEmergencyAdminAccess = false; // put breakpoint on next line to allow emergency access to this page
             if (!allowEmergencyAdminAccess && (string)HttpContext.Current.Profile.UserName != "admin")
@@ -41,7 +41,7 @@ public partial class Tester : System.Web.UI.Page
 
     protected void AddRandomUserRatings_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         int numRatings = Convert.ToInt32(NumRatings.Text);
         int maxNumUserRatings = Convert.ToInt32(MaxPerRating.Text);
         theTester.LaunchTestAddRandomUserRatings(numRatings, maxNumUserRatings);
@@ -49,7 +49,7 @@ public partial class Tester : System.Web.UI.Page
 
     protected void ForceHighStakes_Click(object sender, EventArgs e)
     {
-        RaterooDataManipulation manip = new RaterooDataManipulation();
+        R8RDataManipulation manip = new R8RDataManipulation();
         int numRatings = Convert.ToInt32(ForceHighStakesNumRatingGroups.Text);
         int tblID = Convert.ToInt32(ForceHighStakesTblID.Text);
         int? userID = null;
@@ -61,92 +61,92 @@ public partial class Tester : System.Web.UI.Page
 
     protected void ForceHighStakesEnd_Click(object sender, EventArgs e)
     {
-        RaterooDataManipulation manip = new RaterooDataManipulation();
+        R8RDataManipulation manip = new R8RDataManipulation();
         int tblID = Convert.ToInt32(EndKnownHighStakesTblID.Text);
         manip.FinishKnownHighStakesSoon(tblID);
     }
 
     protected void AddUserRatingsToNew_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         int numUserRatings = Convert.ToInt32(NumUserRatings1.Text);
         theTester.LaunchTestAddUserRatings(numUserRatings);
     }
     protected void AddToExisting_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         int numUserRatings = Convert.ToInt32(NumUserRatings2.Text);
         theTester.LaunchTestAddUserRatingsToExisting(numUserRatings);
     }
     protected void MultipleTbls_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.LaunchTestSetupVarietyTbls();
     }
     protected void SingleTbl_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.LaunchTestSetupSingleTbl();
     }
 
     protected void RatingGroupResolution_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.LaunchTestResolutionCode();
 
     }
 
     protected void SingleTblRow_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.LaunchTestAddSingleTblRow();
 
     }
     protected void FDDelete_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.TestDeleteFieldDefinition(true);
 
     }
     protected void FDUndelete_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.TestDeleteFieldDefinition(false);
 
     }
     protected void MultipleTblRows_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.LaunchTestAddTblRows(Convert.ToInt32(NumTblRows.Text));
 
     }
     protected void CreateMultipleDomains_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.LaunchTestCreateMultipleDomains();
 
     }
     protected void MultipleTests_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.MultipleTests();
 
     }
 
     protected void RandomizeCurrentValue_Click(object sender, EventArgs e)
     {
-        RaterooTestEnvironmentCreator theTester = new RaterooTestEnvironmentCreator();
+        R8RTestEnvironmentCreator theTester = new R8RTestEnvironmentCreator();
         theTester.LaunchSetCurrentValueOfFirstRatingForRestaurants();
     }
     protected void Reset_Click(object sender, EventArgs e)
     {
 
-        RaterooBuilder theBuilder = new RaterooBuilder();
+        R8RBuilder theBuilder = new R8RBuilder();
         theBuilder.DeleteAndRebuild();
 
     }
 
-    //protected void DebugAddRandomDBObject(IRaterooDataContext theDataContext)
+    //protected void DebugAddRandomDBObject(IR8RDataContext theDataContext)
     //{
     //    LongProcess addedLongProcess = new LongProcess
     //    {
@@ -166,7 +166,7 @@ public partial class Tester : System.Web.UI.Page
 
     //}
 
-    //protected void DebugAddRandomDBObjectManyTimes(int numTimes, bool submitChangesEach, IRaterooDataContext theDataContext)
+    //protected void DebugAddRandomDBObjectManyTimes(int numTimes, bool submitChangesEach, IR8RDataContext theDataContext)
     //{
     //    Trace.TraceInformation("Adding random object " + numTimes + " times, submitChangesEach: " + submitChangesEach);
     //    DateTime startTime = TestableDateTime.Now;
@@ -184,7 +184,7 @@ public partial class Tester : System.Web.UI.Page
 
     //protected void DebugTest_Click(object sender, EventArgs e)
     //{
-    //    IRaterooDataContext theDataContext = GetIRaterooDataContext.New(true, true);
+    //    IR8RDataContext theDataContext = GetIR8RDataContext.New(true, true);
     //    DebugAddRandomDBObjectManyTimes(100, true, theDataContext);
     //    DebugAddRandomDBObjectManyTimes(100, false, theDataContext);
     //    DebugAddRandomDBObjectManyTimes(1000, true, theDataContext);
@@ -198,7 +198,7 @@ public partial class Tester : System.Web.UI.Page
     protected void Standard_Click(object sender, EventArgs e)
     {
 
-        RaterooBuilder theBuilder = new RaterooBuilder();
+        R8RBuilder theBuilder = new R8RBuilder();
         theBuilder.DeleteAndRebuild();
         theBuilder.CreateStandard();
 
@@ -206,35 +206,35 @@ public partial class Tester : System.Web.UI.Page
 
     protected void Transition1_Click(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
+        R8RDataManipulation DataTransitions = new R8RDataManipulation();
         DataTransitions.DatabaseTransition20110324();
 
     }
 
     protected void Transition2_Click(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
+        R8RDataManipulation DataTransitions = new R8RDataManipulation();
         DataTransitions.SetNewPointTotalsFields();
 
     }
 
     protected void DeleteAllDataFromTable_Click(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
+        R8RDataManipulation DataTransitions = new R8RDataManipulation();
         DataTransitions.DeleteAllDataInTable(Convert.ToInt32(TblID.Text));
 
     }
 
     protected void DeleteUserRatingDataFromTable_Click(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
+        R8RDataManipulation DataTransitions = new R8RDataManipulation();
         DataTransitions.DeleteUserRatingDataInTable(Convert.ToInt32(TblID2.Text));
 
     }
 
     protected void Correction1_Click(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
+        R8RDataManipulation DataTransitions = new R8RDataManipulation();
         DataTransitions.Correction1();
 
     }
@@ -247,25 +247,25 @@ public partial class Tester : System.Web.UI.Page
 
     protected void StartPreventingChanges(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataManipulation = new RaterooDataManipulation();
+        R8RDataManipulation DataManipulation = new R8RDataManipulation();
         DatabaseAndAzureRoleStatus.SetPreventChanges(DataManipulation.DataContext, true); 
     }
 
     protected void StopPreventingChanges(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataManipulation = new RaterooDataManipulation();
+        R8RDataManipulation DataManipulation = new R8RDataManipulation();
         DatabaseAndAzureRoleStatus.SetPreventChanges(DataManipulation.DataContext, false);
     }
 
     protected void AddFastAccessTables(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
+        R8RDataManipulation DataTransitions = new R8RDataManipulation();
         DataTransitions.AddFastAccessTables(new DenormalizedTableAccess(1));
     }
 
     protected void DropFastAccessTables(object sender, EventArgs e)
     {
-        RaterooDataManipulation DataTransitions = new RaterooDataManipulation();
+        R8RDataManipulation DataTransitions = new R8RDataManipulation();
         DataTransitions.DropFastAccessTables(new DenormalizedTableAccess(1));
     }
 

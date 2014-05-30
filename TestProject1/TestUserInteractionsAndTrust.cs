@@ -32,19 +32,19 @@ namespace TestProject1
     public class TestUserInteractionsAndTrust
     {
         TestHelper TestHelper;
-        RaterooDataManipulation _dataManipulation;
+        R8RDataManipulation _dataManipulation;
         const float Precision = 0.0001F; // The allowable deviation from the "correct" answer that our calculations can be and still pass the tests
 
         [TestInitialize()]
         public void Initialize()
         {
-            GetIRaterooDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
             UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             TestHelper = new TestHelper();
-            _dataManipulation = new RaterooDataManipulation();
+            _dataManipulation = new R8RDataManipulation();
         }
 
         [TestMethod]
@@ -1028,7 +1028,7 @@ namespace TestProject1
             #region applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue
             if (applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
             {
-                RaterooTestEnvironmentCreator testEnv = new RaterooTestEnvironmentCreator(TestHelper);
+                R8RTestEnvironmentCreator testEnv = new R8RTestEnvironmentCreator(TestHelper);
                 PointsManager pm = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
                 testEnv.CreateChoiceGroups(pm.PointsManagerID);
                 ChoiceGroup theChoiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single"); // this is just a test choice group that was added where one can only select a single choice from the group
@@ -1128,7 +1128,7 @@ x.UserID == TestHelper.UserIds[1]);
                 applySpecialCaseAdjustmentFactorToHighMagnitudeRatings)
             {
                 var highMagnitude = trustTracker.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.LargeDeltaRatings); 
-                //var uis = DataAccess.RaterooDB.GetTable<UserInteractionStat>().Where(x => x.UserInteraction.User.UserID == theTestHelper.theUsers[1] && x.StatNum == (int)TrustStat.LargeDeltaRatings).ToList();
+                //var uis = DataAccess.R8RDB.GetTable<UserInteractionStat>().Where(x => x.UserInteraction.User.UserID == theTestHelper.theUsers[1] && x.StatNum == (int)TrustStat.LargeDeltaRatings).ToList();
                 //foreach (var debugui in uis.Where(x => x.SumWeights > 0))
                 //    Trace.TraceInformation("Adj pct " + debugui.SumAdjustPctTimesWeight / debugui.SumWeights + " weights: " + debugui.SumWeights);
                 Math.Abs(noExtraWeightingTrustStat.TrustValue - specialCaseAdjustmentFactorToApply)
@@ -1344,9 +1344,9 @@ x.UserID == TestHelper.UserIds[1]);
 
             TrustCalculations.NumPerfectScoresToGiveNewUser = 0;
             TrustTrackerStatManager.MinAdjustmentFactorToCreditUserRating = 0;
-            RaterooDataManipulation.MinChangePromptingReview = 0.01F; // make the review super-precise for purpose of this test
+            R8RDataManipulation.MinChangePromptingReview = 0.01F; // make the review super-precise for purpose of this test
             TrustTrackingBackgroundTasks.MinChangeToLatestUserEgalitarianTrustBeforeUpdatingWeightInCalculatingTrustTotal = 0.01F; // ditto
-            RaterooDataManipulation.HypotheticalAdjFactorsNotWorthImplementing = new Tuple<float, float>(0.99F, 1.01F); // ditto
+            R8RDataManipulation.HypotheticalAdjFactorsNotWorthImplementing = new Tuple<float, float>(0.99F, 1.01F); // ditto
 
             if (adjustmentFactorToApply == 0)
                 throw new Exception("This test won't work with applying adjustment percentage of 0, because the initial user must apply some wrong number that will yield the correct number after the adjustment percentage is applied.");
@@ -1597,12 +1597,12 @@ x.UserID == TestHelper.UserIds[1]);
 
 
         /// <summary>
-        /// Since it may be important to test different scenarios to ensure that Rateroo's trust system works, we will
+        /// Since it may be important to test different scenarios to ensure that R8R's trust system works, we will
         /// enapsulate parameters in a class for ease of reporting and recording.  Mostly we just want to be able to
         /// use this class's ToString method so that the Debug output for a test can easily report the parameters
         /// its using.
         /// </summary>
-        class RaterooTrustTestParameters
+        class R8RTrustTestParameters
         {
             public int NumUsers;
             public int NumUsersWhoTargetWrongValues;
@@ -1644,9 +1644,9 @@ x.UserID == TestHelper.UserIds[1]);
         /// that a high percentage are near the goal.
         /// </summary>
         [TestMethod]
-        public void RateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings()
+        public void R8RsRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings()
         {
-            rateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings_Helper(new RaterooTrustTestParameters {
+            rateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings_Helper(new R8RTrustTestParameters {
                 NumUsers = 10,
                 NumUsersWhoTargetWrongValues = 2, 
                 NumTblRows = 40, 
@@ -1674,7 +1674,7 @@ x.UserID == TestHelper.UserIds[1]);
         /// <param name="tolerance">The magnitude of deviation allowed by <paramref name="requiredProportionOfRatingsWithinTolerance"/> percent of ratin</param>
         /// <param name="requiredProportionOfRatingsWithinTolerance"></param>
         /// <param name="randomSeed"></param>
-        void rateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings_Helper(RaterooTrustTestParameters parameters)
+        void rateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings_Helper(R8RTrustTestParameters parameters)
         {
             Debug.WriteLine(String.Format("Parameters: {0}", parameters.ToString()));
 
@@ -1699,7 +1699,7 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, parameters.NumTblRows - 1);
             TestHelper.WaitIdleTasks();
 
-            var testEnv = new RaterooTestEnvironmentCreator(TestHelper);
+            var testEnv = new R8RTestEnvironmentCreator(TestHelper);
             PointsManager pointsManager = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
             testEnv.CreateChoiceGroups(pointsManager.PointsManagerID);
             ChoiceGroup choiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
@@ -1823,14 +1823,14 @@ x.UserID == TestHelper.UserIds[1]);
         /// and see if rateroo picks up on it.
         /// </summary>
         [TestMethod]
-        public void RateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor()
+        public void R8RsRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor()
         {
-            RateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor_Helper(20, 50, 40, 10, 0.01F, 0.5M, 0.9F);
+            R8RsRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor_Helper(20, 50, 40, 10, 0.01F, 0.5M, 0.9F);
             //Test_OverallTrustTest_Helper(20, 500, 100, 10, 3, 1);
         }
 
         /// <summary>
-        /// Tests Rateroos's trust system.  Specialist's are users who are particularly good
+        /// Tests R8Rs's trust system.  Specialist's are users who are particularly good
         /// at rating one type of thing.  Either one Tbl among all tables or one ChoiceInField 
         /// among other ChoiceInFields in the same table.
         /// </summary>
@@ -1842,7 +1842,7 @@ x.UserID == TestHelper.UserIds[1]);
         /// <param name="tolerance">The magnitude of deviation allowed by <paramref name="requiredProportionOfRatingsWithinTolerance"/> percent of ratin</param>
         /// <param name="requiredProportionOfRatingsWithinTolerance"></param>
         /// <param name="randomSeed"></param>
-        public void RateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor_Helper(
+        public void R8RsRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor_Helper(
             int numBatchesOfUserRatings, 
             int numUserRatingsPerBatch, 
             int numTblRows, 
@@ -1880,7 +1880,7 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, numTblRows - 1);
             TestHelper.WaitIdleTasks();
 
-            var testEnv = new RaterooTestEnvironmentCreator(TestHelper);
+            var testEnv = new R8RTestEnvironmentCreator(TestHelper);
             PointsManager pointsManager = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
             testEnv.CreateChoiceGroups(pointsManager.PointsManagerID);
             ChoiceGroup choiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
@@ -1948,7 +1948,7 @@ x.UserID == TestHelper.UserIds[1]);
         }
 
         [TestMethod]
-        public void RaterooDeletesUserInteractionsWhenAnotherUserBecomesTheLatestRatingUser()
+        public void R8RDeletesUserInteractionsWhenAnotherUserBecomesTheLatestRatingUser()
         {
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(4);

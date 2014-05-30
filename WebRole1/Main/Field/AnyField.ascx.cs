@@ -20,14 +20,14 @@ public partial class AnyFieldFilter : System.Web.UI.UserControl, IFilterField
     public FieldsBoxMode Mode { get; set; }
     public int? TblRowID { get; set; }
     public int FieldDefinitionOrTblColumnID {get; set;}
-    public RaterooDataAccess DataAccess { get; set; }
+    public R8RDataAccess DataAccess { get; set; }
     public FieldDefinitionInfo FieldInfo { get; set; }
     public TblColumnInfo CatDesInfo { get; set; }
     public System.Web.UI.UserControl theField;
 
     public AnyFieldFilter()
     {
-        DataAccess = new RaterooDataAccess();
+        DataAccess = new R8RDataAccess();
     }
 
     public void AddSpecificFieldType(List<AnyFieldFilter> fieldsAlreadyAdded, bool isPostback)
@@ -102,12 +102,12 @@ public partial class AnyFieldFilter : System.Web.UI.UserControl, IFilterField
     {
         ChoiceFieldFilter theChoiceField = (ChoiceFieldFilter)theField;
         theChoiceField.FieldDefinitionID = FieldInfo.FieldDefinitionID;
-        RaterooDataAccess Obj = new RaterooDataAccess();
-        ChoiceGroupFieldDefinition theFieldDefinition = Obj.RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == FieldInfo.FieldDefinitionID);
+        R8RDataAccess Obj = new R8RDataAccess();
+        ChoiceGroupFieldDefinition theFieldDefinition = Obj.R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.FieldDefinitionID == FieldInfo.FieldDefinitionID);
         theChoiceField.ChoiceGroupID = theFieldDefinition.ChoiceGroupID;
         if (theFieldDefinition.DependentOnChoiceGroupFieldDefinitionID != null)
         {
-            int dependentOnFieldDefinitionID = Obj.RaterooDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.ChoiceGroupFieldDefinitionID == theFieldDefinition.DependentOnChoiceGroupFieldDefinitionID).FieldDefinitionID;
+            int dependentOnFieldDefinitionID = Obj.R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.ChoiceGroupFieldDefinitionID == theFieldDefinition.DependentOnChoiceGroupFieldDefinitionID).FieldDefinitionID;
             var theDependerAlreadyAdded = fieldsAlreadyAdded.SingleOrDefault(f => f.FieldInfo.FieldDefinitionID == dependentOnFieldDefinitionID);
             if (theDependerAlreadyAdded != null)
             {

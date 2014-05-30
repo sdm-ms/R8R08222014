@@ -6,9 +6,9 @@ using ClassLibrary1.Model;
 public partial class Main_Table_ViewCellSingleOutcome : System.Web.UI.UserControl
 {
 
-    public void Setup(RaterooDataAccess dataAccess, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
     {
-        Rating theRating = dataAccess.RaterooDB.GetTable<Rating>().SingleOrDefault(m => m.RatingGroupID == ratingGroupID);
+        Rating theRating = dataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.RatingGroupID == ratingGroupID);
         if (theRating == null)
             return;
 

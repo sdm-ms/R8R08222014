@@ -18,8 +18,8 @@ namespace WebRole1.WebForms
         {
             if (!(HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null))
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
-            RaterooDataAccess myDataAccess = new RaterooDataAccess();
-            User theUser = myDataAccess.RaterooDB.GetTable<User>().Single(x => x.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+            R8RDataAccess myDataAccess = new R8RDataAccess();
+            User theUser = myDataAccess.R8RDB.GetTable<User>().Single(x => x.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
             if (theUser.Username != "admin")
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
         }

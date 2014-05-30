@@ -29,9 +29,9 @@ using ClassLibrary1.Model;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         //  Methods related to calculating points for predictions
 
@@ -333,7 +333,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="ratingID"></param>
         /// <returns></returns>
-        public static decimal GetAlternativeBasisForCalcIfNoPreviousUserRating(IRaterooDataContext theDataContext, Rating theRating, RatingGroupAttribute theRatingGroupAttribute)
+        public static decimal GetAlternativeBasisForCalcIfNoPreviousUserRating(IR8RDataContext theDataContext, Rating theRating, RatingGroupAttribute theRatingGroupAttribute)
         {
             TblColumn theCD = theRating.RatingGroup.TblColumn;
 

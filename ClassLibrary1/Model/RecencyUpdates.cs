@@ -43,7 +43,7 @@ namespace ClassLibrary1
             return ((int)Math.Ceiling(((double)userRatingNumber / (1.0 - (double)pctThreshold))));
         }
 
-        public static bool UpdateRecency(IRaterooDataContext raterooDB)
+        public static bool UpdateRecency(IR8RDataContext raterooDB)
         {
             int maxToUpdate = 1000;
             var updateQuery = from ur in raterooDB.GetTable<UserRating>()

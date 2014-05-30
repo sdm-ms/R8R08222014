@@ -21,9 +21,9 @@ namespace ClassLibrary1.Model
         public const float MaximumRetrospectiveAdjustmentFactor = 1.25F;
         /// <summary>
         /// The maximum and minimum to which we will constrain AdjustmentFactors when we are deciding the extent
-        /// to which Rateroo should trust a new UserRating. Given a range of 0 to 1, that means that Rateroo will
+        /// to which R8R should trust a new UserRating. Given a range of 0 to 1, that means that R8R will
         /// never decide to move in the opposite direction of a new user rating, or to move even further than the
-        /// user rating. So, if the rating was 5 and the user rating is 6, Rateroo's result will be between 5 and 6.
+        /// user rating. So, if the rating was 5 and the user rating is 6, R8R's result will be between 5 and 6.
         /// </summary>
         public const float MinimumPredictiveAdjustmentFactor = 0F;
         public const float MaximumPredictiveAdjustmentFactor = 1F;
@@ -56,7 +56,7 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// An AdjustmentFactor measures the extent to which a rating has moved proportionately from an original rating (the basis)
         /// to a user rating.
-        /// that Rateroo has not moved the Rating's value at all towards the UserRating's Value.  1.0 indicates that Rateroo thinks that
+        /// that R8R has not moved the Rating's value at all towards the UserRating's Value.  1.0 indicates that R8R thinks that
         /// the User's rating is correct.  ±∞ indicates that the User was completely wrong, but we have a constraint option that will
         /// limit this to a range (currently -1.25, 1.25).
         /// 
@@ -68,8 +68,8 @@ namespace ClassLibrary1.Model
         ///     1
         ///         when enteredValue == basisRating.
         ///     
-        /// Where rating was what a user originally entered; basisRating was Rateroo's best guess for the rating value at the time the 
-        /// user entered the rating value; and laterValue is Rateroo's guess for the rating value at a later time.
+        /// Where rating was what a user originally entered; basisRating was R8R's best guess for the rating value at the time the 
+        /// user entered the rating value; and laterValue is R8R's guess for the rating value at a later time.
         /// 
         /// If the user enters the same rating as the basis, the denominator would be zero, so instead the factor is defined to be 1.
         /// 

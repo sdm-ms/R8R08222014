@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="Rateroo" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" schemaVersion="2013-10.2.2">
+<ServiceConfiguration serviceName="R8R" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" schemaVersion="2013-10.2.2">
   <Role name="WebRole1">
     <Instances count="1" />
     <ConfigurationSettings>
@@ -9,7 +9,7 @@
       <!--<Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;" />-->
-      <Setting name="RaterooConnectionString" value="Data Source=PC2012;Initial Catalog=Rateroo10;Integrated Security=True;Connect Timeout=300" />
+      <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>
   </Role>
@@ -22,7 +22,7 @@
       <!--<Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;" />-->
-      <Setting name="RaterooConnectionString" value="Data Source=PC2012;Initial Catalog=Rateroo10;Integrated Security=True;Connect Timeout=300" />
+      <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>
   </Role>

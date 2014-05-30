@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="WebRole1.WebForms.AdminResetEmail" Title="Rateroo: Reset Email" Codebehind="AdminResetEmail.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/StandardPage.master" AutoEventWireup="true" Inherits="WebRole1.WebForms.AdminResetEmail" Title="R8R: Reset Email" Codebehind="AdminResetEmail.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>

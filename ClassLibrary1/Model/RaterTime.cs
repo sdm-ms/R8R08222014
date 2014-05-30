@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary1.Misc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,13 +49,13 @@ namespace ClassLibrary1.Model
 
         public static TimeSpan GetTimeForUser(int userID, DateTime fromTime, DateTime toTime)
         {
-            RaterooDataAccess dataAccess = new RaterooDataAccess();
-            List<DateTime> ratingTimes = dataAccess.RaterooDB
+            R8RDataAccess dataAccess = new R8RDataAccess();
+            List<DateTime> ratingTimes = dataAccess.R8RDB
                                 .GetTable<UserRating>()
                                     .Where(x => x.UserID == userID && x.UserRatingGroup.WhenMade > fromTime && x.UserRatingGroup.WhenMade < toTime)
                                     .Select(x => x.UserRatingGroup.WhenMade)
                                 .Concat(
-                                    dataAccess.RaterooDB.GetTable<UserCheckIn>()
+                                    dataAccess.R8RDB.GetTable<UserCheckIn>()
                                     .Where(x => x.UserID == userID && x.CheckInTime > fromTime && x.CheckInTime < toTime)
                                     .Select(x => x.CheckInTime)
                                  )

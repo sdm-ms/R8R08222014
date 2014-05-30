@@ -32,9 +32,9 @@ using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model
 {
     /// <summary>
-    /// Summary description for RaterooSupport
+    /// Summary description for R8RSupport
     /// </summary>
-    public partial class RaterooDataManipulation
+    public partial class R8RDataManipulation
     {
         // Methods for adding objects to database
 
@@ -808,8 +808,8 @@ namespace ClassLibrary1.Model
         //        TblColumnID = TblColumnID,
         //        HierarchyData = hierarchyData
         //    };
-        //    RaterooDB.GetTable<RatingHierarchySerialized>().InsertOnSubmit(theRatingHierarchySerialized);
-        //    RaterooDB.SubmitChanges();
+        //    R8RDB.GetTable<RatingHierarchySerialized>().InsertOnSubmit(theRatingHierarchySerialized);
+        //    R8RDB.SubmitChanges();
         //    return theRatingHierarchySerialized.RatingHierarchySerializedID;
         //}
 
@@ -851,7 +851,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<Rating>().InsertOnSubmit(theRating);
             DataContext.RegisterObjectToBeInserted(theRating);
 
-            //theRating = RaterooDB.GetTable<Rating>().Where(m => m.RatingStatusID == theRatingStatusID).First().RatingID;
+            //theRating = R8RDB.GetTable<Rating>().Where(m => m.RatingStatusID == theRatingStatusID).First().RatingID;
             if (theRating.NumInGroup == 1)
             {
                 RatingGroup theRatingGroup = theRating.RatingGroup;
@@ -1129,7 +1129,7 @@ namespace ClassLibrary1.Model
             {
                 DataContext.SubmitChanges();
                 StartAddingMissingRatingsForTbl(theTbl.TblID);
-                //var theTblRows = RaterooDB.GetTable<TblRow>().Where(e => e.TblID == theTbl.TblID && e.Status == (Byte)StatusOfObject.Active && e.TradingStatus != (Byte)TradingStatus.Ended).Select(e => new { e.TblRowID, e.TradingStatus });
+                //var theTblRows = R8RDB.GetTable<TblRow>().Where(e => e.TblID == theTbl.TblID && e.Status == (Byte)StatusOfObject.Active && e.TradingStatus != (Byte)TradingStatus.Ended).Select(e => new { e.TblRowID, e.TradingStatus });
                 //foreach (var theTblRow in theTblRows)
                 //{
                 //    int theGroupAttributesID = ObjDataAccess.GetRatingGroupAttributesForTblRowCategory(theTblRow.TblRowID, theCategory);
@@ -1853,7 +1853,7 @@ namespace ClassLibrary1.Model
                 theUserRating.PointsPumpingProportion = 1.0M; // 100% of points that can be earned are real, because there are no prior users who might not have earned their points from whom these points will come
                 pointsTotal.PointsPumpingProportionAvg_Numer += (float) (theUserRating.MaxGain * 1.0M);
                 pointsTotal.PointsPumpingProportionAvg_Denom += (float) theUserRating.MaxGain;
-                pointsTotal.PointsPumpingProportionAvg = RaterooDataManipulation.CalculatePointsPumpingProportionAvg(pointsTotal.PointsPumpingProportionAvg_Numer, pointsTotal.PointsPumpingProportionAvg_Denom, pointsTotal.NumUserRatings);
+                pointsTotal.PointsPumpingProportionAvg = R8RDataManipulation.CalculatePointsPumpingProportionAvg(pointsTotal.PointsPumpingProportionAvg_Numer, pointsTotal.PointsPumpingProportionAvg_Denom, pointsTotal.NumUserRatings);
             }
             if (rating.UserRating != null)
                 rating.UserRating.SubsequentlyRated = true; // previous most recent user rating
@@ -2253,11 +2253,10 @@ namespace ClassLibrary1.Model
             return AddSubsidyDensityRangeGroup(name, creator, null);
         }
 
-        public int AddTblDimensions(int widthOfRowHeaderColumn, int maxWidthOfImageInRowHeaderCell, int maxHeightOfImageInRowHeaderCell, int maxWidthOfImageInTblRowPopUpWindow, int maxHeightOfImageInTblRowPopUpWindow, int widthOfTblRowPopUpWindow)
+        public int AddTblDimensions( int maxWidthOfImageInRowHeaderCell, int maxHeightOfImageInRowHeaderCell, int maxWidthOfImageInTblRowPopUpWindow, int maxHeightOfImageInTblRowPopUpWindow, int widthOfTblRowPopUpWindow)
         {
             TblDimension theTblDimension = new TblDimension
             {
-                WidthOfRowHeaderColumn = widthOfRowHeaderColumn,
                 MaxWidthOfImageInRowHeaderCell = maxWidthOfImageInRowHeaderCell,
                 MaxHeightOfImageInRowHeaderCell = maxHeightOfImageInRowHeaderCell,
                 MaxWidthOfImageInTblRowPopUpWindow = maxWidthOfImageInTblRowPopUpWindow,

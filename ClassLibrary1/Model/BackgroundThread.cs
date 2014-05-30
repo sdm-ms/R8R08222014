@@ -20,7 +20,7 @@ using ClassLibrary1.Misc;
 
 namespace ClassLibrary1.Model
 {
-    public class MyBackgroundTask
+    public class R8RBackgroundTask
     {
         public bool RepeatIndefinitely { get; set; }
         public bool MoreWorkToDo { get; internal set; }
@@ -28,7 +28,7 @@ namespace ClassLibrary1.Model
         public DateTime? ThisWebServerLastUpdateTime;
         public long LoopSetCompletedCount = 0;
 
-        public MyBackgroundTask()
+        public R8RBackgroundTask()
         {
             MoreWorkToDo = true;
             RepeatIndefinitely = true;
@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// Perform idle tasks (such as checking for a rating that needs resolution or updating)
         /// </summary>
-        public void BackgroundTasksRunner(RaterooDataManipulation dataManipulation)
+        public void BackgroundTasksRunner(R8RDataManipulation dataManipulation)
         {
             lock (BackgroundThread.padlock)
             {
@@ -79,7 +79,7 @@ namespace ClassLibrary1.Model
             // Trace.TraceInformation("Exiting IdleTasks moreWorkToDo: " + moreWorkToDo.ToString());
         }
 
-        private bool CompleteSingleLoop(RaterooDataManipulation dataManipulation, int numTasks, int numLoops, int loop)
+        private bool CompleteSingleLoop(R8RDataManipulation dataManipulation, int numTasks, int numLoops, int loop)
         {
             bool moreWorkToDo = true;
             dataManipulation.ResetDataContexts();
@@ -133,7 +133,7 @@ namespace ClassLibrary1.Model
             return moreWorkToDo;
         }
 
-        private static void CompleteSingleTask(RaterooDataManipulation dataManipulation, bool[] moreWorkToDoThisTask, int i)
+        private static void CompleteSingleTask(R8RDataManipulation dataManipulation, bool[] moreWorkToDoThisTask, int i)
         {
             switch (i)
             {
@@ -246,7 +246,7 @@ namespace ClassLibrary1.Model
             MoreWorkToDo = true;
             CurrentlyInBriefPause = false;
             DateTime expireThread = TestableDateTime.Now + new TimeSpan(1, 0, 0);
-            RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             while (TestableDateTime.Now < expireThread || RepeatIndefinitely)
             {
                 //Trace.TraceInformation("Background task main run loop.");
@@ -288,7 +288,7 @@ namespace ClassLibrary1.Model
         static volatile BackgroundThread instance = null;
         public static readonly object padlock = new object();
         static Thread myThread = null;
-        static MyBackgroundTask theTask = null;
+        static R8RBackgroundTask theTask = null;
         static DateTime BriefPauseRequestedTime;
         public static int BriefPauseRequestNumberSeconds = 10;
         static bool _briefPauseRequested;
@@ -412,8 +412,8 @@ namespace ClassLibrary1.Model
             else
             {
                 //Trace.TraceInformation("Using integrated idle tasks.");
-                theTask = new MyBackgroundTask();
-                RaterooDataManipulation theDataAccessModule = new RaterooDataManipulation();
+                theTask = new R8RBackgroundTask();
+                R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
                 theTask.BackgroundTasksRunner(theDataAccessModule);
             }
             //}
@@ -445,10 +445,10 @@ namespace ClassLibrary1.Model
             {
                 if (myThread != null)
                     myThread.Abort();
-                theTask = new MyBackgroundTask();
+                theTask = new R8RBackgroundTask();
                 theTask.RepeatIndefinitely = repeatIndefinitely;
                 myThread = new Thread(theTask.Run);
-                myThread.Name = "Rateroo " + TestableDateTime.Now.ToString();
+                myThread.Name = "R8R " + TestableDateTime.Now.ToString();
                 myThread.Start();
             }
             catch

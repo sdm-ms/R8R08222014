@@ -20,10 +20,10 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
     protected int TblTabID { get; set; }
     protected int? LimitToThisTblColumnID { get; set; }
     protected int TblRowID { get; set; }
-    protected RaterooDataAccess DataAccess { get; set; }
+    protected R8RDataAccess DataAccess { get; set; }
     protected bool rebinding = false;
 
-    public void Setup(RaterooDataAccess dataAccess, int entityID, int theTblTabID, int? limitToThisTblColumnID)
+    public void Setup(R8RDataAccess dataAccess, int entityID, int theTblTabID, int? limitToThisTblColumnID)
     {
 
         DataAccess = dataAccess;
@@ -46,7 +46,7 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
     protected void HeaderLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
         bool useVerticalColumns = NumberandTableFormatter.UseVerticalColumns(DataAccess, TblTabID, LimitToThisTblColumnID,true); 
-        var theQuery = DataAccess.RaterooDB.GetTable<TblColumn>()
+        var theQuery = DataAccess.R8RDB.GetTable<TblColumn>()
                  .Where(x => x.TblTabID == TblTabID 
                      && (LimitToThisTblColumnID == null || LimitToThisTblColumnID == x.TblColumnID)
                      && x.Status == (byte)StatusOfObject.Active)

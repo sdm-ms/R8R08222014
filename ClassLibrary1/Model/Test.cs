@@ -62,7 +62,7 @@ namespace ClassLibrary1.Model
         {
             if (rebuild)
             {
-                var builder = new RaterooBuilder();
+                var builder = new R8RBuilder();
                 builder.DeleteAndRebuild();
             }
             ActionProcessor = new ActionProcessor();
@@ -102,11 +102,11 @@ namespace ClassLibrary1.Model
         public RatingGroup RatingGroup { get { if (_ratingGroup == null) return _ratingGroup; return ActionProcessor.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == _ratingGroup.RatingGroupID); } set { _ratingGroup = value; } }
         public Rating Rating { get { if (_rating == null) return _rating; return ActionProcessor.DataContext.GetTable<Rating>().Single(x => x.RatingID == _rating.RatingID); } set { _rating = value; } }
 
-        public void FinishUserRatingAdd(RaterooDataManipulation rdm)
+        public void FinishUserRatingAdd(R8RDataManipulation rdm)
         {
-            if (RaterooDataManipulation.AddUserRatingLockForTesting == null)
+            if (R8RDataManipulation.AddUserRatingLockForTesting == null)
             {
-                RaterooDataManipulation.AddUserRatingLockForTesting = new object();
+                R8RDataManipulation.AddUserRatingLockForTesting = new object();
                 Thread.Sleep(50); // give enough time for any past loop to finish
             }
             rdm.DataContext.SubmitChanges();
@@ -120,7 +120,7 @@ namespace ClassLibrary1.Model
 
         private void FinishUserRatingAdd_Helper()
         {
-            RaterooDataManipulation rdm = new RaterooDataManipulation();
+            R8RDataManipulation rdm = new R8RDataManipulation();
             rdm.CompleteMultipleAddUserRatings();
             rdm.DataContext.SubmitChanges();
             rdm.ResetDataContexts();
@@ -407,7 +407,7 @@ namespace ClassLibrary1.Model
                 }
                 catch (Exception ex)
                 {
-                    if (!ex.Message.Contains("You cannot make another rating on this table cell until Rateroo trusts your changes")) // We won't report this as an error
+                    if (!ex.Message.Contains("You cannot make another rating on this table cell until R8R trusts your changes")) // We won't report this as an error
                         Trace.TraceInformation("EXCEPTION: " + ex.Message);
                 }
             }
@@ -449,7 +449,7 @@ namespace ClassLibrary1.Model
                 }
                 catch (Exception ex)
                 {
-                    if (!ex.Message.Contains("You cannot make another rating on this table cell until Rateroo trusts your changes")) // We won't report this as an error
+                    if (!ex.Message.Contains("You cannot make another rating on this table cell until R8R trusts your changes")) // We won't report this as an error
                         Trace.TraceInformation("EXCEPTION: " + ex.Message);
                 }
                 if (i % 25 == 0)
@@ -462,12 +462,12 @@ namespace ClassLibrary1.Model
 
     }
 
-    public class RaterooTestEnvironmentCreator
+    public class R8RTestEnvironmentCreator
     {
 
         TestHelper theTestHelper;
 
-        public RaterooTestEnvironmentCreator(TestHelper testHelperToUse = null)
+        public R8RTestEnvironmentCreator(TestHelper testHelperToUse = null)
         {
             theTestHelper = testHelperToUse ?? new TestHelper();
         }
@@ -1041,7 +1041,7 @@ namespace ClassLibrary1.Model
                     break;
 
                 case (int) FieldTypes.DateTimeField:
-                    // DateTimeFieldDefinition theDTFieldDefinition = theTestHelper.Action.RaterooDB.GetTable<DateTimeFieldDefinition>().Single(dt => dt.FieldDefinitionID == theFieldDefinition.FieldDefinitionID);
+                    // DateTimeFieldDefinition theDTFieldDefinition = theTestHelper.Action.R8RDB.GetTable<DateTimeFieldDefinition>().Single(dt => dt.FieldDefinitionID == theFieldDefinition.FieldDefinitionID);
                     DateTime? theTime = null;
                     if (RandomGenerator.GetRandom(0,5) > 0)
                         theTime = new DateTime(RandomGenerator.GetRandom(1900, 2050), RandomGenerator.GetRandom(1, 12), RandomGenerator.GetRandom(1, 28), RandomGenerator.GetRandom(0, 23), RandomGenerator.GetRandom(0, 59), RandomGenerator.GetRandom(0, 59));
@@ -1338,7 +1338,7 @@ namespace ClassLibrary1.Model
 
         public void TestPrep(int numUsers)
         {
-            RaterooBuilder theBuilder = new RaterooBuilder();
+            R8RBuilder theBuilder = new R8RBuilder();
             theBuilder.DeleteAndRebuild();
             theTestHelper.CreateUsers(numUsers);
         }
@@ -1362,7 +1362,7 @@ namespace ClassLibrary1.Model
                 }
                 catch (Exception ex)
                 {
-                    if (!ex.Message.Contains("You cannot make another rating on this table cell until Rateroo trusts your changes")) // We won't report this as an error
+                    if (!ex.Message.Contains("You cannot make another rating on this table cell until R8R trusts your changes")) // We won't report this as an error
                         Trace.TraceError("EXCEPTION: " + ex.Message);
                 }
             }
