@@ -47,7 +47,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
         ChartButton = false;
         TblRowIDForChartButton = entityIDForChartButton;
 
-        if (TblColumnID != null && entityIDForChartButton != null && TblColumnID != 0 && entityIDForChartButton != 0)
+        if (TblColumnID != null && entityIDForChartButton != null && TblColumnID != -1 && entityIDForChartButton != -1)
         {
             //if (substituteRefreshButton)
             //    ; // THIS FEATURE NOT CURRENTLY SUPPORTED ColumnPopUpMouseOverArea.AddAttribute("class", "refreshCell");

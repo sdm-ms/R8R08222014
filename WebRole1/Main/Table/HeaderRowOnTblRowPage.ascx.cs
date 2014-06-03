@@ -69,7 +69,7 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             int? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
-            if (TblColumnID == 0) // see note above
+            if (TblColumnID == -1) // see note above
                 TblColumnID = null;
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];
             string theName = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Name"];

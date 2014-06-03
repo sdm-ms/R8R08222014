@@ -205,7 +205,7 @@ namespace ClassLibrary1.Model
                     catch
                     {
                     }
-                    if (TblColumnID != 0)
+                    if (TblColumnID != -1)
                         theTblColumn = theDataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl == theTbl && x.TblColumnID == TblColumnID);
                 }
             }

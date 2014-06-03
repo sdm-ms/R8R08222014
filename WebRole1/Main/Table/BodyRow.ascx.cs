@@ -58,7 +58,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         LimitToThisTblColumn = limitToThisTblColumn;
         TblColumnToSort = tblColumnToSort;
         TblRowID = entityID;
-        if (TblRowID == 0)
+        if (TblRowID == -1)
             throw new Exception("Internal error: row id must be specified.");
         RowNumber = rowNumber;
         CanPredict = canPredict;

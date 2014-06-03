@@ -99,6 +99,7 @@ namespace ClassLibrary1.Model
         {
             TblColumn theTblColumn = new TblColumn
             {
+                TblColumnID = -1,
                 TblTabID = TblTabID,
                 DefaultRatingGroupAttributesID = defaultRatingGroupAttributesID,
                 TrustTrackerUnit = trackTrustWithinTableColumn ? AddTrustTrackerUnit() : null,
@@ -547,6 +548,7 @@ namespace ClassLibrary1.Model
             //ProfileSimple.Start("AddTblRow");
             TblRow theTblRow = new TblRow
             {
+                TblRowID = -1,
                 Tbl = Tbl,
                 TblRowFieldDisplay = theFieldDisplay,
                 Name = name,
@@ -684,11 +686,12 @@ namespace ClassLibrary1.Model
             // Note: Initially, the Linq to SQL data model had child and parent properties for routing and menu, but this seemed
             // to cause a number of problems in Linq to SQL (bad query translation and duplicated items). So, we are avoiding the 
             // properties for now, which means that we need to have the ID variable
-            if ((higherHierarchyItemForMenu != null && higherHierarchyItemForMenu.HierarchyItemID == 0) || (higherHierarchyItemForRouting != null && higherHierarchyItemForRouting.HierarchyItemID == 0))
+            if ((higherHierarchyItemForMenu != null && higherHierarchyItemForMenu.HierarchyItemID == -1) || (higherHierarchyItemForRouting != null && higherHierarchyItemForRouting.HierarchyItemID == 0))
                 throw new Exception("Internal error: Must submit changes on hierarchy item before using as basis for higher hierarchy item.");
 
             HierarchyItem theHierarchyItem = new HierarchyItem
             {
+                HierarchyItemID = -1,
                 HigherHierarchyItemID = higherHierarchyItemForMenu == null ? (int?) null : (int?) higherHierarchyItemForMenu.HierarchyItemID,
                 HigherHierarchyItemForRoutingID = higherHierarchyItemForRouting == null ? (int?) null : (int?) higherHierarchyItemForRouting.HierarchyItemID,
                 Tbl = associatedTbl,
@@ -937,6 +940,7 @@ namespace ClassLibrary1.Model
             byte? MType = ratingGroupAttributes.TypeOfRatingGroup;
             RatingGroup theGroup = new RatingGroup
             {
+                RatingGroupID = -1,
                 TblRow = tblRow,
                 TblColumn = TblColumn,
                 RatingGroupAttribute = ratingGroupAttributes,
@@ -1027,7 +1031,7 @@ namespace ClassLibrary1.Model
 
         public RatingGroup AddRatingGroupAndRatings(TblRow tblRow, TblColumn tblColumn, RatingGroupAttribute ratingGroupAttributes)
         {
-            if (!(tblRow.TblRowID == 0 || tblColumn.TblColumnID == 0)) // if 0's ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
+            if (!(tblRow.TblRowID == -1 || tblColumn.TblColumnID == -1)) // if 0's ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
                 AddUniquenessLock(new TblRowIDAndTblColumnIDUniquenessGenerator() { TblRowID = tblRow.TblRowID, TblColumnID = tblColumn.TblColumnID }, TestableDateTime.Now + TimeSpan.FromDays(1)); // will prevent anyone else from adding to the same cell simultaneously (note that 1 day is a bit arbitrary -- key is that we want to avoid scenario where we check for ratings and don't find any, and add just an instant later than another web role doing the same thing)
             RatingGroup theRatingGroup = AddRatingGroupAndRatings(tblRow, tblColumn, ratingGroupAttributes, null, null);
             AdvanceRatingGroupToNextRatingPhase(theRatingGroup);
@@ -1051,7 +1055,7 @@ namespace ClassLibrary1.Model
             if (!recursiveCall)
             { // We're at the top of the hierarchy. Let's make sure this rating group doesn't already exist.
                 IQueryable<RatingGroup> existingRatingGroups = null;
-                if (tblRow.TblRowID != 0)
+                if (tblRow.TblRowID != -1)
                 {
                     existingRatingGroups = DataContext.WhereFromNewOrDatabase<RatingGroup>(mg => mg.TblRow == tblRow
                                                    && mg.TblColumn == TblColumn
@@ -1213,7 +1217,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroupAttribute theGroupAttributes;
             OverrideCharacteristic overrideCharacteristics = null;
-            if (theTblRow.TblRowID != 0 && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
+            if (theTblRow.TblRowID != -1 && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
                 overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theColumn.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
             if (overrideCharacteristics == null)
                 theGroupAttributes = theColumn.RatingGroupAttribute;

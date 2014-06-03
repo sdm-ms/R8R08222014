@@ -714,7 +714,7 @@ namespace ClassLibrary1.Model
                     FieldChange(theFieldData, userID);
                 }
 
-                if (theSet.theTblRow.TblRowID != 0)
+                if (theSet.theTblRow.TblRowID != -1)
                 {
                     FieldsDisplayCreator theFieldsDisplayCreator = new FieldsDisplayCreator();
                     theFieldsDisplayCreator.SetFieldDisplayHtml(theSet.theTblRow);
@@ -864,7 +864,7 @@ namespace ClassLibrary1.Model
 
         internal void FieldDelete(TblRow tblRow, FieldDefinition theFieldDefinition, int userID)
         {
-            if (tblRow.TblRowID == 0)
+            if (tblRow.TblRowID == -1)
                 return; // Shouldn't be a field to delete for entity that hasn't been added yet.
             Field theField = DataManipulation.GetFieldForTblRow(tblRow, theFieldDefinition);
             if (theField != null)
@@ -885,7 +885,7 @@ namespace ClassLibrary1.Model
             Field field = null;
             object subfield = null;
             FieldTypes theFieldType = FieldTypes.AddressField; // must initialize before passing as ref below
-            if (tblRow.TblRowID != 0)
+            if (tblRow.TblRowID != -1)
                 DataManipulation.GetFieldForTblRow(tblRow, FieldDefinitionID, ref field, ref subfield, ref theFieldType);
             if (field == null)
             {

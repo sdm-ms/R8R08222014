@@ -156,7 +156,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
        Tbl theTbl = DataAccess.R8RDB.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
        HeaderRowInfoType numColumnHeader = new HeaderRowInfoType
        {
-           TblColumnID = 0,
+           TblColumnID = -1,
            Abbreviation = "#",
            Name = "#",
            WidthStyle = "nmcl " + theTbl.WidthStyleNumCol,
@@ -168,7 +168,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
        string theNameForTblRow = theTbl.TypeOfTblRow;
        HeaderRowInfoType nameColumnHeader = new HeaderRowInfoType
                 {
-                    TblColumnID = 0, // using null here causes problem on postback; we'll change it back below
+                    TblColumnID = -1, // using null here causes problem on postback; we'll change it back below
                     Abbreviation = "",
                     Name = theNameForTblRow,
                     WidthStyle = theTbl.WidthStyleEntityCol,
@@ -192,7 +192,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             int? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
-            if (TblColumnID == 0) // see note above
+            if (TblColumnID == -1) // see note above
                 TblColumnID = null; 
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];
             string theName = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Name"];

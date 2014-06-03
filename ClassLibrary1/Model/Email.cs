@@ -10,7 +10,7 @@ namespace ClassLibrary1.Model
     {
         static string server = "smtp.gmail.com";
         static int port = 587;
-        static string password = "finch2127248474";
+        static string password = "finch86lives";
 
         public static void SendMessage(string to, string messageSubject, string messageBody)
         {

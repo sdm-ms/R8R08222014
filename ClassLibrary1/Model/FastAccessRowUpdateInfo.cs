@@ -24,7 +24,7 @@ namespace ClassLibrary1.Model
             if (tableSpec == null)
             {
                 tableSpec = GetTableSpecification(tblRow);
-                if (tblRow.TblRowID != 0)
+                if (tblRow.TblRowID != -1)
                     dataIsAlreadyInDatabase = true;
             }
             
@@ -69,7 +69,7 @@ namespace ClassLibrary1.Model
                 updates = new SQLInfoForCellsInRow_MainAndSecondaryTables();
             else
                 updates = BinarySerializer.Deserialize<SQLInfoForCellsInRow_MainAndSecondaryTables>(tblRow.FastAccessUpdated.ToArray());
-            if (tblRow.TblRowID != 0)
+            if (tblRow.TblRowID != -1)
                 updates.SetMainTablePrimaryKey(tblRow.TblRowID, true);
             return updates;
         }
