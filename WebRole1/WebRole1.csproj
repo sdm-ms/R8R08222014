@@ -120,7 +120,7 @@
     <Content Include="Admin\GuaranteeApplications.ascx" />
     <Content Include="Admin\Guarantees.ascx" />
     <Content Include="Admin\PointsManager\ChangePointsManager.aspx" />
-    <Content Include="Admin\RewardRatingSettingScreen.ascx" />
+    <Content Include="Admin\RewardRatingSetting.ascx" />
     <Content Include="Admin\Tbl\ChangeTbl.aspx" />
     <Content Include="Admin\Tbl\user control\changeTblImportExport.ascx" />
     <Content Include="Admin\Tester.aspx" />
@@ -208,7 +208,6 @@
     <Content Include="CommonControl\MyPointsSidebarContainer.ascx" />
     <Content Include="CommonControl\PageButtons.ascx" />
     <Content Include="CommonControl\PaymentGuaranteeInfo.ascx" />
-    <Content Include="CommonControl\GoogleMap.ascx" />
     <Content Include="CommonControl\InsertableContent.ascx" />
     <Content Include="CommonControl\Slideshow.ascx" />
     <Content Include="CommonControl\RatingOverTimeGraph.ascx" />
@@ -748,7 +747,6 @@
     <Content Include="images\username_panel.jpg" />
     <Content Include="images\yellow_star.jpg" />
     <Content Include="js\cycleinvoke.js" />
-    <Content Include="js\iepngfix_tilebg.js" />
     <Content Include="js\img-manage.js" />
     <Content Include="js\init.js" />
     <Content Include="js\initmaster.js" />
@@ -761,33 +759,24 @@
     <Content Include="js\jquery-1.4.2.min.js" />
     <Content Include="js\jquery.autocomplete.js" />
     <Content Include="js\jquery.bgiframe.min.js" />
-    <Content Include="js\jquery.cluetip-105beta.js" />
     <Content Include="js\jquery.cluetip.js" />
     <Content Include="js\jquery.contextMenu.js" />
     <Content Include="js\jquery.cycle.all.min.js" />
-    <Content Include="js\jquery.cycleold.all.min.js" />
     <Content Include="js\jquery.dimensions-1.2.js" />
-    <Content Include="js\jquery.dropshadow.js" />
     <Content Include="js\jquery.form.js" />
     <Content Include="js\jquery.hoverIntent.js" />
-    <Content Include="js\jquery.jframe.js" />
     <Content Include="js\jquery.json-2.2.min.js" />
     <Content Include="js\jquery.listen.js" />
-    <Content Include="js\jquery.mb.flipText.min.js" />
     <Content Include="js\jquery.scrollTo-min.js" />
-    <Content Include="js\jquery.simple.tree.js" />
     <Content Include="js\jquery.timers-1.2.js" />
-    <Content Include="js\jquery.tools.min.js" />
     <Content Include="js\jquery.tree.js" />
-    <Content Include="js\jquery.urlEncode.js" />
     <Content Include="js\jsmin.exe" />
     <Content Include="js\mapiconmaker.js" />
     <Content Include="js\mapiconmaker_packed.js" />
     <Content Include="js\markerclusterer.js" />
     <Content Include="js\markerclusterer_packed.js" />
-    <Content Include="js\rateroo-autocomplete.js" />
+    <Content Include="js\r8r-autocomplete.js" />
     <Content Include="js\resize.js" />
-    <Content Include="js\showchartold.js" />
     <Content Include="js\themes\apple\bg.jpg" />
     <Content Include="js\themes\apple\dot_for_ie.gif" />
     <Content Include="js\themes\apple\icons.png" />
@@ -831,12 +820,10 @@
     <Content Include="js\themes\themeroller\throbber.gif" />
     <Content Include="js\topicsmenu.js" />
     <Content Include="js\tree_component.css" />
-    <Content Include="js\tree_component.js" />
     <Content Include="js\ui\ui.core.js" />
     <Content Include="js\ui\ui.slider.css" />
     <Content Include="js\ui\ui.slider.js" />
     <Content Include="js\ui\ui.theme.css" />
-    <Content Include="js\viewtbl.debug.js" />
     <Content Include="js\viewtbl.js" />
     <Content Include="Main\Field\AddressField.ascx" />
     <Content Include="Main\Field\AnyField.ascx" />
@@ -1006,12 +993,12 @@
     <Compile Include="Admin\PointsManager\ChangePointsManager.aspx.designer.cs">
       <DependentUpon>ChangePointsManager.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\RewardRatingSettingScreen.ascx.cs">
-      <DependentUpon>RewardRatingSettingScreen.ascx</DependentUpon>
+    <Compile Include="Admin\RewardRatingSetting.ascx.cs">
+      <DependentUpon>RewardRatingSetting.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\RewardRatingSettingScreen.ascx.designer.cs">
-      <DependentUpon>RewardRatingSettingScreen.ascx</DependentUpon>
+    <Compile Include="Admin\RewardRatingSetting.ascx.designer.cs">
+      <DependentUpon>RewardRatingSetting.ascx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Tbl\ChangeTbl.aspx.cs">
       <DependentUpon>ChangeTbl.aspx</DependentUpon>
@@ -1292,13 +1279,6 @@
     </Compile>
     <Compile Include="CommonControl\PaymentGuaranteeInfo.ascx.designer.cs">
       <DependentUpon>PaymentGuaranteeInfo.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CommonControl\GoogleMap.ascx.cs">
-      <DependentUpon>GoogleMap.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CommonControl\GoogleMap.ascx.designer.cs">
-      <DependentUpon>GoogleMap.ascx</DependentUpon>
     </Compile>
     <Compile Include="CommonControl\InsertableContent.ascx.cs">
       <DependentUpon>InsertableContent.ascx</DependentUpon>
@@ -1833,7 +1813,6 @@
     <Folder Include="Forums\App_LocalResources\sv\" />
     <Folder Include="Forums\App_LocalResources\tr\" />
     <Folder Include="images\spritesource\" />
-    <Folder Include="ImportExportTemp\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

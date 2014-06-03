@@ -119,7 +119,6 @@ namespace ClassLibrary1.Model
             else if (tableSortRule is TableSortRuleDistance)
             {
                 TableSortRuleDistance distanceSortRule = (TableSortRuleDistance)tableSortRule;
-                // DEBUG: We should not need to use UDFNearestNeighbors here. Search for nearest neighbors SQL Server 2012 for some simpler code examples. We do need it in the normalized database, since Linq to SQL otherwise won't produce appropriate queries.
 
                 int paramNum1, paramNum2;
                 paramNum1 = paramNumber;

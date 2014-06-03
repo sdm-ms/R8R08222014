@@ -246,6 +246,7 @@ namespace ClassLibrary1.Model
         }
 
 
+        // Note: We have shifted for now to using the built-in nearest neighbor and filtering functions in SQL Server 2012. We may be able to delete these once testing on those is complete. We have commented out the code calling this, but it could be uncommented.
         internal string GetSqlCommandToDropFunctionForNearestNeighbors(string geoColName)
         {
             return GetSqlCommandToDropFunction("UDFNearestNeighborsFor" + geoColName);
@@ -293,14 +294,20 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             SQLTableDescription theTable = new SQLTableDescription() { Name = "V" + TheTbl.TblID, Columns = columns };
             SQLDirectManipulate.AddTable(dta, theTable);
             SQLDirectManipulate.AddIndicesForSpecifiedColumns(dta, theTable);
+
+            /* We are not joining TblRowStatusRecords for now, but can uncomment this if we go back to that approach.
             SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToDropFunctionForTblRowStatusRecords(TheTbl.TblID));
             SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToAddFunctionForTblRowStatusRecords(TheTbl.TblID));
+             */
+
+            /* The following is commented out pending more complete testing of the SQL Server 2012 functionality that accomplishes the same thing.
             var geocolumns = columns.Where(x => x.ColType == SQLColumnType.typeGeography);
             foreach (var geocol in geocolumns)
             {
                 SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToDropFunctionForNearestNeighbors(geocol.Name));
                 SQLDirectManipulate.ExecuteSQLNonQuery(dta, GetSqlCommandToAddFunctionForNearestNeighbors(TheTbl.TblID, geocol.Name));
             }
+             */
 
             foreach (var fieldMC in multipleChoiceFields)
             {

@@ -177,10 +177,10 @@
     <Compile Include="Misc\LinqExcelProvider.cs" />
     <Compile Include="Misc\MapquestGeocode.cs" />
     <Compile Include="Misc\MD5HashGenerator.cs" />
+    <Compile Include="Misc\Median.cs" />
     <Compile Include="Misc\MoreStrings.cs" />
     <Compile Include="Misc\PredicateBuilder.cs" />
     <Compile Include="Misc\PrettyURLEncode.cs" />
-    <Compile Include="Misc\ProfielBase.cs" />
     <Compile Include="Misc\ProfileSimple.cs" />
     <Compile Include="Misc\RandomGenerator.cs" />
     <Compile Include="Misc\Serialization.cs" />

@@ -39,18 +39,14 @@
                 <asp:ScriptReference Path="~/js/jquery.hoverIntent.js" />
                 <asp:ScriptReference Path="~/js/jquery.cluetip.js" />
                 <asp:ScriptReference Path="~/js/jquery.form.js" />
-                <asp:ScriptReference Path="~/js/jquery.jframe.js" />
                 <asp:ScriptReference Path="~/js/jquery.tools.min.js" />
                 <asp:ScriptReference Path="~/js/jquery.json-2.2.min.js" />
-                <asp:ScriptReference Path="~/js/jquery.urlEncode.js" />
                 <asp:ScriptReference Path="~/js/jquery.timers-1.2.js" />
                 <asp:ScriptReference Path="~/js/jquery.contextMenu.js" />
-                <%--<asp:ScriptReference Path="~/js/iepngfix_tilebg.js" />--%>
                 <asp:ScriptReference Path="~/js/ui/ui.core.js" />
                 <asp:ScriptReference Path="~/js/ui/ui.slider.js" />
                 <asp:ScriptReference Path="~/js/jquery.bgiframe.min.js" />
-                <asp:ScriptReference Path="~/js/jquery.mb.flipText.min.js" />
-                <asp:ScriptReference Path="~/js/rateroo-autocomplete.js" />
+                <asp:ScriptReference Path="~/js/r8r-autocomplete.js" />
                 <asp:ScriptReference Path="~/js/jquery.scrollTo-min.js" />
             </Scripts>
         </CompositeScript>
