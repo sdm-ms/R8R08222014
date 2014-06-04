@@ -1649,7 +1649,7 @@ function viewtbl() {
             .live("mouseenter",
                 function (event) {
                     var thisRow = $(this);
-                    if (currentlyHilited != null && currentlyHilited != thisRow)
+                    if (currentlyHilited != null && currentlyHilited[0] != thisRow[0]) /* must compare DOM elements not jquery object */
                         currentlyHilited.removeClass("hilited");
                     if (currentlyHilited == null || currentlyHilited.getRowNum() != thisRow.getRowNum()) {
                         currentlyHilited = $(this);
