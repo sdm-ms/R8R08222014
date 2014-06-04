@@ -542,8 +542,8 @@ td.noRowsFound
 	margin: 0px;
 	text-align: left;
 	vertical-align: bottom;
-    border-left: 1px solid #D8D8D8;
-	border-right: 1px solid #D8D8D8;
+    /*border-left: 1px solid #D8D8D8;
+	border-right: 1px solid #D8D8D8;*/
 	border-top: 1px solid gray;
 	border-bottom: 1px solid #D8D8D8;
 	border-collapse: collapse;
@@ -635,8 +635,8 @@ td.noRowsFound
 	color: black;
 	padding: 1px 6px 1px 6px;
 	margin:0px;
-	border-left: solid 1px #D8D8D8;
-	border-right: 1px solid #D8D8D8;
+	/*border-left: solid 1px #D8D8D8;
+	border-right: 1px solid #D8D8D8;*/
 	border-collapse: collapse;
 	overflow-x: hidden;
 }
@@ -653,7 +653,7 @@ td.noRowsFound
 
 .mainTable .altrow
 {
-    background-color: #C5F6F4;
+    background-color: #E2FAFA; /* #C5F6F4 */;
     width: 616px;
 } 
 
@@ -670,7 +670,7 @@ td.noRowsFound
 
 .mainTable .hilited
 {
-	background-color: #81F781 !important;
+	background-color: #D9FDD9 !important; /* #81F781 */
 }
 
 
