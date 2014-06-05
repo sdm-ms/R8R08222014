@@ -9,6 +9,7 @@
       <!--<Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;" />-->
+      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>
@@ -22,6 +23,7 @@
       <!--<Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;" />-->
+      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>

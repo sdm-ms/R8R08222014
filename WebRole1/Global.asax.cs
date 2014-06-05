@@ -8,6 +8,10 @@ using System.Web.Routing;
 using System.Web.UI;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
+using System.Web.Configuration;
+using System.Configuration;
+using System.Reflection;
+using System.Web.Profile;
 
 namespace WebRole1
 {
@@ -33,6 +37,12 @@ namespace WebRole1
         {
             // Code that runs on application startup
             RegisterRoutes(RouteTable.Routes);
+
+            // Set the connection strings for user profile information from the azure setting
+            //var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+            //var section = (ConnectionStringsSection)configuration.GetSection("connectionStrings");
+            //section.ConnectionStrings["ApplicationServices"].ConnectionString = AzureSetup.GetConfigurationSetting("R8RConnectionString");
+            //configuration.Save();
 
             /* NOTE: With jquery-1.4.2, we were getting an error on unloading pages (e.g., refreshing them) in IE6 */
             ScriptManager.ScriptResourceMapping.AddDefinition("jQuery", new ScriptResourceDefinition
@@ -64,7 +74,6 @@ namespace WebRole1
         void Session_Start(object sender, EventArgs e)
         {
             // Code that runs when a new session is started
-
         }
 
         void Session_End(object sender, EventArgs e)
@@ -80,6 +89,7 @@ namespace WebRole1
         static bool _chartInitialized;
         void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
+            RealUserProfileCollection.SetProviderConnectionString(ConnectionString.GetUserProfileDatabaseConnectionString());
             if (!_chartInitialized && this.Context.Handler is System.Web.UI.DataVisualization.Charting.ChartHttpHandler)
             {
                 System.Web.UI.DataVisualization.Charting.Chart chart = new System.Web.UI.DataVisualization.Charting.Chart();
@@ -98,7 +108,7 @@ namespace WebRole1
                 }
                 _chartInitialized = true;
             }
-        }  
+        }
 
     }
 }

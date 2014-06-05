@@ -125,7 +125,7 @@ namespace ClassLibrary1.Model
         R8RDataContext _underlyingR8RDataContext;
 
         public R8RSQLDataContext(bool doAllowChangeData, bool enableObjectTracking) : 
-            base( new R8RDataContext(AzureSetup.GetConfigurationSetting("R8RConnectionString")))
+            base( new R8RDataContext(ConnectionString.GetR8RNormalizedDatabaseConnectionString()))
         {
             _underlyingR8RDataContext = (R8RDataContext) UnderlyingDataContext;
             _allowChangeData = doAllowChangeData;

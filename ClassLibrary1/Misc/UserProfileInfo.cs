@@ -6,6 +6,7 @@ using System.Web.Security;
 using System.Web.Profile;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.Model;
+using System.Reflection;
 
 namespace ClassLibrary1.Misc
 {
@@ -201,6 +202,23 @@ namespace ClassLibrary1.Misc
 
     public static class RealUserProfileCollection
     {
+
+        public static void SetProviderConnectionString(string connectionString)
+        {
+            // Set private property of Membership, Role and Profile providers.
+            var connectionStringField = Membership.Provider.GetType().GetField("_sqlConnectionString", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (connectionStringField != null)
+                connectionStringField.SetValue(Membership.Provider, connectionString);
+
+            var roleField = Roles.Provider.GetType().GetField("_sqlConnectionString", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (roleField != null)
+                roleField.SetValue(Roles.Provider, connectionString);
+
+            var profileField = ProfileManager.Provider.GetType().GetField("_sqlConnectionString", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (profileField != null)
+                profileField.SetValue(ProfileManager.Provider, connectionString);
+        }
+
         public static List<IUserProfileInfo> GetAllUsers()
         {
             MembershipUserCollection theCollection = Membership.GetAllUsers();

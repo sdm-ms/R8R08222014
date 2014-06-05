@@ -11,6 +11,7 @@
     <ConfigurationSettings>
       <Setting name="DiagnosticsConnectionString" />
       <Setting name="BlobConnectionString" />
+      <Setting name="ApplicationServices" />
       <Setting name="R8RConnectionString" />
       <Setting name="Denorm0001ConnectionString" />
       <Setting name="DataConnectionString" />
@@ -30,6 +31,7 @@
     <ConfigurationSettings>
       <Setting name="DiagnosticsConnectionString" />
       <Setting name="BlobConnectionString" />
+      <Setting name="ApplicationServices" />
       <Setting name="R8RConnectionString" />
       <Setting name="Denorm0001ConnectionString" />
       <Setting name="DataConnectionString" />

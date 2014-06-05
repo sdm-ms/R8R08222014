@@ -26,8 +26,7 @@ namespace TestProject1
     [TestClass]
     public class TestDataContextRepositoriesInMemory
     {
-        internal const string r8rConnectionString
-            = "Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300";
+        // The connection string must be used solely for the purpose of the initial mapping of the data context into a list of repositories.
         internal R8RDataContext UnderlyingR8RDataContext;
         internal List<RepositoryItemAssociationInfo> repositoryList;
         internal RepositoryItemAssociationInfo fieldToAddressField;
@@ -43,7 +42,7 @@ namespace TestProject1
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
-            UnderlyingR8RDataContext = new R8RDataContext(r8rConnectionString); 
+            UnderlyingR8RDataContext = new R8RDataContext("FAKECONNECTIONSTRING"); 
             repositoryList = MappingInfoProcessor.ProcessDataContextMappingInfo(UnderlyingR8RDataContext);
             fieldToAddressField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(Field) && x.TypeOfForeignItem == typeof(AddressField));
             addressFieldToField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(AddressField) && x.TypeOfForeignItem == typeof(Field));

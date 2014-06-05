@@ -83,7 +83,7 @@ namespace ClassLibrary1.Model
             {
                 SqlCommand myCommand = new SqlCommand();
                 myCommand.CommandText = commandText;
-                String strConnection = AzureSetup.GetConfigurationSetting("R8RConnectionString"); // ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
+                String strConnection = ConnectionString.GetR8RNormalizedDatabaseConnectionString();
                 myConnection.ConnectionString = strConnection;
                 myConnection.Open();
                 myCommand.Connection = myConnection;

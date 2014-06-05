@@ -6,6 +6,7 @@
       <Setting name="DiagnosticsConnectionString" value="DefaultEndpointsProtocol=https;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
+      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>
@@ -16,6 +17,7 @@
       <Setting name="DiagnosticsConnectionString" value="DefaultEndpointsProtocol=https;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=rateroodebug;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
+      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
     </ConfigurationSettings>

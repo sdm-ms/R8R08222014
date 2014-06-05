@@ -34,8 +34,14 @@ namespace TestProject1
         {
             // Use true when you want all tests to use a SQL Server database
             // Use false when you want all tests to use an in-memory database
-            return true;
+            bool returnVal = true;
+
+            if (returnVal && !RoleEnvironment.IsAvailable)
+                RealUserProfileCollection.SetProviderConnectionString(ConnectionString.GetUserProfileDatabaseConnectionString());
+
+            return returnVal;
         }
+
     }
 
     [TestClass]
@@ -126,7 +132,7 @@ namespace TestProject1
 
         private static void AddUser()
         {
-            R8RDataContext myDataContext = new R8RDataContext(AzureSetup.GetConfigurationSetting("R8RConnectionString"));
+            R8RDataContext myDataContext = new R8RDataContext(ConnectionString.GetR8RNormalizedDatabaseConnectionString());
 
             User newUser =  new User {
                 Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),
@@ -145,7 +151,7 @@ namespace TestProject1
             if (!Test_UseRealDatabase.UseReal())
                 return;
 
-            string connectionString = AzureSetup.GetConfigurationSetting("R8RConnectionString"); //  "Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=true";
+            string connectionString = ConnectionString.GetR8RNormalizedDatabaseConnectionString();
 
             // Provide the query string with a parameter placeholder. 
             string queryString =

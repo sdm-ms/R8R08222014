@@ -209,6 +209,7 @@
     <Compile Include="Model\BlobFiles.cs" />
     <Compile Include="Model\CacheManagement.cs" />
     <Compile Include="Model\CacheSubstitution.cs" />
+    <Compile Include="Model\ConnectionString.cs" />
     <Compile Include="Model\TblColumns.cs" />
     <Compile Include="Model\ChoiceGroups.cs" />
     <Compile Include="Model\ClassesAndTypes.cs" />

@@ -14,7 +14,7 @@ namespace ClassLibrary1.Model
         private static R8RDataContext _UnderlyingSQLDataContextForInMemoryContext = 
             new R8RDataContext("no real connection"); // R8RSQLDataContext(true,true).GetRealDatabaseIfExists();
 
-        public static bool UseRealDatabase = true;
+        public static bool UseRealDatabase = true; // This may be overriden in tests when Test_UseRealDatabase.UseReal() returns false.
 
         public static IR8RDataContext New(bool doAllowChangeData, bool enableObjectTracking)
         {
