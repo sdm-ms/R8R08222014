@@ -33,9 +33,10 @@
   </PropertyGroup>
   <!-- Items for the project -->
   <ItemGroup>
-    <ServiceConfiguration Include="ServiceConfiguration.Local.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.CloudProduction.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.Local-Abramowicz.cscfg" />
     <ServiceDefinition Include="ServiceDefinition.csdef" />
-    <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.CloudTesting.cscfg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebRole1\WebRole1.csproj">
