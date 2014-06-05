@@ -43,13 +43,15 @@ namespace ClassLibrary1.Model
         {
             lock (BackgroundThread.padlock)
             {
-                    
+                //if (BackgroundThread.ExitRequested)
+                //{
+                //    BackgroundThread.ExitGranted = true;
+                //    return;
+                //}
+                BackgroundThread.ExitRequested = false;
+                BackgroundThread.ExitGranted = false;   
                 dataManipulation.ResetDataContexts();
-                if (BackgroundThread.ExitRequested)
-                {
-                    BackgroundThread.ExitGranted = true;
-                    return;
-                }
+
 
                 //if (BackgroundThread.IsPauseRequested())
                 //Trace.TraceInformation("Pause is requested.");
@@ -262,6 +264,8 @@ namespace ClassLibrary1.Model
                 //Trace.TraceInformation("IdleTasksOnce");
                 if (BackgroundThread.ExitRequested || BackgroundThread.ExitGranted)
                 {
+                    BackgroundThread.ExitRequested = true;
+                    BackgroundThread.ExitGranted = true;
                     CurrentlyInBriefPause = false;
                     return;
                 }
@@ -432,6 +436,7 @@ namespace ClassLibrary1.Model
             int r = 0;
             while (!ExitGranted)
             {
+                ExitRequested = true;
                 r++;
                 if (r > maximumRepetitions)
                     throw new Exception("Thread is not exiting as requested.");
