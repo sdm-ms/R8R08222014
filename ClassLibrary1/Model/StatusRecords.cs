@@ -16,6 +16,8 @@ namespace ClassLibrary1.Model
 #pragma warning restore 0649
         }
 
+        public static bool RecordRecentChangesInStatusRecords = false; // We are disabling this feature. If enabling it, we would need to copy the TblRowStatusRecords to the denormalized database, so that we could then filter queries to figure out state of tables at particular time in the past.
+
         internal static void RememberChangeForLater(IR8RDataContext R8RDB, string changeType, int changeNum)
         {
             List<int> theList = R8RDB.TempCacheGet(changeType) as List<int>;
@@ -54,6 +56,8 @@ namespace ClassLibrary1.Model
 
         internal static void RecordRowStatusChange(int tblID)
         {
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
+                return;
             DateTime asOfDateTime = TestableDateTime.Now;
             TableServiceContextAccess<DataTableServiceEntity<DateTime>> context = null;
             DataTableServiceEntity<DateTime> theLastDateTime = AzureTable<DateTime>.LoadFirstOrDefaultByPartitionKey(tblID.ToString(), ref context, "LastTblStatusChange");
@@ -68,6 +72,8 @@ namespace ClassLibrary1.Model
 
         internal static void RecordRatingChange( int tblColumnID)
         {
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
+                return;
             DateTime asOfDateTime = TestableDateTime.Now;
             TableServiceContextAccess<DataTableServiceEntity<DateTime>> context = null;
             var theLastDateTime = AzureTable<DateTime>.LoadFirstOrDefaultByPartitionKey(tblColumnID.ToString(), ref context, "LastTblColumnRatingChange");
@@ -82,6 +88,8 @@ namespace ClassLibrary1.Model
 
         public static bool RowStatusHasChangedSince(DateTime earliestTimeToConsider, int tblID)
         {
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
+                throw new Exception("Cannot determine whether row status has changed.");
             TableServiceContextAccess<DataTableServiceEntity<DateTime>> context = null;
             DateTime? theLastDateTime = AzureTable<DateTime>.LoadDataOnlyByPartitionKey(tblID.ToString(), ref context, "LastTblStatusChange").FirstOrDefault();
             if (theLastDateTime == null)
@@ -92,6 +100,8 @@ namespace ClassLibrary1.Model
 
         public static bool RatingHasBeenRecordedSince(DateTime earliestTimeToConsider, int tblColumnID)
         {
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
+                throw new Exception("Cannot determine whether rating has been changed recently.");
             TableServiceContextAccess<DataTableServiceEntity<DateTime>> context = null;
             DateTime? theLastDateTime = AzureTable<DateTime>.LoadDataOnlyByPartitionKey(tblColumnID.ToString(), ref context, "LastTblColumnRatingChange").FirstOrDefault();
             if (theLastDateTime == null)
@@ -154,7 +164,7 @@ namespace ClassLibrary1.Model
 
         public static bool DeleteOldRatingGroupStatusRecords(IR8RDataContext theDataContext)
         {
-            if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
                 return false;
             DateTime oldestToKeep = TestableDateTime.Now - new TimeSpan(0, 30, 0);
             var RatingGroupStatusRecordsToDelete = theDataContext.GetTable<RatingGroupStatusRecord>()

@@ -312,7 +312,7 @@ namespace ClassLibrary1.Model
             {
                 //whereString += "WHERE ";
                 string mainFilter = GetSeparatedList(whereClauses, " AND ");
-                if (FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords && asOfDateTime != null && StatusRecords.RowStatusHasChangedSince((DateTime)asOfDateTime, tblID))
+                if (StatusRecords.RecordRecentChangesInStatusRecords && asOfDateTime != null && StatusRecords.RowStatusHasChangedSince((DateTime)asOfDateTime, tblID))
                     whereString = FilterBasedOnTblRowStatusRecords(mainFilter, originalSqlTableIndex, ref sqlTableIndex, ref paramNumber, parameters, (DateTime)asOfDateTime, tblID, !filters.ActiveOnly);
                 else
                 {

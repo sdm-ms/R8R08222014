@@ -19,8 +19,6 @@ namespace ClassLibrary1.Model
     public static class FastAccessTablesMaintenance
     {
 
-        public static bool RecordRecentChangesInStatusRecords = false; // We are disabling this feature. If enabling it, we would need to copy the TblRowStatusRecords to the denormalized database.
-
         public static bool DoBulkInserting = false; // We don't need this anymore, now that we've implemented individual updating, but we'll keep it in the code for the time being.
         public static bool DoBulkUpdating = false; // We don't need this either. Eventually, if we are sure that our current approach is satisfactory, we'll get rid of the underlying bulk code.
 

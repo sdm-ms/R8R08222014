@@ -609,7 +609,7 @@ namespace ClassLibrary1.Model
         /// <param name="status">A character indicating the status of this record</param>
         public TblRowStatusRecord AddTblRowStatusRecord(TblRow tblRow, DateTime timeChanged, bool deleting, bool adding)
         {
-            if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
                 return null;
             StatusRecords.PrepareToRecordRowStatusChange(DataContext, tblRow.TblID);
             tblRow.StatusRecentlyChanged = true;

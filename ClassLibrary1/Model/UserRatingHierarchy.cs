@@ -652,7 +652,7 @@ namespace ClassLibrary1.Model
 
         public void AddRatingGroupStatusRecord(RatingGroup theRatingGroup, decimal? oldValueOfFirstRating)
         {
-            if (!FastAccessTablesMaintenance.RecordRecentChangesInStatusRecords)
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
                 return;
             RatingGroupStatusRecord theRecord = new RatingGroupStatusRecord
             {
