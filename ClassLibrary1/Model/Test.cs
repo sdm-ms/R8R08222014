@@ -166,8 +166,12 @@ namespace ClassLibrary1.Model
             List<TblRow> tblRows = new List<TblRow>();
             for (int i = 0; i < numTblRows; i++)
             {
-                tblRows.Add(ActionProcessor.TblRowCreate(TblID, SuperUserId, null, "Name " + i.ToString()));
+                TblRow newTblRow = ActionProcessor.TblRowCreate(TblID, SuperUserId, null, "Name " + i.ToString());
+                tblRows.Add(newTblRow);
+                ActionProcessor.DataManipulation.AddMissingRatingsForTblRow(newTblRow);
             }
+            ActionProcessor.DataContext.SubmitChanges();
+            
             return tblRows;
         }
 
