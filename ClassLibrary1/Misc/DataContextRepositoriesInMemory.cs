@@ -22,6 +22,9 @@ namespace ClassLibrary1.Misc
 
     public static class RepositoryItemPrimaryKeys
     {
+
+        public static int[] unsetPrimaryKeyValues = new int[] { -1, default(int) /* 0 */ }; // this assumes that any primary key value that is -1 or 0 has not yet been set by the database, because when creating an object, its primary key is default(int), i.e. 0 (even though SQL Server will also use this as a primary key value), unless it is set to -1 (which is useful as a way of distinguishing genuine 0 primary keys from objects that have not yet been assigned primary keys).
+
         internal static Dictionary<Type, PropertyInfo> dictionary = new Dictionary<Type, PropertyInfo>();
 
         internal static PropertyInfo GetPropertyInfoForPrimaryKeyField(object theItem)
@@ -346,7 +349,7 @@ namespace ClassLibrary1.Misc
 
         internal void SetUnsetPrimaryKeys()
         {
-            IEnumerable<T> theUnset = ListOfEntities.Where(x => RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x) == 0);
+            IEnumerable<T> theUnset = ListOfEntities.Where(x => RepositoryItemPrimaryKeys.unsetPrimaryKeyValues.Any(y => y == RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x)));
             foreach (var unset in theUnset)
                 SetUnsetPrimaryKey(unset);
         }
@@ -362,7 +365,7 @@ namespace ClassLibrary1.Misc
                 int? foreignKeyID = property.GetForeignKeyID(theItem);
                 Type foreignItemType = property.TypeOfForeignItem;
                 List<object> associatedObjects = property.GetAllAssociatedObjects(theItem);
-                if (foreignKeyID != null && foreignKeyID != default(int))
+                if (foreignKeyID != null && !RepositoryItemPrimaryKeys.unsetPrimaryKeyValues.Any(x => x == foreignKeyID))
                 { // set property based on id
                     if (!associatedObjects.Any(x =>
                         // x.GetType() == foreignItemType &&
@@ -398,7 +401,7 @@ namespace ClassLibrary1.Misc
                 Owner.ConfirmNotAlreadyInAnotherDataContext(SimulatedPermanentStorage.originalInMemoryRepositoryList, item);
                 if (!UseFasterSubmitChanges.setting)
                     ConfirmNoAssociationWithUninsertedItemOrItemSetToDelete(item); // note that we only need to check this on entities being inserted, because if there is some other kind of problem, it will be found on deletion
-                if (RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(item) == default(int))
+                if (RepositoryItemPrimaryKeys.unsetPrimaryKeyValues.Contains(RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(item)))
                     SetUnsetPrimaryKey(item); // we must set all primary keys for all repositories before setting the foreign key ids
             }
         }
