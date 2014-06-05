@@ -338,7 +338,7 @@ namespace ClassLibrary1.Model
             RatingCharacteristic ratingCharacteristic, TrustTracker mostRecentUserTrustTracker)
         {
             bool keepTrackingThis = theRatingGroupAttribute.LongTermPointsWeight > 0 || 
-                whenOriginalMade + TimeSpan.FromDays(theRatingGroupAttribute.MinimumDaysToTrackLongTerm) <= TestableDateTime.Now;
+                whenOriginalMade + TimeSpan.FromDays(theRatingGroupAttribute.MinimumDaysToTrackLongTerm) >= TestableDateTime.Now;
             if (keepTrackingThis)
             {
                 if (oldUserInteraction != newUserInteraction || previousLatestUserRating != latestUserRating)
