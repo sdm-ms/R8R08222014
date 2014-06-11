@@ -45,6 +45,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Long")]
         public void SimplePointsPumpingInitiativeCounteracted()
         {
             Initialize();
@@ -74,6 +75,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("UnitTest")]
         public void CheckPointsPumpingProportionSetting()
         {
             CheckPointsPumpingProportionSetting_Helper(

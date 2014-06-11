@@ -75,7 +75,7 @@ namespace ClassLibrary1.Model
             theTblRow.InitialFieldsDisplaySet = true;
 
             TblRowFieldDisplay trfd = theTblRow.TblRowFieldDisplay;
-            string newCompleteRowHeading = SQLFastAccessTableInfo.FastAccessRowsInfo.GetCombinedRowHeadingWithPopup(trfd.Row, trfd.PopUp, theTblRow.Name, theTblRow.TblRowID);
+            string newCompleteRowHeading = FastAccessTableInfo.FastAccessRowsInfo.GetCombinedRowHeadingWithPopup(trfd.Row, trfd.PopUp, theTblRow.Name, theTblRow.TblRowID);
             var faupdate = new FastAccessRowHeadingUpdateInfo() { RowHeading = newCompleteRowHeading };
             faupdate.AddToTblRow(theTblRow);
 

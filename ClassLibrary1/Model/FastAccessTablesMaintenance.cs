@@ -58,7 +58,7 @@ namespace ClassLibrary1.Model
             List<Tbl> tblsToBeCopied = iDataContext.GetTable<Tbl>().Where(x => x.FastTableSyncStatus == (int)FastAccessTableStatus.fastAccessNotCreated).Take(numToProcess).ToList();
             foreach (Tbl tbl in tblsToBeCopied)
             {
-                new SQLFastAccessTableInfo(iDataContext, tbl).AddTable(dta); // will drop first if it exists
+                new FastAccessTableInfo(iDataContext, tbl).AddTable(dta); // will drop first if it exists
                 tbl.FastTableSyncStatus = (int)FastAccessTableStatus.newRowsMustBeCopied;
             }
             return tblsToBeCopied.Count() == numToProcess; // if so, there may be more work to do.
@@ -91,10 +91,10 @@ namespace ClassLibrary1.Model
             List<TblColumn> tblColumns = theTbl.TblTabs.SelectMany(x => x.TblColumns).ToList();
 
             string cacheKey = "fastaccesstableinfo" + theTbl.TblID;
-            SQLFastAccessTableInfo tinfo = (SQLFastAccessTableInfo)CacheManagement.GetItemFromCache(cacheKey);
+            FastAccessTableInfo tinfo = (FastAccessTableInfo)CacheManagement.GetItemFromCache(cacheKey);
             if (tinfo == null)
             {
-                tinfo = new SQLFastAccessTableInfo(iDataContext, theTbl);
+                tinfo = new FastAccessTableInfo(iDataContext, theTbl);
                 CacheManagement.AddItemToCache(cacheKey, new string[] { "TblID" + theTbl.TblID }, tinfo);
             }
 
@@ -140,14 +140,14 @@ namespace ClassLibrary1.Model
         }
 
         [Serializable]
-        internal class RowRequiringUpdate : IComparer
+        internal class FastAccessRowRequiringUpdate : IComparer
         {
             public string TableName { get; set; }
             public int TblRowID { get; set; }
             public bool UpdateRatings { get; set; }
             public bool UpdateFields { get; set; }
 
-            public RowRequiringUpdate(string tableName, int tblRowID, bool updateRatings, bool updateFields)
+            public FastAccessRowRequiringUpdate(string tableName, int tblRowID, bool updateRatings, bool updateFields)
             {
                 TableName = tableName;
                 TblRowID = tblRowID;
@@ -157,8 +157,8 @@ namespace ClassLibrary1.Model
 
             public int Compare(object x, object y)
             {
-                RowRequiringUpdate x1 = x as RowRequiringUpdate;
-                RowRequiringUpdate y1 = y as RowRequiringUpdate;
+                FastAccessRowRequiringUpdate x1 = x as FastAccessRowRequiringUpdate;
+                FastAccessRowRequiringUpdate y1 = y as FastAccessRowRequiringUpdate;
                 return String.Compare(x1.TableName + x1.TblRowID.ToString() + x1.UpdateRatings.ToString() + x1.UpdateFields.ToString(), y1.TableName + y1.TblRowID.ToString() + y1.UpdateRatings.ToString() + y1.UpdateFields.ToString());
             }
 
@@ -167,7 +167,7 @@ namespace ClassLibrary1.Model
         [Serializable]
         internal class RowsRequiringUpdate
         {
-            public List<RowRequiringUpdate> Rows { get; set; }
+            public List<FastAccessRowRequiringUpdate> Rows { get; set; }
         }
 
         static bool useAzureQueuesToDesignateRowsToUpdate = false; // for now, we are disabling the azure approach, because querying based on tbl row ids identified by number seems to tax sql server
@@ -179,10 +179,10 @@ namespace ClassLibrary1.Model
                 R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
                 if (dataContext == null)
                     return;
-                RowRequiringUpdate row = new RowRequiringUpdate("V" + theTbl.TblID.ToString(), theTblRow.TblRowID, updateRatings, updateFields);
-                List<RowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<RowRequiringUpdate>;
+                FastAccessRowRequiringUpdate row = new FastAccessRowRequiringUpdate("V" + theTbl.TblID.ToString(), theTblRow.TblRowID, updateRatings, updateFields);
+                List<FastAccessRowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<FastAccessRowRequiringUpdate>;
                 if (theRowsRequiringUpdates == null)
-                    theRowsRequiringUpdates = new List<RowRequiringUpdate>();
+                    theRowsRequiringUpdates = new List<FastAccessRowRequiringUpdate>();
                 if (!theRowsRequiringUpdates.Any(x => x.TableName == "V" + theTbl.TblID.ToString() && x.TblRowID == theTblRow.TblRowID && x.UpdateFields == updateFields && x.UpdateRatings == updateRatings))
                     theRowsRequiringUpdates.Add(row);
                 iDataContext.TempCacheAdd("fasttablerowupdate", theRowsRequiringUpdates);
@@ -205,7 +205,7 @@ namespace ClassLibrary1.Model
             R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
-            List<RowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<RowRequiringUpdate>;
+            List<FastAccessRowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<FastAccessRowRequiringUpdate>;
             if (theRowsRequiringUpdates != null)
             {
                 RowsRequiringUpdate theRows = new RowsRequiringUpdate { Rows = theRowsRequiringUpdates.ToList() };
@@ -224,7 +224,7 @@ namespace ClassLibrary1.Model
             const int numAtOnce = 25; // 100 produced an error for too many parameters, presumably because we enumerate the tbl rows we want and then query for the fields. 
 
             var queue = new AzureQueueWithErrorRecovery(10, null);
-            List<RowRequiringUpdate> theRows = new List<RowRequiringUpdate>();
+            List<FastAccessRowRequiringUpdate> theRows = new List<FastAccessRowRequiringUpdate>();
             var theMessages = queue.GetMessages("fasttablerowupdate", numAtOnce);
             foreach (var setOfRows in theMessages)
                 theRows.AddRange(((RowsRequiringUpdate)setOfRows).Rows);
@@ -242,7 +242,7 @@ namespace ClassLibrary1.Model
                 bool newRowsAdded = table.Any(x => x.Item.TblRowID == -1); // we can't use update for this, because we don't know the TblRowID yet.
                 List<int> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => tblRowIDs.Contains(x.TblRowID));
-                new SQLFastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.First().Item.UpdateRatings, table.First().Item.UpdateFields);
+                new FastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.First().Item.UpdateRatings, table.First().Item.UpdateFields);
                 if (newRowsAdded && theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.apparentlySynchronized)
                 {
                     theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.newRowsMustBeCopied;
@@ -278,7 +278,7 @@ namespace ClassLibrary1.Model
                 Tbl theTbl = group.First().Item.Tbl;
                 int tblID = theTbl.TblID;
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => x.TblID == tblID && (x.FastAccessUpdateFields || x.FastAccessUpdateRatings)).Take(numAtOnce);
-                int numRowsUpdated = new SQLFastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, group.First().Item.FastAccessUpdateRatings, group.First().Item.FastAccessUpdateFields);
+                int numRowsUpdated = new FastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, group.First().Item.FastAccessUpdateRatings, group.First().Item.FastAccessUpdateFields);
                 foreach (TblRow tblRow in group.Select(x => x.Item))
                 {
                     tblRow.FastAccessUpdateFields = false;

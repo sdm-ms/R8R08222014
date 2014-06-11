@@ -66,7 +66,7 @@ namespace TestProject1
 
 
         [TestMethod]
-        [Category("Convergence")]
+        [Category("Long")]
         public void HeterogeneousTestWorksWithNoSubversiveUsers()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
@@ -86,7 +86,7 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("Convergence")]
+        [Category("Long")]
         public void HeterogeneousTestWorksWithSubversiveUsersAccountingForPreviousRatings()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
@@ -106,7 +106,7 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("Convergence")]
+        [Category("Long")]
         public void HeterogeneousTestWorksWithSubversiveUsersIgnoringPreviousRatings()
         {
             RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(
@@ -213,7 +213,7 @@ namespace TestProject1
 
 
         [TestMethod]
-        [Category("Convergence")]
+        [Category("Long")]
         public void AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows()
         {
             AbsoluteErrorWithinBoundsWhenHeterogeneousUsersRateIterationsofTblRows_Helper(

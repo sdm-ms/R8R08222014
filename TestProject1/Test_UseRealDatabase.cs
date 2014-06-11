@@ -49,6 +49,7 @@ namespace TestProject1
     {
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void ResetAndCreateStandard()
         {
             if (!Test_UseRealDatabase.UseReal())
@@ -59,6 +60,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestMemoryLeaks()
         {
             if (!Test_UseRealDatabase.UseReal())
@@ -146,6 +148,7 @@ namespace TestProject1
 
 
         [TestMethod]
+        [Category("UnitTest")]
         public void TestConnectionString()
         {
             if (!Test_UseRealDatabase.UseReal())

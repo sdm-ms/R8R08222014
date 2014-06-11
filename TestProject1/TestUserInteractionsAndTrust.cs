@@ -48,6 +48,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("UnitTest")]
         public void AdjustmentFactorCalculatesCorrectlyInSeveralDifferentSituations()
         {
             AdjustmentFactorCalc.CalculateAdjustmentFactor(6M, 6, 7, null).Should().BeApproximately(1.0F, 0f);
@@ -68,6 +69,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("UnitTest")]
         public void TestAdjustmentPcts_InReverse()
         {
             AdjustmentFactorCalc.GetRatingToAcceptFromAdjustmentFactor(5M, 6M, 0.50F, null).Should().Be(5.5M);
@@ -79,6 +81,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void RatingHasCorrectRatingValuesAfter1TrustedUserRating()
         {
             TestHelper.CreateSimpleTestTable(true);
@@ -94,6 +97,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void RatingHasCorrectRatingValuesAfter2TrustedUserRatings()
         {
             TestHelper.CreateSimpleTestTable(true);
@@ -113,6 +117,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void RatingHasCorrectRatingValuesAfter3TrustedUserRatings()
         {
             TestHelper.CreateSimpleTestTable(true);
@@ -601,6 +606,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void TestTrustTracker_CalculatesUserInteractionCorrectly_WhereAdjPctIsGreaterThan1()
         {
             TrustCalculations.NumPerfectScoresToGiveNewUser = 0; // for purpose of this test, do not start user with extra trust
@@ -890,6 +896,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestTrustTracker_CalculatesUserInteractionStatAndTrustTrackerStatCorrectly_WhenOneUserIsReratedBySeveralDifferentUsers()
         {
             int numRepetitions = 10;
@@ -967,8 +974,9 @@ namespace TestProject1
                 theTrustTrackerStat.TrustValue.Should().BeApproximately((float) trustValue, 0.01F);
             }
         }
-
+         
         [TestMethod]
+        [Category("Long")]
         public void Test_TrustTracking_ProperlyCalculatesAdjustmentPercentagesBasedOnUserSuccess()
         {
 
@@ -1644,6 +1652,7 @@ x.UserID == TestHelper.UserIds[1]);
         /// that a high percentage are near the goal.
         /// </summary>
         [TestMethod]
+        [Category("Long")]
         public void R8RsRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings()
         {
             rateroosRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatings_Helper(new R8RTrustTestParameters {
@@ -1823,6 +1832,7 @@ x.UserID == TestHelper.UserIds[1]);
         /// and see if rateroo picks up on it.
         /// </summary>
         [TestMethod]
+        [Category("Long")]
         public void R8RsRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor()
         {
             R8RsRatingsShouldConvergeWhenAPopulationOfUsersPerformsRatingstIncludingSpecialCaseAdjustmentFactor_Helper(20, 50, 40, 10, 0.01F, 0.5M, 0.9F);
@@ -1948,6 +1958,7 @@ x.UserID == TestHelper.UserIds[1]);
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void R8RDeletesUserInteractionsWhenAnotherUserBecomesTheLatestRatingUser()
         {
             TestHelper.CreateSimpleTestTable(true);

@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Norm0001" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="R8RDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="R8RConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AddressFields" Member="AddressFields">
     <Type Name="AddressField">
       <Column Name="AddressFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1557,64 +1556,6 @@
       <Association Name="TblDimension_Tbl" Member="TblDimension" ThisKey="TblDimensionsID" OtherKey="TblDimensionsID" Type="TblDimension" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TblColumns" Member="TblColumns">
-    <Type Name="TblColumn">
-      <Column Name="TblColumnID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TblTabID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DefaultRatingGroupAttributesID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ConditionTblColumnID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ConditionGreaterThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="ConditionLessThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
-      <Column Name="CategoryNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Abbreviation" Type="System.String" DbType="NChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Explanation" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="WidthStyle" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="NumNonNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProportionNonNull" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="UsingNonSparseIndex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ShouldUseNonSparseIndex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UseAsFilter" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Sortable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="DefaultSortOrderAscending" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="AutomaticallyCreateMissingRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Association Name="TblColumn_OverrideCharacteristic" Member="OverrideCharacteristics" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="OverrideCharacteristic" />
-      <Association Name="TblColumn_TblColumnFormatting" Member="TblColumnFormattings" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumnFormatting" />
-      <Association Name="TblColumn_RatingGroup" Member="RatingGroups" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="RatingGroup" />
-      <Association Name="TblColumn_TblColumn" Member="TblColumn2" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" Cardinality="One" />
-      <Association Name="TblColumn_TblColumn" Member="TblColumn1" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
-      <Association Name="TrustTrackerUnit_TblColumn" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
-      <Association Name="RatingGroupAttribute_TblColumn" Member="RatingGroupAttribute" ThisKey="DefaultRatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
-      <Association Name="TblTab_TblColumn" Member="TblTab" ThisKey="TblTabID" OtherKey="TblTabID" Type="TblTab" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.FieldDefinitions" Member="FieldDefinitions">
-    <Type Name="FieldDefinition">
-      <Column Name="FieldDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FieldNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FieldName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FieldType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UseAsFilter" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="AddToSearchWords" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="DisplayInTableSettings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DisplayInPopupSettings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DisplayInTblRowPageSettings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="NumNonNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProportionNonNull" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="UsingNonSparseIndex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ShouldUseNonSparseIndex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="FieldDefinition_DateTimeFieldDefinition" Member="DateTimeFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="DateTimeFieldDefinition" />
-      <Association Name="FieldDefinition_Field" Member="Fields" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="Field" />
-      <Association Name="FieldDefinition_NumberFieldDefinition" Member="NumberFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="NumberFieldDefinition" />
-      <Association Name="FieldDefinition_TextFieldDefinition" Member="TextFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="TextFieldDefinition" />
-      <Association Name="FieldDefinition_ChoiceGroupFieldDefinition" Member="ChoiceGroupFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="ChoiceGroupFieldDefinition" />
-      <Association Name="Tbl_FieldDefinition" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.RatingGroupPhaseStatus" Member="RatingGroupPhaseStatus">
     <Type Name="RatingGroupPhaseStatus">
       <Column Name="RatingGroupPhaseStatusID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1654,6 +1595,64 @@
       <Column Name="Status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Association Name="TblDimension_Domain" Member="Domains" ThisKey="TblDimensionsID" OtherKey="TblDimensionsID" Type="Domain" />
       <Association Name="TblDimension_Tbl" Member="Tbls" ThisKey="TblDimensionsID" OtherKey="TblDimensionsID" Type="Tbl" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TblColumns" Member="TblColumns">
+    <Type Name="TblColumn">
+      <Column Name="TblColumnID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TblTabID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultRatingGroupAttributesID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ConditionTblColumnID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TrustTrackerUnitID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ConditionGreaterThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="ConditionLessThan" Type="System.Decimal" DbType="Decimal(18,4)" CanBeNull="true" />
+      <Column Name="CategoryNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Abbreviation" Type="System.String" DbType="NChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Explanation" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="WidthStyle" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NumNonNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProportionNonNull" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="UsingNonSparseColumn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShouldUseNonSparseColumn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UseAsFilter" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Sortable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultSortOrderAscending" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AutomaticallyCreateMissingRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="TblColumn_OverrideCharacteristic" Member="OverrideCharacteristics" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="OverrideCharacteristic" />
+      <Association Name="TblColumn_TblColumnFormatting" Member="TblColumnFormattings" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumnFormatting" />
+      <Association Name="TblColumn_RatingGroup" Member="RatingGroups" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="RatingGroup" />
+      <Association Name="TblColumn_TblColumn" Member="TblColumn2" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" Cardinality="One" />
+      <Association Name="TblColumn_TblColumn" Member="TblColumn1" ThisKey="TblColumnID" OtherKey="TblColumnID" Type="TblColumn" IsForeignKey="true" />
+      <Association Name="TrustTrackerUnit_TblColumn" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
+      <Association Name="RatingGroupAttribute_TblColumn" Member="RatingGroupAttribute" ThisKey="DefaultRatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
+      <Association Name="TblTab_TblColumn" Member="TblTab" ThisKey="TblTabID" OtherKey="TblTabID" Type="TblTab" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FieldDefinitions" Member="FieldDefinitions">
+    <Type Name="FieldDefinition">
+      <Column Name="FieldDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TblID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FieldNum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FieldName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FieldType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UseAsFilter" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AddToSearchWords" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayInTableSettings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayInPopupSettings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayInTblRowPageSettings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="NumNonNull" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProportionNonNull" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="UsingNonSparseColumn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShouldUseNonSparseColumn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="FieldDefinition_DateTimeFieldDefinition" Member="DateTimeFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="DateTimeFieldDefinition" />
+      <Association Name="FieldDefinition_Field" Member="Fields" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="Field" />
+      <Association Name="FieldDefinition_NumberFieldDefinition" Member="NumberFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="NumberFieldDefinition" />
+      <Association Name="FieldDefinition_TextFieldDefinition" Member="TextFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="TextFieldDefinition" />
+      <Association Name="FieldDefinition_ChoiceGroupFieldDefinition" Member="ChoiceGroupFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="ChoiceGroupFieldDefinition" />
+      <Association Name="Tbl_FieldDefinition" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">

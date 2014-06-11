@@ -413,7 +413,7 @@ namespace ClassLibrary1.Model
         {
             foreach (var tbl in DataContext.GetTable<Tbl>())
             {
-                new SQLFastAccessTableInfo(DataContext, tbl).AddTable(dta);
+                new FastAccessTableInfo(DataContext, tbl).AddTable(dta);
             }
         }
 
@@ -424,7 +424,7 @@ namespace ClassLibrary1.Model
                 tbl.FastTableSyncStatus = (int)FastAccessTableStatus.fastAccessNotCreated;
                 CacheManagement.InvalidateCacheDependency("TblID" + tbl.TblID);
                 DataContext.SubmitChanges();
-                new SQLFastAccessTableInfo(DataContext, tbl).DropTable(dta);
+                new FastAccessTableInfo(DataContext, tbl).DropTable(dta);
             }
             DataContext.SubmitChanges();
         }

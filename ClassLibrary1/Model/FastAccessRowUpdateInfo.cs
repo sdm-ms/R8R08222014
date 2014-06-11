@@ -54,12 +54,12 @@ namespace ClassLibrary1.Model
 
         public SQLUpdateInfoTableSpecification GetMainSqlUpdateInfoTableSpecification(int tblID)
         {
-            return SQLFastAccessTableInfo.GetSpecification(tblID);
+            return FastAccessTableInfo.GetSpecification(tblID);
         }
 
         public SQLUpdateInfoTableSpecification GetMultipleChoicesTableSpecification(int fieldDefinitionID, int tblID)
         {
-            return SQLMultipleChoiceFieldTableInfo.GetSpecification(fieldDefinitionID, tblID);
+            return FastAccessMultipleChoiceFieldTableInfo.GetSpecification(fieldDefinitionID, tblID);
         }
 
         public static SQLInfoForCellsInRow_MainAndSecondaryTables GetFastAccessRowUpdateInfoList(TblRow tblRow)
@@ -176,7 +176,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = SQLFastAccessTableInfo.GetVolatilityColumnNameForDuration(TimeFrame), Value = Value, DBtype = SqlDbType.Decimal, DefaultToUseIfMissing = "0" }
+                new SQLCellInfo() { Fieldname = FastAccessTableInfo.GetVolatilityColumnNameForDuration(TimeFrame), Value = Value, DBtype = SqlDbType.Decimal, DefaultToUseIfMissing = "0" }
             };
         }
     }

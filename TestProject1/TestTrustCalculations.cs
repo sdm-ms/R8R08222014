@@ -71,6 +71,7 @@ namespace TestProject1
             return (float)(adjustedValue - basisValue) / (float)(value - basisValue);
         }
         [TestMethod]
+        [Category("UnitTest")]
         public void AdjustmentFactorDoesNotDivideByZero()
         {
             decimal adjustedValue = 1m;

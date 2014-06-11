@@ -74,7 +74,7 @@ namespace ClassLibrary1.Model
             {
                 TableSortRuleActivityLevel activityLevelSortRule = (TableSortRuleActivityLevel)tableSortRule;
                 var timeFrame = activityLevelSortRule.TimeFrame;
-                string trackerString = SQLFastAccessTableInfo.GetVolatilityColumnNameForDuration(timeFrame);
+                string trackerString = FastAccessTableInfo.GetVolatilityColumnNameForDuration(timeFrame);
                 orderByString = String.Format("ORDER BY {0} DESC", trackerString);
             }
             else if (tableSortRule is TableSortRuleNeedsRatingUntrustedUser)

@@ -348,25 +348,19 @@ namespace ClassLibrary1.Model
     partial void InsertTbl(Tbl instance);
     partial void UpdateTbl(Tbl instance);
     partial void DeleteTbl(Tbl instance);
-    partial void InsertTblColumn(TblColumn instance);
-    partial void UpdateTblColumn(TblColumn instance);
-    partial void DeleteTblColumn(TblColumn instance);
-    partial void InsertFieldDefinition(FieldDefinition instance);
-    partial void UpdateFieldDefinition(FieldDefinition instance);
-    partial void DeleteFieldDefinition(FieldDefinition instance);
     partial void InsertRatingGroupPhaseStatus(RatingGroupPhaseStatus instance);
     partial void UpdateRatingGroupPhaseStatus(RatingGroupPhaseStatus instance);
     partial void DeleteRatingGroupPhaseStatus(RatingGroupPhaseStatus instance);
     partial void InsertTblDimension(TblDimension instance);
     partial void UpdateTblDimension(TblDimension instance);
     partial void DeleteTblDimension(TblDimension instance);
+    partial void InsertTblColumn(TblColumn instance);
+    partial void UpdateTblColumn(TblColumn instance);
+    partial void DeleteTblColumn(TblColumn instance);
+    partial void InsertFieldDefinition(FieldDefinition instance);
+    partial void UpdateFieldDefinition(FieldDefinition instance);
+    partial void DeleteFieldDefinition(FieldDefinition instance);
     #endregion
-		
-		public R8RDataContext() : 
-				base(global::ClassLibrary1.Properties.Settings.Default.R8RConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
 		
 		public R8RDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -1248,22 +1242,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<TblColumn> TblColumns
-		{
-			get
-			{
-				return this.GetTable<TblColumn>();
-			}
-		}
-		
-		public System.Data.Linq.Table<FieldDefinition> FieldDefinitions
-		{
-			get
-			{
-				return this.GetTable<FieldDefinition>();
-			}
-		}
-		
 		public System.Data.Linq.Table<RatingGroupPhaseStatus> RatingGroupPhaseStatus
 		{
 			get
@@ -1277,6 +1255,22 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<TblDimension>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TblColumn> TblColumns
+		{
+			get
+			{
+				return this.GetTable<TblColumn>();
+			}
+		}
+		
+		public System.Data.Linq.Table<FieldDefinition> FieldDefinitions
+		{
+			get
+			{
+				return this.GetTable<FieldDefinition>();
 			}
 		}
 		
@@ -35400,1407 +35394,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblColumns")]
-	public partial class TblColumn : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TblColumnID;
-		
-		private int _TblTabID;
-		
-		private int _DefaultRatingGroupAttributesID;
-		
-		private System.Nullable<int> _ConditionTblColumnID;
-		
-		private System.Nullable<int> _TrustTrackerUnitID;
-		
-		private System.Nullable<decimal> _ConditionGreaterThan;
-		
-		private System.Nullable<decimal> _ConditionLessThan;
-		
-		private int _CategoryNum;
-		
-		private string _Abbreviation;
-		
-		private string _Name;
-		
-		private string _Explanation;
-		
-		private string _WidthStyle;
-		
-		private int _NumNonNull;
-		
-		private double _ProportionNonNull;
-		
-		private bool _UsingNonSparseIndex;
-		
-		private bool _ShouldUseNonSparseIndex;
-		
-		private bool _UseAsFilter;
-		
-		private bool _Sortable;
-		
-		private bool _DefaultSortOrderAscending;
-		
-		private bool _AutomaticallyCreateMissingRatings;
-		
-		private byte _Status;
-		
-		private EntitySet<OverrideCharacteristic> _OverrideCharacteristics;
-		
-		private EntitySet<TblColumnFormatting> _TblColumnFormattings;
-		
-		private EntitySet<RatingGroup> _RatingGroups;
-		
-		private EntityRef<TblColumn> _TblColumn2;
-		
-		private EntityRef<TblColumn> _TblColumn1;
-		
-		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
-		
-		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
-		
-		private EntityRef<TblTab> _TblTab;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTblColumnIDChanging(int value);
-    partial void OnTblColumnIDChanged();
-    partial void OnTblTabIDChanging(int value);
-    partial void OnTblTabIDChanged();
-    partial void OnDefaultRatingGroupAttributesIDChanging(int value);
-    partial void OnDefaultRatingGroupAttributesIDChanged();
-    partial void OnConditionTblColumnIDChanging(System.Nullable<int> value);
-    partial void OnConditionTblColumnIDChanged();
-    partial void OnTrustTrackerUnitIDChanging(System.Nullable<int> value);
-    partial void OnTrustTrackerUnitIDChanged();
-    partial void OnConditionGreaterThanChanging(System.Nullable<decimal> value);
-    partial void OnConditionGreaterThanChanged();
-    partial void OnConditionLessThanChanging(System.Nullable<decimal> value);
-    partial void OnConditionLessThanChanged();
-    partial void OnCategoryNumChanging(int value);
-    partial void OnCategoryNumChanged();
-    partial void OnAbbreviationChanging(string value);
-    partial void OnAbbreviationChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnExplanationChanging(string value);
-    partial void OnExplanationChanged();
-    partial void OnWidthStyleChanging(string value);
-    partial void OnWidthStyleChanged();
-    partial void OnNumNonNullChanging(int value);
-    partial void OnNumNonNullChanged();
-    partial void OnProportionNonNullChanging(double value);
-    partial void OnProportionNonNullChanged();
-    partial void OnUsingNonSparseIndexChanging(bool value);
-    partial void OnUsingNonSparseIndexChanged();
-    partial void OnShouldUseNonSparseIndexChanging(bool value);
-    partial void OnShouldUseNonSparseIndexChanged();
-    partial void OnUseAsFilterChanging(bool value);
-    partial void OnUseAsFilterChanged();
-    partial void OnSortableChanging(bool value);
-    partial void OnSortableChanged();
-    partial void OnDefaultSortOrderAscendingChanging(bool value);
-    partial void OnDefaultSortOrderAscendingChanged();
-    partial void OnAutomaticallyCreateMissingRatingsChanging(bool value);
-    partial void OnAutomaticallyCreateMissingRatingsChanged();
-    partial void OnStatusChanging(byte value);
-    partial void OnStatusChanged();
-    #endregion
-		
-		public TblColumn()
-		{
-			this._OverrideCharacteristics = new EntitySet<OverrideCharacteristic>(new Action<OverrideCharacteristic>(this.attach_OverrideCharacteristics), new Action<OverrideCharacteristic>(this.detach_OverrideCharacteristics));
-			this._TblColumnFormattings = new EntitySet<TblColumnFormatting>(new Action<TblColumnFormatting>(this.attach_TblColumnFormattings), new Action<TblColumnFormatting>(this.detach_TblColumnFormattings));
-			this._RatingGroups = new EntitySet<RatingGroup>(new Action<RatingGroup>(this.attach_RatingGroups), new Action<RatingGroup>(this.detach_RatingGroups));
-			this._TblColumn2 = default(EntityRef<TblColumn>);
-			this._TblColumn1 = default(EntityRef<TblColumn>);
-			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
-			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
-			this._TblTab = default(EntityRef<TblTab>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblColumnID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int TblColumnID
-		{
-			get
-			{
-				return this._TblColumnID;
-			}
-			set
-			{
-				if ((this._TblColumnID != value))
-				{
-					if (this._TblColumn1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTblColumnIDChanging(value);
-					this.SendPropertyChanging();
-					this._TblColumnID = value;
-					this.SendPropertyChanged("TblColumnID");
-					this.OnTblColumnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblTabID", DbType="Int NOT NULL")]
-		public int TblTabID
-		{
-			get
-			{
-				return this._TblTabID;
-			}
-			set
-			{
-				if ((this._TblTabID != value))
-				{
-					if (this._TblTab.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTblTabIDChanging(value);
-					this.SendPropertyChanging();
-					this._TblTabID = value;
-					this.SendPropertyChanged("TblTabID");
-					this.OnTblTabIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefaultRatingGroupAttributesID", DbType="Int NOT NULL")]
-		public int DefaultRatingGroupAttributesID
-		{
-			get
-			{
-				return this._DefaultRatingGroupAttributesID;
-			}
-			set
-			{
-				if ((this._DefaultRatingGroupAttributesID != value))
-				{
-					if (this._RatingGroupAttribute.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnDefaultRatingGroupAttributesIDChanging(value);
-					this.SendPropertyChanging();
-					this._DefaultRatingGroupAttributesID = value;
-					this.SendPropertyChanged("DefaultRatingGroupAttributesID");
-					this.OnDefaultRatingGroupAttributesIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionTblColumnID", DbType="Int")]
-		public System.Nullable<int> ConditionTblColumnID
-		{
-			get
-			{
-				return this._ConditionTblColumnID;
-			}
-			set
-			{
-				if ((this._ConditionTblColumnID != value))
-				{
-					this.OnConditionTblColumnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ConditionTblColumnID = value;
-					this.SendPropertyChanged("ConditionTblColumnID");
-					this.OnConditionTblColumnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int")]
-		public System.Nullable<int> TrustTrackerUnitID
-		{
-			get
-			{
-				return this._TrustTrackerUnitID;
-			}
-			set
-			{
-				if ((this._TrustTrackerUnitID != value))
-				{
-					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTrustTrackerUnitIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrustTrackerUnitID = value;
-					this.SendPropertyChanged("TrustTrackerUnitID");
-					this.OnTrustTrackerUnitIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionGreaterThan", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> ConditionGreaterThan
-		{
-			get
-			{
-				return this._ConditionGreaterThan;
-			}
-			set
-			{
-				if ((this._ConditionGreaterThan != value))
-				{
-					this.OnConditionGreaterThanChanging(value);
-					this.SendPropertyChanging();
-					this._ConditionGreaterThan = value;
-					this.SendPropertyChanged("ConditionGreaterThan");
-					this.OnConditionGreaterThanChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionLessThan", DbType="Decimal(18,4)")]
-		public System.Nullable<decimal> ConditionLessThan
-		{
-			get
-			{
-				return this._ConditionLessThan;
-			}
-			set
-			{
-				if ((this._ConditionLessThan != value))
-				{
-					this.OnConditionLessThanChanging(value);
-					this.SendPropertyChanging();
-					this._ConditionLessThan = value;
-					this.SendPropertyChanged("ConditionLessThan");
-					this.OnConditionLessThanChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryNum", DbType="Int NOT NULL")]
-		public int CategoryNum
-		{
-			get
-			{
-				return this._CategoryNum;
-			}
-			set
-			{
-				if ((this._CategoryNum != value))
-				{
-					this.OnCategoryNumChanging(value);
-					this.SendPropertyChanging();
-					this._CategoryNum = value;
-					this.SendPropertyChanged("CategoryNum");
-					this.OnCategoryNumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Abbreviation", DbType="NChar(20) NOT NULL", CanBeNull=false)]
-		public string Abbreviation
-		{
-			get
-			{
-				return this._Abbreviation;
-			}
-			set
-			{
-				if ((this._Abbreviation != value))
-				{
-					this.OnAbbreviationChanging(value);
-					this.SendPropertyChanging();
-					this._Abbreviation = value;
-					this.SendPropertyChanged("Abbreviation");
-					this.OnAbbreviationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Explanation", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Explanation
-		{
-			get
-			{
-				return this._Explanation;
-			}
-			set
-			{
-				if ((this._Explanation != value))
-				{
-					this.OnExplanationChanging(value);
-					this.SendPropertyChanging();
-					this._Explanation = value;
-					this.SendPropertyChanged("Explanation");
-					this.OnExplanationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WidthStyle", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string WidthStyle
-		{
-			get
-			{
-				return this._WidthStyle;
-			}
-			set
-			{
-				if ((this._WidthStyle != value))
-				{
-					this.OnWidthStyleChanging(value);
-					this.SendPropertyChanging();
-					this._WidthStyle = value;
-					this.SendPropertyChanged("WidthStyle");
-					this.OnWidthStyleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumNonNull", DbType="Int NOT NULL")]
-		public int NumNonNull
-		{
-			get
-			{
-				return this._NumNonNull;
-			}
-			set
-			{
-				if ((this._NumNonNull != value))
-				{
-					this.OnNumNonNullChanging(value);
-					this.SendPropertyChanging();
-					this._NumNonNull = value;
-					this.SendPropertyChanged("NumNonNull");
-					this.OnNumNonNullChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProportionNonNull", DbType="Float NOT NULL")]
-		public double ProportionNonNull
-		{
-			get
-			{
-				return this._ProportionNonNull;
-			}
-			set
-			{
-				if ((this._ProportionNonNull != value))
-				{
-					this.OnProportionNonNullChanging(value);
-					this.SendPropertyChanging();
-					this._ProportionNonNull = value;
-					this.SendPropertyChanged("ProportionNonNull");
-					this.OnProportionNonNullChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsingNonSparseIndex", DbType="Bit NOT NULL")]
-		public bool UsingNonSparseIndex
-		{
-			get
-			{
-				return this._UsingNonSparseIndex;
-			}
-			set
-			{
-				if ((this._UsingNonSparseIndex != value))
-				{
-					this.OnUsingNonSparseIndexChanging(value);
-					this.SendPropertyChanging();
-					this._UsingNonSparseIndex = value;
-					this.SendPropertyChanged("UsingNonSparseIndex");
-					this.OnUsingNonSparseIndexChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShouldUseNonSparseIndex", DbType="Bit NOT NULL")]
-		public bool ShouldUseNonSparseIndex
-		{
-			get
-			{
-				return this._ShouldUseNonSparseIndex;
-			}
-			set
-			{
-				if ((this._ShouldUseNonSparseIndex != value))
-				{
-					this.OnShouldUseNonSparseIndexChanging(value);
-					this.SendPropertyChanging();
-					this._ShouldUseNonSparseIndex = value;
-					this.SendPropertyChanged("ShouldUseNonSparseIndex");
-					this.OnShouldUseNonSparseIndexChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UseAsFilter", DbType="Bit NOT NULL")]
-		public bool UseAsFilter
-		{
-			get
-			{
-				return this._UseAsFilter;
-			}
-			set
-			{
-				if ((this._UseAsFilter != value))
-				{
-					this.OnUseAsFilterChanging(value);
-					this.SendPropertyChanging();
-					this._UseAsFilter = value;
-					this.SendPropertyChanged("UseAsFilter");
-					this.OnUseAsFilterChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sortable", DbType="Bit NOT NULL")]
-		public bool Sortable
-		{
-			get
-			{
-				return this._Sortable;
-			}
-			set
-			{
-				if ((this._Sortable != value))
-				{
-					this.OnSortableChanging(value);
-					this.SendPropertyChanging();
-					this._Sortable = value;
-					this.SendPropertyChanged("Sortable");
-					this.OnSortableChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefaultSortOrderAscending", DbType="Bit NOT NULL")]
-		public bool DefaultSortOrderAscending
-		{
-			get
-			{
-				return this._DefaultSortOrderAscending;
-			}
-			set
-			{
-				if ((this._DefaultSortOrderAscending != value))
-				{
-					this.OnDefaultSortOrderAscendingChanging(value);
-					this.SendPropertyChanging();
-					this._DefaultSortOrderAscending = value;
-					this.SendPropertyChanged("DefaultSortOrderAscending");
-					this.OnDefaultSortOrderAscendingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AutomaticallyCreateMissingRatings", DbType="Bit NOT NULL")]
-		public bool AutomaticallyCreateMissingRatings
-		{
-			get
-			{
-				return this._AutomaticallyCreateMissingRatings;
-			}
-			set
-			{
-				if ((this._AutomaticallyCreateMissingRatings != value))
-				{
-					this.OnAutomaticallyCreateMissingRatingsChanging(value);
-					this.SendPropertyChanging();
-					this._AutomaticallyCreateMissingRatings = value;
-					this.SendPropertyChanged("AutomaticallyCreateMissingRatings");
-					this.OnAutomaticallyCreateMissingRatingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
-		public byte Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_OverrideCharacteristic", Storage="_OverrideCharacteristics", ThisKey="TblColumnID", OtherKey="TblColumnID")]
-		public EntitySet<OverrideCharacteristic> OverrideCharacteristics
-		{
-			get
-			{
-				return this._OverrideCharacteristics;
-			}
-			set
-			{
-				this._OverrideCharacteristics.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_TblColumnFormatting", Storage="_TblColumnFormattings", ThisKey="TblColumnID", OtherKey="TblColumnID")]
-		public EntitySet<TblColumnFormatting> TblColumnFormattings
-		{
-			get
-			{
-				return this._TblColumnFormattings;
-			}
-			set
-			{
-				this._TblColumnFormattings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_RatingGroup", Storage="_RatingGroups", ThisKey="TblColumnID", OtherKey="TblColumnID")]
-		public EntitySet<RatingGroup> RatingGroups
-		{
-			get
-			{
-				return this._RatingGroups;
-			}
-			set
-			{
-				this._RatingGroups.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_TblColumn", Storage="_TblColumn2", ThisKey="TblColumnID", OtherKey="TblColumnID", IsUnique=true, IsForeignKey=false)]
-		public TblColumn TblColumn2
-		{
-			get
-			{
-				return this._TblColumn2.Entity;
-			}
-			set
-			{
-				TblColumn previousValue = this._TblColumn2.Entity;
-				if (((previousValue != value) 
-							|| (this._TblColumn2.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TblColumn2.Entity = null;
-						previousValue.TblColumn1 = null;
-					}
-					this._TblColumn2.Entity = value;
-					if ((value != null))
-					{
-						value.TblColumn1 = this;
-					}
-					this.SendPropertyChanged("TblColumn2");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_TblColumn", Storage="_TblColumn1", ThisKey="TblColumnID", OtherKey="TblColumnID", IsForeignKey=true)]
-		public TblColumn TblColumn1
-		{
-			get
-			{
-				return this._TblColumn1.Entity;
-			}
-			set
-			{
-				TblColumn previousValue = this._TblColumn1.Entity;
-				if (((previousValue != value) 
-							|| (this._TblColumn1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TblColumn1.Entity = null;
-						previousValue.TblColumn2 = null;
-					}
-					this._TblColumn1.Entity = value;
-					if ((value != null))
-					{
-						value.TblColumn2 = this;
-						this._TblColumnID = value.TblColumnID;
-					}
-					else
-					{
-						this._TblColumnID = default(int);
-					}
-					this.SendPropertyChanged("TblColumn1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_TblColumn", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
-		public TrustTrackerUnit TrustTrackerUnit
-		{
-			get
-			{
-				return this._TrustTrackerUnit.Entity;
-			}
-			set
-			{
-				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
-				if (((previousValue != value) 
-							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TrustTrackerUnit.Entity = null;
-						previousValue.TblColumns.Remove(this);
-					}
-					this._TrustTrackerUnit.Entity = value;
-					if ((value != null))
-					{
-						value.TblColumns.Add(this);
-						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
-					}
-					else
-					{
-						this._TrustTrackerUnitID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TrustTrackerUnit");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_TblColumn", Storage="_RatingGroupAttribute", ThisKey="DefaultRatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
-		public RatingGroupAttribute RatingGroupAttribute
-		{
-			get
-			{
-				return this._RatingGroupAttribute.Entity;
-			}
-			set
-			{
-				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
-				if (((previousValue != value) 
-							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._RatingGroupAttribute.Entity = null;
-						previousValue.TblColumns.Remove(this);
-					}
-					this._RatingGroupAttribute.Entity = value;
-					if ((value != null))
-					{
-						value.TblColumns.Add(this);
-						this._DefaultRatingGroupAttributesID = value.RatingGroupAttributesID;
-					}
-					else
-					{
-						this._DefaultRatingGroupAttributesID = default(int);
-					}
-					this.SendPropertyChanged("RatingGroupAttribute");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblTab_TblColumn", Storage="_TblTab", ThisKey="TblTabID", OtherKey="TblTabID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public TblTab TblTab
-		{
-			get
-			{
-				return this._TblTab.Entity;
-			}
-			set
-			{
-				TblTab previousValue = this._TblTab.Entity;
-				if (((previousValue != value) 
-							|| (this._TblTab.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TblTab.Entity = null;
-						previousValue.TblColumns.Remove(this);
-					}
-					this._TblTab.Entity = value;
-					if ((value != null))
-					{
-						value.TblColumns.Add(this);
-						this._TblTabID = value.TblTabID;
-					}
-					else
-					{
-						this._TblTabID = default(int);
-					}
-					this.SendPropertyChanged("TblTab");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_OverrideCharacteristics(OverrideCharacteristic entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblColumn = this;
-		}
-		
-		private void detach_OverrideCharacteristics(OverrideCharacteristic entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblColumn = null;
-		}
-		
-		private void attach_TblColumnFormattings(TblColumnFormatting entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblColumn = this;
-		}
-		
-		private void detach_TblColumnFormattings(TblColumnFormatting entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblColumn = null;
-		}
-		
-		private void attach_RatingGroups(RatingGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblColumn = this;
-		}
-		
-		private void detach_RatingGroups(RatingGroup entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblColumn = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.FieldDefinitions")]
-	public partial class FieldDefinition : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _FieldDefinitionID;
-		
-		private int _TblID;
-		
-		private int _FieldNum;
-		
-		private string _FieldName;
-		
-		private int _FieldType;
-		
-		private bool _UseAsFilter;
-		
-		private bool _AddToSearchWords;
-		
-		private int _DisplayInTableSettings;
-		
-		private int _DisplayInPopupSettings;
-		
-		private int _DisplayInTblRowPageSettings;
-		
-		private byte _Status;
-		
-		private int _NumNonNull;
-		
-		private double _ProportionNonNull;
-		
-		private bool _UsingNonSparseIndex;
-		
-		private bool _ShouldUseNonSparseIndex;
-		
-		private EntitySet<DateTimeFieldDefinition> _DateTimeFieldDefinitions;
-		
-		private EntitySet<Field> _Fields;
-		
-		private EntitySet<NumberFieldDefinition> _NumberFieldDefinitions;
-		
-		private EntitySet<TextFieldDefinition> _TextFieldDefinitions;
-		
-		private EntitySet<ChoiceGroupFieldDefinition> _ChoiceGroupFieldDefinitions;
-		
-		private EntityRef<Tbl> _Tbl;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnFieldDefinitionIDChanging(int value);
-    partial void OnFieldDefinitionIDChanged();
-    partial void OnTblIDChanging(int value);
-    partial void OnTblIDChanged();
-    partial void OnFieldNumChanging(int value);
-    partial void OnFieldNumChanged();
-    partial void OnFieldNameChanging(string value);
-    partial void OnFieldNameChanged();
-    partial void OnFieldTypeChanging(int value);
-    partial void OnFieldTypeChanged();
-    partial void OnUseAsFilterChanging(bool value);
-    partial void OnUseAsFilterChanged();
-    partial void OnAddToSearchWordsChanging(bool value);
-    partial void OnAddToSearchWordsChanged();
-    partial void OnDisplayInTableSettingsChanging(int value);
-    partial void OnDisplayInTableSettingsChanged();
-    partial void OnDisplayInPopupSettingsChanging(int value);
-    partial void OnDisplayInPopupSettingsChanged();
-    partial void OnDisplayInTblRowPageSettingsChanging(int value);
-    partial void OnDisplayInTblRowPageSettingsChanged();
-    partial void OnStatusChanging(byte value);
-    partial void OnStatusChanged();
-    partial void OnNumNonNullChanging(int value);
-    partial void OnNumNonNullChanged();
-    partial void OnProportionNonNullChanging(double value);
-    partial void OnProportionNonNullChanged();
-    partial void OnUsingNonSparseIndexChanging(bool value);
-    partial void OnUsingNonSparseIndexChanged();
-    partial void OnShouldUseNonSparseIndexChanging(bool value);
-    partial void OnShouldUseNonSparseIndexChanged();
-    #endregion
-		
-		public FieldDefinition()
-		{
-			this._DateTimeFieldDefinitions = new EntitySet<DateTimeFieldDefinition>(new Action<DateTimeFieldDefinition>(this.attach_DateTimeFieldDefinitions), new Action<DateTimeFieldDefinition>(this.detach_DateTimeFieldDefinitions));
-			this._Fields = new EntitySet<Field>(new Action<Field>(this.attach_Fields), new Action<Field>(this.detach_Fields));
-			this._NumberFieldDefinitions = new EntitySet<NumberFieldDefinition>(new Action<NumberFieldDefinition>(this.attach_NumberFieldDefinitions), new Action<NumberFieldDefinition>(this.detach_NumberFieldDefinitions));
-			this._TextFieldDefinitions = new EntitySet<TextFieldDefinition>(new Action<TextFieldDefinition>(this.attach_TextFieldDefinitions), new Action<TextFieldDefinition>(this.detach_TextFieldDefinitions));
-			this._ChoiceGroupFieldDefinitions = new EntitySet<ChoiceGroupFieldDefinition>(new Action<ChoiceGroupFieldDefinition>(this.attach_ChoiceGroupFieldDefinitions), new Action<ChoiceGroupFieldDefinition>(this.detach_ChoiceGroupFieldDefinitions));
-			this._Tbl = default(EntityRef<Tbl>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldDefinitionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int FieldDefinitionID
-		{
-			get
-			{
-				return this._FieldDefinitionID;
-			}
-			set
-			{
-				if ((this._FieldDefinitionID != value))
-				{
-					this.OnFieldDefinitionIDChanging(value);
-					this.SendPropertyChanging();
-					this._FieldDefinitionID = value;
-					this.SendPropertyChanged("FieldDefinitionID");
-					this.OnFieldDefinitionIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblID", DbType="Int NOT NULL")]
-		public int TblID
-		{
-			get
-			{
-				return this._TblID;
-			}
-			set
-			{
-				if ((this._TblID != value))
-				{
-					if (this._Tbl.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTblIDChanging(value);
-					this.SendPropertyChanging();
-					this._TblID = value;
-					this.SendPropertyChanged("TblID");
-					this.OnTblIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldNum", DbType="Int NOT NULL")]
-		public int FieldNum
-		{
-			get
-			{
-				return this._FieldNum;
-			}
-			set
-			{
-				if ((this._FieldNum != value))
-				{
-					this.OnFieldNumChanging(value);
-					this.SendPropertyChanging();
-					this._FieldNum = value;
-					this.SendPropertyChanged("FieldNum");
-					this.OnFieldNumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string FieldName
-		{
-			get
-			{
-				return this._FieldName;
-			}
-			set
-			{
-				if ((this._FieldName != value))
-				{
-					this.OnFieldNameChanging(value);
-					this.SendPropertyChanging();
-					this._FieldName = value;
-					this.SendPropertyChanged("FieldName");
-					this.OnFieldNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldType", DbType="Int NOT NULL")]
-		public int FieldType
-		{
-			get
-			{
-				return this._FieldType;
-			}
-			set
-			{
-				if ((this._FieldType != value))
-				{
-					this.OnFieldTypeChanging(value);
-					this.SendPropertyChanging();
-					this._FieldType = value;
-					this.SendPropertyChanged("FieldType");
-					this.OnFieldTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UseAsFilter", DbType="Bit NOT NULL")]
-		public bool UseAsFilter
-		{
-			get
-			{
-				return this._UseAsFilter;
-			}
-			set
-			{
-				if ((this._UseAsFilter != value))
-				{
-					this.OnUseAsFilterChanging(value);
-					this.SendPropertyChanging();
-					this._UseAsFilter = value;
-					this.SendPropertyChanged("UseAsFilter");
-					this.OnUseAsFilterChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddToSearchWords", DbType="Bit NOT NULL")]
-		public bool AddToSearchWords
-		{
-			get
-			{
-				return this._AddToSearchWords;
-			}
-			set
-			{
-				if ((this._AddToSearchWords != value))
-				{
-					this.OnAddToSearchWordsChanging(value);
-					this.SendPropertyChanging();
-					this._AddToSearchWords = value;
-					this.SendPropertyChanged("AddToSearchWords");
-					this.OnAddToSearchWordsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayInTableSettings", DbType="Int NOT NULL")]
-		public int DisplayInTableSettings
-		{
-			get
-			{
-				return this._DisplayInTableSettings;
-			}
-			set
-			{
-				if ((this._DisplayInTableSettings != value))
-				{
-					this.OnDisplayInTableSettingsChanging(value);
-					this.SendPropertyChanging();
-					this._DisplayInTableSettings = value;
-					this.SendPropertyChanged("DisplayInTableSettings");
-					this.OnDisplayInTableSettingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayInPopupSettings", DbType="Int NOT NULL")]
-		public int DisplayInPopupSettings
-		{
-			get
-			{
-				return this._DisplayInPopupSettings;
-			}
-			set
-			{
-				if ((this._DisplayInPopupSettings != value))
-				{
-					this.OnDisplayInPopupSettingsChanging(value);
-					this.SendPropertyChanging();
-					this._DisplayInPopupSettings = value;
-					this.SendPropertyChanged("DisplayInPopupSettings");
-					this.OnDisplayInPopupSettingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayInTblRowPageSettings", DbType="Int NOT NULL")]
-		public int DisplayInTblRowPageSettings
-		{
-			get
-			{
-				return this._DisplayInTblRowPageSettings;
-			}
-			set
-			{
-				if ((this._DisplayInTblRowPageSettings != value))
-				{
-					this.OnDisplayInTblRowPageSettingsChanging(value);
-					this.SendPropertyChanging();
-					this._DisplayInTblRowPageSettings = value;
-					this.SendPropertyChanged("DisplayInTblRowPageSettings");
-					this.OnDisplayInTblRowPageSettingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
-		public byte Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumNonNull", DbType="Int NOT NULL")]
-		public int NumNonNull
-		{
-			get
-			{
-				return this._NumNonNull;
-			}
-			set
-			{
-				if ((this._NumNonNull != value))
-				{
-					this.OnNumNonNullChanging(value);
-					this.SendPropertyChanging();
-					this._NumNonNull = value;
-					this.SendPropertyChanged("NumNonNull");
-					this.OnNumNonNullChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProportionNonNull", DbType="Float NOT NULL")]
-		public double ProportionNonNull
-		{
-			get
-			{
-				return this._ProportionNonNull;
-			}
-			set
-			{
-				if ((this._ProportionNonNull != value))
-				{
-					this.OnProportionNonNullChanging(value);
-					this.SendPropertyChanging();
-					this._ProportionNonNull = value;
-					this.SendPropertyChanged("ProportionNonNull");
-					this.OnProportionNonNullChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsingNonSparseIndex", DbType="Bit NOT NULL")]
-		public bool UsingNonSparseIndex
-		{
-			get
-			{
-				return this._UsingNonSparseIndex;
-			}
-			set
-			{
-				if ((this._UsingNonSparseIndex != value))
-				{
-					this.OnUsingNonSparseIndexChanging(value);
-					this.SendPropertyChanging();
-					this._UsingNonSparseIndex = value;
-					this.SendPropertyChanged("UsingNonSparseIndex");
-					this.OnUsingNonSparseIndexChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShouldUseNonSparseIndex", DbType="Bit NOT NULL")]
-		public bool ShouldUseNonSparseIndex
-		{
-			get
-			{
-				return this._ShouldUseNonSparseIndex;
-			}
-			set
-			{
-				if ((this._ShouldUseNonSparseIndex != value))
-				{
-					this.OnShouldUseNonSparseIndexChanging(value);
-					this.SendPropertyChanging();
-					this._ShouldUseNonSparseIndex = value;
-					this.SendPropertyChanged("ShouldUseNonSparseIndex");
-					this.OnShouldUseNonSparseIndexChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_DateTimeFieldDefinition", Storage="_DateTimeFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
-		public EntitySet<DateTimeFieldDefinition> DateTimeFieldDefinitions
-		{
-			get
-			{
-				return this._DateTimeFieldDefinitions;
-			}
-			set
-			{
-				this._DateTimeFieldDefinitions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_Field", Storage="_Fields", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
-		public EntitySet<Field> Fields
-		{
-			get
-			{
-				return this._Fields;
-			}
-			set
-			{
-				this._Fields.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_NumberFieldDefinition", Storage="_NumberFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
-		public EntitySet<NumberFieldDefinition> NumberFieldDefinitions
-		{
-			get
-			{
-				return this._NumberFieldDefinitions;
-			}
-			set
-			{
-				this._NumberFieldDefinitions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_TextFieldDefinition", Storage="_TextFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
-		public EntitySet<TextFieldDefinition> TextFieldDefinitions
-		{
-			get
-			{
-				return this._TextFieldDefinitions;
-			}
-			set
-			{
-				this._TextFieldDefinitions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_ChoiceGroupFieldDefinition", Storage="_ChoiceGroupFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
-		public EntitySet<ChoiceGroupFieldDefinition> ChoiceGroupFieldDefinitions
-		{
-			get
-			{
-				return this._ChoiceGroupFieldDefinitions;
-			}
-			set
-			{
-				this._ChoiceGroupFieldDefinitions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_FieldDefinition", Storage="_Tbl", ThisKey="TblID", OtherKey="TblID", IsForeignKey=true)]
-		public Tbl Tbl
-		{
-			get
-			{
-				return this._Tbl.Entity;
-			}
-			set
-			{
-				Tbl previousValue = this._Tbl.Entity;
-				if (((previousValue != value) 
-							|| (this._Tbl.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Tbl.Entity = null;
-						previousValue.FieldDefinitions.Remove(this);
-					}
-					this._Tbl.Entity = value;
-					if ((value != null))
-					{
-						value.FieldDefinitions.Add(this);
-						this._TblID = value.TblID;
-					}
-					else
-					{
-						this._TblID = default(int);
-					}
-					this.SendPropertyChanged("Tbl");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_DateTimeFieldDefinitions(DateTimeFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = this;
-		}
-		
-		private void detach_DateTimeFieldDefinitions(DateTimeFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = null;
-		}
-		
-		private void attach_Fields(Field entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = this;
-		}
-		
-		private void detach_Fields(Field entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = null;
-		}
-		
-		private void attach_NumberFieldDefinitions(NumberFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = this;
-		}
-		
-		private void detach_NumberFieldDefinitions(NumberFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = null;
-		}
-		
-		private void attach_TextFieldDefinitions(TextFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = this;
-		}
-		
-		private void detach_TextFieldDefinitions(TextFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = null;
-		}
-		
-		private void attach_ChoiceGroupFieldDefinitions(ChoiceGroupFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = this;
-		}
-		
-		private void detach_ChoiceGroupFieldDefinitions(ChoiceGroupFieldDefinition entity)
-		{
-			this.SendPropertyChanging();
-			entity.FieldDefinition = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RatingGroupPhaseStatus")]
 	public partial class RatingGroupPhaseStatus : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -37737,6 +36330,1407 @@ namespace ClassLibrary1.Model
 		{
 			this.SendPropertyChanging();
 			entity.TblDimension = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblColumns")]
+	public partial class TblColumn : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TblColumnID;
+		
+		private int _TblTabID;
+		
+		private int _DefaultRatingGroupAttributesID;
+		
+		private System.Nullable<int> _ConditionTblColumnID;
+		
+		private System.Nullable<int> _TrustTrackerUnitID;
+		
+		private System.Nullable<decimal> _ConditionGreaterThan;
+		
+		private System.Nullable<decimal> _ConditionLessThan;
+		
+		private int _CategoryNum;
+		
+		private string _Abbreviation;
+		
+		private string _Name;
+		
+		private string _Explanation;
+		
+		private string _WidthStyle;
+		
+		private int _NumNonNull;
+		
+		private double _ProportionNonNull;
+		
+		private bool _UsingNonSparseColumn;
+		
+		private bool _ShouldUseNonSparseColumn;
+		
+		private bool _UseAsFilter;
+		
+		private bool _Sortable;
+		
+		private bool _DefaultSortOrderAscending;
+		
+		private bool _AutomaticallyCreateMissingRatings;
+		
+		private byte _Status;
+		
+		private EntitySet<OverrideCharacteristic> _OverrideCharacteristics;
+		
+		private EntitySet<TblColumnFormatting> _TblColumnFormattings;
+		
+		private EntitySet<RatingGroup> _RatingGroups;
+		
+		private EntityRef<TblColumn> _TblColumn2;
+		
+		private EntityRef<TblColumn> _TblColumn1;
+		
+		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
+		
+		private EntityRef<RatingGroupAttribute> _RatingGroupAttribute;
+		
+		private EntityRef<TblTab> _TblTab;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTblColumnIDChanging(int value);
+    partial void OnTblColumnIDChanged();
+    partial void OnTblTabIDChanging(int value);
+    partial void OnTblTabIDChanged();
+    partial void OnDefaultRatingGroupAttributesIDChanging(int value);
+    partial void OnDefaultRatingGroupAttributesIDChanged();
+    partial void OnConditionTblColumnIDChanging(System.Nullable<int> value);
+    partial void OnConditionTblColumnIDChanged();
+    partial void OnTrustTrackerUnitIDChanging(System.Nullable<int> value);
+    partial void OnTrustTrackerUnitIDChanged();
+    partial void OnConditionGreaterThanChanging(System.Nullable<decimal> value);
+    partial void OnConditionGreaterThanChanged();
+    partial void OnConditionLessThanChanging(System.Nullable<decimal> value);
+    partial void OnConditionLessThanChanged();
+    partial void OnCategoryNumChanging(int value);
+    partial void OnCategoryNumChanged();
+    partial void OnAbbreviationChanging(string value);
+    partial void OnAbbreviationChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnExplanationChanging(string value);
+    partial void OnExplanationChanged();
+    partial void OnWidthStyleChanging(string value);
+    partial void OnWidthStyleChanged();
+    partial void OnNumNonNullChanging(int value);
+    partial void OnNumNonNullChanged();
+    partial void OnProportionNonNullChanging(double value);
+    partial void OnProportionNonNullChanged();
+    partial void OnUsingNonSparseColumnChanging(bool value);
+    partial void OnUsingNonSparseColumnChanged();
+    partial void OnShouldUseNonSparseColumnChanging(bool value);
+    partial void OnShouldUseNonSparseColumnChanged();
+    partial void OnUseAsFilterChanging(bool value);
+    partial void OnUseAsFilterChanged();
+    partial void OnSortableChanging(bool value);
+    partial void OnSortableChanged();
+    partial void OnDefaultSortOrderAscendingChanging(bool value);
+    partial void OnDefaultSortOrderAscendingChanged();
+    partial void OnAutomaticallyCreateMissingRatingsChanging(bool value);
+    partial void OnAutomaticallyCreateMissingRatingsChanged();
+    partial void OnStatusChanging(byte value);
+    partial void OnStatusChanged();
+    #endregion
+		
+		public TblColumn()
+		{
+			this._OverrideCharacteristics = new EntitySet<OverrideCharacteristic>(new Action<OverrideCharacteristic>(this.attach_OverrideCharacteristics), new Action<OverrideCharacteristic>(this.detach_OverrideCharacteristics));
+			this._TblColumnFormattings = new EntitySet<TblColumnFormatting>(new Action<TblColumnFormatting>(this.attach_TblColumnFormattings), new Action<TblColumnFormatting>(this.detach_TblColumnFormattings));
+			this._RatingGroups = new EntitySet<RatingGroup>(new Action<RatingGroup>(this.attach_RatingGroups), new Action<RatingGroup>(this.detach_RatingGroups));
+			this._TblColumn2 = default(EntityRef<TblColumn>);
+			this._TblColumn1 = default(EntityRef<TblColumn>);
+			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
+			this._RatingGroupAttribute = default(EntityRef<RatingGroupAttribute>);
+			this._TblTab = default(EntityRef<TblTab>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblColumnID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TblColumnID
+		{
+			get
+			{
+				return this._TblColumnID;
+			}
+			set
+			{
+				if ((this._TblColumnID != value))
+				{
+					if (this._TblColumn1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTblColumnIDChanging(value);
+					this.SendPropertyChanging();
+					this._TblColumnID = value;
+					this.SendPropertyChanged("TblColumnID");
+					this.OnTblColumnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblTabID", DbType="Int NOT NULL")]
+		public int TblTabID
+		{
+			get
+			{
+				return this._TblTabID;
+			}
+			set
+			{
+				if ((this._TblTabID != value))
+				{
+					if (this._TblTab.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTblTabIDChanging(value);
+					this.SendPropertyChanging();
+					this._TblTabID = value;
+					this.SendPropertyChanged("TblTabID");
+					this.OnTblTabIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefaultRatingGroupAttributesID", DbType="Int NOT NULL")]
+		public int DefaultRatingGroupAttributesID
+		{
+			get
+			{
+				return this._DefaultRatingGroupAttributesID;
+			}
+			set
+			{
+				if ((this._DefaultRatingGroupAttributesID != value))
+				{
+					if (this._RatingGroupAttribute.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDefaultRatingGroupAttributesIDChanging(value);
+					this.SendPropertyChanging();
+					this._DefaultRatingGroupAttributesID = value;
+					this.SendPropertyChanged("DefaultRatingGroupAttributesID");
+					this.OnDefaultRatingGroupAttributesIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionTblColumnID", DbType="Int")]
+		public System.Nullable<int> ConditionTblColumnID
+		{
+			get
+			{
+				return this._ConditionTblColumnID;
+			}
+			set
+			{
+				if ((this._ConditionTblColumnID != value))
+				{
+					this.OnConditionTblColumnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionTblColumnID = value;
+					this.SendPropertyChanged("ConditionTblColumnID");
+					this.OnConditionTblColumnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustTrackerUnitID", DbType="Int")]
+		public System.Nullable<int> TrustTrackerUnitID
+		{
+			get
+			{
+				return this._TrustTrackerUnitID;
+			}
+			set
+			{
+				if ((this._TrustTrackerUnitID != value))
+				{
+					if (this._TrustTrackerUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTrustTrackerUnitIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrustTrackerUnitID = value;
+					this.SendPropertyChanged("TrustTrackerUnitID");
+					this.OnTrustTrackerUnitIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionGreaterThan", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> ConditionGreaterThan
+		{
+			get
+			{
+				return this._ConditionGreaterThan;
+			}
+			set
+			{
+				if ((this._ConditionGreaterThan != value))
+				{
+					this.OnConditionGreaterThanChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionGreaterThan = value;
+					this.SendPropertyChanged("ConditionGreaterThan");
+					this.OnConditionGreaterThanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionLessThan", DbType="Decimal(18,4)")]
+		public System.Nullable<decimal> ConditionLessThan
+		{
+			get
+			{
+				return this._ConditionLessThan;
+			}
+			set
+			{
+				if ((this._ConditionLessThan != value))
+				{
+					this.OnConditionLessThanChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionLessThan = value;
+					this.SendPropertyChanged("ConditionLessThan");
+					this.OnConditionLessThanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryNum", DbType="Int NOT NULL")]
+		public int CategoryNum
+		{
+			get
+			{
+				return this._CategoryNum;
+			}
+			set
+			{
+				if ((this._CategoryNum != value))
+				{
+					this.OnCategoryNumChanging(value);
+					this.SendPropertyChanging();
+					this._CategoryNum = value;
+					this.SendPropertyChanged("CategoryNum");
+					this.OnCategoryNumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Abbreviation", DbType="NChar(20) NOT NULL", CanBeNull=false)]
+		public string Abbreviation
+		{
+			get
+			{
+				return this._Abbreviation;
+			}
+			set
+			{
+				if ((this._Abbreviation != value))
+				{
+					this.OnAbbreviationChanging(value);
+					this.SendPropertyChanging();
+					this._Abbreviation = value;
+					this.SendPropertyChanged("Abbreviation");
+					this.OnAbbreviationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Explanation", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Explanation
+		{
+			get
+			{
+				return this._Explanation;
+			}
+			set
+			{
+				if ((this._Explanation != value))
+				{
+					this.OnExplanationChanging(value);
+					this.SendPropertyChanging();
+					this._Explanation = value;
+					this.SendPropertyChanged("Explanation");
+					this.OnExplanationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WidthStyle", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string WidthStyle
+		{
+			get
+			{
+				return this._WidthStyle;
+			}
+			set
+			{
+				if ((this._WidthStyle != value))
+				{
+					this.OnWidthStyleChanging(value);
+					this.SendPropertyChanging();
+					this._WidthStyle = value;
+					this.SendPropertyChanged("WidthStyle");
+					this.OnWidthStyleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumNonNull", DbType="Int NOT NULL")]
+		public int NumNonNull
+		{
+			get
+			{
+				return this._NumNonNull;
+			}
+			set
+			{
+				if ((this._NumNonNull != value))
+				{
+					this.OnNumNonNullChanging(value);
+					this.SendPropertyChanging();
+					this._NumNonNull = value;
+					this.SendPropertyChanged("NumNonNull");
+					this.OnNumNonNullChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProportionNonNull", DbType="Float NOT NULL")]
+		public double ProportionNonNull
+		{
+			get
+			{
+				return this._ProportionNonNull;
+			}
+			set
+			{
+				if ((this._ProportionNonNull != value))
+				{
+					this.OnProportionNonNullChanging(value);
+					this.SendPropertyChanging();
+					this._ProportionNonNull = value;
+					this.SendPropertyChanged("ProportionNonNull");
+					this.OnProportionNonNullChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsingNonSparseColumn", DbType="Bit NOT NULL")]
+		public bool UsingNonSparseColumn
+		{
+			get
+			{
+				return this._UsingNonSparseColumn;
+			}
+			set
+			{
+				if ((this._UsingNonSparseColumn != value))
+				{
+					this.OnUsingNonSparseColumnChanging(value);
+					this.SendPropertyChanging();
+					this._UsingNonSparseColumn = value;
+					this.SendPropertyChanged("UsingNonSparseColumn");
+					this.OnUsingNonSparseColumnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShouldUseNonSparseColumn", DbType="Bit NOT NULL")]
+		public bool ShouldUseNonSparseColumn
+		{
+			get
+			{
+				return this._ShouldUseNonSparseColumn;
+			}
+			set
+			{
+				if ((this._ShouldUseNonSparseColumn != value))
+				{
+					this.OnShouldUseNonSparseColumnChanging(value);
+					this.SendPropertyChanging();
+					this._ShouldUseNonSparseColumn = value;
+					this.SendPropertyChanged("ShouldUseNonSparseColumn");
+					this.OnShouldUseNonSparseColumnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UseAsFilter", DbType="Bit NOT NULL")]
+		public bool UseAsFilter
+		{
+			get
+			{
+				return this._UseAsFilter;
+			}
+			set
+			{
+				if ((this._UseAsFilter != value))
+				{
+					this.OnUseAsFilterChanging(value);
+					this.SendPropertyChanging();
+					this._UseAsFilter = value;
+					this.SendPropertyChanged("UseAsFilter");
+					this.OnUseAsFilterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sortable", DbType="Bit NOT NULL")]
+		public bool Sortable
+		{
+			get
+			{
+				return this._Sortable;
+			}
+			set
+			{
+				if ((this._Sortable != value))
+				{
+					this.OnSortableChanging(value);
+					this.SendPropertyChanging();
+					this._Sortable = value;
+					this.SendPropertyChanged("Sortable");
+					this.OnSortableChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefaultSortOrderAscending", DbType="Bit NOT NULL")]
+		public bool DefaultSortOrderAscending
+		{
+			get
+			{
+				return this._DefaultSortOrderAscending;
+			}
+			set
+			{
+				if ((this._DefaultSortOrderAscending != value))
+				{
+					this.OnDefaultSortOrderAscendingChanging(value);
+					this.SendPropertyChanging();
+					this._DefaultSortOrderAscending = value;
+					this.SendPropertyChanged("DefaultSortOrderAscending");
+					this.OnDefaultSortOrderAscendingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AutomaticallyCreateMissingRatings", DbType="Bit NOT NULL")]
+		public bool AutomaticallyCreateMissingRatings
+		{
+			get
+			{
+				return this._AutomaticallyCreateMissingRatings;
+			}
+			set
+			{
+				if ((this._AutomaticallyCreateMissingRatings != value))
+				{
+					this.OnAutomaticallyCreateMissingRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._AutomaticallyCreateMissingRatings = value;
+					this.SendPropertyChanged("AutomaticallyCreateMissingRatings");
+					this.OnAutomaticallyCreateMissingRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
+		public byte Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_OverrideCharacteristic", Storage="_OverrideCharacteristics", ThisKey="TblColumnID", OtherKey="TblColumnID")]
+		public EntitySet<OverrideCharacteristic> OverrideCharacteristics
+		{
+			get
+			{
+				return this._OverrideCharacteristics;
+			}
+			set
+			{
+				this._OverrideCharacteristics.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_TblColumnFormatting", Storage="_TblColumnFormattings", ThisKey="TblColumnID", OtherKey="TblColumnID")]
+		public EntitySet<TblColumnFormatting> TblColumnFormattings
+		{
+			get
+			{
+				return this._TblColumnFormattings;
+			}
+			set
+			{
+				this._TblColumnFormattings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_RatingGroup", Storage="_RatingGroups", ThisKey="TblColumnID", OtherKey="TblColumnID")]
+		public EntitySet<RatingGroup> RatingGroups
+		{
+			get
+			{
+				return this._RatingGroups;
+			}
+			set
+			{
+				this._RatingGroups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_TblColumn", Storage="_TblColumn2", ThisKey="TblColumnID", OtherKey="TblColumnID", IsUnique=true, IsForeignKey=false)]
+		public TblColumn TblColumn2
+		{
+			get
+			{
+				return this._TblColumn2.Entity;
+			}
+			set
+			{
+				TblColumn previousValue = this._TblColumn2.Entity;
+				if (((previousValue != value) 
+							|| (this._TblColumn2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TblColumn2.Entity = null;
+						previousValue.TblColumn1 = null;
+					}
+					this._TblColumn2.Entity = value;
+					if ((value != null))
+					{
+						value.TblColumn1 = this;
+					}
+					this.SendPropertyChanged("TblColumn2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColumn_TblColumn", Storage="_TblColumn1", ThisKey="TblColumnID", OtherKey="TblColumnID", IsForeignKey=true)]
+		public TblColumn TblColumn1
+		{
+			get
+			{
+				return this._TblColumn1.Entity;
+			}
+			set
+			{
+				TblColumn previousValue = this._TblColumn1.Entity;
+				if (((previousValue != value) 
+							|| (this._TblColumn1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TblColumn1.Entity = null;
+						previousValue.TblColumn2 = null;
+					}
+					this._TblColumn1.Entity = value;
+					if ((value != null))
+					{
+						value.TblColumn2 = this;
+						this._TblColumnID = value.TblColumnID;
+					}
+					else
+					{
+						this._TblColumnID = default(int);
+					}
+					this.SendPropertyChanged("TblColumn1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrustTrackerUnit_TblColumn", Storage="_TrustTrackerUnit", ThisKey="TrustTrackerUnitID", OtherKey="TrustTrackerUnitID", IsForeignKey=true)]
+		public TrustTrackerUnit TrustTrackerUnit
+		{
+			get
+			{
+				return this._TrustTrackerUnit.Entity;
+			}
+			set
+			{
+				TrustTrackerUnit previousValue = this._TrustTrackerUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._TrustTrackerUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrustTrackerUnit.Entity = null;
+						previousValue.TblColumns.Remove(this);
+					}
+					this._TrustTrackerUnit.Entity = value;
+					if ((value != null))
+					{
+						value.TblColumns.Add(this);
+						this._TrustTrackerUnitID = value.TrustTrackerUnitID;
+					}
+					else
+					{
+						this._TrustTrackerUnitID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("TrustTrackerUnit");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RatingGroupAttribute_TblColumn", Storage="_RatingGroupAttribute", ThisKey="DefaultRatingGroupAttributesID", OtherKey="RatingGroupAttributesID", IsForeignKey=true)]
+		public RatingGroupAttribute RatingGroupAttribute
+		{
+			get
+			{
+				return this._RatingGroupAttribute.Entity;
+			}
+			set
+			{
+				RatingGroupAttribute previousValue = this._RatingGroupAttribute.Entity;
+				if (((previousValue != value) 
+							|| (this._RatingGroupAttribute.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RatingGroupAttribute.Entity = null;
+						previousValue.TblColumns.Remove(this);
+					}
+					this._RatingGroupAttribute.Entity = value;
+					if ((value != null))
+					{
+						value.TblColumns.Add(this);
+						this._DefaultRatingGroupAttributesID = value.RatingGroupAttributesID;
+					}
+					else
+					{
+						this._DefaultRatingGroupAttributesID = default(int);
+					}
+					this.SendPropertyChanged("RatingGroupAttribute");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblTab_TblColumn", Storage="_TblTab", ThisKey="TblTabID", OtherKey="TblTabID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public TblTab TblTab
+		{
+			get
+			{
+				return this._TblTab.Entity;
+			}
+			set
+			{
+				TblTab previousValue = this._TblTab.Entity;
+				if (((previousValue != value) 
+							|| (this._TblTab.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TblTab.Entity = null;
+						previousValue.TblColumns.Remove(this);
+					}
+					this._TblTab.Entity = value;
+					if ((value != null))
+					{
+						value.TblColumns.Add(this);
+						this._TblTabID = value.TblTabID;
+					}
+					else
+					{
+						this._TblTabID = default(int);
+					}
+					this.SendPropertyChanged("TblTab");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_OverrideCharacteristics(OverrideCharacteristic entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblColumn = this;
+		}
+		
+		private void detach_OverrideCharacteristics(OverrideCharacteristic entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblColumn = null;
+		}
+		
+		private void attach_TblColumnFormattings(TblColumnFormatting entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblColumn = this;
+		}
+		
+		private void detach_TblColumnFormattings(TblColumnFormatting entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblColumn = null;
+		}
+		
+		private void attach_RatingGroups(RatingGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblColumn = this;
+		}
+		
+		private void detach_RatingGroups(RatingGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblColumn = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.FieldDefinitions")]
+	public partial class FieldDefinition : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _FieldDefinitionID;
+		
+		private int _TblID;
+		
+		private int _FieldNum;
+		
+		private string _FieldName;
+		
+		private int _FieldType;
+		
+		private bool _UseAsFilter;
+		
+		private bool _AddToSearchWords;
+		
+		private int _DisplayInTableSettings;
+		
+		private int _DisplayInPopupSettings;
+		
+		private int _DisplayInTblRowPageSettings;
+		
+		private byte _Status;
+		
+		private int _NumNonNull;
+		
+		private double _ProportionNonNull;
+		
+		private bool _UsingNonSparseColumn;
+		
+		private bool _ShouldUseNonSparseColumn;
+		
+		private EntitySet<DateTimeFieldDefinition> _DateTimeFieldDefinitions;
+		
+		private EntitySet<Field> _Fields;
+		
+		private EntitySet<NumberFieldDefinition> _NumberFieldDefinitions;
+		
+		private EntitySet<TextFieldDefinition> _TextFieldDefinitions;
+		
+		private EntitySet<ChoiceGroupFieldDefinition> _ChoiceGroupFieldDefinitions;
+		
+		private EntityRef<Tbl> _Tbl;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnFieldDefinitionIDChanging(int value);
+    partial void OnFieldDefinitionIDChanged();
+    partial void OnTblIDChanging(int value);
+    partial void OnTblIDChanged();
+    partial void OnFieldNumChanging(int value);
+    partial void OnFieldNumChanged();
+    partial void OnFieldNameChanging(string value);
+    partial void OnFieldNameChanged();
+    partial void OnFieldTypeChanging(int value);
+    partial void OnFieldTypeChanged();
+    partial void OnUseAsFilterChanging(bool value);
+    partial void OnUseAsFilterChanged();
+    partial void OnAddToSearchWordsChanging(bool value);
+    partial void OnAddToSearchWordsChanged();
+    partial void OnDisplayInTableSettingsChanging(int value);
+    partial void OnDisplayInTableSettingsChanged();
+    partial void OnDisplayInPopupSettingsChanging(int value);
+    partial void OnDisplayInPopupSettingsChanged();
+    partial void OnDisplayInTblRowPageSettingsChanging(int value);
+    partial void OnDisplayInTblRowPageSettingsChanged();
+    partial void OnStatusChanging(byte value);
+    partial void OnStatusChanged();
+    partial void OnNumNonNullChanging(int value);
+    partial void OnNumNonNullChanged();
+    partial void OnProportionNonNullChanging(double value);
+    partial void OnProportionNonNullChanged();
+    partial void OnUsingNonSparseColumnChanging(bool value);
+    partial void OnUsingNonSparseColumnChanged();
+    partial void OnShouldUseNonSparseColumnChanging(bool value);
+    partial void OnShouldUseNonSparseColumnChanged();
+    #endregion
+		
+		public FieldDefinition()
+		{
+			this._DateTimeFieldDefinitions = new EntitySet<DateTimeFieldDefinition>(new Action<DateTimeFieldDefinition>(this.attach_DateTimeFieldDefinitions), new Action<DateTimeFieldDefinition>(this.detach_DateTimeFieldDefinitions));
+			this._Fields = new EntitySet<Field>(new Action<Field>(this.attach_Fields), new Action<Field>(this.detach_Fields));
+			this._NumberFieldDefinitions = new EntitySet<NumberFieldDefinition>(new Action<NumberFieldDefinition>(this.attach_NumberFieldDefinitions), new Action<NumberFieldDefinition>(this.detach_NumberFieldDefinitions));
+			this._TextFieldDefinitions = new EntitySet<TextFieldDefinition>(new Action<TextFieldDefinition>(this.attach_TextFieldDefinitions), new Action<TextFieldDefinition>(this.detach_TextFieldDefinitions));
+			this._ChoiceGroupFieldDefinitions = new EntitySet<ChoiceGroupFieldDefinition>(new Action<ChoiceGroupFieldDefinition>(this.attach_ChoiceGroupFieldDefinitions), new Action<ChoiceGroupFieldDefinition>(this.detach_ChoiceGroupFieldDefinitions));
+			this._Tbl = default(EntityRef<Tbl>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldDefinitionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int FieldDefinitionID
+		{
+			get
+			{
+				return this._FieldDefinitionID;
+			}
+			set
+			{
+				if ((this._FieldDefinitionID != value))
+				{
+					this.OnFieldDefinitionIDChanging(value);
+					this.SendPropertyChanging();
+					this._FieldDefinitionID = value;
+					this.SendPropertyChanged("FieldDefinitionID");
+					this.OnFieldDefinitionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblID", DbType="Int NOT NULL")]
+		public int TblID
+		{
+			get
+			{
+				return this._TblID;
+			}
+			set
+			{
+				if ((this._TblID != value))
+				{
+					if (this._Tbl.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTblIDChanging(value);
+					this.SendPropertyChanging();
+					this._TblID = value;
+					this.SendPropertyChanged("TblID");
+					this.OnTblIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldNum", DbType="Int NOT NULL")]
+		public int FieldNum
+		{
+			get
+			{
+				return this._FieldNum;
+			}
+			set
+			{
+				if ((this._FieldNum != value))
+				{
+					this.OnFieldNumChanging(value);
+					this.SendPropertyChanging();
+					this._FieldNum = value;
+					this.SendPropertyChanged("FieldNum");
+					this.OnFieldNumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string FieldName
+		{
+			get
+			{
+				return this._FieldName;
+			}
+			set
+			{
+				if ((this._FieldName != value))
+				{
+					this.OnFieldNameChanging(value);
+					this.SendPropertyChanging();
+					this._FieldName = value;
+					this.SendPropertyChanged("FieldName");
+					this.OnFieldNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FieldType", DbType="Int NOT NULL")]
+		public int FieldType
+		{
+			get
+			{
+				return this._FieldType;
+			}
+			set
+			{
+				if ((this._FieldType != value))
+				{
+					this.OnFieldTypeChanging(value);
+					this.SendPropertyChanging();
+					this._FieldType = value;
+					this.SendPropertyChanged("FieldType");
+					this.OnFieldTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UseAsFilter", DbType="Bit NOT NULL")]
+		public bool UseAsFilter
+		{
+			get
+			{
+				return this._UseAsFilter;
+			}
+			set
+			{
+				if ((this._UseAsFilter != value))
+				{
+					this.OnUseAsFilterChanging(value);
+					this.SendPropertyChanging();
+					this._UseAsFilter = value;
+					this.SendPropertyChanged("UseAsFilter");
+					this.OnUseAsFilterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddToSearchWords", DbType="Bit NOT NULL")]
+		public bool AddToSearchWords
+		{
+			get
+			{
+				return this._AddToSearchWords;
+			}
+			set
+			{
+				if ((this._AddToSearchWords != value))
+				{
+					this.OnAddToSearchWordsChanging(value);
+					this.SendPropertyChanging();
+					this._AddToSearchWords = value;
+					this.SendPropertyChanged("AddToSearchWords");
+					this.OnAddToSearchWordsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayInTableSettings", DbType="Int NOT NULL")]
+		public int DisplayInTableSettings
+		{
+			get
+			{
+				return this._DisplayInTableSettings;
+			}
+			set
+			{
+				if ((this._DisplayInTableSettings != value))
+				{
+					this.OnDisplayInTableSettingsChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayInTableSettings = value;
+					this.SendPropertyChanged("DisplayInTableSettings");
+					this.OnDisplayInTableSettingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayInPopupSettings", DbType="Int NOT NULL")]
+		public int DisplayInPopupSettings
+		{
+			get
+			{
+				return this._DisplayInPopupSettings;
+			}
+			set
+			{
+				if ((this._DisplayInPopupSettings != value))
+				{
+					this.OnDisplayInPopupSettingsChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayInPopupSettings = value;
+					this.SendPropertyChanged("DisplayInPopupSettings");
+					this.OnDisplayInPopupSettingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayInTblRowPageSettings", DbType="Int NOT NULL")]
+		public int DisplayInTblRowPageSettings
+		{
+			get
+			{
+				return this._DisplayInTblRowPageSettings;
+			}
+			set
+			{
+				if ((this._DisplayInTblRowPageSettings != value))
+				{
+					this.OnDisplayInTblRowPageSettingsChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayInTblRowPageSettings = value;
+					this.SendPropertyChanged("DisplayInTblRowPageSettings");
+					this.OnDisplayInTblRowPageSettingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
+		public byte Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumNonNull", DbType="Int NOT NULL")]
+		public int NumNonNull
+		{
+			get
+			{
+				return this._NumNonNull;
+			}
+			set
+			{
+				if ((this._NumNonNull != value))
+				{
+					this.OnNumNonNullChanging(value);
+					this.SendPropertyChanging();
+					this._NumNonNull = value;
+					this.SendPropertyChanged("NumNonNull");
+					this.OnNumNonNullChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProportionNonNull", DbType="Float NOT NULL")]
+		public double ProportionNonNull
+		{
+			get
+			{
+				return this._ProportionNonNull;
+			}
+			set
+			{
+				if ((this._ProportionNonNull != value))
+				{
+					this.OnProportionNonNullChanging(value);
+					this.SendPropertyChanging();
+					this._ProportionNonNull = value;
+					this.SendPropertyChanged("ProportionNonNull");
+					this.OnProportionNonNullChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsingNonSparseColumn", DbType="Bit NOT NULL")]
+		public bool UsingNonSparseColumn
+		{
+			get
+			{
+				return this._UsingNonSparseColumn;
+			}
+			set
+			{
+				if ((this._UsingNonSparseColumn != value))
+				{
+					this.OnUsingNonSparseColumnChanging(value);
+					this.SendPropertyChanging();
+					this._UsingNonSparseColumn = value;
+					this.SendPropertyChanged("UsingNonSparseColumn");
+					this.OnUsingNonSparseColumnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShouldUseNonSparseColumn", DbType="Bit NOT NULL")]
+		public bool ShouldUseNonSparseColumn
+		{
+			get
+			{
+				return this._ShouldUseNonSparseColumn;
+			}
+			set
+			{
+				if ((this._ShouldUseNonSparseColumn != value))
+				{
+					this.OnShouldUseNonSparseColumnChanging(value);
+					this.SendPropertyChanging();
+					this._ShouldUseNonSparseColumn = value;
+					this.SendPropertyChanged("ShouldUseNonSparseColumn");
+					this.OnShouldUseNonSparseColumnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_DateTimeFieldDefinition", Storage="_DateTimeFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
+		public EntitySet<DateTimeFieldDefinition> DateTimeFieldDefinitions
+		{
+			get
+			{
+				return this._DateTimeFieldDefinitions;
+			}
+			set
+			{
+				this._DateTimeFieldDefinitions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_Field", Storage="_Fields", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
+		public EntitySet<Field> Fields
+		{
+			get
+			{
+				return this._Fields;
+			}
+			set
+			{
+				this._Fields.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_NumberFieldDefinition", Storage="_NumberFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
+		public EntitySet<NumberFieldDefinition> NumberFieldDefinitions
+		{
+			get
+			{
+				return this._NumberFieldDefinitions;
+			}
+			set
+			{
+				this._NumberFieldDefinitions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_TextFieldDefinition", Storage="_TextFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
+		public EntitySet<TextFieldDefinition> TextFieldDefinitions
+		{
+			get
+			{
+				return this._TextFieldDefinitions;
+			}
+			set
+			{
+				this._TextFieldDefinitions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FieldDefinition_ChoiceGroupFieldDefinition", Storage="_ChoiceGroupFieldDefinitions", ThisKey="FieldDefinitionID", OtherKey="FieldDefinitionID")]
+		public EntitySet<ChoiceGroupFieldDefinition> ChoiceGroupFieldDefinitions
+		{
+			get
+			{
+				return this._ChoiceGroupFieldDefinitions;
+			}
+			set
+			{
+				this._ChoiceGroupFieldDefinitions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_FieldDefinition", Storage="_Tbl", ThisKey="TblID", OtherKey="TblID", IsForeignKey=true)]
+		public Tbl Tbl
+		{
+			get
+			{
+				return this._Tbl.Entity;
+			}
+			set
+			{
+				Tbl previousValue = this._Tbl.Entity;
+				if (((previousValue != value) 
+							|| (this._Tbl.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Tbl.Entity = null;
+						previousValue.FieldDefinitions.Remove(this);
+					}
+					this._Tbl.Entity = value;
+					if ((value != null))
+					{
+						value.FieldDefinitions.Add(this);
+						this._TblID = value.TblID;
+					}
+					else
+					{
+						this._TblID = default(int);
+					}
+					this.SendPropertyChanged("Tbl");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_DateTimeFieldDefinitions(DateTimeFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = this;
+		}
+		
+		private void detach_DateTimeFieldDefinitions(DateTimeFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = null;
+		}
+		
+		private void attach_Fields(Field entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = this;
+		}
+		
+		private void detach_Fields(Field entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = null;
+		}
+		
+		private void attach_NumberFieldDefinitions(NumberFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = this;
+		}
+		
+		private void detach_NumberFieldDefinitions(NumberFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = null;
+		}
+		
+		private void attach_TextFieldDefinitions(TextFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = this;
+		}
+		
+		private void detach_TextFieldDefinitions(TextFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = null;
+		}
+		
+		private void attach_ChoiceGroupFieldDefinitions(ChoiceGroupFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = this;
+		}
+		
+		private void detach_ChoiceGroupFieldDefinitions(ChoiceGroupFieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.FieldDefinition = null;
 		}
 	}
 	

@@ -47,6 +47,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void RatingGroupIDsWork()
         {
             TestHelper.CreateSimpleTestTable(true);
@@ -72,6 +73,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestCreateTableAndAddLotsOfUserRatingFromFirstUser()
         {
             TestHelper.CreateSimpleEventTestTable();
@@ -106,6 +108,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestAddUserRating_ShortTermResolution_LongTermResolution()
         {
             TestAddUserRating_ShortTermResolution_LongTermResolution_Helper(true);
@@ -417,6 +420,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestRatingResolution_AlternativeMethod()
         {
             TestHelper.CreateSimpleEventTestTable();
