@@ -827,7 +827,7 @@
     <Content Include="js\viewtbl.js" />
     <Content Include="Main\Field\AddressField.ascx" />
     <Content Include="Main\Field\AnyField.ascx" />
-    <Content Include="Main\Field\CategoryFilter.ascx" />
+    <Content Include="Main\Field\OpinionColumnFilter.ascx" />
     <Content Include="Main\Field\ChoiceField.ascx" />
     <Content Include="Main\Field\DateTimeField.ascx" />
     <Content Include="Main\Field\FieldsBox.ascx" />
@@ -1353,12 +1353,12 @@
     <Compile Include="Main\Field\AnyField.ascx.designer.cs">
       <DependentUpon>AnyField.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Main\Field\CategoryFilter.ascx.cs">
-      <DependentUpon>CategoryFilter.ascx</DependentUpon>
+    <Compile Include="Main\Field\OpinionColumnFilter.ascx.cs">
+      <DependentUpon>OpinionColumnFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\Field\CategoryFilter.ascx.designer.cs">
-      <DependentUpon>CategoryFilter.ascx</DependentUpon>
+    <Compile Include="Main\Field\OpinionColumnFilter.ascx.designer.cs">
+      <DependentUpon>OpinionColumnFilter.ascx</DependentUpon>
     </Compile>
     <Compile Include="Main\Field\ChoiceField.ascx.cs">
       <DependentUpon>ChoiceField.ascx</DependentUpon>

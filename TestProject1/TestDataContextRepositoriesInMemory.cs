@@ -33,6 +33,7 @@ namespace TestProject1
         internal RepositoryItemAssociationInfo addressFieldToField;
         internal RepositoryItemAssociationInfo userToUserInfo;
         internal List<RepositoryItemAssociationInfo> ratingToRatingGroup;
+        internal bool originalUseRealDatabase;
 
         /// <summary>
         ///Initialize() is called once during test execution before
@@ -41,6 +42,7 @@ namespace TestProject1
         [TestInitialize()]
         public void Initialize()
         {
+            originalUseRealDatabase = GetIR8RDataContext.UseRealDatabase;
             GetIR8RDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
             UnderlyingR8RDataContext = new R8RDataContext("FAKECONNECTIONSTRING"); 
             repositoryList = MappingInfoProcessor.ProcessDataContextMappingInfo(UnderlyingR8RDataContext);
@@ -58,6 +60,7 @@ namespace TestProject1
         [TestCleanup()]
         public void Cleanup()
         {
+            GetIR8RDataContext.UseRealDatabase = originalUseRealDatabase;
         }
 
         [TestMethod]

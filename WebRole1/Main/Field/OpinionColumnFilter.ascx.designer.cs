@@ -10,7 +10,7 @@
 
 
 
-public partial class CategoryFilter {
+public partial class OpinionColumnFilter {
     
     /// <summary>
     /// CategoryUpdatePanel control.

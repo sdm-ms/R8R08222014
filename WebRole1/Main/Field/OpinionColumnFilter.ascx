@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CategoryFilter" Codebehind="CategoryFilter.ascx.cs" %>
+    Inherits="OpinionColumnFilter" Codebehind="OpinionColumnFilter.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
 <%@ Register TagPrefix="Uc" TagName="Hover" Src="~/CommonControl/Hover.ascx" %>
 <asp:UpdatePanel runat="server" ID="CategoryUpdatePanel" UpdateMode="Conditional">

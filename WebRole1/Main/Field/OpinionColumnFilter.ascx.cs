@@ -14,7 +14,7 @@ using ClassLibrary1.Model;
 
 
 
-public partial class CategoryFilter : System.Web.UI.UserControl, IFilterField
+public partial class OpinionColumnFilter : System.Web.UI.UserControl, IFilterField
 {
     // These aren't really relevant here, but we need them to implement IFilterField
     public FieldsBoxMode Mode { get; set; }

@@ -10,14 +10,22 @@ namespace ClassLibrary1.Model
 {
     public static class ConnectionString
     {
+        private static void CheckHardCodedAppropriate()
+        {
+            if (!GetIR8RDataContext.UseRealDatabase)
+                throw new Exception("Internal error. We should use the hard coded connections only for testing against the real database.");
+            if (RoleEnvironment.IsAvailable)
+                throw new Exception("Internal error. We should not be using hard coded connections within the role environment. Load from config files instead.");
+        }
+
         private static string HardCodedUserProfileDatabase()
         {
-            if (!GetIR8RDataContext.UseRealDatabase || RoleEnvironment.IsAvailable)
-                throw new Exception("Internal error. We should use the hard coded connections only for the test project against the real database.");
+            CheckHardCodedAppropriate();
 
             const string hardCoded = "Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300";
             return hardCoded;
         }
+
 
         public static string GetUserProfileDatabaseConnectionString()
         {
@@ -26,8 +34,7 @@ namespace ClassLibrary1.Model
 
         private static string HardCodedNormalizedDatabase()
         {
-            if (!GetIR8RDataContext.UseRealDatabase || RoleEnvironment.IsAvailable)
-                throw new Exception("Internal error. We should use the hard coded connections only for the test project against the real database.");
+            CheckHardCodedAppropriate();
 
             const string hardCoded = "Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300";
             return hardCoded;
