@@ -139,8 +139,8 @@ namespace ClassLibrary1.Model
             changeTblMode = false;
             pointsSettingsMode = false;
             editMode = false;
-            string entityString = null;
-            string categoryString = null;
+            string tblRowString = null;
+            string tblColumnString = null;
             if (remainderOfHierarchy.Count() >= 1)
             {
                 if (remainderOfHierarchy[0] == "Add")
@@ -173,18 +173,18 @@ namespace ClassLibrary1.Model
                     pointsSettingsMode = true;
                     return;
                 }
-                entityString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[0]);
-                int entityID = 0;
-                if (entityString != null && entityString != "")
+                tblRowString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[0]);
+                int tblRowID = 0;
+                if (tblRowString != null && tblRowString != "")
                 {
                     try
                     {
-                        entityID = Convert.ToInt32(entityString);
+                        tblRowID = Convert.ToInt32(tblRowString);
                     }
                     catch
                     {
                     }
-                    theTblRow = theDataContext.GetTable<TblRow>().SingleOrDefault(x => x.Tbl == theTbl && x.TblRowID == entityID);
+                    theTblRow = theDataContext.GetTable<TblRow>().SingleOrDefault(x => x.Tbl == theTbl && x.TblRowID == tblRowID);
                 }
                 if (theTblRow == null)
                     return;
@@ -196,11 +196,11 @@ namespace ClassLibrary1.Model
                         editMode = true;
                         return;
                     }
-                    categoryString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[1]);
+                    tblColumnString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[1]);
                     int TblColumnID = 0;
                     try
                     {
-                        TblColumnID = Convert.ToInt32(categoryString);
+                        TblColumnID = Convert.ToInt32(tblColumnString);
                     }
                     catch
                     {
@@ -248,7 +248,7 @@ namespace ClassLibrary1.Model
             if (theTblRow != null)
             {
                 if (theTblColumn != null)
-                    theRoute = "mainRouteWithTblRowAndCategory";
+                    theRoute = "mainRouteWithTblRowAndColumn";
                 else
                 {
                     if (editMode)
@@ -463,7 +463,7 @@ namespace ClassLibrary1.Model
         new RoutingMap(RouteID.MainContent, "mainRoutePointsSettings", "{*hierarchy}", "Admin/PointsManager/ChangePointsManager.aspx", new HierarchyMatch(), IncomingMainContent),
         new RoutingMap(RouteID.MainContent, "mainRouteAddTblRow", "{*hierarchy}", "WebForms/Row.aspx", new HierarchyMatch(), IncomingMainContent),
         new RoutingMap(RouteID.MainContent, "mainRouteEditTblRow", "{*hierarchy}", "WebForms/Row.aspx", new HierarchyMatch(), IncomingMainContent),
-        new RoutingMap(RouteID.MainContent, "mainRouteWithTblRowAndCategory", "{*hierarchy}", "WebForms/Main.aspx", new HierarchyMatch(), IncomingMainContent),
+        new RoutingMap(RouteID.MainContent, "mainRouteWithTblRowAndColumn", "{*hierarchy}", "WebForms/Main.aspx", new HierarchyMatch(), IncomingMainContent),
         new RoutingMap(RouteID.MainContent, "mainRouteWithTblRow", "{*hierarchy}", "WebForms/Main.aspx", new HierarchyMatch(),  IncomingMainContent),
         new RoutingMap(RouteID.MainContent, "topicsRoute", "{*hierarchy}",  "WebForms/HomePage.aspx", new HierarchyMatch(),  IncomingMainContent),
         new RoutingMap(RouteID.MainContent, "mainRoute", "{*hierarchy}", "WebForms/Main.aspx", new HierarchyMatch(), IncomingMainContent)
@@ -757,7 +757,7 @@ namespace ClassLibrary1.Model
                         return theRoutingInfo.pointsSettingsMode;
                     case "mainRouteEditTblRow":
                         return theRoutingInfo.editMode;
-                    case "mainRouteWithTblRowAndCategory":
+                    case "mainRouteWithTblRowAndColumn":
                         return theRoutingInfo.theTblRow != null && theRoutingInfo.theTblColumn != null;
                     case "mainRouteWithTblRow":
                         return theRoutingInfo.theTblRow != null && theRoutingInfo.theTblColumn == null;

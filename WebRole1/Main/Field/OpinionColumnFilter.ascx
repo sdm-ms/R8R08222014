@@ -2,7 +2,7 @@
     Inherits="OpinionColumnFilter" Codebehind="OpinionColumnFilter.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
 <%@ Register TagPrefix="Uc" TagName="Hover" Src="~/CommonControl/Hover.ascx" %>
-<asp:UpdatePanel runat="server" ID="CategoryUpdatePanel" UpdateMode="Conditional">
+<asp:UpdatePanel runat="server" ID="ColumnUpdatePanel" UpdateMode="Conditional">
     <ContentTemplate>
         <table >
             <tr>

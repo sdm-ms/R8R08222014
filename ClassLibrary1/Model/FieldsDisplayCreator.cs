@@ -15,7 +15,7 @@ namespace ClassLibrary1.Model
     public class FieldDisplayHtml
     {
         public string theMainHtml;
-        public string entityName;
+        public string rowName;
         public bool fieldDataExists;
     }
 
@@ -38,9 +38,9 @@ namespace ClassLibrary1.Model
             //ProfileSimple.End("GetCompiledQuery");
             //ProfileSimple.Start("AfterCompiledQuery");
 
-            foreach (var entityPlusFieldInfo in theTblRowPlusFieldInfos)
+            foreach (var rowPlusFieldInfo in theTblRowPlusFieldInfos)
             {
-                SetFieldDisplayHtml(entityPlusFieldInfo.TblRow);
+                SetFieldDisplayHtml(rowPlusFieldInfo.TblRow);
             }
 
             //ProfileSimple.End("AfterCompiledQuery");
@@ -54,10 +54,10 @@ namespace ClassLibrary1.Model
             TblRowPlusFieldInfos tblRowInfo = TblRowPlusFieldInfoLoader.GetTblRowPlusFieldInfosWithoutFieldInfos(theTblRow);
             FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow, tblRowInfo);
             FieldDisplayHtml rowPopup = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowPopup, theTblRow, tblRowInfo);
-            FieldDisplayHtml entityPage = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.TblRowPage, theTblRow, tblRowInfo);
+            FieldDisplayHtml tblRowPage = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.TblRowPage, theTblRow, tblRowInfo);
             theTblRow.TblRowFieldDisplay.Row = row.theMainHtml;
             theTblRow.TblRowFieldDisplay.PopUp = rowPopup.theMainHtml;
-            theTblRow.TblRowFieldDisplay.TblRowPage = entityPage.theMainHtml;
+            theTblRow.TblRowFieldDisplay.TblRowPage = tblRowPage.theMainHtml;
         }
 
         public void SetFieldDisplayHtml(TblRow theTblRow)
@@ -67,10 +67,10 @@ namespace ClassLibrary1.Model
             TblDimension theTblDimension = theCssAccess.GetTblDimensionsForRegularTbl(theTblRow.TblID);
             FieldDisplayHtml row = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowHeading, theTblRow);
             FieldDisplayHtml rowPopup = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.RowPopup, theTblRow);
-            FieldDisplayHtml entityPage = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.TblRowPage, theTblRow);
+            FieldDisplayHtml tblRowPage = BuildFieldDisplayHtml(theTblDimension, FieldsLocation.TblRowPage, theTblRow);
             theTblRow.TblRowFieldDisplay.Row = row.theMainHtml;
             theTblRow.TblRowFieldDisplay.PopUp = rowPopup.theMainHtml;
-            theTblRow.TblRowFieldDisplay.TblRowPage = entityPage.theMainHtml;
+            theTblRow.TblRowFieldDisplay.TblRowPage = tblRowPage.theMainHtml;
             theTblRow.TblRowFieldDisplay.ResetNeeded = false;
             theTblRow.InitialFieldsDisplaySet = true;
 
@@ -82,15 +82,15 @@ namespace ClassLibrary1.Model
             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + theTblRow.TblRowID.ToString());
         }
 
-        public FieldDisplayHtml GetFieldDisplayHtml(IR8RDataContext theDataContextToUse, int entityID, FieldsLocation theLocation)
+        public FieldDisplayHtml GetFieldDisplayHtml(IR8RDataContext theDataContextToUse, int tblRowID, FieldsLocation theLocation)
         {
 
-            string myCacheKey = "FieldDisplay" + entityID.ToString() + "," + ((int)theLocation).ToString();
+            string myCacheKey = "FieldDisplay" + tblRowID.ToString() + "," + ((int)theLocation).ToString();
             FieldDisplayHtml cachedResult = (FieldDisplayHtml)CacheManagement.GetItemFromCache(myCacheKey);
             if (cachedResult != null)
                 return cachedResult;
 
-            TblRow theTblRow = theDataContextToUse.GetTable<TblRow>().Single(e => e.TblRowID == entityID);
+            TblRow theTblRow = theDataContextToUse.GetTable<TblRow>().Single(e => e.TblRowID == tblRowID);
 
             FieldDisplayHtml theDisplayHtml = new FieldDisplayHtml();
             switch (theLocation)
@@ -116,13 +116,13 @@ namespace ClassLibrary1.Model
                 return GetFieldDisplayHtml(theDataContextToUse, theTblRow.TblRowID, theLocation);
             }
 
-            theDisplayHtml.theMainHtml = new Regex("/0").Replace(theDisplayHtml.theMainHtml, "/" + entityID.ToString());
+            theDisplayHtml.theMainHtml = new Regex("/0").Replace(theDisplayHtml.theMainHtml, "/" + tblRowID.ToString());
 
-            theDisplayHtml.entityName = theTblRow.Name;
+            theDisplayHtml.rowName = theTblRow.Name;
             theDisplayHtml.fieldDataExists = !theDisplayHtml.theMainHtml.Contains("borderless nopop");
 
             string[] myDependencies = {
-                    "FieldForTblRowID" + entityID.ToString(),
+                    "FieldForTblRowID" + tblRowID.ToString(),
                     "FieldInfoForPointsManagerID" + theTblRow.Tbl.PointsManagerID.ToString()
                           };
             CacheManagement.AddItemToCache(myCacheKey, myDependencies, theDisplayHtml);
@@ -130,9 +130,9 @@ namespace ClassLibrary1.Model
             return theDisplayHtml;
         }
 
-        //public FieldDisplayHtml BuildFieldDisplayHtml(IR8RDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, int entityID)
+        //public FieldDisplayHtml BuildFieldDisplayHtml(IR8RDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, int tblRowID)
         //{
-        //    TblRow theTblRow = theDataContextToUse.TblRows.Single(e => e.TblRowID == entityID);
+        //    TblRow theTblRow = theDataContextToUse.TblRows.Single(e => e.TblRowID == tblRowID);
         //    return BuildFieldDisplayHtml(theDataContextToUse, theTblDimension, theLocation, theTblRow);
         //}
 
@@ -180,21 +180,21 @@ namespace ClassLibrary1.Model
             initialContent.Append("<table class=\"borderless" + nopopString + "\" style=\"width:100%;\">");
             if (theLocation != FieldsLocation.TblRowPage)
             {
-                myFieldDisplayHtml.entityName = theTblRowPlusFieldInfos.TblRow.Name;
-                if (myFieldDisplayHtml.entityName != "")
+                myFieldDisplayHtml.rowName = theTblRowPlusFieldInfos.TblRow.Name;
+                if (myFieldDisplayHtml.rowName != "")
                 {
                     if (theLocation == FieldsLocation.RowHeading)
                     {
                         initialContent.Append("<tr><td><a href=\"");
                         initialContent.Append(Routing.Outgoing(new RoutingInfoMainContent(tblRow.Tbl, tblRow, null))); // The TblRowID might be 0, so we will need to replace that above
                         initialContent.Append("\">");
-                        initialContent.Append(myFieldDisplayHtml.entityName);
+                        initialContent.Append(myFieldDisplayHtml.rowName);
                         initialContent.Append("</a></td></tr>");
                     }
                     else
-                    { // FieldsLocation is for entity page or popup; no need for link.
+                    { // FieldsLocation is for tblRow page or popup; no need for link.
                         //initialContent.Append("<tr><td><span>");
-                        //initialContent.Append(myFieldDisplayHtml.entityName);
+                        //initialContent.Append(myFieldDisplayHtml.tblRowName);
                         //initialContent.Append("</span></td></tr>");
                     }
                 }

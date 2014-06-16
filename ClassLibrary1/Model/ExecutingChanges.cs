@@ -643,7 +643,7 @@ namespace ClassLibrary1.Model
                                 throw new Exception("The abbreviation must be no longer than 10 characters.");
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
                             theTblColumn.Abbreviation = theChange.NewValueText;
-                            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
+                            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                             changeMade = true;
                         }
                         else if (theChange.ChangeSetting1 && theChange.ChangeSetting2)
@@ -652,21 +652,21 @@ namespace ClassLibrary1.Model
                                 throw new Exception("The name must be no longer than 50 characters.");
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
                             theTblColumn.Name = theChange.NewValueText;
-                            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
+                            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                             changeMade = true;
                         }
                         else if (!theChange.ChangeSetting1 && !theChange.ChangeSetting2)
                         {
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
                             theTblColumn.Explanation = theChange.NewValueText;
-                            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
+                            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                             changeMade = true;
                         }
 
                         else if (!theChange.ChangeSetting1 && theChange.ChangeSetting2)
                         {
                             var theTblColumn = DataContext.GetTable<TblColumn>().Single(cd => cd.TblColumnID == theChange.ExistingObject);
-                            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
+                            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                             bool useAsFilter = false, sortable = false, defaultSortOrderAscending = false;
                             int theNewValue = (int)theChange.NewValueInteger;
                             if (theNewValue >= 4)
@@ -692,7 +692,7 @@ namespace ClassLibrary1.Model
                     case TypeOfObject.TblTab:
                         ChangeTblTabDefaultSort((int)theChange.ExistingObject, theChange.NewValueInteger);
                         var theTblTab = DataContext.GetTable<TblTab>().Single(cg => cg.TblTabID == theChange.ExistingObject);
-                        CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblTab.TblID);
+                        CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblTab.TblID);
                         changeMade = true;
                         break;
                     case TypeOfObject.ChoiceInGroup:
@@ -708,9 +708,9 @@ namespace ClassLibrary1.Model
                         else if (theChange.ChangeSetting1 && theChange.ChangeSetting2)
                         {
                             theChoiceInGroup.ChoiceText = theChange.NewValueText;
-                            var entities = theChoiceInGroup.ChoiceInFields.Select(x => x.ChoiceField).Select(x => x.Field).Select(x => x.TblRow).Distinct().ToList();
-                            foreach (var entity in entities)
-                                ResetTblRowFieldDisplay(entity);
+                            var rows = theChoiceInGroup.ChoiceInFields.Select(x => x.ChoiceField).Select(x => x.Field).Select(x => x.TblRow).Distinct().ToList();
+                            foreach (var row in rows)
+                                ResetTblRowFieldDisplay(row);
                         }
                         else if (!theChange.ChangeSetting1 && !theChange.ChangeSetting2)
                         {
@@ -753,7 +753,7 @@ namespace ClassLibrary1.Model
                         {
                             Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject);
                             theTbl.TblTabWord = theChange.NewValueText;
-                            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theChange.ExistingObject);
+                            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theChange.ExistingObject);
                             changeMade = true;
                         }
                         else if (theChange.NewValueText != "" && theChange.ChangeSetting1 == false && theChange.ChangeSetting2 == true)
@@ -769,7 +769,7 @@ namespace ClassLibrary1.Model
                                 Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject);
                                 theTbl.SuppStylesHeader = theStrings[0];
                                 theTbl.SuppStylesMain = theStrings[1];
-                                CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theChange.ExistingObject);
+                                CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theChange.ExistingObject);
                             }
                             catch
                             {
@@ -890,28 +890,28 @@ namespace ClassLibrary1.Model
                 {
                     case TypeOfObject.AddressField:
                         {
-                            int entityID = DataContext.GetTable<AddressField>().Single(a => a.AddressFieldID == theChange.ExistingObject).Field.TblRowID;
-                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entityID);
+                            int tblRowID = DataContext.GetTable<AddressField>().Single(a => a.AddressFieldID == theChange.ExistingObject).Field.TblRowID;
+                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.TblColumn:
                         {
                             TblTab theTab = DataContext.GetTable<TblColumn>().Single(a => a.TblColumnID == theChange.ExistingObject).TblTab;
                             int TblID = theTab.TblID;
-                            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + TblID);
+                            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + TblID);
                         }
                         break;
                     case TypeOfObject.TblTab:
                         {
                             TblTab theTab = DataContext.GetTable<TblColumn>().Single(a => a.TblColumnID == theChange.ExistingObject).TblTab;
                             int TblID = theTab.TblID;
-                            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + TblID);
+                            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + TblID);
                         }
                         break;
                     case TypeOfObject.ChoiceField:
                         {
-                            int entityID = DataContext.GetTable<ChoiceField>().Single(a => a.ChoiceFieldID == theChange.ExistingObject).Field.TblRowID;
-                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entityID);
+                            int tblRowID = DataContext.GetTable<ChoiceField>().Single(a => a.ChoiceFieldID == theChange.ExistingObject).Field.TblRowID;
+                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.ChoiceGroup:
@@ -929,8 +929,8 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.ChoiceInField:
                         {
-                            int entityID = DataContext.GetTable<ChoiceInField>().Single(a => a.ChoiceInFieldID == theChange.ExistingObject).ChoiceField.Field.TblRowID;
-                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entityID);
+                            int tblRowID = DataContext.GetTable<ChoiceInField>().Single(a => a.ChoiceInFieldID == theChange.ExistingObject).ChoiceField.Field.TblRowID;
+                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.ChoiceInGroup:
@@ -954,8 +954,8 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.DateTimeField:
                         {
-                            int entityID = DataContext.GetTable<DateTimeField>().Single(a => a.DateTimeFieldID == theChange.ExistingObject).Field.TblRowID;
-                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entityID);
+                            int tblRowID = DataContext.GetTable<DateTimeField>().Single(a => a.DateTimeFieldID == theChange.ExistingObject).Field.TblRowID;
+                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.DateTimeFieldDefinition:
@@ -978,8 +978,8 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.Field:
                         {
-                            int entityID = DataContext.GetTable<Field>().Single(a => a.FieldID == theChange.ExistingObject).TblRowID;
-                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entityID);
+                            int tblRowID = DataContext.GetTable<Field>().Single(a => a.FieldID == theChange.ExistingObject).TblRowID;
+                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.FieldDefinition:
@@ -990,8 +990,8 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.NumberField:
                         {
-                            int entityID = DataContext.GetTable<NumberField>().Single(a => a.NumberFieldID == theChange.ExistingObject).Field.TblRowID;
-                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entityID);
+                            int tblRowID = DataContext.GetTable<NumberField>().Single(a => a.NumberFieldID == theChange.ExistingObject).Field.TblRowID;
+                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.NumberFieldDefinition:
@@ -1002,8 +1002,8 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.TextField:
                         {
-                            int entityID = DataContext.GetTable<TextField>().Single(a => a.TextFieldID == theChange.ExistingObject).Field.TblRowID;
-                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + entityID);
+                            int tblRowID = DataContext.GetTable<TextField>().Single(a => a.TextFieldID == theChange.ExistingObject).Field.TblRowID;
+                            CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.TextFieldDefinition:

@@ -36,7 +36,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
             bool SortOrderAscending = true; // may change below
             TblTab theTblTab = theHeaderRowInfo.dataAccess.R8RDB.GetTable<TblTab>().Single(cg => cg.TblTabID == theHeaderRowInfo.TblTabID);
             TblColumnToSort = theHeaderRowInfo.TblColumnToSortID;
-            SortByEntityName = theHeaderRowInfo.SortByEntityName;
+            SortByEntityName = theHeaderRowInfo.SortByTblRowName;
             SortOrderAscending = theHeaderRowInfo.ascending;
             //if (TblColumnToSort != null)
             //{
@@ -50,7 +50,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
             if (TblColumnToSort == null)
             {
                 if (SortByEntityName)
-                    theTableSortRule = new TableSortRuleEntityName(SortOrderAscending);
+                    theTableSortRule = new TableSortRuleRowName(SortOrderAscending);
                 else
                 {
                     //TblTab theTblTa2b;
@@ -81,7 +81,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
             SortByEntityName = false;
             DoSortOrderAscending = ((TableSortRuleTblColumn)theTableSortRule).Ascending;
         }
-        else if (theTableSortRule is TableSortRuleEntityName)
+        else if (theTableSortRule is TableSortRuleRowName)
         {
             SortByEntityName = true;
             TblColumnToSortID = null;
@@ -237,7 +237,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
             DoSortOrderAscending = aTableSortRule.Ascending;
             SortByEntityName = false;
         }
-        else if (aTableSortRule is TableSortRuleEntityName)
+        else if (aTableSortRule is TableSortRuleRowName)
         {
             SortByEntityName = true;
             TblColumnToSortID = null;

@@ -164,7 +164,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
                 string href = "";
                 if (ChartButton || SubstituteRefreshButton)
                 {
-                    int? RatingGroupID = DataAccess.GetRatingGroupForTblRowCategory((int)TblRowIDForChartButton, (int)TblColumnID);
+                    int? RatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn((int)TblRowIDForChartButton, (int)TblColumnID);
                     if (RatingGroupID != null)
                     {
                         TblColumn theCD = DataAccess.R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnID);

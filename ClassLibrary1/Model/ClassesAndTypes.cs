@@ -82,7 +82,7 @@ namespace ClassLibrary1.Model
         ChangeTblRows,
         ChangeChoiceGroups,
         ChangeCharacteristics,
-        ChangeCategories,
+        ChangeColumns,
         ChangeUsersRights,
         AdjustPoints,
         ChangeProposalSettings,
@@ -202,7 +202,7 @@ namespace ClassLibrary1.Model
 
     ///<summary>
     ///TblColumnInfo 
-    /// stores basic information about  a category descriptor.
+    /// stores basic information about  a table column.
     /// </summary>
     [TypeConverter(typeof(TblColumnInfoConverter))]
     public class TblColumnInfo
@@ -384,7 +384,7 @@ namespace ClassLibrary1.Model
     public class ActionType
     {
         /// <summary>
-        /// Indicates the action was a creation of an entity
+        /// Indicates the action was a creation of an tblRow
         /// </summary>
         public static char CREATE = 'C';
         /// <summary>

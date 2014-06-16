@@ -69,15 +69,8 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns a specified category descriptor object. For example, in a baseball prediction rating,
-        /// a category group might be "Fielding statistics," and a category descriptor might be "Errors."
-        /// TblColumnID: the id number
-        /// TblTabID: The TblTab of which this is a member.
-        /// DefaultRatingGroupAttributesID: The rating group attributes which, by default, should be
-        /// assigned to a rating group for this category descriptor for a particular entity.
-        /// CategoryNum: The order within the group (need not be unique).
-        /// Abbreviation: An abbreviation that can be used within tables.
-        /// Name: The name of the category descriptor.
+        /// Returns a specified table column object. For example, in a baseball prediction rating,
+        /// a table column group might be "Fielding statistics," and a table column might be "Errors."
         /// </summary>
         /// <param name="theID">The id of the TblColumn to be returned.</param>
         /// <returns>The specified TblColumn</returns>
@@ -88,8 +81,8 @@ namespace ClassLibrary1.Model
 
         /// <summary>
         /// Returns a TblTab object. For example, in an economic statistics prediction rating,
-        /// category groups might be "Labor Statistics" and "Trade Statistics."
-        /// TblTabID: The id number of the category group.
+        /// table column groups might be "Labor Statistics" and "Trade Statistics."
+        /// TblTabID: The id number of the table column group.
         /// TblID: The Tbl to which this TblTab belongs (e.g., an economic statistics Tbl)
         /// NumInTbl: The number (from 1 to the maximum) within the Tbl.
         /// Name: The name of the TblTab.
@@ -205,11 +198,11 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns an object that contains further information for a field descriptor that is a choice group,
-        /// and that connects the field descriptor to the choice group.
+        /// Returns an object that contains further information for a field definition that is a choice group,
+        /// and that connects the field definition to the choice group.
         /// ChoiceGroupFieldDefinitionID: The id of this object.
         /// ChoiceGroupID: The id of the corresponding choice group.
-        /// FieldDefinitionID: The id of the corresponding field descriptor.
+        /// FieldDefinitionID: The id of the corresponding field definition.
         /// DependentOnChoiceGroupFieldDefinitionID: If not null, then the CGFDID of a field that this choice group is dependent on.
         /// A choice group is dependent on another when the values displayed depend on the value of the corresponding
         /// field. For example, one choice group might represent "Divisions" and include "NL East," "NL Central," etc.
@@ -225,7 +218,7 @@ namespace ClassLibrary1.Model
 
         /// <summary>
         /// Returns a ChoiceInField object, which indicates a choice made from a ChoiceGroup 
-        /// for a particular field for a particular entity. For example, the ChoiceInField might 
+        /// for a particular field for a particular row. For example, the ChoiceInField might 
         /// represent "New York Mets" if the ChoiceGroup consists of baseball teams and the particular
         /// baseball player being described in the fields is a New York Met. If multiple
         /// selections are allowed, then there can be more than one ChoiceInField object for a 
@@ -249,7 +242,7 @@ namespace ClassLibrary1.Model
         /// ChoiceGroupID: The id of the ChoiceGroup for which this is a choice (e.g., "Teams").
         /// ChoiceNum: The number of the choice (from 1 to the maximum)
         /// ChoiceText: A string representing this choice (e.g., "New York Mets").
-        /// ActiveInGeneral: 1 if this is generally available as a choice, 0 if it has been retired (but still may exist for entities that already refer to it)
+        /// ActiveInGeneral: 1 if this is generally available as a choice, 0 if it has been retired (but still may exist for table rows that already refer to it)
         /// ActiveOnDeterminingGroupChoiceInGroupID: If the corresponding ChoiceGroupFieldDefinition has DependentOnChoiceGroupFieldDefinitionID value set, 
         /// then this choice will be active only if the value of the choice group or number field specified in
         /// DependentOnChoiceGroupFieldDefinitionID is set to the value specified here.
@@ -266,12 +259,12 @@ namespace ClassLibrary1.Model
         /// Returns a Tbl object. For example, "Pitchers" might be a Tbl in a "Baseball" prediction universe.
         /// TblID: The id of the Tbl
         /// PointsManagerID: The universe in which the Tbl is a part.
-        /// DefaultRatingGroupAttributesID: The default attributes for any rating group for an entity in this Tbl. This will
-        /// be copied by default to the category descriptors for the category groups in this Tbl, but can be overridden for a
-        /// particular category descriptor.
+        /// DefaultRatingGroupAttributesID: The default attributes for any rating group for a row in this Tbl. This will
+        /// be copied by default to the table columns for the table column groups in this Tbl, but can be overridden for a
+        /// particular table column.
         /// Name: The name of the object
         /// Creator: The user that created the object.
-        /// TblTabWord: The word that describes a category group in this Tbl. For example, "Type of statistics" might be
+        /// TblTabWord: The word that describes a table column group in this Tbl. For example, "Type of statistics" might be
         /// used for a baseball Tbl. Alternatives might be "Year" or "Type of statistics and year".
         /// </summary>
         /// <param name="theID"></param>
@@ -306,9 +299,9 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns an object that contains further information for a field descriptor that is a date/time field.
+        /// Returns an object that contains further information for a field definition that is a date/time field.
         /// DateTimeFieldDefinitionID: The id of this object.
-        /// FieldDefinitionID: The id of the corresponding field descriptor.
+        /// FieldDefinitionID: The id of the corresponding field definition.
         /// IncludeDate: 1 if this field should include date information.
         /// IncludeTime: 1 if this field should include time information
         /// </summary>
@@ -338,10 +331,10 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns an TblRow object. For example, in a baseball players rating, the entity might be a
+        /// Returns an TblRow object. For example, in a baseball players rating, the row might be a
         /// baseball player (or, if the Tbl is of hitting statistics, a particular batter).
-        /// TblRowID: Thd id number of the entity.
-        /// TblID: The Tbl in which this entity is a member. (For example, the name of a 
+        /// TblRowID: Thd id number of the row.
+        /// TblID: The Tbl in which this row is a member. (For example, the name of a 
         /// baseball player for whom various statistics are being predicted in a baseball prediction rating.)
         /// </summary>
         /// <param name="theID"></param>
@@ -352,15 +345,15 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns a Field object, which relates an entity to a piece of information about it.
-        /// For example, this object might connect a baseball player "Hank Aaron" to a field descriptor 
+        /// Returns a Field object, which relates a row to a piece of information about it.
+        /// For example, this object might connect a baseball player "Hank Aaron" to a field definition 
         /// "Country of Origin." Note that this does not actually contain the information within the field.
         /// Rather, a TextField, NumberField, ChoiceField object will contain the actual information and refer back
-        /// to this object. There will be one Field object created for each information field for each entity.
+        /// to this object. There will be one Field object created for each information field for each row.
         /// </summary>
         /// FieldID: The id of this field object
-        /// TblRowID: The id of the entity object
-        /// FieldDefinitionID: The id of the field descriptor object.
+        /// TblRowID: The id of the row object
+        /// FieldDefinitionID: The id of the field definition object.
         /// <param name="theID"></param>
         /// <returns></returns>
         public Field GetField(int theID)
@@ -370,15 +363,15 @@ namespace ClassLibrary1.Model
 
         /// <summary>
         /// Returns a FieldDefinition object, which identifies a type of information to be kept about
-        /// entities in a Tbl. 
-        /// FieldDefinitionID: The id of the field descriptor object
-        /// TblID: The id of the Tbl (e.g., "Hitting Statistics") whose entities (e.g., "Players") have fields being described.
+        /// table rows in a Tbl. 
+        /// FieldDefinitionID: The id of the field definition object
+        /// TblID: The id of the Tbl (e.g., "Hitting Statistics") whose table rows (e.g., "Players") have fields being described.
         /// FieldNum: The number of the field (from 1 to the maximum, need not be unique or complete)
         /// FieldName: The name of the field (e.g., "Country of origin")
         /// FieldType: An enumerated type indicating what type of information this is (e.g., text, number, choice group, location, date, etc.)
         /// If the field type is a choice group, then there will be a ChoiceGroupFieldDefinition object with further information.
         /// UseAsFilter: If 1, then when this Tbl is being displayed, the user should be allowed to filter the data by selecting
-        /// only entities who match a range of values within this field.
+        /// only table rows who match a range of values within this field.
         /// </summary>
         /// <param name="theID"></param>
         /// <returns></returns>
@@ -404,12 +397,12 @@ namespace ClassLibrary1.Model
         /// MayPredict: 1 if user may enter predictions.
         /// MayAddTbls: 1 if user may define new Tbls to add.
         /// MayResolveRatings: 1 if user may resolve ratings (i.e., set the final values, or declare the winning outcome)
-        /// MayChangeTblRows: 1 if user may add new entities, delete new entities, and change fields for entities
+        /// MayChangeTblRows: 1 if user may add new table rows, delete new table rows, and change fields for table rows
         /// MayChangeChoiceGroups: 1 if user may inactivate choices in choice groups and add new choices
         /// MayChangeCharacteristics: 1 if user may change rating grop attributes, rating phases, subsidy density groups,
         /// and other attributes of ratings. Note that if attributes are changed for running ratings, then the ratings
         /// must end and then be restarted.
-        /// MayChangeCategories: 1 if user may delete or add categories.
+        /// MayChangeCategories: 1 if user may delete or add columns.
         /// MayChangeUsersRights: 1 if user may change these rights for self or other users.
         /// MayAdjustPoints: 1 if user may adjust other users' points.
         /// MayChangeProposalSettings: 1 if user may change ProposalSettings values.
@@ -493,12 +486,12 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns an object representing a group of ratings (corresponding to a particular entity
+        /// Returns an object representing a group of ratings (corresponding to a particular row
         /// and category). For example, in the baseball ratings, this might represent a single rating
-        /// predicting batting average (the category descriptor) for a particular player (the entity).
+        /// predicting batting average (the table column) for a particular player (the row).
         /// RatingGroupID: The id of this object.
         /// RatingGroupAttributesID: An object specifying attributes for this group.
-        /// TblRowID: The entity corresponding to this rating group.
+        /// TblRowID: The row corresponding to this rating group.
         /// TblColumnID: The category within which this rating group falls.
         /// Activated: Whether this rating group has been activated.
         /// </summary>
@@ -605,9 +598,9 @@ namespace ClassLibrary1.Model
         }
         
         /// <summary>
-        /// Returns an object that contains further information for a field descriptor that is a number.
+        /// Returns an object that contains further information for a field definition that is a number.
         /// NumberFieldDefinitionID: The id of this object.
-        /// FieldDefinitionID: The id of the corresponding field descriptor.
+        /// FieldDefinitionID: The id of the corresponding field definition.
         /// Minimum: The minimum value of a number in this field
         /// Maximum: The maximum value of a number in this field
         /// DecimalPlaces: The number of decimal places to display
@@ -621,11 +614,11 @@ namespace ClassLibrary1.Model
 
         /// <summary>
         /// Returns an object representing special rating group attributes to be used for a particular 
-        /// entity and category, instead of the default rating group attributes that ordinarily would be
-        /// used for that category.
+        /// row and column, instead of the default rating group attributes that ordinarily would be
+        /// used for that column.
         /// OverrideCharacteristicsID: The id of this object.
         /// RatingGroupAttributesID: The id of the rating group attributes to use
-        /// TblRowID: The entity for which we want to use these characteristics
+        /// TblRowID: The row for which we want to use these characteristics
         /// TblColumnID: The category for which we wish to override the characteristics
         /// </summary>
         /// <param name="theID"></param>
@@ -743,7 +736,7 @@ namespace ClassLibrary1.Model
         /// UsersMayProposeChangingChoiceGroups: If 1, users may inactivate choices in choice groups or add new choices
         /// UsersMayProposeChangingCharacteristics: If 1, users may change rating group attributes, characteristics, subisdy
         /// density ranges, etc. Note that these changes would be effected by terminating and restarting all ratings.
-        /// UsersMayProposeChangingCategories: If 1, users may propose changing category groups and descriptors.
+        /// UsersMayProposeChangingColumns: If 1, users may propose changing table column groups and descriptors.
         /// UsersMayPropeChangingUsersRights: If 1, users may propose changing rights of particular or default users
         /// UsersMayProposeAdjustingPoints: If 1, users may propose adjusting particular users' points.
         /// UsersMayProposeChangingProposalSettings: If 1, users may propose changing settings such as these.
@@ -924,7 +917,7 @@ namespace ClassLibrary1.Model
         /// MayChangeCharacteristics: 1 if user may change rating grop attributes, rating phases, subsidy density groups,
         /// and other attributes of ratings. Note that if attributes are changed for running ratings, then the ratings
         /// must end and then be restarted.
-        /// MayChangeCategories: 1 if user may delete or add categories.
+        /// MayChangeColumns: 1 if user may delete or add categories.
         /// MayChangeUsersRights: 1 if user may change these rights for self or other users.
         /// MayAdjustPoints: 1 if user may adjust other users' points.
         /// MayChangeProposalSettings: 1 if user may change ProposalSettings values.
@@ -1188,7 +1181,7 @@ namespace ClassLibrary1.Model
                     case UserActionType.ChangeCharacteristics:
                         returnVal = theRights.MayChangeCharacteristics;
                         break;
-                    case UserActionType.ChangeCategories:
+                    case UserActionType.ChangeColumns:
                         returnVal = theRights.MayChangeCategories;
                         break;
                     case UserActionType.ChangeUsersRights:
@@ -1238,8 +1231,8 @@ namespace ClassLibrary1.Model
                         case UserActionType.ChangeCharacteristics:
                             returnVal = theProposalSettings.UsersMayProposeChangingCharacteristics;
                             break;
-                        case UserActionType.ChangeCategories:
-                            returnVal = theProposalSettings.UsersMayProposeChangingCategories;
+                        case UserActionType.ChangeColumns:
+                            returnVal = theProposalSettings.UsersMayProposeChangingColumns;
                             break;
                         case UserActionType.ChangeUsersRights:
                             returnVal = theProposalSettings.UsersMayProposeChangingUsersRights;
@@ -1308,7 +1301,7 @@ namespace ClassLibrary1.Model
                 return false;
             int pointsManagerID = theTbl.PointsManagerID;
 
-            retval = CheckUserRights(userID, UserActionType.ChangeCategories, false, pointsManagerID, TblID);
+            retval = CheckUserRights(userID, UserActionType.ChangeColumns, false, pointsManagerID, TblID);
             if (retval == true)
             {
                 return retval;
@@ -1327,15 +1320,15 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns the rating hierarchy data based on the current status of the marktes for the entity and the category.
+        /// Returns the rating hierarchy data based on the current status of the marktes for the row and the category.
         /// </summary>
         /// <param name="theTblRowID"></param>
         /// <param name="theTblColumnID"></param>
         /// <returns></returns>
-        public RatingHierarchyData GetRatingHierarchyDataForTblRowCategory(int theTblRowID, int theTblColumnID, ref int? ratingGroupID)
+        public RatingHierarchyData GetRatingHierarchyDataForTblRowAndColumn(int theTblRowID, int theTblColumnID, ref int? ratingGroupID)
         {
             RatingHierarchyData theData = new RatingHierarchyData();
-            ratingGroupID = GetRatingGroupForTblRowCategory(theTblRowID, theTblColumnID);
+            ratingGroupID = GetRatingGroupForTblRowAndColumn(theTblRowID, theTblColumnID);
             if (ratingGroupID != null)
                 AddRatingGroupToRatingHierarchyData((int)ratingGroupID, ref theData, 1);
             return theData;
@@ -1349,10 +1342,10 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns the rating group attributes id for the entity for the specified category descriptor.
+        /// Returns the rating group attributes id for the row for the specified column.
         /// </summary>
-        /// <param name="theTblRowID">The entity</param>
-        /// <param name="theTblColumnID">The category descriptor</param>
+        /// <param name="theTblRowID">The row</param>
+        /// <param name="theTblColumnID">The column</param>
         /// <returns></returns>
         public int GetRatingGroupAttributesForTblRowAndColumn(int theTblRowID, int theTblColumnID)
         {
@@ -1365,12 +1358,12 @@ namespace ClassLibrary1.Model
             //    return overrideCharacteristics.RatingGroupAttributesID;
         }
         /// <summary>
-        /// Returns the topmost rating group for an entity for the specified category descriptor.
+        /// Returns the topmost rating group for a tblRow for the specified table column.
         /// </summary>
         /// <param name="theTblRowID"></param>
         /// <param name="theTblColumnID"></param>
         /// <returns></returns>
-        public int? GetRatingGroupForTblRowCategory(int theTblRowID, int theTblColumnID)
+        public int? GetRatingGroupForTblRowAndColumn(int theTblRowID, int theTblColumnID)
         {
             var theRatingGroups = R8RDB.GetTable<RatingGroup>().Where(mg => (mg.Status == (Byte)StatusOfObject.Active || mg.Status == (Byte)StatusOfObject.DerivativelyUnavailable) &&
                                             mg.TblRowID == theTblRowID && mg.TblColumnID == theTblColumnID
@@ -1383,7 +1376,7 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Adds a rating group to rating hierarchy routine. A helper routine for GetRatingHierarchyDataForTblRowCategory,
+        /// Adds a rating group to rating hierarchy routine. A helper routine for GetRatingHierarchyDataForTblRowAndColumn,
         /// which calls itself recursively for owned rating groups.
         /// </summary>
         /// <param name="ratingGroupID">The rating group whose data should be added to the hierarchy</param>

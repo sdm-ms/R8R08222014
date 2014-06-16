@@ -29,7 +29,7 @@ namespace ClassLibrary1.Model
                 theFormatting = theDataAccessModule.R8RDB.GetTable<TblColumnFormatting>().SingleOrDefault(cdf => cdf.TblColumnID == TblColumnID);
                 int theTblID = theDataAccessModule.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID).TblTab.TblID;
                 string[] myDependencies = {
-                                    "CategoriesForTblID" + theTblID.ToString()
+                                    "ColumnsForTblID" + theTblID.ToString()
                                                       };
                 CacheManagement.AddItemToCache(cacheKey, myDependencies, theFormatting);
             }

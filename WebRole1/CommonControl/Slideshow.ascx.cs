@@ -26,7 +26,7 @@ namespace WebApplication1.CommonControl
         public class TblRowRatingSummary
         {
             public TblRow theTblRow;
-            public List<CategoryAndRating> theInfo;
+            public List<ColumnAndRating> theInfo;
         }
 
         protected List<TblRowRatingSummary> GetRatingsOfBestData()
@@ -42,8 +42,8 @@ namespace WebApplication1.CommonControl
                                 mg.TblColumn.TblTab == e.Tbl.TblTabs.
                                  OrderBy(cg => cg.NumInTbl)
                                  .First() && mg.RatingGroupAttribute.Name.StartsWith("Rating"))
-                                 .Select(y => new CategoryAndRating { 
-                                     Category = y.TblColumn.Name, 
+                                 .Select(y => new ColumnAndRating { 
+                                     Column = y.TblColumn.Name, 
                                      ColumnID = y.TblColumnID,
                                      Rating = y.CurrentValueOfFirstRating ?? 0})
                                  .ToList()

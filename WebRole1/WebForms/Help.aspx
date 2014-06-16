@@ -211,7 +211,7 @@
             compare yourself to all of the other users who have entered ratings on a table
             by adding "/Leaders" to the URL. For example, go
             to http://rateroo.com/Actors/Leaders to see users who have made ratings in the Actors
-            category.)</li>
+            table.)</li>
         <li><a name="17"><b>What if the correct rating for an event isn’t clear even after an
             event has concluded?</b> R8R may resolve such a situation in its discretion.
             For example, we may resolve the ambiguity as we see fit, we may enact some compromise,

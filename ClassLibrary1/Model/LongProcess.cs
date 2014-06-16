@@ -91,11 +91,11 @@ namespace ClassLibrary1.Model
         int numberToDoEachTime { get; set; }
         string uploadFileLocation { get; set; }
         string logFileLocation { get; set; }
-        string entityType { get; set; }
+        string tblRowType { get; set; }
         int userID { get; set; }
         bool copyValuesIntoTbl { get; set; }
 
-        public UploadTblRowsInfo(int TblID, int startingAtNumber, int totalNumberToDo, int numberToDo, string uploadFileLoc, string logFileLoc, string entityType, int userID, bool copyValuesIntoTbl)
+        public UploadTblRowsInfo(int TblID, int startingAtNumber, int totalNumberToDo, int numberToDo, string uploadFileLoc, string logFileLoc, string tblRowType, int userID, bool copyValuesIntoTbl)
         {
             this.TblID = TblID;
             this.startingAtNumber = startingAtNumber;
@@ -103,7 +103,7 @@ namespace ClassLibrary1.Model
             this.numberToDoEachTime = numberToDo;
             this.uploadFileLocation = uploadFileLoc;
             this.logFileLocation = logFileLoc;
-            this.entityType = entityType;
+            this.tblRowType = tblRowType;
             this.userID = userID;
             this.copyValuesIntoTbl = copyValuesIntoTbl;
         }
@@ -118,7 +118,7 @@ namespace ClassLibrary1.Model
             int lastRecordToDo = (int)elementNumber + numberToDoEachTime - 1;
             if (lastRecordToDo > lastRecord)
                 lastRecordToDo = lastRecord;
-            myImporter.PerformImportHelper(uploadFileLocation, logFileLocation, entityType, userID, (int)elementNumber, lastRecordToDo, copyValuesIntoTbl);
+            myImporter.PerformImportHelper(uploadFileLocation, logFileLocation, tblRowType, userID, (int)elementNumber, lastRecordToDo, copyValuesIntoTbl);
             if (lastRecordToDo == lastRecord)
             {
                 File.Delete(uploadFileLocation);
@@ -311,7 +311,7 @@ namespace ClassLibrary1.Model
 
                     if (myLongProcess.TypeOfProcess == (int)LongProcessTypes.uploadTblRows)
                     {
-                        Trace.TraceInformation("About to continue upload entities long process.");
+                        Trace.TraceInformation("About to continue upload table rows long process.");
                         UploadTblRowsInfo myUploadInfo = null;
                         myUploadInfo = (UploadTblRowsInfo)binFormat.Deserialize(mStream);
                         if (myUploadInfo != null)

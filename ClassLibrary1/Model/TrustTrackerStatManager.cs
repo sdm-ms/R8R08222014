@@ -133,8 +133,8 @@ namespace ClassLibrary1.Model
             SetStats(theUserRating.PreviousRatingOrVirtualRating, theUserRating.PreviousDisplayedRating, theUserRating.PreviousDisplayedRating ?? theUserRating.PreviousRatingOrVirtualRating, theUserRating.EnteredUserRating, theUserRating.LastWeekDistanceFromStart, theUserRating.LastWeekPushback, theUserRating.LastYearPushback, theUserRating.UserRatingNumberForUser == 1, theUserRating.IsUsersFirstWeek, theRatingCharacteristic, theUserRating.LogarithmicBase);
         }
 
-        public static float MinThresholdToBeConsideredHighMagnitudeRating = 0.3F; // a userrating with less than a 30% change will get a 0 in this category
-        public static float MaxThresholdToBeConsideredLowMagnitudeRating = 0.7F; // a userrating with more than a 70% change will get a 0 in this category
+        public static float MinThresholdToBeConsideredHighMagnitudeRating = 0.3F; // a userrating with less than a 30% change will get a 0 in this column
+        public static float MaxThresholdToBeConsideredLowMagnitudeRating = 0.7F; // a userrating with more than a 70% change will get a 0 in this column
 
         /// <summary>
         /// Set the Stat Manager's statistics based on data reflecting the situation at the time the user entered the UserRating.

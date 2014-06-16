@@ -11704,7 +11704,7 @@ namespace ClassLibrary1.Model
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeCategories", DbType="Bit NOT NULL")]
-		public bool MayChangeCategories
+		public bool MayChangeColumns
 		{
 			get
 			{
@@ -13914,7 +13914,7 @@ namespace ClassLibrary1.Model
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingCategories", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeChangingCategories
+		public bool UsersMayProposeChangingColumns
 		{
 			get
 			{

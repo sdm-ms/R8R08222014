@@ -483,22 +483,6 @@ namespace ClassLibrary1.Model
                     break;
                 case TypeOfObject.TblColumn:
                     TblColumn theTblColumn = R8RDB.GetTable<TblColumn>().Single(x => x.TblColumnID == objectID);
-                    //if (theStatus == StatusOfObject.Active && theTblColumn.Status != (Byte)StatusOfObject.Active)
-                    //{
-                    //    bool keepLooking = true;
-
-                    //    do
-                    //    {
-                    //        TblColumn match = R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.Status == (Byte)StatusOfObject.Active
-                    //                                       && cd.TblTabID == theTblColumn.TblTabID
-                    //                                       && cd.CategoryNum == theTblColumn.CategoryNum);
-                    //        if (match == null)
-                    //            keepLooking = false;
-                    //        else
-                    //            theTblColumn.CategoryNum++;
-                    //    } while (keepLooking);
-
-                    //}
                     theTblColumn.Status = newValue;
                     break;
                 case TypeOfObject.TblTab:

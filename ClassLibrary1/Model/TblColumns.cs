@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
             if (theList == null)
             {
                 theList = dataContext.GetTable<TblColumn>().Where(x => x.TblTabID == tabID && x.Status == (int)StatusOfObject.Active).OrderBy(x => x.CategoryNum).ThenBy(x => x.TblColumnID).ToList();
-                CacheManagement.AddItemToCache(cacheKey, new string[] { "CategoriesForTblID" + tblID.ToString() }, theList, new TimeSpan(1, 0, 0));
+                CacheManagement.AddItemToCache(cacheKey, new string[] { "ColumnsForTblID" + tblID.ToString() }, theList, new TimeSpan(1, 0, 0));
             }
 
             return theList;
@@ -51,26 +51,26 @@ namespace ClassLibrary1.Model
     /// </summary>
     public partial class R8RDataManipulation
     {
-        //  Methods related to categories
+        //  Methods related to columns
 
         
 
         /// <summary>
-        /// Returns the number of active categories in a particular category group
+        /// Returns the number of active columns in a particular table column group
         /// </summary>
-        /// <param name="TblTabID">The category group</param>
-        /// <returns>The number of categories within that category group</returns>
+        /// <param name="TblTabID">The table column group</param>
+        /// <returns>The number of columns within that table column group</returns>
         public int CountTblColumnsForTblTab(int TblTabID)
         {
             return DataContext.GetTable<TblColumn>().Where(c => c.TblTabID == TblTabID && c.Status == (Byte)StatusOfObject.Active).Count();
         }
 
         /// <summary>
-        /// Returns the number of active categories for all groups in a Tbl.
+        /// Returns the number of active columns for all groups in a Tbl.
         /// </summary>
         /// <param name="TblID">The Tbl</param>
-        /// <returns>The number of categories in the Tbl</returns>
-        public int CountCategoriesForTbl(int TblID)
+        /// <returns>The number of columns in the Tbl</returns>
+        public int CountColumnsForTbl(int TblID)
         {
             var theTblTabs = DataContext.GetTable<TblTab>().Where(cg => cg.TblID == TblID && cg.Status == (Byte)StatusOfObject.Active);
             int total = 0;
@@ -80,50 +80,50 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Deletes a category descriptor and all associated ratings.
+        /// Deletes a table column and all associated ratings.
         /// </summary>
-        /// <param name="TblColumnID">The category descriptor to delete</param>
+        /// <param name="TblColumnID">The table column to delete</param>
         /// <returns></returns>
         //public void DeleteTblColumn(int TblColumnID)
         //{
            
-        //    TblColumn theDescriptor = R8RDB.GetTable<TblColumn>().Single(x=>x.TblColumnID==TblColumnID);
-        //    TblTab theTblTab = theDescriptor.TblTab;
+        //    TblColumn theTblColumn = R8RDB.GetTable<TblColumn>().Single(x=>x.TblColumnID==TblColumnID);
+        //    TblTab theTblTab = theTblColumn.TblTab;
         //    if (theTblTab.DefaultSortTblColumnID == TblColumnID)
         //    {
         //        theTblTab.DefaultSortTblColumnID = null;
         //    }
-        //    var referringTblRows = R8RDB.GetTable<TblRow>().Where(e => e.Status == (Byte)StatusOfObject.Active && e.TblID == theDescriptor.TblTab.TblID);
+        //    var referringTblRows = R8RDB.GetTable<TblRow>().Where(e => e.Status == (Byte)StatusOfObject.Active && e.TblID == theTblColumn.TblTab.TblID);
         //    foreach (var referringTblRow in referringTblRows)
         //    {
-        //        int? ratingGroupID = GetTopRatingGroupForTblRowCategory(referringTblRow.TblRowID, TblColumnID);
+        //        int? ratingGroupID = GetTopRatingGroupForTblRowAndColumn(referringTblRow.TblRowID, TblColumnID);
         //        if (ratingGroupID != null)
         //            EndRatingGroupAndSubgroupsAtCurrentValues((int)ratingGroupID);
         //    }
-        //    R8RDB.GetTable<TblColumn>().DeleteOnSubmit(theDescriptor);
+        //    R8RDB.GetTable<TblColumn>().DeleteOnSubmit(theTblColumn);
         //    R8RDB.SubmitChanges();
         //}
 
         /// <summary>
-        /// Deletes a category group (including all category descriptors and ratings within)
+        /// Deletes a table column group (including all table columns and ratings within)
         /// </summary>
         /// <param name="TblTabID"></param>
         //public void DeleteTblTab(int TblTabID)
         //{
             
         //    TblTab theGroup = R8RDB.GetTable<TblTab>().Single(x=>x.TblTabID==TblTabID);
-        //    var referringDescriptors = R8RDB.GetTable<TblColumn>().Where(cd => cd.Status == (Byte)StatusOfObject.Active && cd.TblTabID == TblTabID);
-        //    foreach (var referringDescriptor in referringDescriptors)
-        //        DeleteTblColumn(referringDescriptor.TblColumnID);
+        //    var referringColumns = R8RDB.GetTable<TblColumn>().Where(cd => cd.Status == (Byte)StatusOfObject.Active && cd.TblTabID == TblTabID);
+        //    foreach (var referringColumn in referringColumns)
+        //        DeleteTblColumn(referringColumn.TblColumnID);
         //    R8RDB.GetTable<TblTab>().DeleteOnSubmit(theGroup);
         //    R8RDB.SubmitChanges();
         //}
 
         /// <summary>
-        /// Change default sort category descriptor of category group
+        /// Change default sort table column of table column group
         /// </summary>
-        /// <param name="TblTabID">The category group Id to change</param>
-        /// <param name="defaultSortTblColumnID">The category descriptor id to set as default sort</param>
+        /// <param name="TblTabID">The table column group Id to change</param>
+        /// <param name="defaultSortTblColumnID">The table column id to set as default sort</param>
         public void ChangeTblTabDefaultSort(int TblTabID,int? defaultSortTblColumnID)
         {
             TblTab theGroup = DataContext.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID);
@@ -134,10 +134,10 @@ namespace ClassLibrary1.Model
 
         public void ChangeTblColumnSortOptions(int TblColumnID,bool useAsFilter,bool sortable,bool defaultSortOrderAscending)
         {
-            TblColumn theDescriptor = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == TblColumnID);
-            theDescriptor.UseAsFilter = useAsFilter;
-            theDescriptor.Sortable = sortable;
-            theDescriptor.DefaultSortOrderAscending = defaultSortOrderAscending;
+            TblColumn tblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == TblColumnID);
+            tblColumn.UseAsFilter = useAsFilter;
+            tblColumn.Sortable = sortable;
+            tblColumn.DefaultSortOrderAscending = defaultSortOrderAscending;
             DataContext.SubmitChanges();
 
         }

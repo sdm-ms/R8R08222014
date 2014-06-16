@@ -141,6 +141,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void UserInteractionStatsAreCorrectBetweenTwoTrustedUsersWhoSequentiallyRateARatingPreviouslyRatedByOneOtherTrustedUserWhereAdjustmentPercentageIsBetween0And1()
         {
             const decimal maxRating = 10M;
@@ -227,6 +228,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void UserInteractionStatsAreZeroBetweenTwoUsersWhoRateARatingPreviouslyRatedByATrustedUserAndThenSubsequentlyRatedByAnotherTrustedUser()
         {
             TestHelper.CreateSimpleTestTable(true);
@@ -253,6 +255,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void UserInteractionStatsForAUserWhoRatesARatingPreviouslyRatedByThreeTrustedUsersShouldBeStableAcrossWaitIdleTasksAndRecalculation()
         {
             TestHelper.CreateSimpleTestTable(true);
@@ -336,6 +339,7 @@ namespace TestProject1
         /// routines for the table). Feel free to change as necessary so that the test is actually testing correctly.
         /// </summary>
         [TestMethod]
+        [Category("IntegrationTest")]
         public void UserInteractionStatsForTwoUsersWhoEachRateTwoRatingsShouldEqualPredictedValues()
         {
             Initialize();
@@ -497,6 +501,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void WeightInCalculatingTrustTotalForTwoUsersWhoEachRateTwoRatingsShouldEqualPredictedValue()
         {
             Initialize();
@@ -700,6 +705,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void TestTrustTracker_LatestEgalitarianTrustUpdatesCorrectly()
         {
             Initialize();
@@ -818,6 +824,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestTrustTracker_CalculatesUserInteractionStatAndTrustTrackerStatCorrectlyWhenOneUserIsReratedByTwoDifferentUsers()
         {
             // For each separate rating, the first user rating can be higher or lower than the base level of 5.0.
@@ -832,6 +839,7 @@ namespace TestProject1
                             decimal[] secondSequence = new decimal[] { secondSequenceFirstUserRating, secondSequenceFirstUserRating + secondSequenceRelativeSecondRating };
                             TestTrustTracker_CalculatesUserInteractionStatAndTrustTrackerStatCorrectly_WhenOneUserIsReratedByTwoDifferentUsers_Helper(firstSequence, secondSequence);
                         }
+            (0 == 0).Should().BeTrue(); // can put breakpoint here after test
         }
 
         private void TestTrustTracker_CalculatesUserInteractionStatAndTrustTrackerStatCorrectly_WhenOneUserIsReratedByTwoDifferentUsers_Helper(decimal[] firstSequence, decimal[] secondSequence)
@@ -1172,6 +1180,7 @@ x.UserID == TestHelper.UserIds[1]);
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestTrustTracking_UserInteractionStatsAreUndoneProperly()
         {
             //RandomGenerator.SeedOverride = 1; // 0 means use date & time
@@ -1233,6 +1242,7 @@ x.UserID == TestHelper.UserIds[1]);
         }
 
         [TestMethod]
+        [Category("Long")]
         public void TestTrustTracking_RatingsByBadSetOfUsersAdjustBack()
         {
             RandomGenerator.SeedOverride = 1; // 0 means use date & time
@@ -1331,6 +1341,7 @@ x.UserID == TestHelper.UserIds[1]);
         /// applied after the idle tasks.
         /// </summary>
         [TestMethod]
+        [Category("Long")]
         public void TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel()
         {
             TestTrustTracking_RatingValuesAdjustBasedOnChangesInTrustLevel_Helper(0.6F, true, false);

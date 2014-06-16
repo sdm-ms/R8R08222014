@@ -328,7 +328,7 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// If there is no previous prediction (i.e., this is first trusted one), then we need an alternative to the previous prediction
         /// as the basis of calculating a score for the rating. We use an average value for the current prediction in ratings of
-        /// that type (typically within the same category descriptor), or the mean of the lowest and highest values if that isn't
+        /// that type (typically within the same table column), or the mean of the lowest and highest values if that isn't
         /// available.
         /// </summary>
         /// <param name="ratingID"></param>

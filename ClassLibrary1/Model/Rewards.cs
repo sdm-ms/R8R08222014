@@ -86,7 +86,7 @@ namespace ClassLibrary1.Model
 
                 R8RDataAccess theDataAccess = new R8RDataAccess();
                 FieldSetDataInfo theFieldSetDataInfo = new FieldSetDataInfo(null, userChangesTbl, theDataAccess);
-                theFieldSetDataInfo.theEntityName = changeName;
+                theFieldSetDataInfo.theRowName = changeName;
                 User theUser = DataContext.GetTable<User>().Single(u => u.UserID == userID);
                 RewardRatingSetting theRMS = DataContext.GetTable<RewardRatingSetting>().Single(rms => rms.PointsManagerID == userChangesTbl.PointsManagerID && rms.Status == (Byte)(StatusOfObject.Active));
                 decimal totalMultiplier = (baseMultiplierOverride ?? theRMS.Multiplier ?? 1M) * (supplementalMultiplier ?? 1M);

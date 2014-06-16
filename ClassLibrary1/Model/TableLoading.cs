@@ -67,7 +67,7 @@ namespace ClassLibrary1.Model
 
                 string theHeaderRow = "";
                 if (includeHeaderRow)
-                    theHeaderRow = LoadHeaderRowFromWebService(theDataAccess, theTableInfo.TblTabID, (theTableSortRule is TableSortRuleTblColumn ? (int?)((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTableSortRule is TableSortRuleEntityName, theTableSortRule.Ascending, theTbl.TblID);
+                    theHeaderRow = LoadHeaderRowFromWebService(theDataAccess, theTableInfo.TblTabID, (theTableSortRule is TableSortRuleTblColumn ? (int?)((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTableSortRule is TableSortRuleRowName, theTableSortRule.Ascending, theTbl.TblID);
 
                 //ProfileSimple.Start("GetTablePopulateResponse"); // QUERYTIMING
                 TablePopulateResponse theResponse = GetTablePopulateResponse(firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, thePointsManager, theTbl, theHeaderRow, rowCountOverride);
@@ -283,7 +283,7 @@ namespace ClassLibrary1.Model
             maxNumResults = null;
             rowCountOverride = null;
             theTableSortRule = TableSortRuleGenerator.GetTableSortRuleFromStringRepresentation(theTableInfo.SortInstruction);
-            if (theTableSortRule is TableSortRuleEntityName)
+            if (theTableSortRule is TableSortRuleRowName)
                 maxNumResults = null;
             else if (theTableSortRule is TableSortRuleDistance)
             {
@@ -369,7 +369,7 @@ namespace ClassLibrary1.Model
             //    theBodyOfRow = LoadBodyOfRowFromWebServiceForComplexTbl(theDataAccess, theTblTabID, suppStyle, theTblRowID, theTbl.TblID);
             //    string[] myDependencies = {
             //                            "RatingsForTblRowIDAndTblTabID" + theTblRowID.ToString() + "," + theTblTabID.ToString(),
-            //                            "CategoriesForTblID" + theTblID.ToString()
+            //                            "ColumnsForTblID" + theTblID.ToString()
             //                                              };
             //    CacheManagement.AddItemToCache(myCacheKeyBodyRow, myDependencies, theBodyOfRow);
             //}
@@ -543,7 +543,7 @@ namespace ClassLibrary1.Model
             return theRowHeading;
         }
 
-        private static string LoadHeaderRowFromWebService(R8RDataAccess theDataAccess, int TblTabID, int? TblColumnToSortID, bool sortByEntityName, bool ascending, int theTblID)
+        private static string LoadHeaderRowFromWebService(R8RDataAccess theDataAccess, int TblTabID, int? TblColumnToSortID, bool sortByTblRowName, bool ascending, int theTblID)
         {
             string theHeaderRow;
             string myCacheKeyHeaderRow = "HeaderRow" + TblTabID + TblColumnToSortID + ascending;
@@ -554,11 +554,11 @@ namespace ClassLibrary1.Model
                 theInfo.dataAccess = theDataAccess;
                 theInfo.TblTabID = TblTabID;
                 theInfo.TblColumnToSortID = TblColumnToSortID;
-                theInfo.SortByEntityName = sortByEntityName;
+                theInfo.SortByTblRowName = sortByTblRowName;
                 theInfo.ascending = ascending;
                 theHeaderRow = MoreStrings.MoreStringManip.RenderUnloadedUserControl("~/Main/Table/HeaderRow.ascx", "theHeaderRowInfo", theInfo);
                 string[] myDependencies = {
-                    "CategoriesForTblID" + theTblID.ToString()
+                    "ColumnsForTblID" + theTblID.ToString()
                           };
                 CacheManagement.AddItemToCache(myCacheKeyHeaderRow, myDependencies, theHeaderRow);
             }

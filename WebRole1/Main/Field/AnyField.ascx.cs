@@ -22,7 +22,7 @@ public partial class AnyFieldFilter : System.Web.UI.UserControl, IFilterField
     public int FieldDefinitionOrTblColumnID {get; set;}
     public R8RDataAccess DataAccess { get; set; }
     public FieldDefinitionInfo FieldInfo { get; set; }
-    public TblColumnInfo CatDesInfo { get; set; }
+    public TblColumnInfo TblColInfo { get; set; }
     public System.Web.UI.UserControl theField;
 
     public AnyFieldFilter()
@@ -73,7 +73,7 @@ public partial class AnyFieldFilter : System.Web.UI.UserControl, IFilterField
             }
 
         }
-        else if (CatDesInfo != null)
+        else if (TblColInfo != null)
         {
             if (Mode == FieldsBoxMode.addTblRow)
             {
@@ -81,20 +81,20 @@ public partial class AnyFieldFilter : System.Web.UI.UserControl, IFilterField
             }
             else
             {
-                theField = (System.Web.UI.UserControl)LoadControl("~/Main/Field/CategoryFilter.ascx");
+                theField = (System.Web.UI.UserControl)LoadControl("~/Main/Field/OpinionColumnFilter.ascx");
             }
             ((IFilterField)theField).DataAccess = DataAccess;
-            ((IFilterField)theField).FieldDefinitionOrTblColumnID = CatDesInfo.TblColumnID;
+            ((IFilterField)theField).FieldDefinitionOrTblColumnID = TblColInfo.TblColumnID;
             PlaceHolder1.Controls.Add(theField);
         }
     }
 
     public UserSelectedRatingInfo GetUserSelectedRatingInfo()
     {
-        if (CatDesInfo == null || Mode != FieldsBoxMode.addTblRow)
+        if (TblColInfo == null || Mode != FieldsBoxMode.addTblRow)
             return null;
         UserSelectedRatingInfo theRatingInfo = ((RatingTypeSelector)theField).GetUserSelectedRatingInfo();
-        theRatingInfo.theColumnID = CatDesInfo.TblColumnID;
+        theRatingInfo.theColumnID = TblColInfo.TblColumnID;
         return theRatingInfo;
     }
 

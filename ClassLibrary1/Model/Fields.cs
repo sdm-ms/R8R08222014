@@ -17,7 +17,7 @@ namespace ClassLibrary1.Model
 
     /// <summary>
     /// FieldTypes
-    /// Enumerates the different types of fields that can be used to describe an entity.
+    /// Enumerates the different types of fields that can be used to describe facts about a row.
     /// </summary>
     public enum FieldTypes
     {
@@ -193,7 +193,7 @@ namespace ClassLibrary1.Model
 
             // Note: Here we load all the fields. We won't actually use the projected data, but this serves to 
             // load the relevant data into the database, so that we can use the single query above in memory
-            // for each entity needing updating.
+            // for each row needing updating.
             const int maxAtOnce = 500;
             theQueryForMultipleNeedingResetting = CompiledQuery.Compile((R8RDataContext CurrentDataContext) =>                               
                     CurrentDataContext.GetTable<Field>()
@@ -317,7 +317,7 @@ namespace ClassLibrary1.Model
 
     /// <summary>
     /// FieldDefinitionInfo
-    /// Stores basic information about a field descriptor. This is used by the FieldsBox.
+    /// Stores basic information about a field definition. This is used by the FieldsBox.
     /// </summary>
     [TypeConverter(typeof(FieldDefinitionInfoConverter))]
     public class FieldDefinitionInfo

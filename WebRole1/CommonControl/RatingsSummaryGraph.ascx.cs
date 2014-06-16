@@ -17,16 +17,16 @@ using System.Collections.Generic;
 using ClassLibrary1.Model;
 
 
-public class CategoryAndRating
+public class ColumnAndRating
 {
-    public string Category;
+    public string Column;
     public int ColumnID;
     public decimal Rating;
 }
 
 public partial class RatingsSummaryGraph : System.Web.UI.UserControl
 {
-    public List<CategoryAndRating> TheInfo { get; set; }
+    public List<ColumnAndRating> TheInfo { get; set; }
 
     internal R8RDataAccess DataAccess = new R8RDataAccess();
 
@@ -38,10 +38,10 @@ public partial class RatingsSummaryGraph : System.Web.UI.UserControl
         }
     }
 
-    public void Manual_Setup(List<CategoryAndRating> theInfo)
+    public void Manual_Setup(List<ColumnAndRating> theInfo)
     {
         Series series = new Series("Default");
-        var xValues = theInfo.Select(x => x.Category).ToList();
+        var xValues = theInfo.Select(x => x.Column).ToList();
         var yValues = theInfo.Select(y => y.Rating).ToList();
         series.Points.DataBindXY(xValues, yValues);
 

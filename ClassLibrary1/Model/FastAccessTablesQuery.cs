@@ -63,7 +63,7 @@ namespace ClassLibrary1.Model
                 return;
             joinString = " ";
             string ascOrDescString = (tableSortRule.Ascending) ? "ASC" : "DESC";
-            if (tableSortRule is TableSortRuleEntityName)
+            if (tableSortRule is TableSortRuleRowName)
                 orderByString = "ORDER BY NS " + ascOrDescString + ", NME " + ascOrDescString; // we use the short name field (which has an index) and then the full NME field to break ties
             else if (tableSortRule is TableSortRuleNewestInDatabase)
                 orderByString = "ORDER BY ID " + ascOrDescString;

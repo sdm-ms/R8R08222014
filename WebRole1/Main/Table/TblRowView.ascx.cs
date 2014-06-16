@@ -199,7 +199,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
                     //Trace.TraceInformation("Creating new item for " + RowId + " : " + theContent);
                     string[] myDependencies = {
                                     "RatingsForTblRowIDAndTblTabID" + RowId.ToString() + "," + theTblTabID.ToString(),
-                                    "CategoriesForTblID" + TblID.ToString()
+                                    "ColumnsForTblID" + TblID.ToString()
                                                       };
                     CacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
                 }

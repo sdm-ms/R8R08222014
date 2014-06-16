@@ -41,7 +41,7 @@ public partial class Main_Table_ViewCellRowHeading : System.Web.UI.UserControl
             popupFieldDisplayHtml = thePopUpFieldsDisplay.Setup(theDataAccess.R8RDB, theTblDimension, FieldsLocation.RowPopup, theTblRowID, false);
             PopUpFieldsDisplayPlaceHolder.Controls.Add(thePopUpFieldsDisplay);
 
-            FieldsDisplayDiv.AddAttribute("title", mainFieldDisplayHtml.entityName);
+            FieldsDisplayDiv.AddAttribute("title", mainFieldDisplayHtml.rowName);
             if (popupFieldDisplayHtml.fieldDataExists)
             { // prepare info for our Clutip
                 FieldsDisplayDiv.AddAttribute("rel", "#FPU" + theTblRowID.ToString());

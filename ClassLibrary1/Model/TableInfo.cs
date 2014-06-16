@@ -45,7 +45,7 @@ namespace ClassLibrary1.Model
         public R8RDataAccess dataAccess;
         public int TblTabID;
         public int? TblColumnToSortID;
-        public bool SortByEntityName; // only if there is no column to sort by
+        public bool SortByTblRowName; // only if there is no column to sort by
         public bool ascending;
     }
 

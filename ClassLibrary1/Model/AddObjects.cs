@@ -39,9 +39,9 @@ namespace ClassLibrary1.Model
         // Methods for adding objects to database
 
         /// <summary>
-        /// Adds an object representing a numeric field for a particular entity
+        /// Adds an object representing a numeric field for a particular tblRow
         /// </summary>
-        /// <param name="fieldID">The field (which corresponds in turn to a particular entity)</param>
+        /// <param name="fieldID">The field (which corresponds in turn to a particular tblRow)</param>
         /// <param name="Address">The Address to which this field should be set</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of this object</returns>
@@ -86,13 +86,13 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Add a category descriptor to a category group.
+        /// Add a table column to a table column group.
         /// </summary>
-        /// <param name="TblTabID">Category group to add to</param>
-        /// <param name="defaultRatingGroupAttributesID">The default rating group attributes for entities in this category</param>
+        /// <param name="TblTabID">table column group to add to</param>
+        /// <param name="defaultRatingGroupAttributesID">The default rating group attributes for table rows in this column</param>
         /// <param name="columnNum">The order within the group (need not be unique)</param>
-        /// <param name="abbreviation">An abbreviation for the category (used in tables)</param>
-        /// <param name="name">The name of the category</param>
+        /// <param name="abbreviation">An abbreviation for the column (used in tables)</param>
+        /// <param name="name">The name of the column</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
         public int AddTblColumn(int TblTabID, int defaultRatingGroupAttributesID, int columnNum, string abbreviation, string name, string widthStyle, string explanation, bool trackTrustWithinTableColumn)
@@ -112,7 +112,7 @@ namespace ClassLibrary1.Model
             };
             DataContext.GetTable<TblColumn>().InsertOnSubmit(theTblColumn);
             DataContext.SubmitChanges();
-            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + DataContext.GetTable<TblTab>().Single(f => f.TblTabID == TblTabID).TblID);
+            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + DataContext.GetTable<TblTab>().Single(f => f.TblTabID == TblTabID).TblID);
             return theTblColumn.TblColumnID;
         }
 
@@ -133,16 +133,16 @@ namespace ClassLibrary1.Model
             };
             DataContext.GetTable<TblColumnFormatting>().InsertOnSubmit(theTblColumnFormatting);
             DataContext.SubmitChanges();
-            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + DataContext.GetTable<TblColumn>().Single(f => f.TblColumnID == TblColumnID).TblTab.TblID);
+            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + DataContext.GetTable<TblColumn>().Single(f => f.TblColumnID == TblColumnID).TblTab.TblID);
             return theTblColumnFormatting.TblColumnFormattingID;
         }
 
         /// <summary>
-        /// Adds a category group. Create this, then call AddTblColumn.
+        /// Adds a table column group. Create this, then call AddTblColumn.
         /// </summary>
         /// <param name="TblID">The Tbl to add to.</param>
-        /// <param name="numInTbl">The number of the category group (need not be unique).</param>
-        /// <param name="name">The name of the category group.</param>
+        /// <param name="numInTbl">The number of the table column group (need not be unique).</param>
+        /// <param name="name">The name of the table column group.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
         public int AddTblTab(int TblID, int numInTbl, string name)
@@ -156,7 +156,7 @@ namespace ClassLibrary1.Model
             };
             DataContext.GetTable<TblTab>().InsertOnSubmit(theTblTab);
             DataContext.SubmitChanges();
-            CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + TblID);
+            CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + TblID);
             return theTblTab.TblTabID;
         }
 
@@ -252,7 +252,7 @@ namespace ClassLibrary1.Model
         /// Add a choice field. Note that the choice itself will be made with ChoiceInFields objects,
         /// which in turn point to ChoiceInGroup objects.
         /// </summary>
-        /// <param name="fieldID">The field (for a particular entity) that is a choice field.</param>
+        /// <param name="fieldID">The field (for a particular tblRow) that is a choice field.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
         public ChoiceField AddChoiceField(Field field)
@@ -272,7 +272,7 @@ namespace ClassLibrary1.Model
         /// Add a ChoiceGroupFieldDefinition, which contains more information to add to a FieldDefinition for a choice field.
         /// </summary>
         /// <param name="choiceGroupID">The choice group for this field.</param>
-        /// <param name="FieldDefinitionID">The field descriptor to which information is being added.</param>
+        /// <param name="FieldDefinitionID">The field definition to which information is being added.</param>
         /// <param name="DependentOnChoiceGroupFieldDefinitionID">Null, or the ID of another choice group that determines whether
         /// choices in this choice group are active</param>
         /// <param name="status">The status of the object and table</param>
@@ -343,7 +343,7 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Add a ChoiceInField object (representing the identification of a choice made for a choice field for a particular entity).
+        /// Add a ChoiceInField object (representing the identification of a choice made for a choice field for a particular tblRow).
         /// </summary>
         /// <param name="choiceFieldID">The choice field for which a choice is being made</param>
         /// <param name="choiceInGroupID">The selected choice from the choice group</param>
@@ -395,12 +395,12 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="pointsManagerID">The universe to add to</param>
         /// <param name="defaultRatingGroupAttributesID">The default attributes for rating groups in this Tbl</param>
-        /// <param name="TblTabWord">A word to describe the category groups (e.g., "Year")</param>
+        /// <param name="TblTabWord">A word to describe the table column groups (e.g., "Year")</param>
         /// <param name="name">The name of the Tbl</param>
         /// <param name="creator">The creator of the Tbl, or null if system-created</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddTbl(int pointsManagerID, int? defaultRatingGroupAttributesID, String TblTabWord, String name, int? creator, bool allowOverrideOfRatingCharacterstics, bool oneRatingPerRatingGroup, String typeOfTblRow, String entityAdditionCriteria, bool allowUsersToAddComments, bool limitCommentsToUsersWhoCanMakeUserRatings, string widthStyleEntityCol, string widthStyleNumCol)
+        public int AddTbl(int pointsManagerID, int? defaultRatingGroupAttributesID, String TblTabWord, String name, int? creator, bool allowOverrideOfRatingCharacterstics, bool oneRatingPerRatingGroup, String typeOfTblRow, String rowAdditionCriteria, bool allowUsersToAddComments, bool limitCommentsToUsersWhoCanMakeUserRatings, string widthStyleNameCol, string widthStyleNumCol)
         {
             Tbl theTbl = new Tbl
             {
@@ -415,10 +415,10 @@ namespace ClassLibrary1.Model
                 TypeOfTblRow = typeOfTblRow,
                 AllowUsersToAddComments = allowUsersToAddComments,
                 LimitCommentsToUsersWhoCanMakeUserRatings = limitCommentsToUsersWhoCanMakeUserRatings,
-                TblRowAdditionCriteria = entityAdditionCriteria,
+                TblRowAdditionCriteria = rowAdditionCriteria,
                 SuppStylesHeader = "",
                 SuppStylesMain = "",
-                WidthStyleEntityCol = widthStyleEntityCol,
+                WidthStyleEntityCol = widthStyleNameCol,
                 WidthStyleNumCol = widthStyleNumCol,
                 FastTableSyncStatus = (int) FastAccessTableStatus.fastAccessNotCreated
             };
@@ -431,19 +431,19 @@ namespace ClassLibrary1.Model
             return theTbl.TblID;
         }
         /// <summary>
-        /// Adds a Comment object, allowing a user to add comments about an entity
+        /// Adds a Comment object, allowing a user to add comments about a TblRow
         /// </summary>
-        /// <param name="RowId">The Id of entity</param>
+        /// <param name="RowId">The Id of row</param>
         /// <param name="UserId">Id of user who add comment</param>
         /// <param name="CommentTitle">Title of comment</param>
         /// <param name="CommentText">Detailed description of comment text </param>
         /// <param name="Date">Date on which comment added</param>
         /// <returns></returns>
-        public int AddComment(int entityId, int userId, string commentTitle, string commentText, DateTime date, StatusOfObject initialStatus)
+        public int AddComment(int tblRowID, int userId, string commentTitle, string commentText, DateTime date, StatusOfObject initialStatus)
         {
             Comment theComment = new Comment
             {
-                TblRowID = entityId,
+                TblRowID = tblRowID,
                 UserID = userId,
                 CommentTitle = commentTitle,
                 CommentText = commentText,
@@ -453,15 +453,15 @@ namespace ClassLibrary1.Model
             };
             DataContext.GetTable<Comment>().InsertOnSubmit(theComment);
             DataContext.SubmitChanges();
-            CacheManagement.InvalidateCacheDependency("CommentForTblRowID" + entityId);
+            CacheManagement.InvalidateCacheDependency("CommentForTblRowID" + tblRowID);
             return theComment.CommentsID;
 
         }
 
         /// <summary>
-        /// Adds an object representing a numeric field for a particular entity
+        /// Adds an object representing a numeric field for a particular row
         /// </summary>
-        /// <param name="fieldID">The field (which corresponds in turn to a particular entity)</param>
+        /// <param name="fieldID">The field (which corresponds in turn to a particular row)</param>
         /// <param name="DateTime">The DateTime to which this field should be set</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of this object</returns>
@@ -488,9 +488,9 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Includes more information about a date time field to add information to a field descriptor
+        /// Includes more information about a date time field to add information to a field definition
         /// </summary>
-        /// <param name="FieldDefinitionID">The corresponding field descriptor</param>
+        /// <param name="FieldDefinitionID">The corresponding field definition</param>
         /// <param name="includeDate">Should this include a date?</param>
         /// <param name="includeTime">Should this include a time?</param>
         /// <param name="status"></param>
@@ -532,10 +532,10 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Adds an entity to a Tbl. This does not automaticlaly add the associated ratings. See AddRatingsForTblRow.
+        /// Adds a row to a Tbl. This does not automaticlaly add the associated ratings. See AddRatingsForTblRow.
         /// </summary>
         /// <param name="TblID">The Tbl to add to.</param>
-        /// <param name="name">The name of the entity to add.</param>
+        /// <param name="name">The name of the row to add.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
         public TblRow AddTblRow(Tbl Tbl, string name, List<UserSelectedRatingInfo> theRatingTypeOverrides = null)
@@ -602,10 +602,9 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Adds/updates a record about the addition of an entity. 
+        /// Adds/updates a record about the addition of a row. 
         /// </summary>
-        /// <param name="entityId">The referred entity</param>
-        /// <param name="timeChanged">The time the entity was added</param>
+        /// <param name="timeChanged">The time the row was added</param>
         /// <param name="status">A character indicating the status of this record</param>
         public TblRowStatusRecord AddTblRowStatusRecord(TblRow tblRow, DateTime timeChanged, bool deleting, bool adding)
         {
@@ -626,10 +625,9 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Adds a field to describe something about an entity. Note that the actual information being
+        /// Adds a field to describe something about a row. Note that the actual information being
         /// added will be added separately in a ChoiceField, NumberField, or TextField.
         /// </summary>
-        /// <param name="entityID">The entity to add information about</param>
         /// <param name="FieldDefinitionID">A description of the field being added.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
@@ -657,7 +655,7 @@ namespace ClassLibrary1.Model
         /// <param name="fieldNum">The number of the field (from 1 to the maximum, but need not be unique, and some may be skipped)</param>
         /// <param name="fieldName">The name of the field</param>
         /// <param name="fieldType">The type of the field (e.g., number, choice) (see enumeration above)</param>
-        /// <param name="useAsFilter">If true, then we will allow the user to search for entities by specifying 
+        /// <param name="useAsFilter">If true, then we will allow the user to search for table rows by specifying 
         /// information about this field</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
@@ -748,10 +746,10 @@ namespace ClassLibrary1.Model
         /// <param name="mayPredict">Can make predictions</param>
         /// <param name="mayAddTbls">Can add Tbls</param>
         /// <param name="mayResolveRatings">Can resolve ratings and rating groups</param>
-        /// <param name="mayChangeTblRows">Can change entities' fields, add entities, etc.</param>
+        /// <param name="mayChangeTblRows">Can change entities' fields, add table rows, etc.</param>
         /// <param name="mayChangeChoiceGroups">Can add to and inactivate choice group entries</param>
         /// <param name="mayChangeCharacteristics">Can change rating characteristics, group attributes</param>
-        /// <param name="mayChangeCategories">Can add/delete category descriptors and groups</param>
+        /// <param name="mayChangeCategories">Can add/delete table columns and groups</param>
         /// <param name="mayChangeUsersRights">Can add/delete users rights objects</param>
         /// <param name="mayAdjustPoints">Can make adjustments to users' points</param>
         /// <param name="mayChangeProposalSettings">Can change proposal settings</param>
@@ -759,14 +757,14 @@ namespace ClassLibrary1.Model
        
         public int AddInvitedUser(string emailId, bool mayView, bool mayPredict, bool mayAddTbls,
             bool mayResolveRatings, bool mayChangeTblRows, bool mayChangeChoiceGroups, bool mayChangeCharacteristics,
-            bool mayChangeCategories, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings)
+            bool mayChangeColumns, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings)
         {
             InvitedUser TheInvitedUser = new InvitedUser
             {
                 EmailId = emailId,
                 MayAddTbls = mayAddTbls,
                 MayAdjustPoints = mayAdjustPoints,
-                MayChangeCategories = mayChangeCategories,
+                MayChangeColumns = mayChangeColumns,
                 MayChangeCharacteristics = mayChangeCharacteristics,
                 MayChangeChoiceGroups = mayChangeChoiceGroups,
                 MayChangeTblRows = mayChangeTblRows,
@@ -803,18 +801,6 @@ namespace ClassLibrary1.Model
         }
 
 
-        //public int AddRatingHierarchySerialized(int entityID, int TblColumnID, byte[] hierarchyData)
-        //{
-        //    RatingHierarchySerialized theRatingHierarchySerialized = new RatingHierarchySerialized
-        //    {
-        //        TblRowID = entityID,
-        //        TblColumnID = TblColumnID,
-        //        HierarchyData = hierarchyData
-        //    };
-        //    R8RDB.GetTable<RatingHierarchySerialized>().InsertOnSubmit(theRatingHierarchySerialized);
-        //    R8RDB.SubmitChanges();
-        //    return theRatingHierarchySerialized.RatingHierarchySerializedID;
-        //}
 
         /// <summary>
         /// Adds a rating to the database. The rating group and a rating plan for this rating should already be
@@ -928,10 +914,9 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Adds a rating group for an entity. Does not add the associated ratings (see AddRatingGroupAndRatings).
+        /// Adds a rating group for a row. Does not add the associated ratings (see AddRatingGroupAndRatings).
         /// </summary>
-        /// <param name="entityID">The entity for which to add the ratings</param>
-        /// <param name="TblColumnID">The category this rating group corresponds to</param>
+        /// <param name="TblColumnID">The column this rating group corresponds to</param>
         /// <param name="ratingGroupAttributesID">The attributes of the rating group</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added rating group</returns>
@@ -965,8 +950,7 @@ namespace ClassLibrary1.Model
         /// <summary>
         /// Add a rating group and the ratings associated with it. This is called by AddRatingsForTblRow.
         /// </summary>
-        /// <param name="entityID">The entity for which to add the ratings</param>
-        /// <param name="TblColumnID">The category this rating group corresponds to</param>
+        /// <param name="TblColumnID">The column this rating group corresponds to</param>
         /// <param name="ratingGroupAttributesID">The attributes of the rating group</param>
         /// <returns>The id for the rating group object</returns>
         /// 
@@ -1051,7 +1035,7 @@ namespace ClassLibrary1.Model
             RatingGroup topRatingGroup = null)
         {
             bool recursiveCall = (topRatingGroup != null);
-            //Trace.TraceInformation("AddRatingGroupAndRatings " + entityID + " " + TblColumnID + recursiveCall.ToString());
+            //Trace.TraceInformation("AddRatingGroupAndRatings " + tblRow.TblRowID + " " + TblColumnID + recursiveCall.ToString());
             if (!recursiveCall)
             { // We're at the top of the hierarchy. Let's make sure this rating group doesn't already exist.
                 IQueryable<RatingGroup> existingRatingGroups = null;
@@ -1119,7 +1103,7 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Adds ratings for a category if the Tbl is active. Used to add a category to running ratings.
+        /// Adds ratings for a column if the Tbl is active. Used to add a category to running ratings.
         /// </summary>
         /// <param name="columnID"></param>
         public void AddRatingsAfterAddingColumnIfTblIsActive(int columnID)
@@ -1133,15 +1117,6 @@ namespace ClassLibrary1.Model
             {
                 DataContext.SubmitChanges();
                 StartAddingMissingRatingsForTbl(theTbl.TblID);
-                //var theTblRows = R8RDB.GetTable<TblRow>().Where(e => e.TblID == theTbl.TblID && e.Status == (Byte)StatusOfObject.Active && e.TradingStatus != (Byte)TradingStatus.Ended).Select(e => new { e.TblRowID, e.TradingStatus });
-                //foreach (var theTblRow in theTblRows)
-                //{
-                //    int theGroupAttributesID = ObjDataAccess.GetRatingGroupAttributesForTblRowCategory(theTblRow.TblRowID, theCategory);
-                //    AddRatingGroupAndRatings(theTblRow.TblRowID, theCategory, theGroupAttributesID);
-                //    int ratingGroupID = (int)GetTopRatingGroupForTblRowCategory(theTblRow.TblRowID, theCategory);
-                //    SetTradingStatusHierarchical(ratingGroupID, TypeOfObject.RatingGroup, (TradingStatus)theTblRow.TradingStatus);
-                //    CacheManagement.InvalidateCacheDependency("RatingGroupID" + ratingGroupID);
-                //}
             }
         }
 
@@ -1151,7 +1126,7 @@ namespace ClassLibrary1.Model
 
             var theTblRows = DataContext.GetTable<TblRow>().Where(e => e.TblID == TblID &&
                    e.Status == (Byte)StatusOfObject.Active && e.TblRowID >= startingTblRowID);
-            int entityCount = theTblRows.Count();
+            int rowCount = theTblRows.Count();
             IQueryable<TblRow> theTblRowsToDo = null;
             if (numToDo == null) // do 'em all
                 theTblRowsToDo = theTblRows;
@@ -1164,7 +1139,7 @@ namespace ClassLibrary1.Model
                 FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, tblRow.Tbl, tblRow, true, false); // note that this is not executed
                 lastTblRowProcessed = tblRow.TblRowID;
             }
-            if (entityCount <= numToDo)
+            if (rowCount <= numToDo)
                 return null;
             else
                 return lastTblRowProcessed + 1;
@@ -1177,8 +1152,8 @@ namespace ClassLibrary1.Model
                 return;
 
             // AddRatingsForSomeTblRowsInTblAndStartTrading(TblID, null, 0);
-            bool entitiesExist = DataContext.GetTable<TblRow>().Any(x => x.TblID == TblID);
-            if (entitiesExist)
+            bool tblRowsExist = DataContext.GetTable<TblRow>().Any(x => x.TblID == TblID);
+            if (tblRowsExist)
             {
                 CreateMissingRatingsInfo myInfo = new CreateMissingRatingsInfo(5, 0);
                 AddOrResetLongProcess(LongProcessTypes.createMissingRatings, 600, TblID, null, GetBasePriorityLevelForLongProcess(LongProcessTypes.createMissingRatings), myInfo);
@@ -1186,9 +1161,8 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Add the ratings for an entity.
+        /// Add the ratings for a row.
         /// </summary>
-        /// <param name="entityID">The entity to add ratings for.</param>
         public void AddMissingRatingsForTblRow(TblRow theTblRow)
         {
             //ProfileSimple.Start("TblTabs");
@@ -1201,15 +1175,15 @@ namespace ClassLibrary1.Model
             //ProfileSimple.End("TblTabs");
             foreach (TblTab theTblTab in theTblTabs)
             {
-                List<TblColumn> theCategories = DataContext.TempCacheGet("TblColumns" + theTblTab.TblTabID) as List<TblColumn>;
-                if (theCategories == null)
+                List<TblColumn> tblColumns = DataContext.TempCacheGet("TblColumns" + theTblTab.TblTabID) as List<TblColumn>;
+                if (tblColumns == null)
                 {
-                    theCategories = DataContext.GetTable<TblColumn>().Where(c => c.TblTabID == theTblTab.TblTabID && c.Status == (Byte)StatusOfObject.Active).ToList();
-                    DataContext.TempCacheAdd("TblColumns" + theTblTab.TblTabID, theCategories);
+                    tblColumns = DataContext.GetTable<TblColumn>().Where(c => c.TblTabID == theTblTab.TblTabID && c.Status == (Byte)StatusOfObject.Active).ToList();
+                    DataContext.TempCacheAdd("TblColumns" + theTblTab.TblTabID, tblColumns);
                 }
-                foreach (TblColumn theCategory in theCategories)
+                foreach (TblColumn tblColumn in tblColumns)
                 {
-                    AddMissingRatingGroupAndRatings(theTblRow, theCategory);
+                    AddMissingRatingGroupAndRatings(theTblRow, tblColumn);
                 }
             }
         }
@@ -1457,9 +1431,9 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Adds an object representing a numeric field for a particular entity
+        /// Adds an object representing a numeric field for a particular tblRow
         /// </summary>
-        /// <param name="fieldID">The field (which corresponds in turn to a particular entity)</param>
+        /// <param name="fieldID">The field (which corresponds in turn to a particular tblRow)</param>
         /// <param name="number">The number to which this field should be set</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of this object</returns>
@@ -1504,12 +1478,11 @@ namespace ClassLibrary1.Model
 
         /// <summary>
         /// Add an OverrideCharacteristics object, which specifies the rating group attributes for 
-        /// a particular category of a particular entity. It doesn't actually implement any changes, but
+        /// a particular column of a particular row. It doesn't actually implement any changes, but
         /// the AddRatingsForTblRow function looks for these objects. This won't affect running ratings.
         /// </summary>
         /// <param name="ratingGroupAttributesID">The rating group attributes to use</param>
-        /// <param name="entityID">The entity for which ratings are being added</param>
-        /// <param name="TblColumnID">The category for which ratings are being added</param>
+        /// <param name="TblColumnID">The column for which ratings are being added</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the object </returns>
         public OverrideCharacteristic AddOverrideCharacteristics(RatingGroupAttribute theRatingGroupAttributes, TblRow theTblRow, TblColumn theTblColumn)
@@ -1951,11 +1924,11 @@ namespace ClassLibrary1.Model
         /// for the universe as a whole.</param>
         /// <param name="usersMayProposeAddingTbls">If 1, users can propose entire new Tbls (including associated rating group attributes)</param>
         /// <param name="usersMayProposeResolvingRatings">If 1, users, can propose to resolve ratings and rating groups.</param>
-        /// <param name="usersMayProposeChangingTblRows">If 1, users may add, change, and delete entities.</param>
+        /// <param name="usersMayProposeChangingTblRows">If 1, users may add, change, and delete table rows.</param>
         /// <param name="usersMayProposeChangingChoiceGroups">If 1, users may inactivate choices in choice groups or add new choices</param>
         /// <param name="usersMayProposeChangingCharacteristics">If 1, users may change rating group attributes, characteristics, subisdy
         /// density ranges, etc. Note that these changes would be effected by terminating and restarting all ratings.</param>
-        /// <param name="usersMayProposeChangingCategories">If 1, users may propose changing category groups and descriptors.</param>
+        /// <param name="usersMayProposeChangingColumns">If 1, users may propose changing table column groups and descriptors.</param>
         /// <param name="usersMayProposeChangingUsersRights">If 1, users may propose changing rights of particular or default users</param>
         /// <param name="usersMayProposeAdjustingPoints">If 1, users may propose adjusting particular users' points.</param>
         /// <param name="usersMayProposeChangingProposalSettings">If 1, users may propose changing settings such as these.</param>
@@ -1978,7 +1951,7 @@ namespace ClassLibrary1.Model
         /// <param name="status">The status of this object</param>
         /// <returns></returns>
         public int AddProposalSettings(int? pointsManagerID, int? TblID, bool usersMayProposeAddingTbls, bool usersMayProposeResolvingRatings, bool usersMayProposeChangingTblRows,
-            bool usersMayProposeChangingChoiceGroups, bool usersMayProposeChangingCharacteristics, bool usersMayProposeChangingCategories, bool usersMayProposeChangingUsersRights, bool usersMayProposeAdjustingPoints,
+            bool usersMayProposeChangingChoiceGroups, bool usersMayProposeChangingCharacteristics, bool usersMayProposeChangingColumns, bool usersMayProposeChangingUsersRights, bool usersMayProposeAdjustingPoints,
             bool usersMayProposeChangingProposalSettings, decimal minValueToApprove, decimal maxValueToReject, int minTimePastThreshold, decimal minProportionOfThisTime, int minAdditionalTimeForRewardRating,
             int halfLifeForRewardRating, decimal maxBonusForProposal, decimal maxPenaltyForRejection, decimal subsidyForApprovalRating, decimal subsidyForRewardRating,
             int halfLifeForResolvingAtFinalValue, decimal requiredPointsToMakeProposal,
@@ -1993,7 +1966,7 @@ namespace ClassLibrary1.Model
                 UsersMayProposeChangingTblRows = usersMayProposeChangingTblRows,
                 UsersMayProposeChangingChoiceGroups = usersMayProposeChangingChoiceGroups,
                 UsersMayProposeChangingCharacteristics = usersMayProposeChangingCharacteristics,
-                UsersMayProposeChangingCategories = usersMayProposeChangingCategories,
+                UsersMayProposeChangingColumns = usersMayProposeChangingColumns,
                 UsersMayProposeChangingUsersRights = usersMayProposeChangingUsersRights,
                 UsersMayProposeAdjustingPoints = usersMayProposeAdjustingPoints,
                 UsersMayProposeChangingProposalSettings = usersMayProposeChangingProposalSettings,
@@ -2274,7 +2247,7 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Add a text field (that is, specific text for a field for a particular entity).
+        /// Add a text field (that is, specific text for a field for a particular row).
         /// </summary>
         /// <param name="fieldID">The field for which we are providing text</param>
         /// <param name="text">The text</param>
@@ -2441,10 +2414,10 @@ namespace ClassLibrary1.Model
         /// <param name="mayPredict">Can make predictions</param>
         /// <param name="mayAddTbls">Can add Tbls</param>
         /// <param name="mayResolveRatings">Can resolve ratings and rating groups</param>
-        /// <param name="mayChangeTblRows">Can change entities' fields, add entities, etc.</param>
+        /// <param name="mayChangeTblRows">Can change entities' fields, add table rows, etc.</param>
         /// <param name="mayChangeChoiceGroups">Can add to and inactivate choice group entries</param>
         /// <param name="mayChangeCharacteristics">Can change rating characteristics, group attributes</param>
-        /// <param name="mayChangeCategories">Can add/delete category descriptors and groups</param>
+        /// <param name="mayChangeColumns">Can add/delete table columns and groups</param>
         /// <param name="mayChangeUsersRights">Can add/delete users rights objects</param>
         /// <param name="mayAdjustPoints">Can make adjustments to users' points</param>
         /// <param name="mayChangeProposalSettings">Can change proposal settings</param>
@@ -2454,7 +2427,7 @@ namespace ClassLibrary1.Model
         /// 
         public int AddUsersRights(int? userID, int? pointsManagerID, bool mayView, bool mayPredict, bool mayAddTbls,
             bool mayResolveRatings, bool mayChangeTblRows, bool mayChangeChoiceGroups, bool mayChangeCharacteristics,
-            bool mayChangeCategories, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings,
+            bool mayChangeColumns, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings,
             String name, int? creator)
         {
             UsersRight theUsersRights = new UsersRight
@@ -2468,7 +2441,7 @@ namespace ClassLibrary1.Model
                 MayChangeTblRows = mayChangeTblRows,
                 MayChangeChoiceGroups = mayChangeChoiceGroups,
                 MayChangeCharacteristics = mayChangeCharacteristics,
-                MayChangeCategories = mayChangeCategories,
+                MayChangeCategories = mayChangeColumns,
                 MayChangeUsersRights = mayChangeUsersRights,
                 MayAdjustPoints = mayAdjustPoints,
                 MayChangeProposalSettings = mayChangeProposalSettings,

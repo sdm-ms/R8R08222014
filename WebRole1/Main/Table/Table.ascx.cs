@@ -173,7 +173,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
                     //Trace.TraceInformation("Creating new item for " + theTblRowID + " : " + theContent);
                     string[] myDependencies = {
                                     "RatingsForTblRowIDAndTblTabID" + theTblRowID.ToString() + "," + TblTabID.ToString(),
-                                    "CategoriesForTblID" + TblID.ToString()
+                                    "ColumnsForTblID" + TblID.ToString()
                                                       };
                     CacheManagement.AddItemToCache(myCacheKey, myDependencies, theContent);
                 }
@@ -222,7 +222,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             bool SortOrderAscending = false;
             DataAccess.GetDefaultSortForTblTab(TblTabID, ref TblColumnToSort, ref SortOrderAscending);
             if (TblColumnToSort == null)
-                theTableSortRule = new TableSortRuleEntityName(SortOrderAscending);
+                theTableSortRule = new TableSortRuleRowName(SortOrderAscending);
             else
                 theTableSortRule = new TableSortRuleTblColumn((int) TblColumnToSort, SortOrderAscending);
             ViewState["TableSortRule"] = theTableSortRule;
@@ -233,7 +233,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     public void ResortTable(int? TblColumnID, bool NewSortOrder)
     {
         if (TblColumnID == null)
-            theTableSortRule = new TableSortRuleEntityName(NewSortOrder);
+            theTableSortRule = new TableSortRuleRowName(NewSortOrder);
         else
             theTableSortRule = new TableSortRuleTblColumn((int)TblColumnID, NewSortOrder);
         ViewState["TableSortRule"] = theTableSortRule;

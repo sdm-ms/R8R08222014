@@ -27,8 +27,8 @@ public partial class FieldsBox : System.Web.UI.UserControl
     protected TblRow TheTblRow { get; set; }
     internal SearchWordsFilter searchWordsControl;
     internal List<AnyFieldFilter> fieldsControls = new List<AnyFieldFilter>();
-    internal List<FieldDefinitionInfo> fieldsDescriptors;
-    internal List<AnyFieldFilter> categoryControls = new List<AnyFieldFilter>();
+    internal List<FieldDefinitionInfo> fieldDefinitions;
+    internal List<AnyFieldFilter> columnControls = new List<AnyFieldFilter>();
     internal List<TblColumnInfo> TblColumns;
     protected int index = 0; // keep track of number of items created/databound
     FieldSetDataInfo TheFieldSetDataInfo;
@@ -136,7 +136,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         if (!Page.IsPostBack)
         {
             // if there is no filter then making filter table invisible
-            if ((Mode == FieldsBoxMode.filterWithButton || Mode== FieldsBoxMode.filterWithoutButton) && searchWordsControl == null && !fieldsDescriptors.Any() && (TblColumns == null || !TblColumns.Any()))
+            if ((Mode == FieldsBoxMode.filterWithButton || Mode== FieldsBoxMode.filterWithoutButton) && searchWordsControl == null && !fieldDefinitions.Any() && (TblColumns == null || !TblColumns.Any()))
             {
                 PanelAroundFilterBox.Visible = false;
             }
@@ -146,7 +146,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
 
     protected void LinqDataSourceFields_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
-        e.Result = fieldsDescriptors;
+        e.Result = fieldDefinitions;
     }
 
     public void SetupChildFields(ListViewItemEventArgs e)
@@ -196,31 +196,31 @@ public partial class FieldsBox : System.Web.UI.UserControl
         }
     }
 
-    protected void LinqDataSourceCategories_Selecting(object sender, LinqDataSourceSelectEventArgs e)
+    protected void LinqDataSourceColumns_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
         e.Result = (TblColumns == null) ? new List<TblColumnInfo>() : TblColumns;
     }
 
-    public void SetupChildCategories(ListViewItemEventArgs e)
+    public void SetupChildColumns(ListViewItemEventArgs e)
     {
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            TblColumnInfo theCategoryInfo = new TblColumnInfo();
-            theCategoryInfo.TblColumnID = (int)FieldsBoxListViewCategories.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
-            theCategoryInfo.TblColumnName = (string)FieldsBoxListViewCategories.DataKeys[dataItem.DisplayIndex].Values["TblColumnName"];
-            theCategoryInfo.DefaultSortOrderAsc = (bool)FieldsBoxListViewCategories.DataKeys[dataItem.DisplayIndex].Values["DefaultSortOrderAsc"];
-            theCategoryInfo.Sortable = (bool)FieldsBoxListViewCategories.DataKeys[dataItem.DisplayIndex].Values["Sortable"];
+            TblColumnInfo theColumnInfo = new TblColumnInfo();
+            theColumnInfo.TblColumnID = (int)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+            theColumnInfo.TblColumnName = (string)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnName"];
+            theColumnInfo.DefaultSortOrderAsc = (bool)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["DefaultSortOrderAsc"];
+            theColumnInfo.Sortable = (bool)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["Sortable"];
 
             AnyFieldFilter theField = (AnyFieldFilter)e.Item.FindControl("FilterField");
             theField.Mode = Mode;
-            theField.CatDesInfo = theCategoryInfo;
-            theField.AddSpecificFieldType(categoryControls, Page.IsPostBack);
-            categoryControls.Add(theField);
+            theField.TblColInfo = theColumnInfo;
+            theField.AddSpecificFieldType(columnControls, Page.IsPostBack);
+            columnControls.Add(theField);
         }
     }
 
-    public void FieldsBoxListViewCategories_DataBinding(object sender, EventArgs e)
+    public void FieldsBoxListViewColumns_DataBinding(object sender, EventArgs e)
     {
         if (Page.IsPostBack)
         { // usually, we don't databound on postback
@@ -228,35 +228,34 @@ public partial class FieldsBox : System.Web.UI.UserControl
         }
     }
 
-    protected void FieldsBoxListViewCategories_ItemCreated(object sender, ListViewItemEventArgs e)
+    protected void FieldsBoxListViewColumns_ItemCreated(object sender, ListViewItemEventArgs e)
     {
         if (Page.IsPostBack && !rebinding)
         {
-            //Trace.TraceInformation("Categories create item.");
-            SetupChildCategories(e);
+            SetupChildColumns(e);
         }
     }
 
-    protected void FieldsBoxListViewCategories_ItemDataBound(object sender, ListViewItemEventArgs e)
+    protected void FieldsBoxListViewColumns_ItemDataBound(object sender, ListViewItemEventArgs e)
     {
         if (!Page.IsPostBack || rebinding)
         {
             //Trace.TraceInformation("Categories data binding.");
-            SetupChildCategories(e);
+            SetupChildColumns(e);
         }
     }
 
-    public void ReBind(bool resetFields, bool resetCategories, int? tblTabID)
+    public void ReBind(bool resetFields, bool resetColumns, int? tblTabID)
     {
         rebinding = true;
         LoadFilters();
         if (resetFields)
             FieldsBoxListViewFields.DataBind();
-        if (resetCategories)
+        if (resetColumns)
         {
             TblTabID = tblTabID;
             LoadTblColumns();
-            FieldsBoxListViewCategories.DataBind();
+            FieldsBoxListViewColumns.DataBind();
         }
         UpdatePanel2.Update();
     }
@@ -264,10 +263,10 @@ public partial class FieldsBox : System.Web.UI.UserControl
     protected void LoadFieldDefinitions(bool limitToUseAsFilters)
     {
         string cacheKey = "FieldsBoxFieldDefinitions" + TblID.ToString() + limitToUseAsFilters.ToString();
-        fieldsDescriptors = CacheManagement.GetItemFromCache(cacheKey) as List<FieldDefinitionInfo>;
-        if (fieldsDescriptors == null)
+        fieldDefinitions = CacheManagement.GetItemFromCache(cacheKey) as List<FieldDefinitionInfo>;
+        if (fieldDefinitions == null)
         {
-            fieldsDescriptors = DataAccess.R8RDB.GetTable<FieldDefinition>()
+            fieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>()
                              .Where(fd => fd.TblID == TblID && fd.Status == Convert.ToByte(StatusOfObject.Active)
                                             && (!limitToUseAsFilters || fd.UseAsFilter == true))
                              .OrderBy(fd => fd.FieldNum)
@@ -280,7 +279,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
                                 FieldNum = fd.FieldNum
                             }).ToList();
             string[] noDependency = { };
-            CacheManagement.AddItemToCache(cacheKey, noDependency, fieldsDescriptors, new TimeSpan(0,1,0));
+            CacheManagement.AddItemToCache(cacheKey, noDependency, fieldDefinitions, new TimeSpan(0,1,0));
         }
     }
 
@@ -325,7 +324,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
 
     public List<UserSelectedRatingInfo> GetUserSelectedRatingInfos()
     {
-        return categoryControls.Select(x => x.GetUserSelectedRatingInfo()).Where(x => x != null).ToList();
+        return columnControls.Select(x => x.GetUserSelectedRatingInfo()).Where(x => x != null).ToList();
     }
 
     public FilterRules GetFilterRulesWithDeletedBasedOnUserChoice()
@@ -354,7 +353,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
                 }
             }
           
-            foreach (var c in categoryControls)
+            foreach (var c in columnControls)
             {
                 try
                 {
@@ -381,7 +380,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         if (TheFieldSetDataInfo == null || lastDataContext != DataAccess.R8RDB)
         {
             TheFieldSetDataInfo = new FieldSetDataInfo(TheTblRow == null ? null : DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == TheTblRow.TblRowID), DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID==TblID), DataAccess); // Reload, since data context may have changed. We must use current data context so that any changes are persisted to the database.
-            TheFieldSetDataInfo.theEntityName = MoreStringManip.StripHtml(EntityName.Text);
+            TheFieldSetDataInfo.theRowName = MoreStringManip.StripHtml(EntityName.Text);
             foreach (var f in fieldsControls)
             {
                 FieldDataInfo theFieldData = f.GetFieldValue(TheFieldSetDataInfo);
@@ -422,11 +421,11 @@ public partial class FieldsBox : System.Web.UI.UserControl
         }
         if (args.IsValid)
         {
-            foreach (var theControl in categoryControls)
+            foreach (var theControl in columnControls)
             {
                 if (!theControl.InputDataValidatesOK(ref errorMessage))
                 {
-                    ReportValidationError(theControl.CatDesInfo.TblColumnName + ": " + errorMessage);
+                    ReportValidationError(theControl.TblColInfo.TblColumnName + ": " + errorMessage);
                     args.IsValid = false;
                     break;
                 }
@@ -443,7 +442,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         if (args.IsValid)
         {
             LoadFieldSetDataInfo();
-            if (TheFieldSetDataInfo.theEntityName == "")
+            if (TheFieldSetDataInfo.theRowName == "")
             {
                 args.IsValid = false;
                 ReportValidationError("You must provide a name in the first field below.");

@@ -227,7 +227,7 @@ namespace TestProject1
                 iterations: 20, 
                 roundsPerIteration: 1,
                 userRatingsPerRating: 5,
-                maximumAllowableAverageAbsoluteErrorForFinalIteration: 0.15m,
+                maximumAllowableAverageAbsoluteErrorForFinalIteration: 0.25m,
                 subversiveUserIgnoresPreviousRatings: false);
         }
 

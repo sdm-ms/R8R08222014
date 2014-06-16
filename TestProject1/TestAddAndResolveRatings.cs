@@ -428,6 +428,7 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("IntegrationTest")]
         public void VolatilityRecordedProperly()
         {
             Initialize();

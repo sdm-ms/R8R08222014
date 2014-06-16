@@ -100,12 +100,12 @@ namespace ClassLibrary1.Model
         // We have defined the following cache dependency strings. 
         // RatingGroupID: cached information for individual table cell
         // RatingsForTblRowIDAndTblTabID: cached information for row of table cells
-        // CategoriesForTblID: info on category descriptors and groups
-        // FieldForTblRowID, FieldInfoForPointsManagerID: cached info on fields for particular entities and field descriptors for universe
-        // TblRowForTblID: cached info on entities in Tbl
+        // CategoriesForTblID: info on table columns and groups
+        // FieldForTblRowID, FieldInfoForPointsManagerID: cached info on fields for particular table rows and field definitions for universe
+        // TblRowForTblID: cached info on table rows in Tbl
         // TblID: information on the table itself
         // TopicsMenu (with no ID): the topics menu
-        // CommentForTblRowID : Comments for an entity
+        // CommentForTblRowID : Comments for a row
         // DomainID (for anything miscellaneous within a domain not in above)
         private static CacheDependency CreateCacheDependencyFromStrings(string[] theDependencyStrings)
         {

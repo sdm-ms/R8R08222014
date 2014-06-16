@@ -1145,7 +1145,7 @@ namespace ClassLibrary1.Model
             int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
             int? myRatingGroupAttributes = CreateRatingGroupAttributes(myType,theRatingPhase,theSubsidyDensityRange,theRatingCondition,thePointsManagerID,myChangesGroup);
             bool oneRatingPerRatingGroup = new[] { TestRatingGroupAttributesTypes.predictEvent, TestRatingGroupAttributesTypes.predictEventWithDefault, TestRatingGroupAttributesTypes.predictNumberFromRangeMinusToPlus, TestRatingGroupAttributesTypes.predictNumberFromRangeOnlyPlus, TestRatingGroupAttributesTypes.rating }.Contains(myType);
-            return theTestHelper.ActionProcessor.TblCreate(thePointsManagerID, myRatingGroupAttributes, "Category group", true, true, theTestHelper.SuperUserId, myChangesGroup, name, false, oneRatingPerRatingGroup, "MyTblRow", "The entity addition criteria would be spelled out here.", true, true, "wf250","wf25");
+            return theTestHelper.ActionProcessor.TblCreate(thePointsManagerID, myRatingGroupAttributes, "table column group", true, true, theTestHelper.SuperUserId, myChangesGroup, name, false, oneRatingPerRatingGroup, "MyTblRow", "The table row addition criteria would be spelled out here.", true, true, "wf250","wf25");
         }
 
         protected void PointsManagerChangeDollarSubsidySettings(int pointsManagerID)

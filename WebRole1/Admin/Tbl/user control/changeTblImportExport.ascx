@@ -42,7 +42,7 @@
                 </Triggers>
                 <ContentTemplate>
                     <asp:FileUpload runat="server" ID="XMLFileUpload" EnableViewState="true" CssClass="inp" />
-                    <asp:Button ID="BtnImport" CssClass="Btn1" runat="server" Text="Import entities from XML file"
+                    <asp:Button ID="BtnImport" CssClass="Btn1" runat="server" Text="Import rows from XML file"
                         OnClick="BtnImport_Click" CausesValidation="false" />
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -55,9 +55,9 @@
                     <asp:PostBackTrigger ControlID="BtnExport" />
                 </Triggers>
                 <ContentTemplate>
-                    <asp:Button ID="BtnExport" runat="server" Text="Export entities to XML file" CssClass="Btn1"
+                    <asp:Button ID="BtnExport" runat="server" Text="Export rows to XML file" CssClass="Btn1"
                         OnClick="BtnExport_Click" CausesValidation="false" />
-                    <asp:CheckBox runat="server" ID="ChkInActivate" Text="Include inactivated entities" />
+                    <asp:CheckBox runat="server" ID="ChkInActivate" Text="Include deleted rows" />
                     <asp:CheckBox runat="server" ID="ChkIncValues" Text="Include item values" />
                 </ContentTemplate>
             </asp:UpdatePanel>

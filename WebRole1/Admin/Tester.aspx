@@ -83,9 +83,9 @@
         <br />
         <asp:Button ID="Button6" runat="server" OnClick="SingleTblRow_Click" Text="Add single entity to first Tbl" />
         <br />
-        <asp:Button ID="Button14" runat="server" OnClick="FDDelete_Click" Text="Delete field descriptors from first Tbl" />
+        <asp:Button ID="Button14" runat="server" OnClick="FDDelete_Click" Text="Delete field definitions from first Tbl" />
         <br />
-        <asp:Button ID="Button15" runat="server" OnClick="FDUndelete_Click" Text="Undelete field descriptors from first Tbl" />
+        <asp:Button ID="Button15" runat="server" OnClick="FDUndelete_Click" Text="Undelete field definitions from first Tbl" />
         <br />
         <asp:Button ID="Button8" runat="server" OnClick="MultipleTblRows_Click" Text="Add number entity to first Tbl" />
         <asp:TextBox ID="NumTblRows" runat="server"></asp:TextBox>

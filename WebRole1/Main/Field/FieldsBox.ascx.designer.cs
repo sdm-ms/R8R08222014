@@ -129,13 +129,13 @@ public partial class FieldsBox {
     protected global::System.Web.UI.WebControls.ListView FieldsBoxListViewFields;
     
     /// <summary>
-    /// FieldsBoxListViewCategories control.
+    /// FieldsBoxListViewColumns control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.ListView FieldsBoxListViewCategories;
+    protected global::System.Web.UI.WebControls.ListView FieldsBoxListViewColumns;
     
     /// <summary>
     /// LinqDataSourceFields control.
@@ -147,13 +147,13 @@ public partial class FieldsBox {
     protected global::System.Web.UI.WebControls.LinqDataSource LinqDataSourceFields;
     
     /// <summary>
-    /// LinqDataSourceCategories control.
+    /// LinqDataSourceColumns control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.LinqDataSource LinqDataSourceCategories;
+    protected global::System.Web.UI.WebControls.LinqDataSource LinqDataSourceColumns;
     
     /// <summary>
     /// BtnCancel control.

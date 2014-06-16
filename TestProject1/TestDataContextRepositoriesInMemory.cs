@@ -64,7 +64,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void RepositoryItem_CanGetAndSetPrimaryKey()
         {
@@ -78,7 +77,6 @@ namespace TestProject1
 
         
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToMany()
         {
@@ -92,7 +90,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToOneWithForeignKeyID()
         {
@@ -104,7 +101,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToOneWithoutForeignKeyID()
         {
@@ -118,7 +114,6 @@ namespace TestProject1
 
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForMultipleOneToManyPropertiesBetweenSameTypes()
         {
@@ -133,7 +128,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void RepositoryItemAssociationInfo_GetAllAssociatedObjects()
         {
@@ -149,7 +143,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void RepositoryItemAssociationInfo_GetForeignKeyID()
         {
@@ -159,7 +152,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void RepositoryItemAssociationInfo_AddAndRemoveForeignItem_ForOneToOneWithForeignKeyID()
         {
@@ -174,7 +166,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void RepositoryItemAssociationInfo_AddAndRemoveForeignItem_ForOneToMany()
         {
@@ -189,7 +180,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void RepositoryItemAssociationInfo_AddAndRemoveForeignItem_ForOneToOneWithoutForeignKeyID()
         {
@@ -215,7 +205,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepositoryList_GetRepository()
         {
@@ -225,7 +214,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_InsertOnSubmit()
         {
@@ -236,7 +224,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_DeleteOnSubmit()
         {
@@ -249,7 +236,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_GetItemByID()
         {
@@ -261,7 +247,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_SetUnsetPrimaryKey()
         {
@@ -274,8 +259,7 @@ namespace TestProject1
 
         // This isn't working right now -- but might have better luck after upgrading to VS2013 Ultimate, which supports fakes
         //[TestMethod]
-        //[Category("InMemoryRepository")]
-		[Category("UnitTest")]
+		//[Category("UnitTest")]
         //public void InMemoryRepository_SetPropertiesBasedOnForeignKeyID()
         //{
         //    InitializeInMemoryRepositoryList();
@@ -300,7 +284,6 @@ namespace TestProject1
         //}
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithID()
         {
@@ -318,7 +301,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetBefore()
         {
@@ -338,7 +320,6 @@ namespace TestProject1
 
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetAfterAssociationCreation()
         {
@@ -357,7 +338,6 @@ namespace TestProject1
 
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetOnCompletingInsertOnSubmit()
         {
@@ -375,7 +355,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_CompleteInsertOnSubmit_MakingAssociationWithProperty_WherePrimaryKeyIsSetIndirectly()
         {
@@ -394,7 +373,6 @@ namespace TestProject1
 
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void RepositoryItemAssociationInfo_CompleteInsertOnSubmit_WhereMultipleSimilarPropertiesExist()
         {
@@ -422,8 +400,7 @@ namespace TestProject1
         }
 
         //[TestMethod]
-        //[Category("InMemoryRepository")]
-		[Category("UnitTest")]
+		//[Category("UnitTest")]
         //public void RepositoryItemAssociationInfo_CompleteInsertOnSubmit_WhereMultipleSimilarPropertiesExist2()
         //{
         //    var repoList2 = new InMemoryRepositoryList(UnderlyingR8RDataContext);
@@ -442,7 +419,6 @@ namespace TestProject1
         //}
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_ConfirmNoAssociationWithUninsertedItemOrItemSetToDelete()
         {
@@ -459,7 +435,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepository_ConfirmNoAssociationWithNondeletedItem()
         {
@@ -476,9 +451,7 @@ namespace TestProject1
 
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
-        [Category("UnitTest")]
         public void InMemoryRepository_CompleteDeleteOnSubmit()
         {
             InitializeInMemoryRepositoryList();
@@ -494,7 +467,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryRepositoryListTests()
         {
@@ -532,7 +504,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void SimulatedPermanentStorageTest()
         {
@@ -544,7 +515,6 @@ namespace TestProject1
         }
 
         [TestMethod]
-        [Category("InMemoryRepository")]
 		[Category("UnitTest")]
         public void InMemoryContextTest()
         {

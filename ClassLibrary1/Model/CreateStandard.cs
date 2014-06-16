@@ -332,7 +332,7 @@ namespace ClassLibrary1.Model
             return theCD;
         }
 
-        protected void SetCategoryAsDefaultSort(int TblTabID, int TblColumnID)
+        protected void SetColumnAsDefaultSort(int TblTabID, int TblColumnID)
         {
             Action.TblTabChangeDefaultSort(TblTabID, TblColumnID, true, superUser, null);
         }
@@ -369,10 +369,10 @@ namespace ClassLibrary1.Model
             return theHierarchyItem;
         }
 
-        protected int CreateTbl(string name, string entityName, string entityAdditionCriteria, int defaultRGA, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int thePointsManagerID, bool oneRatingPerRatingGroup = true, bool allowOverrideOfCharacteristics = false, string widthStyleEntityCol="wf225", string widthStyleNumCol="wf35")
+        protected int CreateTbl(string name, string rowName, string tblRowAdditionCriteria, int defaultRGA, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int thePointsManagerID, bool oneRatingPerRatingGroup = true, bool allowOverrideOfCharacteristics = false, string widthStyleNameCol="wf225", string widthStyleNumCol="wf35")
         {
             int myChangesGroup = Action.ChangesGroupCreate(null, null, superUser, null, null, null, null);
-            int theTblID = Action.TblCreate(thePointsManagerID, defaultRGA, "Category group", true, true, superUser, null, name, allowOverrideOfCharacteristics, oneRatingPerRatingGroup, entityName, entityAdditionCriteria, true, true, widthStyleEntityCol, widthStyleNumCol);
+            int theTblID = Action.TblCreate(thePointsManagerID, defaultRGA, "table column group", true, true, superUser, null, name, allowOverrideOfCharacteristics, oneRatingPerRatingGroup, rowName, tblRowAdditionCriteria, true, true, widthStyleNameCol, widthStyleNumCol);
             return theTblID;
         }
 
@@ -530,7 +530,7 @@ namespace ClassLibrary1.Model
             CreateEvent("Playoff", "Makes playoffs", "The percentage probability that the team makes the playoffs.", basicStatsGroup, myRatingPhase, false, true, false);
             CreateEvent("Pennant", "Pennant winners", "The percentage probability that the team reaches the World Series.", basicStatsGroup, myRatingPhase, false, true, false);
             int wsChamps = CreateEvent("WS Champs", "World Series Champs", "The percentage probability that the team wins the World Series.", basicStatsGroup, myRatingPhase, false, true, false);
-            SetCategoryAsDefaultSort(basicStatsGroup, wsChamps);
+            SetColumnAsDefaultSort(basicStatsGroup, wsChamps);
         }
 
         protected void CreateBaseballChoiceGroups(int pointsManagerID)
@@ -756,7 +756,7 @@ namespace ClassLibrary1.Model
 
             CreateEvent("Playoff", "Makes playoffs", "The percentage probability that the team makes the playoffs.", basicStatsGroup, myRatingPhase, false, true, false);
             int scChamps = CreateEvent("Champs", "Stanley Cup Champions", "The percentage probability that the team wins the Stanley Cup.", basicStatsGroup, myRatingPhase, false, true, false);
-            SetCategoryAsDefaultSort(basicStatsGroup, scChamps);
+            SetColumnAsDefaultSort(basicStatsGroup, scChamps);
         }
 
         protected void CreateHockeyChoiceGroups(int pointsManagerID)
@@ -948,7 +948,7 @@ namespace ClassLibrary1.Model
         protected void CreateMain(int ratingGroup, int? saleGroup, int myRatingPhase)
         {
             int overall = CreateRating("Overall", "Overall", "The overall quality of the property, all factors considered", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall);
+            SetColumnAsDefaultSort(ratingGroup, overall);
             CreateRating("Curb Appeal", "Curb Appeal", "The appearance of the property from outside", ratingGroup, myRatingPhase, true, true, false);
             CreateRating("Interior", "Interior Quality Overall", "The quality of the interior of the property", ratingGroup, myRatingPhase, true, true, false);
             CreateRating("Kitchen", "Kitchen Quality", "The overall quality of the kitchen", ratingGroup, myRatingPhase, true, true, false);
@@ -1038,9 +1038,9 @@ namespace ClassLibrary1.Model
         {
         }
 
-        protected void CreateAnswerCategory(int ratingGroup, int myRatingPhase)
+        protected void CreateAnswerColumn(int ratingGroup, int myRatingPhase)
         {
-            int singleCategory = CreateEvent("Answer","Answer","Depending on the question, the answer may be a rating (0-10), a yes-no answer (0%-100%), a multiple choice answer (with each choice 0%-100%), or some other range of numbers.",ratingGroup,myRatingPhase,false,false,false);
+            int singleColumn = CreateEvent("Answer","Answer","Depending on the question, the answer may be a rating (0-10), a yes-no answer (0%-100%), a multiple choice answer (with each choice 0%-100%), or some other range of numbers.",ratingGroup,myRatingPhase,false,false,false);
         }
 
         protected void CreateQuestionChoiceGroups(int pointsManagerID)
@@ -1059,7 +1059,7 @@ namespace ClassLibrary1.Model
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             CreateQuestionFields(newsTblID);
             int ratingGroup = CreateTblTab("Main", newsTblID);
-            CreateAnswerCategory(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
+            CreateAnswerColumn(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
             return newsTblID;
         }
 
@@ -1090,9 +1090,9 @@ namespace ClassLibrary1.Model
         {
         }
 
-        protected void CreateAnswerCategory(int ratingGroup, int myRatingPhase)
+        protected void CreateAnswerColumn(int ratingGroup, int myRatingPhase)
         {
-            int singleCategory = CreateEvent("Answer", "Answer", "Depending on the question, the answer may be a rating (0-10), a yes-no answer (0%-100%), a multiple choice answer (with each choice 0%-100%), or some other range of numbers.", ratingGroup, myRatingPhase, false, false, false);
+            int singleColumn = CreateEvent("Answer", "Answer", "Depending on the question, the answer may be a rating (0-10), a yes-no answer (0%-100%), a multiple choice answer (with each choice 0%-100%), or some other range of numbers.", ratingGroup, myRatingPhase, false, false, false);
         }
 
         protected void CreateQuestionChoiceGroups(int pointsManagerID)
@@ -1111,7 +1111,7 @@ namespace ClassLibrary1.Model
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             CreateQuestionFields(PrivatePagesTblID);
             int ratingGroup = CreateTblTab("Main", PrivatePagesTblID);
-            CreateAnswerCategory(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
+            CreateAnswerColumn(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
             return PrivatePagesTblID;
         }
 
@@ -1147,7 +1147,7 @@ namespace ClassLibrary1.Model
         protected void CreateActorsMain(int ratingGroup, int myRatingPhase)
         {
             int overall = CreateRating("Popularity", "Current popularity", "The current popularity of this actor or actress", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall);
+            SetColumnAsDefaultSort(ratingGroup, overall);
             CreateRating("Long-term", "Long-term popularity", "How popular this actor or actress is likely to be over the long term", ratingGroup, myRatingPhase, false, true, false);
             CreateRating("Ability", "Acting ability", "The acting ability of this actor or actress", ratingGroup, myRatingPhase, false, true, false);
             CreateRating("Hot", "Hotness", "The physical attractiveness and general hotness of this actor or actress.", ratingGroup, myRatingPhase, false, true, false);
@@ -1189,7 +1189,7 @@ namespace ClassLibrary1.Model
         protected void CreateRealityStarsMain(int ratingGroup, int myRatingPhase)
         {
             int overall = CreateRating("Popularity", "Current popularity", "The current popularity of this reality show star", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall);
+            SetColumnAsDefaultSort(ratingGroup, overall);
             CreateRating("Long-term", "Long-term popularity", "How popular this reality show star is likely to be over the long term", ratingGroup, myRatingPhase, false, true, false);
             CreateRating("Talent", "Talent", "The talent of this reality show star, if any", ratingGroup, myRatingPhase, false, true, false);
             CreateRating("Hot", "Hotness", "The physical attractiveness and general hotness of this reality show star", ratingGroup, myRatingPhase, false, true, false);
@@ -1226,7 +1226,7 @@ namespace ClassLibrary1.Model
         protected void CreateMoviesMain(int ratingGroup, int myRatingPhase)
         {
             int overall = CreateRating("Overall", "Overall", "The overall quality of this movie", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall);
+            SetColumnAsDefaultSort(ratingGroup, overall);
             CreateRating("Film Buffs", "Film Buffs", "How much film buffs like this movie", ratingGroup, myRatingPhase, false, true, false);
             CreateRating("Action", "Action", "How exciting is the action in this movie", ratingGroup, myRatingPhase, false, true, false);
             CreateRating("Romantic", "Romance", "How romantic is this movie", ratingGroup, myRatingPhase, false, true, false);
@@ -1294,7 +1294,7 @@ namespace ClassLibrary1.Model
         protected void CreateSimpleTestMain(int ratingGroup, int myRatingPhase)
         {
             int overall = CreateRating("Test", "Test name", "The current popularity of this actor or actress", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall);
+            SetColumnAsDefaultSort(ratingGroup, overall);
         }
 
         
@@ -1339,7 +1339,7 @@ namespace ClassLibrary1.Model
         protected void CreateSimpleTestMain(int tblTab, int myRatingPhase)
         {
             int overall = CreateEvent("Test", "Test name", "Probability of something", tblTab, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(tblTab, overall);
+            SetColumnAsDefaultSort(tblTab, overall);
         }
 
 
@@ -1403,10 +1403,10 @@ namespace ClassLibrary1.Model
             thePartyChoiceGroupID = CreateChoiceGroup(pointsManagerID, thePartyChoiceGroup, choiceGroupStandardSettingsNoAlphabetize, null, "Party");
         }
 
-        protected void CreatePoliticianCategories(int ratingGroup, int myRatingPhase)
+        protected void CreatePoliticianColumns(int ratingGroup, int myRatingPhase)
         {
             int power = CreateRating("Power", "Power", "Overall power", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, power);
+            SetColumnAsDefaultSort(ratingGroup, power);
             int overall = CreateRating("Effectiveness", "Effectiveness", "Effectiveness as a legislator or leader, placing aside political views", ratingGroup, myRatingPhase, true, true, false);
             int politics = CreateRating("Politics", "Political skills", "Political skills, in obtaining both positions and legislative goals", ratingGroup, myRatingPhase, true, true, false);
             CreateRatingNegativeToPositive("Social", "Social issues", "How liberal/conservative this person is on social issues (-10 = most liberal, 10 = most conservative)", ratingGroup, myRatingPhase, true, true, false);
@@ -1474,15 +1474,15 @@ namespace ClassLibrary1.Model
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             CreatePoliticianFields(politiciansTblID);
             int ratingGroup = CreateTblTab("Ratings", politiciansTblID);
-            CreatePoliticianCategories(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
+            CreatePoliticianColumns(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
             BeginImport("politicians.xml", politiciansTblID);
         }
 
 
-        protected void CreateJudgeCategories(int ratingGroup, int myRatingPhase)
+        protected void CreateJudgeColumns(int ratingGroup, int myRatingPhase)
         {
             int overall = CreateRating("Overall", "Overall performance", "Overall performance, placing aside political views", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall);
+            SetColumnAsDefaultSort(ratingGroup, overall);
             CreateRating("Demeanor", "Demeanor and in-court performance", "Judicial demeanor and effectiveness in court", ratingGroup, myRatingPhase, true, true, false);
             CreateRating("Opinions", "Written opinions", "Quality, thoroughness, and thoughtfulness, placing aside political views", ratingGroup, myRatingPhase, true, true, false);
             CreateRating("Fairness", "Fairness", "Judicial fairness and commitment to the law above personal or political preference", ratingGroup, myRatingPhase, true, true, false);
@@ -1569,7 +1569,7 @@ namespace ClassLibrary1.Model
             //Action.TblChangeStyles(propertiesTblID, "mainTableHeadingSmall", "mainTableSmall", true, superUser, null);
             CreateJudgeFields(judgesTblID);
             int ratingGroup = CreateTblTab("Ratings", judgesTblID);
-            CreateJudgeCategories(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
+            CreateJudgeColumns(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
             BeginImport("Judges.xml", judgesTblID);
         }
 
@@ -1581,7 +1581,7 @@ namespace ClassLibrary1.Model
             supremeCourtTblID = CreateTbl("Supreme Court", "Case or Issue", "Any case accepted for Supreme Court hearing or significant issue in such a case is eligible to be included", standardObjectsForPointsManager[thePointsManagerID].eventRGA, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID, null, null, thePointsManagerID, false);
             CreateSupremeCourtFields(supremeCourtTblID);
             int TblTab = CreateTblTab("Main", supremeCourtTblID);
-            CreateSupremeCourtCategories(thePointsManagerID, TblTab, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
+            CreateSupremeCourtColumns(thePointsManagerID, TblTab, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
             BeginImport("supremecourt.xml", supremeCourtTblID);
         }
 
@@ -1597,7 +1597,7 @@ namespace ClassLibrary1.Model
             CreateFieldDefinitionDisplaySettings(issue, visibleWithNoNameFieldDisplay);
         }
 
-        private void CreateSupremeCourtCategories(int pointsManagerID, int TblTab, int ratingPhaseID)
+        private void CreateSupremeCourtColumns(int pointsManagerID, int TblTab, int ratingPhaseID)
         {
             int probYes = CreateEvent("Yes", "Probability of \"Yes\"", "The percentage chance that the issue listed (such as whether the case will be affirmed) will have an answer of yes. The final value may be between 0 and 100 in the event of a split decision or an ambiguous opinion. If a majority of the Court does not decide an issue, then still pending ratings will be cancelled.", TblTab, ratingPhaseID, true, true, false);
 
@@ -1621,7 +1621,7 @@ namespace ClassLibrary1.Model
             var yesVotesItem = theHierarchy.RatingHierarchyEntries.Single(x => x.RatingName == "Yes votes");
             var replacement = new List<ActionProcessor.RatingCharacteristicsHierarchyOverride> { new ActionProcessor.RatingCharacteristicsHierarchyOverride { theEntryForRatingGroupWhoseMembersWillHaveDifferentCharacteristics = yesVotesItem, theReplacementCharacteristicsID = indVoteRating} };
             supremeCourtHierarchyRGA = Action.RatingGroupAttributesCreate(votesRating, replacement, null, null, theHierarchy, "Supreme Court vote totals", RatingGroupTypes.hierarchyNumbersTop, "Supreme Court vote totals", false, false, new List<RatingHierarchyEntry> { yesVotesItem }, (decimal)0.5, true, true, superUser, myChangesGroup, pointsManagerID);
-            int votesCategory = CreateTblColumn("Votes", "Number of expected votes", "The value for a Justice should be set equal to the probability (between 0 and 1) of a yes vote. The final value of a Justice's yes vote may be between 0 and 1 in the event of a split decision or an ambiguous opinion. Total voting should be less than 9 when a Justice may not participate. If a Justice is replaced in a Term, the successor's vote will count for the original Justice.", TblTab, supremeCourtHierarchyRGA, false, true, false, true,"wf225");
+            int votesColumn = CreateTblColumn("Votes", "Number of expected votes", "The value for a Justice should be set equal to the probability (between 0 and 1) of a yes vote. The final value of a Justice's yes vote may be between 0 and 1 in the event of a split decision or an ambiguous opinion. Total voting should be less than 9 when a Justice may not participate. If a Justice is replaced in a Term, the successor's vote will count for the original Justice.", TblTab, supremeCourtHierarchyRGA, false, true, false, true,"wf225");
         }
 
         public override void Create()
@@ -1659,7 +1659,7 @@ namespace ClassLibrary1.Model
         protected void CreateMain(int ratingGroup, int myRatingPhase)
         {
             int overall = CreateRating("Overall", "Overall quality", "The overall quality of the blog", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall);
+            SetColumnAsDefaultSort(ratingGroup, overall);
             CreateRating("General interest", "General interest", "How interesting the blog is to an average reader of blogs", ratingGroup, myRatingPhase, true, true, false);
             CreateRating("Special interest", "Specialized interest", "How interesting the blog is to someone with a particular interest in the subject matter of the blog", ratingGroup, myRatingPhase, true, true, false);
             CreateRating("Creativity", "Creativity", "How creative the blog is", ratingGroup, myRatingPhase, true, true, false);
@@ -1742,9 +1742,9 @@ namespace ClassLibrary1.Model
         protected void CreateMain(int ratingGroup, int myRatingPhase)
         {
             int overall = CreateRating("Overall", "Overall quality", "The overall quality of the restaurant, not taking into account price", ratingGroup, myRatingPhase, true, true, false);
-            SetCategoryAsDefaultSort(ratingGroup, overall); //NOTE: If adding back in, uncomment SetCategoryAsDefaultSort below.
+            SetColumnAsDefaultSort(ratingGroup, overall); //NOTE: If adding back in, uncomment SetCategoryAsDefaultSort below.
             int food = CreateRating("Food", "Quality of food", "The taste, creativity, and plating of the food", ratingGroup, myRatingPhase, false, true, false);
-            //SetCategoryAsDefaultSort(ratingGroup, food);
+            //SetColumnAsDefaultSort(ratingGroup, food);
             //int taste = CreateRating("Taste", "Taste of food", "How good the food tastes", ratingGroup, myRatingPhase, false, true, false);
             //CreateRating("Creativity", "Creativity of food", "The overall creativity of the food, including plating and selection of dishes and ingredients", ratingGroup, myRatingPhase, false, true, false);
             //CreateRating("Service", "Quality of service", "The knowledge and attentiveness of the service.", ratingGroup, myRatingPhase, false, true, false);

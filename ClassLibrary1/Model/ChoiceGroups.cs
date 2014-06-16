@@ -391,7 +391,7 @@ namespace ClassLibrary1.Model
 
     //    }
 
-    //    public bool ChoicesForFieldDefinitionVerifyOK(int entityID, int FieldDefinitionID, List<int> multipleChoices)
+    //    public bool ChoicesForFieldDefinitionVerifyOK(int tblRowID, int FieldDefinitionID, List<int> multipleChoices)
     //    {
     //        try
     //        {
@@ -415,10 +415,10 @@ namespace ClassLibrary1.Model
     //        }
     //    }
 
-    //    public bool ChoicesForFieldNumVerifyOK(int entityID, int fieldNum, List<int> multipleChoices)
+    //    public bool ChoicesForFieldNumVerifyOK(int tblRowID, int fieldNum, List<int> multipleChoices)
     //    {
     //        FieldDefinition theFieldDefinition = DataAccessModule.GetFieldDefinitionForTblRow(entityID, fieldNum);
-    //        return ChoicesForFieldDefinitionVerifyOK(entityID, theFieldDefinition.FieldDefinitionID, multipleChoices);
+    //        return ChoicesForFieldDefinitionVerifyOK(tblRowID, theFieldDefinition.FieldDefinitionID, multipleChoices);
     //    }
     //}
 }

@@ -367,9 +367,9 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.ChoiceGroup:
                     ChoiceGroup theChoiceGroup = DataContext.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID == objectID);
                     theChoiceGroup.Status = newValue;
-                    var entities1 = theChoiceGroup.ChoiceGroups.SelectMany(x => x.ChoiceInGroups).SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceField.Field.TblRow).Distinct().ToList();
-                    foreach (var entity1 in entities1)
-                        ResetTblRowFieldDisplay(entity1);
+                    var tblRows1 = theChoiceGroup.ChoiceGroups.SelectMany(x => x.ChoiceInGroups).SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceField.Field.TblRow).Distinct().ToList();
+                    foreach (var tblRow1 in tblRows1)
+                        ResetTblRowFieldDisplay(tblRow1);
                     break;
                 case TypeOfObject.ChoiceGroupFieldDefinition:
                     ChoiceGroupFieldDefinition theCGFD = DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.ChoiceGroupFieldDefinitionID== objectID);
@@ -392,9 +392,9 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.ChoiceInGroup:
                     ChoiceInGroup theChoiceInGroup = DataContext.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == objectID);
                     theChoiceInGroup.Status = newValue;
-                    var entities = theChoiceInGroup.ChoiceInFields.Select(x => x.ChoiceField).Select(x => x.Field.TblRow).Distinct().ToList();
-                    foreach (var entity in entities)
-                        ResetTblRowFieldDisplay(entity);
+                    var tblRows = theChoiceInGroup.ChoiceInFields.Select(x => x.ChoiceField).Select(x => x.Field.TblRow).Distinct().ToList();
+                    foreach (var tblRow in tblRows)
+                        ResetTblRowFieldDisplay(tblRow);
                     break;
                 case TypeOfObject.Tbl:
                     DataContext.GetTable<Tbl>().Single(x => x.TblID == objectID).Status = newValue;
@@ -1021,7 +1021,7 @@ namespace ClassLibrary1.Model
         /// <param name="theName">The name of the object</param>
         public void ChangeNameOfObject(int objectID, TypeOfObject theObjectType, int? userID, String theName)
         {
-            // We allow duplicative names for entities, but not other objects.
+            // We allow duplicative names for table rows, but not other objects.
             if (!NameIsAvailableForObject(objectID, theObjectType, userID, theName) && theObjectType != TypeOfObject.TblRow)
                 FindAvailableNameForObject(objectID, theObjectType, userID, ref theName);
             switch (theObjectType)
@@ -1029,12 +1029,12 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.TblColumn:
                     var theTblColumn = DataContext.GetTable<TblColumn>().Single(x=>x.TblColumnID==objectID);
                     theTblColumn.Name = theName;
-                    CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblColumn.TblTab.TblID);
+                    CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                     break;
                 case TypeOfObject.TblTab:
                     var theTblTab = DataContext.GetTable<TblTab>().Single(x => x.TblTabID==objectID);
                     theTblTab.Name = theName;
-                    CacheManagement.InvalidateCacheDependency("CategoriesForTblID" + theTblTab.TblID);
+                    CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblTab.TblID);
                     break;
                 case TypeOfObject.ChoiceGroup:
                     var theChoiceGroup = DataContext.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID==objectID);

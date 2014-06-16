@@ -11,7 +11,7 @@ namespace ClassLibrary1.Model
         internal class TblRowUpdateRecentStatusTracker
         {
 #pragma warning disable 0649
-            public TblRowStatusRecord entityStatusRecord;
+            public TblRowStatusRecord tblRowStatusRecord;
             public bool anyToKeepForThisTblRow;
 #pragma warning restore 0649
         }
@@ -128,23 +128,23 @@ namespace ClassLibrary1.Model
 
         public static bool DeleteOldTblRowStatusRecords(IR8RDataContext theDataContext)
         {
-            // We delete the old entity status records that we no longer need
+            // We delete the old table row status records that we no longer need
             // to track in an effort to keep search results current. We must
-            // update the StatusRecentlyChanged field for entities with no
+            // update the StatusRecentlyChanged field for table rows with no
             // remaining TblRowStatusRecords after the deletion.
             DateTime oldestToKeep = TestableDateTime.Now - new TimeSpan(0,30,0);
-            var entityStatusRecordsToDelete = theDataContext.GetTable<TblRowStatusRecord>()
+            var tblRowStatusRecordsToDelete = theDataContext.GetTable<TblRowStatusRecord>()
                 .Where(x => x.TimeChanged < oldestToKeep)
                 .Select(x => new TblRowUpdateRecentStatusTracker
                     {
-                        entityStatusRecord = x,
+                        tblRowStatusRecord = x,
                         anyToKeepForThisTblRow = x.TblRow.TblRowStatusRecords.Any(y => y.TimeChanged >= oldestToKeep)
                     }).ToList();
-            foreach (var theOneToDelete in entityStatusRecordsToDelete)
+            foreach (var theOneToDelete in tblRowStatusRecordsToDelete)
             {
-                theDataContext.GetTable<TblRowStatusRecord>().DeleteOnSubmit(theOneToDelete.entityStatusRecord);
+                theDataContext.GetTable<TblRowStatusRecord>().DeleteOnSubmit(theOneToDelete.tblRowStatusRecord);
                 if (!theOneToDelete.anyToKeepForThisTblRow)
-                    theOneToDelete.entityStatusRecord.TblRow.StatusRecentlyChanged = false;
+                    theOneToDelete.tblRowStatusRecord.TblRow.StatusRecentlyChanged = false;
             }
             return false; // no more work to do for a while.
                 

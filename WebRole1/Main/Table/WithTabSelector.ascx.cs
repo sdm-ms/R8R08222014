@@ -90,22 +90,22 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
     /// <summary>
     /// FillTblTabMenu
     /// Fills the menu.
-    /// Hides the menu if there are 0 or 1 category group only.
+    /// Hides the menu if there are 0 or 1 table column group only.
     /// NOTE: Currently, the menu will ultimately be transformed by the Javascript into a set of tabs.
     /// </summary>
     /// <returns></returns>
     protected void FillTblTabMenu()
     {        
-        //Fetching category Group and binding it to drop down list
+        //Fetching table column group and binding it to drop down list
         var GetTblTab = DataAccess.R8RDB.GetTable<TblTab>()
                                .Where(x => x.TblID == TblID && x.Status == Convert.ToByte(StatusOfObject.Active))
                                .OrderBy(x => x.NumInTbl)
                                .ThenBy(x => x.TblTabID)
                                .Select(x => new { Name = x.Name, TblTabID = x.TblTabID}).ToList();
 
-        int categoryCount = GetTblTab.Count();
+        int opinionColumnsCount = GetTblTab.Count();
 
-        if (categoryCount >= 1)
+        if (opinionColumnsCount >= 1)
         {
             if (!Page.IsPostBack)
             {
@@ -117,7 +117,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
             }
         }
 
-        TableSelector.Visible = categoryCount > 1;
+        TableSelector.Visible = opinionColumnsCount > 1;
     }
 
     public int GetTblTabID()
@@ -129,7 +129,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
             return Convert.ToInt32(theString);
     }
 
-    public void UpdateMainTable(bool resetTableToTop, bool resetFields, bool resetCategories, bool resetSort, bool reloadFields)
+    public void UpdateMainTable(bool resetTableToTop, bool resetFields, bool resetColumns, bool resetSort, bool reloadFields)
     {
         int TblTabID = GetTblTabID();
         if (MainTable != null)
@@ -138,7 +138,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
         }
         UpdatePanelAroundMainTable.Update();
         if (FieldsBox != null)
-            FieldsBox.ReBind(resetFields, resetCategories, TblTabID);
+            FieldsBox.ReBind(resetFields, resetColumns, TblTabID);
     }
 
 
@@ -176,7 +176,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
             }
             else if (TblColumnToSort == null)
                 // Note: The client may change this to load by distance on initially loading the page.
-                theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleEntityName(true));
+                theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleRowName(true));
             else
                 theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleTblColumn((int)TblColumnToSort, SortOrderAscending));
             theInfo.SortMenu = SortMenuGenerator.GetSortMenuForTblTab(DataAccess.R8RDB, TblTabID, userIsTrusted);

@@ -141,12 +141,11 @@ namespace ClassLibrary1.Model
         }
 
         /// <summary>
-        /// Returns the topmost rating group for a particular entity and category
+        /// Returns the topmost rating group for a particular tblRow and column
         /// </summary>
-        /// <param name="entityID">The entity</param>
-        /// <param name="TblColumnID">The category descriptor object</param>
+        /// <param name="TblColumnID">The table column object</param>
         /// <returns>The topmost rating group</returns>
-        public RatingGroup GetTopRatingGroupForTblRowCategory(TblRow tblRow, TblColumn TblColumn)
+        public RatingGroup GetTopRatingGroupForTblRowAndColumn(TblRow tblRow, TblColumn TblColumn)
         {
             var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow == tblRow && m.RatingGroup.TblColumn == TblColumn);
             if (firstRating != null)
@@ -181,7 +180,7 @@ namespace ClassLibrary1.Model
         }
 
         ///// <summary>
-        ///// Sets the trading status of a universe, Tbl, entity, rating group, or rating. This routine does not
+        ///// Sets the trading status of a universe, Tbl, TblRow, rating group, or rating. This routine does not
         ///// ensure hierarchical integrity, but is called by SetTradingStatus below. It does take appropriate action
         ///// when a rating is started. Note that this is called by the FinalizeRating function (not the other way around)
         ///// </summary>
@@ -239,7 +238,7 @@ namespace ClassLibrary1.Model
         //}
 
         ///// <summary>
-        ///// Returns the trading status of a rating, rating group, entity, Tbl, or universe.
+        ///// Returns the trading status of a rating, rating group, TblRow, Tbl.
         ///// </summary>
         ///// <param name="objectID">The object id</param>
         ///// <param name="theType">The type of object</param>
@@ -278,7 +277,7 @@ namespace ClassLibrary1.Model
         }
 
         ///// <summary>
-        ///// Sets the trading status of a universe, Tbl, entity, rating group, or rating, considering
+        ///// Sets the trading status of a universe, Tbl, TblRow, rating group, or rating, considering
         ///// the trading status of whatever is immediately higher in the hierarchy. Note that right now,
         ///// this does not directly affect whatever is beneath it in the hierarchy. That will be accomplished
         ///// through a separate routine that runs as a background process noting inconsistencies.
@@ -329,7 +328,7 @@ namespace ClassLibrary1.Model
         //            && newStatus == TradingStatus.Active
         //            && oldStatus == TradingStatus.NotYetStarted)
         //        AdvanceRatingGroupToNextRatingPhase(objectID);
-        //    // If we're just starting off a Tbl, go ahead and start trading. Note that when we're adding an entity to 
+        //    // If we're just starting off a Tbl, go ahead and start trading. Note that when we're adding an TblRow to 
         //    // a Tbl that's already started, we'll add the ratings for that entity separately.
         //    if (theType == TypeOfObject.Tbl && newStatus == TradingStatus.Active && oldStatus == TradingStatus.NotYetStarted)
         //        StartAddingMissingRatingsForTbl(objectID);
@@ -351,10 +350,10 @@ namespace ClassLibrary1.Model
         //    //        var TblTabs = R8RDB.GetTable<TblTab>().Where(cg => cg.TblID == theTblRow.TblID && cg.Status == (Byte)StatusOfObject.Active);
         //    //        foreach (TblTab theTblTab in TblTabs)
         //    //        {
-        //    //            var theCategories = R8RDB.GetTable<TblColumn>().Where(c => c.TblTabID == theTblTab.TblTabID && c.Status == (Byte)StatusOfObject.Active);
-        //    //            foreach (TblColumn theCategory in theCategories)
+        //    //            var theTblColumns = R8RDB.GetTable<TblColumn>().Where(c => c.TblTabID == theTblTab.TblTabID && c.Status == (Byte)StatusOfObject.Active);
+        //    //            foreach (TblColumn theTblColumn in theTblColumns)
         //    //            {
-        //    //                int? theRatingGroupID = GetTopRatingGroupForTblRowCategory(objectID, theCategory.TblColumnID);
+        //    //                int? theRatingGroupID = GetTopRatingGroupForTblRowAndColumn(objectID, theTblColumn.TblColumnID);
         //    //                if (theRatingGroupID != null)
         //    //                    SetTradingStatusHierarchical((int) theRatingGroupID, TypeOfObject.RatingGroup, newStatus);
         //    //            }
@@ -363,8 +362,8 @@ namespace ClassLibrary1.Model
         //    //    case TypeOfObject.Tbl:  
                     
         //    //        var theTblRows = R8RDB.GetTable<TblRow>().Where(e => e.TblID == objectID && e.Status == (Byte)StatusOfObject.Active).Select(e => e.TblRowID);
-        //    //        foreach (int entityID in theTblRows)
-        //    //            SetTradingStatusHierarchical(entityID, TypeOfObject.TblRow, newStatus);
+        //    //        foreach (int tblRowID in theTblRows)
+        //    //            SetTradingStatusHierarchical(tblRowID, TypeOfObject.TblRow, newStatus);
         //    //        break;
 
         //    //    case TypeOfObject.PointsManager:

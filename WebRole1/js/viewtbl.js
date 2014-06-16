@@ -1791,7 +1791,7 @@ function viewtbl() {
                 if (TblColumnToSort == "")
                     TblColumnToSort = null;
             }
-            updateTableSortedByCategory(TblColumnToSort, asc);
+            updateTableSortedByColumn(TblColumnToSort, asc);
         }
     }
 
@@ -1837,12 +1837,12 @@ function viewtbl() {
 
     /* updates the table to sort by the specified table column and sort direction */
 
-    function updateTableSortedByCategory(TblColumnToSort, sortAsc) {
+    function updateTableSortedByColumn(TblColumnToSort, sortAsc) {
         var instruction;
         if (TblColumnToSort == null)
             instruction = sortInstructionTblRow(sortAsc);
         else
-            instruction = sortInstructionCategory(TblColumnToSort, sortAsc);
+            instruction = sortInstructionColumn(TblColumnToSort, sortAsc);
         updateTableSort(instruction);
     }
 
@@ -1864,7 +1864,7 @@ function viewtbl() {
 
     /* generates sort instructions for some types of sorting */
     /* only those that need to be generated on the fly are included */
-    function sortInstructionCategory(TblColumnID, ascending) {
+    function sortInstructionColumn(TblColumnID, ascending) {
         return "C," + TblColumnID + "," + (ascending ? "true" : "false");
     }
 

@@ -49,7 +49,7 @@ namespace ClassLibrary1.Model
         public TblRow theTblRow { get; set; }
         public Tbl theTbl { get; set; }
         public R8RDataAccess DataAccess { get; set; }
-        public string theEntityName { get; set; }
+        public string theRowName { get; set; }
         public List<FieldDataInfo> theFieldDataInfos { get; set; }
         public List<FieldDefinition> theEmptyFieldDefinitions { get; set; }
         public List<TblVal> defaultTblVals { get; set; }
@@ -61,7 +61,7 @@ namespace ClassLibrary1.Model
             theTblRow = tblRow;
             theTbl = Tbl;
             if (theTbl == null && theTblRow == null)
-                throw new Exception("FieldSetDataInfo: TblID or entityID must be specified.");
+                throw new Exception("FieldSetDataInfo: TblID or TblRowID must be specified.");
             if (theTbl == null)
             {
                 theTbl = theTblRow.Tbl;
@@ -69,7 +69,7 @@ namespace ClassLibrary1.Model
             else
             {
                 if (theTblRow != null && theTbl != theTblRow.Tbl && theTbl.TblID != theTblRow.Tbl.TblID)
-                    throw new Exception("FieldSetDataInfo: TblID and entityID do not match.");
+                    throw new Exception("FieldSetDataInfo: TblID and TblRowID do not match.");
             }
             theFieldDataInfos = new List<FieldDataInfo>();
             theEmptyFieldDefinitions = new List<FieldDefinition>();
@@ -83,7 +83,7 @@ namespace ClassLibrary1.Model
 
         public void LoadFromDatabase()
         {
-            theEntityName = theTblRow.Name;
+            theRowName = theTblRow.Name;
             List<FieldDefinition> FieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.TblID == theTblRow.TblID).OrderBy(fd => fd.FieldNum).ThenBy(fd => fd.FieldName).ToList();
             foreach (var FieldDefinition in FieldDefinitions)
             {
@@ -128,12 +128,12 @@ namespace ClassLibrary1.Model
         public string GetComparison(FieldSetDataInfo oldSettings)
         {
             StringBuilder myBuilder = new StringBuilder();
-            myBuilder.Append("Changes to " + oldSettings.theEntityName + "<br>");
+            myBuilder.Append("Changes to " + oldSettings.theRowName + "<br>");
             bool nameChanged = false;
-            if (theEntityName != oldSettings.theEntityName)
+            if (theRowName != oldSettings.theRowName)
             {
                 nameChanged = true;
-                myBuilder.Append("New name: " + theEntityName + "<br>");
+                myBuilder.Append("New name: " + theRowName + "<br>");
             }
             var changedFields = theFieldDataInfos
                 .Where(x =>
@@ -193,7 +193,7 @@ namespace ClassLibrary1.Model
         public string GetDescription()
         {
             StringBuilder myBuilder = new StringBuilder();
-            myBuilder.Append("Name: " + theEntityName);
+            myBuilder.Append("Name: " + theRowName);
             foreach (var fieldDataInfo in theFieldDataInfos)
             {
                 string theString = fieldDataInfo.GetDescription();
@@ -426,7 +426,7 @@ namespace ClassLibrary1.Model
                 DataAccess.R8RDB.TempCacheAdd(key, theNFD);
             }
             if (theNFD == null)
-                throw new Exception("The number field descriptor is missing.");
+                throw new Exception("The number field definition is missing.");
             if (theNFD.Minimum != null && TheNumber < theNFD.Minimum)
                 throw new Exception("The number is set too low.");
             if (theNFD.Maximum != null && TheNumber > theNFD.Maximum)
@@ -479,7 +479,7 @@ namespace ClassLibrary1.Model
                 DataAccess.R8RDB.TempCacheAdd(key, theCGFD);
             }
             if (theCGFD == null)
-                throw new Exception("The choice group field descriptor is missing.");
+                throw new Exception("The choice group field definition is missing.");
         }
 
         public ChoiceInGroup GetChoiceInGroupIDForChoiceText(string theChoiceInGroupText)
@@ -646,15 +646,15 @@ namespace ClassLibrary1.Model
     /// </summary>
     public partial class R8RDataManipulation
     {
-        // Methods related to entities and fields.
+        // Methods related to table rows and fields.
 
         /// <summary>
-        /// Returns a field descriptor for a specified entity and field number. 
+        /// Returns a field definition for a specified table row and field number. 
         /// </summary>
         /// <param name="entityID">The entity</param>
         /// <param name="fieldNum">The field number</param>
-        /// <returns>The field descriptor</returns>
-        //public FieldDefinition GetFieldDefinitionForTblRow(int? entityID, int fieldNum)
+        /// <returns>The field definition</returns>
+        //public FieldDefinition GetFieldDefinitionForTblRow(int? tblRowID, int fieldNum)
         //{
         //    throw new Exception("This is no longer supported.");
         //    TblRow theTblRow = R8RDB.GetTable<TblRow>().SingleOrDefault(e => e.TblRowID == entityID);
@@ -692,19 +692,19 @@ namespace ClassLibrary1.Model
             return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRow == tblRow && f.FieldDefinition == FieldDefinition && f.Status == (byte)StatusOfObject.Active);
         }
 
-        public Field GetFieldForTblRow(int? entityID, int? FieldDefinitionID)
+        public Field GetFieldForTblRow(int? tblRowID, int? FieldDefinitionID)
         {
-            return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRowID == entityID && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
+            return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRowID == tblRowID && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
         }
 
-        public void GetFieldForTblRow(int? entityID, int? FieldDefinitionID, ref int? theFieldID, ref int? theSubfieldID, ref FieldTypes theFieldType)
+        public void GetFieldForTblRow(int? tblRowID, int? FieldDefinitionID, ref int? theFieldID, ref int? theSubfieldID, ref FieldTypes theFieldType)
         {
             theFieldID = null;
             theSubfieldID = null;
-            if (entityID == null || FieldDefinitionID == null)
+            if (tblRowID == null || FieldDefinitionID == null)
                 return;
 
-            var theField = DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRowID == entityID && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
+            var theField = DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRowID == tblRowID && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
             if (theField != null)
                 theFieldID = theField.FieldID;
 

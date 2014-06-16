@@ -34,13 +34,13 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
     protected R8RDataAccess DataAccess;
     ActionProcessor Obj = new ActionProcessor();
 
-    public void Setup(int entityID, int tblColumnID)
+    public void Setup(int tblRowID, int tblColumnID)
     {
         DataAccess = new R8RDataAccess();
-        TblRowID = entityID;
+        TblRowID = tblRowID;
         TblColumnID = tblColumnID;
         TblColumn theTblColumn = DataAccess.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
-        RatingGroupID = (int) DataAccess.GetRatingGroupForTblRowCategory(entityID, TblColumnID);
+        RatingGroupID = (int) DataAccess.GetRatingGroupForTblRowAndColumn(tblRowID, TblColumnID);
         int topRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
         Tbl theTbl = DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == TblRowID).Tbl;
         TblID = theTbl.TblID;

@@ -83,10 +83,10 @@
                                             </asp:ListView>
                                         </tr>
                                     </table>
-                                    <asp:ListView runat="server" ID="FieldsBoxListViewCategories" DataSourceID="LinqDataSourceCategories"
+                                    <asp:ListView runat="server" ID="FieldsBoxListViewColumns" DataSourceID="LinqDataSourceColumns"
                                         DataKeyNames="TblColumnID,TblColumnName,DefaultSortOrderAsc,Sortable"
-                                        OnDataBinding="FieldsBoxListViewCategories_DataBinding" OnItemCreated="FieldsBoxListViewCategories_ItemCreated"
-                                        OnItemDataBound="FieldsBoxListViewCategories_ItemDataBound">
+                                        OnDataBinding="FieldsBoxListViewColumns_DataBinding" OnItemCreated="FieldsBoxListViewColumns_ItemCreated"
+                                        OnItemDataBound="FieldsBoxListViewColumns_ItemDataBound">
                                         <LayoutTemplate>
                                             <table cellspacing="0" class="filterTable">
                                                 <tr id="itemPlaceholder" runat="server">
@@ -119,8 +119,8 @@
                                     <asp:LinqDataSource ID="LinqDataSourceFields" runat="server" ContextTypeName="UserRatingDataAccess"
                                         OnSelecting="LinqDataSourceFields_Selecting">
                                     </asp:LinqDataSource>
-                                    <asp:LinqDataSource ID="LinqDataSourceCategories" runat="server" ContextTypeName="UserRatingDataAccess"
-                                        OnSelecting="LinqDataSourceCategories_Selecting">
+                                    <asp:LinqDataSource ID="LinqDataSourceColumns" runat="server" ContextTypeName="UserRatingDataAccess"
+                                        OnSelecting="LinqDataSourceColumns_Selecting">
                                     </asp:LinqDataSource>
                                 </ContentTemplate>
                             </asp:UpdatePanel>

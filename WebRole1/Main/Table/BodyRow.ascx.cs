@@ -86,7 +86,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             int theTblColumnID = (int)BodyRowListView.DataKeys[dataItem.DisplayIndex].Value;
 
-            int? theRatingGroupID = DataAccess.GetRatingGroupForTblRowCategory(TblRowID, theTblColumnID);
+            int? theRatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn(TblRowID, theTblColumnID);
 
             if (theRatingGroupID != null)
             {

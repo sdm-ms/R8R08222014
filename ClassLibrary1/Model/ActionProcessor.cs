@@ -213,7 +213,7 @@ namespace ClassLibrary1.Model
                 return;
 
             FieldSetDataInfo theData = DataManipulation.CreateFieldSetDataForRewardRating(originalTbl, userChangesTbl, changeType, baseMultiplierOverride, supplementalMultiplier, userID, changeName, changeDescription);
-            theData.theEntityName = changeName;
+            theData.theRowName = changeName;
 
             RewardRatingSetting theSetting = DataContext.GetTable<RewardRatingSetting>().SingleOrDefault(rms => rms.PointsManagerID == originalTbl.PointsManagerID && rms.Status == (Byte)StatusOfObject.Active);
             User theSuperUser = DataContext.GetTable<User>().SingleOrDefault(u => u.Username == "admin"); // this is created by admin, but a field above tracks the creating user for purpose of giving credit
@@ -300,7 +300,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("Insufficient privileges");
         }
 
-        public int TblCreate(int pointsManagerID, int? defaultRatingGroupAttributesID, string TblTabWord, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, String name, bool AllowOverrideOfRatingCharacterstics, bool OneRatingPerRatingGroup, string TypeOfTblRow, string entityAdditionCriteria, bool AllowUsersToAddComments, bool LimitCommentsToUsersWhoCanMakeUserRatings, string widthStyleEntityCol, string widthStyleNumCol)
+        public int TblCreate(int pointsManagerID, int? defaultRatingGroupAttributesID, string TblTabWord, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID, String name, bool AllowOverrideOfRatingCharacterstics, bool OneRatingPerRatingGroup, string TypeOfTblRow, string rowAdditionCriteria, bool AllowUsersToAddComments, bool LimitCommentsToUsersWhoCanMakeUserRatings, string widthStyleNameCol, string widthStyleNumCol)
         {
             
             int? newObjectID = null;
@@ -313,7 +313,7 @@ namespace ClassLibrary1.Model
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
-                newObjectID = DataManipulation.AddTbl(pointsManagerID, defaultRatingGroupAttributesID, TblTabWord, name, theUser, AllowOverrideOfRatingCharacterstics, OneRatingPerRatingGroup, TypeOfTblRow, entityAdditionCriteria, AllowUsersToAddComments, LimitCommentsToUsersWhoCanMakeUserRatings, widthStyleEntityCol, widthStyleNumCol);
+                newObjectID = DataManipulation.AddTbl(pointsManagerID, defaultRatingGroupAttributesID, TblTabWord, name, theUser, AllowOverrideOfRatingCharacterstics, OneRatingPerRatingGroup, TypeOfTblRow, rowAdditionCriteria, AllowUsersToAddComments, LimitCommentsToUsersWhoCanMakeUserRatings, widthStyleNameCol, widthStyleNumCol);
                 if (makeActive)
                 {
                     int theChange = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.Tbl, true, false, false, false, false, false, false, false, "", newObjectID, null, null, null, null, "", null);
@@ -334,7 +334,7 @@ namespace ClassLibrary1.Model
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.AddTblsAndChangePointsManagers, !doItNow, pointsManagerID, TblID, true))
             {
                 if (TblTabWord.Length >= 50)
-                    throw new Exception("The word to describe the category group must be less than 50 characters.");
+                    throw new Exception("The word to describe the table column group must be less than 50 characters.");
 
                 int changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.Tbl, false, false, false, false, true, true, false, false, "", null, TblID, null, null, null, TblTabWord, null);
                 if (doItNow)
@@ -365,7 +365,7 @@ namespace ClassLibrary1.Model
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.AddTblsAndChangePointsManagers, !doItNow, pointsManagerID, TblID, true))
             {
                 if (typeOfTblRow.Length >= 50)
-                    throw new Exception("The word to describe the type of entity must be less than 50 characters.");
+                    throw new Exception("The word to describe the type of row must be less than 50 characters.");
 
                 int changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.Tbl, false, false, false, false, false, false, true, false, "", null, TblID, null, null, null, typeOfTblRow, null);
                 if (doItNow)
@@ -571,7 +571,7 @@ namespace ClassLibrary1.Model
             
             DataManipulation.ConfirmObjectExists(FieldDefinitionID, TypeOfObject.FieldDefinition);
             int TblID = DataAccess.GetFieldDefinition(FieldDefinitionID).TblID;
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, null, TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, null, TblID, true))
             {
                 if (fieldName.Length >= 50)
                     throw new Exception("The field name must be less than 50 characters.");
@@ -651,7 +651,7 @@ namespace ClassLibrary1.Model
 
         public TblRow TblRowCreate(int TblID, int userID, int? changesGroupID, String name, List<UserSelectedRatingInfo> theRatingTypeOverrides = null)
         {
-            // Note that the creation of an entity is not part of a changes group, since we need to create them before assigning IDs.
+            // Note that the creation of a row is not part of a changes group, since we need to create them before assigning IDs.
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, false, null, TblID, false))
             {
                 Tbl theTbl = DataContext.GetTable<Tbl>().Single(c => c.TblID == TblID);
@@ -669,13 +669,13 @@ namespace ClassLibrary1.Model
         public TblRow TblRowCreateWithFields(FieldSetDataInfo theFieldSetDataInfo, int userID, List<UserSelectedRatingInfo> theRatingTypeOverrides = null)
         {
             if (theFieldSetDataInfo.theTbl == null)
-                throw new Exception("Tbl must be specified before creating entity.");
+                throw new Exception("Tbl must be specified before creating row.");
              int? changesGroupID = null;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, false, null, theFieldSetDataInfo.theTbl.TblID, false))
             {
 
                 //ProfileSimple.Start("TblRowCreate");
-                TblRow theTblRow = TblRowCreate(theFieldSetDataInfo.theTbl.TblID, userID, changesGroupID, theFieldSetDataInfo.theEntityName, theRatingTypeOverrides);
+                TblRow theTblRow = TblRowCreate(theFieldSetDataInfo.theTbl.TblID, userID, changesGroupID, theFieldSetDataInfo.theRowName, theRatingTypeOverrides);
                 theFieldSetDataInfo.theTblRow = theTblRow;
                 //ProfileSimple.End("TblRowCreate");
                 //ProfileSimple.Start("FieldSetImplement");
@@ -685,7 +685,7 @@ namespace ClassLibrary1.Model
                 decimal? baseMultiplierOverride;
                 var shouldCreateReward = DataManipulation.ShouldCreateRewardRating((int)theFieldSetDataInfo.theTbl.TblID, userID, out baseMultiplierOverride);
                 if (shouldCreateReward)
-                    RewardRatingCreate((int)theFieldSetDataInfo.theTbl.TblID, RewardableUserAction.AddRow, baseMultiplierOverride, 1M, userID, "Added row: " + theFieldSetDataInfo.theEntityName, theFieldSetDataInfo.GetDescription());
+                    RewardRatingCreate((int)theFieldSetDataInfo.theTbl.TblID, RewardableUserAction.AddRow, baseMultiplierOverride, 1M, userID, "Added row: " + theFieldSetDataInfo.theRowName, theFieldSetDataInfo.GetDescription());
 
                 //ProfileSimple.End("RewardInTblRowCreateWithFields");
                 return theTblRow;
@@ -702,7 +702,7 @@ namespace ClassLibrary1.Model
             int? changesGroupID = null;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, false, null, theSet.theTbl.TblID, false))
             {
-                theSet.theTblRow.Name = theSet.theEntityName;
+                theSet.theTblRow.Name = theSet.theRowName;
                 theSet.IdentifyEmptyFields(activeFieldDefinitionsOnly); // Identify the empty fields (which need to be deleted if they exist)
                 //ProfileSimple.Start("FieldDelete and FieldChange");
                 foreach (var theEmptyFieldDefinition in theSet.theEmptyFieldDefinitions)
@@ -737,7 +737,7 @@ namespace ClassLibrary1.Model
                 FieldSetDataInfo oldSettings = new FieldSetDataInfo(theSet.theTblRow, theSet.theTbl, new R8RDataAccess());
                 oldSettings.LoadFromDatabase();
                 string changesList = theSet.GetComparison(oldSettings);
-                RewardRatingCreate((int)theSet.theTbl.TblID, RewardableUserAction.ChangeFields, baseMultiplierOverride, 0.75M, userID, "Changed info: " + theSet.theEntityName, changesList);
+                RewardRatingCreate((int)theSet.theTbl.TblID, RewardableUserAction.ChangeFields, baseMultiplierOverride, 0.75M, userID, "Changed info: " + theSet.theRowName, changesList);
             }
             //ProfileSimple.End("RewardRating");
             //ProfileSimple.End("FieldSetImplement");
@@ -772,12 +772,12 @@ namespace ClassLibrary1.Model
             }
         }
 
-        internal void EntityNameChange(int entityID, string newName, int userID, int changesGroupID)
+        internal void TblRowNameChange(int tblRowID, string newName, int userID, int changesGroupID)
         {
             // Assumes that change has already been approved. Will not implement the change.
-            string currentName = DataManipulation.DataContext.GetTable<TblRow>().Single(e => e.TblRowID == entityID).Name;
+            string currentName = DataManipulation.DataContext.GetTable<TblRow>().Single(e => e.TblRowID == tblRowID).Name;
             if (currentName != newName)
-                DataManipulation.AddChangesStatusOfObject(changesGroupID, TypeOfObject.TblRow, false, false, false, true, false, false, false, false, newName, null, entityID, null, null, null, "", null);
+                DataManipulation.AddChangesStatusOfObject(changesGroupID, TypeOfObject.TblRow, false, false, false, true, false, false, false, false, newName, null, tblRowID, null, null, null, "", null);
         }
 
         internal void FieldChange(FieldDataInfo theFieldData, int userID)
@@ -865,7 +865,7 @@ namespace ClassLibrary1.Model
         internal void FieldDelete(TblRow tblRow, FieldDefinition theFieldDefinition, int userID)
         {
             if (tblRow.TblRowID == -1)
-                return; // Shouldn't be a field to delete for entity that hasn't been added yet.
+                return; // Shouldn't be a field to delete for table row that hasn't been added yet.
             Field theField = DataManipulation.GetFieldForTblRow(tblRow, theFieldDefinition);
             if (theField != null)
             {
@@ -934,7 +934,7 @@ namespace ClassLibrary1.Model
             {
                 FieldDefinition theFieldDefinition = DataManipulation.DataContext.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.FieldDefinitionID == FieldDefinitionID);
                 if (theFieldDefinition == null)
-                    throw new Exception("Error -- field definition does not exist for entity to be added.");
+                    throw new Exception("Error -- field definition does not exist for row to be added.");
 
                 NumberFieldDefinition theNumberFieldDefinition = null;
                 ChoiceGroupFieldDefinition theChoiceGroupFieldDefinition = null;
@@ -1106,7 +1106,7 @@ namespace ClassLibrary1.Model
 
             
             int? newObjectID = null;
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !makeActiveNow, null, TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !makeActiveNow, null, TblID, true))
             {
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
@@ -1150,7 +1150,7 @@ namespace ClassLibrary1.Model
            
             DataManipulation.ConfirmObjectExists(TblTabID, TypeOfObject.TblTab);
             TblTab theTblTab = DataAccess.GetTblTab(TblTabID);
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, null, theTblTab.TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, null, theTblTab.TblID, true))
             {
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
@@ -1166,7 +1166,7 @@ namespace ClassLibrary1.Model
         {
             DataManipulation.ConfirmObjectExists(TblTabID, TypeOfObject.TblTab);
             TblTab theTblTab = DataAccess.GetTblTab(TblTabID);
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, null, theTblTab.TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, null, theTblTab.TblID, true))
             {
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
@@ -1185,7 +1185,7 @@ namespace ClassLibrary1.Model
             int TblID = DataAccess.R8RDB.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.TblID;
             DataManipulation.ConfirmObjectExists(TblColumnID, TypeOfObject.TblColumn);
             int newObjectID;
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !makeActiveNow, null, TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !makeActiveNow, null, TblID, true))
             {
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
@@ -1221,22 +1221,22 @@ namespace ClassLibrary1.Model
             int? newObjectID = null;
             DataManipulation.ConfirmObjectExists(TblTabID, TypeOfObject.TblTab);
 
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !makeActiveNow, null, tblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !makeActiveNow, null, tblID, true))
             {
                 int? theUser = userID;
                 if ( DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
-                int categoryNum = DataManipulation.DataContext.GetTable<TblColumn>().Where(cd => cd.TblTabID == TblTabID).Count() + 1;
-                newObjectID = DataManipulation.AddTblColumn(TblTabID, defaultRatingGroupAttributesID, categoryNum, abbreviation, name, widthStyle, explanation, trackTrustWithinTableColumn);
+                int numTblColumnsInTab = DataManipulation.DataContext.GetTable<TblColumn>().Where(cd => cd.TblTabID == TblTabID).Count() + 1;
+                newObjectID = DataManipulation.AddTblColumn(TblTabID, defaultRatingGroupAttributesID, numTblColumnsInTab, abbreviation, name, widthStyle, explanation, trackTrustWithinTableColumn);
                 if (makeActive)
                 {                    
                     int theChange = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.TblColumn, true, false, false, false, false, false, false, false, "", newObjectID, null, null, null, null, "", null);
                     if (makeActiveNow)
                     {
                         //start of modification
-                        bool? AllowOverrideofRatingGroupCharacterstics = DataAccess.GetTbl(tblID).AllowOverrideOfRatingGroupCharacterstics;
-                        int NumofCategoryDesc = DataManipulation.DataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == tblID && x.Status == (byte)StatusOfObject.Active).Count();
-                        if (AllowOverrideofRatingGroupCharacterstics == true && NumofCategoryDesc > 1)
+                        bool? allowOverrideofRatingGroupCharacterstics = DataAccess.GetTbl(tblID).AllowOverrideOfRatingGroupCharacterstics;
+                        int tblColumnNum = DataManipulation.DataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == tblID && x.Status == (byte)StatusOfObject.Active).Count();
+                        if (allowOverrideofRatingGroupCharacterstics == true && tblColumnNum > 1)
                         {
                             DataAccess.GetTbl(tblID).AllowOverrideOfRatingGroupCharacterstics = false;
                            
@@ -1257,7 +1257,7 @@ namespace ClassLibrary1.Model
           
             DataManipulation.ConfirmObjectExists(TblColumnID, TypeOfObject.TblColumn);
             TblColumn theTblColumn = DataAccess.GetTblColumn(TblColumnID);
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, null, theTblColumn.TblTab.TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, null, theTblColumn.TblTab.TblID, true))
             {
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
@@ -1276,7 +1276,7 @@ namespace ClassLibrary1.Model
             int TblID = DataManipulation.DataContext.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.Tbl.TblID;
             int pointsManagerID = DataManipulation.DataContext.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.Tbl.PointsManager.PointsManagerID;
 
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, pointsManagerID, TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, pointsManagerID, TblID, true))
             {
                 if (abbreviation.Length > 10)
                     throw new Exception("The abbreviation must be no longer than 10 characters.");
@@ -1296,7 +1296,7 @@ namespace ClassLibrary1.Model
             int TblID = DataManipulation.DataContext.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.Tbl.TblID;
             int pointsManagerID = DataManipulation.DataContext.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.Tbl.PointsManager.PointsManagerID;
 
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, pointsManagerID, TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, pointsManagerID, TblID, true))
             {
                 if (Name.Length > 50)
                     throw new Exception("The Name must be no longer than 50 characters.");
@@ -1316,7 +1316,7 @@ namespace ClassLibrary1.Model
             int TblID = DataManipulation.DataContext.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.Tbl.TblID;
             int pointsManagerID = DataManipulation.DataContext.GetTable<TblColumn>().Single(c => c.TblColumnID == TblColumnID).TblTab.Tbl.PointsManager.PointsManagerID;
 
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, pointsManagerID, TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, pointsManagerID, TblID, true))
             {
 
 
@@ -1334,7 +1334,7 @@ namespace ClassLibrary1.Model
             DataManipulation.ConfirmObjectExists(TblColumnID, TypeOfObject.TblColumn);
             TblColumn theTblColumn = DataAccess.GetTblColumn(TblColumnID);
 
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeCategories, !doItNow, null, theTblColumn.TblTab.TblID, true))
+            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, null, theTblColumn.TblTab.TblID, true))
             {
 
                 int theNewSetting = 0;
@@ -1354,9 +1354,9 @@ namespace ClassLibrary1.Model
 
         }
         
-        public void TblRowDeleteOrUndelete(int entityID, bool delete, bool doItNow, int userID, int? changesGroupID)
+        public void TblRowDeleteOrUndelete(int tblRowID, bool delete, bool doItNow, int userID, int? changesGroupID)
         {
-            TblRow theTblRow = DataAccess.GetTblRow(entityID); 
+            TblRow theTblRow = DataAccess.GetTblRow(tblRowID); 
             if (DataManipulation.TblIsRewardTbl(theTblRow.Tbl))
                 throw new Exception("You cannot delete or undelete a table cell in Changes.");
 
@@ -1366,7 +1366,7 @@ namespace ClassLibrary1.Model
                 if (DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
 
-                int theChange = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.TblRow, false, true, false, false, false, delete, false, false, "", null,entityID, null, null, null, "", null);
+                int theChange = DataManipulation.AddChangesStatusOfObject((int)changesGroupID, TypeOfObject.TblRow, false, true, false, false, false, delete, false, false, "", null,tblRowID, null, null, null, "", null);
                 if (doItNow)
                     DataManipulation.ImplementChangesGroup((int)changesGroupID);
 
@@ -1684,7 +1684,7 @@ namespace ClassLibrary1.Model
         }
 
         public int ProposalSettingsCreate(int? pointsManagerID, int? TblID, bool usersMayProposeAddingTbls, bool usersMayProposeResolvingRatings, bool usersMayProposeChangingTblRows,
-            bool usersMayProposeChangingChoiceGroups, bool usersMayProposeChangingCharacteristics, bool usersMayProposeChangingCategories, bool usersMayProposeChangingUsersRights, bool usersMayProposeAdjustingPoints,
+            bool usersMayProposeChangingChoiceGroups, bool usersMayProposeChangingCharacteristics, bool usersMayProposeChangingColumns, bool usersMayProposeChangingUsersRights, bool usersMayProposeAdjustingPoints,
             bool usersMayProposeChangingProposalSettings, decimal minValueToApprove, decimal maxValueToReject, int minTimePastThreshold, decimal minProportionOfThisTime, int minAdditionalTimeForRewardRating,
             int halfLifeForRewardRating, decimal maxBonusForProposal, decimal maxPenaltyForRejection, decimal subsidyForApprovalRating, decimal subsidyForRewardRating,
             int halfLifeForResolvingAtFinalValue, decimal requiredPointsToMakeProposal,
@@ -1706,7 +1706,7 @@ namespace ClassLibrary1.Model
                 if (DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
                 newObjectID = DataManipulation.AddProposalSettings(pointsManagerID, TblID, usersMayProposeAddingTbls, usersMayProposeResolvingRatings, usersMayProposeChangingTblRows, 
-                                    usersMayProposeChangingChoiceGroups, usersMayProposeChangingCharacteristics, usersMayProposeChangingCategories, usersMayProposeChangingUsersRights, usersMayProposeAdjustingPoints, 
+                                    usersMayProposeChangingChoiceGroups, usersMayProposeChangingCharacteristics, usersMayProposeChangingColumns, usersMayProposeChangingUsersRights, usersMayProposeAdjustingPoints, 
                                     usersMayProposeChangingProposalSettings, minValueToApprove, maxValueToReject, minTimePastThreshold, minProportionOfThisTime, minAdditionalTimeForRewardRating,
                                     halfLifeForRewardRating, maxBonusForProposal, maxPenaltyForRejection, subsidyForApprovalRating, subsidyForRewardRating,
                                     halfLifeForResolvingAtFinalValue,  requiredPointsToMakeProposal,
@@ -1725,7 +1725,7 @@ namespace ClassLibrary1.Model
 
         public int UsersRightsCreate(int? userToAffectID, int? pointsManagerID, bool mayView, bool mayPredict, bool mayAddTbls,
             bool mayResolveRatings, bool mayChangeTblRows, bool mayChangeChoiceGroups, bool mayChangeCharacteristics,
-            bool mayChangeCategories, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings,
+            bool mayChangeColumns, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings,
             String name, bool makeActive, bool makeActiveNow, int userID, int? changesGroupID)
         {
             int? newObjectID = null;
@@ -1741,7 +1741,7 @@ namespace ClassLibrary1.Model
                     theUser = null;
                 newObjectID = DataManipulation.AddUsersRights(userToAffectID, pointsManagerID, mayView, mayPredict, mayAddTbls,
                                 mayResolveRatings, mayChangeTblRows, mayChangeChoiceGroups, mayChangeCharacteristics,
-                                mayChangeCategories, mayChangeUsersRights, mayAdjustPoints, mayChangeProposalSettings,
+                                mayChangeColumns, mayChangeUsersRights, mayAdjustPoints, mayChangeProposalSettings,
                                 name, theUser);
                 if (makeActive)
                 {
@@ -1796,7 +1796,7 @@ namespace ClassLibrary1.Model
             {
                 case TypeOfObject.TblColumn:
                 case TypeOfObject.TblTab:
-                    theAction = UserActionType.ChangeCategories;
+                    theAction = UserActionType.ChangeColumns;
                     break;
                 case TypeOfObject.ChoiceGroup:
                     theAction = UserActionType.ChangeChoiceGroups;
@@ -2274,15 +2274,15 @@ namespace ClassLibrary1.Model
         //    else throw new Exception("You don't have privileges to launch trading on a Tbl.");
         //}
 
-        public int CommentForTblRowCreate(int entityId, string commentTitle, string commentText, DateTime date, int userID, bool proposeOnly, bool considerCreatingRewardRating, int? changesGroupID)
+        public int CommentForTblRowCreate(int tblRowID, string commentTitle, string commentText, DateTime date, int userID, bool proposeOnly, bool considerCreatingRewardRating, int? changesGroupID)
         {
             int? theCommentId = null;
-            DataManipulation.ConfirmObjectExists(entityId, TypeOfObject.TblRow);
-            Tbl theTbl = DataAccess.GetTblRow(entityId).Tbl;
+            DataManipulation.ConfirmObjectExists(tblRowID, TypeOfObject.TblRow);
+            Tbl theTbl = DataAccess.GetTblRow(tblRowID).Tbl;
             int? PointsManagerID = theTbl.PointsManagerID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, false, PointsManagerID, null, true))
             {
-                theCommentId = DataManipulation.AddComment(entityId, userID, commentTitle, commentText, date, proposeOnly ? StatusOfObject.Proposed : StatusOfObject.Active);
+                theCommentId = DataManipulation.AddComment(tblRowID, userID, commentTitle, commentText, date, proposeOnly ? StatusOfObject.Proposed : StatusOfObject.Active);
                 DataManipulation.ImplementChangesGroup((int)changesGroupID);
             }
             else
@@ -2491,15 +2491,15 @@ namespace ClassLibrary1.Model
             
         }
 
-        //public void CommentForTblRowCreate(int entityId, int userId, string commentTitle, string commentText, DateTime date, int? changesGroupID)
+        //public void CommentForTblRowCreate(int tblRowID, int userId, string commentTitle, string commentText, DateTime date, int? changesGroupID)
         //{
-        //    DataAccessModule.ConfirmObjectExists(entityId, TypeOfObject.TblRow);
-        //    TblRow theTblRow = ObjDataAccess.GetTblRow(entityId);
+        //    DataAccessModule.ConfirmObjectExists(tblRowID, TypeOfObject.TblRow);
+        //    TblRow theTblRow = ObjDataAccess.GetTblRow(tblRowID);
         //    int? TableId = theTblRow.TblID;
 
         //    if (DataAccessModule.ProceedWithChange(ref changesGroupID,userId,UserActionOldList.ChangeTblRows,false,null,TableId))
         //    {
-        //        int newObjectID = DataAccessModule.AddComment(entityId, userId, commentTitle, commentText, date);
+        //        int newObjectID = DataAccessModule.AddComment(tblRowID, userId, commentTitle, commentText, date);
         //        int theChange = DataAccessModule.AddChangesStatusOfObject((int)changesGroupID,TypeOfObject.Comment,true,false,false,false,false,false,false,false,"",newObjectID,null,null,null,null,"",null);
         //        DataAccessModule.ImplementChangesGroup((int)changesGroupID);
         //    }
@@ -2523,9 +2523,9 @@ namespace ClassLibrary1.Model
         }
         public int AddInvitedUser(string emailId, bool mayView, bool mayPredict, bool mayAddTbls,
            bool mayResolveRatings, bool mayChangeTblRows, bool mayChangeChoiceGroups, bool mayChangeCharacteristics,
-           bool mayChangeCategories, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings)
+           bool mayChangeColumns, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings)
         {
-            return DataManipulation.AddInvitedUser(emailId,mayView,mayPredict,mayAddTbls,mayResolveRatings,mayChangeTblRows,mayChangeChoiceGroups,mayChangeCharacteristics,mayChangeCategories,mayChangeUsersRights,mayAdjustPoints,mayChangeProposalSettings);
+            return DataManipulation.AddInvitedUser(emailId,mayView,mayPredict,mayAddTbls,mayResolveRatings,mayChangeTblRows,mayChangeChoiceGroups,mayChangeCharacteristics,mayChangeColumns,mayChangeUsersRights,mayAdjustPoints,mayChangeProposalSettings);
 
         }
         public UserLoginResult CheckValidUser(string username, string password)

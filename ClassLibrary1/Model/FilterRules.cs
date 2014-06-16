@@ -84,7 +84,7 @@ namespace ClassLibrary1.Model
     public class FilterRules
     {
         public int TblID { get; set; }
-        public bool ActiveOnly { get; set; } // true if we only want to return entities where trading is active
+        public bool ActiveOnly { get; set; } // true if we only want to return table rows where trading is active
         public bool HighStakesOnly { get; set; } // true if we only want to return table rows that include rating groups with the HighStakes flag set.
         public List<FilterRule> theFilterRules { get; set; }
         public bool GetNewDateTime { get; set; }
@@ -152,7 +152,7 @@ namespace ClassLibrary1.Model
         {
             if (ActiveOnly)
             {
-                // Organizing the search around StatusRecentlyChanged considerably speeds the query, because the TblRowStatusRecords only need to be examined for the small number of entities that have been recently changed.
+                // Organizing the search around StatusRecentlyChanged considerably speeds the query, because the TblRowStatusRecords only need to be examined for the small number of table rows that have been recently changed.
                 theQuery = theQuery
                     .Where(x =>
                         (x.StatusRecentlyChanged == false && x.Status == (int)StatusOfObject.Active) /* active now and that's not a recent thing */
@@ -223,12 +223,12 @@ namespace ClassLibrary1.Model
         public IQueryable<TblRow> GetFilteredAndSortedQuery(IR8RDataContext theDataContext, int? maxNumResults, TableSortRule theSortRule, bool sortByNameAfterTakingTop, bool nameAscending)
         {
             IQueryable<TblRow> theTblRowsWithRatings = null;
-            if (theSortRule is TableSortRuleEntityName)
+            if (theSortRule is TableSortRuleRowName)
                 theTblRowsWithRatings = GetFilteredQuerySortedByName(theDataContext, maxNumResults, theSortRule.Ascending); // When sorting by name, we will show all entries, even though this takes longer, so users can use the scrollbar to find a particular one
             else
             {
                 if (theSortRule is TableSortRuleTblColumn)
-                    theTblRowsWithRatings = GetFilteredQuerySortedByCategory(theDataContext, maxNumResults, ((TableSortRuleTblColumn)theSortRule).TblColumnToSortID, theSortRule.Ascending);
+                    theTblRowsWithRatings = GetFilteredQuerySortedByColumn(theDataContext, maxNumResults, ((TableSortRuleTblColumn)theSortRule).TblColumnToSortID, theSortRule.Ascending);
                 else if (theSortRule is TableSortRuleActivityLevel)
                     theTblRowsWithRatings = GetFilteredQuerySortedByActivityLevel(theDataContext, ((TableSortRuleActivityLevel)theSortRule).TimeFrame, maxNumResults, !theSortRule.Ascending);
                 else if (theSortRule is TableSortRuleDistance)
@@ -248,7 +248,7 @@ namespace ClassLibrary1.Model
             return theTblRowsWithRatings;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByCategory(IR8RDataContext theDataContext, int? maxNumResults, int TblColumnToSort, bool ascending)
+        public IQueryable<TblRow> GetFilteredQuerySortedByColumn(IR8RDataContext theDataContext, int? maxNumResults, int TblColumnToSort, bool ascending)
         {
 
 
@@ -579,8 +579,8 @@ namespace ClassLibrary1.Model
         public decimal? MinValue { get; set; }
         public decimal? MaxValue { get; set; }
 
-        public TblColumnFilterRule(int CategoryId, decimal? minValue, decimal? maxValue)
-            : base(CategoryId)
+        public TblColumnFilterRule(int tblColumnID, decimal? minValue, decimal? maxValue)
+            : base(tblColumnID)
         {
             MinValue = minValue;
             MaxValue = maxValue;
@@ -689,7 +689,7 @@ namespace ClassLibrary1.Model
             }
             if (theFilterRule is TblColumnFilterRule)
             {
-                result.Add("type", "category");
+                result.Add("type", "tblColumn");
                 result.Add("min", ((TblColumnFilterRule)theFilterRule).MinValue);
                 result.Add("max", ((TblColumnFilterRule)theFilterRule).MaxValue);
             }
@@ -745,7 +745,7 @@ namespace ClassLibrary1.Model
             {
                 return new TextFilterRule((int)dictionary["id"], (string)dictionary["texttags"]);
             }
-            if (theType == "category")
+            if (theType == "tblColumn")
             {
                 decimal? min = null;
                 decimal? max = null;

@@ -24,7 +24,7 @@ namespace ClassLibrary1.Model
             {
                 TblTab theCG = theDataContext.GetTable<TblTab>().Single(cg => cg.TblTabID == theTblTabID);
                 theSortMenu = GetSortMenuForTblTab(theCG, trustedUser);
-                CacheManagement.AddItemToCache(cacheKey, new string[] { "CategoriesForTblID" + theTblTabID }, theSortMenu, new TimeSpan(5, 0, 0));
+                CacheManagement.AddItemToCache(cacheKey, new string[] { "ColumnsForTblID" + theTblTabID }, theSortMenu, new TimeSpan(5, 0, 0));
             }
             return theSortMenu;
         }
@@ -44,8 +44,8 @@ namespace ClassLibrary1.Model
                 //theSortMenu.Add(new SortMenuItem { M = "Distance From Other Location...", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(0, 0, true)) });
             }
 
-            theSortMenu.Add(new SortMenuItem { M = theTblTab.Tbl.TypeOfTblRow /* + " (A-Z)" */, I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleEntityName(true)) });
-            /* theSortMenu.Add(new SortMenuItem { M = theTblTab.Tbl.TypeOfTblRow + " (Z-A)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleEntityName(false)) }); */
+            theSortMenu.Add(new SortMenuItem { M = theTblTab.Tbl.TypeOfTblRow /* + " (A-Z)" */, I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleRowName(true)) });
+            /* theSortMenu.Add(new SortMenuItem { M = theTblTab.Tbl.TypeOfTblRow + " (Z-A)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleRowName(false)) }); */
 
             IQueryable<TblColumn> theCDs = theTblTab.TblColumns.AsQueryable().Where(x => x.Sortable == true && x.Status == (int)StatusOfObject.Active).OrderBy(x => x.CategoryNum).ThenBy(x => x.TblColumnID);
             foreach (var cd in theCDs)
@@ -108,7 +108,7 @@ namespace ClassLibrary1.Model
                         return new TableSortRuleDistance((float)Convert.ToDecimal(split[1]), (float)Convert.ToDecimal(split[2]), Convert.ToInt32(split[3]), Convert.ToBoolean(split[4]));
 
                     case "E":
-                        return new TableSortRuleEntityName(Convert.ToBoolean(split[1]));
+                        return new TableSortRuleRowName(Convert.ToBoolean(split[1]));
 
                     case "N":
                         return new TableSortRuleNewestInDatabase(Convert.ToBoolean(split[1]));
@@ -174,9 +174,9 @@ namespace ClassLibrary1.Model
         }
     }
 
-    public class TableSortRuleEntityName : TableSortRule
+    public class TableSortRuleRowName : TableSortRule
     {
-        public TableSortRuleEntityName(bool ascending)
+        public TableSortRuleRowName(bool ascending)
             : base(ascending)
         {
         }

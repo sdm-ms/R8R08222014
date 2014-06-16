@@ -34,7 +34,7 @@ namespace TestProject1
         {
             // Use true when you want all tests to use a SQL Server database
             // Use false when you want all tests to use an in-memory database
-            bool returnVal = false;
+            bool returnVal = true;
 
             if (returnVal && !RoleEnvironment.IsAvailable)
                 RealUserProfileCollection.SetProviderConnectionString(ConnectionString.GetUserProfileDatabaseConnectionString());

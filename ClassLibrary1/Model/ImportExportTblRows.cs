@@ -130,7 +130,7 @@ namespace ClassLibrary1.Model
             }
             catch
             {
-                throw new Exception("The field descriptor " + FieldDefinitionID + "was not found.");
+                throw new Exception("The field definition " + FieldDefinitionID + "was not found.");
             }
             return returnVal;
         }
@@ -145,7 +145,7 @@ namespace ClassLibrary1.Model
             }
             catch
             {
-                throw new Exception("No field descriptor was found for " + abbreviatedFieldName);
+                throw new Exception("No field definition was found for " + abbreviatedFieldName);
             }
             return returnVal;
         }
@@ -198,10 +198,10 @@ namespace ClassLibrary1.Model
             public List<string> ColumnNames;
             public List<ExcelFileFieldInfo> FieldInfos = new List<ExcelFileFieldInfo>();
             public int? actionOnImportColumn;
-            public int? entityIDColumn;
+            public int? tblRowIDColumn;
             public int? initialStatusColumn;
             public int? statusChangeColumn;
-            public int? entityNameColumn;
+            public int? rowNameColumn;
             public ImportExport theImportExport;
 
             public ExcelFileColumnTracker(ImportExport theImportExportToUse, List<string> theColumnNames)
@@ -221,13 +221,13 @@ namespace ClassLibrary1.Model
                     if (columnName == "ActionOnImport")
                         actionOnImportColumn = excelColumnNum;
                     else if (columnName == "TblRowID")
-                        entityIDColumn = excelColumnNum;
+                        tblRowIDColumn = excelColumnNum;
                     else if (columnName == "InitialStatus")
                         initialStatusColumn = excelColumnNum;
                     else if (columnName == "StatusChange")
                         statusChangeColumn = excelColumnNum;
-                    else if (columnName == "EntityName")
-                        entityNameColumn = excelColumnNum;
+                    else if (columnName == "TblRowName")
+                        rowNameColumn = excelColumnNum;
                     else
                     {
                         ExcelFileFieldInfo theFieldInfo = FieldInfos.SingleOrDefault(x => x.abbreviatedFieldName == columnName);
@@ -258,10 +258,10 @@ namespace ClassLibrary1.Model
                 if (theColumnTracker.actionOnImportColumn != null)
                     actionOnImportString = theRow[(int)theColumnTracker.actionOnImportColumn].ToString();
                 XAttribute theActionOnImportAttribute = new XAttribute("ActionOnImport", actionOnImportString);
-                string entityIDString = "";
-                if (theColumnTracker.entityIDColumn != null)
-                    entityIDString = theRow[(int)theColumnTracker.entityIDColumn].ToString();
-                XAttribute theTblRowIDAttribute = new XAttribute("TblRowID", entityIDString);
+                string tblRowIDString = "";
+                if (theColumnTracker.tblRowIDColumn != null)
+                    tblRowIDString = theRow[(int)theColumnTracker.tblRowIDColumn].ToString();
+                XAttribute theTblRowIDAttribute = new XAttribute("TblRowID", tblRowIDString);
                 string initialStatusString = "notexist";
                 if (theColumnTracker.initialStatusColumn != null)
                     initialStatusString = theRow[(int)theColumnTracker.initialStatusColumn].ToString();
@@ -275,8 +275,8 @@ namespace ClassLibrary1.Model
                 theTblRowElement.Add(theInitialStatusAttribute);
                 theTblRowElement.Add(theStatusChangeAttribute);
 
-                if (theColumnTracker.entityNameColumn != null)
-                    theTblRowElement.Add(new XElement("EntityName", theRow[(int)theColumnTracker.entityNameColumn].ToString()));
+                if (theColumnTracker.rowNameColumn != null)
+                    theTblRowElement.Add(new XElement("TblRowName", theRow[(int)theColumnTracker.rowNameColumn].ToString()));
                 foreach (var fieldInfo in theColumnTracker.FieldInfos)
                 {
                     XElement theFieldElement = null;
@@ -387,8 +387,8 @@ namespace ClassLibrary1.Model
                         theInfo.defaultTblVals = JsonSerializer.Deserialize<List<TblVal>>(theField.Value);
                     continue;
                 }
-                if (theField.Name == "EntityName")
-                    theInfo.theEntityName = theField.Value;
+                if (theField.Name == "TblRowName")
+                    theInfo.theRowName = theField.Value;
                 else
                 {
                     int FieldDefinitionID = dictionaryNameToID[theField.Name.ToString()];
@@ -399,7 +399,7 @@ namespace ClassLibrary1.Model
                         DataAccess.R8RDB.TempCacheAdd("FieldDefinition" + FieldDefinitionID, theFieldDefinition);
                     }
                     if (theFieldDefinition == null)
-                        throw new Exception("Field descriptor not found for " + theElement.Name);
+                        throw new Exception("field definition not found for " + theElement.Name);
                     switch (theFieldDefinition.FieldType)
                     {
                         case (int)FieldTypes.AddressField:
@@ -481,7 +481,7 @@ namespace ClassLibrary1.Model
                     }
                     if (InitialStatusAttribute.Value == "notexist" && ActionOnImportAttribute.Value == "updatefields")
                     {
-                        AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "Cannot update fields of an entity that did not exist. Use addfields to add the entity.");
+                        AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "Cannot update fields of a tblRow that did not exist. Use addfields to add the tblRow.");
                         continue;
                     }
                     if (InitialStatusAttribute.Value != "notexist")
@@ -498,13 +498,13 @@ namespace ClassLibrary1.Model
                         theTblRow = DataAccess.R8RDB.GetTable<TblRow>().SingleOrDefault(x => x.TblRowID == ExistingTblRowID && x.Tbl == TheTbl);
                         if (theTblRow == null)
                         {
-                            AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "'RowId' of entity given by user " + ExistingTblRowID + " does not exist for this Tbl.");
+                            AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "'RowId' of tblRow given by user " + ExistingTblRowID + " does not exist for this Tbl.");
                             continue;
                         }
                     }
 
                     if (ActionOnImportAttribute.Value == "updatefields" || ActionOnImportAttribute.Value == "addfields")
-                    { // load the fields and update them or add them and the new entity.
+                    { // load the fields and update them or add them and the new tblRow.
                         try
                         {
                             //ProfileSimple.Start("ConvertXElement");
@@ -515,7 +515,7 @@ namespace ClassLibrary1.Model
                             else
                             {
                                 //ProfileSimple.Start("TblRowCreateWithFields");
-                                if (!String.IsNullOrWhiteSpace(theFieldSetDataInfo.theEntityName)) // skip unnamed entities
+                                if (!String.IsNullOrWhiteSpace(theFieldSetDataInfo.theRowName)) // skip unnamed table rows
                                     theTblRow = theActionProcessor.TblRowCreateWithFields(theFieldSetDataInfo, UserId);
                                 //ProfileSimple.End("TblRowCreateWithFields");
                             }
@@ -524,7 +524,7 @@ namespace ClassLibrary1.Model
                         }
                         catch (Exception ex)
                         {
-                            AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "The following message occurred in processing the entity: " + ex.Message);
+                            AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "The following message occurred in processing the table row: " + ex.Message);
                             continue;
                         }
                     }
@@ -571,13 +571,13 @@ namespace ClassLibrary1.Model
 
 
             XElement TblRowList = XElement.Load(storedFileLocation);
-            string entityType = GetTypeOfTblRowForTbl();
-            int elementCount = TblRowList.Descendants(entityType).Count();
+            string tblRowType = GetTypeOfTblRowForTbl();
+            int elementCount = TblRowList.Descendants(tblRowType).Count();
 
             // initiate a long process to actually perform the upload
             R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             const int numToImportAtATime = 100;
-            UploadTblRowsInfo theInfo = new UploadTblRowsInfo(TheTbl.TblID, 1, elementCount, numToImportAtATime, mainFile.FileName, logFile.FileName, entityType, UserId, copyValuesIntoTbl);
+            UploadTblRowsInfo theInfo = new UploadTblRowsInfo(TheTbl.TblID, 1, elementCount, numToImportAtATime, mainFile.FileName, logFile.FileName, tblRowType, UserId, copyValuesIntoTbl);
             theDataAccessModule.AddOrResetLongProcess(R8RDataManipulation.LongProcessTypes.uploadTblRows, 120, null, null, R8RDataManipulation.GetBasePriorityLevelForLongProcess(R8RDataManipulation.LongProcessTypes.uploadTblRows), theInfo);
 
             mainFile.StorePermanently();
@@ -585,7 +585,7 @@ namespace ClassLibrary1.Model
 
             //The following code is for synchronous upload.
             //for (int i = 1; i <= elementCount; i++)
-            //    PerformImportHelper(storedFileLocation, storedLogLocation, entityType, UserId, i, i);
+            //    PerformImportHelper(storedFileLocation, storedLogLocation, tblRowType, UserId, i, i);
 
 
         }
@@ -709,7 +709,7 @@ namespace ClassLibrary1.Model
 
             XmlSchemaElement NameElement = new XmlSchemaElement();
             SqTblRow.Items.Add(NameElement);
-            NameElement.Name = "EntityName";
+            NameElement.Name = "TblRowName";
             NameElement.MinOccurs = 1;
             NameElement.MaxOccurs = 1;
             NameElement.SchemaTypeName = new XmlQualifiedName("string", "http://www.w3.org/2001/XMLSchema");
@@ -877,7 +877,7 @@ namespace ClassLibrary1.Model
                     theTblRowElement.Add(new XElement("SerializedValues", theTblValsString));
                 }
 
-                theTblRowElement.Add(new XElement("EntityName", E.Name));
+                theTblRowElement.Add(new XElement("TblRowName", E.Name));
 
                 var theFields = DataAccess.R8RDB.GetTable<Field>().Where(f => f.TblRowID == E.TblRowID).OrderBy(f => f.FieldDefinition.FieldNum).ThenBy(f => f.FieldDefinition.FieldDefinitionID);
                 foreach (var theField in theFields)
