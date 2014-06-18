@@ -314,7 +314,7 @@ namespace ClassLibrary1.Model
             if (oneRatingFocus)
                 theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID == ActionProcessor.DataContext.NewOrFirst<Rating>(m => m.RatingCharacteristic.Name == "Event").RatingID);
             else
-                theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID > 0); // all ratings
+                theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
 
             var theRatingsGroups = theRatings
                 .Select(x => x.TopmostRatingGroupID).Distinct().ToList(); // all rating groups
@@ -355,13 +355,13 @@ namespace ClassLibrary1.Model
                 if (oneRatingFocus)
                     theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID == ActionProcessor.DataContext.NewOrFirst<Rating>(m => m.RatingCharacteristic.Name == "Event").RatingID);
                 else
-                    theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID > 0); // all ratings
+                    theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
 
                 foreach (var debugRating in theRatings)
                     Trace.TraceInformation("On list: Rating " + debugRating.RatingID + " value: " + debugRating.CurrentValue + " ratinggroup " + debugRating.RatingGroupID);
 
                 // now close the rating groups
-                var theTopRatingGroups = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID > 0).Select(m => m.RatingGroup2).Distinct().ToList();
+                var theTopRatingGroups = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true).Select(m => m.RatingGroup2).Distinct().ToList();
                 foreach (var theTopRatingGroup in theTopRatingGroups)
                     ActionProcessor.ResolveRatingGroup(theTopRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, asOf, SuperUserId, null);
                 ActionProcessor.DataContext.SubmitChanges();
@@ -389,7 +389,7 @@ namespace ClassLibrary1.Model
             User theAdmin = ActionProcessor.DataContext.GetTable<User>().Single(u => u.Username == "admin");
             IQueryable<Rating> theRatings = null;
             int theRatingsCount = 0;
-            theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID > 0); // all ratings
+            theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
             theRatingsCount = theRatings.Count();
             int countSoFar = 0;
             for (int j = 1; j <= numRatings; j++)
@@ -436,7 +436,7 @@ namespace ClassLibrary1.Model
                             theRatings = theList.AsQueryable();
                         }
                         else
-                            theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID > 0); // all ratings
+                            theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
                         theRatingsCount = theRatings.Count();
                         if (theRatingsCount == 0)
                         {

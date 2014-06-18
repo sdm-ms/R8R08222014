@@ -6,9 +6,9 @@
       <!--<Setting name="DiagnosticsConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />-->
-      <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;" />
-      <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;" />
-      <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;" />
+      <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
+      <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
+      <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
@@ -20,9 +20,9 @@
       <!--<Setting name="DiagnosticsConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />-->
-      <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;" />
-      <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;" />
-      <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;" />
+      <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
+      <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
+      <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
       <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />

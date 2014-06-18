@@ -72,8 +72,9 @@ namespace ClassLibrary1.Misc
                 // read account configuration settings
 
                 AzureSetup.SetConfigurationSettingPublisher();
+                string dataConnectionString = RoleEnvironment.GetConfigurationSettingValue("DataConnectionString");
                 var storageAccount =
-                  CloudStorageAccount.FromConfigurationSetting("DataConnectionString");
+                  CloudStorageAccount.Parse(dataConnectionString);
 
                 // create blob container for images
                 blobStorage =

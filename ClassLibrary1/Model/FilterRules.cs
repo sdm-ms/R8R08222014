@@ -321,9 +321,6 @@ namespace ClassLibrary1.Model
             // on y.FieldID equals e.FieldID
             // select e.TblRow;
 
-            var test = theDataContext.GetTable<AddressField>().AsQueryable().Where(x => x.Field.TblRow.TblID == 34);
-            var test2 = test.GetType();
-
             //if (maxNumResults != null)
             //    theFilteredQueryWithSortValues = theFilteredQueryWithSortValues.Take((int) maxNumResults);
 

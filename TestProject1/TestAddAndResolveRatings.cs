@@ -814,7 +814,7 @@ namespace TestProject1
                 Debug.Write(String.Format(" ROUND={0} START_TIME={1} END_TIME={2} \n", theMPS.RoundNum, theMPS.StartTime.ToLongTimeString(), theMPS.ActualCompleteTime.ToLongTimeString()));
                 Debug.WriteLine("");
             }
-            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().Where(x => x.PointsTotalID > 0).ToList();
+            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().Where(x => true).ToList();
             foreach (var theUser in theUsers)
             {
                 string reportString = String.Format("POINTTOTALS: user {0},  points {1}", theUser.UserID, theUser.TotalPoints);
@@ -843,7 +843,7 @@ namespace TestProject1
 
         internal void TestHelperCheckPoints(List<UserPointsRecordSnapshot> theList, List<UserRatingPointsRecordSnapshot> theList2, int theCycle)
         {
-            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().Where(x => x.PointsTotalID > 0).ToList();
+            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().Where(x => true).ToList();
             foreach (var theUser in theUsers)
             {
                 var recordedUser = theList.SingleOrDefault(x => x.afterCycle == theCycle && x.userID == theUser.UserID);

@@ -214,8 +214,6 @@ namespace ClassLibrary1.Model
                 logBase: originalUserRating.LogarithmicBase,
                 constrainForRetrospectiveAssessment: true);
             UpdateUserInteractionStats(theUserInteraction, originalUserRating, ratingCharacteristic, adjustFactor, subtractFromUserInteraction);
-//            if (theUserInteraction != null && theUserInteraction.User.UserID == 2)
- //               Debug.WriteLine("AdjustUserInteraction " + theUserInteraction.User.UserID + " " + theUserInteraction.User1.UserID + " subtract: " + subtractFromUserInteraction + " latest user rating: " + (latestUserRating == null ? -1 : latestUserRating.UserID) + " adjust: " + adjustFactor + " latest entered " + latestUserRating.EnteredUserRating + " latest new " + latestUserRating.NewUserRating);
         }
 
         public static void UpdateUserInteractionStats(
