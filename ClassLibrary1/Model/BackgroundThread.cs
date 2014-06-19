@@ -84,18 +84,13 @@ namespace ClassLibrary1.Model
             bool[] moreWorkToDoThisTask = new bool[numTasks];
             for (int i = 1; i <= numTasks; i++)
             {
-                if (BackgroundThreadManager.PauseRequestedImmediately)
-                {
-                    BackgroundThreadManager.PauseRequestedImmediately = false;
-                    BackgroundThreadManager.CurrentlyPaused = true;
-                }
                 while (BackgroundThreadManager.CurrentlyPaused)
                 {
                     Thread.Sleep(1); // very minimal pause until we check again to see if the pause request has been turned off
                 }
                 if (loop == 1 || loop == numLoops) // we try everything on first loop, as well as on last loop, so moreWorkToDo will be accurate
                     moreWorkToDoThisTask[i - 1] = true;
-                if (!BackgroundThreadManager.IsBriefPauseRequested() && ((i == 1 && moreWorkToDoThisTask.Any(x => x == true)) || moreWorkToDoThisTask[i - 1]))
+                if ((i == 1 && moreWorkToDoThisTask.Any(x => x == true)) || moreWorkToDoThisTask[i - 1])
                 {
                     // Trace.TraceInformation("Task " + i);
                     // ProfileSimple.Start("TaskNum" + i);
@@ -247,12 +242,6 @@ namespace ClassLibrary1.Model
             {
                 //Trace.TraceInformation("Background task main run loop.");
                 // Trace.TraceInformation("Running background task.");
-                while (BackgroundThreadManager.IsBriefPauseRequested())
-                {
-                    CurrentlyInBriefPause = true;
-                    //Trace.TraceInformation("Background task 5 second pause.");
-                    Thread.Sleep(5000); // pause
-                }
 
                 CurrentlyInBriefPause = false;
                 //Trace.TraceInformation("IdleTasksOnce");
@@ -280,70 +269,14 @@ namespace ClassLibrary1.Model
         public static readonly object padlock = new object();
         static Thread myThread = null;
         static R8RBackgroundTask theTask = null;
-        static DateTime BriefPauseRequestedTime;
-        public static int BriefPauseRequestNumberSeconds = 10;
-        static bool _briefPauseRequested;
         internal static int numberPauseRequests = 0;
-        public static bool PauseRequestedImmediately { get; set; }
         public static bool PauseRequestedWhenWorkIsComplete { get; set; }
         public static bool CurrentlyPaused { get; set; }
 
-        internal static bool BriefPauseRequested
-        {
-            get
-            {
-                if (BriefPauseRequestedTime < TestableDateTime.Now - TimeSpan.FromSeconds(BriefPauseRequestNumberSeconds))
-                    _briefPauseRequested = false;
-                return _briefPauseRequested;
-            }
-            
-            set
-            {
-                if (value == true)
-                {
-                    BriefPauseRequestedTime = TestableDateTime.Now;
-                    if (!_briefPauseRequested)
-                        _briefPauseRequested = true;
-                }
-            }
-        }
-
         BackgroundThreadManager()
         {
-            _briefPauseRequested = false;
         }
 
-        public static bool IsBriefPauseRequested()
-        {
-            // Trace.TraceInformation("Pause requested: " + PauseRequested);
-            return BriefPauseRequested;
-        }
-
-        public void RequestBriefPause()
-        {
-            BriefPauseRequested = true;
-            //try
-            //{
-            //    PauseRequested = true; // We've requested a pause -- wait for the main background task to recognize this and to pause
-            //    Monitor.TryEnter(padlock, TimeSpan.FromMilliseconds(10000));
-            //    Monitor.Exit(padlock);
-            //    EnsureBackgroundTaskIsRunning();
-            //}
-            //catch
-            //{
-            //}
-        }
-
-        public void RequestBriefPauseAndWaitForPauseToBegin()
-        {
-            EnsureBackgroundTaskIsRunning(true);
-            RequestBriefPause();
-            while (theTask != null && !theTask.CurrentlyInBriefPause)
-            {
-                Thread.Sleep(25);
-                EnsureBackgroundTaskIsRunning(true);
-            }
-        }
 
         public void RequestPauseAndWaitForPauseToBegin()
         {

@@ -176,7 +176,7 @@ namespace ClassLibrary1.Model
         //static DateTime lastCurrentRoleIsBackgroundProcessingCheck;
         public static bool CurrentRoleIsBackgroundProcessing()
         {
-            return (performingBackgroundWork == true) || BackgroundThreadManager.BriefPauseRequested;
+            return (performingBackgroundWork == true);
             //if (currentRoleIsBackgroundProcessing != null && lastCurrentRoleIsBackgroundProcessingCheck > TestableDateTime.Now - new TimeSpan(0, 1, 0))
             //    return (bool)currentRoleIsBackgroundProcessing;
             //IR8RDataContext theDataContext = GetIR8RDataContext.New(false, false); // make this read-only so that MSDTC is not required if there is already an open data context
