@@ -48,8 +48,6 @@ namespace ClassLibrary1.Model
                 //    BackgroundThread.ExitGranted = true;
                 //    return;
                 //}
-                BackgroundThreadManager.ExitRequested = false;
-                BackgroundThreadManager.ExitGranted = false;   
                 dataManipulation.ResetDataContexts();
 
 
@@ -60,8 +58,6 @@ namespace ClassLibrary1.Model
                 const int numLoops = 10;
                 for (int loop = 1; loop <= numLoops; loop++)
                 {
-                    if (BackgroundThreadManager.ExitRequested)
-                        break;
                     if (loop != 1 && BackgroundThreadManager.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
                     {
                         BackgroundThreadManager.PauseRequestedWhenWorkIsComplete = false;
@@ -88,8 +84,6 @@ namespace ClassLibrary1.Model
             bool[] moreWorkToDoThisTask = new bool[numTasks];
             for (int i = 1; i <= numTasks; i++)
             {
-                if (BackgroundThreadManager.ExitRequested)
-                    break;
                 if (BackgroundThreadManager.PauseRequestedImmediately)
                 {
                     BackgroundThreadManager.PauseRequestedImmediately = false;
@@ -262,13 +256,6 @@ namespace ClassLibrary1.Model
 
                 CurrentlyInBriefPause = false;
                 //Trace.TraceInformation("IdleTasksOnce");
-                if (BackgroundThreadManager.ExitRequested || BackgroundThreadManager.ExitGranted)
-                {
-                    BackgroundThreadManager.ExitRequested = true;
-                    BackgroundThreadManager.ExitGranted = true;
-                    CurrentlyInBriefPause = false;
-                    return;
-                }
                 BackgroundTasksRunner(theDataAccessModule);
                 if (!MoreWorkToDo)
                 {
@@ -300,8 +287,6 @@ namespace ClassLibrary1.Model
         public static bool PauseRequestedImmediately { get; set; }
         public static bool PauseRequestedWhenWorkIsComplete { get; set; }
         public static bool CurrentlyPaused { get; set; }
-        public static bool ExitRequested = false;
-        public static bool ExitGranted = false;
 
         internal static bool BriefPauseRequested
         {
@@ -326,8 +311,6 @@ namespace ClassLibrary1.Model
         BackgroundThreadManager()
         {
             _briefPauseRequested = false;
-            ExitRequested = false;
-            ExitGranted = false;
         }
 
         public static bool IsBriefPauseRequested()
@@ -426,22 +409,6 @@ namespace ClassLibrary1.Model
             //    Monitor.Exit(padlock);
             //}
             //Trace.TraceInformation("Exiting EnsureBackgroundTaskIsRunning");
-        }
-
-        public void ExitAsSoonAsPossible()
-        {
-            ExitRequested = true;
-            CurrentlyPaused = false;
-            int maximumRepetitions = 1000;
-            int r = 0;
-            while (!ExitGranted)
-            {
-                ExitRequested = true;
-                r++;
-                if (r > maximumRepetitions)
-                    throw new Exception("Thread is not exiting as requested.");
-                Thread.Sleep(100);
-            }
         }
 
         internal void ResetThread(bool repeatIndefinitely)
