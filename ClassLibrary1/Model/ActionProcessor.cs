@@ -2113,10 +2113,10 @@ namespace ClassLibrary1.Model
                     theResponse.result = new UserRatingResult(ex.Message);
                 else
                 {
-                    if (numTries < 5)
+                    if (numTries < 3)
                     {
                         System.Diagnostics.Trace.TraceError("Exception in predictionsaddfromservice " + ex.Message + numTries);
-                        BackgroundThread.Instance.RequestBriefPauseAndWaitForPauseToBegin();
+                        //BackgroundThread.Instance.RequestBriefPauseAndWaitForPauseToBegin();
                         goto TryLabel;
                     }
                     else

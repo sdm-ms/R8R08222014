@@ -38,7 +38,7 @@ namespace ClassLibrary1.Model
             bool hasAddress = addressFieldDefinitions.Any();
             if (hasAddress)
             {
-                int fieldDefinitionID = addressFieldDefinitions.OrderBy(x => x.FieldNum).First().FieldDefinitionID;
+                int fieldDefinitionID = addressFieldDefinitions.OrderBy(x => x.FieldNum).First().FieldDefinitionID;  // OK to order by ID to get consistent ordering
                 theSortMenu.Add(new SortMenuItem { M = "Distance From You", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(-1, -1, fieldDefinitionID, true)) });
                 theSortMenu.Add(new SortMenuItem { M = "Distance From Center of Map", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(-2, -2, fieldDefinitionID, true)) });
                 //theSortMenu.Add(new SortMenuItem { M = "Distance From Other Location...", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(0, 0, true)) });
@@ -47,7 +47,7 @@ namespace ClassLibrary1.Model
             theSortMenu.Add(new SortMenuItem { M = theTblTab.Tbl.TypeOfTblRow /* + " (A-Z)" */, I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleRowName(true)) });
             /* theSortMenu.Add(new SortMenuItem { M = theTblTab.Tbl.TypeOfTblRow + " (Z-A)", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleRowName(false)) }); */
 
-            IQueryable<TblColumn> theCDs = theTblTab.TblColumns.AsQueryable().Where(x => x.Sortable == true && x.Status == (int)StatusOfObject.Active).OrderBy(x => x.CategoryNum).ThenBy(x => x.TblColumnID);
+            IQueryable<TblColumn> theCDs = theTblTab.TblColumns.AsQueryable().Where(x => x.Sortable == true && x.Status == (int)StatusOfObject.Active).OrderBy(x => x.CategoryNum).ThenBy(x => x.TblColumnID);  // OK to order by ID to get consistent ordering
             foreach (var cd in theCDs)
                 theSortMenu.Add(GetSortMenuItemForTblColumn(cd, false, false));
             /* theSortMenu.AddRange(GetSortMenuItemsForTblColumn(cd)); */

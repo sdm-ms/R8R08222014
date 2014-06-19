@@ -123,7 +123,7 @@ namespace TestProject1
                 requiredProportionOfRatingsWithinTolerance: 0.95f,
                 breakUponSuccess:true,
                 subversiveUserIgnoresPreviousRatings: true);
-            BackgroundThread.Instance.ExitAsSoonAsPossible();
+            BackgroundThreadManager.Instance.ExitAsSoonAsPossible();
         }
 
         public void RatingsShouldConvergeWhenAPopulationOfHeterogeneousUsersPerformRatings_Helper(

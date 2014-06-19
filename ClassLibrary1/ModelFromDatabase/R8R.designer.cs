@@ -159,9 +159,6 @@ namespace ClassLibrary1.Model
     partial void InsertInsertableContent(InsertableContent instance);
     partial void UpdateInsertableContent(InsertableContent instance);
     partial void DeleteInsertableContent(InsertableContent instance);
-    partial void InsertInvitedUser(InvitedUser instance);
-    partial void UpdateInvitedUser(InvitedUser instance);
-    partial void DeleteInvitedUser(InvitedUser instance);
     partial void InsertLongProcess(LongProcess instance);
     partial void UpdateLongProcess(LongProcess instance);
     partial void DeleteLongProcess(LongProcess instance);
@@ -180,9 +177,6 @@ namespace ClassLibrary1.Model
     partial void InsertProposalEvaluationRatingSetting(ProposalEvaluationRatingSetting instance);
     partial void UpdateProposalEvaluationRatingSetting(ProposalEvaluationRatingSetting instance);
     partial void DeleteProposalEvaluationRatingSetting(ProposalEvaluationRatingSetting instance);
-    partial void InsertProposalSetting(ProposalSetting instance);
-    partial void UpdateProposalSetting(ProposalSetting instance);
-    partial void DeleteProposalSetting(ProposalSetting instance);
     partial void InsertRatingCharacteristic(RatingCharacteristic instance);
     partial void UpdateRatingCharacteristic(RatingCharacteristic instance);
     partial void DeleteRatingCharacteristic(RatingCharacteristic instance);
@@ -360,7 +354,22 @@ namespace ClassLibrary1.Model
     partial void InsertFieldDefinition(FieldDefinition instance);
     partial void UpdateFieldDefinition(FieldDefinition instance);
     partial void DeleteFieldDefinition(FieldDefinition instance);
+    partial void InsertUniquenessLockReference(UniquenessLockReference instance);
+    partial void UpdateUniquenessLockReference(UniquenessLockReference instance);
+    partial void DeleteUniquenessLockReference(UniquenessLockReference instance);
+    partial void InsertInvitedUser(InvitedUser instance);
+    partial void UpdateInvitedUser(InvitedUser instance);
+    partial void DeleteInvitedUser(InvitedUser instance);
+    partial void InsertProposalSetting(ProposalSetting instance);
+    partial void UpdateProposalSetting(ProposalSetting instance);
+    partial void DeleteProposalSetting(ProposalSetting instance);
     #endregion
+		
+		public R8RDataContext() : 
+				base(global::ClassLibrary1.Properties.Settings.Default.Norm0001ConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
 		
 		public R8RDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -738,14 +747,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<InvitedUser> InvitedUsers
-		{
-			get
-			{
-				return this.GetTable<InvitedUser>();
-			}
-		}
-		
 		public System.Data.Linq.Table<LongProcess> LongProcesses
 		{
 			get
@@ -791,14 +792,6 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<ProposalEvaluationRatingSetting>();
-			}
-		}
-		
-		public System.Data.Linq.Table<ProposalSetting> ProposalSettings
-		{
-			get
-			{
-				return this.GetTable<ProposalSetting>();
 			}
 		}
 		
@@ -1271,6 +1264,30 @@ namespace ClassLibrary1.Model
 			get
 			{
 				return this.GetTable<FieldDefinition>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UniquenessLockReference> UniquenessLockReferences
+		{
+			get
+			{
+				return this.GetTable<UniquenessLockReference>();
+			}
+		}
+		
+		public System.Data.Linq.Table<InvitedUser> InvitedUsers
+		{
+			get
+			{
+				return this.GetTable<InvitedUser>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProposalSetting> ProposalSettings
+		{
+			get
+			{
+				return this.GetTable<ProposalSetting>();
 			}
 		}
 		
@@ -11450,380 +11467,6 @@ namespace ClassLibrary1.Model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.InvitedUser")]
-	public partial class InvitedUser : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ActivationNumber;
-		
-		private string _EmailId;
-		
-		private bool _MayView;
-		
-		private bool _MayPredict;
-		
-		private bool _MayAddTbls;
-		
-		private bool _MayResolveRatings;
-		
-		private bool _MayChangeTblRows;
-		
-		private bool _MayChangeChoiceGroups;
-		
-		private bool _MayChangeCharacteristics;
-		
-		private bool _MayChangeCategories;
-		
-		private bool _MayChangeUsersRights;
-		
-		private bool _MayAdjustPoints;
-		
-		private bool _MayChangeProposalSettings;
-		
-		private bool _IsRegistered;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnActivationNumberChanging(int value);
-    partial void OnActivationNumberChanged();
-    partial void OnEmailIdChanging(string value);
-    partial void OnEmailIdChanged();
-    partial void OnMayViewChanging(bool value);
-    partial void OnMayViewChanged();
-    partial void OnMayPredictChanging(bool value);
-    partial void OnMayPredictChanged();
-    partial void OnMayAddTblsChanging(bool value);
-    partial void OnMayAddTblsChanged();
-    partial void OnMayResolveRatingsChanging(bool value);
-    partial void OnMayResolveRatingsChanged();
-    partial void OnMayChangeTblRowsChanging(bool value);
-    partial void OnMayChangeTblRowsChanged();
-    partial void OnMayChangeChoiceGroupsChanging(bool value);
-    partial void OnMayChangeChoiceGroupsChanged();
-    partial void OnMayChangeCharacteristicsChanging(bool value);
-    partial void OnMayChangeCharacteristicsChanged();
-    partial void OnMayChangeCategoriesChanging(bool value);
-    partial void OnMayChangeCategoriesChanged();
-    partial void OnMayChangeUsersRightsChanging(bool value);
-    partial void OnMayChangeUsersRightsChanged();
-    partial void OnMayAdjustPointsChanging(bool value);
-    partial void OnMayAdjustPointsChanged();
-    partial void OnMayChangeProposalSettingsChanging(bool value);
-    partial void OnMayChangeProposalSettingsChanged();
-    partial void OnIsRegisteredChanging(bool value);
-    partial void OnIsRegisteredChanged();
-    #endregion
-		
-		public InvitedUser()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActivationNumber", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ActivationNumber
-		{
-			get
-			{
-				return this._ActivationNumber;
-			}
-			set
-			{
-				if ((this._ActivationNumber != value))
-				{
-					this.OnActivationNumberChanging(value);
-					this.SendPropertyChanging();
-					this._ActivationNumber = value;
-					this.SendPropertyChanged("ActivationNumber");
-					this.OnActivationNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailId", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string EmailId
-		{
-			get
-			{
-				return this._EmailId;
-			}
-			set
-			{
-				if ((this._EmailId != value))
-				{
-					this.OnEmailIdChanging(value);
-					this.SendPropertyChanging();
-					this._EmailId = value;
-					this.SendPropertyChanged("EmailId");
-					this.OnEmailIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayView", DbType="Bit NOT NULL")]
-		public bool MayView
-		{
-			get
-			{
-				return this._MayView;
-			}
-			set
-			{
-				if ((this._MayView != value))
-				{
-					this.OnMayViewChanging(value);
-					this.SendPropertyChanging();
-					this._MayView = value;
-					this.SendPropertyChanged("MayView");
-					this.OnMayViewChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayPredict", DbType="Bit NOT NULL")]
-		public bool MayPredict
-		{
-			get
-			{
-				return this._MayPredict;
-			}
-			set
-			{
-				if ((this._MayPredict != value))
-				{
-					this.OnMayPredictChanging(value);
-					this.SendPropertyChanging();
-					this._MayPredict = value;
-					this.SendPropertyChanged("MayPredict");
-					this.OnMayPredictChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayAddTbls", DbType="Bit NOT NULL")]
-		public bool MayAddTbls
-		{
-			get
-			{
-				return this._MayAddTbls;
-			}
-			set
-			{
-				if ((this._MayAddTbls != value))
-				{
-					this.OnMayAddTblsChanging(value);
-					this.SendPropertyChanging();
-					this._MayAddTbls = value;
-					this.SendPropertyChanged("MayAddTbls");
-					this.OnMayAddTblsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayResolveRatings", DbType="Bit NOT NULL")]
-		public bool MayResolveRatings
-		{
-			get
-			{
-				return this._MayResolveRatings;
-			}
-			set
-			{
-				if ((this._MayResolveRatings != value))
-				{
-					this.OnMayResolveRatingsChanging(value);
-					this.SendPropertyChanging();
-					this._MayResolveRatings = value;
-					this.SendPropertyChanged("MayResolveRatings");
-					this.OnMayResolveRatingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeTblRows", DbType="Bit NOT NULL")]
-		public bool MayChangeTblRows
-		{
-			get
-			{
-				return this._MayChangeTblRows;
-			}
-			set
-			{
-				if ((this._MayChangeTblRows != value))
-				{
-					this.OnMayChangeTblRowsChanging(value);
-					this.SendPropertyChanging();
-					this._MayChangeTblRows = value;
-					this.SendPropertyChanged("MayChangeTblRows");
-					this.OnMayChangeTblRowsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeChoiceGroups", DbType="Bit NOT NULL")]
-		public bool MayChangeChoiceGroups
-		{
-			get
-			{
-				return this._MayChangeChoiceGroups;
-			}
-			set
-			{
-				if ((this._MayChangeChoiceGroups != value))
-				{
-					this.OnMayChangeChoiceGroupsChanging(value);
-					this.SendPropertyChanging();
-					this._MayChangeChoiceGroups = value;
-					this.SendPropertyChanged("MayChangeChoiceGroups");
-					this.OnMayChangeChoiceGroupsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeCharacteristics", DbType="Bit NOT NULL")]
-		public bool MayChangeCharacteristics
-		{
-			get
-			{
-				return this._MayChangeCharacteristics;
-			}
-			set
-			{
-				if ((this._MayChangeCharacteristics != value))
-				{
-					this.OnMayChangeCharacteristicsChanging(value);
-					this.SendPropertyChanging();
-					this._MayChangeCharacteristics = value;
-					this.SendPropertyChanged("MayChangeCharacteristics");
-					this.OnMayChangeCharacteristicsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeCategories", DbType="Bit NOT NULL")]
-		public bool MayChangeColumns
-		{
-			get
-			{
-				return this._MayChangeCategories;
-			}
-			set
-			{
-				if ((this._MayChangeCategories != value))
-				{
-					this.OnMayChangeCategoriesChanging(value);
-					this.SendPropertyChanging();
-					this._MayChangeCategories = value;
-					this.SendPropertyChanged("MayChangeCategories");
-					this.OnMayChangeCategoriesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeUsersRights", DbType="Bit NOT NULL")]
-		public bool MayChangeUsersRights
-		{
-			get
-			{
-				return this._MayChangeUsersRights;
-			}
-			set
-			{
-				if ((this._MayChangeUsersRights != value))
-				{
-					this.OnMayChangeUsersRightsChanging(value);
-					this.SendPropertyChanging();
-					this._MayChangeUsersRights = value;
-					this.SendPropertyChanged("MayChangeUsersRights");
-					this.OnMayChangeUsersRightsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayAdjustPoints", DbType="Bit NOT NULL")]
-		public bool MayAdjustPoints
-		{
-			get
-			{
-				return this._MayAdjustPoints;
-			}
-			set
-			{
-				if ((this._MayAdjustPoints != value))
-				{
-					this.OnMayAdjustPointsChanging(value);
-					this.SendPropertyChanging();
-					this._MayAdjustPoints = value;
-					this.SendPropertyChanged("MayAdjustPoints");
-					this.OnMayAdjustPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeProposalSettings", DbType="Bit NOT NULL")]
-		public bool MayChangeProposalSettings
-		{
-			get
-			{
-				return this._MayChangeProposalSettings;
-			}
-			set
-			{
-				if ((this._MayChangeProposalSettings != value))
-				{
-					this.OnMayChangeProposalSettingsChanging(value);
-					this.SendPropertyChanging();
-					this._MayChangeProposalSettings = value;
-					this.SendPropertyChanged("MayChangeProposalSettings");
-					this.OnMayChangeProposalSettingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRegistered", DbType="Bit NOT NULL")]
-		public bool IsRegistered
-		{
-			get
-			{
-				return this._IsRegistered;
-			}
-			set
-			{
-				if ((this._IsRegistered != value))
-				{
-					this.OnIsRegisteredChanging(value);
-					this.SendPropertyChanging();
-					this._IsRegistered = value;
-					this.SendPropertyChanged("IsRegistered");
-					this.OnIsRegisteredChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LongProcesses")]
 	public partial class LongProcess : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -13589,774 +13232,6 @@ namespace ClassLibrary1.Model
 						this._RatingGroupAttributesID = default(int);
 					}
 					this.SendPropertyChanged("RatingGroupAttribute");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProposalSettings")]
-	public partial class ProposalSetting : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ProposalSettingsID;
-		
-		private System.Nullable<int> _PointsManagerID;
-		
-		private System.Nullable<int> _TblID;
-		
-		private bool _UsersMayProposeAddingTbls;
-		
-		private bool _UsersMayProposeResolvingRatings;
-		
-		private bool _UsersMayProposeChangingTblRows;
-		
-		private bool _UsersMayProposeChangingChoiceGroups;
-		
-		private bool _UsersMayProposeChangingCharacteristics;
-		
-		private bool _UsersMayProposeChangingCategories;
-		
-		private bool _UsersMayProposeChangingUsersRights;
-		
-		private bool _UsersMayProposeAdjustingPoints;
-		
-		private bool _UsersMayProposeChangingProposalSettings;
-		
-		private decimal _MinValueToApprove;
-		
-		private decimal _MaxValueToReject;
-		
-		private int _MinTimePastThreshold;
-		
-		private decimal _MinProportionOfThisTime;
-		
-		private int _MinAdditionalTimeForRewardRating;
-		
-		private int _HalfLifeForRewardRating;
-		
-		private decimal _MaxBonusForProposal;
-		
-		private decimal _MaxPenaltyForRejection;
-		
-		private decimal _SubsidyForApprovalRating;
-		
-		private decimal _SubsidyForRewardRating;
-		
-		private int _HalfLifeForResolvingAtFinalValue;
-		
-		private decimal _RequiredPointsToMakeProposal;
-		
-		private string _Name;
-		
-		private System.Nullable<int> _Creator;
-		
-		private byte _Status;
-		
-		private EntityRef<PointsManager> _PointsManager;
-		
-		private EntityRef<Tbl> _Tbl;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnProposalSettingsIDChanging(int value);
-    partial void OnProposalSettingsIDChanged();
-    partial void OnPointsManagerIDChanging(System.Nullable<int> value);
-    partial void OnPointsManagerIDChanged();
-    partial void OnTblIDChanging(System.Nullable<int> value);
-    partial void OnTblIDChanged();
-    partial void OnUsersMayProposeAddingTblsChanging(bool value);
-    partial void OnUsersMayProposeAddingTblsChanged();
-    partial void OnUsersMayProposeResolvingRatingsChanging(bool value);
-    partial void OnUsersMayProposeResolvingRatingsChanged();
-    partial void OnUsersMayProposeChangingTblRowsChanging(bool value);
-    partial void OnUsersMayProposeChangingTblRowsChanged();
-    partial void OnUsersMayProposeChangingChoiceGroupsChanging(bool value);
-    partial void OnUsersMayProposeChangingChoiceGroupsChanged();
-    partial void OnUsersMayProposeChangingCharacteristicsChanging(bool value);
-    partial void OnUsersMayProposeChangingCharacteristicsChanged();
-    partial void OnUsersMayProposeChangingCategoriesChanging(bool value);
-    partial void OnUsersMayProposeChangingCategoriesChanged();
-    partial void OnUsersMayProposeChangingUsersRightsChanging(bool value);
-    partial void OnUsersMayProposeChangingUsersRightsChanged();
-    partial void OnUsersMayProposeAdjustingPointsChanging(bool value);
-    partial void OnUsersMayProposeAdjustingPointsChanged();
-    partial void OnUsersMayProposeChangingProposalSettingsChanging(bool value);
-    partial void OnUsersMayProposeChangingProposalSettingsChanged();
-    partial void OnMinValueToApproveChanging(decimal value);
-    partial void OnMinValueToApproveChanged();
-    partial void OnMaxValueToRejectChanging(decimal value);
-    partial void OnMaxValueToRejectChanged();
-    partial void OnMinTimePastThresholdChanging(int value);
-    partial void OnMinTimePastThresholdChanged();
-    partial void OnMinProportionOfThisTimeChanging(decimal value);
-    partial void OnMinProportionOfThisTimeChanged();
-    partial void OnMinAdditionalTimeForRewardRatingChanging(int value);
-    partial void OnMinAdditionalTimeForRewardRatingChanged();
-    partial void OnHalfLifeForRewardRatingChanging(int value);
-    partial void OnHalfLifeForRewardRatingChanged();
-    partial void OnMaxBonusForProposalChanging(decimal value);
-    partial void OnMaxBonusForProposalChanged();
-    partial void OnMaxPenaltyForRejectionChanging(decimal value);
-    partial void OnMaxPenaltyForRejectionChanged();
-    partial void OnSubsidyForApprovalRatingChanging(decimal value);
-    partial void OnSubsidyForApprovalRatingChanged();
-    partial void OnSubsidyForRewardRatingChanging(decimal value);
-    partial void OnSubsidyForRewardRatingChanged();
-    partial void OnHalfLifeForResolvingAtFinalValueChanging(int value);
-    partial void OnHalfLifeForResolvingAtFinalValueChanged();
-    partial void OnRequiredPointsToMakeProposalChanging(decimal value);
-    partial void OnRequiredPointsToMakeProposalChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnCreatorChanging(System.Nullable<int> value);
-    partial void OnCreatorChanged();
-    partial void OnStatusChanging(byte value);
-    partial void OnStatusChanged();
-    #endregion
-		
-		public ProposalSetting()
-		{
-			this._PointsManager = default(EntityRef<PointsManager>);
-			this._Tbl = default(EntityRef<Tbl>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProposalSettingsID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ProposalSettingsID
-		{
-			get
-			{
-				return this._ProposalSettingsID;
-			}
-			set
-			{
-				if ((this._ProposalSettingsID != value))
-				{
-					this.OnProposalSettingsIDChanging(value);
-					this.SendPropertyChanging();
-					this._ProposalSettingsID = value;
-					this.SendPropertyChanged("ProposalSettingsID");
-					this.OnProposalSettingsIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", DbType="Int")]
-		public System.Nullable<int> PointsManagerID
-		{
-			get
-			{
-				return this._PointsManagerID;
-			}
-			set
-			{
-				if ((this._PointsManagerID != value))
-				{
-					if (this._PointsManager.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPointsManagerIDChanging(value);
-					this.SendPropertyChanging();
-					this._PointsManagerID = value;
-					this.SendPropertyChanged("PointsManagerID");
-					this.OnPointsManagerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblID", DbType="Int")]
-		public System.Nullable<int> TblID
-		{
-			get
-			{
-				return this._TblID;
-			}
-			set
-			{
-				if ((this._TblID != value))
-				{
-					if (this._Tbl.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTblIDChanging(value);
-					this.SendPropertyChanging();
-					this._TblID = value;
-					this.SendPropertyChanged("TblID");
-					this.OnTblIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeAddingTbls", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeAddingTbls
-		{
-			get
-			{
-				return this._UsersMayProposeAddingTbls;
-			}
-			set
-			{
-				if ((this._UsersMayProposeAddingTbls != value))
-				{
-					this.OnUsersMayProposeAddingTblsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeAddingTbls = value;
-					this.SendPropertyChanged("UsersMayProposeAddingTbls");
-					this.OnUsersMayProposeAddingTblsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeResolvingRatings", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeResolvingRatings
-		{
-			get
-			{
-				return this._UsersMayProposeResolvingRatings;
-			}
-			set
-			{
-				if ((this._UsersMayProposeResolvingRatings != value))
-				{
-					this.OnUsersMayProposeResolvingRatingsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeResolvingRatings = value;
-					this.SendPropertyChanged("UsersMayProposeResolvingRatings");
-					this.OnUsersMayProposeResolvingRatingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingTblRows", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeChangingTblRows
-		{
-			get
-			{
-				return this._UsersMayProposeChangingTblRows;
-			}
-			set
-			{
-				if ((this._UsersMayProposeChangingTblRows != value))
-				{
-					this.OnUsersMayProposeChangingTblRowsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeChangingTblRows = value;
-					this.SendPropertyChanged("UsersMayProposeChangingTblRows");
-					this.OnUsersMayProposeChangingTblRowsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingChoiceGroups", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeChangingChoiceGroups
-		{
-			get
-			{
-				return this._UsersMayProposeChangingChoiceGroups;
-			}
-			set
-			{
-				if ((this._UsersMayProposeChangingChoiceGroups != value))
-				{
-					this.OnUsersMayProposeChangingChoiceGroupsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeChangingChoiceGroups = value;
-					this.SendPropertyChanged("UsersMayProposeChangingChoiceGroups");
-					this.OnUsersMayProposeChangingChoiceGroupsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingCharacteristics", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeChangingCharacteristics
-		{
-			get
-			{
-				return this._UsersMayProposeChangingCharacteristics;
-			}
-			set
-			{
-				if ((this._UsersMayProposeChangingCharacteristics != value))
-				{
-					this.OnUsersMayProposeChangingCharacteristicsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeChangingCharacteristics = value;
-					this.SendPropertyChanged("UsersMayProposeChangingCharacteristics");
-					this.OnUsersMayProposeChangingCharacteristicsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingCategories", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeChangingColumns
-		{
-			get
-			{
-				return this._UsersMayProposeChangingCategories;
-			}
-			set
-			{
-				if ((this._UsersMayProposeChangingCategories != value))
-				{
-					this.OnUsersMayProposeChangingCategoriesChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeChangingCategories = value;
-					this.SendPropertyChanged("UsersMayProposeChangingCategories");
-					this.OnUsersMayProposeChangingCategoriesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingUsersRights", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeChangingUsersRights
-		{
-			get
-			{
-				return this._UsersMayProposeChangingUsersRights;
-			}
-			set
-			{
-				if ((this._UsersMayProposeChangingUsersRights != value))
-				{
-					this.OnUsersMayProposeChangingUsersRightsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeChangingUsersRights = value;
-					this.SendPropertyChanged("UsersMayProposeChangingUsersRights");
-					this.OnUsersMayProposeChangingUsersRightsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeAdjustingPoints", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeAdjustingPoints
-		{
-			get
-			{
-				return this._UsersMayProposeAdjustingPoints;
-			}
-			set
-			{
-				if ((this._UsersMayProposeAdjustingPoints != value))
-				{
-					this.OnUsersMayProposeAdjustingPointsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeAdjustingPoints = value;
-					this.SendPropertyChanged("UsersMayProposeAdjustingPoints");
-					this.OnUsersMayProposeAdjustingPointsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingProposalSettings", DbType="Bit NOT NULL")]
-		public bool UsersMayProposeChangingProposalSettings
-		{
-			get
-			{
-				return this._UsersMayProposeChangingProposalSettings;
-			}
-			set
-			{
-				if ((this._UsersMayProposeChangingProposalSettings != value))
-				{
-					this.OnUsersMayProposeChangingProposalSettingsChanging(value);
-					this.SendPropertyChanging();
-					this._UsersMayProposeChangingProposalSettings = value;
-					this.SendPropertyChanged("UsersMayProposeChangingProposalSettings");
-					this.OnUsersMayProposeChangingProposalSettingsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinValueToApprove", DbType="Decimal(18,4) NOT NULL")]
-		public decimal MinValueToApprove
-		{
-			get
-			{
-				return this._MinValueToApprove;
-			}
-			set
-			{
-				if ((this._MinValueToApprove != value))
-				{
-					this.OnMinValueToApproveChanging(value);
-					this.SendPropertyChanging();
-					this._MinValueToApprove = value;
-					this.SendPropertyChanged("MinValueToApprove");
-					this.OnMinValueToApproveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxValueToReject", DbType="Decimal(18,4) NOT NULL")]
-		public decimal MaxValueToReject
-		{
-			get
-			{
-				return this._MaxValueToReject;
-			}
-			set
-			{
-				if ((this._MaxValueToReject != value))
-				{
-					this.OnMaxValueToRejectChanging(value);
-					this.SendPropertyChanging();
-					this._MaxValueToReject = value;
-					this.SendPropertyChanged("MaxValueToReject");
-					this.OnMaxValueToRejectChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinTimePastThreshold", DbType="Int NOT NULL")]
-		public int MinTimePastThreshold
-		{
-			get
-			{
-				return this._MinTimePastThreshold;
-			}
-			set
-			{
-				if ((this._MinTimePastThreshold != value))
-				{
-					this.OnMinTimePastThresholdChanging(value);
-					this.SendPropertyChanging();
-					this._MinTimePastThreshold = value;
-					this.SendPropertyChanged("MinTimePastThreshold");
-					this.OnMinTimePastThresholdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinProportionOfThisTime", DbType="Decimal(18,4) NOT NULL")]
-		public decimal MinProportionOfThisTime
-		{
-			get
-			{
-				return this._MinProportionOfThisTime;
-			}
-			set
-			{
-				if ((this._MinProportionOfThisTime != value))
-				{
-					this.OnMinProportionOfThisTimeChanging(value);
-					this.SendPropertyChanging();
-					this._MinProportionOfThisTime = value;
-					this.SendPropertyChanged("MinProportionOfThisTime");
-					this.OnMinProportionOfThisTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinAdditionalTimeForRewardRating", DbType="Int NOT NULL")]
-		public int MinAdditionalTimeForRewardRating
-		{
-			get
-			{
-				return this._MinAdditionalTimeForRewardRating;
-			}
-			set
-			{
-				if ((this._MinAdditionalTimeForRewardRating != value))
-				{
-					this.OnMinAdditionalTimeForRewardRatingChanging(value);
-					this.SendPropertyChanging();
-					this._MinAdditionalTimeForRewardRating = value;
-					this.SendPropertyChanged("MinAdditionalTimeForRewardRating");
-					this.OnMinAdditionalTimeForRewardRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HalfLifeForRewardRating", DbType="Int NOT NULL")]
-		public int HalfLifeForRewardRating
-		{
-			get
-			{
-				return this._HalfLifeForRewardRating;
-			}
-			set
-			{
-				if ((this._HalfLifeForRewardRating != value))
-				{
-					this.OnHalfLifeForRewardRatingChanging(value);
-					this.SendPropertyChanging();
-					this._HalfLifeForRewardRating = value;
-					this.SendPropertyChanged("HalfLifeForRewardRating");
-					this.OnHalfLifeForRewardRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxBonusForProposal", DbType="Decimal(18,4) NOT NULL")]
-		public decimal MaxBonusForProposal
-		{
-			get
-			{
-				return this._MaxBonusForProposal;
-			}
-			set
-			{
-				if ((this._MaxBonusForProposal != value))
-				{
-					this.OnMaxBonusForProposalChanging(value);
-					this.SendPropertyChanging();
-					this._MaxBonusForProposal = value;
-					this.SendPropertyChanged("MaxBonusForProposal");
-					this.OnMaxBonusForProposalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxPenaltyForRejection", DbType="Decimal(18,4) NOT NULL")]
-		public decimal MaxPenaltyForRejection
-		{
-			get
-			{
-				return this._MaxPenaltyForRejection;
-			}
-			set
-			{
-				if ((this._MaxPenaltyForRejection != value))
-				{
-					this.OnMaxPenaltyForRejectionChanging(value);
-					this.SendPropertyChanging();
-					this._MaxPenaltyForRejection = value;
-					this.SendPropertyChanged("MaxPenaltyForRejection");
-					this.OnMaxPenaltyForRejectionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubsidyForApprovalRating", DbType="Decimal(18,4) NOT NULL")]
-		public decimal SubsidyForApprovalRating
-		{
-			get
-			{
-				return this._SubsidyForApprovalRating;
-			}
-			set
-			{
-				if ((this._SubsidyForApprovalRating != value))
-				{
-					this.OnSubsidyForApprovalRatingChanging(value);
-					this.SendPropertyChanging();
-					this._SubsidyForApprovalRating = value;
-					this.SendPropertyChanged("SubsidyForApprovalRating");
-					this.OnSubsidyForApprovalRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubsidyForRewardRating", DbType="Decimal(18,4) NOT NULL")]
-		public decimal SubsidyForRewardRating
-		{
-			get
-			{
-				return this._SubsidyForRewardRating;
-			}
-			set
-			{
-				if ((this._SubsidyForRewardRating != value))
-				{
-					this.OnSubsidyForRewardRatingChanging(value);
-					this.SendPropertyChanging();
-					this._SubsidyForRewardRating = value;
-					this.SendPropertyChanged("SubsidyForRewardRating");
-					this.OnSubsidyForRewardRatingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HalfLifeForResolvingAtFinalValue", DbType="Int NOT NULL")]
-		public int HalfLifeForResolvingAtFinalValue
-		{
-			get
-			{
-				return this._HalfLifeForResolvingAtFinalValue;
-			}
-			set
-			{
-				if ((this._HalfLifeForResolvingAtFinalValue != value))
-				{
-					this.OnHalfLifeForResolvingAtFinalValueChanging(value);
-					this.SendPropertyChanging();
-					this._HalfLifeForResolvingAtFinalValue = value;
-					this.SendPropertyChanged("HalfLifeForResolvingAtFinalValue");
-					this.OnHalfLifeForResolvingAtFinalValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequiredPointsToMakeProposal", DbType="Decimal(18,4) NOT NULL")]
-		public decimal RequiredPointsToMakeProposal
-		{
-			get
-			{
-				return this._RequiredPointsToMakeProposal;
-			}
-			set
-			{
-				if ((this._RequiredPointsToMakeProposal != value))
-				{
-					this.OnRequiredPointsToMakeProposalChanging(value);
-					this.SendPropertyChanging();
-					this._RequiredPointsToMakeProposal = value;
-					this.SendPropertyChanged("RequiredPointsToMakeProposal");
-					this.OnRequiredPointsToMakeProposalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
-		public System.Nullable<int> Creator
-		{
-			get
-			{
-				return this._Creator;
-			}
-			set
-			{
-				if ((this._Creator != value))
-				{
-					this.OnCreatorChanging(value);
-					this.SendPropertyChanging();
-					this._Creator = value;
-					this.SendPropertyChanged("Creator");
-					this.OnCreatorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
-		public byte Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalSetting", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
-		public PointsManager PointsManager
-		{
-			get
-			{
-				return this._PointsManager.Entity;
-			}
-			set
-			{
-				PointsManager previousValue = this._PointsManager.Entity;
-				if (((previousValue != value) 
-							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PointsManager.Entity = null;
-						previousValue.ProposalSettings.Remove(this);
-					}
-					this._PointsManager.Entity = value;
-					if ((value != null))
-					{
-						value.ProposalSettings.Add(this);
-						this._PointsManagerID = value.PointsManagerID;
-					}
-					else
-					{
-						this._PointsManagerID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("PointsManager");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_ProposalSetting", Storage="_Tbl", ThisKey="TblID", OtherKey="TblID", IsForeignKey=true)]
-		public Tbl Tbl
-		{
-			get
-			{
-				return this._Tbl.Entity;
-			}
-			set
-			{
-				Tbl previousValue = this._Tbl.Entity;
-				if (((previousValue != value) 
-							|| (this._Tbl.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Tbl.Entity = null;
-						previousValue.ProposalSettings.Remove(this);
-					}
-					this._Tbl.Entity = value;
-					if ((value != null))
-					{
-						value.ProposalSettings.Add(this);
-						this._TblID = value.TblID;
-					}
-					else
-					{
-						this._TblID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Tbl");
 				}
 			}
 		}
@@ -26068,8 +24943,6 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<ProposalEvaluationRatingSetting> _ProposalEvaluationRatingSettings;
 		
-		private EntitySet<ProposalSetting> _ProposalSettings;
-		
 		private EntitySet<RewardRatingSetting> _RewardRatingSettings;
 		
 		private EntitySet<UsersAdministrationRightsGroup> _UsersAdministrationRightsGroups;
@@ -26083,6 +24956,8 @@ namespace ClassLibrary1.Model
 		private EntitySet<PointsTotal> _PointsTotals;
 		
 		private EntitySet<Tbl> _Tbls;
+		
+		private EntitySet<ProposalSetting> _ProposalSettings;
 		
 		private EntityRef<TrustTrackerUnit> _TrustTrackerUnit;
 		
@@ -26183,7 +25058,6 @@ namespace ClassLibrary1.Model
 			this._InsertableContents = new EntitySet<InsertableContent>(new Action<InsertableContent>(this.attach_InsertableContents), new Action<InsertableContent>(this.detach_InsertableContents));
 			this._PointsAdjustments = new EntitySet<PointsAdjustment>(new Action<PointsAdjustment>(this.attach_PointsAdjustments), new Action<PointsAdjustment>(this.detach_PointsAdjustments));
 			this._ProposalEvaluationRatingSettings = new EntitySet<ProposalEvaluationRatingSetting>(new Action<ProposalEvaluationRatingSetting>(this.attach_ProposalEvaluationRatingSettings), new Action<ProposalEvaluationRatingSetting>(this.detach_ProposalEvaluationRatingSettings));
-			this._ProposalSettings = new EntitySet<ProposalSetting>(new Action<ProposalSetting>(this.attach_ProposalSettings), new Action<ProposalSetting>(this.detach_ProposalSettings));
 			this._RewardRatingSettings = new EntitySet<RewardRatingSetting>(new Action<RewardRatingSetting>(this.attach_RewardRatingSettings), new Action<RewardRatingSetting>(this.detach_RewardRatingSettings));
 			this._UsersAdministrationRightsGroups = new EntitySet<UsersAdministrationRightsGroup>(new Action<UsersAdministrationRightsGroup>(this.attach_UsersAdministrationRightsGroups), new Action<UsersAdministrationRightsGroup>(this.detach_UsersAdministrationRightsGroups));
 			this._UsersRights = new EntitySet<UsersRight>(new Action<UsersRight>(this.attach_UsersRights), new Action<UsersRight>(this.detach_UsersRights));
@@ -26191,6 +25065,7 @@ namespace ClassLibrary1.Model
 			this._RatingGroupAttributes = new EntitySet<RatingGroupAttribute>(new Action<RatingGroupAttribute>(this.attach_RatingGroupAttributes), new Action<RatingGroupAttribute>(this.detach_RatingGroupAttributes));
 			this._PointsTotals = new EntitySet<PointsTotal>(new Action<PointsTotal>(this.attach_PointsTotals), new Action<PointsTotal>(this.detach_PointsTotals));
 			this._Tbls = new EntitySet<Tbl>(new Action<Tbl>(this.attach_Tbls), new Action<Tbl>(this.detach_Tbls));
+			this._ProposalSettings = new EntitySet<ProposalSetting>(new Action<ProposalSetting>(this.attach_ProposalSettings), new Action<ProposalSetting>(this.detach_ProposalSettings));
 			this._TrustTrackerUnit = default(EntityRef<TrustTrackerUnit>);
 			this._Domain = default(EntityRef<Domain>);
 			OnCreated();
@@ -27089,19 +25964,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalSetting", Storage="_ProposalSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
-		public EntitySet<ProposalSetting> ProposalSettings
-		{
-			get
-			{
-				return this._ProposalSettings;
-			}
-			set
-			{
-				this._ProposalSettings.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_RewardRatingSetting", Storage="_RewardRatingSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
 		public EntitySet<RewardRatingSetting> RewardRatingSettings
 		{
@@ -27190,6 +26052,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._Tbls.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalSetting", Storage="_ProposalSettings", ThisKey="PointsManagerID", OtherKey="PointsManagerID")]
+		public EntitySet<ProposalSetting> ProposalSettings
+		{
+			get
+			{
+				return this._ProposalSettings;
+			}
+			set
+			{
+				this._ProposalSettings.Assign(value);
 			}
 		}
 		
@@ -27341,18 +26216,6 @@ namespace ClassLibrary1.Model
 			entity.PointsManager = null;
 		}
 		
-		private void attach_ProposalSettings(ProposalSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = this;
-		}
-		
-		private void detach_ProposalSettings(ProposalSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.PointsManager = null;
-		}
-		
 		private void attach_RewardRatingSettings(RewardRatingSetting entity)
 		{
 			this.SendPropertyChanging();
@@ -27432,6 +26295,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_Tbls(Tbl entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = null;
+		}
+		
+		private void attach_ProposalSettings(ProposalSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.PointsManager = this;
+		}
+		
+		private void detach_ProposalSettings(ProposalSetting entity)
 		{
 			this.SendPropertyChanging();
 			entity.PointsManager = null;
@@ -34429,6 +33304,8 @@ namespace ClassLibrary1.Model
 		
 		private System.Nullable<System.DateTime> _DeletionTime;
 		
+		private EntitySet<UniquenessLockReference> _UniquenessLockReferences;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -34441,6 +33318,7 @@ namespace ClassLibrary1.Model
 		
 		public UniquenessLock()
 		{
+			this._UniquenessLockReferences = new EntitySet<UniquenessLockReference>(new Action<UniquenessLockReference>(this.attach_UniquenessLockReferences), new Action<UniquenessLockReference>(this.detach_UniquenessLockReferences));
 			OnCreated();
 		}
 		
@@ -34484,6 +33362,19 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UniquenessLock_UniquenessLockReference", Storage="_UniquenessLockReferences", ThisKey="Id", OtherKey="UniquenessLockID")]
+		public EntitySet<UniquenessLockReference> UniquenessLockReferences
+		{
+			get
+			{
+				return this._UniquenessLockReferences;
+			}
+			set
+			{
+				this._UniquenessLockReferences.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -34502,6 +33393,18 @@ namespace ClassLibrary1.Model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_UniquenessLockReferences(UniquenessLockReference entity)
+		{
+			this.SendPropertyChanging();
+			entity.UniquenessLock = this;
+		}
+		
+		private void detach_UniquenessLockReferences(UniquenessLockReference entity)
+		{
+			this.SendPropertyChanging();
+			entity.UniquenessLock = null;
 		}
 	}
 	
@@ -34559,8 +33462,6 @@ namespace ClassLibrary1.Model
 		
 		private EntitySet<InsertableContent> _InsertableContents;
 		
-		private EntitySet<ProposalSetting> _ProposalSettings;
-		
 		private EntitySet<TblTab> _TblTabs;
 		
 		private EntitySet<TrustTrackerForChoiceInGroup> _TrustTrackerForChoiceInGroups;
@@ -34568,6 +33469,8 @@ namespace ClassLibrary1.Model
 		private EntitySet<TblRow> _TblRows;
 		
 		private EntitySet<FieldDefinition> _FieldDefinitions;
+		
+		private EntitySet<ProposalSetting> _ProposalSettings;
 		
 		private EntityRef<PointsManager> _PointsManager;
 		
@@ -34628,11 +33531,11 @@ namespace ClassLibrary1.Model
 			this._ChangesGroups = new EntitySet<ChangesGroup>(new Action<ChangesGroup>(this.attach_ChangesGroups), new Action<ChangesGroup>(this.detach_ChangesGroups));
 			this._HierarchyItems = new EntitySet<HierarchyItem>(new Action<HierarchyItem>(this.attach_HierarchyItems), new Action<HierarchyItem>(this.detach_HierarchyItems));
 			this._InsertableContents = new EntitySet<InsertableContent>(new Action<InsertableContent>(this.attach_InsertableContents), new Action<InsertableContent>(this.detach_InsertableContents));
-			this._ProposalSettings = new EntitySet<ProposalSetting>(new Action<ProposalSetting>(this.attach_ProposalSettings), new Action<ProposalSetting>(this.detach_ProposalSettings));
 			this._TblTabs = new EntitySet<TblTab>(new Action<TblTab>(this.attach_TblTabs), new Action<TblTab>(this.detach_TblTabs));
 			this._TrustTrackerForChoiceInGroups = new EntitySet<TrustTrackerForChoiceInGroup>(new Action<TrustTrackerForChoiceInGroup>(this.attach_TrustTrackerForChoiceInGroups), new Action<TrustTrackerForChoiceInGroup>(this.detach_TrustTrackerForChoiceInGroups));
 			this._TblRows = new EntitySet<TblRow>(new Action<TblRow>(this.attach_TblRows), new Action<TblRow>(this.detach_TblRows));
 			this._FieldDefinitions = new EntitySet<FieldDefinition>(new Action<FieldDefinition>(this.attach_FieldDefinitions), new Action<FieldDefinition>(this.detach_FieldDefinitions));
+			this._ProposalSettings = new EntitySet<ProposalSetting>(new Action<ProposalSetting>(this.attach_ProposalSettings), new Action<ProposalSetting>(this.detach_ProposalSettings));
 			this._PointsManager = default(EntityRef<PointsManager>);
 			this._User = default(EntityRef<User>);
 			this._TblDimension = default(EntityRef<TblDimension>);
@@ -35110,19 +34013,6 @@ namespace ClassLibrary1.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_ProposalSetting", Storage="_ProposalSettings", ThisKey="TblID", OtherKey="TblID")]
-		public EntitySet<ProposalSetting> ProposalSettings
-		{
-			get
-			{
-				return this._ProposalSettings;
-			}
-			set
-			{
-				this._ProposalSettings.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_TblTab", Storage="_TblTabs", ThisKey="TblID", OtherKey="TblID")]
 		public EntitySet<TblTab> TblTabs
 		{
@@ -35172,6 +34062,19 @@ namespace ClassLibrary1.Model
 			set
 			{
 				this._FieldDefinitions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_ProposalSetting", Storage="_ProposalSettings", ThisKey="TblID", OtherKey="TblID")]
+		public EntitySet<ProposalSetting> ProposalSettings
+		{
+			get
+			{
+				return this._ProposalSettings;
+			}
+			set
+			{
+				this._ProposalSettings.Assign(value);
 			}
 		}
 		
@@ -35333,18 +34236,6 @@ namespace ClassLibrary1.Model
 			entity.Tbl = null;
 		}
 		
-		private void attach_ProposalSettings(ProposalSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tbl = this;
-		}
-		
-		private void detach_ProposalSettings(ProposalSetting entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tbl = null;
-		}
-		
 		private void attach_TblTabs(TblTab entity)
 		{
 			this.SendPropertyChanging();
@@ -35388,6 +34279,18 @@ namespace ClassLibrary1.Model
 		}
 		
 		private void detach_FieldDefinitions(FieldDefinition entity)
+		{
+			this.SendPropertyChanging();
+			entity.Tbl = null;
+		}
+		
+		private void attach_ProposalSettings(ProposalSetting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Tbl = this;
+		}
+		
+		private void detach_ProposalSettings(ProposalSetting entity)
 		{
 			this.SendPropertyChanging();
 			entity.Tbl = null;
@@ -37731,6 +36634,1275 @@ namespace ClassLibrary1.Model
 		{
 			this.SendPropertyChanging();
 			entity.FieldDefinition = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UniquenessLockReferences")]
+	public partial class UniquenessLockReference : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private System.Nullable<System.Guid> _UniquenessLockID;
+		
+		private EntityRef<UniquenessLock> _UniquenessLock;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnUniquenessLockIDChanging(System.Nullable<System.Guid> value);
+    partial void OnUniquenessLockIDChanged();
+    #endregion
+		
+		public UniquenessLockReference()
+		{
+			this._UniquenessLock = default(EntityRef<UniquenessLock>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniquenessLockID", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> UniquenessLockID
+		{
+			get
+			{
+				return this._UniquenessLockID;
+			}
+			set
+			{
+				if ((this._UniquenessLockID != value))
+				{
+					if (this._UniquenessLock.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUniquenessLockIDChanging(value);
+					this.SendPropertyChanging();
+					this._UniquenessLockID = value;
+					this.SendPropertyChanged("UniquenessLockID");
+					this.OnUniquenessLockIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UniquenessLock_UniquenessLockReference", Storage="_UniquenessLock", ThisKey="UniquenessLockID", OtherKey="Id", IsForeignKey=true)]
+		public UniquenessLock UniquenessLock
+		{
+			get
+			{
+				return this._UniquenessLock.Entity;
+			}
+			set
+			{
+				UniquenessLock previousValue = this._UniquenessLock.Entity;
+				if (((previousValue != value) 
+							|| (this._UniquenessLock.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UniquenessLock.Entity = null;
+						previousValue.UniquenessLockReferences.Remove(this);
+					}
+					this._UniquenessLock.Entity = value;
+					if ((value != null))
+					{
+						value.UniquenessLockReferences.Add(this);
+						this._UniquenessLockID = value.Id;
+					}
+					else
+					{
+						this._UniquenessLockID = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("UniquenessLock");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.InvitedUser")]
+	public partial class InvitedUser : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ActivationNumber;
+		
+		private string _EmailId;
+		
+		private bool _MayView;
+		
+		private bool _MayPredict;
+		
+		private bool _MayAddTbls;
+		
+		private bool _MayResolveRatings;
+		
+		private bool _MayChangeTblRows;
+		
+		private bool _MayChangeChoiceGroups;
+		
+		private bool _MayChangeCharacteristics;
+		
+		private bool _MayChangeColumns;
+		
+		private bool _MayChangeUsersRights;
+		
+		private bool _MayAdjustPoints;
+		
+		private bool _MayChangeProposalSettings;
+		
+		private bool _IsRegistered;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnActivationNumberChanging(int value);
+    partial void OnActivationNumberChanged();
+    partial void OnEmailIdChanging(string value);
+    partial void OnEmailIdChanged();
+    partial void OnMayViewChanging(bool value);
+    partial void OnMayViewChanged();
+    partial void OnMayPredictChanging(bool value);
+    partial void OnMayPredictChanged();
+    partial void OnMayAddTblsChanging(bool value);
+    partial void OnMayAddTblsChanged();
+    partial void OnMayResolveRatingsChanging(bool value);
+    partial void OnMayResolveRatingsChanged();
+    partial void OnMayChangeTblRowsChanging(bool value);
+    partial void OnMayChangeTblRowsChanged();
+    partial void OnMayChangeChoiceGroupsChanging(bool value);
+    partial void OnMayChangeChoiceGroupsChanged();
+    partial void OnMayChangeCharacteristicsChanging(bool value);
+    partial void OnMayChangeCharacteristicsChanged();
+    partial void OnMayChangeColumnsChanging(bool value);
+    partial void OnMayChangeColumnsChanged();
+    partial void OnMayChangeUsersRightsChanging(bool value);
+    partial void OnMayChangeUsersRightsChanged();
+    partial void OnMayAdjustPointsChanging(bool value);
+    partial void OnMayAdjustPointsChanged();
+    partial void OnMayChangeProposalSettingsChanging(bool value);
+    partial void OnMayChangeProposalSettingsChanged();
+    partial void OnIsRegisteredChanging(bool value);
+    partial void OnIsRegisteredChanged();
+    #endregion
+		
+		public InvitedUser()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActivationNumber", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ActivationNumber
+		{
+			get
+			{
+				return this._ActivationNumber;
+			}
+			set
+			{
+				if ((this._ActivationNumber != value))
+				{
+					this.OnActivationNumberChanging(value);
+					this.SendPropertyChanging();
+					this._ActivationNumber = value;
+					this.SendPropertyChanged("ActivationNumber");
+					this.OnActivationNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailId", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string EmailId
+		{
+			get
+			{
+				return this._EmailId;
+			}
+			set
+			{
+				if ((this._EmailId != value))
+				{
+					this.OnEmailIdChanging(value);
+					this.SendPropertyChanging();
+					this._EmailId = value;
+					this.SendPropertyChanged("EmailId");
+					this.OnEmailIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayView", DbType="Bit NOT NULL")]
+		public bool MayView
+		{
+			get
+			{
+				return this._MayView;
+			}
+			set
+			{
+				if ((this._MayView != value))
+				{
+					this.OnMayViewChanging(value);
+					this.SendPropertyChanging();
+					this._MayView = value;
+					this.SendPropertyChanged("MayView");
+					this.OnMayViewChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayPredict", DbType="Bit NOT NULL")]
+		public bool MayPredict
+		{
+			get
+			{
+				return this._MayPredict;
+			}
+			set
+			{
+				if ((this._MayPredict != value))
+				{
+					this.OnMayPredictChanging(value);
+					this.SendPropertyChanging();
+					this._MayPredict = value;
+					this.SendPropertyChanged("MayPredict");
+					this.OnMayPredictChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayAddTbls", DbType="Bit NOT NULL")]
+		public bool MayAddTbls
+		{
+			get
+			{
+				return this._MayAddTbls;
+			}
+			set
+			{
+				if ((this._MayAddTbls != value))
+				{
+					this.OnMayAddTblsChanging(value);
+					this.SendPropertyChanging();
+					this._MayAddTbls = value;
+					this.SendPropertyChanged("MayAddTbls");
+					this.OnMayAddTblsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayResolveRatings", DbType="Bit NOT NULL")]
+		public bool MayResolveRatings
+		{
+			get
+			{
+				return this._MayResolveRatings;
+			}
+			set
+			{
+				if ((this._MayResolveRatings != value))
+				{
+					this.OnMayResolveRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._MayResolveRatings = value;
+					this.SendPropertyChanged("MayResolveRatings");
+					this.OnMayResolveRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeTblRows", DbType="Bit NOT NULL")]
+		public bool MayChangeTblRows
+		{
+			get
+			{
+				return this._MayChangeTblRows;
+			}
+			set
+			{
+				if ((this._MayChangeTblRows != value))
+				{
+					this.OnMayChangeTblRowsChanging(value);
+					this.SendPropertyChanging();
+					this._MayChangeTblRows = value;
+					this.SendPropertyChanged("MayChangeTblRows");
+					this.OnMayChangeTblRowsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeChoiceGroups", DbType="Bit NOT NULL")]
+		public bool MayChangeChoiceGroups
+		{
+			get
+			{
+				return this._MayChangeChoiceGroups;
+			}
+			set
+			{
+				if ((this._MayChangeChoiceGroups != value))
+				{
+					this.OnMayChangeChoiceGroupsChanging(value);
+					this.SendPropertyChanging();
+					this._MayChangeChoiceGroups = value;
+					this.SendPropertyChanged("MayChangeChoiceGroups");
+					this.OnMayChangeChoiceGroupsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeCharacteristics", DbType="Bit NOT NULL")]
+		public bool MayChangeCharacteristics
+		{
+			get
+			{
+				return this._MayChangeCharacteristics;
+			}
+			set
+			{
+				if ((this._MayChangeCharacteristics != value))
+				{
+					this.OnMayChangeCharacteristicsChanging(value);
+					this.SendPropertyChanging();
+					this._MayChangeCharacteristics = value;
+					this.SendPropertyChanged("MayChangeCharacteristics");
+					this.OnMayChangeCharacteristicsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeColumns", DbType="Bit NOT NULL")]
+		public bool MayChangeColumns
+		{
+			get
+			{
+				return this._MayChangeColumns;
+			}
+			set
+			{
+				if ((this._MayChangeColumns != value))
+				{
+					this.OnMayChangeColumnsChanging(value);
+					this.SendPropertyChanging();
+					this._MayChangeColumns = value;
+					this.SendPropertyChanged("MayChangeColumns");
+					this.OnMayChangeColumnsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeUsersRights", DbType="Bit NOT NULL")]
+		public bool MayChangeUsersRights
+		{
+			get
+			{
+				return this._MayChangeUsersRights;
+			}
+			set
+			{
+				if ((this._MayChangeUsersRights != value))
+				{
+					this.OnMayChangeUsersRightsChanging(value);
+					this.SendPropertyChanging();
+					this._MayChangeUsersRights = value;
+					this.SendPropertyChanged("MayChangeUsersRights");
+					this.OnMayChangeUsersRightsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayAdjustPoints", DbType="Bit NOT NULL")]
+		public bool MayAdjustPoints
+		{
+			get
+			{
+				return this._MayAdjustPoints;
+			}
+			set
+			{
+				if ((this._MayAdjustPoints != value))
+				{
+					this.OnMayAdjustPointsChanging(value);
+					this.SendPropertyChanging();
+					this._MayAdjustPoints = value;
+					this.SendPropertyChanged("MayAdjustPoints");
+					this.OnMayAdjustPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MayChangeProposalSettings", DbType="Bit NOT NULL")]
+		public bool MayChangeProposalSettings
+		{
+			get
+			{
+				return this._MayChangeProposalSettings;
+			}
+			set
+			{
+				if ((this._MayChangeProposalSettings != value))
+				{
+					this.OnMayChangeProposalSettingsChanging(value);
+					this.SendPropertyChanging();
+					this._MayChangeProposalSettings = value;
+					this.SendPropertyChanged("MayChangeProposalSettings");
+					this.OnMayChangeProposalSettingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRegistered", DbType="Bit NOT NULL")]
+		public bool IsRegistered
+		{
+			get
+			{
+				return this._IsRegistered;
+			}
+			set
+			{
+				if ((this._IsRegistered != value))
+				{
+					this.OnIsRegisteredChanging(value);
+					this.SendPropertyChanging();
+					this._IsRegistered = value;
+					this.SendPropertyChanged("IsRegistered");
+					this.OnIsRegisteredChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProposalSettings")]
+	public partial class ProposalSetting : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ProposalSettingsID;
+		
+		private System.Nullable<int> _PointsManagerID;
+		
+		private System.Nullable<int> _TblID;
+		
+		private bool _UsersMayProposeAddingTbls;
+		
+		private bool _UsersMayProposeResolvingRatings;
+		
+		private bool _UsersMayProposeChangingTblRows;
+		
+		private bool _UsersMayProposeChangingChoiceGroups;
+		
+		private bool _UsersMayProposeChangingCharacteristics;
+		
+		private bool _UsersMayProposeChangingColumns;
+		
+		private bool _UsersMayProposeChangingUsersRights;
+		
+		private bool _UsersMayProposeAdjustingPoints;
+		
+		private bool _UsersMayProposeChangingProposalSettings;
+		
+		private decimal _MinValueToApprove;
+		
+		private decimal _MaxValueToReject;
+		
+		private int _MinTimePastThreshold;
+		
+		private decimal _MinProportionOfThisTime;
+		
+		private int _MinAdditionalTimeForRewardRating;
+		
+		private int _HalfLifeForRewardRating;
+		
+		private decimal _MaxBonusForProposal;
+		
+		private decimal _MaxPenaltyForRejection;
+		
+		private decimal _SubsidyForApprovalRating;
+		
+		private decimal _SubsidyForRewardRating;
+		
+		private int _HalfLifeForResolvingAtFinalValue;
+		
+		private decimal _RequiredPointsToMakeProposal;
+		
+		private string _Name;
+		
+		private System.Nullable<int> _Creator;
+		
+		private byte _Status;
+		
+		private EntityRef<PointsManager> _PointsManager;
+		
+		private EntityRef<Tbl> _Tbl;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProposalSettingsIDChanging(int value);
+    partial void OnProposalSettingsIDChanged();
+    partial void OnPointsManagerIDChanging(System.Nullable<int> value);
+    partial void OnPointsManagerIDChanged();
+    partial void OnTblIDChanging(System.Nullable<int> value);
+    partial void OnTblIDChanged();
+    partial void OnUsersMayProposeAddingTblsChanging(bool value);
+    partial void OnUsersMayProposeAddingTblsChanged();
+    partial void OnUsersMayProposeResolvingRatingsChanging(bool value);
+    partial void OnUsersMayProposeResolvingRatingsChanged();
+    partial void OnUsersMayProposeChangingTblRowsChanging(bool value);
+    partial void OnUsersMayProposeChangingTblRowsChanged();
+    partial void OnUsersMayProposeChangingChoiceGroupsChanging(bool value);
+    partial void OnUsersMayProposeChangingChoiceGroupsChanged();
+    partial void OnUsersMayProposeChangingCharacteristicsChanging(bool value);
+    partial void OnUsersMayProposeChangingCharacteristicsChanged();
+    partial void OnUsersMayProposeChangingColumnsChanging(bool value);
+    partial void OnUsersMayProposeChangingColumnsChanged();
+    partial void OnUsersMayProposeChangingUsersRightsChanging(bool value);
+    partial void OnUsersMayProposeChangingUsersRightsChanged();
+    partial void OnUsersMayProposeAdjustingPointsChanging(bool value);
+    partial void OnUsersMayProposeAdjustingPointsChanged();
+    partial void OnUsersMayProposeChangingProposalSettingsChanging(bool value);
+    partial void OnUsersMayProposeChangingProposalSettingsChanged();
+    partial void OnMinValueToApproveChanging(decimal value);
+    partial void OnMinValueToApproveChanged();
+    partial void OnMaxValueToRejectChanging(decimal value);
+    partial void OnMaxValueToRejectChanged();
+    partial void OnMinTimePastThresholdChanging(int value);
+    partial void OnMinTimePastThresholdChanged();
+    partial void OnMinProportionOfThisTimeChanging(decimal value);
+    partial void OnMinProportionOfThisTimeChanged();
+    partial void OnMinAdditionalTimeForRewardRatingChanging(int value);
+    partial void OnMinAdditionalTimeForRewardRatingChanged();
+    partial void OnHalfLifeForRewardRatingChanging(int value);
+    partial void OnHalfLifeForRewardRatingChanged();
+    partial void OnMaxBonusForProposalChanging(decimal value);
+    partial void OnMaxBonusForProposalChanged();
+    partial void OnMaxPenaltyForRejectionChanging(decimal value);
+    partial void OnMaxPenaltyForRejectionChanged();
+    partial void OnSubsidyForApprovalRatingChanging(decimal value);
+    partial void OnSubsidyForApprovalRatingChanged();
+    partial void OnSubsidyForRewardRatingChanging(decimal value);
+    partial void OnSubsidyForRewardRatingChanged();
+    partial void OnHalfLifeForResolvingAtFinalValueChanging(int value);
+    partial void OnHalfLifeForResolvingAtFinalValueChanged();
+    partial void OnRequiredPointsToMakeProposalChanging(decimal value);
+    partial void OnRequiredPointsToMakeProposalChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnCreatorChanging(System.Nullable<int> value);
+    partial void OnCreatorChanged();
+    partial void OnStatusChanging(byte value);
+    partial void OnStatusChanged();
+    #endregion
+		
+		public ProposalSetting()
+		{
+			this._PointsManager = default(EntityRef<PointsManager>);
+			this._Tbl = default(EntityRef<Tbl>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProposalSettingsID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ProposalSettingsID
+		{
+			get
+			{
+				return this._ProposalSettingsID;
+			}
+			set
+			{
+				if ((this._ProposalSettingsID != value))
+				{
+					this.OnProposalSettingsIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProposalSettingsID = value;
+					this.SendPropertyChanged("ProposalSettingsID");
+					this.OnProposalSettingsIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PointsManagerID", DbType="Int")]
+		public System.Nullable<int> PointsManagerID
+		{
+			get
+			{
+				return this._PointsManagerID;
+			}
+			set
+			{
+				if ((this._PointsManagerID != value))
+				{
+					if (this._PointsManager.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPointsManagerIDChanging(value);
+					this.SendPropertyChanging();
+					this._PointsManagerID = value;
+					this.SendPropertyChanged("PointsManagerID");
+					this.OnPointsManagerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TblID", DbType="Int")]
+		public System.Nullable<int> TblID
+		{
+			get
+			{
+				return this._TblID;
+			}
+			set
+			{
+				if ((this._TblID != value))
+				{
+					if (this._Tbl.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTblIDChanging(value);
+					this.SendPropertyChanging();
+					this._TblID = value;
+					this.SendPropertyChanged("TblID");
+					this.OnTblIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeAddingTbls", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeAddingTbls
+		{
+			get
+			{
+				return this._UsersMayProposeAddingTbls;
+			}
+			set
+			{
+				if ((this._UsersMayProposeAddingTbls != value))
+				{
+					this.OnUsersMayProposeAddingTblsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeAddingTbls = value;
+					this.SendPropertyChanged("UsersMayProposeAddingTbls");
+					this.OnUsersMayProposeAddingTblsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeResolvingRatings", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeResolvingRatings
+		{
+			get
+			{
+				return this._UsersMayProposeResolvingRatings;
+			}
+			set
+			{
+				if ((this._UsersMayProposeResolvingRatings != value))
+				{
+					this.OnUsersMayProposeResolvingRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeResolvingRatings = value;
+					this.SendPropertyChanged("UsersMayProposeResolvingRatings");
+					this.OnUsersMayProposeResolvingRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingTblRows", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeChangingTblRows
+		{
+			get
+			{
+				return this._UsersMayProposeChangingTblRows;
+			}
+			set
+			{
+				if ((this._UsersMayProposeChangingTblRows != value))
+				{
+					this.OnUsersMayProposeChangingTblRowsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeChangingTblRows = value;
+					this.SendPropertyChanged("UsersMayProposeChangingTblRows");
+					this.OnUsersMayProposeChangingTblRowsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingChoiceGroups", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeChangingChoiceGroups
+		{
+			get
+			{
+				return this._UsersMayProposeChangingChoiceGroups;
+			}
+			set
+			{
+				if ((this._UsersMayProposeChangingChoiceGroups != value))
+				{
+					this.OnUsersMayProposeChangingChoiceGroupsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeChangingChoiceGroups = value;
+					this.SendPropertyChanged("UsersMayProposeChangingChoiceGroups");
+					this.OnUsersMayProposeChangingChoiceGroupsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingCharacteristics", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeChangingCharacteristics
+		{
+			get
+			{
+				return this._UsersMayProposeChangingCharacteristics;
+			}
+			set
+			{
+				if ((this._UsersMayProposeChangingCharacteristics != value))
+				{
+					this.OnUsersMayProposeChangingCharacteristicsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeChangingCharacteristics = value;
+					this.SendPropertyChanged("UsersMayProposeChangingCharacteristics");
+					this.OnUsersMayProposeChangingCharacteristicsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingColumns", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeChangingColumns
+		{
+			get
+			{
+				return this._UsersMayProposeChangingColumns;
+			}
+			set
+			{
+				if ((this._UsersMayProposeChangingColumns != value))
+				{
+					this.OnUsersMayProposeChangingColumnsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeChangingColumns = value;
+					this.SendPropertyChanged("UsersMayProposeChangingColumns");
+					this.OnUsersMayProposeChangingColumnsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingUsersRights", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeChangingUsersRights
+		{
+			get
+			{
+				return this._UsersMayProposeChangingUsersRights;
+			}
+			set
+			{
+				if ((this._UsersMayProposeChangingUsersRights != value))
+				{
+					this.OnUsersMayProposeChangingUsersRightsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeChangingUsersRights = value;
+					this.SendPropertyChanged("UsersMayProposeChangingUsersRights");
+					this.OnUsersMayProposeChangingUsersRightsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeAdjustingPoints", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeAdjustingPoints
+		{
+			get
+			{
+				return this._UsersMayProposeAdjustingPoints;
+			}
+			set
+			{
+				if ((this._UsersMayProposeAdjustingPoints != value))
+				{
+					this.OnUsersMayProposeAdjustingPointsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeAdjustingPoints = value;
+					this.SendPropertyChanged("UsersMayProposeAdjustingPoints");
+					this.OnUsersMayProposeAdjustingPointsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsersMayProposeChangingProposalSettings", DbType="Bit NOT NULL")]
+		public bool UsersMayProposeChangingProposalSettings
+		{
+			get
+			{
+				return this._UsersMayProposeChangingProposalSettings;
+			}
+			set
+			{
+				if ((this._UsersMayProposeChangingProposalSettings != value))
+				{
+					this.OnUsersMayProposeChangingProposalSettingsChanging(value);
+					this.SendPropertyChanging();
+					this._UsersMayProposeChangingProposalSettings = value;
+					this.SendPropertyChanged("UsersMayProposeChangingProposalSettings");
+					this.OnUsersMayProposeChangingProposalSettingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinValueToApprove", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MinValueToApprove
+		{
+			get
+			{
+				return this._MinValueToApprove;
+			}
+			set
+			{
+				if ((this._MinValueToApprove != value))
+				{
+					this.OnMinValueToApproveChanging(value);
+					this.SendPropertyChanging();
+					this._MinValueToApprove = value;
+					this.SendPropertyChanged("MinValueToApprove");
+					this.OnMinValueToApproveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxValueToReject", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MaxValueToReject
+		{
+			get
+			{
+				return this._MaxValueToReject;
+			}
+			set
+			{
+				if ((this._MaxValueToReject != value))
+				{
+					this.OnMaxValueToRejectChanging(value);
+					this.SendPropertyChanging();
+					this._MaxValueToReject = value;
+					this.SendPropertyChanged("MaxValueToReject");
+					this.OnMaxValueToRejectChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinTimePastThreshold", DbType="Int NOT NULL")]
+		public int MinTimePastThreshold
+		{
+			get
+			{
+				return this._MinTimePastThreshold;
+			}
+			set
+			{
+				if ((this._MinTimePastThreshold != value))
+				{
+					this.OnMinTimePastThresholdChanging(value);
+					this.SendPropertyChanging();
+					this._MinTimePastThreshold = value;
+					this.SendPropertyChanged("MinTimePastThreshold");
+					this.OnMinTimePastThresholdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinProportionOfThisTime", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MinProportionOfThisTime
+		{
+			get
+			{
+				return this._MinProportionOfThisTime;
+			}
+			set
+			{
+				if ((this._MinProportionOfThisTime != value))
+				{
+					this.OnMinProportionOfThisTimeChanging(value);
+					this.SendPropertyChanging();
+					this._MinProportionOfThisTime = value;
+					this.SendPropertyChanged("MinProportionOfThisTime");
+					this.OnMinProportionOfThisTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MinAdditionalTimeForRewardRating", DbType="Int NOT NULL")]
+		public int MinAdditionalTimeForRewardRating
+		{
+			get
+			{
+				return this._MinAdditionalTimeForRewardRating;
+			}
+			set
+			{
+				if ((this._MinAdditionalTimeForRewardRating != value))
+				{
+					this.OnMinAdditionalTimeForRewardRatingChanging(value);
+					this.SendPropertyChanging();
+					this._MinAdditionalTimeForRewardRating = value;
+					this.SendPropertyChanged("MinAdditionalTimeForRewardRating");
+					this.OnMinAdditionalTimeForRewardRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HalfLifeForRewardRating", DbType="Int NOT NULL")]
+		public int HalfLifeForRewardRating
+		{
+			get
+			{
+				return this._HalfLifeForRewardRating;
+			}
+			set
+			{
+				if ((this._HalfLifeForRewardRating != value))
+				{
+					this.OnHalfLifeForRewardRatingChanging(value);
+					this.SendPropertyChanging();
+					this._HalfLifeForRewardRating = value;
+					this.SendPropertyChanged("HalfLifeForRewardRating");
+					this.OnHalfLifeForRewardRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxBonusForProposal", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MaxBonusForProposal
+		{
+			get
+			{
+				return this._MaxBonusForProposal;
+			}
+			set
+			{
+				if ((this._MaxBonusForProposal != value))
+				{
+					this.OnMaxBonusForProposalChanging(value);
+					this.SendPropertyChanging();
+					this._MaxBonusForProposal = value;
+					this.SendPropertyChanged("MaxBonusForProposal");
+					this.OnMaxBonusForProposalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxPenaltyForRejection", DbType="Decimal(18,4) NOT NULL")]
+		public decimal MaxPenaltyForRejection
+		{
+			get
+			{
+				return this._MaxPenaltyForRejection;
+			}
+			set
+			{
+				if ((this._MaxPenaltyForRejection != value))
+				{
+					this.OnMaxPenaltyForRejectionChanging(value);
+					this.SendPropertyChanging();
+					this._MaxPenaltyForRejection = value;
+					this.SendPropertyChanged("MaxPenaltyForRejection");
+					this.OnMaxPenaltyForRejectionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubsidyForApprovalRating", DbType="Decimal(18,4) NOT NULL")]
+		public decimal SubsidyForApprovalRating
+		{
+			get
+			{
+				return this._SubsidyForApprovalRating;
+			}
+			set
+			{
+				if ((this._SubsidyForApprovalRating != value))
+				{
+					this.OnSubsidyForApprovalRatingChanging(value);
+					this.SendPropertyChanging();
+					this._SubsidyForApprovalRating = value;
+					this.SendPropertyChanged("SubsidyForApprovalRating");
+					this.OnSubsidyForApprovalRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubsidyForRewardRating", DbType="Decimal(18,4) NOT NULL")]
+		public decimal SubsidyForRewardRating
+		{
+			get
+			{
+				return this._SubsidyForRewardRating;
+			}
+			set
+			{
+				if ((this._SubsidyForRewardRating != value))
+				{
+					this.OnSubsidyForRewardRatingChanging(value);
+					this.SendPropertyChanging();
+					this._SubsidyForRewardRating = value;
+					this.SendPropertyChanged("SubsidyForRewardRating");
+					this.OnSubsidyForRewardRatingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HalfLifeForResolvingAtFinalValue", DbType="Int NOT NULL")]
+		public int HalfLifeForResolvingAtFinalValue
+		{
+			get
+			{
+				return this._HalfLifeForResolvingAtFinalValue;
+			}
+			set
+			{
+				if ((this._HalfLifeForResolvingAtFinalValue != value))
+				{
+					this.OnHalfLifeForResolvingAtFinalValueChanging(value);
+					this.SendPropertyChanging();
+					this._HalfLifeForResolvingAtFinalValue = value;
+					this.SendPropertyChanged("HalfLifeForResolvingAtFinalValue");
+					this.OnHalfLifeForResolvingAtFinalValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequiredPointsToMakeProposal", DbType="Decimal(18,4) NOT NULL")]
+		public decimal RequiredPointsToMakeProposal
+		{
+			get
+			{
+				return this._RequiredPointsToMakeProposal;
+			}
+			set
+			{
+				if ((this._RequiredPointsToMakeProposal != value))
+				{
+					this.OnRequiredPointsToMakeProposalChanging(value);
+					this.SendPropertyChanging();
+					this._RequiredPointsToMakeProposal = value;
+					this.SendPropertyChanged("RequiredPointsToMakeProposal");
+					this.OnRequiredPointsToMakeProposalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Creator", DbType="Int")]
+		public System.Nullable<int> Creator
+		{
+			get
+			{
+				return this._Creator;
+			}
+			set
+			{
+				if ((this._Creator != value))
+				{
+					this.OnCreatorChanging(value);
+					this.SendPropertyChanging();
+					this._Creator = value;
+					this.SendPropertyChanged("Creator");
+					this.OnCreatorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="TinyInt NOT NULL")]
+		public byte Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PointsManager_ProposalSetting", Storage="_PointsManager", ThisKey="PointsManagerID", OtherKey="PointsManagerID", IsForeignKey=true)]
+		public PointsManager PointsManager
+		{
+			get
+			{
+				return this._PointsManager.Entity;
+			}
+			set
+			{
+				PointsManager previousValue = this._PointsManager.Entity;
+				if (((previousValue != value) 
+							|| (this._PointsManager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PointsManager.Entity = null;
+						previousValue.ProposalSettings.Remove(this);
+					}
+					this._PointsManager.Entity = value;
+					if ((value != null))
+					{
+						value.ProposalSettings.Add(this);
+						this._PointsManagerID = value.PointsManagerID;
+					}
+					else
+					{
+						this._PointsManagerID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("PointsManager");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Tbl_ProposalSetting", Storage="_Tbl", ThisKey="TblID", OtherKey="TblID", IsForeignKey=true)]
+		public Tbl Tbl
+		{
+			get
+			{
+				return this._Tbl.Entity;
+			}
+			set
+			{
+				Tbl previousValue = this._Tbl.Entity;
+				if (((previousValue != value) 
+							|| (this._Tbl.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Tbl.Entity = null;
+						previousValue.ProposalSettings.Remove(this);
+					}
+					this._Tbl.Entity = value;
+					if ((value != null))
+					{
+						value.ProposalSettings.Add(this);
+						this._TblID = value.TblID;
+					}
+					else
+					{
+						this._TblID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Tbl");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

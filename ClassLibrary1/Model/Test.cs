@@ -260,23 +260,21 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public bool ExitImmediately = false;
         public void WaitIdleTasks()
         {
-            ExitImmediately = false;
             ActionProcessor.DataContext.SubmitChanges();
             long? initialLoopSetCompleted = null;
             bool hasBeenNotBusy = true; // now that we are requesting pauses at the end of this routine we don't have to wait for it not to have been busy.
             bool hasBeenBusyAfterBeingNotBusy = false; // we want it to be not busy, busy, and then not busy again
             bool hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = false;
-            BackgroundThread.CurrentlyPaused = false;
-            while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy && !ExitImmediately)
+            BackgroundThreadManager.CurrentlyPaused = false;
+            while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy)
             {
                 //Trace.TraceInformation("WaitIdleTasks still more work to do.");
-                BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true);
+                BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
                 if (initialLoopSetCompleted == null)
-                    initialLoopSetCompleted = BackgroundThread.Instance.LoopSetsCompleted();
-                bool moreWorkToDo = BackgroundThread.Instance.IsBackgroundTaskBusy();
+                    initialLoopSetCompleted = BackgroundThreadManager.Instance.LoopSetsCompleted();
+                bool moreWorkToDo = BackgroundThreadManager.Instance.IsBackgroundTaskBusy();
                 if (hasBeenNotBusy == false && !moreWorkToDo)
                     hasBeenNotBusy = true;
                 if (moreWorkToDo && hasBeenNotBusy)
@@ -284,13 +282,13 @@ namespace ClassLibrary1.Model
                 if (!moreWorkToDo && hasBeenBusyAfterBeingNotBusy)
                 {
                     hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = true;
-                    BackgroundThread.Instance.RequestPauseAndWaitForPauseToBegin();
+                    BackgroundThreadManager.Instance.RequestPauseAndWaitForPauseToBegin();
                 }
                 else
                 {
                     Thread.Sleep(1); // so we don't eat up CPU
                     const int maxLoopSets = 10;
-                    long? totalLoopSetsCompleted = BackgroundThread.Instance.LoopSetsCompleted();
+                    long? totalLoopSetsCompleted = BackgroundThreadManager.Instance.LoopSetsCompleted();
                     long? loopSetsCompletedThisWait = totalLoopSetsCompleted - initialLoopSetCompleted;
                     if (loopSetsCompletedThisWait == 5)
                     {
@@ -300,11 +298,8 @@ namespace ClassLibrary1.Model
                         throw new Exception("Idle tasks appear to be in an infinite loop."); // we can put a conditional breakpoint earlier if we want to more easily debut
                 }
             }
-            if (ExitImmediately)
-                BackgroundThread.Instance.ExitAsSoonAsPossible();
             //Trace.TraceInformation("WaitIdleTasks complete.");
             ActionProcessor.ResetDataContexts(); // Otherwise, we may have stale data in our data context.
-            ExitImmediately = false;
         }
 
 
@@ -440,7 +435,7 @@ namespace ClassLibrary1.Model
                         theRatingsCount = theRatings.Count();
                         if (theRatingsCount == 0)
                         {
-                            BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true); // allow ratings to be created
+                            BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true); // allow ratings to be created
 
                         }
                     } while (theRatingsCount == 0);
@@ -458,7 +453,7 @@ namespace ClassLibrary1.Model
                 }
                 if (i % 25 == 0)
                 {
-                    BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true);
+                    BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
                     Thread.Sleep(15000);
                 }
             }
@@ -1388,7 +1383,7 @@ namespace ClassLibrary1.Model
 
         public void TestDeleteFieldDefinition(bool delete)
         {
-            Tbl theTbl = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Where(x => x.Name != "Changes").OrderBy(x => x.TblID).FirstOrDefault();
+            Tbl theTbl = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Where(x => x.Name != "Changes").FirstOrDefault();
             User superUser = theTestHelper.ActionProcessor.DataContext.GetTable<User>().Single(u => u.Username == "admin");
             var theFieldDefinitions = theTbl.FieldDefinitions;
             foreach (var fd in theFieldDefinitions)
@@ -1424,7 +1419,7 @@ namespace ClassLibrary1.Model
                 Trace.TraceInformation("TESTEVENT # " + count);
                 TestEvent(false,10,25,TestPhasesTypes.oneMinPhasesSquareRoot, TestRatingGroupAttributesTypes.multipleContingencies, numUserRatings);
             }
-            BackgroundThread.Instance.EnsureBackgroundTaskIsRunning(true);
+            BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
         }
 
         public void LaunchTestAddUserRatingsToExisting(int numUserRatings)

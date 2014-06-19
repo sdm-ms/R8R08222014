@@ -68,10 +68,10 @@ namespace TestProject1
         public void RepositoryItem_CanGetAndSetPrimaryKey()
         {
             User theUser = new User();
-            int primaryKey = RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
+            int primaryKey = (int) RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
             primaryKey.Should().Be(0);
             RepositoryItemPrimaryKeys.SetPrimaryKeyFieldValue(theUser, 5);
-            primaryKey = RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
+            primaryKey = (int) RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
             primaryKey.Should().Be(5);
         }
 
@@ -195,12 +195,16 @@ namespace TestProject1
 
         static InMemoryRepositoryList repoList;
         static InMemoryRepository<AddressField> theInMemoryRepositoryAddressField;
+        static InMemoryRepository<UniquenessLock> theInMemoryRepositoryUniquenessLock;
+        static InMemoryRepository<UniquenessLockReference> theInMemoryRepositoryUniquenessLockReference;
         static InMemoryRepository<Field> theInMemoryRepositoryField;
 
         public void InitializeInMemoryRepositoryList()
         {
             repoList = new InMemoryRepositoryList(UnderlyingR8RDataContext);
             theInMemoryRepositoryAddressField = repoList.GetRepository<AddressField>() as InMemoryRepository<AddressField>;
+            theInMemoryRepositoryUniquenessLock = repoList.GetRepository<UniquenessLock>() as InMemoryRepository<UniquenessLock>;
+            theInMemoryRepositoryUniquenessLockReference = repoList.GetRepository<UniquenessLockReference>() as InMemoryRepository<UniquenessLockReference>;
             theInMemoryRepositoryField = repoList.GetRepository<Field>() as InMemoryRepository<Field>;
         }
 
@@ -244,6 +248,17 @@ namespace TestProject1
             theAddressField.AddressFieldID = 5;
             theInMemoryRepositoryAddressField.InsertOnSubmit(theAddressField);
             theInMemoryRepositoryAddressField.GetItemByID(5).Should().Equals(theAddressField);
+        }
+
+        [TestMethod]
+        [Category("UnitTest")]
+        public void InMemoryRepository_GetItemByGUID()
+        {
+            InitializeInMemoryRepositoryList();
+            UniquenessLock theUniquenessLock = new UniquenessLock();
+            Guid theGuid = theUniquenessLock.Id;
+            theInMemoryRepositoryUniquenessLock.InsertOnSubmit(theUniquenessLock);
+            theInMemoryRepositoryUniquenessLock.GetItemByID(theGuid).Should().Equals(theUniquenessLock);
         }
 
         [TestMethod]
@@ -467,6 +482,22 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("UnitTest")]
+        public void GUIDForeignKeysTests()
+        {
+            InitializeInMemoryRepositoryList();
+            UniquenessLock theLock = new UniquenessLock();
+            UniquenessLockReference theReference = new UniquenessLockReference() { UniquenessLock = theLock }; // we created this type solely to do this test (since we had no other GUID foreign key references at the time)
+            theInMemoryRepositoryUniquenessLock.InsertOnSubmit(theLock);
+            theInMemoryRepositoryUniquenessLockReference.InsertOnSubmit(theReference);
+            repoList.CleanUpBeforeSubmittingChanges();
+
+            UniquenessLockReference theReference2 = (UniquenessLockReference) theInMemoryRepositoryUniquenessLockReference.GetItemByID(theReference.Id);
+            theReference2.Id.Should().Equals(theReference.Id);
+            theReference2.UniquenessLock.Id.Should().Equals(theLock.Id);
+        }
+
+        [TestMethod]
 		[Category("UnitTest")]
         public void InMemoryRepositoryListTests()
         {
@@ -485,8 +516,6 @@ namespace TestProject1
             theAddressField.FieldID.Should().Be(1);
             theInMemoryRepositoryAddressField.GetItemByID(1).Should().Equals(theAddressField);
             theInMemoryRepositoryField.GetItemByID(1).Should().Equals(theField);
-
-            repoList.GetRepositories().Count().Should().Be(2);
 
             InMemoryRepositoryList repoList2 = new InMemoryRepositoryList(UnderlyingR8RDataContext, repoList);
             InMemoryRepository<AddressField> repoAddress2 = repoList2.GetRepository<AddressField>() as InMemoryRepository<AddressField>;

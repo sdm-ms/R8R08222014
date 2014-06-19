@@ -609,14 +609,14 @@ namespace ClassLibrary1.Model
             if (theField == null)
                 existingList = new List<ChoiceInGroup>();
             else
-                existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField == theField && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceInGroupID).ToList();
+                existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField == theField && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceText).ThenBy(x => x.ChoiceInGroupID).ToList();  // OK to order by ID to get consistent ordering for purpose of making comparison
             DataAccess.R8RDB.TempCache[cacheKey] = existingList;
             return existingList;
         }
 
         public override bool MatchesDatabase()
         {
-            List<ChoiceInGroup> thisListOrdered = TheChoices.OrderBy(x => x.ChoiceInGroupID).ToList();
+            List<ChoiceInGroup> thisListOrdered = TheChoices.OrderBy(x => x.ChoiceText).ThenBy(x => x.ChoiceInGroupID).ToList();
             List<ChoiceInGroup> existingList = GetDatabaseValues();
             return (existingList.SequenceEqual(thisListOrdered));
         }
@@ -803,6 +803,7 @@ namespace ClassLibrary1.Model
                 bool moreWorkToDo = true;
                 while (moreWorkToDo)
                 {
+                    // NOTE: This use of order by ID is very problematic (given the plan to switch to GUID), BUT since we are going to be deleting this code, it's not worth fixing right now.
                     var theTblRowFieldDisplays = DataContext.GetTable<TblRowFieldDisplay>().OrderBy(x => x.TblRowFieldDisplayID).Where(e => e.TblRowFieldDisplayID > highestIDCompleted &&
  e.TblRows.First().Tbl == theTbl && !e.ResetNeeded).Take(5000);
                     moreWorkToDo = theTblRowFieldDisplays.Any();

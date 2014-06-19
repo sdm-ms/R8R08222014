@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Norm0001" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="R8RDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="Norm0001ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AddressFields" Member="AddressFields">
     <Type Name="AddressField">
       <Column Name="AddressFieldID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -499,24 +500,6 @@
       <Association Name="Tbl_InsertableContent" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.InvitedUser" Member="InvitedUsers">
-    <Type Name="InvitedUser">
-      <Column Name="ActivationNumber" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="EmailId" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="MayView" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayPredict" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayAddTbls" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayResolveRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayChangeTblRows" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayChangeChoiceGroups" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayChangeCharacteristics" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayChangeCategories" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayChangeUsersRights" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayAdjustPoints" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MayChangeProposalSettings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsRegistered" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.LongProcesses" Member="LongProcesses">
     <Type Name="LongProcess">
       <Column Name="LongProcessID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -597,39 +580,6 @@
       <Association Name="UserAction_ProposalEvaluationRatingSetting" Member="UserAction" ThisKey="UserActionID" OtherKey="UserActionID" Type="UserAction" IsForeignKey="true" />
       <Association Name="PointsManager_ProposalEvaluationRatingSetting" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
       <Association Name="RatingGroupAttribute_ProposalEvaluationRatingSetting" Member="RatingGroupAttribute" ThisKey="RatingGroupAttributesID" OtherKey="RatingGroupAttributesID" Type="RatingGroupAttribute" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ProposalSettings" Member="ProposalSettings">
-    <Type Name="ProposalSetting">
-      <Column Name="ProposalSettingsID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="PointsManagerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TblID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="UsersMayProposeAddingTbls" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeResolvingRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeChangingTblRows" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeChangingChoiceGroups" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeChangingCharacteristics" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeChangingCategories" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeChangingUsersRights" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeAdjustingPoints" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="UsersMayProposeChangingProposalSettings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MinValueToApprove" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="MaxValueToReject" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="MinTimePastThreshold" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="MinProportionOfThisTime" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="MinAdditionalTimeForRewardRating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="HalfLifeForRewardRating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="MaxBonusForProposal" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="MaxPenaltyForRejection" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="SubsidyForApprovalRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="SubsidyForRewardRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="HalfLifeForResolvingAtFinalValue" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RequiredPointsToMakeProposal" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Creator" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Association Name="PointsManager_ProposalSetting" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
-      <Association Name="Tbl_ProposalSetting" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.RatingCharacteristics" Member="RatingCharacteristics">
@@ -1210,7 +1160,6 @@
       <Association Name="PointsManager_InsertableContent" Member="InsertableContents" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="InsertableContent" />
       <Association Name="PointsManager_PointsAdjustment" Member="PointsAdjustments" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsAdjustment" />
       <Association Name="PointsManager_ProposalEvaluationRatingSetting" Member="ProposalEvaluationRatingSettings" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="ProposalEvaluationRatingSetting" />
-      <Association Name="PointsManager_ProposalSetting" Member="ProposalSettings" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="ProposalSetting" />
       <Association Name="PointsManager_RewardRatingSetting" Member="RewardRatingSettings" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="RewardRatingSetting" />
       <Association Name="PointsManager_UsersAdministrationRightsGroup" Member="UsersAdministrationRightsGroups" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="UsersAdministrationRightsGroup" />
       <Association Name="PointsManager_UsersRight" Member="UsersRights" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="UsersRight" />
@@ -1218,6 +1167,7 @@
       <Association Name="PointsManager_RatingGroupAttribute" Member="RatingGroupAttributes" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="RatingGroupAttribute" />
       <Association Name="PointsManager_PointsTotal" Member="PointsTotals" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsTotal" />
       <Association Name="PointsManager_Tbl" Member="Tbls" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="Tbl" />
+      <Association Name="PointsManager_ProposalSetting" Member="ProposalSettings" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="ProposalSetting" />
       <Association Name="TrustTrackerUnit_PointsManager" Member="TrustTrackerUnit" ThisKey="TrustTrackerUnitID" OtherKey="TrustTrackerUnitID" Type="TrustTrackerUnit" IsForeignKey="true" />
       <Association Name="Domain_PointsManager" Member="Domain" ThisKey="DomainID" OtherKey="DomainID" Type="Domain" IsForeignKey="true" />
     </Type>
@@ -1518,6 +1468,7 @@
     <Type Name="UniquenessLock">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="DeletionTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="UniquenessLock_UniquenessLockReference" Member="UniquenessLockReferences" ThisKey="Id" OtherKey="UniquenessLockID" Type="UniquenessLockReference" />
     </Type>
   </Table>
   <Table Name="dbo.Tbls" Member="Tbls">
@@ -1546,11 +1497,11 @@
       <Association Name="Tbl_ChangesGroup" Member="ChangesGroups" ThisKey="TblID" OtherKey="TblID" Type="ChangesGroup" />
       <Association Name="Tbl_HierarchyItem" Member="HierarchyItems" ThisKey="TblID" OtherKey="TblID" Type="HierarchyItem" />
       <Association Name="Tbl_InsertableContent" Member="InsertableContents" ThisKey="TblID" OtherKey="TblID" Type="InsertableContent" />
-      <Association Name="Tbl_ProposalSetting" Member="ProposalSettings" ThisKey="TblID" OtherKey="TblID" Type="ProposalSetting" />
       <Association Name="Tbl_TblTab" Member="TblTabs" ThisKey="TblID" OtherKey="TblID" Type="TblTab" />
       <Association Name="Tbl_TrustTrackerForChoiceInGroup" Member="TrustTrackerForChoiceInGroups" ThisKey="TblID" OtherKey="TblID" Type="TrustTrackerForChoiceInGroup" />
       <Association Name="Tbl_TblRow" Member="TblRows" ThisKey="TblID" OtherKey="TblID" Type="TblRow" />
       <Association Name="Tbl_FieldDefinition" Member="FieldDefinitions" ThisKey="TblID" OtherKey="TblID" Type="FieldDefinition" />
+      <Association Name="Tbl_ProposalSetting" Member="ProposalSettings" ThisKey="TblID" OtherKey="TblID" Type="ProposalSetting" />
       <Association Name="PointsManager_Tbl" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
       <Association Name="User_Tbl" Member="User" ThisKey="Creator" OtherKey="UserID" Type="User" IsForeignKey="true" />
       <Association Name="TblDimension_Tbl" Member="TblDimension" ThisKey="TblDimensionsID" OtherKey="TblDimensionsID" Type="TblDimension" IsForeignKey="true" />
@@ -1653,6 +1604,64 @@
       <Association Name="FieldDefinition_TextFieldDefinition" Member="TextFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="TextFieldDefinition" />
       <Association Name="FieldDefinition_ChoiceGroupFieldDefinition" Member="ChoiceGroupFieldDefinitions" ThisKey="FieldDefinitionID" OtherKey="FieldDefinitionID" Type="ChoiceGroupFieldDefinition" />
       <Association Name="Tbl_FieldDefinition" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UniquenessLockReferences" Member="UniquenessLockReferences">
+    <Type Name="UniquenessLockReference">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UniquenessLockID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Association Name="UniquenessLock_UniquenessLockReference" Member="UniquenessLock" ThisKey="UniquenessLockID" OtherKey="Id" Type="UniquenessLock" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InvitedUser" Member="InvitedUsers">
+    <Type Name="InvitedUser">
+      <Column Name="ActivationNumber" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EmailId" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MayView" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayPredict" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayAddTbls" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayResolveRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayChangeTblRows" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayChangeChoiceGroups" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayChangeCharacteristics" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayChangeColumns" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayChangeUsersRights" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayAdjustPoints" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MayChangeProposalSettings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsRegistered" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProposalSettings" Member="ProposalSettings">
+    <Type Name="ProposalSetting">
+      <Column Name="ProposalSettingsID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PointsManagerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TblID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UsersMayProposeAddingTbls" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeResolvingRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeChangingTblRows" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeChangingChoiceGroups" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeChangingCharacteristics" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeChangingColumns" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeChangingUsersRights" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeAdjustingPoints" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UsersMayProposeChangingProposalSettings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MinValueToApprove" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="MaxValueToReject" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="MinTimePastThreshold" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MinProportionOfThisTime" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="MinAdditionalTimeForRewardRating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HalfLifeForRewardRating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxBonusForProposal" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="MaxPenaltyForRejection" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="SubsidyForApprovalRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="SubsidyForRewardRating" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="HalfLifeForResolvingAtFinalValue" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RequiredPointsToMakeProposal" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Creator" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="PointsManager_ProposalSetting" Member="PointsManager" ThisKey="PointsManagerID" OtherKey="PointsManagerID" Type="PointsManager" IsForeignKey="true" />
+      <Association Name="Tbl_ProposalSetting" Member="Tbl" ThisKey="TblID" OtherKey="TblID" Type="Tbl" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.DistanceBetween" Method="DistanceBetween" IsComposable="true">

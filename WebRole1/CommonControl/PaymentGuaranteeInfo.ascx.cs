@@ -89,7 +89,8 @@ namespace WebRole1.CommonControl
                     //RouteValueDictionary parameters;
                     //Routing.OutgoingGetRoute(new RoutingInfoMainContent(ThePointsManager.Tbls.First(), null, null, false, false, false, false, true), out urlString, out parameters );
                     //Apply.PostBackUrl = "/" + new RoutingInfoMainContent(ThePointsManager.Tbls.First(x => x.Name != "Changes"), null, null, false, false, false, false, true).GetHierarchyRoutingParameterString(); // "~/Guarantees";
-                    RoutingInfoMainContent route = Routing.IncomingMainContent(Page.RouteData, GetIR8RDataContext.New(false, false));
+                    R8RDataManipulation rdm = new R8RDataManipulation();
+                    RoutingInfoMainContent route = Routing.IncomingMainContent(Page.RouteData, rdm.DataContext); 
                     Apply.PostBackUrl = route.lastItemInHierarchy.RouteToHere + "/Guarantees";
                 }
                 if (Location == PaymentGuaranteeInfoLocation.GuaranteePage)

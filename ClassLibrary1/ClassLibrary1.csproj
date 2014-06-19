@@ -258,7 +258,7 @@
     <Compile Include="Model\SearchWords.cs" />
     <Compile Include="Model\StatusRecords.cs" />
     <Compile Include="Model\StringConstants.cs" />
-    <Compile Include="Model\SupportBase.cs" />
+    <Compile Include="Model\DataManipulation.cs" />
     <Compile Include="Model\TableInfo.cs" />
     <Compile Include="Model\TableLoading.cs" />
     <Compile Include="Model\TableSortMenu.cs" />

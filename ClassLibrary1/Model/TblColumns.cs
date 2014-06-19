@@ -38,7 +38,7 @@ namespace ClassLibrary1.Model
 
             if (theList == null)
             {
-                theList = dataContext.GetTable<TblColumn>().Where(x => x.TblTabID == tabID && x.Status == (int)StatusOfObject.Active).OrderBy(x => x.CategoryNum).ThenBy(x => x.TblColumnID).ToList();
+                theList = dataContext.GetTable<TblColumn>().Where(x => x.TblTabID == tabID && x.Status == (int)StatusOfObject.Active).OrderBy(x => x.CategoryNum).ThenBy(x => x.TblColumnID).ToList();  // OK to order by ID to get consistent ordering
                 CacheManagement.AddItemToCache(cacheKey, new string[] { "ColumnsForTblID" + tblID.ToString() }, theList, new TimeSpan(1, 0, 0));
             }
 

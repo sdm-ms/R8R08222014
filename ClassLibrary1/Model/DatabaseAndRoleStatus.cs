@@ -153,7 +153,7 @@ namespace ClassLibrary1.Model
                     theWorkerRole.IsBackgroundProcessing = true;
                 else
                 {
-                    var selectedWebRole = remainingRoles.OrderBy(x => x.RoleID).FirstOrDefault();
+                    var selectedWebRole = remainingRoles.OrderBy(x => x.RoleID).FirstOrDefault(); 
                     if (selectedWebRole != null)
                         selectedWebRole.IsBackgroundProcessing = true;
                 }
@@ -176,7 +176,7 @@ namespace ClassLibrary1.Model
         //static DateTime lastCurrentRoleIsBackgroundProcessingCheck;
         public static bool CurrentRoleIsBackgroundProcessing()
         {
-            return (performingBackgroundWork == true) || BackgroundThread.BriefPauseRequested;
+            return (performingBackgroundWork == true) || BackgroundThreadManager.BriefPauseRequested;
             //if (currentRoleIsBackgroundProcessing != null && lastCurrentRoleIsBackgroundProcessingCheck > TestableDateTime.Now - new TimeSpan(0, 1, 0))
             //    return (bool)currentRoleIsBackgroundProcessing;
             //IR8RDataContext theDataContext = GetIR8RDataContext.New(false, false); // make this read-only so that MSDTC is not required if there is already an open data context

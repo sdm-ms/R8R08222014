@@ -293,10 +293,10 @@ namespace ClassLibrary1.Model
 
             if (ascending)
                 theFilteredAndSortedQuery = theFilteredQuery
-                    .OrderBy(x => x.Name).ThenBy(x => x.TblRowID);
+                    .OrderBy(x => x.Name).ThenBy(x => x.TblRowID); // OK to use ID as a secondary ordering
             else
                 theFilteredAndSortedQuery = theFilteredQuery
-                    .OrderByDescending(x => x.Name).ThenBy(x => x.TblRowID);
+                    .OrderByDescending(x => x.Name).ThenBy(x => x.TblRowID); // OK to use ID as a secondary ordering
 
             if (maxNumResults != null)
                 theFilteredAndSortedQuery = theFilteredAndSortedQuery.Take((int)maxNumResults);

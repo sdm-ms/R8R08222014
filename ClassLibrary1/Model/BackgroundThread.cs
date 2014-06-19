@@ -33,7 +33,7 @@ namespace ClassLibrary1.Model
             MoreWorkToDo = true;
             RepeatIndefinitely = true;
             CurrentlyInBriefPause = false;
-            BackgroundThread.CurrentlyPaused = false;
+            BackgroundThreadManager.CurrentlyPaused = false;
         }
 
         /// <summary>
@@ -41,15 +41,15 @@ namespace ClassLibrary1.Model
         /// </summary>
         public void BackgroundTasksRunner(R8RDataManipulation dataManipulation)
         {
-            lock (BackgroundThread.padlock)
+            lock (BackgroundThreadManager.padlock)
             {
                 //if (BackgroundThread.ExitRequested)
                 //{
                 //    BackgroundThread.ExitGranted = true;
                 //    return;
                 //}
-                BackgroundThread.ExitRequested = false;
-                BackgroundThread.ExitGranted = false;   
+                BackgroundThreadManager.ExitRequested = false;
+                BackgroundThreadManager.ExitGranted = false;   
                 dataManipulation.ResetDataContexts();
 
 
@@ -60,12 +60,12 @@ namespace ClassLibrary1.Model
                 const int numLoops = 10;
                 for (int loop = 1; loop <= numLoops; loop++)
                 {
-                    if (BackgroundThread.ExitRequested)
+                    if (BackgroundThreadManager.ExitRequested)
                         break;
-                    if (loop != 1 && BackgroundThread.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
+                    if (loop != 1 && BackgroundThreadManager.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
                     {
-                        BackgroundThread.PauseRequestedWhenWorkIsComplete = false;
-                        BackgroundThread.CurrentlyPaused = true;
+                        BackgroundThreadManager.PauseRequestedWhenWorkIsComplete = false;
+                        BackgroundThreadManager.CurrentlyPaused = true;
                     }
                     MoreWorkToDo = CompleteSingleLoop(dataManipulation, numTasks, numLoops, loop);
                 }
@@ -88,20 +88,20 @@ namespace ClassLibrary1.Model
             bool[] moreWorkToDoThisTask = new bool[numTasks];
             for (int i = 1; i <= numTasks; i++)
             {
-                if (BackgroundThread.ExitRequested)
+                if (BackgroundThreadManager.ExitRequested)
                     break;
-                if (BackgroundThread.PauseRequestedImmediately)
+                if (BackgroundThreadManager.PauseRequestedImmediately)
                 {
-                    BackgroundThread.PauseRequestedImmediately = false;
-                    BackgroundThread.CurrentlyPaused = true;
+                    BackgroundThreadManager.PauseRequestedImmediately = false;
+                    BackgroundThreadManager.CurrentlyPaused = true;
                 }
-                while (BackgroundThread.CurrentlyPaused)
+                while (BackgroundThreadManager.CurrentlyPaused)
                 {
                     Thread.Sleep(1); // very minimal pause until we check again to see if the pause request has been turned off
                 }
                 if (loop == 1 || loop == numLoops) // we try everything on first loop, as well as on last loop, so moreWorkToDo will be accurate
                     moreWorkToDoThisTask[i - 1] = true;
-                if (!BackgroundThread.IsBriefPauseRequested() && ((i == 1 && moreWorkToDoThisTask.Any(x => x == true)) || moreWorkToDoThisTask[i - 1]))
+                if (!BackgroundThreadManager.IsBriefPauseRequested() && ((i == 1 && moreWorkToDoThisTask.Any(x => x == true)) || moreWorkToDoThisTask[i - 1]))
                 {
                     // Trace.TraceInformation("Task " + i);
                     // ProfileSimple.Start("TaskNum" + i);
@@ -253,7 +253,7 @@ namespace ClassLibrary1.Model
             {
                 //Trace.TraceInformation("Background task main run loop.");
                 // Trace.TraceInformation("Running background task.");
-                while (BackgroundThread.IsBriefPauseRequested())
+                while (BackgroundThreadManager.IsBriefPauseRequested())
                 {
                     CurrentlyInBriefPause = true;
                     //Trace.TraceInformation("Background task 5 second pause.");
@@ -262,10 +262,10 @@ namespace ClassLibrary1.Model
 
                 CurrentlyInBriefPause = false;
                 //Trace.TraceInformation("IdleTasksOnce");
-                if (BackgroundThread.ExitRequested || BackgroundThread.ExitGranted)
+                if (BackgroundThreadManager.ExitRequested || BackgroundThreadManager.ExitGranted)
                 {
-                    BackgroundThread.ExitRequested = true;
-                    BackgroundThread.ExitGranted = true;
+                    BackgroundThreadManager.ExitRequested = true;
+                    BackgroundThreadManager.ExitGranted = true;
                     CurrentlyInBriefPause = false;
                     return;
                 }
@@ -284,12 +284,12 @@ namespace ClassLibrary1.Model
     }
 
     /// <summary>
-    /// Summary description for BackgroundThread
+    /// Summary description for BackgroundThreadManager
     /// </summary>
-    public sealed class BackgroundThread
+    public sealed class BackgroundThreadManager
     {
         bool useSeparateThread = true; // set to false for debugging, if you want all operations to be sequential.
-        static volatile BackgroundThread instance = null;
+        static volatile BackgroundThreadManager instance = null;
         public static readonly object padlock = new object();
         static Thread myThread = null;
         static R8RBackgroundTask theTask = null;
@@ -323,7 +323,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        BackgroundThread()
+        BackgroundThreadManager()
         {
             _briefPauseRequested = false;
             ExitRequested = false;
@@ -477,7 +477,7 @@ namespace ClassLibrary1.Model
         //}
 
 
-        public static BackgroundThread Instance
+        public static BackgroundThreadManager Instance
         {
             get
             {
@@ -485,7 +485,7 @@ namespace ClassLibrary1.Model
                 //{
                     if (instance == null)
                     {
-                        instance = new BackgroundThread();
+                        instance = new BackgroundThreadManager();
                     }
                     return instance;
                 //}

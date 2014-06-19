@@ -112,12 +112,20 @@ namespace ClassLibrary1.Model
             return Action.RatingPhaseGroupCreate(thePhases, "Ten minute minimum phases", true, true, superUser, null);
         }
 
-        protected int CreateRatingPhaseGroupStandard()
+        protected int CreateRatingPhaseGroupABitShort()
         {
             List<RatingPhaseData> thePhases = new List<RatingPhaseData>();
             RatingPhaseData oneDayMinimumPhases = new RatingPhaseData(100, ScoringRules.SquareRoot, true, false, null, 60 * 60 * 24 * 1, 60 * 60 * 12 * 1, true, null);
             thePhases.Add(oneDayMinimumPhases);
             return Action.RatingPhaseGroupCreate(thePhases, "One day minimum phases", true, true, superUser, null);
+        }
+
+        protected int CreateRatingPhaseGroupStandard()
+        {
+            List<RatingPhaseData> thePhases = new List<RatingPhaseData>();
+            RatingPhaseData threeDayMinimumPhases = new RatingPhaseData(100, ScoringRules.SquareRoot, true, false, null, 60 * 60 * 24 * 3, 60 * 60 * 24 * 1, true, null);
+            thePhases.Add(threeDayMinimumPhases);
+            return Action.RatingPhaseGroupCreate(thePhases, "Three day minimum phases", true, true, superUser, null);
         }
 
         protected int CreateRatingPhaseGroupLong()

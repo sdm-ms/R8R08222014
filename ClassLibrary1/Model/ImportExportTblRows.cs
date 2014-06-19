@@ -239,7 +239,7 @@ namespace ClassLibrary1.Model
                 }
 
                 if (FieldInfos != null)
-                    FieldInfos = FieldInfos.OrderBy(f => f.fieldNum).ThenBy(f => f.FieldDefinitionID).ToList();
+                    FieldInfos = FieldInfos.OrderBy(f => f.fieldNum).ThenBy(f => f.FieldDefinitionID).ToList(); // OK to order by ID here -- just assuring consistent ordering
             }
         }
 
@@ -610,7 +610,7 @@ namespace ClassLibrary1.Model
 
             var Filterdata = Obj.DataContext.GetTable<FieldDefinition>()
                                  .Where(fd => fd.TblID == TheTbl.TblID && fd.Status == Convert.ToByte(StatusOfObject.Active))
-                                 .OrderBy(fd => fd.FieldNum).ThenBy(fd => fd.FieldDefinitionID);
+                                 .OrderBy(fd => fd.FieldNum).ThenBy(fd => fd.FieldDefinitionID); // OK to order by ID to get consistent ordering
 
             XmlSchema Schema = new XmlSchema();
             string typeOfTblRow = GetTypeOfTblRowForTbl();
@@ -879,7 +879,7 @@ namespace ClassLibrary1.Model
 
                 theTblRowElement.Add(new XElement("TblRowName", E.Name));
 
-                var theFields = DataAccess.R8RDB.GetTable<Field>().Where(f => f.TblRowID == E.TblRowID).OrderBy(f => f.FieldDefinition.FieldNum).ThenBy(f => f.FieldDefinition.FieldDefinitionID);
+                var theFields = DataAccess.R8RDB.GetTable<Field>().Where(f => f.TblRowID == E.TblRowID).OrderBy(f => f.FieldDefinition.FieldNum).ThenBy(f => f.FieldDefinition.FieldDefinitionID); // OK to order by ID to get consistent ordering
                 foreach (var theField in theFields)
                 {
                     XElement theFieldElement = null;

@@ -1060,7 +1060,7 @@ namespace TestProject1
                     // Otherwise there's a 50% chance that we will set theChoiceId to a random choice other than the first one
                     else if (RandomGenerator.GetRandom() > 0.5)
                         theChoiceId = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                    TblRow theTblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First();
+                    TblRow theTblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here -- this produces a consistent order, but it doesn't really matter what order we insert userratings in
                     // If we leave theChoice == null, then this means that there is no choice for this field.
                     TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(theTblRow, fieldDefinitionID, theChoiceId, TestHelper.SuperUserId, null);
                 }
@@ -1731,7 +1731,7 @@ x.UserID == TestHelper.UserIds[1]);
             for (int rowNum = 0; rowNum < parameters.NumTblRows; rowNum++)
             {
                 randomChoiceInGroupIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First();
+                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID here, as we're just trying to get a consistent ordering, not an ordering by time.
                 TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(tblRow, fieldDefinitionId, randomChoiceInGroupIds[rowNum],
                     TestHelper.SuperUserId, null);
             }
@@ -1913,7 +1913,7 @@ x.UserID == TestHelper.UserIds[1]);
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
             {
                 randomChoiceIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First();
+                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here, since just getting a consistent ordering
                 TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(tblRow, fieldDefinitionId, randomChoiceIds[rowNum], 
                     TestHelper.SuperUserId, null);
             }

@@ -891,7 +891,7 @@ namespace ClassLibrary1.Model
             {
                 if (numTries < 3 && !CheckJavaScriptHelper.IsJavascriptEnabled)
                 {
-                    BackgroundThread.Instance.RequestBriefPauseAndWaitForPauseToBegin();
+                    //BackgroundThreadManager.Instance.RequestBriefPauseAndWaitForPauseToBegin();
                     goto TryLabel;
                 }
                 else throw new Exception("Sorry, R8R is busy processing other ratings. Try again soon.");
@@ -900,7 +900,7 @@ namespace ClassLibrary1.Model
             {
                 if (numTries < 3 && !CheckJavaScriptHelper.IsJavascriptEnabled)
                 {
-                    BackgroundThread.Instance.RequestBriefPauseAndWaitForPauseToBegin();
+                    //BackgroundThreadManager.Instance.RequestBriefPauseAndWaitForPauseToBegin();
                     goto TryLabel;
                 }
                 else throw new Exception("Sorry, R8R is busy processing other ratings. Try again soon.");

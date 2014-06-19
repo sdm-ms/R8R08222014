@@ -685,10 +685,6 @@ namespace ClassLibrary1.Model
         public void CreateStandard()
         {
             R8RDataAccess.AllowNullOrUserID0UserForTestingAndInitialBuild = true;
-            BackgroundThread.BriefPauseRequestNumberSeconds = 30000;
-            BackgroundThread.BriefPauseRequested = true;
-            Thread.Sleep(5000);
-
             
             /*Government government = new Government();
             government.Create();
@@ -720,8 +716,6 @@ namespace ClassLibrary1.Model
             PrivatePages privatePages = new PrivatePages();
             privatePages.Create();
             */
-
-            BackgroundThread.BriefPauseRequestNumberSeconds = 0;
         }
 
     }

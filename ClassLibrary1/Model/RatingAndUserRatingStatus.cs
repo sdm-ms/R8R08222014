@@ -62,7 +62,7 @@ namespace ClassLibrary1.Model
             const int maxAtOnce = 10;
             var resolutions = (from x in (DataContext.GetTable<RatingGroupResolution>()
                 .Where(x => x.Status == (int)StatusOfObject.Proposed)
-                .OrderBy(x => x.ExecutionTime).ThenBy(x => x.RatingGroupResolutionID)
+                .OrderBy(x => x.ExecutionTime).ThenBy(x => x.RatingGroupResolutionID) // OK to order by ID just to get a consistent ordering
                 .Take(maxAtOnce))
                 let RatingResolution = x
                 let RatingGroup = x.RatingGroup
