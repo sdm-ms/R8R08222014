@@ -20,14 +20,11 @@ namespace WorkerRole1
             // This is a sample worker implementation. Replace with your logic.
             Trace.TraceInformation("WorkerRole1 entry point called", "Information");
 
+            BackgroundTaskManager backgroundTaskManager = new BackgroundTaskManager();
             while (true)
             {
-
-                var theTask = new R8RBackgroundTask();
-                R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
-                theTask.BackgroundTasksRunner(theDataAccessModule);
-                //Thread.Sleep(10000);
-                //Trace.TraceInformationLine("Working", "Information");
+                backgroundTaskManager.EnsureBackgroundTaskIsRunning();
+                Thread.Sleep(500);
             }
         }
 

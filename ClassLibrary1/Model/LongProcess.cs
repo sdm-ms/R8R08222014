@@ -254,8 +254,8 @@ namespace ClassLibrary1.Model
                 DataContext.SubmitChanges();
                 int returnVal = AddOrResetLongProcess(typeOfProcess, delayBeforeReset, object1ID, object2ID, priority, theData);
 
-                if (BackgroundThreadManager.RunBackgroundTaskFromWebRole)
-                    BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
+                if (BackgroundTaskManager.RunBackgroundTaskFromWebRole)
+                    BackgroundTaskManager.InstanceForRunningFromWebRole.EnsureBackgroundTaskIsRunning();
 
                 return returnVal;
             }

@@ -58,8 +58,8 @@ public partial class ViewTbl : System.Web.UI.Page
 
     protected void Page_PreRender(object sender, EventArgs e)
     {
-        if (BackgroundThreadManager.RunBackgroundTaskFromWebRole)
-            BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
+        if (BackgroundTaskManager.RunBackgroundTaskFromWebRole)
+            BackgroundTaskManager.InstanceForRunningFromWebRole.EnsureBackgroundTaskIsRunning();
     }
 
     protected void SetChildrenProperties()

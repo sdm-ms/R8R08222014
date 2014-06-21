@@ -22,57 +22,45 @@ namespace ClassLibrary1.Model
 {
     public class R8RBackgroundTask
     {
-        public bool RepeatIndefinitely { get; set; }
         public bool MoreWorkToDo { get; internal set; }
-        public bool CurrentlyInBriefPause { get; internal set; }
-        public DateTime? ThisWebServerLastUpdateTime;
         public long LoopSetCompletedCount = 0;
+        public BackgroundTaskManager BackgroundTaskManager;
 
-        public R8RBackgroundTask()
+        public R8RBackgroundTask(BackgroundTaskManager backgroundTaskManager)
         {
             MoreWorkToDo = true;
-            RepeatIndefinitely = true;
-            CurrentlyInBriefPause = false;
-            BackgroundThreadManager.CurrentlyPaused = false;
+            BackgroundTaskManager = backgroundTaskManager;
+            BackgroundTaskManager.CurrentlyPaused = false;
         }
 
         /// <summary>
         /// Perform idle tasks (such as checking for a rating that needs resolution or updating)
         /// </summary>
-        public void BackgroundTasksRunner(R8RDataManipulation dataManipulation)
+        public void RunBackgroundTasksSeveralTimes()
         {
-            lock (BackgroundThreadManager.padlock)
+            R8RDataManipulation dataManipulation = new R8RDataManipulation();
+
+            dataManipulation.ResetDataContexts();
+
+            MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
+            const int numTasks = 20;
+            const int numLoops = 5;
+            for (int loop = 1; loop <= numLoops; loop++)
             {
-                //if (BackgroundThread.ExitRequested)
-                //{
-                //    BackgroundThread.ExitGranted = true;
-                //    return;
-                //}
-                dataManipulation.ResetDataContexts();
-
-
-                //if (BackgroundThread.IsPauseRequested())
-                //Trace.TraceInformation("Pause is requested.");
-                MoreWorkToDo = true; // note that this may be relied on by external components, so until we've gone through all tasks with no more work to do, we must keep this at true
-                const int numTasks = 20;
-                const int numLoops = 10;
-                for (int loop = 1; loop <= numLoops; loop++)
+                if (loop != 1 && BackgroundTaskManager.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
                 {
-                    if (loop != 1 && BackgroundThreadManager.PauseRequestedWhenWorkIsComplete && !MoreWorkToDo)
-                    {
-                        BackgroundThreadManager.PauseRequestedWhenWorkIsComplete = false;
-                        BackgroundThreadManager.CurrentlyPaused = true;
-                    }
-                    MoreWorkToDo = CompleteSingleLoop(dataManipulation, numTasks, numLoops, loop);
+                    BackgroundTaskManager.PauseRequestedWhenWorkIsComplete = false;
+                    BackgroundTaskManager.CurrentlyPaused = true;
                 }
-                LoopSetCompletedCount++;
-                if (!MoreWorkToDo)
-                {
-                    if (!RoleEnvironment.IsAvailable)
-                        Thread.Sleep(100); // sleep only long enough for unit tests to realize that the idle tasks have completed.
-                    else
-                        Thread.Sleep(3000);
-                }
+                MoreWorkToDo = CompleteSingleLoop(dataManipulation, numTasks, numLoops, loop);
+            }
+            LoopSetCompletedCount++;
+            if (!MoreWorkToDo)
+            {
+                if (!RoleEnvironment.IsAvailable)
+                    Thread.Sleep(100); // sleep only long enough for unit tests to realize that the idle tasks have completed.
+                else
+                    Thread.Sleep(3000);
             }
             // Trace.TraceInformation("Exiting IdleTasks moreWorkToDo: " + moreWorkToDo.ToString());
         }
@@ -84,7 +72,7 @@ namespace ClassLibrary1.Model
             bool[] moreWorkToDoThisTask = new bool[numTasks];
             for (int i = 1; i <= numTasks; i++)
             {
-                while (BackgroundThreadManager.CurrentlyPaused)
+                while (BackgroundTaskManager.CurrentlyPaused)
                 {
                     Thread.Sleep(1); // very minimal pause until we check again to see if the pause request has been turned off
                 }
@@ -232,82 +220,73 @@ namespace ClassLibrary1.Model
         //    return BackgroundThread.Instance.GetThread();
         //}
 
-        public void Run()
-        {
-            MoreWorkToDo = true;
-            CurrentlyInBriefPause = false;
-            DateTime expireThread = TestableDateTime.Now + new TimeSpan(1, 0, 0);
-            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
-            while (TestableDateTime.Now < expireThread || RepeatIndefinitely)
-            {
-                //Trace.TraceInformation("Background task main run loop.");
-                // Trace.TraceInformation("Running background task.");
+        //public void Run()
+        //{
+        //    MoreWorkToDo = true;
+        //    while (true)
+        //    {
+        //        //Trace.TraceInformation("Background task main run loop.");
+        //        // Trace.TraceInformation("Running background task.");
 
-                CurrentlyInBriefPause = false;
-                //Trace.TraceInformation("IdleTasksOnce");
-                BackgroundTasksRunner(theDataAccessModule);
-                if (!MoreWorkToDo)
-                {
-                    CurrentlyInBriefPause = true;
-                    //Trace.TraceInformation("No more work to do. Pausing background task 0.5 seconds.");
-                    Thread.Sleep(500);
-                }
-                CurrentlyInBriefPause = false;
-            }
-            //Trace.TraceInformation("Background task main run loop complete.");
+        //        //Trace.TraceInformation("IdleTasksOnce");
+        //        BackgroundTasksRunner();
+        //        if (!MoreWorkToDo)
+        //        {
+        //            //Trace.TraceInformation("No more work to do. Pausing background task 0.5 seconds.");
+        //            Thread.Sleep(500);
+        //        }
+        //    }
 
-        }
+        //}
     }
 
     /// <summary>
-    /// Summary description for BackgroundThreadManager
+    /// Summary description for BackgroundTaskManager
     /// </summary>
-    public sealed class BackgroundThreadManager
+    public class BackgroundTaskManager
     {
         bool useSeparateThread = true; // set to false for debugging, if you want all operations to be sequential.
-        static volatile BackgroundThreadManager instance = null;
-        public static readonly object padlock = new object();
-        static Thread myThread = null;
-        static R8RBackgroundTask theTask = null;
-        internal static int numberPauseRequests = 0;
-        public static bool PauseRequestedWhenWorkIsComplete { get; set; }
-        public static bool CurrentlyPaused { get; set; }
+        static volatile BackgroundTaskManager instanceForRunningFromWebRole = null;
+        Thread backgroundTaskThread = null;
+        R8RBackgroundTask backgroundTask = null;
+        internal int numberPauseRequests = 0;
+        public bool PauseRequestedWhenWorkIsComplete { get; set; }
+        public bool CurrentlyPaused { get; set; }
 
-        BackgroundThreadManager()
+        public BackgroundTaskManager()
         {
         }
-
 
         public void RequestPauseAndWaitForPauseToBegin()
         {
             PauseRequestedWhenWorkIsComplete = true;
-            EnsureBackgroundTaskIsRunning(true);
-            while (theTask != null && !CurrentlyPaused)
+            EnsureBackgroundTaskIsRunning();
+            while (backgroundTask != null && !CurrentlyPaused)
             {
                 Thread.Sleep(1);
-                EnsureBackgroundTaskIsRunning(true);
+                EnsureBackgroundTaskIsRunning();
             }
         }
 
         public bool IsBackgroundTaskBusy()
         {
-            if (theTask == null)
+            if (backgroundTask == null)
                 return false;
             else
-                return theTask.MoreWorkToDo;
+                return backgroundTask.MoreWorkToDo;
         }
 
         public long? LoopSetsCompleted()
         {
-            if (theTask == null)
+            if (backgroundTask == null)
                 return null;
             else
-                return theTask.LoopSetCompletedCount;
+                return backgroundTask.LoopSetCompletedCount;
         }
 
         public static bool RunBackgroundTaskFromWebRole = false;
 
-        public void EnsureBackgroundTaskIsRunning(bool repeatIndefinitely)
+        public void EnsureBackgroundTaskIsRunning()
         {
             //Trace.TraceInformation("Entering EnsureBackgroundTaskIsRunning");
             //if (!Monitor.TryEnter(padlock, TimeSpan.FromMilliseconds(1)))
@@ -319,12 +298,12 @@ namespace ClassLibrary1.Model
             if (useSeparateThread)
             {
                 System.Threading.ThreadState threadState = System.Threading.ThreadState.Unstarted;
-                if (myThread != null)
-                    threadState = myThread.ThreadState;
-                if (myThread == null || (threadState != System.Threading.ThreadState.Running && threadState != System.Threading.ThreadState.WaitSleepJoin))
+                if (backgroundTaskThread != null)
+                    threadState = backgroundTaskThread.ThreadState;
+                if (backgroundTaskThread == null || (threadState != System.Threading.ThreadState.Running && threadState != System.Threading.ThreadState.WaitSleepJoin))
                 {
-                    Trace.TraceInformation("About to reset thread, which was in state " + ((myThread == null) ? "null" : threadState.ToString()));
-                    ResetThread(repeatIndefinitely);
+                    Trace.TraceInformation("About to reset thread, which was in state " + ((backgroundTaskThread == null) ? "null" : threadState.ToString()));
+                    ResetThread(); // this will cause it to keep running indefinitely
                 }
                 //else
                 //    Trace.TraceInformation("Background task already running. Will not reset.");
@@ -332,9 +311,11 @@ namespace ClassLibrary1.Model
             else
             {
                 //Trace.TraceInformation("Using integrated idle tasks.");
-                theTask = new R8RBackgroundTask();
-                R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
-                theTask.BackgroundTasksRunner(theDataAccessModule);
+                // this will only run during debugging
+                backgroundTask = new R8RBackgroundTask(this);
+                bool keepGoing = true;
+                while (keepGoing) // can change during debugging to stop this
+                    backgroundTask.RunBackgroundTasksSeveralTimes();
             }
             //}
             //finally
@@ -344,17 +325,16 @@ namespace ClassLibrary1.Model
             //Trace.TraceInformation("Exiting EnsureBackgroundTaskIsRunning");
         }
 
-        internal void ResetThread(bool repeatIndefinitely)
+        internal void ResetThread()
         {
             try
             {
-                if (myThread != null)
-                    myThread.Abort();
-                theTask = new R8RBackgroundTask();
-                theTask.RepeatIndefinitely = repeatIndefinitely;
-                myThread = new Thread(theTask.Run);
-                myThread.Name = "R8R " + TestableDateTime.Now.ToString();
-                myThread.Start();
+                if (backgroundTaskThread != null)
+                    backgroundTaskThread.Abort();
+                backgroundTask = new R8RBackgroundTask(this);
+                backgroundTaskThread = new Thread(backgroundTask.RunBackgroundTasksSeveralTimes);
+                backgroundTaskThread.Name = "R8R " + TestableDateTime.Now.ToString();
+                backgroundTaskThread.Start();
             }
             catch
             {
@@ -363,8 +343,8 @@ namespace ClassLibrary1.Model
 
         public void StopThread()
         {
-            if (myThread != null)
-                myThread.Abort();
+            if (backgroundTaskThread != null)
+                backgroundTaskThread.Abort();
         }
 
 
@@ -377,17 +357,17 @@ namespace ClassLibrary1.Model
         //}
 
 
-        public static BackgroundThreadManager Instance
+        public static BackgroundTaskManager InstanceForRunningFromWebRole
         {
             get
             {
                 //lock (padlock)
                 //{
-                    if (instance == null)
+                    if (instanceForRunningFromWebRole == null)
                     {
-                        instance = new BackgroundThreadManager();
+                        instanceForRunningFromWebRole = new BackgroundTaskManager();
                     }
-                    return instance;
+                    return instanceForRunningFromWebRole;
                 //}
             }
         }

@@ -57,6 +57,7 @@ namespace ClassLibrary1.Model
     public class TestHelper
     {
         public ActionProcessor ActionProcessor;
+        public BackgroundTaskManager BackgroundTaskManager;
 
         public TestHelper(bool rebuild = true)
         {
@@ -66,6 +67,7 @@ namespace ClassLibrary1.Model
                 builder.DeleteAndRebuild();
             }
             ActionProcessor = new ActionProcessor();
+            BackgroundTaskManager = new BackgroundTaskManager();
         }
 
         private int _superUserId;
@@ -267,14 +269,14 @@ namespace ClassLibrary1.Model
             bool hasBeenNotBusy = true; // now that we are requesting pauses at the end of this routine we don't have to wait for it not to have been busy.
             bool hasBeenBusyAfterBeingNotBusy = false; // we want it to be not busy, busy, and then not busy again
             bool hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = false;
-            BackgroundThreadManager.CurrentlyPaused = false;
+            BackgroundTaskManager.CurrentlyPaused = false;
             while (!hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy)
             {
                 //Trace.TraceInformation("WaitIdleTasks still more work to do.");
-                BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
+                BackgroundTaskManager.EnsureBackgroundTaskIsRunning();
                 if (initialLoopSetCompleted == null)
-                    initialLoopSetCompleted = BackgroundThreadManager.Instance.LoopSetsCompleted();
-                bool moreWorkToDo = BackgroundThreadManager.Instance.IsBackgroundTaskBusy();
+                    initialLoopSetCompleted = BackgroundTaskManager.LoopSetsCompleted();
+                bool moreWorkToDo = BackgroundTaskManager.IsBackgroundTaskBusy();
                 if (hasBeenNotBusy == false && !moreWorkToDo)
                     hasBeenNotBusy = true;
                 if (moreWorkToDo && hasBeenNotBusy)
@@ -282,13 +284,13 @@ namespace ClassLibrary1.Model
                 if (!moreWorkToDo && hasBeenBusyAfterBeingNotBusy)
                 {
                     hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = true;
-                    BackgroundThreadManager.Instance.RequestPauseAndWaitForPauseToBegin();
+                    BackgroundTaskManager.RequestPauseAndWaitForPauseToBegin();
                 }
                 else
                 {
                     Thread.Sleep(1); // so we don't eat up CPU
                     const int maxLoopSets = 10;
-                    long? totalLoopSetsCompleted = BackgroundThreadManager.Instance.LoopSetsCompleted();
+                    long? totalLoopSetsCompleted = BackgroundTaskManager.LoopSetsCompleted();
                     long? loopSetsCompletedThisWait = totalLoopSetsCompleted - initialLoopSetCompleted;
                     if (loopSetsCompletedThisWait == 5)
                     {
@@ -435,7 +437,7 @@ namespace ClassLibrary1.Model
                         theRatingsCount = theRatings.Count();
                         if (theRatingsCount == 0)
                         {
-                            BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true); // allow ratings to be created
+                            BackgroundTaskManager.EnsureBackgroundTaskIsRunning(); // allow ratings to be created
 
                         }
                     } while (theRatingsCount == 0);
@@ -453,7 +455,7 @@ namespace ClassLibrary1.Model
                 }
                 if (i % 25 == 0)
                 {
-                    BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
+                    BackgroundTaskManager.EnsureBackgroundTaskIsRunning();
                     Thread.Sleep(15000);
                 }
             }
@@ -1419,7 +1421,7 @@ namespace ClassLibrary1.Model
                 Trace.TraceInformation("TESTEVENT # " + count);
                 TestEvent(false,10,25,TestPhasesTypes.oneMinPhasesSquareRoot, TestRatingGroupAttributesTypes.multipleContingencies, numUserRatings);
             }
-            BackgroundThreadManager.Instance.EnsureBackgroundTaskIsRunning(true);
+            theTestHelper.BackgroundTaskManager.EnsureBackgroundTaskIsRunning();
         }
 
         public void LaunchTestAddUserRatingsToExisting(int numUserRatings)
