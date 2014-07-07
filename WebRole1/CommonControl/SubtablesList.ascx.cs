@@ -44,7 +44,7 @@ using ClassLibrary1.Model;
             PointsManager firstPointsManager = null;
             if (location != null)
             {
-                Tbl aTable = R8RDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && location.theMenuHierarchy.Contains(x.HierarchyItems.First()));
+                Tbl aTable = R8RDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && location.theHierarchy.Contains(x.HierarchyItems.First()));
                 if (aTable != null)
                     firstPointsManager = aTable.PointsManager;
             }

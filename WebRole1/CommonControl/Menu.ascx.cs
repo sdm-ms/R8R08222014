@@ -119,7 +119,7 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
         if (higherItem == null)
             return listItems;
         else
-            return GetListItemText("LIHIER" + higherItem.HierarchyItemID.ToString(), higherItem.HierarchyItemName, higherItem.RouteToHere, listItems, (theLocation.theMenuHierarchy == null) ? false : theLocation.theMenuHierarchy.Contains(higherItem));
+            return GetListItemText("LIHIER" + higherItem.HierarchyItemID.ToString(), higherItem.HierarchyItemName, higherItem.RouteToHere, listItems, (theLocation.theHierarchy == null) ? false : theLocation.theHierarchy.Contains(higherItem));
     }
 
 }

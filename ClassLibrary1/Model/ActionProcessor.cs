@@ -2430,14 +2430,14 @@ namespace ClassLibrary1.Model
             CacheManagement.InvalidateCacheDependency("InsertableContent");
         }
 
-        public HierarchyItem HierarchyItemCreate(HierarchyItem higherItemForMenu, HierarchyItem higherItemForRouting, Tbl correspondingTblIfAny, bool includeInMenu, string name, int userID, int? changesGroupID)
+        public HierarchyItem HierarchyItemCreate(HierarchyItem higherItem, Tbl correspondingTblIfAny, bool includeInMenu, string name, int userID, int? changesGroupID)
         {
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.AddTblsAndChangePointsManagers, false, null, null, true))
             {
                 int? theUser = userID;
                 if (DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
-                return DataManipulation.AddHierarchyItem(higherItemForMenu, higherItemForRouting, correspondingTblIfAny, includeInMenu, name);
+                return DataManipulation.AddHierarchyItem(higherItem, correspondingTblIfAny, includeInMenu, name);
             }
             else
                 throw new Exception("Insufficient privileges");

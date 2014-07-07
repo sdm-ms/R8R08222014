@@ -73,9 +73,8 @@ namespace ClassLibrary1.Model
 
     public class RoutingInfoMainContent : RoutingInfo
     {
-        public List<HierarchyItem> theRoutingHierarchy;
-        public List<HierarchyItem> theMenuHierarchy;
-        public HierarchyItem lastItemInHierarchy { get { return theRoutingHierarchy == null ? null : theRoutingHierarchy.LastOrDefault(); } }
+        public List<HierarchyItem> theHierarchy;
+        public HierarchyItem lastItemInHierarchy { get { return theHierarchy == null ? null : theHierarchy.LastOrDefault(); } }
         public Domain theDomain { get { return (theTbl == null) ? null : theTbl.PointsManager.Domain; } }
         public PointsManager thePointsManager { get { return (theTbl == null) ? null : theTbl.PointsManager; } }
         public Tbl theTbl { get { return (lastItemInHierarchy == null) ? null : lastItemInHierarchy.Tbl; } }
@@ -98,8 +97,7 @@ namespace ClassLibrary1.Model
         public RoutingInfoMainContent(HierarchyItem hierarchyItem, TblRow tblRow = null, TblColumn TblColumn = null)
             : base(RouteID.MainContent)
         {
-            theRoutingHierarchy = HierarchyItems.GetHierarchyAsList(hierarchyItem, true);
-            theMenuHierarchy = HierarchyItems.GetHierarchyAsList(hierarchyItem, false);
+            theHierarchy = HierarchyItems.GetHierarchyAsList(hierarchyItem);
             theTblRow = tblRow;
             theTblColumn = TblColumn;
         }
@@ -107,7 +105,7 @@ namespace ClassLibrary1.Model
         public RoutingInfoMainContent(Tbl Tbl, TblRow tblRow, TblColumn TblColumn, bool isEditMode = false, bool isAddMode = false, bool isCommentsMode = false, bool isLeadersMode = false, bool isGuaranteesMode = false, bool isChangeTableMode = false, bool isPointsSettingsMode = false)
             : base(RouteID.MainContent)
         {
-            theRoutingHierarchy = HierarchyItems.GetHierarchyAsList(HierarchyItems.GetHierarchyItemForTbl(Tbl), true);
+            theHierarchy = HierarchyItems.GetHierarchyAsList(HierarchyItems.GetHierarchyItemForTbl(Tbl));
             theTblRow = tblRow;
             theTblColumn = TblColumn;
             editMode = isEditMode;
@@ -123,14 +121,13 @@ namespace ClassLibrary1.Model
             : base(RouteID.MainContent)
         {
             string[] remainderOfHierarchy;
-            HierarchyItem theHierarchyItem = HierarchyItems.GetHierarchyFromStrings(hierarchyString.Split('/').Select(x => PrettyURLEncode.UrlTextDecode(x)).ToArray(), out remainderOfHierarchy, true);
+            HierarchyItem theHierarchyItem = HierarchyItems.GetHierarchyFromStrings(hierarchyString.Split('/').Select(x => PrettyURLEncode.UrlTextDecode(x)).ToArray(), out remainderOfHierarchy);
             if (theHierarchyItem == null)
             {
                 isValid = false;
                 return;
             }
-            theRoutingHierarchy = HierarchyItems.GetHierarchyAsList(theHierarchyItem, true);
-            theMenuHierarchy = HierarchyItems.GetHierarchyAsList(theHierarchyItem, false);
+            theHierarchy = HierarchyItems.GetHierarchyAsList(theHierarchyItem);
 
             addMode = false;
             commentsMode = false;
@@ -214,12 +211,12 @@ namespace ClassLibrary1.Model
         public string GetHierarchyRoutingParameterString()
         {
             string theHierarchyString = "";
-            int itemCount = theRoutingHierarchy.Count();
+            int itemCount = theHierarchy.Count();
             for (int i = 0; i < itemCount; i++)
             {
                 if (i != 0)
                     theHierarchyString += "/";
-                theHierarchyString += PrettyURLEncode.UrlTextEncode(theRoutingHierarchy[i].HierarchyItemName);
+                theHierarchyString += PrettyURLEncode.UrlTextEncode(theHierarchy[i].HierarchyItemName);
             }
             if (theTblRow != null)
                 theHierarchyString += "/" + PrettyURLEncode.UrlTextEncode(theTblRow.TblRowID.ToString());
@@ -286,7 +283,7 @@ namespace ClassLibrary1.Model
 
         public string GetOutgoingRoute(int hierarchyLevel)
         {
-            int hierarchyLevels = theRoutingHierarchy.Count();
+            int hierarchyLevels = theHierarchy.Count();
             TblRow tblRow = null;
             TblColumn TblColumnToInclude = null;
             if (hierarchyLevel >= hierarchyLevels)
@@ -295,13 +292,13 @@ namespace ClassLibrary1.Model
                 if (hierarchyLevel >= hierarchyLevels + 1)
                     TblColumnToInclude = theTblColumn;
             }
-            RoutingInfoMainContent routingForLevel = RoutingInfoMainContentFactory.GetRoutingInfo(theRoutingHierarchy[hierarchyLevel], tblRow, TblColumnToInclude);
+            RoutingInfoMainContent routingForLevel = RoutingInfoMainContentFactory.GetRoutingInfo(theHierarchy[hierarchyLevel], tblRow, TblColumnToInclude);
             return routingForLevel.GetOutgoingRoute();
         }
 
         public int GetTotalLevels()
         {
-            int totalLevels = theRoutingHierarchy.Count();
+            int totalLevels = theHierarchy.Count();
             if (theTblRow != null)
                 totalLevels++;
             if (theTblColumn != null)
@@ -318,9 +315,9 @@ namespace ClassLibrary1.Model
 
         public string GetName(int hierarchyLevel)
         {
-            int hierarchyLevels = theRoutingHierarchy.Count();
+            int hierarchyLevels = theHierarchy.Count();
             if (hierarchyLevel < hierarchyLevels)
-                return theRoutingHierarchy[hierarchyLevel].HierarchyItemName;
+                return theHierarchy[hierarchyLevel].HierarchyItemName;
             else if (hierarchyLevel == hierarchyLevels && theTblRow != null)
                 return theTblRow.Name;
             else if (hierarchyLevel == hierarchyLevels + 1 && theTblColumn != null)
@@ -762,7 +759,7 @@ namespace ClassLibrary1.Model
                     case "mainRouteWithTblRow":
                         return theRoutingInfo.theTblRow != null && theRoutingInfo.theTblColumn == null;
                     case "topicsRoute":
-                        return theRoutingInfo.theTbl == null && theRoutingInfo.theRoutingHierarchy != null;
+                        return theRoutingInfo.theTbl == null && theRoutingInfo.theHierarchy != null;
                     case "mainRoute":
                         return theRoutingInfo.theTbl != null && theRoutingInfo.theTblRow == null;
                 }

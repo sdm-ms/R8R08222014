@@ -123,6 +123,8 @@ namespace ClassLibrary1.Model
 
         public static bool DeleteOldStatusRecords(IR8RDataContext theDataContext)
         {
+            if (!StatusRecords.RecordRecentChangesInStatusRecords)
+                return false;
             return DeleteOldTblRowStatusRecords(theDataContext) || DeleteOldRatingGroupStatusRecords(theDataContext);
         }
 

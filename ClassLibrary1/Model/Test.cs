@@ -1227,7 +1227,7 @@ namespace ClassLibrary1.Model
             myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
             int thePointsManagerID = CreatePointsManager(name + " universe",myType,theRatingPhaseID,null,null,theDomainID);
             int theTblID = CreateTbl(name + " Tbl", myType, theRatingPhaseID, null, null, thePointsManagerID);
-            theTestHelper.ActionProcessor.HierarchyItemCreate(null, null, theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Single(x => x.TblID == theTblID), true, name + " Tbl", theTestHelper.SuperUserId, null);
+            theTestHelper.ActionProcessor.HierarchyItemCreate(null, theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Single(x => x.TblID == theTblID), true, name + " Tbl", theTestHelper.SuperUserId, null);
 /*            theTestHelper.Action.InsertableContentCreate(theDomainID, null, null, "domainTest", "This is non-overridable domain content.", true, false, (short)InsertableLocation.TopOfViewTblContent, true, theTestHelper.superUser, null);
             theTestHelper.Action.InsertableContentCreate(theDomainID, null, null, "domainTest2", "This is overridable domain content.", true, true, (short)InsertableLocation.TopOfViewTblContent, true, theTestHelper.superUser, null);
             theTestHelper.Action.InsertableContentCreate(null, thePointsManagerID, null, "universeTest", "This is non-overridable universe content.", true, false, (short)InsertableLocation.TopOfViewTblContent, true, theTestHelper.superUser, null);

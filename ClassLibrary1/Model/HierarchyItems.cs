@@ -13,7 +13,7 @@ namespace ClassLibrary1.Model
 
     public static class HierarchyItems
     {
-        public static HierarchyItem GetHierarchyFromStrings(string[] theStrings, out string[] remainderOfHierarchy, bool useRoutingHierarchy)
+        public static HierarchyItem GetHierarchyFromStrings(string[] theStrings, out string[] remainderOfHierarchy)
         {
             remainderOfHierarchy = null;
             if (theStrings.Count() == 1 && theStrings[0] == "")
@@ -33,13 +33,13 @@ namespace ClassLibrary1.Model
                 try
                 {
                     if (higherItem == null)
-                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStrings[i] && ((useRoutingHierarchy && x.HigherHierarchyItemForRoutingID == null) || (!useRoutingHierarchy && x.HigherHierarchyItemID == null)));
+                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStrings[i] && (x.HigherHierarchyItemID == null));
                     else
                     {
                         //if (higherItem.HierarchyItemID == null)
                         //    throw new Exception("GetHierarchyFromStrings internal error: higherItem.HierarchyItemID was null. "); /* Could occur if we add a new hierarchy item and immediately search for it, but this does not seem likely to explain error received (?) */
                         int higherItemHierarchyID = (int) higherItem.HierarchyItemID;
-                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStrings[i] && ((useRoutingHierarchy && x.HigherHierarchyItemForRoutingID == higherItemHierarchyID) || (!useRoutingHierarchy && x.HigherHierarchyItemID == higherItemHierarchyID)));
+                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStrings[i] && (x.HigherHierarchyItemID == higherItemHierarchyID));
                     }
                 }
                 catch
@@ -71,60 +71,48 @@ namespace ClassLibrary1.Model
             return Routing.Outgoing(new RoutingInfoMainContent(theItem));
         }
 
-        public static HierarchyItem GetItemParent(HierarchyItem theItem, bool useRoutingHierarchy)
+        public static HierarchyItem GetItemParent(HierarchyItem theItem)
         {
             /* Note: Because of extensive problems, we're not using automatic association properties on this table. */
             int targetHierarchyItemID;
-            if (useRoutingHierarchy)
-            {
-                if (theItem.HigherHierarchyItemForRoutingID == null)
-                    return null;
-                targetHierarchyItemID = (int) theItem.HigherHierarchyItemForRoutingID;
-            }
-            else
-            {
-                if (theItem.HigherHierarchyItemID == null)
-                    return null;
-                targetHierarchyItemID = (int)theItem.HigherHierarchyItemID;
-            }
+            if (theItem.HigherHierarchyItemID == null)
+                return null;
+            targetHierarchyItemID = (int)theItem.HigherHierarchyItemID;
             R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Single(x => x.HierarchyItemID == targetHierarchyItemID);
         }
 
 
-        public static IEnumerable<HierarchyItem> GetItemChildren(HierarchyItem theItem, bool useRoutingHierarchy)
+        public static IEnumerable<HierarchyItem> GetItemChildren(HierarchyItem theItem)
         {
             /* Note: Because of extensive problems, we're not using automatic association properties on this table. */
 
             R8RDataManipulation theDataAccessModule = new R8RDataManipulation(); 
-            if (useRoutingHierarchy)
-                return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemForRoutingID == theItem.HierarchyItemID);
-            else
-                return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == theItem.HierarchyItemID);
+            return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == theItem.HierarchyItemID);
             
         }
 
-        public static List<HierarchyItem> GetHierarchyAsList(HierarchyItem theItem, bool useRoutingHierarchy)
+        public static List<HierarchyItem> GetHierarchyAsList(HierarchyItem theItem, bool includeOnlyItemsInMenu = false)
         {
             List<HierarchyItem> theList = new List<HierarchyItem>();
-            if (!useRoutingHierarchy && !theItem.IncludeInMenu)
+            if (includeOnlyItemsInMenu && !theItem.IncludeInMenu)
                 return theList;
             theList.Add(theItem);
-            HierarchyItem higherItem = GetItemParent(theItem, useRoutingHierarchy);
+            HierarchyItem higherItem = GetItemParent(theItem);
             while (higherItem != null)
             {
                 theList.Add(higherItem);
-                higherItem = GetItemParent(higherItem, useRoutingHierarchy);
+                higherItem = GetItemParent(higherItem);
             }
             theList.Reverse();
             return theList;
         }
 
 
-        public static List<HierarchyItem> GetHierarchyAsListForTbl(Tbl theTbl, bool useRoutingHierarchy)
+        public static List<HierarchyItem> GetHierarchyAsListForTbl(Tbl theTbl)
         {
             HierarchyItem theItem = GetHierarchyItemForTbl(theTbl);
-            return GetHierarchyAsList(theItem, useRoutingHierarchy);
+            return GetHierarchyAsList(theItem);
         }
 
         public static HierarchyItem GetHierarchyItemForTbl(Tbl theTbl)
@@ -188,7 +176,7 @@ namespace ClassLibrary1.Model
             if (theItem.Tbl == null)
             {
                 totalPrize = 0;
-                foreach (var item in GetItemChildren(theItem,false))
+                foreach (var item in GetItemChildren(theItem))
                 {
                     decimal addAmount;
                     DateTime? lastDate;
