@@ -125,16 +125,16 @@ namespace ClassLibrary1.Model
 
                 // Table data
 
-                case 2:
+                case 2: // TO BE DELETED ONCE WE GENERATE TABLE ROW FIELD DISPLAYS ON THE CLIENT
                     moreWorkToDoThisTask[i - 1] = dataManipulation.RespondToResetTblRowFieldDisplays();
                     break;
 
-                case 3:
+                case 3: // CAN BE DELETED (CURRRENTLY NOT DOING ANY WORK)
                     moreWorkToDoThisTask[i - 1] = GeocodeUpdate.DoUpdate(dataManipulation.DataContext); // updating addresses that couldn't be geocoded before
                     break;
 
                 case 4:
-                    moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess(); // currently, create missing ratings and upload table rows
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.ContinueLongProcess(); // currently, used only to upload table rows in bulk
                     break;
 
                 // Rating status (note that long process above also can include ratings)
@@ -147,7 +147,7 @@ namespace ClassLibrary1.Model
                     moreWorkToDoThisTask[i - 1] = dataManipulation.CompleteMultipleAddUserRatings(); // loads the UserRatingsToAdd and completes the process of adding UserRating to the database
                     break;
 
-                case 7:
+                case 7: // NOT CURRENTLY DOING ANY WORK BECAUSE RecordRecentChangesInStatusRecords IS SET TO FALSE. Not deleting yet, though, until we're sure we don't need these.
                     moreWorkToDoThisTask[i - 1] = StatusRecords.DeleteOldStatusRecords(dataManipulation.DataContext); // we are deleting old status records (which are used to ensure consistent sorting even after user ratings have been changed)
                     break;
 
@@ -160,15 +160,15 @@ namespace ClassLibrary1.Model
                     break;
 
                 case 10:
-                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskMakeHighStakesKnown();
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.AdvanceRatingGroupsNeedingAdvancing();
                     break;
 
                 case 11:
-                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskConsiderDemotingHighStakesPrematurely();
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskMakeHighStakesKnown();
                     break;
 
                 case 12:
-                    moreWorkToDoThisTask[i - 1] = dataManipulation.AdvanceRatingGroupsNeedingAdvancing();
+                    moreWorkToDoThisTask[i - 1] = dataManipulation.IdleTaskConsiderDemotingHighStakesPrematurely();
                     break;
 
                 // Points and user ratings
