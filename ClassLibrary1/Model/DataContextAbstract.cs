@@ -37,13 +37,7 @@ namespace ClassLibrary1.Model
 
         bool ResolveConflictsIfPossible();
 
-        void SetUserRatingAddOptions();
-
-        void SetPageLoadOptions();
-
         void LoadStatsWithTrustTrackersAndUserInteractions();
-
-        void SetUserRatingUpdatingLoadOptions();
 
         void SetUserRatingAddingLoadOptions();
 
