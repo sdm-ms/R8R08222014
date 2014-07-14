@@ -259,9 +259,9 @@
     <Compile Include="Misc\DataContextRepositories.cs" />
     <Compile Include="Misc\DataContextRepositoriesEF.cs" />
     <Compile Include="Misc\DataContextRepositoriesInMemory.cs" />
-    <Compile Include="Misc\DataContextRepositoriesSQL.cs" />
     <Compile Include="Misc\DataContextRepositoryExtensions.cs" />
     <Compile Include="Misc\DateTimeManip.cs" />
+    <Compile Include="Misc\EntityHelper.cs" />
     <Compile Include="Misc\GeoCalc.cs" />
     <Compile Include="Misc\GoogleGeocode.cs" />
     <Compile Include="Misc\GooglePagerField.cs" />
@@ -312,7 +312,6 @@
     <Compile Include="Model\DataContextAbstract.cs" />
     <Compile Include="Model\DataContextInMemory.cs" />
     <Compile Include="Model\DataContextManagement.cs" />
-    <Compile Include="Model\DataContextSQL.cs" />
     <Compile Include="Model\DeleteObjects.cs" />
     <Compile Include="Model\Email.cs" />
     <Compile Include="Model\ExecutingChanges.cs" />

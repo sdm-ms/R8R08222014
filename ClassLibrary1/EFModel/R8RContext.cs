@@ -7,8 +7,8 @@ namespace ClassLibrary1.EFModel
 
     public partial class R8RContext : DbContext
     {
-        public R8RContext()
-            : base("name=R8RContext")
+        public R8RContext(string connectionString)
+            : base(connectionString)
         {
         }
 

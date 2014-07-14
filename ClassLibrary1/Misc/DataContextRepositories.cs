@@ -28,7 +28,7 @@ namespace ClassLibrary1.Misc
     public interface IRepository<T> : IQueryable<T> where T : class
     {
         void InsertOnSubmit(T theObject);
-        void InsertOnSubmitIfNotAlreadyInserted(T theObject);
+        //void InsertOnSubmitIfNotAlreadyInserted(T theObject);
         void DeleteOnSubmit(T theObject);
     }
 

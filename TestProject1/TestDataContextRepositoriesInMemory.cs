@@ -83,7 +83,7 @@ namespace TestProject1
         {
             repositoryList.Should().NotBeNull("because there should be exactly one association from AddressField to Field");
             fieldToAddressField.Should().NotBeNull("because there should be exactly one association from Field to AddressField");
-            fieldToAddressField.PropertyReturnsEntitySet.Should().BeTrue("because in theory multiple AddressFields can point to the same field, even though we do not actually do this");
+            fieldToAddressField.PropertyReturnsICollection.Should().BeTrue("because in theory multiple AddressFields can point to the same field, even though we do not actually do this");
             fieldToAddressField.PropertyOfForeignKeyID.Should().BeNull("because there is no AddressFieldID in the Field table");
             fieldToAddressField.NameOfPropertyWithForeignKeyID.Should().Be("", "because there is no AddressFieldID in the Field table");
             fieldToAddressField.Property.Name.Should().Be("AddressFields");
@@ -94,7 +94,7 @@ namespace TestProject1
 		[Category("UnitTest")]
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToOneWithForeignKeyID()
         {
-            addressFieldToField.PropertyReturnsEntitySet.Should().BeFalse("because an AddressFIeld can point to only one Field");
+            addressFieldToField.PropertyReturnsICollection.Should().BeFalse("because an AddressFIeld can point to only one Field");
             addressFieldToField.PropertyOfForeignKeyID.Name.Should().Be("FieldID");
             addressFieldToField.NameOfPropertyWithForeignKeyID.Should().Be("FieldID");
             addressFieldToField.Property.Name.Should().Be("Field");
@@ -106,7 +106,7 @@ namespace TestProject1
         public void MappingInfoProcessor_ReturnsCorrectResults_ForOneToOneWithoutForeignKeyID()
         {
             userToUserInfo.Should().NotBeNull("because there should be exactly one association from User to UserInfo");
-            userToUserInfo.PropertyReturnsEntitySet.Should().BeFalse("because the data model explicitly specifies that only one UserInfo can point to the same User field");
+            userToUserInfo.PropertyReturnsICollection.Should().BeFalse("because the data model explicitly specifies that only one UserInfo can point to the same User field");
             userToUserInfo.PropertyOfForeignKeyID.Should().BeNull("because there is no UserInfoID in the User table");
             userToUserInfo.NameOfPropertyWithForeignKeyID.Should().Be("", "because there is no UserInfoID in the Field table");
             userToUserInfo.Property.Name.Should().Be("UserInfo");

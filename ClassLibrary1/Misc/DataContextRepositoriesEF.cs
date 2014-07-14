@@ -7,6 +7,8 @@ using ClassLibrary1.EFModel;
 using System.Data.Entity.Core.Objects;
 using System.Linq.Expressions;
 using System.Data.Entity.Core.Objects.DataClasses;
+using System.Data.Entity;
+using System.Collections;
 
 namespace ClassLibrary1.Misc
 {
@@ -24,12 +26,22 @@ namespace ClassLibrary1.Misc
         public Expression Expression { get { return UnderlyingTable.AsQueryable().Expression; } }
         public IQueryProvider Provider { get { return UnderlyingTable.AsQueryable().Provider; } }
 
-        public static void SetEntityKey<TEntity>(this ObjectContext context, TEntity entity) where TEntity : EntityObject, new()
+        public IEnumerator<T> GetEnumerator()
+        {
+            return UnderlyingTable.AsQueryable().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return UnderlyingTable.AsQueryable().GetEnumerator();
+        }
+
+        private void SetEntityKey<TEntity>(ObjectContext context, TEntity entity) where TEntity : EntityObject, new()
         {
             entity.EntityKey = context.CreateEntityKey(GetEntitySetName(context, entity.GetType()), entity);
         }
 
-        public static string GetEntitySetName(this ObjectContext context, Type entityType)
+        private string GetEntitySetName(ObjectContext context, Type entityType)
         {
             return EntityHelper.GetEntitySetName(entityType, context);
         }
@@ -37,43 +49,20 @@ namespace ClassLibrary1.Misc
         public void InsertOnSubmit(T theObject)
         {
             UnderlyingTable.Context.AddObject(GetEntitySetName(UnderlyingTable.Context, theObject.GetType()), theObject);
-            InsertOnSubmit(theObject);
-        }
-
-        public void InsertOnSubmitIfNotAlreadyInserted(T theObject)
-        {
-            if (UnderlyingTable.GetOriginalEntityState(theObject) == null)
-                UnderlyingTable.InsertOnSubmit(theObject);
         }
 
         public void DeleteOnSubmit(T theObject)
         {
-            UnderlyingTable.DeleteOnSubmit(theObject);
-        }
-
-
-        public T GetOriginalEntityState(T theObject)
-        {
-            return UnderlyingTable.GetOriginalEntityState(theObject);
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return UnderlyingTable.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return UnderlyingTable.GetEnumerator();
+            UnderlyingTable.Context.DeleteObject(theObject);
         }
     }
 
 
     public class EFDataContext : IDataContext
     {
-        public DataContext UnderlyingDataContext { get; set; }
+        public DbContext UnderlyingDataContext { get; set; }
 
-        public SQLDataContext(DataContext underlyingDataContext)
+        public EFDataContext(DbContext underlyingDataContext)
         {
             UnderlyingDataContext = underlyingDataContext;
         }
@@ -102,7 +91,7 @@ namespace ClassLibrary1.Misc
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
             var theTable = UnderlyingDataContext.GetTable<T>();
-            return new SQLRepository<T>(theTable);
+            return new EFRepository<T>(theTable);
         }
 
         public virtual void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)

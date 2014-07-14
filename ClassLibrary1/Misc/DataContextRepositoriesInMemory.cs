@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Data.Linq;
 using System.Reflection;
 using System.Data.Linq.Mapping;
+using System.Data.Entity;
 
 namespace ClassLibrary1.Misc
 {
@@ -78,51 +79,16 @@ namespace ClassLibrary1.Misc
         public string NameOfPropertyConnectingToForeignItem;
         public string NameOfPropertyWithForeignKeyID;
         public Type TypeOfForeignItem;
-        public bool PropertyReturnsEntitySet;
-        private MethodInfo _EntitySetRemoveMethod;
-        private Type _SpecificEntitySetType;
-        public Type SpecificEntitySetType
-        {
-            get
-            {
-                if (_SpecificEntitySetType == null)
-                    SetEntitySetTypeAndRemoveMethod();
-                return _SpecificEntitySetType;
-            }
-            set
-            {
-                _SpecificEntitySetType = value;
-            }
-        }
-        public MethodInfo EntitySetRemoveMethod
-        {
-            get
-            {
-                if (_EntitySetRemoveMethod == null)
-                    SetEntitySetTypeAndRemoveMethod();
-                return _EntitySetRemoveMethod;
-            }
-            set
-            {
-                _EntitySetRemoveMethod = value;
-            }
-        }
-
-        internal void SetEntitySetTypeAndRemoveMethod()
-        {
-            Type genericEntitySet = typeof(EntitySet<>);
-            Type[] typeArgs = { TypeOfForeignItem };
-            SpecificEntitySetType = genericEntitySet.MakeGenericType(typeArgs);
-            EntitySetRemoveMethod = SpecificEntitySetType.GetMethods().Single(x => x.Name == "Remove");
-        }
+        public bool PropertyReturnsICollection;
+        
 
         public List<object> GetAllAssociatedObjects(object theRepositoryItem)
         {
-            if (PropertyReturnsEntitySet)
+            if (PropertyReturnsICollection)
             {
-                IEnumerable theEntitySet = Property.GetValue(theRepositoryItem, null) as IEnumerable;
+                IEnumerable theCollection = Property.GetValue(theRepositoryItem, null) as IEnumerable;
                 List<object> theList = new List<object>();
-                foreach (var item in theEntitySet)
+                foreach (var item in theCollection)
                     theList.Add(item);
                 return theList;
             }
@@ -143,7 +109,7 @@ namespace ClassLibrary1.Misc
 
         public void RemoveForeignItemFromProperty(object theRepositoryItem, object foreignItemToRemove)
         {
-            if (PropertyReturnsEntitySet)
+            if (PropertyReturnsICollection)
             {
                 object theEntitySet = Property.GetValue(theRepositoryItem, null); // EntitySet<typeof(TypeOfForeignItem)>;
                 if (foreignItemToRemove != null)
@@ -166,7 +132,7 @@ namespace ClassLibrary1.Misc
 
         public void AddForeignItemToProperty(object theObject, object foreignItemToAdd)
         {
-            if (PropertyReturnsEntitySet)
+            if (PropertyReturnsICollection)
             {
                 object theEntitySet = Property.GetValue(theObject, null); // EntitySet<typeof(TypeOfForeignItem)>;
                 SpecificEntitySetType.InvokeMember("Add", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToAdd });
@@ -195,7 +161,7 @@ namespace ClassLibrary1.Misc
     {
         public static Dictionary<Type, List<RepositoryItemAssociationInfo>> mappingInfoForDataContexts = new Dictionary<Type, List<RepositoryItemAssociationInfo>>();
 
-        public static List<RepositoryItemAssociationInfo> GetMappingInfoForDataContext(DataContext theDataContext)
+        public static List<RepositoryItemAssociationInfo> GetMappingInfoForDataContext(DbContext theDataContext)
         {
             Type theType = theDataContext.GetType();
             List<RepositoryItemAssociationInfo> theInfo;
@@ -209,7 +175,7 @@ namespace ClassLibrary1.Misc
             return theInfo;
         }
 
-        public static List<RepositoryItemAssociationInfo> ProcessDataContextMappingInfo(DataContext theDataContext)
+        public static List<RepositoryItemAssociationInfo> ProcessDataContextMappingInfo(DbContext theDataContext)
         {
             var associations = from x in theDataContext.Mapping.GetTables()
                                let rowType = x.RowType
@@ -231,7 +197,7 @@ namespace ClassLibrary1.Misc
                                    PropertyOfForeignKeyID = foreignKeyIDProperty,
                                    NameOfPropertyWithForeignKeyID = foreignKeyIDProperty == null ? "" : foreignKeyIDProperty.Name,
                                    TypeOfForeignItem = association.OtherType.Type,
-                                   PropertyReturnsEntitySet = association.IsMany
+                                   PropertyReturnsICollection = association.IsMany
                                };
             return associations.ToList();
         }
@@ -376,7 +342,7 @@ namespace ClassLibrary1.Misc
             // For example, if AddressField is created and FieldID = 35 but AddressFIeld.Field is not set to the object with 
             // primary key id == 35, then
             // we must set Field to that object.
-            foreach (var property in PropertiesForThisItemType.Where(x => !x.PropertyReturnsEntitySet && x.PropertyOfForeignKeyID != null))
+            foreach (var property in PropertiesForThisItemType.Where(x => !x.PropertyReturnsICollection && x.PropertyOfForeignKeyID != null))
             {
                 object foreignKeyID = property.GetForeignKeyID(theItem);
                 Type foreignItemType = property.TypeOfForeignItem;
@@ -488,10 +454,10 @@ namespace ClassLibrary1.Misc
     {
         public Dictionary<Type, IInMemoryRepositorySubmitChangesActions> inMemoryRepositoryDictionary;
         public List<IInMemoryRepositorySubmitChangesActions> inMemoryRepositoryList;
-        public DataContext UnderlyingDataContext { get; set; }
+        public DbContext UnderlyingDataContext { get; set; }
         public List<RepositoryItemAssociationInfo> MappingInfo { get; set; }
 
-        public InMemoryRepositoryList(DataContext underlyingDataContext)
+        public InMemoryRepositoryList(DbContext underlyingDataContext)
         {
             UnderlyingDataContext = underlyingDataContext;
             MappingInfo = MappingInfoProcessor.GetMappingInfoForDataContext(underlyingDataContext);
@@ -604,7 +570,7 @@ namespace ClassLibrary1.Misc
         public static Dictionary<Type, InMemoryRepositoryList> inMemoryRepositoryDictionary;
         public static Dictionary<object, InMemoryRepositoryList> originalInMemoryRepositoryList = new Dictionary<object, InMemoryRepositoryList>();
 
-        public static InMemoryRepositoryList GetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext)
+        public static InMemoryRepositoryList GetSimulatedPermanentStorageForDataContextType(DbContext underlyingDataContext)
         {
             Type theType = underlyingDataContext.GetType();
 
@@ -621,7 +587,7 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public static void SetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext, InMemoryRepositoryList inMemoryRepositoryList)
+        public static void SetSimulatedPermanentStorageForDataContextType(DbContext underlyingDataContext, InMemoryRepositoryList inMemoryRepositoryList)
         { // This is a faster way of doing submit changes. 
             Type theType = underlyingDataContext.GetType();
 
@@ -646,9 +612,9 @@ namespace ClassLibrary1.Misc
     {
         public InMemoryRepositoryList inMemoryRepositories;
 
-        public DataContext UnderlyingDataContext { get; set; }
+        public DbContext UnderlyingDataContext { get; set; }
 
-        public InMemoryContext(DataContext underlyingDataContext)
+        public InMemoryContext(DbContext underlyingDataContext)
         {
             UnderlyingDataContext = underlyingDataContext;
             Type theType = underlyingDataContext.GetType();

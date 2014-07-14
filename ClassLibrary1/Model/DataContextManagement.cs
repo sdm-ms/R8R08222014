@@ -81,16 +81,6 @@ namespace ClassLibrary1.Model
                 if (HttpContext.Current.Items[key] != null)
                 {
                     dataContext = (IR8RDataContext)HttpContext.Current.Items[key];
-                    if (dataContext != null && dataContext.IsRealDatabase())
-                    {
-                        IR8RDataContext realDatabase = dataContext.GetRealDatabaseIfExists();
-                        if (realDatabase != null && realDatabase is ClassLibrary1.OldModel.R8RDataContext && (((ClassLibrary1.OldModel.R8RSQLDataContext)dataContext).AllowChangeData == false && doAllowChangeData == true)
-                            || (((ClassLibrary1.OldModel.R8RDataContext)realDatabase).ObjectTrackingEnabled != enableObjectTracking))
-                        { // We only reset the data context if we want to write data and we can't do so.
-                            ResetMyDataContext(key);
-                            return GetDataContext(key, doAllowChangeData, enableObjectTracking);
-                        }
-                    }
                 }
                 else
                 {

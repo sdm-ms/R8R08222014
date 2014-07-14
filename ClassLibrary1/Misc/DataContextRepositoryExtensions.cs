@@ -51,7 +51,8 @@ namespace ClassLibrary1.Misc
         {
             var theDBTable = theDataContext.GetTable<T>();
             foreach (var theObject in theDataContext.RegisteredToBeInserted.OfType<T>())
-                theDBTable.InsertOnSubmitIfNotAlreadyInserted(theObject);
+                theDBTable.InsertOnSubmit(theObject);
+                //theDBTable.InsertOnSubmitIfNotAlreadyInserted(theObject);
         }
 
         /// <summary>
