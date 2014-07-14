@@ -6,7 +6,6 @@ using System.Text;
 using ClassLibrary1.Misc;
 using System.Data.Linq;
 using System.Diagnostics;
-using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {

@@ -8,7 +8,6 @@ using System.Web.Caching;
 using System.Text.RegularExpressions;
 using System.Linq.Expressions;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using System.Threading;
 
 namespace ClassLibrary1.Model
@@ -33,13 +32,18 @@ namespace ClassLibrary1.Model
         {
             var dataAccess = new R8RDataAccess();
             TblRowPlusFieldInfoLoader theTblRowPlusFieldsInfoLoader = new TblRowPlusFieldInfoLoader();
+            //ProfileSimple.Start("GetCompiledQuery");
             // Note that we use the following to load the data into a list, but we don't actually use the field info from the list. Because it's loaded in, it won't be loaded in again.
             List<TblRowPlusFieldInfos> theTblRowPlusFieldInfos = theTblRowPlusFieldsInfoLoader.GetTblRowPlusFieldInfos(dataAccess.R8RDB);
+            //ProfileSimple.End("GetCompiledQuery");
+            //ProfileSimple.Start("AfterCompiledQuery");
 
             foreach (var rowPlusFieldInfo in theTblRowPlusFieldInfos)
             {
                 SetFieldDisplayHtml(rowPlusFieldInfo.TblRow);
             }
+
+            //ProfileSimple.End("AfterCompiledQuery");
         }
 
         public void SetFieldDisplayHtmlWithoutFieldsForNow(TblRow theTblRow)
@@ -137,7 +141,10 @@ namespace ClassLibrary1.Model
         public FieldDisplayHtml BuildFieldDisplayHtml(TblDimension theTblDimension, FieldsLocation theLocation, TblRow tblRow)
         {
             TblRowPlusFieldInfoLoader theTblRowPlusFieldsInfoLoader = new TblRowPlusFieldInfoLoader();
+            //ProfileSimple.Start("GetCompiledQuery");
             TblRowPlusFieldInfos theTblRowPlusFieldInfos = theTblRowPlusFieldsInfoLoader.GetTblRowPlusFieldInfos(theLocation, tblRow);
+            //ProfileSimple.End("GetCompiledQuery");
+            //ProfileSimple.Start("AfterCompiledQuery");
 
             return BuildFieldDisplayHtml(theTblDimension, theLocation, tblRow, theTblRowPlusFieldInfos);
         }
@@ -199,6 +206,8 @@ namespace ClassLibrary1.Model
             middleContent.Insert(0, initialContent.ToString());
             myFieldDisplayHtml.theMainHtml = middleContent.ToString();
 
+
+            //ProfileSimple.End("AfterCompiledQuery");
             return myFieldDisplayHtml;
         }
 

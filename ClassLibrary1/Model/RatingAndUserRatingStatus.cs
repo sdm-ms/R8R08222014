@@ -21,12 +21,12 @@ using System.Reflection;
 using System.Transactions;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
+////using PredRatings;
 using MoreStrings;
 
 using System.Threading;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {

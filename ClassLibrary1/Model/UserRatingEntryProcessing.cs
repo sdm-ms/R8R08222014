@@ -5,7 +5,6 @@ using System.Text;
 using MoreStrings;
 
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {

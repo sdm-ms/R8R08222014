@@ -22,7 +22,6 @@ using System.Transactions;
 using System.Data.Linq.Mapping;
 ////using PredRatings;
 using MoreStrings;
-using ClassLibrary1.EFModel;
 
 
 

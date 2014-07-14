@@ -20,7 +20,6 @@ using System.Linq.Expressions;
 
 using System.Diagnostics;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 namespace ClassLibrary1.Model
@@ -311,15 +310,21 @@ namespace ClassLibrary1.Model
             if (maxNumResults == null)
                 maxNumResults = 1000000000;
 
-            throw new NotImplementedException(); // must copy stored procedure to Entity Framework context if we need to reimplement this
-
+            theFilteredQueryWithSortValues =
+                    from y in theDataContext.UDFNearestNeighborsForTbl(latitude, longitude, maxNumResults, tblID)
+                    join e in GetFilteredQueryAsTblRows(theDataContext, null)
+                    on y.TblRowID equals e.TblRowID
+                    select e;
             //theFilteredQueryWithSortValues =
-            //        from y in theDataContext.UDFNearestNeighborsForTbl(latitude, longitude, maxNumResults, tblID)
-            //        join e in GetFilteredQueryAsTblRows(theDataContext, null)
-            //        on y.TblRowID equals e.TblRowID
-            //        select e;
+            // from y in theDataContext.GetTable<UDFNearestNeighbor>()(latitude, longitude, maxNumResults)
+            // join e in GetFilteredQueryAsTblRows(theDataContext, null).Select(z => z.Fields.FirstOrDefault(f => f.FieldDefinition.FieldType == (int)FieldTypes.AddressField))
+            // on y.FieldID equals e.FieldID
+            // select e.TblRow;
 
-            //return theFilteredQueryWithSortValues;
+            //if (maxNumResults != null)
+            //    theFilteredQueryWithSortValues = theFilteredQueryWithSortValues.Take((int) maxNumResults);
+
+            return theFilteredQueryWithSortValues;
         }
 
         public IQueryable<TblRow> GetFilteredQuerySortedByNeedsRating(IR8RDataContext theDataContext, int? maxNumResults)

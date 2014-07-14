@@ -19,7 +19,6 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 using FluentAssertions;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace TestProject1
@@ -28,7 +27,7 @@ namespace TestProject1
     public class TestDataContextRepositoriesInMemory
     {
         // The connection string must be used solely for the purpose of the initial mapping of the data context into a list of repositories.
-        internal IR8RDataContext UnderlyingR8RDataContext;
+        internal R8RDataContext UnderlyingR8RDataContext;
         internal List<RepositoryItemAssociationInfo> repositoryList;
         internal RepositoryItemAssociationInfo fieldToAddressField;
         internal RepositoryItemAssociationInfo addressFieldToField;
@@ -45,7 +44,7 @@ namespace TestProject1
         {
             originalUseRealDatabase = GetIR8RDataContext.UseRealDatabase;
             GetIR8RDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
-            UnderlyingR8RDataContext = new IR8RDataContext("FAKECONNECTIONSTRING"); 
+            UnderlyingR8RDataContext = new R8RDataContext("FAKECONNECTIONSTRING"); 
             repositoryList = MappingInfoProcessor.ProcessDataContextMappingInfo(UnderlyingR8RDataContext);
             fieldToAddressField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(Field) && x.TypeOfForeignItem == typeof(AddressField));
             addressFieldToField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(AddressField) && x.TypeOfForeignItem == typeof(Field));

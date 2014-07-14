@@ -25,7 +25,6 @@ using MoreStrings;
 
 using System.Diagnostics;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 

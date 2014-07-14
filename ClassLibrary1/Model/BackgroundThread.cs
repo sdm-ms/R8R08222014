@@ -15,7 +15,6 @@ using System.Transactions;
 
 using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 

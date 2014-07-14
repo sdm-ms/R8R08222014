@@ -21,7 +21,6 @@ using System.IO;
 using System.Text;
 
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class Main_Table_Table : System.Web.UI.UserControl
 {

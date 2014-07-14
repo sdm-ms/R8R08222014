@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClassLibrary1.Model;
 
-namespace ClassLibrary1.EFModel
+namespace ClassLibrary1.Model
 {
     public partial class TblRow
     {
-        /* DEBUG -- NEW LOGIC */
-        void OnValidate(System.Data.Linq.ChangeAction action)
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
 
             if (action == System.Data.Linq.ChangeAction.Insert) // this.FastAccessInitialCopy && this.FastAccessUpdated == null)
@@ -27,36 +25,31 @@ namespace ClassLibrary1.EFModel
             OnStatusChanging(this.Status);
         }
 
-        /* DEBUG -- NEW LOGIC */
-        void OnElevateOnMostNeedsRatingChanging(bool value)
+        partial void OnElevateOnMostNeedsRatingChanging(bool value)
         {
             var fa = new FastAccessElevateOnMostNeedsRatingUpdateInfo() { ElevateOnMostNeedsRating = value };
             fa.AddToTblRow(this);
         }
 
-        /* DEBUG -- NEW LOGIC */
-        void OnCountNonnullEntriesChanging(int value)
+        partial void OnCountNonnullEntriesChanging(int value)
         {
             var facnnei = new FastAccessCountNonNullEntriesUpdateInfo() { CountNonNullEntries = value };
             facnnei.AddToTblRow(this);
         }
 
-        /* DEBUG -- NEW LOGIC */
-        void OnCountUserPointsChanging(decimal value)
+        partial void OnCountUserPointsChanging(decimal value)
         {
             var facup = new FastAccessCountUserPointsUpdateInfo() { CountUserPoints = value };
             facup.AddToTblRow(this);
         }
 
-        /* DEBUG -- NEW LOGIC */
-        void OnNameChanging(string value)
+        partial void OnNameChanging(string value)
         {
             var faname = new FastAccessTblRowNameUpdateInfo() { Name = value };
             faname.AddToTblRow(this);
         }
 
-        /* DEBUG -- NEW LOGIC */
-        void OnStatusChanging(byte value)
+        partial void OnStatusChanging(byte value)
         {
             var fadel = new FastAccessDeletedUpdateInfo() { Deleted = value == (byte)StatusOfObject.Unavailable };
             fadel.AddToTblRow(this);
@@ -66,8 +59,7 @@ namespace ClassLibrary1.EFModel
 
     public partial class RatingGroup
     {
-        /* DEBUG -- NEW LOGIC */
-        void OnValidate(System.Data.Linq.ChangeAction action)
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             if (action == System.Data.Linq.ChangeAction.Insert && this.TblRow != null)
                 AddFastAccessForNewData();
@@ -80,8 +72,7 @@ namespace ClassLibrary1.EFModel
             //  OnValueRecentlyChangedChanging(this.ValueRecentlyChanged); // This will automatically be set once we actually set the RatingGroup to a value.
         }
 
-        /* DEBUG -- NEW LOGIC */
-        void OnHighStakesKnownChanging(bool value)
+        partial void OnHighStakesKnownChanging(bool value)
         {
             if (!RatingGroupTypesList.lowerHierarchy.Contains(this.TypeOfRatingGroup)) // i.e., if this is a top rating group
             {
@@ -90,8 +81,7 @@ namespace ClassLibrary1.EFModel
             }
         }
 
-        /* DEBUG -- NEW LOGIC */
-        void OnValueRecentlyChangedChanging(bool value)
+        partial void OnValueRecentlyChangedChanging(bool value)
         {
             var farui = new FastAccessRecentlyChangedInfo()
             {
@@ -104,8 +94,7 @@ namespace ClassLibrary1.EFModel
 
     public partial class AddressField
     {
-        /* DEBUG -- NEW LOGIC */
-        void OnValidate(System.Data.Linq.ChangeAction action)
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             if ((action == System.Data.Linq.ChangeAction.Insert  || action == System.Data.Linq.ChangeAction.Update) && this.Field.TblRow != null)
                 UpdateFastAccess();
@@ -130,8 +119,7 @@ namespace ClassLibrary1.EFModel
 
     public partial class NumberField
     {
-        /* DEBUG -- NEW LOGIC */
-        void OnValidate(System.Data.Linq.ChangeAction action)
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             if ((action == System.Data.Linq.ChangeAction.Insert || action == System.Data.Linq.ChangeAction.Update) && this.Field.TblRow != null)
                 UpdateFastAccess();
@@ -154,7 +142,7 @@ namespace ClassLibrary1.EFModel
 
     public partial class TextField
     {
-        /* DEBUG -- NEW LOGIC */ void OnValidate(System.Data.Linq.ChangeAction action)
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             if ((action == System.Data.Linq.ChangeAction.Insert || action == System.Data.Linq.ChangeAction.Update) && this.Field.TblRow != null)
                 UpdateFastAccess();
@@ -177,8 +165,7 @@ namespace ClassLibrary1.EFModel
 
     public partial class DateTimeField
     {
-        /* DEBUG -- NEW LOGIC */
-        void OnValidate(System.Data.Linq.ChangeAction action)
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             if ((action == System.Data.Linq.ChangeAction.Insert || action == System.Data.Linq.ChangeAction.Update) && this.Field.TblRow != null)
                 UpdateFastAccess();
@@ -200,8 +187,7 @@ namespace ClassLibrary1.EFModel
 
     public partial class ChoiceInField
     {
-        /* DEBUG -- NEW LOGIC */
-        void OnValidate(System.Data.Linq.ChangeAction action)
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             if ((action == System.Data.Linq.ChangeAction.Insert || action == System.Data.Linq.ChangeAction.Update) && this.ChoiceField.Field.TblRow != null)
             {

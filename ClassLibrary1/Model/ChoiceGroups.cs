@@ -12,7 +12,6 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using System.Text;
-using ClassLibrary1.EFModel;
 
 
 namespace ClassLibrary1.Model

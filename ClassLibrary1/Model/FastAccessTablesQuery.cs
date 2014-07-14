@@ -13,7 +13,6 @@ using Microsoft.SqlServer.Types;
 using GoogleGeocoder;
 using System.Collections;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using ClassLibrary1.EFModel;
 
 
 namespace ClassLibrary1.Model
@@ -59,7 +58,7 @@ namespace ClassLibrary1.Model
         {
             joinString = "";
             orderByString = "";
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
             joinString = " ";
@@ -146,7 +145,7 @@ namespace ClassLibrary1.Model
 
         internal static List<ChoiceFullFieldDefinition> GetChoiceFullFieldDefinitions(IR8RDataContext iDataContext, Tbl tbl)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             string cacheString = "ChoiceFullFieldDefinition" + tbl.TblID.ToString();
@@ -161,7 +160,7 @@ namespace ClassLibrary1.Model
 
         internal static List<FieldDefinition> GetAddressFieldDefinitions(IR8RDataContext iDataContext, Tbl tbl)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             string cacheString = "AddressFieldDefinition" + tbl.TblID.ToString();
@@ -176,7 +175,7 @@ namespace ClassLibrary1.Model
 
         internal static FieldDefinition GetFieldDefinition(IR8RDataContext iDataContext, int fieldDefinitionID)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             FieldDefinition fd = iDataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID);
@@ -186,7 +185,7 @@ namespace ClassLibrary1.Model
 
         internal static ChoiceGroupFieldDefinition GetChoiceGroupFieldDefinition(IR8RDataContext iDataContext, int fieldDefinitionID)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             ChoiceGroupFieldDefinition cgfd = iDataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == fieldDefinitionID); // NOTE: This is a lookup based on a FieldDefinitionID, NOT a ChoiceGroupFieldDefinitionID
@@ -370,7 +369,7 @@ namespace ClassLibrary1.Model
 
         internal static DataTable GetDataTable(IR8RDataContext iDataContext, DenormalizedTableAccess dta, List<string> variableList, TableSortRule tableSortRule, FilterRules filters, List<ChoiceFullFieldDefinition> choiceFieldDefinitions, int tblID, int skip, int take)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             // SAMPLE -- this produces query results somewhat like this and adds the rowcount (indicating the total number of results without skip & take
@@ -451,7 +450,7 @@ namespace ClassLibrary1.Model
         {
             bodyRowList = null;
             rowCount = null;
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
 

@@ -11,7 +11,6 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class TwoCol : System.Web.UI.MasterPage
 {

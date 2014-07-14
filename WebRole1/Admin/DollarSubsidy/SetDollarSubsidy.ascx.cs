@@ -12,7 +12,6 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserControl
 {

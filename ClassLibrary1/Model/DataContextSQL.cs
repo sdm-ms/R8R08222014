@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Data.Linq;
 using System.Reflection;
 
-namespace ClassLibrary1.OldModel
+namespace ClassLibrary1.Model
 {
     public partial class R8RDataContext
     {
@@ -43,7 +43,7 @@ namespace ClassLibrary1.OldModel
 
     }
 
-    public class R8RSQLDataContext : SQLDataContext, ClassLibrary1.Model.IR8RDataContext
+    public class R8RSQLDataContext : SQLDataContext, IR8RDataContext
     {
         public System.IO.TextWriter Log
         {
@@ -67,7 +67,7 @@ namespace ClassLibrary1.OldModel
             return true;
         }
 
-        public ClassLibrary1.Model.IR8RDataContext GetRealDatabaseIfExists()
+        public R8RDataContext GetRealDatabaseIfExists()
         {
             return _underlyingR8RDataContext;
         }
@@ -124,10 +124,10 @@ namespace ClassLibrary1.OldModel
 
         R8RDataContext _underlyingR8RDataContext;
 
-        public R8RSQLDataContext(bool doAllowChangeData, bool enableObjectTracking) :
-            base(new R8RDataContext(ClassLibrary1.Model.ConnectionString.GetR8RNormalizedDatabaseConnectionString()))
+        public R8RSQLDataContext(bool doAllowChangeData, bool enableObjectTracking) : 
+            base( new R8RDataContext(ConnectionString.GetR8RNormalizedDatabaseConnectionString()))
         {
-            _underlyingR8RDataContext = (ClassLibrary1.Model.IR8RDataContext)UnderlyingDataContext;
+            _underlyingR8RDataContext = (R8RDataContext) UnderlyingDataContext;
             _allowChangeData = doAllowChangeData;
             if (!enableObjectTracking)
                 _underlyingR8RDataContext.ObjectTrackingEnabled = false;

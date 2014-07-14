@@ -5,15 +5,14 @@ using System.Text;
 using ClassLibrary1.Misc;
 using System.Data.Linq;
 using System.Linq.Expressions;
-using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {
 
     public static class GetIR8RDataContext
     {
-        //private static R8RDataContext _UnderlyingSQLDataContextForInMemoryContext = 
-        //    new R8RDataContext("no real connection"); // R8RSQLDataContext(true,true).GetRealDatabaseIfExists();
+        private static R8RDataContext _UnderlyingSQLDataContextForInMemoryContext = 
+            new R8RDataContext("no real connection"); // R8RSQLDataContext(true,true).GetRealDatabaseIfExists();
 
         public static bool UseRealDatabase = true; // Do not change this code. This may be overriden in tests when Test_UseRealDatabase.UseReal() returns false.
 
@@ -30,7 +29,7 @@ namespace ClassLibrary1.Model
     {
         bool IsRealDatabase();
 
-        IR8RDataContext GetRealDatabaseIfExists();
+        R8RDataContext GetRealDatabaseIfExists();
 
         System.IO.TextWriter Log { get; set; }
 
@@ -41,6 +40,9 @@ namespace ClassLibrary1.Model
         void LoadStatsWithTrustTrackersAndUserInteractions();
 
         void SetUserRatingAddingLoadOptions();
+
+        IQueryable<TblRow> UDFNearestNeighborsForTbl(float? latitude, float? longitude, int? maxNumResults, int? tblID);
+        IQueryable<AddressField> UDFDistanceWithin(float? latitude, float? longitude, float? distance);
     }
 
 

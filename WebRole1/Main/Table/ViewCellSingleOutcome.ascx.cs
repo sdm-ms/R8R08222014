@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class Main_Table_ViewCellSingleOutcome : System.Web.UI.UserControl
 {

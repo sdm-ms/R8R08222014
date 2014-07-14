@@ -16,7 +16,6 @@ using MoreStrings;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class Main_Table_BodyRow : System.Web.UI.UserControl
 {

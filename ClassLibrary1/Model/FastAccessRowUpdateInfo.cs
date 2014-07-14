@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClassLibrary1.Misc;
-using ClassLibrary1.Model;
 using System.Data;
-using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {

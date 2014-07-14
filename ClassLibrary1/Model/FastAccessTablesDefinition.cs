@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ClassLibrary1.Misc;
-using ClassLibrary1.EFModel;
+
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -111,7 +111,7 @@ namespace ClassLibrary1.Model
 
         public FastAccessMultipleChoiceFieldTableInfo(IR8RDataContext iDataContext, FieldDefinition theFieldDefinition)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
 
@@ -663,7 +663,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         internal DataTable CreateDataTable(IR8RDataContext iDataContext, List<TblRow> tblRows)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
             // assumes that row info has already been stored. 
@@ -688,7 +688,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         internal DataTable CreateDataTableForMultipleChoiceField(IR8RDataContext iDataContext, FastAccessMultipleChoiceFieldTableInfo subtableInfo)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
 
@@ -708,7 +708,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         public int BulkCopyRows(IR8RDataContext iDataContext, DenormalizedTableAccess dta, List<TblRow> tblRows, List<TblColumn> tblColumns)
         {
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return 0;
 

@@ -11,7 +11,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 public partial class Default2 : System.Web.UI.Page

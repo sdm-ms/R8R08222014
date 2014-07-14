@@ -16,7 +16,6 @@ using System.Diagnostics;
 
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class Tester : System.Web.UI.Page
 {

@@ -12,7 +12,6 @@ using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 ////using PredRatings;
 

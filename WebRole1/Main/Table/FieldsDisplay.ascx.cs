@@ -14,7 +14,6 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 
 public partial class Main_Table_FieldsDisplay : System.Web.UI.UserControl

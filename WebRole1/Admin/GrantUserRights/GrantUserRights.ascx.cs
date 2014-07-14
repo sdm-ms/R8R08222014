@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 
 namespace WebApplication1.Admin.GrantUserRights

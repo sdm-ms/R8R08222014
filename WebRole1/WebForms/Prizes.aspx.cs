@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 
 using System.Web.Security;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 public partial class Prizes : System.Web.UI.Page

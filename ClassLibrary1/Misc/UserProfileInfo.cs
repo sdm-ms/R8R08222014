@@ -6,7 +6,6 @@ using System.Web.Security;
 using System.Web.Profile;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using System.Reflection;
 
 namespace ClassLibrary1.Misc

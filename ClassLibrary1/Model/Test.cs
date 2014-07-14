@@ -18,7 +18,6 @@ using System.Reflection;
 using System.Transactions;
 using System.Diagnostics;
 using System.Text;
-using ClassLibrary1.EFModel;
 
 using GoogleGeocoder;
 

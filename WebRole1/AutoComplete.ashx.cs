@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 namespace WebRole1
 {

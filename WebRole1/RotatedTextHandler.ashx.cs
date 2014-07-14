@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 namespace WebRole1
 {

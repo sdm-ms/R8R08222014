@@ -29,7 +29,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Web.Profile;
 using ClassLibrary1.Misc;
-using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {

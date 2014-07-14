@@ -22,7 +22,6 @@ using System.Xml.Serialization;
 
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.UI.UserControl
 {

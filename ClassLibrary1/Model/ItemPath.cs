@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 
 using System.Text;
-using ClassLibrary1.EFModel;
 
 
 namespace ClassLibrary1.Model

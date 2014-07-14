@@ -21,7 +21,6 @@ using System.Reflection;
 using System.Transactions;
 using System.Data.Linq.Mapping;
 using MoreStrings;
-using ClassLibrary1.EFModel;
 
 
 namespace ClassLibrary1.Model

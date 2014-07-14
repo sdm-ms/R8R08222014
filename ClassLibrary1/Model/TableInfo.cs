@@ -6,7 +6,6 @@ using System.Text;
 
 using System.Web.Script.Serialization;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 
 namespace ClassLibrary1.Model

@@ -1,5 +1,4 @@
-﻿using ClassLibrary1.EFModel;
-using ClassLibrary1.Misc;
+﻿using ClassLibrary1.Misc;
 using System;
 using System.Collections.Generic;
 using System.Linq;

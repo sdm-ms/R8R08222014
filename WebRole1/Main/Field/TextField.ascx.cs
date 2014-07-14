@@ -14,7 +14,6 @@ using System.Xml.Linq;
 
 using MoreStrings;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 
 public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField

@@ -10,7 +10,6 @@ using System.Web.UI.HtmlControls;
 using MoreStrings;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 public partial class Main_Table_Comments : System.Web.UI.UserControl
 {

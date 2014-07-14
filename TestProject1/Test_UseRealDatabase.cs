@@ -19,7 +19,6 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 using FluentAssertions;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.ServiceHosting.Tools.DevelopmentStorage;
 using Microsoft.ServiceHosting.Tools.DevelopmentFabric;
@@ -135,7 +134,7 @@ namespace TestProject1
 
         private static void AddUser()
         {
-            IR8RDataContext myDataContext = new IR8RDataContext(ConnectionString.GetR8RNormalizedDatabaseConnectionString());
+            R8RDataContext myDataContext = new R8RDataContext(ConnectionString.GetR8RNormalizedDatabaseConnectionString());
 
             User newUser =  new User {
                 Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 
 
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 ////using PredRatings;
 
 public partial class Main_Table_HeaderRow : System.Web.UI.UserControl

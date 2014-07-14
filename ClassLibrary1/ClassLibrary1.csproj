@@ -53,13 +53,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="GMapGeocoder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Dependencies\GMapGeocoder.dll</HintPath>
     </Reference>
@@ -117,9 +110,9 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.Services" />
@@ -162,89 +155,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EFModel\AddressField.cs" />
-    <Compile Include="EFModel\AdministrationRight.cs" />
-    <Compile Include="EFModel\AdministrationRightsGroup.cs" />
-    <Compile Include="EFModel\ChangesGroup.cs" />
-    <Compile Include="EFModel\ChangesStatusOfObject.cs" />
-    <Compile Include="EFModel\ChoiceField.cs" />
-    <Compile Include="EFModel\ChoiceGroup.cs" />
-    <Compile Include="EFModel\ChoiceGroupFieldDefinition.cs" />
-    <Compile Include="EFModel\ChoiceInField.cs" />
-    <Compile Include="EFModel\ChoiceInGroup.cs" />
-    <Compile Include="EFModel\Comment.cs" />
-    <Compile Include="EFModel\DatabaseStatus.cs" />
-    <Compile Include="EFModel\DateTimeField.cs" />
-    <Compile Include="EFModel\DateTimeFieldDefinition.cs" />
-    <Compile Include="EFModel\Domain.cs" />
-    <Compile Include="EFModel\Field.cs" />
-    <Compile Include="EFModel\FieldDefinition.cs" />
-    <Compile Include="EFModel\HierarchyItem.cs" />
-    <Compile Include="EFModel\InsertableContent.cs" />
-    <Compile Include="EFModel\InvitedUser.cs" />
-    <Compile Include="EFModel\LongProcess.cs" />
-    <Compile Include="EFModel\NumberField.cs" />
-    <Compile Include="EFModel\NumberFieldDefinition.cs" />
-    <Compile Include="EFModel\OverrideCharacteristic.cs" />
-    <Compile Include="EFModel\PointsAdjustment.cs" />
-    <Compile Include="EFModel\PointsManager.cs" />
-    <Compile Include="EFModel\PointsTotal.cs" />
-    <Compile Include="EFModel\ProposalEvaluationRatingSetting.cs" />
-    <Compile Include="EFModel\ProposalSetting.cs" />
-    <Compile Include="EFModel\R8RContext.cs" />
-    <Compile Include="EFModel\Rating.cs" />
-    <Compile Include="EFModel\RatingCharacteristic.cs" />
-    <Compile Include="EFModel\RatingCondition.cs" />
-    <Compile Include="EFModel\RatingGroup.cs" />
-    <Compile Include="EFModel\RatingGroupAttribute.cs" />
-    <Compile Include="EFModel\RatingGroupPhaseStatus.cs" />
-    <Compile Include="EFModel\RatingGroupResolution.cs" />
-    <Compile Include="EFModel\RatingGroupStatusRecord.cs" />
-    <Compile Include="EFModel\RatingPhase.cs" />
-    <Compile Include="EFModel\RatingPhaseGroup.cs" />
-    <Compile Include="EFModel\RatingPhaseStatus.cs" />
-    <Compile Include="EFModel\RatingPlan.cs" />
-    <Compile Include="EFModel\RewardPendingPointsTracker.cs" />
-    <Compile Include="EFModel\RewardRatingSetting.cs" />
-    <Compile Include="EFModel\RoleStatus.cs" />
-    <Compile Include="EFModel\SearchWord.cs" />
-    <Compile Include="EFModel\SearchWordChoice.cs" />
-    <Compile Include="EFModel\SearchWordHierarchyItem.cs" />
-    <Compile Include="EFModel\SearchWordTblRowName.cs" />
-    <Compile Include="EFModel\SearchWordTextField.cs" />
-    <Compile Include="EFModel\SubsidyAdjustment.cs" />
-    <Compile Include="EFModel\SubsidyDensityRangeGroup.cs" />
-    <Compile Include="EFModel\SubsidyDensityRange.cs" />
-    <Compile Include="EFModel\Tbl.cs" />
-    <Compile Include="EFModel\TblColumn.cs" />
-    <Compile Include="EFModel\TblColumnFormatting.cs" />
-    <Compile Include="EFModel\TblDimension.cs" />
-    <Compile Include="EFModel\TblRow.cs" />
-    <Compile Include="EFModel\TblRowFieldDisplay.cs" />
-    <Compile Include="EFModel\TblRowStatusRecord.cs" />
-    <Compile Include="EFModel\TblTab.cs" />
-    <Compile Include="EFModel\TextField.cs" />
-    <Compile Include="EFModel\TextFieldDefinition.cs" />
-    <Compile Include="EFModel\TrustTracker.cs" />
-    <Compile Include="EFModel\TrustTrackerForChoiceInGroup.cs" />
-    <Compile Include="EFModel\TrustTrackerForChoiceInGroupsUserRatingLink.cs" />
-    <Compile Include="EFModel\TrustTrackerStat.cs" />
-    <Compile Include="EFModel\TrustTrackerUnit.cs" />
-    <Compile Include="EFModel\UniquenessLock.cs" />
-    <Compile Include="EFModel\UniquenessLockReference.cs" />
-    <Compile Include="EFModel\User.cs" />
-    <Compile Include="EFModel\UserAction.cs" />
-    <Compile Include="EFModel\UserCheckIn.cs" />
-    <Compile Include="EFModel\UserInfo.cs" />
-    <Compile Include="EFModel\UserInteraction.cs" />
-    <Compile Include="EFModel\UserInteractionStat.cs" />
-    <Compile Include="EFModel\UserRating.cs" />
-    <Compile Include="EFModel\UserRatingGroup.cs" />
-    <Compile Include="EFModel\UserRatingsToAdd.cs" />
-    <Compile Include="EFModel\UsersAdministrationRightsGroup.cs" />
-    <Compile Include="EFModel\UsersRight.cs" />
-    <Compile Include="EFModel\VolatilityTblRowTracker.cs" />
-    <Compile Include="EFModel\VolatilityTracker.cs" />
     <Compile Include="Misc\AzureChartControlBlobHandler.cs" />
     <Compile Include="Misc\AzureCloudDrive.cs" />
     <Compile Include="Misc\AzureNotifications.cs" />

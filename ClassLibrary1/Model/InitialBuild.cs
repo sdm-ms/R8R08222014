@@ -28,7 +28,6 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.Misc;
 using System.Diagnostics;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using System.Text.RegularExpressions;
 using System.Threading; 
 //namespace PredRatings
@@ -123,7 +122,7 @@ namespace ClassLibrary1.Model
 
         public void ResetDatabaseAlt()
         {
-            IR8RDataContext dataContext = R8RDB.GetRealDatabaseIfExists();
+            R8RDataContext dataContext = R8RDB.GetRealDatabaseIfExists();
             if (dataContext != null)
             {
                 dataContext.ExecuteCommand("EXEC [sp_MSforeachtable] 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'");

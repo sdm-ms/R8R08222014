@@ -14,7 +14,6 @@ using System.Xml.Linq;
 using System.Text;
 using MoreStrings;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 public partial class Ratings : System.Web.UI.Page

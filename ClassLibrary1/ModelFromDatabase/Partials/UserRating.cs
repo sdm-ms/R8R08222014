@@ -27,11 +27,10 @@ using MoreStrings;
 using System.Threading;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
-namespace ClassLibrary1.EFModel
+namespace ClassLibrary1.Model
 {
-    public partial class UserRating
+    public partial class UserRating : INotifyPropertyChanging, INotifyPropertyChanged
     {
         public bool Resolved { get { return this.LongTermResolutionReflected; } }
 

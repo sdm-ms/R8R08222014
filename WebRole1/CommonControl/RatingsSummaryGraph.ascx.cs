@@ -15,7 +15,6 @@ using System.Web.UI.DataVisualization.Charting;
 using System.Globalization;
 using System.Collections.Generic;
 using ClassLibrary1.Model;
-using ClassLibrary1.EFModel;
 
 
 public class ColumnAndRating
