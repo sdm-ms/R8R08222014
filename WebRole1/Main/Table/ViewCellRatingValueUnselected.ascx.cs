@@ -13,6 +13,7 @@ using System.Xml.Linq;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 ////using PredRatings;
 

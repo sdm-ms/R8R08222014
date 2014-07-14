@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Text;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 public partial class User_Control_InsertableContent : System.Web.UI.UserControl

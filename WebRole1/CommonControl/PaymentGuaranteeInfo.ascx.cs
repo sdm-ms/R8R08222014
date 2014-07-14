@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using System.Web.Routing;
 
 namespace WebRole1.CommonControl

@@ -24,6 +24,7 @@ using System.Data.Linq.Mapping;
 using MoreStrings;
 
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace ClassLibrary1.Model

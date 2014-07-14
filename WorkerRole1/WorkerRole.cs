@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace WorkerRole1

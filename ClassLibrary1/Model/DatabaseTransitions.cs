@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 using System.ComponentModel;
 

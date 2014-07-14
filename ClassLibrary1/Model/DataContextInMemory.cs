@@ -5,6 +5,7 @@ using System.Text;
 using ClassLibrary1.Misc;
 using System.Data.Linq;
 using Microsoft.WindowsAzure.ServiceRuntime;
+using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {
@@ -33,7 +34,7 @@ namespace ClassLibrary1.Model
             return false;
         }
 
-        public R8RDataContext GetRealDatabaseIfExists()
+        public IR8RDataContext GetRealDatabaseIfExists()
         {
             return null;
         }
@@ -80,12 +81,12 @@ namespace ClassLibrary1.Model
             base.BeforeSubmitChanges();
         }
 
-        R8RDataContext underlyingR8RDataContext;
+        IR8RDataContext underlyingR8RDataContext;
 
         public R8RInMemoryDataContext()
-            : base(new R8RDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
+            : base(new IR8RDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
         {
-            underlyingR8RDataContext = (R8RDataContext)UnderlyingDataContext;
+            underlyingR8RDataContext = (IR8RDataContext)UnderlyingDataContext;
         }
 
         public void LoadStatsWithTrustTrackersAndUserInteractions()

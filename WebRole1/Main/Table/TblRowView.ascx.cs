@@ -16,6 +16,7 @@ using Subgurim.Controles;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 public partial class Main_Table_TblRowView : System.Web.UI.UserControl

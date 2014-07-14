@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 using System.Transactions;
 using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
 
 /// <summary>
 /// Summary description for LongProess

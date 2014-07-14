@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
     public partial class RatingTypeSelector : System.Web.UI.UserControl, IFilterField

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserControl
 {

@@ -18,6 +18,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {
@@ -82,9 +83,9 @@ namespace ClassLibrary1.Model
                     dataContext = (IR8RDataContext)HttpContext.Current.Items[key];
                     if (dataContext != null && dataContext.IsRealDatabase())
                     {
-                        R8RDataContext realDatabase = dataContext.GetRealDatabaseIfExists();
-                        if ( realDatabase != null && (((R8RSQLDataContext)dataContext).AllowChangeData == false && doAllowChangeData == true)
-                            || (realDatabase.ObjectTrackingEnabled != enableObjectTracking))
+                        IR8RDataContext realDatabase = dataContext.GetRealDatabaseIfExists();
+                        if (realDatabase != null && realDatabase is ClassLibrary1.OldModel.R8RDataContext && (((ClassLibrary1.OldModel.R8RSQLDataContext)dataContext).AllowChangeData == false && doAllowChangeData == true)
+                            || (((ClassLibrary1.OldModel.R8RDataContext)realDatabase).ObjectTrackingEnabled != enableObjectTracking))
                         { // We only reset the data context if we want to write data and we can't do so.
                             ResetMyDataContext(key);
                             return GetDataContext(key, doAllowChangeData, enableObjectTracking);

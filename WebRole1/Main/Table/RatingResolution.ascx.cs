@@ -13,6 +13,7 @@ using System.Xml.Linq;
 
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserControl
 {
