@@ -29,9 +29,6 @@ namespace ClassLibrary1.Misc
         void InsertOnSubmit(T theObject);
         void InsertOnSubmitIfNotAlreadyInserted(T theObject);
         void DeleteOnSubmit(T theObject);
-
-        // As far as I know, this method just appeared...should we delete it?
-        //UserInteraction Single(Func<UserInteraction, bool> func);
     }
 
     public static class IRepositoryExtensions 

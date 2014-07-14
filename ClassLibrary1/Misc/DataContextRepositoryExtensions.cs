@@ -54,6 +54,13 @@ namespace ClassLibrary1.Misc
                 theDBTable.InsertOnSubmitIfNotAlreadyInserted(theObject);
         }
 
+        /// <summary>
+        /// Returns objects that either have been registered to be inserted or are in the database.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="theDataContext"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public static IQueryable<TSource> WhereFromNewOrDatabase<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             IQueryable<TSource> newObjects = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().Where<TSource>(predicate);
