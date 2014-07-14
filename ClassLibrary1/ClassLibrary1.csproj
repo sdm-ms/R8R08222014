@@ -257,6 +257,7 @@
     <Compile Include="Misc\CheckJavaScriptHelper.cs" />
     <Compile Include="Misc\DataContextExtensions.cs" />
     <Compile Include="Misc\DataContextRepositories.cs" />
+    <Compile Include="Misc\DataContextRepositoriesEF.cs" />
     <Compile Include="Misc\DataContextRepositoriesInMemory.cs" />
     <Compile Include="Misc\DataContextRepositoriesSQL.cs" />
     <Compile Include="Misc\DataContextRepositoryExtensions.cs" />
