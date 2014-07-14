@@ -69,7 +69,7 @@ namespace ClassLibrary1.Misc
     }
 
 
-    public class SQLDataContext : IDataContext
+    public class EFDataContext : IDataContext
     {
         public DataContext UnderlyingDataContext { get; set; }
 
