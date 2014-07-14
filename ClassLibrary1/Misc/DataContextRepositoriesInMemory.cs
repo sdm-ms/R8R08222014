@@ -248,7 +248,7 @@ namespace ClassLibrary1.Misc
         object GetItemByID(object ID);
     }
 
-    public class InMemoryRepository<T> : IInMemoryRepositorySubmitChangesActions, IRepository<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+    public class InMemoryRepository<T> : IInMemoryRepositorySubmitChangesActions, IRepository<T> where T : class
     {
         int maxPrimaryKeyID = 0;
         List<T> ListOfEntities;
@@ -518,7 +518,7 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public IRepository<T> GetRepository<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+        public IRepository<T> GetRepository<T>() where T : class
         {
             Type theType = typeof(T);
             IInMemoryRepositorySubmitChangesActions item;
@@ -670,7 +670,7 @@ namespace ClassLibrary1.Misc
                 inMemoryRepositories = new InMemoryRepositoryList(UnderlyingDataContext, SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext));
         }
 
-        public IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+        public IRepository<T> GetTable<T>() where T : class
         {
             return inMemoryRepositories.GetRepository<T>();
         }
