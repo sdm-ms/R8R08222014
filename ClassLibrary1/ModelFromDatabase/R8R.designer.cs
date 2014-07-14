@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ClassLibrary1.ModelOld
+namespace ClassLibrary1.Model
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
