@@ -16,6 +16,7 @@ using System.Diagnostics;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class FieldsBox : System.Web.UI.UserControl
 {

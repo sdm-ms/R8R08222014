@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Text;
 
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl

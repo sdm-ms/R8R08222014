@@ -24,6 +24,7 @@ using GoogleGeocoder;
 using System.Diagnostics;
 using StringEnumSupport;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using ClassLibrary1.Misc;
 
 namespace ClassLibrary1.Model

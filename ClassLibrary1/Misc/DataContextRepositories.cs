@@ -6,6 +6,7 @@ using System.Data.Linq;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using System.Diagnostics;
 using System.Collections;

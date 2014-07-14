@@ -13,6 +13,7 @@ using System.Xml.Linq;
 
 
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_ViewCellRowHeading : System.Web.UI.UserControl
 {

@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using System.Collections.Generic;
 using ClassLibrary1.Misc;
 namespace ClassLibrary1.Model

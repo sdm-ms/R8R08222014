@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class NarrowResults : System.Web.UI.Page
 {

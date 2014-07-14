@@ -10,6 +10,7 @@ using System.Text;
 using System.Web.Routing;
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 namespace WebApplication1.CommonControl
 {

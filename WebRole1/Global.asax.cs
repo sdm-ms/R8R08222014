@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web.UI;
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using System.Web.Configuration;
 using System.Configuration;
 using System.Reflection;

@@ -13,6 +13,7 @@ using Microsoft.SqlServer.Types;
 using GoogleGeocoder;
 using System.Collections;
 using Microsoft.WindowsAzure.ServiceRuntime;
+using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
 {
@@ -36,7 +37,7 @@ namespace ClassLibrary1.Model
         public static bool ContinueFastAccessMaintenance(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
 
-            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null || !RoleEnvironment.IsAvailable)
                 return false;
 
@@ -69,7 +70,7 @@ namespace ClassLibrary1.Model
             if (!DoBulkInserting)
                 return false;
 
-            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
 
@@ -176,7 +177,7 @@ namespace ClassLibrary1.Model
         {
             if (useAzureQueuesToDesignateRowsToUpdate)
             {
-                R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+                IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
                 if (dataContext == null)
                     return;
                 FastAccessRowRequiringUpdate row = new FastAccessRowRequiringUpdate("V" + theTbl.TblID.ToString(), theTblRow.TblRowID, updateRatings, updateFields);
@@ -202,7 +203,7 @@ namespace ClassLibrary1.Model
             if (!useAzureQueuesToDesignateRowsToUpdate)
                 return;
 
-            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return;
             List<FastAccessRowRequiringUpdate> theRowsRequiringUpdates = iDataContext.TempCacheGet("fasttablerowupdate") as List<FastAccessRowRequiringUpdate>;
@@ -218,7 +219,7 @@ namespace ClassLibrary1.Model
         internal static bool ContinueUpdate_AzureVersion(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
             // We should probably not resurrect this, as the AzureQueueWithErrorRecovery simply drops the entire table and rebuilds if it runs into trouble.
-            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
             const int numAtOnce = 25; // 100 produced an error for too many parameters, presumably because we enumerate the tbl rows we want and then query for the fields. 
@@ -264,7 +265,7 @@ namespace ClassLibrary1.Model
 
             if (useAzureQueuesToDesignateRowsToUpdate)
                 return ContinueUpdate_AzureVersion(iDataContext, dta); // seems to create more problems but we'll keep the code around for now in case we change our mind
-            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;
             const int numAtOnce = 100;
@@ -295,7 +296,7 @@ namespace ClassLibrary1.Model
         static bool DisableIndividualUpdating = false;
         internal static bool ContinueIndividualUpdating(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
-            R8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
+            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null || DisableIndividualUpdating)
                 return false;
             const int numAtOnce = 2000;

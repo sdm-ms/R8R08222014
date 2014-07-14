@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data.Linq;
 using System.Linq.Expressions;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 /// <summary>
 /// Summary description for Fields
@@ -139,7 +140,6 @@ namespace ClassLibrary1.Model
     {
         static bool initialized = false;
         static Func<TblRowPlusFieldInfoLoaderRequest, TblRowPlusFieldInfos> theQueryForSingleTblRow;
-        static Func<R8RDataContext, IQueryable<TblRowPlusFieldInfos>>  theQueryForMultipleNeedingResetting;
 
         public TblRowPlusFieldInfoLoader()
         {
@@ -191,50 +191,11 @@ namespace ClassLibrary1.Model
                 };
 
 
-            // Note: Here we load all the fields. We won't actually use the projected data, but this serves to 
-            // load the relevant data into the database, so that we can use the single query above in memory
-            // for each row needing updating.
-            const int maxAtOnce = 500;
-            theQueryForMultipleNeedingResetting = CompiledQuery.Compile((R8RDataContext CurrentDataContext) =>                               
-                    CurrentDataContext.GetTable<Field>()
-                    .Join<Field,TblRow,TblRow,Field>(
-                        CurrentDataContext.GetTable<TblRow>().Where(x => x.TblRowFieldDisplay.ResetNeeded).OrderBy(x => x.InitialFieldsDisplaySet).Take(50),
-                        theField => theField.TblRow, // outer
-                        theTblRow => theTblRow, // inner (from MultipleTblRows)
-                        (theField, theTblRow) => theField // keep the field
-                    )
-                    .GroupBy(f => f.TblRow)
-                    .Select(x => new TblRowPlusFieldInfos {
-                            TblRow = x.Key,
-                            PointsManager = x.Key.Tbl.PointsManager,
-                            Fields = x
-                                .OrderBy(f => f.FieldDefinition.FieldNum)
-                                .ThenBy(f => f.FieldDefinitionID)
-                                .Select(f => new FieldDisplayInfoComplete
-                                {
-                                    Field = f,
-                                    FieldDesc = f.FieldDefinition,
-                                    DisplaySettings = f.FieldDefinition.DisplayInTblRowPageSettings, /* note: other might be used in query above */
-                                    TheAddressField = (f.FieldDefinition.FieldType == (int)FieldTypes.AddressField) ? f.AddressFields.Where(z => z.Status == (int) StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheNumberField = (f.FieldDefinition.FieldType == (int)FieldTypes.NumberField) ? f.NumberFields.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheTextField = (f.FieldDefinition.FieldType == (int)FieldTypes.TextField) ? f.TextFields.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheDateTimeField = (f.FieldDefinition.FieldType == (int)FieldTypes.DateTimeField) ? f.DateTimeFields.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheChoiceField = (f.FieldDefinition.FieldType == (int)FieldTypes.ChoiceField) ? f.ChoiceFields.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheChoices = (f.FieldDefinition.FieldType == (int)FieldTypes.ChoiceField) ? f.ChoiceFields.Where(z => z.Status == (int)StatusOfObject.Active).SelectMany(y => y.ChoiceInFields).Where(z2 => z2.Status == (int)StatusOfObject.Active).Select(y => y.ChoiceInGroup) : null,
-                                    TheChoiceGroupFieldDesc = (f.FieldDefinition.FieldType == (int)FieldTypes.ChoiceField) ? f.FieldDefinition.ChoiceGroupFieldDefinitions.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheDateTimeFieldDesc = (f.FieldDefinition.FieldType == (int)FieldTypes.DateTimeField) ? f.FieldDefinition.DateTimeFieldDefinitions.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheNumberFieldDesc = (f.FieldDefinition.FieldType == (int)FieldTypes.NumberField) ? f.FieldDefinition.NumberFieldDefinitions.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null,
-                                    TheTextFieldDesc = (f.FieldDefinition.FieldType == (int)FieldTypes.TextField) ? f.FieldDefinition.TextFieldDefinitions.Where(z => z.Status == (int)StatusOfObject.Active).FirstOrDefault() : null
-                                }
-                                ) // Note: We can't concatenate to this the table rows that have no fields, so we will deal with that in GetTblRowPlusFieldInfos.
-                            }
-                    )
-                    .Take(maxAtOnce)
-                );
+            
 
         }
 
-        public List<TblRowPlusFieldInfos> GetTblRowPlusFieldInfosWithoutCompiledQuery(IR8RDataContext dataContextToUse)
+        public List<TblRowPlusFieldInfos> GetTblRowPlusFieldInfosComplete(IR8RDataContext dataContextToUse)
         {
             return dataContextToUse.GetTable<Field>()
                     .Join<Field,TblRow,TblRow,Field>(
@@ -304,10 +265,7 @@ namespace ClassLibrary1.Model
 
 
             List<TblRowPlusFieldInfos> theListToReturn;
-            if (dataContextToUse.IsRealDatabase())
-                theListToReturn = theQueryForMultipleNeedingResetting(dataContextToUse.GetRealDatabaseIfExists()).ToList();
-            else
-                theListToReturn = GetTblRowPlusFieldInfosWithoutCompiledQuery(dataContextToUse);
+            theListToReturn = GetTblRowPlusFieldInfosComplete(dataContextToUse);
             
             theListToReturn.AddRange(rowsWithNoFieldsNeedingResetting);
 

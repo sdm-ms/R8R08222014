@@ -9,6 +9,7 @@ using System.Web.Caching;
 
 using Subgurim.Controls.GoogleMaps;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 public partial class CommonControl_Menu : System.Web.UI.UserControl

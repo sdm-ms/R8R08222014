@@ -19,6 +19,7 @@ using GoogleGeocoder;
 
 using ClassLibrary1.Misc;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class ChangeTbl : System.Web.UI.Page
 {
