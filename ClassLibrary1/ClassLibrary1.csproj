@@ -53,6 +53,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="GMapGeocoder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Dependencies\GMapGeocoder.dll</HintPath>
     </Reference>
@@ -110,6 +117,7 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
@@ -190,6 +198,156 @@
     <Compile Include="Misc\UserProfileInfo.cs" />
     <Compile Include="Misc\WeakReferenceTracker.cs" />
     <Compile Include="Misc\IEnumerableExtensions.cs" />
+    <Compile Include="ModelFromDatabase\AddressField.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\AdministrationRight.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\AdministrationRightsGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ChangesGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ChangesStatusOfObject.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ChoiceField.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ChoiceGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ChoiceGroupFieldDefinition.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ChoiceInField.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ChoiceInGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\Comment.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\DatabaseStatu.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\DateTimeField.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\DateTimeFieldDefinition.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\Domain.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\Field.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\FieldDefinition.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\Forum.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumAdministrator.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumComplaint.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumGroupPermission.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumMessage.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumMessageRating.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumModerator.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumNewTopicSubscription.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumPersonalMessage.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumPoll.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumPollAnswer.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumPollOption.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumSubforum.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumSubscription.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumTopic.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumUploadedFile.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumUploadedPersonalFile.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumUser.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumUserGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ForumUsersInGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\HierarchyItem.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\InsertableContent.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\InvitedUser.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\LongProcess.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\NumberField.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\NumberFieldDefinition.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\OverrideCharacteristic.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\PointsAdjustment.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\PointsManager.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\PointsTotal.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ProposalEvaluationRatingSetting.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\ProposalSetting.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ModelFromDatabase\R8R.cs">
       <DependentUpon>R8R.dbml</DependentUpon>
     </Compile>
@@ -202,6 +360,180 @@
     <Compile Include="ModelFromDatabase\Partials\TrustTrackerUnit.cs" />
     <Compile Include="Misc\TimeSpanExtensions.cs" />
     <Compile Include="ModelFromDatabase\Partials\UserRating.cs" />
+    <Compile Include="ModelFromDatabase\R8RContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R8RContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\R8RContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\R8RContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R8RContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\Rating.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingCharacteristic.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingCondition.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingGroupAttribute.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingGroupPhaseStatu.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingGroupResolution.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingGroupStatusRecord.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingPhas.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingPhaseGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingPhaseStatu.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RatingPlan.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RewardPendingPointsTracker.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RewardRatingSetting.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\RoleStatu.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SearchWord.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SearchWordChoice.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SearchWordHierarchyItem.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SearchWordTblRowName.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SearchWordTextField.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SubsidyAdjustment.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SubsidyDensityRange.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\SubsidyDensityRangeGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\Tbl.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TblColumn.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TblColumnFormatting.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TblDimension.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TblRow.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TblRowFieldDisplay.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TblRowStatusRecord.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TblTab.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TextField.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TextFieldDefinition.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TrustTracker.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TrustTrackerForChoiceInGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TrustTrackerForChoiceInGroupsUserRatingLink.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TrustTrackerStat.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\TrustTrackerUnit.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UniquenessLock.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UniquenessLockReference.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\User.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserAction.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserCheckIn.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserInfo.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserInteraction.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserInteractionStat.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserRating.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserRatingGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UserRatingsToAdd.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UsersAdministrationRightsGroup.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\UsersRight.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\VolatilityTblRowTracker.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelFromDatabase\VolatilityTracker.cs">
+      <DependentUpon>R8RContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ActionProcessor.cs" />
     <Compile Include="Model\AddObjects.cs" />
     <Compile Include="Model\AdjustmentFactorCalc.cs" />
@@ -289,6 +621,23 @@
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>R8R.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="ModelFromDatabase\R8RContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>R8RContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ModelFromDatabase\R8RContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>R8RContext.edmx</DependentUpon>
+      <LastGenOutput>R8RContext.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ModelFromDatabase\R8RContext.edmx.diagram">
+      <DependentUpon>R8RContext.edmx</DependentUpon>
+    </None>
+    <None Include="ModelFromDatabase\R8RContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>R8RContext.edmx</DependentUpon>
+      <LastGenOutput>R8RContext.cs</LastGenOutput>
     </None>
     <None Include="ModelFromDatabase\Rateroo.dbml.views">
       <DependentUpon>R8R.dbml</DependentUpon>

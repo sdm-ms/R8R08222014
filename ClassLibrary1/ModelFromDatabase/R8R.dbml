@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Norm0001" EntityNamespace="ClassLibrary1.Model" ContextNamespace="ClassLibrary1.Model" Class="R8RDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Norm0001" EntityNamespace="ClassLibrary1.ModelOld" ContextNamespace="ClassLibrary1.ModelOld" Class="R8RDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True" SettingsObjectName="ClassLibrary1.Properties.Settings" SettingsPropertyName="Norm0001ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AddressFields" Member="AddressFields">
     <Type Name="AddressField">
