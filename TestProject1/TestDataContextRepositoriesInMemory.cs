@@ -28,7 +28,7 @@ namespace TestProject1
     public class TestDataContextRepositoriesInMemory
     {
         // The connection string must be used solely for the purpose of the initial mapping of the data context into a list of repositories.
-        internal IR8RDataContext UnderlyingR8RDataContext;
+        internal R8RContext UnderlyingR8RDataContext;
         internal List<RepositoryItemAssociationInfo> repositoryList;
         internal RepositoryItemAssociationInfo fieldToAddressField;
         internal RepositoryItemAssociationInfo addressFieldToField;
@@ -45,7 +45,7 @@ namespace TestProject1
         {
             originalUseRealDatabase = GetIR8RDataContext.UseRealDatabase;
             GetIR8RDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
-            UnderlyingR8RDataContext = new IR8RDataContext("FAKECONNECTIONSTRING"); 
+            UnderlyingR8RDataContext = new R8RContext("FAKECONNECTIONSTRING"); 
             repositoryList = MappingInfoProcessor.ProcessDataContextMappingInfo(UnderlyingR8RDataContext);
             fieldToAddressField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(Field) && x.TypeOfForeignItem == typeof(AddressField));
             addressFieldToField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(AddressField) && x.TypeOfForeignItem == typeof(Field));
@@ -411,8 +411,8 @@ namespace TestProject1
             theInMemoryRepositoryRatingGroup.CompleteInsertOnSubmitStep2();
 
             theRating.RatingGroup.Should().Equals(theRatingGroup);
-            theRating.RatingGroup2.Should().BeNull();
-            theRating.RatingGroup1.Should().BeNull();
+            theRating.TopRatingGroup.Should().BeNull();
+            theRating.OwnedRatingGroup.Should().BeNull();
         }
 
         //[TestMethod]

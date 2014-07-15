@@ -16,8 +16,8 @@ namespace ClassLibrary1.EFModel
             UserRatingsToAdds = new HashSet<UserRatingsToAdd>();
             VolatilityTrackers = new HashSet<VolatilityTracker>();
             Ratings = new HashSet<Rating>();
-            Ratings1 = new HashSet<Rating>();
-            Ratings2 = new HashSet<Rating>();
+            RatingsAboveThisRatingGroupInHierarchy = new HashSet<Rating>();
+            RatingsWithinTopRatingGroupHierarchy = new HashSet<Rating>();
             UserRatingGroups = new HashSet<UserRatingGroup>();
         }
 
@@ -55,9 +55,9 @@ namespace ClassLibrary1.EFModel
 
         public virtual ICollection<Rating> Ratings { get; set; }
 
-        public virtual ICollection<Rating> Ratings1 { get; set; }
+        public virtual ICollection<Rating> RatingsAboveThisRatingGroupInHierarchy { get; set; }
 
-        public virtual ICollection<Rating> Ratings2 { get; set; }
+        public virtual ICollection<Rating> RatingsWithinTopRatingGroupHierarchy { get; set; }
 
         public virtual ICollection<UserRatingGroup> UserRatingGroups { get; set; }
 

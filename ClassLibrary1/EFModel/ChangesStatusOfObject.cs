@@ -31,7 +31,6 @@ namespace ClassLibrary1.EFModel
 
         public bool MayAffectRunningRating { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string NewName { get; set; }
 
@@ -45,12 +44,10 @@ namespace ClassLibrary1.EFModel
 
         public decimal? NewValueDecimal { get; set; }
 
-        [Required]
         public string NewValueText { get; set; }
 
         public DateTime? NewValueDateTime { get; set; }
 
-        [Required]
         public string ChangeDescription { get; set; }
 
         public virtual ChangesGroup ChangesGroup { get; set; }

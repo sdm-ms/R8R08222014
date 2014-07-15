@@ -31,18 +31,14 @@ namespace ClassLibrary1.EFModel
 
         public int CategoryNum { get; set; }
 
-        [Required]
         [StringLength(20)]
         public string Abbreviation { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Name { get; set; }
 
-        [Required]
         public string Explanation { get; set; }
 
-        [Required]
         [StringLength(20)]
         public string WidthStyle { get; set; }
 
@@ -72,9 +68,9 @@ namespace ClassLibrary1.EFModel
 
         public virtual ICollection<TblColumnFormatting> TblColumnFormattings { get; set; }
 
-        public virtual TblColumn TblColumns1 { get; set; }
+        public virtual TblColumn TblColumnOnWhichThisColumnIsConditional { get; set; }
 
-        public virtual TblColumn TblColumn1 { get; set; }
+        public virtual ICollection<TblColumn> TblColumnsConditionalOnThisColumn { get; set; }
 
         public virtual TrustTrackerUnit TrustTrackerUnit { get; set; }
 

@@ -27,7 +27,6 @@ namespace ClassLibrary1.EFModel
 
         public int HalfLifeForResolvingAtFinalValue { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public int? Creator { get; set; }

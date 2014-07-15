@@ -19,7 +19,6 @@ namespace ClassLibrary1.EFModel
 
         public decimal? DefaultUserRating { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public string Description { get; set; }

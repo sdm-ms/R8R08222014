@@ -13,11 +13,9 @@ namespace ClassLibrary1.EFModel
 
         public int TblColumnID { get; set; }
 
-        [Required]
         [StringLength(10)]
         public string Prefix { get; set; }
 
-        [Required]
         [StringLength(10)]
         public string Suffix { get; set; }
 
@@ -29,10 +27,8 @@ namespace ClassLibrary1.EFModel
 
         public decimal? ExtraDecimalPlace3Above { get; set; }
 
-        [Required]
         public string SuppStylesHeader { get; set; }
 
-        [Required]
         public string SuppStylesMain { get; set; }
 
         public byte Status { get; set; }

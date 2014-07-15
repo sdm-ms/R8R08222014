@@ -30,7 +30,6 @@ namespace ClassLibrary1.EFModel
 
         public decimal? ConstrainedSum { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public byte? TypeOfRatingGroup { get; set; }

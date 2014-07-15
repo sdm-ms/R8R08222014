@@ -9,6 +9,8 @@ using System.Linq.Expressions;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.Entity;
 using System.Collections;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 
 namespace ClassLibrary1.Misc
 {
@@ -60,11 +62,11 @@ namespace ClassLibrary1.Misc
 
     public class EFDataContext : IDataContext
     {
-        public DbContext UnderlyingDataContext { get; set; }
+        public DbContext UnderlyingDbContext { get; set; }
 
         public EFDataContext(DbContext underlyingDataContext)
         {
-            UnderlyingDataContext = underlyingDataContext;
+            UnderlyingDbContext = underlyingDataContext;
         }
 
         bool _tooLate = false;
@@ -76,22 +78,23 @@ namespace ClassLibrary1.Misc
 
         public void Reset()
         {
-            if (UnderlyingDataContext.Connection != null)
-            {
-                if (UnderlyingDataContext.Connection.State != System.Data.ConnectionState.Closed)
-                {
-                    UnderlyingDataContext.Connection.Close();
-                }
-            }
-            UnderlyingDataContext.Dispose();
+            //if (UnderlyingDbContext.Connection != null)
+            //{
+            //    if (UnderlyingDbContext.Connection.State != System.Data.ConnectionState.Closed)
+            //    {
+            //        UnderlyingDbContext.Connection.Close();
+            //    }
+            //}
+            UnderlyingDbContext.Dispose();
             TooLateToSetPageLoadOptions = false;
         }
 
         public IRepository<T> GetTable<T>() where T : class
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
-            var theTable = UnderlyingDataContext.GetTable<T>();
-            return new EFRepository<T>(theTable);
+            ObjectContext objectContext = ((IObjectContextAdapter)UnderlyingDbContext).ObjectContext;  
+            ObjectSet<T> objectSet = objectContext.CreateObjectSet<T>();
+            return new EFRepository<T>(objectSet);
         }
 
         public virtual void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
@@ -112,7 +115,14 @@ namespace ClassLibrary1.Misc
 
         public virtual void CompleteSubmitChanges(System.Data.Linq.ConflictMode conflictMode)
         {
-            UnderlyingDataContext.SubmitChanges();
+            try
+            {
+                UnderlyingDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

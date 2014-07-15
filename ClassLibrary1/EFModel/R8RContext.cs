@@ -145,8 +145,8 @@ namespace ClassLibrary1.EFModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ChoiceGroup>()
-                .HasMany(e => e.ChoiceGroups1)
-                .WithOptional(e => e.ChoiceGroup1)
+                .HasMany(e => e.ChoiceGroupsDependentOnThisChoiceGroup)
+                .WithOptional(e => e.ChoiceGroupOnWhichThisChoiceGroupIsDependent)
                 .HasForeignKey(e => e.DependentOnChoiceGroupID);
 
             modelBuilder.Entity<ChoiceInGroup>()
@@ -155,8 +155,8 @@ namespace ClassLibrary1.EFModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ChoiceInGroup>()
-                .HasMany(e => e.ChoiceInGroups1)
-                .WithOptional(e => e.ChoiceInGroup1)
+                .HasMany(e => e.ChoiceInGroupsDependentOnThisChoiceInGroup)
+                .WithOptional(e => e.ChoiceInGroupOnWhichThisChoiceInGroupIsDependent)
                 .HasForeignKey(e => e.ActiveOnDeterminingGroupChoiceInGroupID);
 
             modelBuilder.Entity<ChoiceInGroup>()
@@ -599,13 +599,13 @@ namespace ClassLibrary1.EFModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RatingGroup>()
-                .HasMany(e => e.Ratings1)
-                .WithOptional(e => e.RatingGroup1)
+                .HasMany(e => e.RatingsAboveThisRatingGroupInHierarchy) // DEBUG -- should be only 1
+                .WithOptional(e => e.OwnedRatingGroup)
                 .HasForeignKey(e => e.OwnedRatingGroupID);
 
             modelBuilder.Entity<RatingGroup>()
-                .HasMany(e => e.Ratings2)
-                .WithRequired(e => e.RatingGroup2)
+                .HasMany(e => e.RatingsWithinTopRatingGroupHierarchy)
+                .WithRequired(e => e.TopRatingGroup)
                 .HasForeignKey(e => e.TopmostRatingGroupID)
                 .WillCascadeOnDelete(false);
 
@@ -639,7 +639,7 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<RatingPhase>()
                 .HasMany(e => e.RatingGroupPhaseStatus)
-                .WithRequired(e => e.RatingPhas)
+                .WithRequired(e => e.RatingPhase)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RatingPhaseStatus>()
@@ -797,8 +797,9 @@ namespace ClassLibrary1.EFModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TblColumn>()
-                .HasOptional(e => e.TblColumns1)
-                .WithRequired(e => e.TblColumn1);
+                .HasMany(e => e.TblColumnsConditionalOnThisColumn)
+                .WithOptional(e => e.TblColumnOnWhichThisColumnIsConditional)
+                .HasForeignKey(e => e.ConditionTblColumnID);
 
             modelBuilder.Entity<TblRowFieldDisplay>()
                 .HasMany(e => e.TblRows)
@@ -1148,9 +1149,8 @@ namespace ClassLibrary1.EFModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
-                .HasMany(e => e.UserInfoes)
-                .WithRequired(e => e.User)
-                .WillCascadeOnDelete(false);
+                .HasOptional(e => e.UserInfo)
+                .WithRequired(e => e.User);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.UserInteractions)

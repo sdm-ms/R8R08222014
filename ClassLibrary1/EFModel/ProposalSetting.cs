@@ -57,7 +57,6 @@ namespace ClassLibrary1.EFModel
 
         public decimal RequiredPointsToMakeProposal { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public int? Creator { get; set; }

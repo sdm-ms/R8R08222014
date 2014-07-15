@@ -12,7 +12,7 @@ namespace ClassLibrary1.EFModel
         {
             ChoiceGroupFieldDefinitions = new HashSet<ChoiceGroupFieldDefinition>();
             ChoiceInGroups = new HashSet<ChoiceInGroup>();
-            ChoiceGroups1 = new HashSet<ChoiceGroup>();
+            ChoiceGroupsDependentOnThisChoiceGroup = new HashSet<ChoiceGroup>();
         }
 
         public int ChoiceGroupID { get; set; }
@@ -49,9 +49,9 @@ namespace ClassLibrary1.EFModel
 
         public virtual ICollection<ChoiceInGroup> ChoiceInGroups { get; set; }
 
-        public virtual ICollection<ChoiceGroup> ChoiceGroups1 { get; set; }
+        public virtual ICollection<ChoiceGroup> ChoiceGroupsDependentOnThisChoiceGroup { get; set; }
 
-        public virtual ChoiceGroup ChoiceGroup1 { get; set; }
+        public virtual ChoiceGroup ChoiceGroupOnWhichThisChoiceGroupIsDependent { get; set; }
 
         public virtual PointsManager PointsManager { get; set; }
 

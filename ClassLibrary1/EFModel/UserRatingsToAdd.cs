@@ -15,7 +15,6 @@ namespace ClassLibrary1.EFModel
 
         public int TopRatingGroupID { get; set; }
 
-        [Required]
         public byte[] UserRatingHierarchy { get; set; }
 
         public virtual RatingGroup RatingGroup { get; set; }

@@ -26,7 +26,6 @@ namespace ClassLibrary1.EFModel
 
         public int TblRowFieldDisplayID { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public byte Status { get; set; }

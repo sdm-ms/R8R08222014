@@ -281,14 +281,6 @@
     <Compile Include="Misc\UserProfileInfo.cs" />
     <Compile Include="Misc\WeakReferenceTracker.cs" />
     <Compile Include="Misc\IEnumerableExtensions.cs" />
-    <Compile Include="ModelFromDatabase\R8R.cs">
-      <DependentUpon>R8R.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="ModelFromDatabase\R8R.designer.cs">
-      <DependentUpon>R8R.dbml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="ModelFromDatabase\Partials\Rating.cs" />
     <Compile Include="ModelFromDatabase\Partials\TrustTrackerUnit.cs" />
     <Compile Include="Misc\TimeSpanExtensions.cs" />
@@ -301,6 +293,7 @@
     <Compile Include="Model\CacheManagement.cs" />
     <Compile Include="Model\CacheSubstitution.cs" />
     <Compile Include="Model\ConnectionString.cs" />
+    <Compile Include="Model\DataContextEF.cs" />
     <Compile Include="Model\TblColumns.cs" />
     <Compile Include="Model\ChoiceGroups.cs" />
     <Compile Include="Model\ClassesAndTypes.cs" />
@@ -375,23 +368,10 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ModelFromDatabase\R8R.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>R8R.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ModelFromDatabase\Rateroo.dbml.views">
-      <DependentUpon>R8R.dbml</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ModelFromDatabase\R8R.dbml.layout">
-      <DependentUpon>R8R.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -422,11 +402,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ModelFromDatabase\Rateroo.dbml.views_def.layout">
-      <DependentUpon>R8R.dbml</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

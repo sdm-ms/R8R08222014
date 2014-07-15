@@ -12,22 +12,6 @@ namespace ClassLibrary1.Model
 
     public class R8RInMemoryDataContext : InMemoryContext, IR8RDataContext
     {
-        public System.IO.TextWriter Log
-        {
-            get
-            {
-                return null;
-            }
-            set
-            {
-                // Nada
-            }
-        }
-
-        public System.Data.Common.DbCommand GetCommand(IQueryable query)
-        {
-            return null;
-        }
 
         public bool IsRealDatabase()
         {
@@ -84,18 +68,11 @@ namespace ClassLibrary1.Model
         IR8RDataContext underlyingR8RDataContext;
 
         public R8RInMemoryDataContext()
-            : base(new IR8RDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
+            : base(new R8RContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
         {
             underlyingR8RDataContext = (IR8RDataContext)UnderlyingDataContext;
         }
 
-        public void LoadStatsWithTrustTrackersAndUserInteractions()
-        {
-        }
-
-        public void SetUserRatingAddingLoadOptions()
-        {
-        }
 
         public IQueryable<TblRow> UDFNearestNeighborsForTbl(float? latitude, float? longitude, int? maxNumResults, int? tblID)
         {

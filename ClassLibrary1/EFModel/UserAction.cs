@@ -17,7 +17,6 @@ namespace ClassLibrary1.EFModel
 
         public int UserActionID { get; set; }
 
-        [Required]
         public string Text { get; set; }
 
         public bool SuperUser { get; set; }

@@ -19,7 +19,6 @@ namespace ClassLibrary1.EFModel
 
         public int NumInTbl { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Name { get; set; }
 

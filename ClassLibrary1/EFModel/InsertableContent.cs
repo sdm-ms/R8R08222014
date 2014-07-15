@@ -10,7 +10,6 @@ namespace ClassLibrary1.EFModel
     {
         public int InsertableContentID { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Name { get; set; }
 
@@ -20,7 +19,6 @@ namespace ClassLibrary1.EFModel
 
         public int? TblID { get; set; }
 
-        [Required]
         public string Content { get; set; }
 
         public bool IsTextOnly { get; set; }

@@ -777,7 +777,7 @@ WHEN MATCHED THEN
                                                  select new { Set = x, Fieldnames = fieldnames, Fieldstring = fieldstring };
             var groupsOfSetsOfFieldnameMatches = from a in augmented
                                                  group a by a.Fieldstring into g
-                                                 select new { RowsIdentifiedByFieldnames = g.Select(x => x.Set), Fieldnames = g.First().Fieldnames};
+                                                 select new { RowsIdentifiedByFieldnames = g.Select(x => x.Set), Fieldnames = g.FirstOrDefault().Fieldnames};
             var groupsList = groupsOfSetsOfFieldnameMatches.ToList();
             foreach (var group in groupsOfSetsOfFieldnameMatches)
             {

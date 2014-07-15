@@ -12,7 +12,6 @@ namespace ClassLibrary1.EFModel
 
         public int FieldID { get; set; }
 
-        [Required]
         public string AddressString { get; set; }
 
         public decimal? Latitude { get; set; }

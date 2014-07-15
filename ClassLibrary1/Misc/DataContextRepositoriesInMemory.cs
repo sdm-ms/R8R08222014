@@ -113,7 +113,7 @@ namespace ClassLibrary1.Misc
             {
                 object theEntitySet = Property.GetValue(theRepositoryItem, null); // EntitySet<typeof(TypeOfForeignItem)>;
                 if (foreignItemToRemove != null)
-                    SpecificEntitySetType.InvokeMember("Remove", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToRemove });
+                    ;// DEBUG SpecificEntitySetType.InvokeMember("Remove", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToRemove });
             }
             else if (PropertyOfForeignKeyID != null)
             {
@@ -135,7 +135,7 @@ namespace ClassLibrary1.Misc
             if (PropertyReturnsICollection)
             {
                 object theEntitySet = Property.GetValue(theObject, null); // EntitySet<typeof(TypeOfForeignItem)>;
-                SpecificEntitySetType.InvokeMember("Add", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToAdd });
+                // DEBUG SpecificEntitySetType.InvokeMember("Add", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToAdd });
             }
             else if (PropertyOfForeignKeyID != null)
             {
@@ -177,29 +177,31 @@ namespace ClassLibrary1.Misc
 
         public static List<RepositoryItemAssociationInfo> ProcessDataContextMappingInfo(DbContext theDataContext)
         {
-            var associations = from x in theDataContext.Mapping.GetTables()
-                               let rowType = x.RowType
-                               let dataMembers = rowType.DataMembers
-                               from dataMember in dataMembers
-                               let memberInfo = dataMember.Member
-                               where memberInfo is System.Reflection.PropertyInfo
-                               let propertyInfo = (PropertyInfo)memberInfo
-                               let propertyInfoAssociationAttribute = (AssociationAttribute) propertyInfo.GetCustomAttributes(typeof(AssociationAttribute), false).FirstOrDefault()
-                               let association = dataMember.Association
-                               where dataMember.Association != null
-                               let foreignKeyIDPropertyInfo = dataMembers.SingleOrDefault(y => propertyInfoAssociationAttribute != null && propertyInfoAssociationAttribute.ThisKey == y.Name && propertyInfoAssociationAttribute.IsForeignKey == true)
-                               let foreignKeyIDProperty = (association.IsMany || foreignKeyIDPropertyInfo == null) ? null : (PropertyInfo)foreignKeyIDPropertyInfo.Member
-                               select new RepositoryItemAssociationInfo
-                               {
-                                   TypeOfItemContainingProperty = rowType.Type,
-                                   Property = propertyInfo,
-                                   NameOfPropertyConnectingToForeignItem = dataMember.Name,
-                                   PropertyOfForeignKeyID = foreignKeyIDProperty,
-                                   NameOfPropertyWithForeignKeyID = foreignKeyIDProperty == null ? "" : foreignKeyIDProperty.Name,
-                                   TypeOfForeignItem = association.OtherType.Type,
-                                   PropertyReturnsICollection = association.IsMany
-                               };
-            return associations.ToList();
+            return null; // DEBUG
+
+            //var associations = from x in theDataContext.Mapping.GetTables()
+            //                   let rowType = x.RowType
+            //                   let dataMembers = rowType.DataMembers
+            //                   from dataMember in dataMembers
+            //                   let memberInfo = dataMember.Member
+            //                   where memberInfo is System.Reflection.PropertyInfo
+            //                   let propertyInfo = (PropertyInfo)memberInfo
+            //                   let propertyInfoAssociationAttribute = (AssociationAttribute) propertyInfo.GetCustomAttributes(typeof(AssociationAttribute), false).FirstOrDefault()
+            //                   let association = dataMember.Association
+            //                   where dataMember.Association != null
+            //                   let foreignKeyIDPropertyInfo = dataMembers.SingleOrDefault(y => propertyInfoAssociationAttribute != null && propertyInfoAssociationAttribute.ThisKey == y.Name && propertyInfoAssociationAttribute.IsForeignKey == true)
+            //                   let foreignKeyIDProperty = (association.IsMany || foreignKeyIDPropertyInfo == null) ? null : (PropertyInfo)foreignKeyIDPropertyInfo.Member
+            //                   select new RepositoryItemAssociationInfo
+            //                   {
+            //                       TypeOfItemContainingProperty = rowType.Type,
+            //                       Property = propertyInfo,
+            //                       NameOfPropertyConnectingToForeignItem = dataMember.Name,
+            //                       PropertyOfForeignKeyID = foreignKeyIDProperty,
+            //                       NameOfPropertyWithForeignKeyID = foreignKeyIDProperty == null ? "" : foreignKeyIDProperty.Name,
+            //                       TypeOfForeignItem = association.OtherType.Type,
+            //                       PropertyReturnsICollection = association.IsMany
+            //                   };
+            //return associations.ToList();
         }
     }
 
@@ -465,7 +467,7 @@ namespace ClassLibrary1.Misc
             inMemoryRepositoryList = new List<IInMemoryRepositorySubmitChangesActions>();
         }
 
-        public InMemoryRepositoryList(DataContext underlyingDataContext, InMemoryRepositoryList listToClone)
+        public InMemoryRepositoryList(DbContext underlyingDataContext, InMemoryRepositoryList listToClone)
         {
             UnderlyingDataContext = underlyingDataContext;
             MappingInfo = MappingInfoProcessor.GetMappingInfoForDataContext(underlyingDataContext);

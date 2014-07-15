@@ -71,7 +71,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroup theOwnerGroup = ownerRating.RatingGroup;
 
-            ownerRating.RatingGroup1 = theOwnedGroup;
+            ownerRating.OwnedRatingGroup = theOwnedGroup;
 
             RatingGroupTypes parentRatingGroupType = (RatingGroupTypes) theOwnerGroup.TypeOfRatingGroup;
             RatingGroupTypes subordinateRatingGroupTypes = parentRatingGroupType;
@@ -102,7 +102,7 @@ namespace ClassLibrary1.Model
         /// <returns>The rating above the group, or null</returns>
         public Rating GetRatingGroupOwner(RatingGroup ratingGroup)
         {
-            Rating theRating = DataContext.NewOrSingleOrDefault<Rating>(m => m.RatingGroup1 == ratingGroup);
+            Rating theRating = DataContext.NewOrSingleOrDefault<Rating>(m => m.OwnedRatingGroup == ratingGroup);
             return theRating;
         }
 
@@ -115,7 +115,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroup theCurrentRatingGroup = prediction.Rating.RatingGroup;
             UserRatingGroup theUserRatingGroup = prediction.UserRatingGroup;
-            Rating theRatingOwner = ObjDataAccess.R8RDB.NewOrSingle<Rating>(m => m.RatingGroup1 == theCurrentRatingGroup);
+            Rating theRatingOwner = ObjDataAccess.R8RDB.NewOrSingle<Rating>(m => m.OwnedRatingGroup == theCurrentRatingGroup);
             if (theRatingOwner == null)
                 return null;
             else
@@ -138,7 +138,7 @@ namespace ClassLibrary1.Model
         /// <returns>True if this prediction is at the bottom of the hierarchy</returns>
         public bool UserRatingIsBottomOfHierarchy(UserRating prediction)
         {
-            return prediction.Rating.RatingGroup1 == null;
+            return prediction.Rating.OwnedRatingGroup == null;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace ClassLibrary1.Model
         {
             var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow == tblRow && m.RatingGroup.TblColumn == TblColumn);
             if (firstRating != null)
-                return firstRating.RatingGroup2;
+                return firstRating.TopRatingGroup;
 
             // otherwise, use longer method.
             var theRatingGroups = DataContext.GetTable<RatingGroup>().Where(mg => mg.TblRow == tblRow && mg.TblColumn == TblColumn && mg.Status == (Byte)StatusOfObject.Active);
@@ -171,9 +171,9 @@ namespace ClassLibrary1.Model
         {
             var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup == ratingGroup);
             if (firstRating != null)
-                return firstRating.RatingGroup2;
+                return firstRating.TopRatingGroup;
 
-            Rating theOwnerRating =  DataContext.NewOrSingleOrDefault<Rating>(m => m.RatingGroup1 == ratingGroup);
+            Rating theOwnerRating =  DataContext.NewOrSingleOrDefault<Rating>(m => m.OwnedRatingGroup == ratingGroup);
             if (theOwnerRating == null)
                 return ratingGroup;
             else
@@ -483,7 +483,7 @@ namespace ClassLibrary1.Model
             {
                 //ProfileSimple.Start("topmostRatingGroup");
                 //ProfileSimple.Start("LoadTheRatings");
-                var theRatings = DataContext.WhereFromNewOrDatabase<Rating>(m => m.RatingGroup2 == topmostRatingGroup).ToList();
+                var theRatings = DataContext.WhereFromNewOrDatabase<Rating>(m => m.TopRatingGroup == topmostRatingGroup).ToList();
                 //ProfileSimple.End("LoadTheRatings");
                 //ProfileSimple.Start("GetRatingGroupPhaseStatus");
                 RatingGroupPhaseStatus theRatingGroupPhaseStatus = GetRatingGroupPhaseStatus(topmostRatingGroup); 
@@ -491,7 +491,7 @@ namespace ClassLibrary1.Model
                 foreach (var theRating in theRatings)
                 {
                     //ProfileSimple.Start("AdvanceRatingGroup2");
-                    bool canAdvance = AdvanceRatingGroupToNextRatingPhase(theRating.RatingGroup2, theRatingGroupPhaseStatus, ref newRatingGroupPhaseStatus);
+                    bool canAdvance = AdvanceRatingGroupToNextRatingPhase(theRating.TopRatingGroup, theRatingGroupPhaseStatus, ref newRatingGroupPhaseStatus);
                     //ProfileSimple.End("AdvanceRatingGroup2");
                     if (!canAdvance)
                         return null;

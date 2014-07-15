@@ -368,7 +368,7 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.ChoiceGroup:
                     ChoiceGroup theChoiceGroup = DataContext.GetTable<ChoiceGroup>().Single(x => x.ChoiceGroupID == objectID);
                     theChoiceGroup.Status = newValue;
-                    var tblRows1 = theChoiceGroup.ChoiceGroups.SelectMany(x => x.ChoiceInGroups).SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceField.Field.TblRow).Distinct().ToList();
+                    var tblRows1 = theChoiceGroup.ChoiceInGroups.SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceField.Field.TblRow).Distinct().ToList();
                     foreach (var tblRow1 in tblRows1)
                         ResetTblRowFieldDisplay(tblRow1);
                     break;

@@ -57,7 +57,7 @@ namespace ClassLibrary1.Model
         {
             get
             {
-                return _dataContextManagement.GetDataContext(true, true);
+                return _dataContextManagement.GetDataContext();
             }
         }
 

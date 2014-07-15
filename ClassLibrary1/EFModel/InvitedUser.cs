@@ -12,7 +12,6 @@ namespace ClassLibrary1.EFModel
         [Key]
         public int ActivationNumber { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string EmailId { get; set; }
 

@@ -66,7 +66,7 @@ namespace ClassLibrary1.Model
                 .Take(maxAtOnce))
                 let RatingResolution = x
                 let RatingGroup = x.RatingGroup
-                let Ratings = RatingGroup.Ratings2
+                let Ratings = RatingGroup.RatingsWithinTopRatingGroupHierarchy
                 let UserRatings = Ratings.SelectMany(y => y.UserRatings)
                 let TblRow = RatingGroup.TblRow
                 let TblColumn = RatingGroup.TblColumn
@@ -98,7 +98,7 @@ namespace ClassLibrary1.Model
                 /* in the rare event that there are multiple simultaneous resolutions */
                 foreach (var z in resolution.UserRatings)
                     UpdatePointsForUserRating(z, resolution.PointsTotals.Single(w => w.User == z.User), currentTime);
-                var ratingsWithlastUserRatings = resolution.RatingResolution.RatingGroup.Ratings2.Select(x => new { 
+                var ratingsWithlastUserRatings = resolution.RatingResolution.RatingGroup.RatingsWithinTopRatingGroupHierarchy.Select(x => new { 
                     Rating = x, 
                     TblColumn = resolution.TblColumn,
                     Tbl = resolution.Tbl,
@@ -161,7 +161,7 @@ namespace ClassLibrary1.Model
                 // apply rewards for ratings being resolved
                 Rating firstRating = resolution.Ratings.FirstOrDefault();
                 if (firstRating != null)
-                    ApplyRewardsForRatingBeingResolved(firstRating.RatingGroup2, resolution.RatingResolution.CancelPreviousResolutions);
+                    ApplyRewardsForRatingBeingResolved(firstRating.TopRatingGroup, resolution.RatingResolution.CancelPreviousResolutions);
             }
             return resolutions.Count() == maxAtOnce;
         }
@@ -181,8 +181,6 @@ namespace ClassLibrary1.Model
         {
             DateTime currentTime = TestableDateTime.Now;
             const int maxToTake = 50;
-
-            DataContext.LoadStatsWithTrustTrackersAndUserInteractions(); // we can't seem to do this in a projection without getting a linq to sql unable to translate error, so we're going to use loading options.
 
             var rpsInitialQuery = DataContext.GetTable<RatingPhaseStatus>()
                 .Where(rps => rps.TriggerUserRatingsUpdate)
@@ -492,7 +490,7 @@ namespace ClassLibrary1.Model
 
             decimal longTermPointsWeight = theUserRating.Rating.RatingGroup.RatingGroupAttribute.LongTermPointsWeight;
             Rating theRating = theUserRating.Rating;
-            RatingGroup theTopRatingGroup = theRating.RatingGroup2;
+            RatingGroup theTopRatingGroup = theRating.TopRatingGroup;
 
             decimal basisForRating = theUserRating.PreviousRatingOrVirtualRating;
             // if we want to give zero points for untrusted ratings, we could uncomment the following lines, but it may be better

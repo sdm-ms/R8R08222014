@@ -830,7 +830,7 @@ namespace ClassLibrary1.Model
                 //Trace.TraceInformation("Starting to add predictions.");
                 //R8RDB.GetTable<SetUserRatingAddOption>(); doesn't seem to work
                 Rating firstRating = theRatings.Single(m => m.RatingID == ratingIdAndUserRatingValues[0].RatingID);
-                RatingGroup topRatingGroup = firstRating.RatingGroup2;
+                RatingGroup topRatingGroup = firstRating.TopRatingGroup;
                 decimal? constrainedSum = topRatingGroup.RatingGroupAttribute.ConstrainedSum;
 
                 RatingIdAndUserRatingValue firstUserRating = ratingIdAndUserRatingValues.First();
@@ -919,8 +919,6 @@ namespace ClassLibrary1.Model
 
             lock (AddUserRatingLockForTesting ?? alternativeLock)
             {
-
-                DataContext.SetUserRatingAddingLoadOptions();
                 int numAtATime = 100;
                 /* We manually load the first rating in rating group to speed processing of common scenario. The load options should bring everything else in. */
                 List<UserRatingsToAdd> userRatingsToAddList = null;

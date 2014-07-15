@@ -30,7 +30,10 @@ using System.Diagnostics;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 using System.Text.RegularExpressions;
-using System.Threading; 
+using System.Threading;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Metadata.Edm; 
 //namespace PredRatings
 //{
 
@@ -67,7 +70,7 @@ namespace ClassLibrary1.Model
         {
             get
             {
-                return myDataContextManagement.GetDataContext(true, true);
+                return myDataContextManagement.GetDataContext();
             }
         }
 
@@ -121,18 +124,6 @@ namespace ClassLibrary1.Model
            return tablenameWithoutDBO;
        }
 
-        public void ResetDatabaseAlt()
-        {
-            IR8RDataContext dataContext = R8RDB.GetRealDatabaseIfExists();
-            if (dataContext != null)
-            {
-                dataContext.ExecuteCommand("EXEC [sp_MSforeachtable] 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'");
-                //R8RDB.ExecuteCommand("exec [sp_MSforeachtable] 'truncate table ?'");
-                //R8RDB.ExecuteCommand("EXEC [sp_MSforeachtable] @command1='DBCC CHECKIDENT (?, RESEED, 100)'");
-                //R8RDB.ExecuteCommand("EXEC [sp_MSforeachtable] @command1='DBCC DBREINDEX('?')'");
-                dataContext.ExecuteCommand("EXEC [sp_MSforeachtable] 'ALTER TABLE ? CHECK CONSTRAINT ALL'");
-            }
-        }
 
         //public void DeleteEverythingSQL()
         //{
@@ -391,50 +382,75 @@ namespace ClassLibrary1.Model
             ResetDataContexts();
         }
 
-        List<MetaTable> successfulOrder = new List<MetaTable>();
+
+        public static void ClearDatabase(DbContext context)
+        {
+            var tableNames = GetNamesOfTables(context);
+
+            foreach (var tableName in tableNames)
+            {
+                context.Database.ExecuteSqlCommand(string.Format("DELETE FROM {0}", tableName));
+            }
+
+            context.SaveChanges();
+        }
+
+        private static List<string> GetNamesOfTables(DbContext context)
+        {
+            var tableNames = context.Database.SqlQuery<string>("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT LIKE '%Migration%'").ToList();
+            return tableNames.Where(x => !x.Contains("Forum") && !x.Contains("aspnet")).ToList();
+            //var objectContext = ((IObjectContextAdapter)context).ObjectContext;
+            //var entities = objectContext.MetadataWorkspace.GetEntityContainer(objectContext.DefaultContainerName, DataSpace.CSpace).BaseEntitySets;
+            //var method = objectContext.GetType().GetMethods().First(x => x.Name == "CreateObjectSet");
+            //var createObjectSetMethods = entities.Select(x => method.MakeGenericMethod(Type.GetType(x.ElementType.FullName + ", " + assembly))).ToList();
+            //var objectSets = createObjectSetMethods.Select(x => x.Invoke(objectContext, null));
+            //var tableNames = objectSets.Select(objectSet => (objectSet.GetType().GetProperty("EntitySet").GetValue(objectSet, null) as EntitySet).Name).ToList();
+            //return tableNames;
+        }
 
         public void DeleteAllTablesSql(IR8RDataContext dataContext)
         {
             if (!dataContext.IsRealDatabase())
                 return;
 
+            List<string> successfulOrder = new List<string>();
+            List<string> theTables = GetNamesOfTables(((R8REFDataContext)dataContext).UnderlyingDbContext);
+
             int successfulCount = successfulOrder.Count();
             if (successfulCount != 0) // we've done this successfully before, so let's try in the same order.
             {
                 ExecuteCommand("EXEC sp_msforeachtable \"ALTER TABLE ? NOCHECK CONSTRAINT all\"");
-                List<MetaTable> successfulOrderCopy = successfulOrder;
-                successfulOrder = new List<MetaTable>();
-                DeleteAllTablesSQLHelper(successfulOrderCopy);
+                List<string> successfulOrderCopy = successfulOrder;
+                successfulOrder = new List<string>();
+                DeleteAllTablesSQLHelper(successfulOrderCopy, successfulOrder);
                 ExecuteCommand("exec sp_msforeachtable @command1=\"print '?'\", @command2=\"ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all\"");
                 if (successfulOrder.Count() == successfulCount) // it worked -- otherwise we'll keep going with tables that didn't work
                     return;
             }
-
-            List<MetaTable> theTables = dataContext.GetRealDatabaseIfExists().Mapping.GetTables().ToList().Where(x => !x.TableName.Contains("aspnet") && !x.TableName.Contains("Forum") && !successfulOrder.Any(y => y.TableName == x.TableName)).ToList();
             while (theTables.Any())
             {
                 ExecuteCommand("EXEC sp_msforeachtable \"ALTER TABLE ? NOCHECK CONSTRAINT all\"");
-                DeleteAllTablesSQLHelper(theTables);
+                DeleteAllTablesSQLHelper(theTables, successfulOrder);
                 ExecuteCommand("exec sp_msforeachtable @command1=\"print '?'\", @command2=\"ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all\"");
             }
         }
 
         [DebuggerHidden]
-        public void DeleteAllTablesSQLHelper(List<MetaTable> remainingTables)
+        public void DeleteAllTablesSQLHelper(List<string> remainingTables, List<string> successfulOrder)
         {
-            List<MetaTable> tablesToRemove = new List<MetaTable>();
+            List<string> tablesToRemove = new List<string>();
             foreach (var tbl in remainingTables)
             {
                 try
                 {
-                    DeleteAllRecords(tbl.TableName);
+                    DeleteAllRecords(tbl);
                     tablesToRemove.Add(tbl);
                     successfulOrder.Add(tbl);
-                    Trace.WriteLine("Successfully deleted all data from " + tbl.TableName);
+                    Trace.WriteLine("Successfully deleted all data from " + tbl);
                 }
                 catch (Exception ex)
                 {
-                    Trace.WriteLine("Not yet able to delete all data from " + tbl.TableName + " " + ex.Message);
+                    Trace.WriteLine("Not yet able to delete all data from " + tbl + " " + ex.Message);
                 }
             }
             remainingTables.RemoveAll(x => tablesToRemove.Contains(x));

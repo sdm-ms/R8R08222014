@@ -575,7 +575,7 @@ namespace ClassLibrary1.Model
                     throw new Exception("Dependent choice group not found."); 
                 foreach (ChoiceInGroup theChoice in TheChoices)
                 {
-                    if (theChoice.ChoiceInGroup1 != null)
+                    if (theChoice.ChoiceInGroupOnWhichThisChoiceInGroupIsDependent != null)
                     {
                         ChoiceInGroup theCorrespondingChoice = theChoiceFieldDataThisDependsOn.TheChoices.SingleOrDefault(c => c.ChoiceInGroupID == theChoice.ActiveOnDeterminingGroupChoiceInGroupID);
                         if (theCorrespondingChoice == null)

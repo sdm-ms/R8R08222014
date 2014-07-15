@@ -17,10 +17,8 @@ namespace ClassLibrary1.EFModel
 
         public int FieldID { get; set; }
 
-        [Required]
         public string Text { get; set; }
 
-        [Required]
         public string Link { get; set; }
 
         public byte Status { get; set; }

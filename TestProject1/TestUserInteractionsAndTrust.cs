@@ -879,10 +879,10 @@ namespace TestProject1
             TestHelper.WaitIdleTasks();
 
             var theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[2]);
-            double correctWeightInCalculatingTrustTotal1 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats[0], theUserInteraction1);
+            double correctWeightInCalculatingTrustTotal1 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats.ToArray()[0], theUserInteraction1);
             theUserInteraction1.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal1, 0.01F);
             var theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[3]);
-            double correctWeightInCalculatingTrustTotal2 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats[0], theUserInteraction2);
+            double correctWeightInCalculatingTrustTotal2 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats.ToArray()[0], theUserInteraction2);
             theUserInteraction2.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal2, 0.01F);
             var theUserInteraction3 = _dataManipulation.DataContext.GetTable<UserInteraction>().SingleOrDefault(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[9]);
             theUserInteraction3.Should().BeNull(); // because the idle task should eliminate it
@@ -965,7 +965,7 @@ namespace TestProject1
             {
                 UserInteraction uiToAdd = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[2 + s]);
                 userInteractions.Add(uiToAdd);
-                uiToAdd.WeightInCalculatingTrustTotal.Should().BeApproximately(TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(uiToAdd.UserInteractionStats[0], uiToAdd), 0.01F);
+                uiToAdd.WeightInCalculatingTrustTotal.Should().BeApproximately(TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(uiToAdd.UserInteractionStats.ToArray()[0], uiToAdd), 0.01F);
             }
 
             int numStats = TrustTrackerStatManager.NumStats;

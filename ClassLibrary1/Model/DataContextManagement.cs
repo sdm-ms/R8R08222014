@@ -73,7 +73,7 @@ namespace ClassLibrary1.Model
             ResetMyDataContext(key);
         }
 
-        internal IR8RDataContext GetDataContext(string key, bool doAllowChangeData, bool enableObjectTracking)
+        internal IR8RDataContext GetDataContext(string key)
         {
             IR8RDataContext dataContext = null;
             if (HttpContext.Current != null)
@@ -84,7 +84,7 @@ namespace ClassLibrary1.Model
                 }
                 else
                 {
-                    dataContext = GetIR8RDataContext.New(doAllowChangeData, enableObjectTracking);
+                    dataContext = GetIR8RDataContext.New();
                     if (dataContext != null)
                         HttpContext.Current.Items[key] = dataContext;
                 }
@@ -93,7 +93,7 @@ namespace ClassLibrary1.Model
             {
                 if (_ThreadDataContext == null)
                 {
-                    _ThreadDataContext = GetIR8RDataContext.New(doAllowChangeData, enableObjectTracking);
+                    _ThreadDataContext = GetIR8RDataContext.New();
                 }
                 dataContext = _ThreadDataContext;
                 //LocalDataStoreSlot threadData = Thread.GetNamedDataSlot(key);
@@ -124,11 +124,11 @@ namespace ClassLibrary1.Model
         }
 
 
-        public IR8RDataContext GetDataContext(bool doAllowChangeData, bool enableObjectTracking)
+        public IR8RDataContext GetDataContext()
         {
             string key = GetThreadKey();
             //Trace.TraceInformation("GetDataContext " + key);
-            return GetDataContext(key, doAllowChangeData, enableObjectTracking);
+            return GetDataContext(key);
         }
     }
 

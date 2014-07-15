@@ -11,7 +11,6 @@ namespace ClassLibrary1.EFModel
         [Key]
         public int RoleStatusID { get; set; }
 
-        [Required]
         public string RoleID { get; set; }
 
         public DateTime? LastCheckIn { get; set; }

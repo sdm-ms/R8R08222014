@@ -827,8 +827,8 @@ namespace ClassLibrary1.Model
             {
                 RatingGroup = ratingGroup,
                 RatingCharacteristic = RatingCharacteristics,
-                RatingGroup1 = null,
-                RatingGroup2 = topRatingGroup,
+                OwnedRatingGroup = null,
+                TopRatingGroup = topRatingGroup,
                 NumInGroup = ratingPlan.NumInGroup,
                 Name = ratingPlan.Name,
                 Creator = ratingPlan.Creator,

@@ -53,10 +53,10 @@ namespace ClassLibrary1.Model
                           {
                               Rating = x,
                               RatingGroup = x.RatingGroup,
-                              TopRatingGroup = x.RatingGroup2,
-                              RatingGroupResolutions = x.RatingGroup2.RatingGroupResolutions,
+                              TopRatingGroup = x.TopRatingGroup,
+                              RatingGroupResolutions = x.TopRatingGroup.RatingGroupResolutions,
                               RatingGroupAttribute = x.RatingGroup.RatingGroupAttribute,
-                              TopRatingGroupAttribute = x.RatingGroup2.RatingGroupAttribute,
+                              TopRatingGroupAttribute = x.TopRatingGroup.RatingGroupAttribute,
                               RatingCharacteristic = ratingCharacteristic,
                               SubsidyDensityRangeGroup = subsidyDensityRangeGroup,
                               TblRow = tblRow,

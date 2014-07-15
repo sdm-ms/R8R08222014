@@ -23,16 +23,12 @@ namespace ClassLibrary1.EFModel
 
         public int? TblID { get; set; }
 
-        [Required]
         public string HierarchyItemName { get; set; }
 
-        [Required]
         public string FullHierarchyWithHtml { get; set; }
 
-        [Required]
         public string FullHierarchyNoHtml { get; set; }
 
-        [Required]
         public string RouteToHere { get; set; }
 
         public bool IncludeInMenu { get; set; }

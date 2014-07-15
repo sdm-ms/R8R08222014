@@ -1969,7 +1969,7 @@ namespace ClassLibrary1.Model
                 }
                 if (i == 0)
                 {
-                    topRatingGroup = theRating.RatingGroup2;
+                    topRatingGroup = theRating.TopRatingGroup;
                     topMostRatingID = theRating.TopmostRatingGroupID;
                     if (theRatingGroups.Single(mg => mg.RatingGroupID == topMostRatingID).Status != (Byte)StatusOfObject.Active)
                     {
@@ -2023,7 +2023,7 @@ namespace ClassLibrary1.Model
                 else
                     firstRating = allRatingsIfOneRatingPerCell.SingleOrDefault(m => m.RatingID == theRatingIDs.First());
                 RatingCharacteristic theRatingCharacteristic = firstRating.RatingCharacteristic;
-                RatingGroup theTopRatingGroup = firstRating.RatingGroup2;
+                RatingGroup theTopRatingGroup = firstRating.TopRatingGroup;
                 TblRow theTableRow = theTopRatingGroup.TblRow;
                 if (theTableRow.Status == (Byte)StatusOfObject.Unavailable)
                 {
@@ -2034,7 +2034,7 @@ namespace ClassLibrary1.Model
                 List<Rating> theRatings = new List<Rating>();
                 if (theTypeForFirstRating != RatingGroupTypes.probabilitySingleOutcome && theTypeForFirstRating != RatingGroupTypes.singleDate && theTypeForFirstRating != RatingGroupTypes.singleNumber)
                 {
-                    theRatings = DataContext.GetTable<Rating>().Where(x => x.RatingGroup2 == theTopRatingGroup).ToList(); // all ratings sharing same top rating group
+                    theRatings = DataContext.GetTable<Rating>().Where(x => x.TopRatingGroup == theTopRatingGroup).ToList(); // all ratings sharing same top rating group
                 }
                 else
                     theRatings.Add(firstRating);

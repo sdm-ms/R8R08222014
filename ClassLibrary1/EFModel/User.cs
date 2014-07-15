@@ -26,7 +26,6 @@ namespace ClassLibrary1.EFModel
             TrustTrackerForChoiceInGroups = new HashSet<TrustTrackerForChoiceInGroup>();
             TrustTrackers = new HashSet<TrustTracker>();
             UserCheckIns = new HashSet<UserCheckIn>();
-            UserInfoes = new HashSet<UserInfo>();
             UserInteractions = new HashSet<UserInteraction>();
             UserInteractions1 = new HashSet<UserInteraction>();
             UserRatings = new HashSet<UserRating>();
@@ -37,7 +36,6 @@ namespace ClassLibrary1.EFModel
 
         public int UserID { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Username { get; set; }
 
@@ -46,6 +44,8 @@ namespace ClassLibrary1.EFModel
         public decimal TrustPointsRatioTotals { get; set; }
 
         public byte Status { get; set; }
+
+        public virtual UserInfo UserInfo { get; set; }
 
         public virtual ICollection<ChangesGroup> ChangesGroups { get; set; }
 
@@ -78,8 +78,6 @@ namespace ClassLibrary1.EFModel
         public virtual ICollection<TrustTracker> TrustTrackers { get; set; }
 
         public virtual ICollection<UserCheckIn> UserCheckIns { get; set; }
-
-        public virtual ICollection<UserInfo> UserInfoes { get; set; }
 
         public virtual ICollection<UserInteraction> UserInteractions { get; set; }
 

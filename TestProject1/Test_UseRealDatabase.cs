@@ -135,7 +135,8 @@ namespace TestProject1
 
         private static void AddUser()
         {
-            IR8RDataContext myDataContext = new IR8RDataContext(ConnectionString.GetR8RNormalizedDatabaseConnectionString());
+            // this was added to help diagnose a memory leak and is now used only for that purpose, in case it reappears
+            IR8RDataContext myDataContext = new R8REFDataContext();
 
             User newUser =  new User {
                 Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),
@@ -144,7 +145,6 @@ namespace TestProject1
             };
             myDataContext.GetTable<User>().InsertOnSubmit(newUser);
             myDataContext.SubmitChanges();
-            // DEBUG myDataContext.ClearContextCache();
         }
 
 

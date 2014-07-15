@@ -26,11 +26,9 @@ namespace ClassLibrary1.EFModel
 
         public int? DefaultRatingGroupAttributesID { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string TblTabWord { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         [StringLength(50)]
@@ -50,20 +48,15 @@ namespace ClassLibrary1.EFModel
 
         public bool OneRatingPerRatingGroup { get; set; }
 
-        [Required]
         public string TblRowAdditionCriteria { get; set; }
 
-        [Required]
         public string SuppStylesHeader { get; set; }
 
-        [Required]
         public string SuppStylesMain { get; set; }
 
-        [Required]
         [StringLength(20)]
         public string WidthStyleEntityCol { get; set; }
 
-        [Required]
         [StringLength(20)]
         public string WidthStyleNumCol { get; set; }
 

@@ -17,10 +17,10 @@ namespace ClassLibrary1.Model
 
         public static bool UseRealDatabase = true; // Do not change this code. This may be overriden in tests when Test_UseRealDatabase.UseReal() returns false.
 
-        public static IR8RDataContext New(bool doAllowChangeData, bool enableObjectTracking)
+        public static IR8RDataContext New()
         {
             if (UseRealDatabase)
-                return new R8RSQLDataContext(doAllowChangeData, enableObjectTracking);
+                return new R8REFDataContext();
             else
                 return new R8RInMemoryDataContext();
         }
@@ -32,15 +32,9 @@ namespace ClassLibrary1.Model
 
         IR8RDataContext GetRealDatabaseIfExists();
 
-        System.IO.TextWriter Log { get; set; }
-
-        System.Data.Common.DbCommand GetCommand(IQueryable query);
-
         bool ResolveConflictsIfPossible();
 
-        void LoadStatsWithTrustTrackersAndUserInteractions();
-
-        void SetUserRatingAddingLoadOptions();
+        IQueryable<AddressField> UDFDistanceWithin(float? latitude, float? longitude, float? distance);
     }
 
 

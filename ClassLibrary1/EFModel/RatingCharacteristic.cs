@@ -27,7 +27,6 @@ namespace ClassLibrary1.EFModel
 
         public byte DecimalPlaces { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public int? Creator { get; set; }

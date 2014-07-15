@@ -11,7 +11,7 @@ namespace ClassLibrary1.EFModel
         public ChoiceInGroup()
         {
             ChoiceInFields = new HashSet<ChoiceInField>();
-            ChoiceInGroups1 = new HashSet<ChoiceInGroup>();
+            ChoiceInGroupsDependentOnThisChoiceInGroup = new HashSet<ChoiceInGroup>();
             SearchWordChoices = new HashSet<SearchWordChoice>();
             TrustTrackerForChoiceInGroups = new HashSet<TrustTrackerForChoiceInGroup>();
         }
@@ -34,9 +34,9 @@ namespace ClassLibrary1.EFModel
 
         public virtual ICollection<ChoiceInField> ChoiceInFields { get; set; }
 
-        public virtual ICollection<ChoiceInGroup> ChoiceInGroups1 { get; set; }
+        public virtual ICollection<ChoiceInGroup> ChoiceInGroupsDependentOnThisChoiceInGroup { get; set; }
 
-        public virtual ChoiceInGroup ChoiceInGroup1 { get; set; }
+        public virtual ChoiceInGroup ChoiceInGroupOnWhichThisChoiceInGroupIsDependent { get; set; }
 
         public virtual ICollection<SearchWordChoice> SearchWordChoices { get; set; }
 

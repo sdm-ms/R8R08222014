@@ -58,7 +58,7 @@ namespace ClassLibrary1.EFModel
 
         public virtual ICollection<SubsidyAdjustment> SubsidyAdjustments { get; set; }
 
-        public virtual RatingPhase RatingPhas { get; set; }
+        public virtual RatingPhase RatingPhase { get; set; }
 
         public virtual RatingPhaseGroup RatingPhaseGroup { get; set; }
     }

@@ -32,7 +32,6 @@ namespace ClassLibrary1.EFModel
 
         public int TotalUserRatings { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public int? Creator { get; set; }
@@ -53,9 +52,9 @@ namespace ClassLibrary1.EFModel
 
         public virtual RatingGroup RatingGroup { get; set; }
 
-        public virtual RatingGroup RatingGroup1 { get; set; }
+        public virtual RatingGroup OwnedRatingGroup { get; set; }
 
-        public virtual RatingGroup RatingGroup2 { get; set; }
+        public virtual RatingGroup TopRatingGroup { get; set; }
 
         public virtual ICollection<RatingPhaseStatus> RatingPhaseStatus { get; set; }
 

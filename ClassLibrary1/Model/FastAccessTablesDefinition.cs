@@ -536,8 +536,8 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                                     LastTrustedValue = firstRating == null ? null : firstRating.LastTrustedValue,
                                     SingleNumber = (bool) singleNumber,
                                     RatingGroupID = y.RatingGroupID,
-                                    DecimalPlaces = firstRating == null ? 0 : y.Ratings.First().RatingCharacteristic.DecimalPlaces,
-                                    RatingID = firstRating == null || !singleNumber ? null : (int?)y.Ratings.First().RatingID, 
+                                    DecimalPlaces = firstRating == null ? 0 : y.Ratings.FirstOrDefault().RatingCharacteristic.DecimalPlaces,
+                                    RatingID = firstRating == null || !singleNumber ? null : (int?)y.Ratings.FirstOrDefault().RatingID, 
                                     RecentlyChanged = y.ValueRecentlyChanged
                                 },
                     AddressFields = x.Fields.SelectMany(z => z.AddressFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(

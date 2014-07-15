@@ -359,7 +359,7 @@ namespace ClassLibrary1.Model
                     Trace.TraceInformation("On list: Rating " + debugRating.RatingID + " value: " + debugRating.CurrentValue + " ratinggroup " + debugRating.RatingGroupID);
 
                 // now close the rating groups
-                var theTopRatingGroups = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true).Select(m => m.RatingGroup2).Distinct().ToList();
+                var theTopRatingGroups = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true).Select(m => m.TopRatingGroup).Distinct().ToList();
                 foreach (var theTopRatingGroup in theTopRatingGroups)
                     ActionProcessor.ResolveRatingGroup(theTopRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, asOf, SuperUserId, null);
                 ActionProcessor.DataContext.SubmitChanges();

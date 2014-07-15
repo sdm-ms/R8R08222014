@@ -41,7 +41,7 @@ namespace ClassLibrary1.Model
         {
             get
             {
-                return myDataContextManagement.GetDataContext(true, true);
+                return myDataContextManagement.GetDataContext();
             }
         }
 
