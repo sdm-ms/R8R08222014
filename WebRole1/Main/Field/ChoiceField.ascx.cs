@@ -240,7 +240,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
         if (!AllowMultipleSelections || Mode == FieldsBoxMode.filterWithButton || Mode == FieldsBoxMode.filterWithoutButton)
         {
             if (theChoices != null && theChoices.Any())
-                SelectChoiceInMenu(Convert.ToInt32(theChoices.First().Value));
+                SelectChoiceInMenu(Convert.ToInt32(theChoices.FirstOrDefault().Value));
         }
     }
 

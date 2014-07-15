@@ -39,7 +39,7 @@ public partial class NumberFieldFilter : System.Web.UI.UserControl, IFilterField
                             && a.Field.TblRowID == TblRowID && a.Status == (Byte)StatusOfObject.Active);
                 
                 if (theNumberField != null)
-                    TxtTo.Text = (theNumberField.Number == null) ? "" : MoreStrings.MoreStringManip.FormatToExactDecimalPlaces(theNumberField.Number, theNumberField.Field.FieldDefinition.NumberFieldDefinitions.First().DecimalPlaces);
+                    TxtTo.Text = (theNumberField.Number == null) ? "" : MoreStrings.MoreStringManip.FormatToExactDecimalPlaces(theNumberField.Number, theNumberField.Field.FieldDefinition.NumberFieldDefinitions.FirstOrDefault().DecimalPlaces);
 
             } 
         }

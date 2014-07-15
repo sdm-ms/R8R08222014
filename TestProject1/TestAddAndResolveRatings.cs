@@ -102,7 +102,7 @@ namespace TestProject1
             UserEditResponse theResponse = new UserEditResponse();
             int userNumber = RandomGenerator.GetRandom(1, 6); // exclude first user who we are testing things about
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, isEvent ? random * 100 : random * 10, TestHelper.UserIds[userNumber], ref theResponse);
-            Trace.TraceInformation("Trying to add another HERE after UserRatingAdd " + random + " response of " + theResponse.result.success + " " + theResponse.currentValues.First().theUserRating);
+            Trace.TraceInformation("Trying to add another HERE after UserRatingAdd " + random + " response of " + theResponse.result.success + " " + theResponse.currentValues.FirstOrDefault().theUserRating);
             TestHelper.WaitIdleTasks();
             Rating theRating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingID == TestHelper.Rating.RatingID);
             theRating.CurrentValue.Should().Be(isEvent ? random * 100 : random * 10);
@@ -689,7 +689,7 @@ namespace TestProject1
                 theTestHelper.TestHelperResolveRatings(true, originalDateTimes[cycle - 1], false, false); // this is before there has been any short term resolution
                 theTestHelper.WaitIdleTasks();
                 numResolutions++;
-                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).First().CancelPreviousResolutions.Should().BeFalse();
+                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).FirstOrDefault().CancelPreviousResolutions.Should().BeFalse();
                 theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().Where(x => x.Status == (int) StatusOfObject.Active).Count().Should().Be(numResolutions);
                 TestableDateTime.UseFakeTimes();
                 bool moveForward = RandomGenerator.GetRandom() > 0.5;
@@ -704,7 +704,7 @@ namespace TestProject1
                 theTestHelper.TestHelperResolveRatings(true, TestableDateTime.Now, true, false); // now, unresolve
                 theTestHelper.WaitIdleTasks();
                 numResolutions++;
-                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).First().CancelPreviousResolutions.Should().BeTrue();
+                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).FirstOrDefault().CancelPreviousResolutions.Should().BeTrue();
                 theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().Where(x => x.Status == (int)StatusOfObject.Active).Count().Should().Be(numResolutions);
                 TestHelperReportAllUserRatings(cycle, false, true, false);
             }
@@ -714,7 +714,7 @@ namespace TestProject1
                 theTestHelper.TestHelperResolveRatings(true, theDateTimes[cycle - 1], false, false);
                 theTestHelper.WaitIdleTasks();
                 numResolutions++;
-                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).First().CancelPreviousResolutions.Should().BeFalse();
+                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).FirstOrDefault().CancelPreviousResolutions.Should().BeFalse();
                 theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().Where(x => x.Status == (int)StatusOfObject.Active).Count().Should().Be(numResolutions);
                 TestHelperReportAllUserRatings(cycle, false, false, true);
                 TestHelperCheckPoints(theUserRecords, theUserRatingRecords, cycle);
@@ -722,7 +722,7 @@ namespace TestProject1
                 theTestHelper.TestHelperResolveRatings(true, TestableDateTime.Now, true, false); // now, unresolve
                 theTestHelper.WaitIdleTasks();
                 numResolutions++;
-                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).First().CancelPreviousResolutions.Should().BeTrue();
+                theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).FirstOrDefault().CancelPreviousResolutions.Should().BeTrue();
                 theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().Where(x => x.Status == (int)StatusOfObject.Active).Count().Should().Be(numResolutions);
                 TestHelperReportAllUserRatings(cycle, false, true, true);
                 if (cycle == numCycles)
@@ -731,9 +731,9 @@ namespace TestProject1
                     theTestHelper.TestHelperResolveRatings(true, theDateTimes[cycle - 1], false, true);
                     theTestHelper.WaitIdleTasks();
                     numResolutions++;
-                    theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).First().CancelPreviousResolutions.Should().BeFalse();
+                    theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).FirstOrDefault().CancelPreviousResolutions.Should().BeFalse();
 
-                    theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).First().ResolveByUnwinding.Should().BeTrue();
+                    theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).FirstOrDefault().ResolveByUnwinding.Should().BeTrue();
                     theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().Where(x => x.Status == (int)StatusOfObject.Active).Count().Should().Be(numResolutions);
                     Trace.TraceInformation("Long term points should be 0 for list below.");
                     TestHelperReportAllUserRatings(cycle + 100, false, true, true);
@@ -742,7 +742,7 @@ namespace TestProject1
                     theTestHelper.TestHelperResolveRatings(true, theDateTimes[cycle - 1], false, false);
                     theTestHelper.WaitIdleTasks();
                     numResolutions += 2; // because ti will first cancel and then add another resolution
-                    theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).First().CancelPreviousResolutions.Should().BeFalse();
+                    theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().OrderByDescending(x => x.RatingGroupResolutionID).FirstOrDefault().CancelPreviousResolutions.Should().BeFalse();
                     theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().Where(x => x.Status == (int)StatusOfObject.Active).Count().Should().Be(numResolutions);
                     Trace.TraceInformation("Long term points should not generally be zeor for list below.");
                     TestHelperReportAllUserRatings(cycle, false, false, true);

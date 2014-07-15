@@ -71,7 +71,7 @@ namespace TestProject1
                     TestHelper.WaitIdleTasks();
             }
             TestHelper.WaitIdleTasks();
-            decimal? ppp = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == TestHelper.UserIds[0]).First().PointsPumpingProportion;
+            decimal? ppp = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == TestHelper.UserIds[0]).FirstOrDefault().PointsPumpingProportion;
             ppp.Should().Equals(1.0M);
         }
 

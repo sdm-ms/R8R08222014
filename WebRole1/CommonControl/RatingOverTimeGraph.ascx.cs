@@ -270,7 +270,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
                 .Where(p => p.RatingID == theRatingID)
                 .OrderByDescending(p => p.UserRatingGroup.WhenMade);
             if (theEarlierUserRatings.Any())
-                theEarlierValue = theEarlierUserRatings.First().NewUserRating;
+                theEarlierValue = theEarlierUserRatings.FirstOrDefault().NewUserRating;
 
             Series series = new Series(aSeries.SeriesInfo.SeriesName);
             var xValues = aSeries.UserRatingData.Select(x => x.Date).ToList();
@@ -306,7 +306,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
             {
                 if (!SuppressDrilledInSeriesName)
                 {
-                    DrilledInSeriesName.Text = theSerieses.First().SeriesInfo.SeriesName;
+                    DrilledInSeriesName.Text = theSerieses.FirstOrDefault().SeriesInfo.SeriesName;
                     DrilledInSeriesName.Visible = true;
                 }
             }

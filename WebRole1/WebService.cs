@@ -84,7 +84,7 @@ namespace WebServices
 
             User theUser = actionProcessor.DataContext.GetTable<User>().Single(u => u.Username == theUserAccessInfo.userName);
             List<Rating> ratingsEntered = RatingsAndRelatedInfoLoader.Load(actionProcessor.DataContext, specifiedRatingIDs, theUser);
-            bool oneRatingPerRatingGroup = ratingsEntered.First().RatingGroup.TblRow.Tbl.OneRatingPerRatingGroup;
+            bool oneRatingPerRatingGroup = ratingsEntered.FirstOrDefault().RatingGroup.TblRow.Tbl.OneRatingPerRatingGroup;
             //actionProcessor.R8RDB.GetTable<SetUserRatingAddingLoadOption>();
             if (theResponse != null)
             {
