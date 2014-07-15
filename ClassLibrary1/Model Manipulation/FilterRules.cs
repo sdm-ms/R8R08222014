@@ -37,7 +37,7 @@ namespace ClassLibrary1.Model
     public abstract class FilterRule
     {
         public bool FilterOn { get; set; }
-        public int theID { get; set; }
+        public Guid theID { get; set; }
 
         public FilterRule() // parameterless constructor for deserialization
         {
@@ -84,7 +84,7 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class FilterRules
     {
-        public int TblID { get; set; }
+        public Guid TblID { get; set; }
         public bool ActiveOnly { get; set; } // true if we only want to return table rows where trading is active
         public bool HighStakesOnly { get; set; } // true if we only want to return table rows that include rating groups with the HighStakes flag set.
         public List<FilterRule> theFilterRules { get; set; }
@@ -97,7 +97,7 @@ namespace ClassLibrary1.Model
             AsOfDateTime = DateTimeManip.RoundDateTimeSeconds(TestableDateTime.Now, 15, DateTimeManip.eRoundingDirection.down); // Round down to nearest 15 seconds, so that we can cache effectively over short periods of time
         }
 
-        public FilterRules(int tblID, bool activeOnly, bool highStakesOnly)
+        public FilterRules(Guid tblID, bool activeOnly, bool highStakesOnly)
             : this()
         {
             TblID = tblID;
@@ -304,7 +304,7 @@ namespace ClassLibrary1.Model
             return theFilteredAndSortedQuery;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByAddress(IR8RDataContext theDataContext, int? maxNumResults, float latitude, float longitude, int tblID)
+        public IQueryable<TblRow> GetFilteredQuerySortedByAddress(IR8RDataContext theDataContext, int? maxNumResults, float latitude, float longitude, Guid tblID)
         {
             IQueryable<TblRow> theFilteredQueryWithSortValues = null;
 
@@ -440,13 +440,13 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class ChoiceFilterRule : FilterRule
     {
-        public int ChoiceInGroupID { get; set; }
+        public Guid ChoiceInGroupID { get; set; }
 
         public ChoiceFilterRule() // for deserialization
         {
         }
 
-        public ChoiceFilterRule(int FieldDefinitionID, int choiceInGroupID)
+        public ChoiceFilterRule(int FieldDefinitionID, Guid choiceInGroupID)
             : base(FieldDefinitionID)
         {
             ChoiceInGroupID = choiceInGroupID;
@@ -571,7 +571,7 @@ namespace ClassLibrary1.Model
         public decimal? MinValue { get; set; }
         public decimal? MaxValue { get; set; }
 
-        public TblColumnFilterRule(int tblColumnID, decimal? minValue, decimal? maxValue)
+        public TblColumnFilterRule(Guid tblColumnID, decimal? minValue, decimal? maxValue)
             : base(tblColumnID)
         {
             MinValue = minValue;
@@ -598,7 +598,7 @@ namespace ClassLibrary1.Model
     {
         public string TheSearchWords { get; set; }
 
-        public SearchWordsFilterRule(int TblID, string theSearchWords)
+        public SearchWordsFilterRule(Guid TblID, string theSearchWords)
             : base(TblID)
         {
             TheSearchWords = theSearchWords;

@@ -1051,7 +1051,7 @@ namespace TestProject1
                 ChoiceGroup theChoiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single"); // this is just a test choice group that was added where one can only select a single choice from the group
                 var choiceInGroups = theChoiceGroup.ChoiceInGroups.ToList();
                 int choiceInGroupsCount = choiceInGroups.Count();
-                int fieldDefinitionID = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", FieldTypes.ChoiceField, true, theChoiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
+                Guid fieldDefinitionID = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", FieldTypes.ChoiceField, true, theChoiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
                 for (int rowNum = 0; rowNum < numTblRows; rowNum++)
                 {
                     int? theChoiceId = null;
@@ -1298,7 +1298,7 @@ x.UserID == TestHelper.UserIds[1]);
             for (int i = 0; i < totalUserRatingsByGoodUsers; i++)
             {
                 int userIndex = RandomGenerator.GetRandom(numBadUsers, numBadUsers + numGoodUsers);
-                int ratingID = ratings[RandomGenerator.GetRandom(numRatingsUntouched, numRatingsUntouched + numRatingsChallenged)].RatingID;
+                Guid ratingID = ratings[RandomGenerator.GetRandom(numRatingsUntouched, numRatingsUntouched + numRatingsChallenged)].RatingID;
                 decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)i / (decimal)totalUserRatingsByGoodUsers)); // user ratings will gradually get more precise
                 decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal) RandomGenerator.GetRandom(-1.0, 1.0);
                 TestHelper.ActionProcessor.UserRatingAdd(ratingID, valueToDo, TestHelper.UserIds[userIndex], ref aResponse);
@@ -1759,7 +1759,7 @@ x.UserID == TestHelper.UserIds[1]);
             }
             #endregion
             //int minUserId = _dataManipulation.DataContext.GetTable<User>().Min(u => u.UserID);
-            //int userIdsUnderWhichUserWillTargetWrongValues = minUserId + numUsersWhoTargetWrongValues;
+            //Guid userIDsUnderWhichUserWillTargetWrongValues = minUserId + numUsersWhoTargetWrongValues;
 
             for (int batchNum = 0; batchNum < parameters.NumBatchesOfUserRatings; batchNum++)
             {

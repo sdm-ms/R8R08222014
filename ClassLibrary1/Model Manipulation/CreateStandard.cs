@@ -31,22 +31,22 @@ namespace ClassLibrary1.Model
 {
     public class StandardObjectsForEachPointsManager
     {
-        public int eventRGA;
-        public int ratingRGA;
-        public int ratingNegPosRGA;
-        public int eventShortRGA;
-        public int ratingShortRGA;
-        public int eventVeryShortRGA;
-        public int ratingVeryShortRGA;
-        public int eventLongRGA;
-        public int ratingLongRGA;
-        public int eventVeryLongRGA;
-        public int ratingVeryLongRGA;
-        public int theRatingPhaseStandardID;
-        public int theRatingPhaseShortID;
-        public int theRatingPhaseVeryShortID;
-        public int theRatingPhaseLongID;
-        public int theRatingPhaseVeryLongID;
+        public Guid eventRGA;
+        public Guid ratingRGA;
+        public Guid ratingNegPosRGA;
+        public Guid eventShortRGA;
+        public Guid ratingShortRGA;
+        public Guid eventVeryShortRGA;
+        public Guid ratingVeryShortRGA;
+        public Guid eventLongRGA;
+        public Guid ratingLongRGA;
+        public Guid eventVeryLongRGA;
+        public Guid ratingVeryLongRGA;
+        public Guid theRatingPhaseStandardID;
+        public Guid theRatingPhaseShortID;
+        public Guid theRatingPhaseVeryShortID;
+        public Guid theRatingPhaseLongID;
+        public Guid theRatingPhaseVeryLongID;
     }
 
     public abstract class CreateStandardBase
@@ -146,7 +146,7 @@ namespace ClassLibrary1.Model
             return Action.RatingPhaseGroupCreate(thePhases, "Two months minimum phases", true, true, superUser, null);
         }
 
-        protected int CreateTblTab(string name, int TblID)
+        protected int CreateTblTab(string name, Guid TblID)
         {
             return Action.TblTabCreate(TblID, name, true, true, superUser, null);
         }
@@ -158,24 +158,24 @@ namespace ClassLibrary1.Model
             return theCD;
         }
 
-        protected int CreateChoiceGroup(int pointsManagerID, ChoiceGroupData theChoiceGroupData, int choiceGroupSettings, int? dependentOnChoiceGroupID, string name)
+        protected Guid CreateChoiceGroup(Guid pointsManagerID, ChoiceGroupData theChoiceGroupData, int choiceGroupSettings, Guid? dependentOnChoiceGroupID, string name)
         {
-            int theChoiceGroup = Action.ChoiceGroupCreate(pointsManagerID, theChoiceGroupData, choiceGroupSettings, dependentOnChoiceGroupID, true, true, superUser, null, name);
+            Guid theChoiceGroup = Action.ChoiceGroupCreate(pointsManagerID, theChoiceGroupData, choiceGroupSettings, dependentOnChoiceGroupID, true, true, superUser, null, name);
             return theChoiceGroup;
         }
 
-        public int CreateChoiceGroup(int pointsManagerID, string[] theChoices, string name, int? choiceGroupSettings = null)
+        public Guid CreateChoiceGroup(Guid pointsManagerID, string[] theChoices, string name, int? choiceGroupSettings = null)
         {
             if (choiceGroupSettings == null)
                 choiceGroupSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false,true,false,false,false,true,true,true);
             ChoiceGroupData theChoiceGroupData = new ChoiceGroupData();
             foreach (var choice in theChoices)
                 theChoiceGroupData.AddChoiceToGroup(choice);
-            int theChoiceGroupID = CreateChoiceGroup(pointsManagerID, theChoiceGroupData, (int) choiceGroupSettings, null, name);
+            Guid theChoiceGroupID = CreateChoiceGroup(pointsManagerID, theChoiceGroupData, (int)choiceGroupSettings, null, name);
             return theChoiceGroupID;
         }
 
-        public int CreateDependentChoiceGroup(int pointsManagerID, int choiceGroupThisIsDependentOnID, DepItemsLevel[] theDepItems, string name, int? choiceGroupSettings = null)
+        public Guid CreateDependentChoiceGroup(Guid pointsManagerID, int choiceGroupThisIsDependentOnID, DepItemsLevel[] theDepItems, string name, int? choiceGroupSettings = null)
         {
             if (choiceGroupSettings == null)
                 choiceGroupSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false, true, false, false, false, true, true, true);
@@ -193,7 +193,7 @@ namespace ClassLibrary1.Model
             return theChoiceGroupID;
         }
 
-        public List<int> CreateHierarchyChoiceGroup(int pointsManagerID, DepItems[] theHierarchy, List<string> name, int? choiceGroupSettings = null)
+        public List<int> CreateHierarchyChoiceGroup(Guid pointsManagerID, DepItems[] theHierarchy, List<string> name, int? choiceGroupSettings = null)
         {
             List<int> choiceGroupIDs = new List<int>();
             List<DepItemsLevel[]> theDepItemsLevels = new List<DepItemsLevel[]>();
@@ -255,40 +255,40 @@ namespace ClassLibrary1.Model
         }
 
 
-        protected int CreateFieldDefinition(int TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter)
+        protected int CreateFieldDefinition(Guid TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter)
         {
             int theCD = Action.FieldDefinitionCreate(TblID, fieldName, theFieldType, useAsFilter, true, true, superUser, null);
             return theCD;
         }
 
-        protected int CreateFieldDefinition(int TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, bool includeDate, bool includeTime)
+        protected int CreateFieldDefinition(Guid TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, bool includeDate, bool includeTime)
         {
             int theCD = Action.FieldDefinitionCreate(TblID, fieldName, theFieldType, useAsFilter, includeDate, includeTime, true, true, superUser, null);
             return theCD;
         }
 
 
-        protected int CreateFieldDefinition(int TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, bool includeText, bool includeLink, bool searchable)
+        protected int CreateFieldDefinition(Guid TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, bool includeText, bool includeLink, bool searchable)
         {
             int theCD = Action.FieldDefinitionCreate(TblID, fieldName, theFieldType, useAsFilter, includeText, includeLink, searchable, true, true, superUser, null);
             return theCD;
         }
 
-        protected int CreateFieldDefinition(int TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, int choiceGroupID, int? dependentOnChoiceGroupFieldDefinitionID)
+        protected int CreateFieldDefinition(Guid TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, int choiceGroupID, int? dependentOnChoiceGroupFieldDefinitionID)
         {
             int choiceGroupFieldDefinitionID = 0;
             return CreateFieldDefinition(TblID, fieldName, theFieldType, useAsFilter, choiceGroupID, dependentOnChoiceGroupFieldDefinitionID, ref choiceGroupFieldDefinitionID);
         }
  
 
-        protected int CreateFieldDefinition(int TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, int choiceGroupID, int? dependentOnChoiceGroupFieldDefinitionID, ref int choiceGroupFieldDefinitionFD)
+        protected int CreateFieldDefinition(Guid TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, int choiceGroupID, int? dependentOnChoiceGroupFieldDefinitionID, ref int choiceGroupFieldDefinitionFD)
         {
             int theFD = Action.FieldDefinitionCreate(TblID, fieldName, theFieldType, useAsFilter, choiceGroupID, dependentOnChoiceGroupFieldDefinitionID, true, true, superUser, null);
             choiceGroupFieldDefinitionFD = Action.DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == theFD).ChoiceGroupFieldDefinitionID;
             return theFD;
         }
 
-        protected int CreateFieldDefinition(int TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, decimal? minimum, decimal? maximum, short decimalPlaces)
+        protected int CreateFieldDefinition(Guid TblID, string fieldName, FieldTypes theFieldType, bool useAsFilter, decimal? minimum, decimal? maximum, short decimalPlaces)
         {
             int theCD = Action.FieldDefinitionCreate(TblID, fieldName, theFieldType, useAsFilter, minimum, maximum, decimalPlaces, true, true, superUser, null);
             return theCD;
@@ -341,12 +341,12 @@ namespace ClassLibrary1.Model
             return theCD;
         }
 
-        protected void SetColumnAsDefaultSort(int TblTabID, int TblColumnID)
+        protected void SetColumnAsDefaultSort(int TblTabID, Guid TblColumnID)
         {
             Action.TblTabChangeDefaultSort(TblTabID, TblColumnID, true, superUser, null);
         }
 
-        protected void BeginImport(string filename, int TblID)
+        protected void BeginImport(string filename, Guid TblID)
         {
             //ImportExport myImportExport = new ImportExport(Action.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
             //string sourceFileLoc = Server.MapPath("~/sourcedata/" + filename);
@@ -388,7 +388,7 @@ namespace ClassLibrary1.Model
         protected int CreatePointsManager(string name, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID, bool createRewardTbl, bool visibleToPublic = true, decimal probabilityHighStakes = 0.01M, decimal highStakesMultiplierSecret = 100M, decimal highStakesMultiplierKnown = 10M)
         {
             int myChangesGroup = Action.ChangesGroupCreate(null, null, superUser, null, null, null, null);
-            int pointsManagerID = Action.PointsManagerCreate(theDomainID, null, true, true, superUser, null, name);
+            Guid pointsManagerID = Action.PointsManagerCreate(theDomainID, null, true, true, superUser, null, name);
             CreateStandardObjectsForPointsManager(pointsManagerID);
 
             if (createRewardTbl)
@@ -419,7 +419,7 @@ namespace ClassLibrary1.Model
             standardDomain = Action.DataContext.GetTable<Domain>().SingleOrDefault(d => d.Name == "R8RStandard");
             if (standardDomain == null)
             { // all this will only run once
-                int domainID = Action.DomainCreate(true, true, false, true, true, superUser, null, "R8RStandard");
+                Guid domainID = Action.DomainCreate(true, true, false, true, true, superUser, null, "R8RStandard");
                 standardDomain = Action.DataContext.GetTable<Domain>().Single(d => d.Name == "R8RStandard");
                 sportsHierarchy = CreateHierarchyItem(null, null, true, "Sports");
                 entertainmentHierarchy = CreateHierarchyItem(null, null, true, "Entertainment");
@@ -442,7 +442,7 @@ namespace ClassLibrary1.Model
 
         }
 
-        public void CreateStandardObjectsForPointsManager(int pointsManagerID)
+        public void CreateStandardObjectsForPointsManager(Guid pointsManagerID)
         {
             StandardObjectsForEachPointsManager so = new StandardObjectsForEachPointsManager();
 
@@ -542,7 +542,7 @@ namespace ClassLibrary1.Model
             SetColumnAsDefaultSort(basicStatsGroup, wsChamps);
         }
 
-        protected void CreateBaseballChoiceGroups(int pointsManagerID)
+        protected void CreateBaseballChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
 
@@ -622,7 +622,7 @@ namespace ClassLibrary1.Model
             batsAndThrowsChoiceGroupID = CreateChoiceGroup(pointsManagerID, theBatsAndThrowsChoiceGroup, choiceGroupStandardSettings, null, "Bats/Throws");
         }
 
-        protected void CreateHittingOrPitchingFields(int TblID, bool isPitching)
+        protected void CreateHittingOrPitchingFields(Guid TblID, bool isPitching)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -656,17 +656,17 @@ namespace ClassLibrary1.Model
             CreateFieldDefinitionDisplaySettings(playerPageFD, doNotShowThisField, doNotShowThisField, visibleWithNoNameFieldDisplay);
         }
 
-        protected void CreateHittingFields(int TblID)
+        protected void CreateHittingFields(Guid TblID)
         {
             CreateHittingOrPitchingFields(TblID, false);
         }
 
-        protected void CreatePitchingFields(int TblID)
+        protected void CreatePitchingFields(Guid TblID)
         {
             CreateHittingOrPitchingFields(TblID, true);
         }
 
-        protected void CreateStandingsFields(int TblID)
+        protected void CreateStandingsFields(Guid TblID)
         {
             int leagueCGFD = 0;
             int leagueFD = CreateFieldDefinition(TblID, "League", FieldTypes.ChoiceField, true, leagueChoiceGroupID, null, ref leagueCGFD);
@@ -768,7 +768,7 @@ namespace ClassLibrary1.Model
             SetColumnAsDefaultSort(basicStatsGroup, scChamps);
         }
 
-        protected void CreateHockeyChoiceGroups(int pointsManagerID)
+        protected void CreateHockeyChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
 
@@ -844,7 +844,7 @@ namespace ClassLibrary1.Model
             catchesAndShootsChoiceGroupID = CreateChoiceGroup(pointsManagerID, theCatchesAndShootsChoiceGroup, choiceGroupStandardSettings, null, "Shoots/Catches");
         }
 
-        protected void CreatePlayerOrGoalieFields(int TblID, bool isGoalie)
+        protected void CreatePlayerOrGoalieFields(Guid TblID, bool isGoalie)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -885,17 +885,17 @@ namespace ClassLibrary1.Model
             CreateFieldDefinitionDisplaySettings(playerPageFD, doNotShowThisField, doNotShowThisField, visibleWithNoNameFieldDisplay);
         }
 
-        protected void CreatePlayerFields(int TblID)
+        protected void CreatePlayerFields(Guid TblID)
         {
             CreatePlayerOrGoalieFields(TblID, false);
         }
 
-        protected void CreateGoalieFields(int TblID)
+        protected void CreateGoalieFields(Guid TblID)
         {
             CreatePlayerOrGoalieFields(TblID, true);
         }
 
-        protected void CreateStandingsFields(int TblID)
+        protected void CreateStandingsFields(Guid TblID)
         {
             int conferenceCGFD = 0;
             int conferenceFD = CreateFieldDefinition(TblID, "Conference", FieldTypes.ChoiceField, true, conferenceChoiceGroupID, null, ref conferenceCGFD);
@@ -974,7 +974,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        protected void CreateRealEstateChoiceGroups(int pointsManagerID)
+        protected void CreateRealEstateChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
 
@@ -985,7 +985,7 @@ namespace ClassLibrary1.Model
             listingTypeChoiceGroupID = CreateChoiceGroup(pointsManagerID, theListingTypeChoiceGroup, choiceGroupStandardSettings, null, "Listing Type");
         }
 
-        protected void CreateRealEstateFields(int TblID)
+        protected void CreateRealEstateFields(Guid TblID)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -1052,11 +1052,11 @@ namespace ClassLibrary1.Model
             int singleColumn = CreateEvent("Answer","Answer","Depending on the question, the answer may be a rating (0-10), a yes-no answer (0%-100%), a multiple choice answer (with each choice 0%-100%), or some other range of numbers.",ratingGroup,myRatingPhase,false,false,false);
         }
 
-        protected void CreateQuestionChoiceGroups(int pointsManagerID)
+        protected void CreateQuestionChoiceGroups(Guid pointsManagerID)
         {
         }
 
-        protected void CreateQuestionFields(int TblID)
+        protected void CreateQuestionFields(Guid TblID)
         {
         }
 
@@ -1076,7 +1076,7 @@ namespace ClassLibrary1.Model
         {
             int thePointsManagerID = CreatePointsManager(tableName, null, null, standardDomain.DomainID, true);
             int defaultType = standardObjectsForPointsManager[thePointsManagerID].eventRGA;
-            int TblID = CreateNewsTable(defaultType, thePointsManagerID);
+            Guid TblID = CreateNewsTable(defaultType, thePointsManagerID);
             HierarchyItem hierarchyItem = CreateHierarchyItem(newsHierarchy, TblID, true, tableName);
         }
 
@@ -1104,11 +1104,11 @@ namespace ClassLibrary1.Model
             int singleColumn = CreateEvent("Answer", "Answer", "Depending on the question, the answer may be a rating (0-10), a yes-no answer (0%-100%), a multiple choice answer (with each choice 0%-100%), or some other range of numbers.", ratingGroup, myRatingPhase, false, false, false);
         }
 
-        protected void CreateQuestionChoiceGroups(int pointsManagerID)
+        protected void CreateQuestionChoiceGroups(Guid pointsManagerID)
         {
         }
 
-        protected void CreateQuestionFields(int TblID)
+        protected void CreateQuestionFields(Guid TblID)
         {
         }
 
@@ -1128,7 +1128,7 @@ namespace ClassLibrary1.Model
         {
             int thePointsManagerID = CreatePointsManager(tableName, null, null, standardDomain.DomainID, true, false, 0.0M);
             int defaultType = standardObjectsForPointsManager[thePointsManagerID].eventRGA;
-            int TblID = CreatePrivatePagesTable(tableName, defaultType, thePointsManagerID);
+            Guid TblID = CreatePrivatePagesTable(tableName, defaultType, thePointsManagerID);
             HierarchyItem hierarchyItem = CreateHierarchyItem(null, TblID, false, tableName);
         }
 
@@ -1162,7 +1162,7 @@ namespace ClassLibrary1.Model
             CreateRating("Hot", "Hotness", "The physical attractiveness and general hotness of this actor or actress.", ratingGroup, myRatingPhase, false, true, false);
         }
 
-        protected void CreateActorsChoiceGroups(int pointsManagerID)
+        protected void CreateActorsChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
             ChoiceGroupData theSexChoiceGroup = new ChoiceGroupData();
@@ -1171,7 +1171,7 @@ namespace ClassLibrary1.Model
             theSexChoiceGroupID = CreateChoiceGroup(pointsManagerID, theSexChoiceGroup, choiceGroupStandardSettings, null, "Sex");
         }
 
-        protected void CreateActorsFields(int TblID)
+        protected void CreateActorsFields(Guid TblID)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -1204,12 +1204,12 @@ namespace ClassLibrary1.Model
             CreateRating("Hot", "Hotness", "The physical attractiveness and general hotness of this reality show star", ratingGroup, myRatingPhase, false, true, false);
         }
 
-        protected void CreateRealityStarsChoiceGroups(int pointsManagerID)
+        protected void CreateRealityStarsChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
         }
 
-        protected void CreateRealityStarsFields(int TblID)
+        protected void CreateRealityStarsFields(Guid TblID)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -1243,12 +1243,12 @@ namespace ClassLibrary1.Model
             CreateRating("Kids", "Kids", "How appropriate is this movie for young children", ratingGroup, myRatingPhase, false, true, false);
         }
 
-        protected void CreateMoviesChoiceGroups(int pointsManagerID)
+        protected void CreateMoviesChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
         }
 
-        protected void CreateMoviesFields(int TblID)
+        protected void CreateMoviesFields(Guid TblID)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -1278,7 +1278,7 @@ namespace ClassLibrary1.Model
 
             int thePointsManagerID = CreatePointsManager("Actors", null, null, standardDomain.DomainID, true);
             int defaultType = standardObjectsForPointsManager[thePointsManagerID].ratingRGA;
-            int TblID = CreateActors(defaultType, thePointsManagerID);
+            Guid TblID = CreateActors(defaultType, thePointsManagerID);
             HierarchyItem actorsItem = CreateHierarchyItem(entertainmentHierarchy, TblID, true, "Actors");
             thePointsManagerID = CreatePointsManager("RealityStars", null, null, standardDomain.DomainID, true);
             TblID = CreateRealityStars(defaultType, thePointsManagerID);
@@ -1329,7 +1329,7 @@ namespace ClassLibrary1.Model
 
             int thePointsManagerID = CreatePointsManager("SimpleTest", null, null, standardDomain.DomainID, true);
             int defaultType = useExtraLongRatingPhaseGroup ? standardObjectsForPointsManager[thePointsManagerID].ratingVeryLongRGA : standardObjectsForPointsManager[thePointsManagerID].ratingRGA;
-            int TblID = CreateSimpleTest(defaultType, thePointsManagerID);
+            Guid TblID = CreateSimpleTest(defaultType, thePointsManagerID);
 
             HierarchyItem testHierarchy = CreateHierarchyItem(null, null, true, "Test Hierarchy");
             HierarchyItem testItem = CreateHierarchyItem(testHierarchy, TblID, true, "Test Items");
@@ -1368,7 +1368,7 @@ namespace ClassLibrary1.Model
 
             int thePointsManagerID = CreatePointsManager("SimpleEventTest", null, null, standardDomain.DomainID, true);
             int defaultType = standardObjectsForPointsManager[thePointsManagerID].ratingRGA;
-            int TblID = CreateSimpleTest(defaultType, thePointsManagerID);
+            Guid TblID = CreateSimpleTest(defaultType, thePointsManagerID);
 
             HierarchyItem testHierarchy = CreateHierarchyItem(null, null, true, "Test Event Hierarchy");
             HierarchyItem testItem = CreateHierarchyItem(testHierarchy, TblID, true, "Test Event Items");
@@ -1394,7 +1394,7 @@ namespace ClassLibrary1.Model
         {
         }
 
-        protected void CreateSharedChoiceGroupsForPeople(int pointsManagerID)
+        protected void CreateSharedChoiceGroupsForPeople(Guid pointsManagerID)
         {
             choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false, true, true, true, true, false, true, true);
             int choiceGroupStandardSettingsNoAlphabetize = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false, false, true, true, true, false, false, true);
@@ -1423,7 +1423,7 @@ namespace ClassLibrary1.Model
             CreateRatingNegativeToPositive("Security", "Security issues", "How liberal/conservative this person is on national security and domestic security issues (-10 = most liberal, 10 = most conservative)", ratingGroup, myRatingPhase, true, true, false);
         }
 
-        protected void CreatePoliticianChoiceGroups(int pointsManagerID)
+        protected void CreatePoliticianChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettingsNoAlphabetize = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false, false, true, true, true, false, false, true);
             int choiceGroupMultipleSettingsNoAlphabetize = ChoiceGroupSettingsMask.GetChoiceGroupSetting(true, false, true, true, true, false, false, true);
@@ -1455,7 +1455,7 @@ namespace ClassLibrary1.Model
             thePartyChoiceGroupID = CreateChoiceGroup(pointsManagerID, thePartyChoiceGroup, choiceGroupStandardSettingsNoAlphabetize, null, "Party");
         }
 
-        protected void CreatePoliticianFields(int TblID)
+        protected void CreatePoliticianFields(Guid TblID)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -1500,7 +1500,7 @@ namespace ClassLibrary1.Model
             CreateRatingNegativeToPositive("Criminal", "Criminal justice issues", "How liberal/conservative this person is on criminal justice issues (-10 = most liberal, 10 = most conservative)", ratingGroup, myRatingPhase, true, true, false);
         }
 
-        protected void CreateJudgeChoiceGroups(int pointsManagerID)
+        protected void CreateJudgeChoiceGroups(Guid pointsManagerID)
         {
             string[] fedJurs = { "National", "First Circuit", "Second Circuit", "Third Circuit", "Fourth Circuit", "Fifth Circuit", "Sixth Circuit", "Seventh Circuit", "Eighth Circuit", "Ninth Circuit", "Tenth Circuit", "Eleventh Circuit", "D.C. Circuit", "Other" };
             string[] nationalCourts = { "Supreme Court", "Federal Circuit", "Ct. Intl. Trade", "Administrative Courts", "Tax Court", "Fed. Claims", "Other" };
@@ -1549,7 +1549,7 @@ namespace ClassLibrary1.Model
                 new DepItemsLevel("Other", CirOther)}, "Court", noAlphabetizeChoiceGroupSettings);
         }
 
-        protected void CreateJudgeFields(int TblID)
+        protected void CreateJudgeFields(Guid TblID)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);
@@ -1594,7 +1594,7 @@ namespace ClassLibrary1.Model
             BeginImport("supremecourt.xml", supremeCourtTblID);
         }
 
-        protected void CreateSupremeCourtFields(int TblID)
+        protected void CreateSupremeCourtFields(Guid TblID)
         {
             int caseName = CreateFieldDefinition(TblID, "Case name", FieldTypes.TextField, true, true, true, true);
             CreateFieldDefinitionDisplaySettings(caseName, doNotShowThisField, doNotShowThisField, doNotShowThisField);
@@ -1606,7 +1606,7 @@ namespace ClassLibrary1.Model
             CreateFieldDefinitionDisplaySettings(issue, visibleWithNoNameFieldDisplay);
         }
 
-        private void CreateSupremeCourtColumns(int pointsManagerID, int TblTab, int ratingPhaseID)
+        private void CreateSupremeCourtColumns(Guid pointsManagerID, int TblTab, int ratingPhaseID)
         {
             int probYes = CreateEvent("Yes", "Probability of \"Yes\"", "The percentage chance that the issue listed (such as whether the case will be affirmed) will have an answer of yes. The final value may be between 0 and 100 in the event of a split decision or an ambiguous opinion. If a majority of the Court does not decide an issue, then still pending ratings will be cancelled.", TblTab, ratingPhaseID, true, true, false);
 
@@ -1636,7 +1636,7 @@ namespace ClassLibrary1.Model
         public override void Create()
         {
             base.Create();
-            int pointsManagerID = CreatePointsManager("Politicians", null, null, standardDomain.DomainID, true);
+            Guid pointsManagerID = CreatePointsManager("Politicians", null, null, standardDomain.DomainID, true);
             int defaultType = standardObjectsForPointsManager[pointsManagerID].ratingRGA;
             CreateSharedChoiceGroupsForPeople(pointsManagerID);
             CreatePoliticianChoiceGroups(pointsManagerID);
@@ -1676,7 +1676,7 @@ namespace ClassLibrary1.Model
 
         }
 
-        protected void CreateBlogChoiceGroups(int pointsManagerID)
+        protected void CreateBlogChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(true, true, true, true, true, false, true, true);
 
@@ -1705,7 +1705,7 @@ namespace ClassLibrary1.Model
             topicChoiceGroupID = CreateChoiceGroup(pointsManagerID, theTopicChoiceGroup, choiceGroupStandardSettings, null, "Topic");
         }
 
-        protected void CreateBlogFields(int TblID)
+        protected void CreateBlogFields(Guid TblID)
         {
             int linkFD = CreateFieldDefinition(TblID, "Link", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(linkFD, visibleWithNoNameFieldDisplay, doNotShowThisField, visibleWithNoNameFieldDisplay);
@@ -1770,7 +1770,7 @@ namespace ClassLibrary1.Model
             CreateStat("Speed", "Speed in minutes", "The average number of minutes that a diner will spend in the restaurant (dinner if different meals are served)", ratingGroup, myRatingPhase, 0, 0, 300, false, true, true, null);
         }
 
-        protected void CreateRestaurantChoiceGroups(int pointsManagerID)
+        protected void CreateRestaurantChoiceGroups(Guid pointsManagerID)
         {
             int choiceGroupStandardSettings = ChoiceGroupSettingsMask.GetStandardSetting();
             ChoiceGroupData theCuisineChoiceGroup = new ChoiceGroupData();
@@ -1871,7 +1871,7 @@ namespace ClassLibrary1.Model
 
 
 
-        protected void CreateRestaurantFields(int TblID)
+        protected void CreateRestaurantFields(Guid TblID)
         {
             int photoFD = CreateFieldDefinition(TblID, "Photo", FieldTypes.TextField, false, false, true, false);
             CreateFieldDefinitionDisplaySettings(photoFD, doNotShowThisField, pictureFieldDisplayTopRight, pictureFieldDisplayTopRight);

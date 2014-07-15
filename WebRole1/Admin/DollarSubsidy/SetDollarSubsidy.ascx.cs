@@ -17,7 +17,7 @@ using ClassLibrary1.EFModel;
 public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserControl
 {
     ActionProcessor Obj = new ActionProcessor();
-    public int? SubtopicId=null;
+    public Guid? SubtopicId = null;
     protected void Page_Load(object sender, EventArgs e)
     {
         Buttons.okHandler += new CommonControl_PageButtons.OnButtonClick(ImplementSetDollarSubsidy);
@@ -179,7 +179,7 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
         bool DoItNow = true;
 
         int? ChangeGroupId = null;
-        int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         // Calling the routines
         Obj.PointsManagerChangeSettings((int)SubtopicId, CurrentPeriodDollerSubsidy, EndofDollerSubsidyPeriod, NextPeriodDollerSubsidy, NextPeriodLength, NumPrizes, MinPayment, DoItNow, UserId, ChangeGroupId);
         User_Control_ModalPopUp PopUp = (User_Control_ModalPopUp)Buttons.FindControl("PopUp");

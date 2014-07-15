@@ -8,9 +8,9 @@ namespace ClassLibrary1.EFModel
 
     public partial class DateTimeFieldDefinition
     {
-        public int DateTimeFieldDefinitionID { get; set; }
+        public Guid DateTimeFieldDefinitionID { get; set; }
 
-        public int FieldDefinitionID { get; set; }
+        public Guid FieldDefinitionID { get; set; }
 
         public bool IncludeDate { get; set; }
 

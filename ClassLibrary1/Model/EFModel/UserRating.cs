@@ -15,21 +15,21 @@ namespace ClassLibrary1.EFModel
             UserRatings1 = new HashSet<UserRating>();
         }
 
-        public int UserRatingID { get; set; }
+        public Guid UserRatingID { get; set; }
 
-        public int UserRatingGroupID { get; set; }
+        public Guid UserRatingGroupID { get; set; }
 
-        public int RatingID { get; set; }
+        public Guid RatingID { get; set; }
 
-        public int RatingPhaseStatusID { get; set; }
+        public Guid RatingPhaseStatusID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
-        public int? TrustTrackerUnitID { get; set; }
+        public Guid? TrustTrackerUnitID { get; set; }
 
-        public int? RewardPendingPointsTrackerID { get; set; }
+        public Guid? RewardPendingPointsTrackerID { get; set; }
 
-        public int? MostRecentUserRatingID { get; set; }
+        public Guid? MostRecentUserRatingID { get; set; }
 
         public decimal PreviousRatingOrVirtualRating { get; set; }
 

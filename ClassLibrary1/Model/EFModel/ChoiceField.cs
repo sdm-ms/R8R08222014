@@ -13,9 +13,9 @@ namespace ClassLibrary1.EFModel
             ChoiceInFields = new HashSet<ChoiceInField>();
         }
 
-        public int ChoiceFieldID { get; set; }
+        public Guid ChoiceFieldID { get; set; }
 
-        public int FieldID { get; set; }
+        public Guid FieldID { get; set; }
 
         public byte Status { get; set; }
 

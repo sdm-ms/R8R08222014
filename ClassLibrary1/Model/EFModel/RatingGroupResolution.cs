@@ -8,9 +8,9 @@ namespace ClassLibrary1.EFModel
 
     public partial class RatingGroupResolution
     {
-        public int RatingGroupResolutionID { get; set; }
+        public Guid RatingGroupResolutionID { get; set; }
 
-        public int RatingGroupID { get; set; }
+        public Guid RatingGroupID { get; set; }
 
         public bool CancelPreviousResolutions { get; set; }
 
@@ -20,7 +20,7 @@ namespace ClassLibrary1.EFModel
 
         public DateTime? ExecutionTime { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

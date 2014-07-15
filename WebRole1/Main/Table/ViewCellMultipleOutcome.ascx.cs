@@ -22,9 +22,9 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
     R8RDataAccess DataAccess;
     Action<int> SelectFn;
     int ColumnNumber;
-    int TblColumnID;
+    Guid TblColumnID;
     public bool rebinding = false;
-    public int RatingGroupID;
+    public Guid RatingGroupID;
     public bool CanPredict;
     public bool Selected;
     protected TradingStatus TheTradingStatus;
@@ -36,7 +36,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
         rebinding = true;
     }
 
-    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, int tblColumnID, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid tblColumnID, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
     {
         SuppStyle = suppStyle;
         if (doRebind)
@@ -87,7 +87,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
 
             string ratingName = (string)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingName"];
-            int ratingID = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingID"];
+            Guid ratingID = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingID"];
             decimal? value = (decimal?)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["value"];
             int hierarchyLevel = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["hierarchyLevel"];
             int decimalPlaces = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["decimalPlaces"];

@@ -13,13 +13,13 @@ namespace ClassLibrary1.EFModel
             ChoiceGroupFieldDefinitions1 = new HashSet<ChoiceGroupFieldDefinition>();
         }
 
-        public int ChoiceGroupFieldDefinitionID { get; set; }
+        public Guid ChoiceGroupFieldDefinitionID { get; set; }
 
-        public int ChoiceGroupID { get; set; }
+        public Guid ChoiceGroupID { get; set; }
 
-        public int FieldDefinitionID { get; set; }
+        public Guid FieldDefinitionID { get; set; }
 
-        public int? DependentOnChoiceGroupFieldDefinitionID { get; set; }
+        public Guid? DependentOnChoiceGroupFieldDefinitionID { get; set; }
 
         public bool TrackTrustBasedOnChoices { get; set; }
 

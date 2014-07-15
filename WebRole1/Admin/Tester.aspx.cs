@@ -52,8 +52,8 @@ public partial class Tester : System.Web.UI.Page
     {
         R8RDataManipulation manip = new R8RDataManipulation();
         int numRatings = Convert.ToInt32(ForceHighStakesNumRatingGroups.Text);
-        int tblID = Convert.ToInt32(ForceHighStakesTblID.Text);
-        int? userID = null;
+        Guid tblID = Convert.ToInt32(ForceHighStakesTblID.Text);
+        Guid? userID = null;
         if (ForceHighStakesUserID.Text != "")
             userID = Convert.ToInt32(ForceHighStakesUserID.Text);
         manip.ChangeToHighStakes(tblID, numRatings, userID);
@@ -63,7 +63,7 @@ public partial class Tester : System.Web.UI.Page
     protected void ForceHighStakesEnd_Click(object sender, EventArgs e)
     {
         R8RDataManipulation manip = new R8RDataManipulation();
-        int tblID = Convert.ToInt32(EndKnownHighStakesTblID.Text);
+        Guid tblID = Convert.ToInt32(EndKnownHighStakesTblID.Text);
         manip.FinishKnownHighStakesSoon(tblID);
     }
 

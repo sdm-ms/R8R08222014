@@ -45,7 +45,7 @@ namespace ClassLibrary1.Model
     //        this.updateUserRatingGroup = updateUserRatingGroup;
     //    }
 
-    //    public int? Continue(int? currentUserRatingID, int ratingID, int ratingPhaseStatusID, UserRatingUpdatingReason theResolutionType)
+    //    public int? Continue(int? currentUserRatingID, Guid ratingID, int ratingPhaseStatusID, UserRatingUpdatingReason theResolutionType)
     //    {
     //        if (currentUserRatingID == null)
     //            currentUserRatingID = startingAtUserRatingID;
@@ -57,46 +57,22 @@ namespace ClassLibrary1.Model
     //    }
     //}
 
-    [Serializable]
-    public class CreateMissingRatingsInfo
-    {
-
-        int? numberToDoEachTime { get; set; }
-        int startingAtTblRowID { get; set; }
-
-
-        public CreateMissingRatingsInfo(int? numberToDo, int startingAtTblRowID)
-        {
-            this.numberToDoEachTime = numberToDo;
-            this.startingAtTblRowID = startingAtTblRowID;
-        }
-
-        public int? Continue(int? currentTblRowID, int TblID)
-        {
-            if (currentTblRowID == null)
-                currentTblRowID = startingAtTblRowID; 
-            //Trace.TraceInformation("Continuing missing ratings long process starting at " + currentTblRowID);
-            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
-            int? returnVal = theDataAccessModule.AddMissingRatingsForSomeTblRows(TblID, numberToDoEachTime, (int)currentTblRowID);
-            //Trace.TraceInformation("Finishing continuation with return value of " + returnVal);
-            return returnVal;
-        }
-    }
+    
 
     [Serializable]
     public class UploadTblRowsInfo
     {
-        int TblID { get; set; }
+        Guid TblID { get; set; }
         int startingAtNumber { get; set; }
         int totalNumberToDo { get; set; }
         int numberToDoEachTime { get; set; }
         string uploadFileLocation { get; set; }
         string logFileLocation { get; set; }
         string tblRowType { get; set; }
-        int userID { get; set; }
+        Guid userID { get; set; }
         bool copyValuesIntoTbl { get; set; }
 
-        public UploadTblRowsInfo(int TblID, int startingAtNumber, int totalNumberToDo, int numberToDo, string uploadFileLoc, string logFileLoc, string tblRowType, int userID, bool copyValuesIntoTbl)
+        public UploadTblRowsInfo(Guid TblID, int startingAtNumber, int totalNumberToDo, int numberToDo, string uploadFileLoc, string logFileLoc, string tblRowType, Guid userID, bool copyValuesIntoTbl)
         {
             this.TblID = TblID;
             this.startingAtNumber = startingAtNumber;
@@ -174,7 +150,7 @@ namespace ClassLibrary1.Model
 
 
 
-        public int AddOrResetLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, int? object1ID, int? object2ID, int priority, byte[] additionalInfo)
+        public Guid AddOrResetLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, Guid? object1ID, Guid? object2ID, int priority, byte[] additionalInfo)
         {
 
             LongProcess theLongProcess = DataContext.GetTable<LongProcess>().SingleOrDefault(
@@ -200,7 +176,7 @@ namespace ClassLibrary1.Model
             return theLongProcess.LongProcessID;
         }
 
-        public int AddOrResetLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, int? object1ID, int? object2ID, int priority, UploadTblRowsInfo myUploadInfo)
+        public Guid AddOrResetLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, Guid? object1ID, Guid? object2ID, int priority, UploadTblRowsInfo myUploadInfo)
         {
             BinaryFormatter binFormat = new BinaryFormatter();
             using (MemoryStream mStream = new MemoryStream())
@@ -233,34 +209,6 @@ namespace ClassLibrary1.Model
         //    }
         //}
 
-        public int AddOrResetLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, int? object1ID, int? object2ID, int priority, CreateMissingRatingsInfo myUpdateInfo)
-        {
-            //Trace.TraceInformation("AddOrResetLongProcess missing ratings " + myUpdateInfo.ToString());
-            BinaryFormatter binFormat = new BinaryFormatter();
-            using (MemoryStream mStream = new MemoryStream())
-            {
-                binFormat.Serialize(mStream, myUpdateInfo);
-                byte[] theData = mStream.GetBuffer();
-
-                //MemoryStream mStream2 = new MemoryStream(theData);
-                //BinaryFormatter binFormat2 = new BinaryFormatter();
-                //try
-                //{
-                //    CreateMissingRatingsInfo myUpdateInfo2 = (CreateMissingRatingsInfo)binFormat.Deserialize(mStream2);
-                //}
-                //catch
-                //{
-                //}
-
-                DataContext.SubmitChanges();
-                int returnVal = AddOrResetLongProcess(typeOfProcess, delayBeforeReset, object1ID, object2ID, priority, theData);
-
-                if (BackgroundTaskManager.RunBackgroundTaskFromWebRole)
-                    BackgroundTaskManager.InstanceForRunningFromWebRole.EnsureBackgroundTaskIsRunning();
-
-                return returnVal;
-            }
-        }
 
         public bool ContinueLongProcess()
         {

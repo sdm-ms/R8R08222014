@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class AdministrationRight
     {
-        public int AdministrationRightID { get; set; }
+        public Guid AdministrationRightID { get; set; }
 
-        public int AdministrationRightsGroupID { get; set; }
+        public Guid AdministrationRightsGroupID { get; set; }
 
-        public int? UserActionID { get; set; }
+        public Guid? UserActionID { get; set; }
 
         public bool AllowUserToMakeImmediateChanges { get; set; }
 

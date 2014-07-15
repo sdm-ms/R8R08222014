@@ -754,11 +754,11 @@ namespace TestProject1
 
         internal class UserPointsRecordSnapshot
         {
-            public int userID;
+            public Guid userID;
             public int afterCycle;
             public decimal points;
 
-            public UserPointsRecordSnapshot(int theUserID, int theAfterCycle, decimal thePoints)
+            public UserPointsRecordSnapshot(Guid theUserID, int theAfterCycle, decimal thePoints)
             {
                 userID = theUserID;
                 afterCycle = theAfterCycle;
@@ -768,11 +768,11 @@ namespace TestProject1
 
         internal class UserRatingPointsRecordSnapshot
         {
-            public int predID;
+            public Guid predID;
             public int afterCycle;
             public decimal points;
 
-            public UserRatingPointsRecordSnapshot(int thePredID, int theAfterCycle, decimal thePoints)
+            public UserRatingPointsRecordSnapshot(Guid thePredID, int theAfterCycle, decimal thePoints)
             {
                 predID = thePredID;
                 afterCycle = theAfterCycle;

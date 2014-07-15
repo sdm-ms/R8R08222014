@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class UserInteractionStat
     {
-        public int UserInteractionStatID { get; set; }
+        public Guid UserInteractionStatID { get; set; }
 
-        public int UserInteractionID { get; set; }
+        public Guid UserInteractionID { get; set; }
 
-        public int TrustTrackerStatID { get; set; }
+        public Guid TrustTrackerStatID { get; set; }
 
         public short StatNum { get; set; }
 

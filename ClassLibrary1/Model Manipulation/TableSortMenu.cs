@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
             bool hasAddress = addressFieldDefinitions.Any();
             if (hasAddress)
             {
-                int fieldDefinitionID = addressFieldDefinitions.OrderBy(x => x.FieldNum).FirstOrDefault().FieldDefinitionID;  // OK to order by ID to get consistent ordering
+                Guid fieldDefinitionID = addressFieldDefinitions.OrderBy(x => x.FieldNum).FirstOrDefault().FieldDefinitionID;  // OK to order by ID to get consistent ordering
                 theSortMenu.Add(new SortMenuItem { M = "Distance From You", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(-1, -1, fieldDefinitionID, true)) });
                 theSortMenu.Add(new SortMenuItem { M = "Distance From Center of Map", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(-2, -2, fieldDefinitionID, true)) });
                 //theSortMenu.Add(new SortMenuItem { M = "Distance From Other Location...", I = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleDistance(0, 0, true)) });
@@ -145,8 +145,8 @@ namespace ClassLibrary1.Model
 
     public class TableSortRuleTblColumn : TableSortRule
     {
-        public int TblColumnToSortID;
-        public TableSortRuleTblColumn(int tblColumnToSortID, bool ascending)
+        public Guid TblColumnToSortID;
+        public TableSortRuleTblColumn(Guid tblColumnToSortID, bool ascending)
             : base(ascending)
         {
             TblColumnToSortID = tblColumnToSortID;
@@ -161,8 +161,8 @@ namespace ClassLibrary1.Model
     {
         public float Latitude;
         public float Longitude;
-        public int FieldDefinitionID;
-        public TableSortRuleDistance(float latitude, float longitude, int fieldDefinitionID, bool ascending)
+        public Guid FieldDefinitionID;
+        public TableSortRuleDistance(float latitude, float longitude, Guid fieldDefinitionID, bool ascending)
             : base(ascending)
         {
             Latitude = latitude;

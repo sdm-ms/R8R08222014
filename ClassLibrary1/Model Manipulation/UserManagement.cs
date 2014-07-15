@@ -108,7 +108,7 @@ namespace ClassLibrary1.Model
             /// </summary>
             /// <param name="userid"></param>
             /// <param name="isVerified"></param>
-            public void SetUserVerificationStatus(int userid, bool isVerified)
+            public void SetUserVerificationStatus(Guid userID, bool isVerified)
             {
                 UserInfo theUserInfo = DataContext.GetTable<UserInfo>().Single(user => user.UserID == userid);
                 theUserInfo.IsVerified = isVerified;

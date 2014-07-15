@@ -13,7 +13,7 @@ namespace WebRole1.Admin
     public partial class RewardRatingSettingScreen : System.Web.UI.UserControl
     {
         public ActionProcessor theActionProcessor;
-        public int pointsManagerID;
+        public Guid pointsManagerID;
 
         public void Setup(int thePointsManagerID)
         {

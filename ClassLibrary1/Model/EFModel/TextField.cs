@@ -13,9 +13,9 @@ namespace ClassLibrary1.EFModel
             SearchWordTextFields = new HashSet<SearchWordTextField>();
         }
 
-        public int TextFieldID { get; set; }
+        public Guid TextFieldID { get; set; }
 
-        public int FieldID { get; set; }
+        public Guid FieldID { get; set; }
 
         public string Text { get; set; }
 

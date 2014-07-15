@@ -18,7 +18,7 @@ using ClassLibrary1.EFModel;
 public partial class Main_Table_ViewCellMainUnselected : System.Web.UI.UserControl
 {
 
-    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, int TblColumnID, int ratingGroupID, bool isInSortedColumn, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid TblColumnID, int ratingGroupID, bool isInSortedColumn, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool doRebind, string suppStyle)
     {
         string theCSSClass = "mainCellMarker";
         if (theTradingStatus == TradingStatus.Ended)

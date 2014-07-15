@@ -21,7 +21,7 @@ using ClassLibrary1.EFModel;
 public class ColumnAndRating
 {
     public string Column;
-    public int ColumnID;
+    public Guid ColumnID;
     public decimal Rating;
 }
 

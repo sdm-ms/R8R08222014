@@ -8,13 +8,13 @@ namespace ClassLibrary1.EFModel
 
     public partial class LongProcess
     {
-        public int LongProcessID { get; set; }
+        public Guid LongProcessID { get; set; }
 
         public int TypeOfProcess { get; set; }
 
-        public int? Object1ID { get; set; }
+        public Guid? Object1ID { get; set; }
 
-        public int? Object2ID { get; set; }
+        public Guid? Object2ID { get; set; }
 
         public int Priority { get; set; }
 

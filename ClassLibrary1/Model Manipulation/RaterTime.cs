@@ -48,7 +48,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public static TimeSpan GetTimeForUser(int userID, DateTime fromTime, DateTime toTime)
+        public static TimeSpan GetTimeForUser(Guid userID, DateTime fromTime, DateTime toTime)
         {
             R8RDataAccess dataAccess = new R8RDataAccess();
             List<DateTime> ratingTimes = dataAccess.R8RDB

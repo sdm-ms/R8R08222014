@@ -9,9 +9,9 @@ namespace ClassLibrary1.EFModel
     [Table("UserInfo")]
     public partial class UserInfo
     {
-        public int UserInfoID { get; set; }
+        public Guid UserInfoID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
         [StringLength(50)]
         public string FirstName { get; set; }

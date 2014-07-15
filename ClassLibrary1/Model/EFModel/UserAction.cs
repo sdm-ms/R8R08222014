@@ -15,7 +15,7 @@ namespace ClassLibrary1.EFModel
             RewardRatingSettings = new HashSet<RewardRatingSetting>();
         }
 
-        public int UserActionID { get; set; }
+        public Guid UserActionID { get; set; }
 
         public string Text { get; set; }
 

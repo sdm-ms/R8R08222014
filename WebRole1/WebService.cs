@@ -131,7 +131,7 @@ namespace WebServices
         [WebMethod]
         public MyPointsSidebarInfo GetSidebarInfo(string pointsManagerIDString, UserAccessInfo theUserAccessInfo)
         {
-            int pointsManagerID = Convert.ToInt32(pointsManagerIDString);
+            Guid pointsManagerID = Convert.ToInt32(pointsManagerIDString);
             UserEditResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo);
             if (theResponse != null)
                 return null;

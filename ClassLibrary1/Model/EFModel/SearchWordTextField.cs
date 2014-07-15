@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class SearchWordTextField
     {
-        public int SearchWordTextFieldID { get; set; }
+        public Guid SearchWordTextFieldID { get; set; }
 
-        public int TextFieldID { get; set; }
+        public Guid TextFieldID { get; set; }
 
-        public int SearchWordID { get; set; }
+        public Guid SearchWordID { get; set; }
 
         public virtual SearchWord SearchWord { get; set; }
 

@@ -9,13 +9,13 @@ namespace ClassLibrary1.EFModel
     public partial class RatingPlan
     {
         [Key]
-        public int RatingPlansID { get; set; }
+        public Guid RatingPlansID { get; set; }
 
-        public int RatingGroupAttributesID { get; set; }
+        public Guid RatingGroupAttributesID { get; set; }
 
         public int NumInGroup { get; set; }
 
-        public int? OwnedRatingGroupAttributesID { get; set; }
+        public Guid? OwnedRatingGroupAttributesID { get; set; }
 
         public decimal? DefaultUserRating { get; set; }
 
@@ -23,7 +23,7 @@ namespace ClassLibrary1.EFModel
 
         public string Description { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

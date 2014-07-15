@@ -13,7 +13,7 @@ namespace ClassLibrary1.EFModel
             TblRows = new HashSet<TblRow>();
         }
 
-        public int TblRowFieldDisplayID { get; set; }
+        public Guid TblRowFieldDisplayID { get; set; }
 
         public string Row { get; set; }
 

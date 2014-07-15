@@ -14,7 +14,7 @@ using System.Xml.Linq;
 public partial class Admin_DollarSubsidy_DollarSubsidy : System.Web.UI.UserControl
 {
     Admin_DollarSubsidy_SetDollarSubsidy dollarsubs;
-    public int? SubtopicId = null;
+    public Guid? SubtopicId = null;
 
     public void Setup(int subtopicId)
     {

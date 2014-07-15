@@ -17,7 +17,7 @@ using ClassLibrary1.EFModel;
 
 public partial class Leaders : System.Web.UI.Page
 {
-    internal int UserID;
+    internal Guid userID;
 
     RoutingInfoMainContent theLocation;
     R8RDataAccess DataAccess;
@@ -40,7 +40,7 @@ public partial class Leaders : System.Web.UI.Page
         ItemPath1.theTbl = theLocation.theTbl;
     }
 
-    public string FormatLinkToUsersRatings(string username, int userID)
+    public string FormatLinkToUsersRatings(string username, Guid userID)
     {
         return "<a href=\"/Ratings/" + userID.ToString() + "\">" + username + "</a>";
     }

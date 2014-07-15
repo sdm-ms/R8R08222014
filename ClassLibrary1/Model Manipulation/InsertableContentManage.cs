@@ -67,7 +67,7 @@ namespace ClassLibrary1.Model
             return false;
         }
 
-        public void UpdateAutomaticInsertableContentForPointsManager(int pointsManagerID, decimal currentPeriodDollarSubsidy, int? numPrizes, DateTime? endOfDollarSubsidyPeriod)
+        public void UpdateAutomaticInsertableContentForPointsManager(Guid pointsManagerID, decimal currentPeriodDollarSubsidy, int? numPrizes, DateTime? endOfDollarSubsidyPeriod)
         {
             if (!AutomaticInsertableContentForPrizesOn())
                 return; // this feature has been superceded.

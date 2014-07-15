@@ -8,16 +8,16 @@ namespace ClassLibrary1.EFModel
 
     public partial class InsertableContent
     {
-        public int InsertableContentID { get; set; }
+        public Guid InsertableContentID { get; set; }
 
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int? DomainID { get; set; }
+        public Guid? DomainID { get; set; }
 
-        public int? PointsManagerID { get; set; }
+        public Guid? PointsManagerID { get; set; }
 
-        public int? TblID { get; set; }
+        public Guid? TblID { get; set; }
 
         public string Content { get; set; }
 

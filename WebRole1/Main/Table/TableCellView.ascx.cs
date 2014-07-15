@@ -22,9 +22,9 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
 {
 
     protected int RatingGroupID;
-    protected int TblRowID;
-    protected int TblColumnID;
-    protected int TblID;
+    protected Guid TblRowID;
+    protected Guid TblColumnID;
+    protected Guid TblID;
     protected int PointsManagerID;
     protected bool CanPredict;
     protected bool CanAdminister;
@@ -35,7 +35,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
     protected R8RDataAccess DataAccess;
     ActionProcessor Obj = new ActionProcessor();
 
-    public void Setup(int tblRowID, int tblColumnID)
+    public void Setup(Guid tblRowID, Guid tblColumnID)
     {
         DataAccess = new R8RDataAccess();
         TblRowID = tblRowID;
@@ -88,7 +88,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         CanResolveRatings = false;
         if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
         {
-            int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, PointsManagerID, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, PointsManagerID, TblID);

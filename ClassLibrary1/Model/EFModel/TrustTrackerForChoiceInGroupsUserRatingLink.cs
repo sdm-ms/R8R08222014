@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class TrustTrackerForChoiceInGroupsUserRatingLink
     {
-        public int TrustTrackerForChoiceInGroupsUserRatingLinkID { get; set; }
+        public Guid TrustTrackerForChoiceInGroupsUserRatingLinkID { get; set; }
 
-        public int UserRatingID { get; set; }
+        public Guid UserRatingID { get; set; }
 
-        public int TrustTrackerForChoiceInGroupID { get; set; }
+        public Guid TrustTrackerForChoiceInGroupID { get; set; }
 
         public virtual TrustTrackerForChoiceInGroup TrustTrackerForChoiceInGroup { get; set; }
 

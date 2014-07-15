@@ -8,9 +8,9 @@ namespace ClassLibrary1.EFModel
 
     public partial class SubsidyAdjustment
     {
-        public int SubsidyAdjustmentID { get; set; }
+        public Guid SubsidyAdjustmentID { get; set; }
 
-        public int RatingGroupPhaseStatusID { get; set; }
+        public Guid RatingGroupPhaseStatusID { get; set; }
 
         public decimal SubsidyAdjustmentFactor { get; set; }
 

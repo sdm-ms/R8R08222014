@@ -15,7 +15,7 @@ namespace WebRole1.Admin
     {
         public string FileName { get; set; }
         public string Username { get; set; }
-        public int UserID { get; set; }
+        public Guid userID { get; set; }
     }
 
     public partial class GuaranteeApplications : System.Web.UI.UserControl
@@ -116,7 +116,7 @@ namespace WebRole1.Admin
         //    ListViewDataItem dataItem = (ListViewDataItem)e.Item;
         //    DataKey currentDataKey = MainListView.DataKeys[dataItem.DisplayIndex];
         //    string fileName = (string)currentDataKey["FileName"];
-        //    int userID = (int)currentDataKey["UserID"];
+        //    Guid userID = (int)currentDataKey["UserID"];
         //    switch (e.CommandName)
         //    {
         //        case "Download":

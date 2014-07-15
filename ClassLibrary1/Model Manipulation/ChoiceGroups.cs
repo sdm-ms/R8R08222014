@@ -116,10 +116,10 @@ namespace ClassLibrary1.Model
     public class ChoiceInGroupData
     {
         public String text; // Text for the item
-        public int? determiningGroupValue; // The ChoiceInGroupID of a choice in the DependentOnChoiceGroupID that must be set for this to be available (or null if this is always avaiable)
+        public Guid? determiningGroupValue; // The ChoiceInGroupID of a choice in the DependentOnChoiceGroupID that must be set for this to be available (or null if this is always avaiable)
         public bool isAvailable; // Is this generally available? False if this has been deactivated
         public int choiceNum; // The choice number -- the choices will be sorted by this number
-        public int? choiceInGroupID; // Once this has been created in the database, this will be set to the object id for the ChoiceInGroup table
+        public Guid? choiceInGroupID; // Once this has been created in the database, this will be set to the object id for the ChoiceInGroup table
 
         public ChoiceInGroupData(String theText, int? theDeterminingGroupValue, bool theIsAvailable, int theChoiceNum, int? theChoiceInGroupID)
         {
@@ -185,7 +185,7 @@ namespace ClassLibrary1.Model
             AddChoiceToGroup(text, determiningGroupValue, true, null);
         }
 
-        public void AddChoiceToGroup(String text, int? determiningGroupValue, bool isAvailable, int? choiceInGroupID)
+        public void AddChoiceToGroup(String text, int? determiningGroupValue, bool isAvailable, Guid? choiceInGroupID)
         {
             int choiceNum = theData.Count + 1; // This is the default -- add it to the end of the group.
             theData.Add(new ChoiceInGroupData(text, determiningGroupValue, isAvailable, choiceNum, choiceInGroupID));
@@ -392,7 +392,7 @@ namespace ClassLibrary1.Model
 
     //    }
 
-    //    public bool ChoicesForFieldDefinitionVerifyOK(int tblRowID, int FieldDefinitionID, List<int> multipleChoices)
+    //    public bool ChoicesForFieldDefinitionVerifyOK(Guid tblRowID, int FieldDefinitionID, List<int> multipleChoices)
     //    {
     //        try
     //        {
@@ -416,7 +416,7 @@ namespace ClassLibrary1.Model
     //        }
     //    }
 
-    //    public bool ChoicesForFieldNumVerifyOK(int tblRowID, int fieldNum, List<int> multipleChoices)
+    //    public bool ChoicesForFieldNumVerifyOK(Guid tblRowID, int fieldNum, List<int> multipleChoices)
     //    {
     //        FieldDefinition theFieldDefinition = DataAccessModule.GetFieldDefinitionForTblRow(entityID, fieldNum);
     //        return ChoicesForFieldDefinitionVerifyOK(tblRowID, theFieldDefinition.FieldDefinitionID, multipleChoices);

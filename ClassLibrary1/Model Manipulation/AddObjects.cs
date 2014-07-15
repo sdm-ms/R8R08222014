@@ -96,7 +96,7 @@ namespace ClassLibrary1.Model
         /// <param name="name">The name of the column</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddTblColumn(int TblTabID, int defaultRatingGroupAttributesID, int columnNum, string abbreviation, string name, string widthStyle, string explanation, bool trackTrustWithinTableColumn)
+        public Guid AddTblColumn(Guid TblTabID, Guid defaultRatingGroupAttributesID, int columnNum, string abbreviation, string name, string widthStyle, string explanation, bool trackTrustWithinTableColumn)
         {
             TblColumn theTblColumn = new TblColumn
             {
@@ -117,7 +117,7 @@ namespace ClassLibrary1.Model
             return theTblColumn.TblColumnID;
         }
 
-        public int AddTblColumnFormatting(int TblColumnID, string prefix, string suffix, bool omitLeadingZero, decimal? extraDecimalPlaceAbove, decimal? extraDecimalPlace2Above, decimal? extraDecimalPlace3Above, string suppStylesHeader, string suppStylesMain)
+        public Guid AddTblColumnFormatting(Guid TblColumnID, string prefix, string suffix, bool omitLeadingZero, decimal? extraDecimalPlaceAbove, decimal? extraDecimalPlace2Above, decimal? extraDecimalPlace3Above, string suppStylesHeader, string suppStylesMain)
         {
             TblColumnFormatting theTblColumnFormatting = new TblColumnFormatting
             {
@@ -146,7 +146,7 @@ namespace ClassLibrary1.Model
         /// <param name="name">The name of the table column group.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddTblTab(int TblID, int numInTbl, string name)
+        public Guid AddTblTab(Guid TblID, int numInTbl, string name)
         {
             TblTab theTblTab = new TblTab
             {
@@ -173,7 +173,7 @@ namespace ClassLibrary1.Model
         /// <param name="scheduleApprovalOrRejection">If on track for approval or rejection, when</param>
         /// <param name="scheduleImplementation">If set for implementation, when</param>
         /// <returns></returns>
-        public int AddChangesGroup(int? pointsManagerID, int? TblID, int? creator, int? makeChangeRatingID, int? rewardRatingID, StatusOfChanges statusOfChanges, DateTime? scheduleApprovalOrRejection, DateTime? scheduleImplementation)
+        public Guid AddChangesGroup(Guid? pointsManagerID, Guid? TblID, Guid? creator, Guid? makeChangeRatingID, Guid? rewardRatingID, StatusOfChanges statusOfChanges, DateTime? scheduleApprovalOrRejection, DateTime? scheduleImplementation)
         {
             DataContext.SubmitChanges();
            
@@ -212,12 +212,12 @@ namespace ClassLibrary1.Model
         /// <param name="newValueText">The new Text value</param>
         /// <returns></returns>
         /// 
-        public int AddChangesStatusOfObject(int changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, int? newObject, int? existingObject, bool? newValueBoolean, int? newValueInteger, decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime)
+        public Guid AddChangesStatusOfObject(Guid changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, Guid? newObject, Guid? existingObject, bool? newValueBoolean, int? newValueInteger, decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime)
         {
             return AddChangesStatusOfObject(changesGroupID, objectType, addObject, deleteObject, replaceObject, changeName, changeOther, changeSetting1, changeSetting2, mayAffectRunningRating, newName, newObject, existingObject, newValueBoolean, newValueInteger, newValueDecimal, newValueText, newValueDateTime, "");
         }
 
-        public int AddChangesStatusOfObject(int changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, int? newObject, int? existingObject, bool? newValueBoolean, int? newValueInteger, decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime, string changeDescription)
+        public Guid AddChangesStatusOfObject(Guid changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, Guid? newObject, Guid? existingObject, bool? newValueBoolean, int? newValueInteger, decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime, string changeDescription)
         {
             ChangesStatusOfObject theChangesStatusOfObject = new ChangesStatusOfObject
             {
@@ -278,7 +278,7 @@ namespace ClassLibrary1.Model
         /// choices in this choice group are active</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddChoiceGroupFieldDefinition(int choiceGroupID, int FieldDefinitionID, int? DependentOnChoiceGroupFieldDefinitionID)
+        public Guid AddChoiceGroupFieldDefinition(Guid choiceGroupID, Guid FieldDefinitionID, Guid? DependentOnChoiceGroupFieldDefinitionID)
         {
             ChoiceGroupFieldDefinition theChoiceGroupFieldDefinition = new ChoiceGroupFieldDefinition
             {
@@ -293,7 +293,7 @@ namespace ClassLibrary1.Model
             return theChoiceGroupFieldDefinition.ChoiceGroupFieldDefinitionID;
         }
 
-        public int AddChoiceGroup(int pointsManagerID, int choiceGroupSettings, int? DependentOnChoiceGroupID,
+        public Guid AddChoiceGroup(Guid pointsManagerID, int choiceGroupSettings, Guid? DependentOnChoiceGroupID,
              String name)
         {
             return AddChoiceGroup(pointsManagerID,
@@ -317,8 +317,8 @@ namespace ClassLibrary1.Model
         /// <param name="name">The name of this choice group</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddChoiceGroup(int pointsManagerID, bool allowMultipleSelections,bool alphabetize,bool invisibleWhenEmpty,
-            bool showTagCloud,bool pickViaAutoComplete,int? DependentOnChoiceGroupID, 
+        public Guid AddChoiceGroup(Guid pointsManagerID, bool allowMultipleSelections, bool alphabetize, bool invisibleWhenEmpty,
+            bool showTagCloud, bool pickViaAutoComplete, Guid? DependentOnChoiceGroupID, 
             bool showAllPossibilitiesIfNoDependentChoice, bool alphabetizeWhenShowingAllPossibilities, 
             bool allowAutoAddWhenAddingFields, String name)
         {
@@ -375,7 +375,7 @@ namespace ClassLibrary1.Model
         /// only if activeInGeneral and the value of the determining choice group equals this value.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddChoiceInGroup(int choiceGroupID, int choiceNum, String choiceText, int? ActiveOnDeterminingGroupChoiceInGroupID)
+        public Guid AddChoiceInGroup(Guid choiceGroupID, int choiceNum, String choiceText, Guid? ActiveOnDeterminingGroupChoiceInGroupID)
         {
             ChoiceInGroup theChoiceInGroup = new ChoiceInGroup
             {
@@ -401,7 +401,7 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The creator of the Tbl, or null if system-created</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddTbl(int pointsManagerID, int? defaultRatingGroupAttributesID, String TblTabWord, String name, int? creator, bool allowOverrideOfRatingCharacterstics, bool oneRatingPerRatingGroup, String typeOfTblRow, String rowAdditionCriteria, bool allowUsersToAddComments, bool limitCommentsToUsersWhoCanMakeUserRatings, string widthStyleNameCol, string widthStyleNumCol)
+        public Guid AddTbl(Guid pointsManagerID, Guid? defaultRatingGroupAttributesID, String TblTabWord, String name, Guid? creator, bool allowOverrideOfRatingCharacterstics, bool oneRatingPerRatingGroup, String typeOfTblRow, String rowAdditionCriteria, bool allowUsersToAddComments, bool limitCommentsToUsersWhoCanMakeUserRatings, string widthStyleNameCol, string widthStyleNumCol)
         {
             Tbl theTbl = new Tbl
             {
@@ -440,7 +440,7 @@ namespace ClassLibrary1.Model
         /// <param name="CommentText">Detailed description of comment text </param>
         /// <param name="Date">Date on which comment added</param>
         /// <returns></returns>
-        public int AddComment(int tblRowID, int userId, string commentTitle, string commentText, DateTime date, StatusOfObject initialStatus)
+        public Guid AddComment(Guid tblRowID, Guid userId, string commentTitle, string commentText, DateTime date, StatusOfObject initialStatus)
         {
             Comment theComment = new Comment
             {
@@ -496,7 +496,7 @@ namespace ClassLibrary1.Model
         /// <param name="includeTime">Should this include a time?</param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public int AddDateTimeFieldDefinition(int FieldDefinitionID, bool includeDate, bool includeTime)
+        public Guid AddDateTimeFieldDefinition(Guid FieldDefinitionID, bool includeDate, bool includeTime)
         {
             DateTimeFieldDefinition theDateTimeFieldDefinition = new DateTimeFieldDefinition
             {
@@ -516,7 +516,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="activeRatingWebsite">Should this be active in the general rating website?</param>
         /// <returns></returns>
-        public int AddDomain( bool activeRatingWebsite,  String name, int? creator)
+        public Guid AddDomain(bool activeRatingWebsite, String name, Guid? creator)
         {
 
             Domain theDomain = new Domain
@@ -660,7 +660,7 @@ namespace ClassLibrary1.Model
         /// information about this field</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddFieldDefinition(int TblID, int fieldNum, string fieldName, FieldTypes fieldType, bool useAsFilter)
+        public Guid AddFieldDefinition(Guid TblID, int fieldNum, string fieldName, FieldTypes fieldType, bool useAsFilter)
         {
             FieldDefinition theFieldDefinition = new FieldDefinition
             {
@@ -714,7 +714,7 @@ namespace ClassLibrary1.Model
         /// <param name="overridable">1, if Object is overidable</param>
         /// <param name="loaction">loaction of the Insertable object</param>
         /// <returns></returns>
-        public int AddInsertableContents(string name,int? domainId,int? universeId,int? TblId,string contents,bool isTextOnly,bool overridable,InsertableLocation location)
+        public Guid AddInsertableContents(string name, Guid? domainId, Guid? universeId, Guid? TblId, string contents, bool isTextOnly, bool overridable, InsertableLocation location)
         {
             InsertableContent theInsertableContent = new InsertableContent
                                     {
@@ -754,8 +754,8 @@ namespace ClassLibrary1.Model
         /// <param name="mayAdjustPoints">Can make adjustments to users' points</param>
         /// <param name="mayChangeProposalSettings">Can change proposal settings</param>
         /// <returns></returns>
-       
-        public int AddInvitedUser(string emailId, bool mayView, bool mayPredict, bool mayAddTbls,
+
+        public Guid AddInvitedUser(string emailId, bool mayView, bool mayPredict, bool mayAddTbls,
             bool mayResolveRatings, bool mayChangeTblRows, bool mayChangeChoiceGroups, bool mayChangeCharacteristics,
             bool mayChangeColumns, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings)
         {
@@ -780,7 +780,7 @@ namespace ClassLibrary1.Model
             return TheInvitedUser.ActivationNumber;
         }
 
-        public int AddLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, int? object1ID, int? object2ID, int priority, byte[] additionalInfo)
+        public Guid AddLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, Guid? object1ID, Guid? object2ID, int priority, byte[] additionalInfo)
         {
             LongProcess theLongProcess = new LongProcess
             {
@@ -865,7 +865,7 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The creator of the rating</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added rating characteristics object</returns>
-        public int AddRatingCharacteristics(int RatingPhaseGroupID, int? SubsidyDensityRangeGroupID, decimal minimumUserRating, decimal maximumUserRating, short decimalPlaces, String name, int? creator)
+        public Guid AddRatingCharacteristics(Guid RatingPhaseGroupID, Guid? SubsidyDensityRangeGroupID, decimal minimumUserRating, decimal maximumUserRating, short decimalPlaces, String name, Guid? creator)
         {
             RatingCharacteristic theCharacteristics = new RatingCharacteristic
             {
@@ -925,7 +925,6 @@ namespace ClassLibrary1.Model
             byte? MType = ratingGroupAttributes.TypeOfRatingGroup;
             RatingGroup theGroup = new RatingGroup
             {
-                RatingGroupID = -1,
                 TblRow = tblRow,
                 TblColumn = TblColumn,
                 RatingGroupAttribute = ratingGroupAttributes,
@@ -958,19 +957,19 @@ namespace ClassLibrary1.Model
         [Serializable]
         private class TblRowIDAndTblColumnIDUniquenessGenerator
         {
-            public int TblRowID;
-            public int TblColumnID;
+            public Guid TblRowID;
+            public Guid TblColumnID;
             public string Purpose = "GenerateUniqueID";
         }
 
-        public Tuple<int,int> AddMissingRatingGroupAndRatings(string tblRowIDAndColumnIDSeparatedBySlash)
+        public Tuple<Guid, Guid> AddMissingRatingGroupAndRatings(string tblRowIDAndColumnIDSeparatedBySlash)
         {
             string[] components = tblRowIDAndColumnIDSeparatedBySlash.Split('/');
             if (!(components.Length == 2))
                 throw new Exception("Unexpected cell formatting error.");
             TblRow tblRow = null;
             TblColumn tblColumn = null;
-            int tblRowID = 0, tblColumnID = 0;
+            Guid tblRowID, tblColumnID;
             try
             {
                 tblRowID = Convert.ToInt32(components[0]);
@@ -1010,7 +1009,7 @@ namespace ClassLibrary1.Model
             new FastAccessRatingIDUpdatingInfo() { RatingID = rating.RatingID, RatingGroupID = rating.RatingGroup.RatingGroupID, TblColumnID = tblColumn.TblColumnID }.AddToTblRow(tblRow);
             DataContext.SubmitChanges();
             ResetDataContexts();
-            return new Tuple<int, int>(rating.RatingID, rating.RatingGroupID);
+            return new Tuple<Guid, Guid>(rating.RatingID, rating.RatingGroupID);
         }
 
         public RatingGroup AddRatingGroupAndRatings(TblRow tblRow, TblColumn tblColumn, RatingGroupAttribute ratingGroupAttributes)
@@ -1106,7 +1105,7 @@ namespace ClassLibrary1.Model
         /// Adds ratings for a column if the Tbl is active. Used to add a category to running ratings.
         /// </summary>
         /// <param name="columnID"></param>
-        public void AddRatingsAfterAddingColumnIfTblIsActive(int columnID)
+        public void AddRatingsAfterAddingColumnIfTblIsActive(Guid columnID)
         {
 
             Tbl theTbl = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == columnID).TblTab.Tbl;
@@ -1120,33 +1119,8 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public int? AddMissingRatingsForSomeTblRows(int TblID, int? numToDo, int startingTblRowID)
-        {
-            throw new Exception("Internal error. We should not be adding missing ratings for entire TblRows anymore. This code remains just in case it is needed in the future.");
-
-            var theTblRows = DataContext.GetTable<TblRow>().Where(e => e.TblID == TblID &&
-                   e.Status == (Byte)StatusOfObject.Active && e.TblRowID >= startingTblRowID);
-            int rowCount = theTblRows.Count();
-            IQueryable<TblRow> theTblRowsToDo = null;
-            if (numToDo == null) // do 'em all
-                theTblRowsToDo = theTblRows;
-            else
-                theTblRowsToDo = theTblRows.Take((int) numToDo);
-            int lastTblRowProcessed = 0;
-            foreach (TblRow tblRow in theTblRowsToDo)
-            {
-                AddMissingRatingsForTblRow(tblRow);
-                FastAccessTablesMaintenance.IdentifyRowRequiringBulkUpdate(DataContext, tblRow.Tbl, tblRow, true, false); // note that this is not executed
-                lastTblRowProcessed = tblRow.TblRowID;
-            }
-            if (rowCount <= numToDo)
-                return null;
-            else
-                return lastTblRowProcessed + 1;
-        }
-
         bool missingRatingsLongProcessedEnabled = false; // we don't want to do this any more because users may add larger numbers of columns, so we'll create ratings on an as-needed basis
-        public void StartAddingMissingRatingsForTbl(int TblID)
+        public void StartAddingMissingRatingsForTbl(Guid TblID)
         {
             if (!missingRatingsLongProcessedEnabled)
                 return;
@@ -1213,7 +1187,7 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The creator of the rating group attributes</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the attributes object</returns>
-        public int AddRatingGroupAttributes(int ratingCharacteristicsID, int? ratingConditionID, decimal? constrainedSum, String name, RatingGroupTypes RatingType, String ratingGroupDescription, int? creator, int pointsManagerID, bool ratingEndingTimeVaries, bool ratingsCanBeAutoCalculated, decimal longTermPointsWeight)
+        public Guid AddRatingGroupAttributes(Guid ratingCharacteristicsID, Guid? ratingConditionID, decimal? constrainedSum, String name, RatingGroupTypes RatingType, String ratingGroupDescription, Guid? creator, Guid pointsManagerID, bool ratingEndingTimeVaries, bool ratingsCanBeAutoCalculated, decimal longTermPointsWeight)
         {
             RatingGroupAttribute theRatingGroupAttributes = new RatingGroupAttribute
             {
@@ -1251,7 +1225,7 @@ namespace ClassLibrary1.Model
         /// <param name="repeatNTimes">If not null, the number of times this phase should repeat</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the object added</returns>
-        public int AddRatingPhase(int RatingPhaseGroupID, decimal subsidyLevel, ScoringRules scoringRule, bool timed, bool baseTimingOnSpecificTime, DateTime? endTime, int? runTime, int halfLifeForResolution, bool repeatIndefinitely, int? repeatNTimes)
+        public Guid AddRatingPhase(Guid RatingPhaseGroupID, decimal subsidyLevel, ScoringRules scoringRule, bool timed, bool baseTimingOnSpecificTime, DateTime? endTime, int? runTime, int halfLifeForResolution, bool repeatIndefinitely, int? repeatNTimes)
         {
            
             RatingPhaseGroup theGroup =   DataContext.GetTable<RatingPhaseGroup>().Single(x=>x.RatingPhaseGroupID==RatingPhaseGroupID);
@@ -1287,7 +1261,7 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The creator of the group, or null for system-created</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the object added</returns>
-        public int AddRatingPhaseGroup(String name, int? creator)
+        public Guid AddRatingPhaseGroup(String name, Guid? creator)
         {
             RatingPhaseGroup theGroup = new RatingPhaseGroup
             {
@@ -1376,7 +1350,7 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The creator of this rating, or null for system-created</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the rating plan</returns>
-        public int AddRatingPlan(int ratingGroupAttributesID, int numInGroup, decimal? defaultUserRating, string name,string ratingDescription, int? creator)
+        public Guid AddRatingPlan(Guid ratingGroupAttributesID, int numInGroup, decimal? defaultUserRating, string name, string ratingDescription, Guid? creator)
         {
             RatingPlan thePlan = new RatingPlan
             {
@@ -1402,7 +1376,7 @@ namespace ClassLibrary1.Model
         /// <param name="effectiveTime">The effective time of the resolution (can be before the current time but not later)</param>
         /// <param name="creator"></param>
         /// <returns></returns>
-        public RatingGroupResolution AddRatingGroupResolution(RatingGroup ratingGroup, bool cancelPreviousResolutions, bool resolveByUnwinding, DateTime? effectiveTime, int? creator)
+        public RatingGroupResolution AddRatingGroupResolution(RatingGroup ratingGroup, bool cancelPreviousResolutions, bool resolveByUnwinding, DateTime? effectiveTime, Guid? creator)
         {
 
             DateTime currentTime = TestableDateTime.Now;
@@ -1460,7 +1434,7 @@ namespace ClassLibrary1.Model
         /// <param name="decimalPlaces">The number of decimal places to display</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddNumberFieldDefinition(int FieldDefinitionID, decimal? minimum, decimal? maximum, short decimalPlaces)
+        public Guid AddNumberFieldDefinition(Guid FieldDefinitionID, decimal? minimum, decimal? maximum, short decimalPlaces)
         {
             NumberFieldDefinition theNumberFieldDefinition = new NumberFieldDefinition
             {
@@ -1732,7 +1706,7 @@ namespace ClassLibrary1.Model
                 RatingPhaseStatus = ratingPhaseStatus,
                 User = user,
                 TrustTrackerUnit = trustTrackerUnit,
-                RewardPendingPointsTrackerID = (theRewardPendingPointsTracker == null) ? (int?)null : theRewardPendingPointsTracker.RewardPendingPointsTrackerID,
+                RewardPendingPointsTrackerID = (theRewardPendingPointsTracker == null) ? (Guid?)null : theRewardPendingPointsTracker.RewardPendingPointsTrackerID,
                 UserRating1 = null, /* most recent user rating -- does not include this one */
                 PreviousRatingOrVirtualRating = previousUserRating ?? lastTrustedRatingOrBasisOfCalc, // Formerly: lastTrustedRatingOrBasisOfCalc, BUT: we have eliminated the concept of trusted vs. nontrusted ratings, so now we can always use the previous user rating if there is one, resorting to the basis of the calculation if the previous user rating was null.
                 PreviousDisplayedRating = previousUserRating,
@@ -1783,9 +1757,9 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<UserRating>().InsertOnSubmit(theUserRating);
             DataContext.RegisterObjectToBeInserted(theUserRating);
 
-            List<int> allChoiceInGroupIDsToBeTrustTracked = additionalInfo.ChoiceInGroupIDsNotTrackedYet.Union(additionalInfo.TrustTrackerChoiceSummaries.Select(x => x.ChoiceInGroupID)).ToList();
+            List<Guid> allChoiceInGroupIDsToBeTrustTracked = additionalInfo.ChoiceInGroupIDsNotTrackedYet.Union(additionalInfo.TrustTrackerChoiceSummaries.Select(x => x.ChoiceInGroupID)).ToList();
             List<TrustTrackerForChoiceInGroup> choiceInGroupsInDatabaseAlready = DataContext.GetTable<TrustTrackerForChoiceInGroup>().Where(x => allChoiceInGroupIDsToBeTrustTracked.Contains(x.ChoiceInGroupID) && x.User == user).ToList();
-            List<int> notYetInsertedInt = allChoiceInGroupIDsToBeTrustTracked.Except(choiceInGroupsInDatabaseAlready.Select(x => x.ChoiceInGroupID)).ToList();
+            List<Guid> notYetInsertedInt = allChoiceInGroupIDsToBeTrustTracked.Except(choiceInGroupsInDatabaseAlready.Select(x => x.ChoiceInGroupID)).ToList();
             List<ChoiceInGroup> notYetInserted = DataContext.GetTable<ChoiceInGroup>().Where(x => additionalInfo.ChoiceInGroupIDsNotTrackedYet.Contains(x.ChoiceInGroupID)).ToList();
             List<TrustTrackerForChoiceInGroup> allTrustTrackersForChoiceInGroups = new List<TrustTrackerForChoiceInGroup>();
             allTrustTrackersForChoiceInGroups.AddRange(choiceInGroupsInDatabaseAlready);
@@ -1880,7 +1854,7 @@ namespace ClassLibrary1.Model
 
         public class UserRatingToAddViaAzure
         {
-           // int userID;
+           // Guid userID;
 
         }
 
@@ -1950,12 +1924,12 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The creator of this user settings object (or null for system-created)</param>
         /// <param name="status">The status of this object</param>
         /// <returns></returns>
-        public int AddProposalSettings(int? pointsManagerID, int? TblID, bool usersMayProposeAddingTbls, bool usersMayProposeResolvingRatings, bool usersMayProposeChangingTblRows,
+        public Guid AddProposalSettings(Guid? pointsManagerID, Guid? TblID, bool usersMayProposeAddingTbls, bool usersMayProposeResolvingRatings, bool usersMayProposeChangingTblRows,
             bool usersMayProposeChangingChoiceGroups, bool usersMayProposeChangingCharacteristics, bool usersMayProposeChangingColumns, bool usersMayProposeChangingUsersRights, bool usersMayProposeAdjustingPoints,
             bool usersMayProposeChangingProposalSettings, decimal minValueToApprove, decimal maxValueToReject, int minTimePastThreshold, decimal minProportionOfThisTime, int minAdditionalTimeForRewardRating,
             int halfLifeForRewardRating, decimal maxBonusForProposal, decimal maxPenaltyForRejection, decimal subsidyForApprovalRating, decimal subsidyForRewardRating,
             int halfLifeForResolvingAtFinalValue, decimal requiredPointsToMakeProposal,
-            String name, int? creator)
+            String name, Guid? creator)
         {
             ProposalSetting theProposalSettings = new ProposalSetting
             {
@@ -2002,7 +1976,7 @@ namespace ClassLibrary1.Model
 
 
         /// <returns></returns>
-        public int AddSubsidyAdjustment(int ratingPhaseStatusID, decimal subsidyAdjustmentFactor, DateTime? endingTime, int? endingTimeHalfLife)
+        public Guid AddSubsidyAdjustment(Guid ratingPhaseStatusID, decimal subsidyAdjustmentFactor, DateTime? endingTime, int? endingTimeHalfLife)
         {
 
             SubsidyAdjustment theAdjustment = new SubsidyAdjustment
@@ -2020,7 +1994,7 @@ namespace ClassLibrary1.Model
             return theAdjustment.SubsidyAdjustmentID;
         }
 
-        public int AddRewardPendingPointsTracker(TblRow rewardTblRow, int userWhoMadeChangeID)
+        public Guid AddRewardPendingPointsTracker(TblRow rewardTblRow, Guid userWhoMadeChangeID)
         {
             RewardPendingPointsTracker theRewardPendingPointsTracker = new RewardPendingPointsTracker
             {
@@ -2036,7 +2010,7 @@ namespace ClassLibrary1.Model
             return theRewardPendingPointsTracker.RewardPendingPointsTrackerID;
         }
 
-        public int AddRewardRatingSettings(int pointsManagerID, int? userActionID, int ratingGroupAttributesID, decimal probOfRewardEvaluation, decimal? multiplier, string name, int? creator)
+        public Guid AddRewardRatingSettings(Guid pointsManagerID, Guid? userActionID, Guid ratingGroupAttributesID, decimal probOfRewardEvaluation, decimal? multiplier, string name, Guid? creator)
         {
 
             RewardRatingSetting theRewardRatingSetting = new RewardRatingSetting
@@ -2063,7 +2037,7 @@ namespace ClassLibrary1.Model
         /// <param name="theSubsidyDensityRangeGroupID">The group to which this range should be added.</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddSubsidyDensityRange(int theSubsidyDensityRangeGroupID)
+        public Guid AddSubsidyDensityRange(Guid theSubsidyDensityRangeGroupID)
         {
 
             SubsidyDensityRange theRange = new SubsidyDensityRange
@@ -2091,7 +2065,7 @@ namespace ClassLibrary1.Model
         /// to a unique subsidy density range (for example, by eliminating or narrowing overlapping ranges).</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The added object</returns>
-        public int AddSubsidyDensityRange(int theSubsidyDensityRangeGroupID, Decimal theRangeBottom, Decimal theRangeTop, Decimal theLiquidityFactor, bool fixGroup)
+        public Guid AddSubsidyDensityRange(Guid theSubsidyDensityRangeGroupID, Decimal theRangeBottom, Decimal theRangeTop, Decimal theLiquidityFactor, bool fixGroup)
         {
             
             if (theRangeBottom < 0 || theRangeTop > 1 || theRangeBottom > theRangeTop)
@@ -2207,8 +2181,8 @@ namespace ClassLibrary1.Model
         /// <param name="theBase">If a simple logarithmic subsidy density range is used, the base of the range</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        
-        public int AddSubsidyDensityRangeGroup(string name, int? creator, decimal? theBase)
+
+        public Guid AddSubsidyDensityRangeGroup(string name, Guid? creator, decimal? theBase)
         {
             SubsidyDensityRangeGroup theGroup = new SubsidyDensityRangeGroup
             {
@@ -2225,12 +2199,12 @@ namespace ClassLibrary1.Model
             return theGroup.SubsidyDensityRangeGroupID;
         }
 
-        public int AddSubsidyDensityRangeGroup(string name, int? creator)
+        public Guid AddSubsidyDensityRangeGroup(string name, Guid? creator)
         {
             return AddSubsidyDensityRangeGroup(name, creator, null);
         }
 
-        public int AddTblDimensions( int maxWidthOfImageInRowHeaderCell, int maxHeightOfImageInRowHeaderCell, int maxWidthOfImageInTblRowPopUpWindow, int maxHeightOfImageInTblRowPopUpWindow, int widthOfTblRowPopUpWindow)
+        public Guid AddTblDimensions(int maxWidthOfImageInRowHeaderCell, int maxHeightOfImageInRowHeaderCell, int maxWidthOfImageInTblRowPopUpWindow, int maxHeightOfImageInTblRowPopUpWindow, int widthOfTblRowPopUpWindow)
         {
             TblDimension theTblDimension = new TblDimension
             {
@@ -2269,7 +2243,7 @@ namespace ClassLibrary1.Model
             return theTextField;
         }
 
-        public int AddTextFieldDefinition(int FieldDefinitionID, bool includeText, bool includeLink, bool searchable)
+        public Guid AddTextFieldDefinition(Guid FieldDefinitionID, bool includeText, bool includeLink, bool searchable)
         {
             if (!includeText && !includeLink)
                 throw new Exception("Text field must include text, link, or both.");
@@ -2296,7 +2270,7 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The user who created the universe</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added object</returns>
-        public int AddPointsManager(int domainID, String name, int? creator)
+        public Guid AddPointsManager(Guid domainID, String name, Guid? creator)
         {
 
             PointsManager thePointsManagers = new PointsManager
@@ -2377,7 +2351,7 @@ namespace ClassLibrary1.Model
         /// <param name="Zipcode"></param>
         /// <param name="City"></param>
         /// <param name="State"></param>
-        public void AddUserInfo(int userID, string firstName, string lastname, string email, string address1, string address2, string workphone, string homephone, string mobilephone, string password, string zipcode, string city, string state, string country)
+        public void AddUserInfo(Guid userID, string firstName, string lastname, string email, string address1, string address2, string workphone, string homephone, string mobilephone, string password, string zipcode, string city, string state, string country)
         {
 
             UserInfo theUserInfo = new UserInfo
@@ -2425,10 +2399,10 @@ namespace ClassLibrary1.Model
         /// <param name="creator">The creator of this user settings object (or null for system-created)</param>
         /// <param name="status">The status of the object and table</param>
         /// 
-        public int AddUsersRights(int? userID, int? pointsManagerID, bool mayView, bool mayPredict, bool mayAddTbls,
+        public Guid AddUsersRights(Guid? userID, Guid? pointsManagerID, bool mayView, bool mayPredict, bool mayAddTbls,
             bool mayResolveRatings, bool mayChangeTblRows, bool mayChangeChoiceGroups, bool mayChangeCharacteristics,
             bool mayChangeColumns, bool mayChangeUsersRights, bool mayAdjustPoints, bool mayChangeProposalSettings,
-            String name, int? creator)
+            String name, Guid? creator)
         {
             UsersRight theUsersRights = new UsersRight
             {
@@ -2521,14 +2495,14 @@ namespace ClassLibrary1.Model
 
             return theUser;
         }
-        
-        public int AddUserReturnId(String userName, bool isSuperUser, string email, string password, bool profileAlreadyAdded)
+
+        public Guid AddUserReturnId(String userName, bool isSuperUser, string email, string password, bool profileAlreadyAdded)
         {
             return AddUser(userName, email, password, isSuperUser, profileAlreadyAdded).UserID;
         }
 
 
-        public int AddUserAction(int userActionID, string text, bool superUser)
+        public Guid AddUserAction(Guid userActionID, string text, bool superUser)
         {
             UserAction theUserAction = new UserAction
             {

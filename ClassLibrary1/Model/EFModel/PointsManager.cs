@@ -25,11 +25,11 @@ namespace ClassLibrary1.EFModel
             UsersRights = new HashSet<UsersRight>();
         }
 
-        public int PointsManagerID { get; set; }
+        public Guid PointsManagerID { get; set; }
 
-        public int DomainID { get; set; }
+        public Guid DomainID { get; set; }
 
-        public int? TrustTrackerUnitID { get; set; }
+        public Guid? TrustTrackerUnitID { get; set; }
 
         public decimal CurrentPeriodDollarSubsidy { get; set; }
 
@@ -103,7 +103,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? creator { get; set; }
 
         public byte Status { get; set; }
 

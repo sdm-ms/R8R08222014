@@ -15,15 +15,15 @@ namespace ClassLibrary1.EFModel
             TblColumnFormattings = new HashSet<TblColumnFormatting>();
         }
 
-        public int TblColumnID { get; set; }
+        public Guid TblColumnID { get; set; }
 
-        public int TblTabID { get; set; }
+        public Guid TblTabID { get; set; }
 
-        public int DefaultRatingGroupAttributesID { get; set; }
+        public Guid DefaultRatingGroupAttributesID { get; set; }
 
-        public int? ConditionTblColumnID { get; set; }
+        public Guid? ConditionTblColumnID { get; set; }
 
-        public int? TrustTrackerUnitID { get; set; }
+        public Guid? TrustTrackerUnitID { get; set; }
 
         public decimal? ConditionGreaterThan { get; set; }
 

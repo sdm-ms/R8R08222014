@@ -15,8 +15,8 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class TableInfo
     {
-        public int TblID;
-        public int TblTabID;
+        public Guid TblID;
+        public Guid TblTabID;
         public string SortInstruction;
         public List<SortMenuItem> SortMenu;
         public string SuppStyle;
@@ -26,26 +26,26 @@ namespace ClassLibrary1.Model
     public class LoadRowHeadingInfo
     {
         public R8RDataAccess dataAccess;
-        public int theTblID;
-        public int thePointsManagerID;
-        public int theTblRowID;
+        public Guid theTblID;
+        public Guid thePointsManagerID;
+        public Guid theTblRowID;
         public TblDimension theTblDimension;
     }
 
     public class LoadBodyRowInfo
     {
         public R8RDataAccess dataAccess;
-        public int theTblID;
-        public int theTblRowID;
-        public int TblTabID;
+        public Guid theTblID;
+        public Guid theTblRowID;
+        public Guid TblTabID;
         public string suppStyle;
     }
 
     public class LoadHeaderRowInfo
     {
         public R8RDataAccess dataAccess;
-        public int TblTabID;
-        public int? TblColumnToSortID;
+        public Guid TblTabID;
+        public Guid? TblColumnToSortID;
         public bool SortByTblRowName; // only if there is no column to sort by
         public bool ascending;
     }
@@ -54,10 +54,10 @@ namespace ClassLibrary1.Model
     {
         public TblRowFieldDisplay TblRowFieldDisplay;
         public string RowHeadingWithPopup; // only if data is loaded through fast tables
-        public int TblRowID;
-        public int TblColumnID;
-        public int? TopRatingGroupID;
-        public int? FirstRatingID;
+        public Guid TblRowID;
+        public Guid TblColumnID;
+        public Guid? TopRatingGroupID;
+        public Guid? FirstRatingID;
         public int? DecPlaces; // null if preformatted string exists
         public decimal? ValueOfFirstRating; // null if preformatted string exists
         public bool SingleNumberOnly;

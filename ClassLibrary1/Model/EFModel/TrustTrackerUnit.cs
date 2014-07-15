@@ -17,7 +17,7 @@ namespace ClassLibrary1.EFModel
             UserRatings = new HashSet<UserRating>();
         }
 
-        public int TrustTrackerUnitID { get; set; }
+        public Guid TrustTrackerUnitID { get; set; }
 
         public short SkepticalTrustThreshhold { get; set; }
 

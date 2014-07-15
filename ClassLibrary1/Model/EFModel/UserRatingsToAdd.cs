@@ -9,11 +9,11 @@ namespace ClassLibrary1.EFModel
     [Table("UserRatingsToAdd")]
     public partial class UserRatingsToAdd
     {
-        public int UserRatingsToAddID { get; set; }
+        public Guid UserRatingsToAddID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
-        public int TopRatingGroupID { get; set; }
+        public Guid TopRatingGroupID { get; set; }
 
         public byte[] UserRatingHierarchy { get; set; }
 

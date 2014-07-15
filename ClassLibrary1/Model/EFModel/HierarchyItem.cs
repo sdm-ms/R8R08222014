@@ -15,13 +15,13 @@ namespace ClassLibrary1.EFModel
             SearchWordHierarchyItems = new HashSet<SearchWordHierarchyItem>();
         }
 
-        public int HierarchyItemID { get; set; }
+        public Guid HierarchyItemID { get; set; }
 
-        public int? HigherHierarchyItemID { get; set; }
+        public Guid? HigherHierarchyItemID { get; set; }
 
-        public int? HigherHierarchyItemForRoutingID { get; set; }
+        public Guid? HigherHierarchyItemForRoutingID { get; set; }
 
-        public int? TblID { get; set; }
+        public Guid? TblID { get; set; }
 
         public string HierarchyItemName { get; set; }
 

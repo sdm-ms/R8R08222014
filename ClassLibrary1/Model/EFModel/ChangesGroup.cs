@@ -14,17 +14,17 @@ namespace ClassLibrary1.EFModel
             ChangesStatusOfObjects = new HashSet<ChangesStatusOfObject>();
         }
 
-        public int ChangesGroupID { get; set; }
+        public Guid ChangesGroupID { get; set; }
 
-        public int? PointsManagerID { get; set; }
+        public Guid? PointsManagerID { get; set; }
 
-        public int? TblID { get; set; }
+        public Guid? TblID { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
-        public int? MakeChangeRatingID { get; set; }
+        public Guid? MakeChangeRatingID { get; set; }
 
-        public int? RewardRatingID { get; set; }
+        public Guid? RewardRatingID { get; set; }
 
         public byte StatusOfChanges { get; set; }
 

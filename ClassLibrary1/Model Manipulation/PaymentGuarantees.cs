@@ -27,7 +27,7 @@ namespace ClassLibrary1.Model
     public partial class R8RDataManipulation
     {
 
-        public void GuaranteeSettings(int pointsManagerID, decimal dollarValuePerPoint, decimal discountForGuarantees, decimal maximumTotalGuarantees, bool conditionalGuaranteesAvailableForNewUsers, bool allowApplicationsWhenNoConditionalGuaranteesAvailable, bool conditionalGuaranteesAvailableForExistingUsers, int conditionalGuaranteeTimeBlockInHours, decimal maximumGuaranteePaymentPerHour)
+        public void GuaranteeSettings(Guid pointsManagerID, decimal dollarValuePerPoint, decimal discountForGuarantees, decimal maximumTotalGuarantees, bool conditionalGuaranteesAvailableForNewUsers, bool allowApplicationsWhenNoConditionalGuaranteesAvailable, bool conditionalGuaranteesAvailableForExistingUsers, int conditionalGuaranteeTimeBlockInHours, decimal maximumGuaranteePaymentPerHour)
         {
             PointsManager thePointsManager = DataContext.NewOrSingle<PointsManager>(x => x.PointsManagerID == pointsManagerID);
             thePointsManager.DollarValuePerPoint = dollarValuePerPoint;

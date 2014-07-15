@@ -29,7 +29,7 @@ namespace ClassLibrary1.Model
     [Serializable()]
     public class TrustTrackerChoiceSummary
     {
-        public int ChoiceInGroupID;
+        public Guid ChoiceInGroupID;
         public float SumAdjustmentPctTimesRatingMagnitude;
         public float SumRatingMagnitudes;
         public float TrustValueForChoice;

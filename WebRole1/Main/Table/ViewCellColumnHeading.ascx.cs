@@ -18,7 +18,7 @@ using ClassLibrary1.EFModel;
 
 public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserControl
 {
-    protected int? TblColumnID; 
+    protected Guid? TblColumnID; 
     protected R8RDataAccess DataAccess;
     protected string Abbreviation;
     protected string Name;
@@ -29,10 +29,10 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
     protected bool SubstituteRefreshButton;
     protected bool VerticalText;
     protected bool ChartButton;
-    protected int? TblRowIDForChartButton;
+    protected Guid? TblRowIDForChartButton;
     protected Action<int?, bool> SortFn;
 
-    public void Setup(R8RDataAccess dataAccess, Action<int?, bool> sortFn, int? tblColumnID, int? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
+    public void Setup(R8RDataAccess dataAccess, Action<int?, bool> sortFn, Guid? tblColumnID, int? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
     {
         DataAccess = dataAccess;
         SortFn = sortFn;

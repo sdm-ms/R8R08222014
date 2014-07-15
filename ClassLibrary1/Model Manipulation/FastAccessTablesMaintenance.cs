@@ -144,11 +144,11 @@ namespace ClassLibrary1.Model
         internal class FastAccessRowRequiringUpdate : IComparer
         {
             public string TableName { get; set; }
-            public int TblRowID { get; set; }
+            public Guid TblRowID { get; set; }
             public bool UpdateRatings { get; set; }
             public bool UpdateFields { get; set; }
 
-            public FastAccessRowRequiringUpdate(string tableName, int tblRowID, bool updateRatings, bool updateFields)
+            public FastAccessRowRequiringUpdate(string tableName, Guid tblRowID, bool updateRatings, bool updateFields)
             {
                 TableName = tableName;
                 TblRowID = tblRowID;
@@ -238,10 +238,10 @@ namespace ClassLibrary1.Model
             bool anyNewRowsAdded = false;
             foreach (var table in theRowsByTableAndUpdateInstruction)
             {
-                int tblID = Convert.ToInt32(table.FirstOrDefault().Item.TableName.Substring(1));
+                Guid tblID = Convert.ToInt32(table.FirstOrDefault().Item.TableName.Substring(1));
                 Tbl theTbl = iDataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
                 bool newRowsAdded = table.Any(x => x.Item.TblRowID == -1); // we can't use update for this, because we don't know the TblRowID yet.
-                List<int> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
+                List<Guid> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => tblRowIDs.Contains(x.TblRowID));
                 new FastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.FirstOrDefault().Item.UpdateRatings, table.FirstOrDefault().Item.UpdateFields);
                 if (newRowsAdded && theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.apparentlySynchronized)
@@ -277,7 +277,7 @@ namespace ClassLibrary1.Model
             foreach (var group in theRowsByTableAndUpdateInstruction)
             {
                 Tbl theTbl = group.FirstOrDefault().Item.Tbl;
-                int tblID = theTbl.TblID;
+                Guid tblID = theTbl.TblID;
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => x.TblID == tblID && (x.FastAccessUpdateFields || x.FastAccessUpdateRatings)).Take(numAtOnce);
                 int numRowsUpdated = new FastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, group.FirstOrDefault().Item.FastAccessUpdateRatings, group.FirstOrDefault().Item.FastAccessUpdateFields);
                 foreach (TblRow tblRow in group.Select(x => x.Item))

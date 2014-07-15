@@ -13,11 +13,11 @@ namespace ClassLibrary1.EFModel
             TrustTrackerStats = new HashSet<TrustTrackerStat>();
         }
 
-        public int TrustTrackerID { get; set; }
+        public Guid TrustTrackerID { get; set; }
 
-        public int TrustTrackerUnitID { get; set; }
+        public Guid TrustTrackerUnitID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
         public double OverallTrustLevel { get; set; }
 

@@ -30,7 +30,7 @@ namespace ClassLibrary1.Model
 
     public static class RatingsAndRelatedInfoLoader
     {
-        public static List<Rating> Load(IR8RDataContext theDataContext, List<int> ratingIDs, User theUser)
+        public static List<Rating> Load(IR8RDataContext theDataContext, List<Guid> ratingIDs, User theUser)
         {
             
             var results = (from x in theDataContext.GetTable<Rating>()
@@ -82,19 +82,19 @@ namespace ClassLibrary1.Model
 
     public class RatingIdAndUserRatingValue
     {
-        public int RatingID;
+        public Guid RatingID;
         public decimal UserRatingValue;
     }
 
     public class RatingAndCurrentValue
     {
-        public int ratingID;
+        public Guid ratingID;
         public decimal? theValue;
     }
 
     public class RatingCurrentValueAndDecimalPlaces
     {
-        public int ratingID;
+        public Guid ratingID;
         public decimal? theValue;
         public int decimalPlaces;
     }

@@ -23,7 +23,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
     protected R8RDataAccess DataAccess;
     public FieldsBoxMode Mode { get; set; }
     protected bool rebinding = false;
-    protected int TblID { get; set; }
+    protected Guid TblID { get; set; }
     protected int? TblTabID { get; set; }
     protected TblRow TheTblRow { get; set; }
     internal SearchWordsFilter searchWordsControl;

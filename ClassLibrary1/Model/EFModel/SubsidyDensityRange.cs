@@ -9,9 +9,9 @@ namespace ClassLibrary1.EFModel
     public partial class SubsidyDensityRange
     {
         [Key]
-        public int SubsidyDensityRangeID { get; set; }
+        public Guid SubsidyDensityRangeID { get; set; }
 
-        public int SubsidyDensityRangeGroupID { get; set; }
+        public Guid SubsidyDensityRangeGroupID { get; set; }
 
         public decimal RangeBottom { get; set; }
 

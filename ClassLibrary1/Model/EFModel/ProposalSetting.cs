@@ -9,11 +9,11 @@ namespace ClassLibrary1.EFModel
     public partial class ProposalSetting
     {
         [Key]
-        public int ProposalSettingsID { get; set; }
+        public Guid ProposalSettingsID { get; set; }
 
-        public int? PointsManagerID { get; set; }
+        public Guid? PointsManagerID { get; set; }
 
-        public int? TblID { get; set; }
+        public Guid? TblID { get; set; }
 
         public bool UsersMayProposeAddingTbls { get; set; }
 
@@ -59,7 +59,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

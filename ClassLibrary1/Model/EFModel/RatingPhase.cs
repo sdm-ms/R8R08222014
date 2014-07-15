@@ -15,9 +15,9 @@ namespace ClassLibrary1.EFModel
         }
 
         [Key]
-        public int RatingPhaseID { get; set; }
+        public Guid RatingPhaseID { get; set; }
 
-        public int RatingPhaseGroupID { get; set; }
+        public Guid RatingPhaseGroupID { get; set; }
 
         public int NumberInGroup { get; set; }
 

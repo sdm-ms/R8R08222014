@@ -56,7 +56,7 @@ public partial class ChangeTbl : System.Web.UI.Page
     //    {
     //         TableId = int.Parse(Request.QueryString["TableId"]);
     //        int? ChangeGroupId = null;
-    //    int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+    //    Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     //    StatusOfObject Status = (StatusOfObject)Obj.ObjDataAccess.GetTbl(TableId).Status;
     //    if (Status ==  StatusOfObject.Active)
     //    {

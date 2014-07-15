@@ -15,7 +15,7 @@ namespace ClassLibrary1.EFModel
         }
 
         [Key]
-        public int TblDimensionsID { get; set; }
+        public Guid TblDimensionsID { get; set; }
 
         public int MaxWidthOfImageInRowHeaderCell { get; set; }
 
@@ -27,7 +27,7 @@ namespace ClassLibrary1.EFModel
 
         public int WidthOfTblRowPopUpWindow { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte? Status { get; set; }
 

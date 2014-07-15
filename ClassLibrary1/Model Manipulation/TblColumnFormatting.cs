@@ -18,7 +18,7 @@ namespace ClassLibrary1.Model
             return theFormatting;
         }
 
-        public static TblColumnFormatting GetFormattingForTblColumn(int TblColumnID)
+        public static TblColumnFormatting GetFormattingForTblColumn(Guid TblColumnID)
         {
             TblColumnFormatting theFormatting = null;
             string cacheKey = "CatDesFormat" + TblColumnID.ToString();
@@ -37,12 +37,12 @@ namespace ClassLibrary1.Model
             return theFormatting;
         }
 
-        public static string FormatAsSpecified(decimal? value, int decimalPlaces, int TblColumnID)
+        public static string FormatAsSpecified(decimal? value, int decimalPlaces, Guid TblColumnID)
         {
             return FormatAsSpecified(value, decimalPlaces, GetFormattingForTblColumn(TblColumnID));
         }
 
-        public static string GetSuppStyleMain(int? TblColumnID)
+        public static string GetSuppStyleMain(Guid? TblColumnID)
         {
             if (TblColumnID == null)
                 return "";
@@ -52,7 +52,7 @@ namespace ClassLibrary1.Model
             return theFormatting.SuppStylesMain;
         }
 
-        public static string GetSuppStyleHeader(int? TblColumnID)
+        public static string GetSuppStyleHeader(Guid? TblColumnID)
         {
             if (TblColumnID == null)
                 return "";
@@ -89,7 +89,7 @@ namespace ClassLibrary1.Model
             return theRules.Prefix + initialFormatting + theRules.Suffix;
         }
 
-        public static string RemovePrefixAndSuffix(string initialString, int TblColumnID)
+        public static string RemovePrefixAndSuffix(string initialString, Guid TblColumnID)
         {
             return RemovePrefixAndSuffix(initialString, GetFormattingForTblColumn(TblColumnID));
         }

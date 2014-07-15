@@ -13,13 +13,13 @@ namespace ClassLibrary1.EFModel
             TrustTrackerForChoiceInGroupsUserRatingLinks = new HashSet<TrustTrackerForChoiceInGroupsUserRatingLink>();
         }
 
-        public int TrustTrackerForChoiceInGroupID { get; set; }
+        public Guid TrustTrackerForChoiceInGroupID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
-        public int ChoiceInGroupID { get; set; }
+        public Guid ChoiceInGroupID { get; set; }
 
-        public int TblID { get; set; }
+        public Guid TblID { get; set; }
 
         public float SumAdjustmentPctTimesRatingMagnitude { get; set; }
 

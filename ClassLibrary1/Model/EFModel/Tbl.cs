@@ -20,11 +20,11 @@ namespace ClassLibrary1.EFModel
             TblTabs = new HashSet<TblTab>();
         }
 
-        public int TblID { get; set; }
+        public Guid TblID { get; set; }
 
-        public int PointsManagerID { get; set; }
+        public Guid PointsManagerID { get; set; }
 
-        public int? DefaultRatingGroupAttributesID { get; set; }
+        public Guid? DefaultRatingGroupAttributesID { get; set; }
 
         [StringLength(50)]
         public string WordToDescribeGroupOfColumnsInThisTbl { get; set; }
@@ -34,9 +34,9 @@ namespace ClassLibrary1.EFModel
         [StringLength(50)]
         public string TypeOfTblRow { get; set; }
 
-        public int? TblDimensionsID { get; set; }
+        public Guid? TblDimensionsID { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

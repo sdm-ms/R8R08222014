@@ -97,7 +97,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         HeaderLinqDataSource.Selecting += new EventHandler<LinqDataSourceSelectEventArgs>(HeaderLinqDataSource_Selecting);
     }
 
-    protected void ResortMainTable(int? TblColumnID, bool sortAscending)
+    protected void ResortMainTable(Guid? TblColumnID, bool sortAscending)
     {
         ResortCateDesFn(TblColumnID, sortAscending);
     }
@@ -120,7 +120,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 
     class HeaderRowInfoType
     {
-        public int? TblColumnID { get; set; }
+        public Guid? TblColumnID { get; set; }
         public string Abbreviation { get; set; }
         public string Name { get; set; }
         public string WidthStyle { get; set; }
@@ -192,7 +192,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+            Guid? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
             if (TblColumnID == -1) // see note above
                 TblColumnID = null; 
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];

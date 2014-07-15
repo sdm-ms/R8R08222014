@@ -16,13 +16,13 @@ namespace ClassLibrary1.EFModel
         }
 
         [Key]
-        public int RatingGroupPhaseStatusID { get; set; }
+        public Guid RatingGroupPhaseStatusID { get; set; }
 
-        public int RatingPhaseGroupID { get; set; }
+        public Guid RatingPhaseGroupID { get; set; }
 
-        public int RatingPhaseID { get; set; }
+        public Guid RatingPhaseID { get; set; }
 
-        public int RatingGroupID { get; set; }
+        public Guid RatingGroupID { get; set; }
 
         public int RoundNum { get; set; }
 

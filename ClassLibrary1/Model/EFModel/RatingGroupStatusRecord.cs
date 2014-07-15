@@ -8,9 +8,9 @@ namespace ClassLibrary1.EFModel
 
     public partial class RatingGroupStatusRecord
     {
-        public int RatingGroupStatusRecordID { get; set; }
+        public Guid RatingGroupStatusRecordID { get; set; }
 
-        public int RatingGroupID { get; set; }
+        public Guid RatingGroupID { get; set; }
 
         [Column(TypeName = "numeric")]
         public decimal? OldValueOfFirstRating { get; set; }

@@ -42,13 +42,13 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="ownedRatingGroupAttributesID">The rating group attributes for the hierarchically below group</param>
         /// <param name="ownerRatingPlanID">The rating plan for the hierarchically above rating</param>
-        public void RelateRatingPlanAndGroupAttributes(int ownedRatingGroupAttributesID, int ownerRatingPlanID)
+        public void RelateRatingPlanAndGroupAttributes(Guid ownedRatingGroupAttributesID, Guid ownerRatingPlanID)
         {
             RatingPlan thePlan = DataContext.GetTable<RatingPlan>().Single(x=>x.RatingPlansID==ownerRatingPlanID);
             RatingGroupAttribute theAttributes = DataContext.GetTable<RatingGroupAttribute>().Single(x=>x.RatingGroupAttributesID==ownedRatingGroupAttributesID);
 
             thePlan.OwnedRatingGroupAttributesID = ownedRatingGroupAttributesID;
-            int ownerRatingGroupAttributesID = thePlan.RatingGroupAttributesID;
+            Guid ownerRatingGroupAttributesID = thePlan.RatingGroupAttributesID;
 
             RatingGroupTypes parentRatingGroupType = (RatingGroupTypes) DataContext.GetTable<RatingGroupAttribute>().Single(mga => mga.RatingGroupAttributesID == ownerRatingGroupAttributesID).TypeOfRatingGroup;
             RatingGroupTypes subordinateRatingGroupTypes = parentRatingGroupType;
@@ -363,14 +363,14 @@ namespace ClassLibrary1.Model
         //    //    case TypeOfObject.Tbl:  
                     
         //    //        var theTblRows = R8RDB.GetTable<TblRow>().Where(e => e.TblID == objectID && e.Status == (Byte)StatusOfObject.Active).Select(e => e.TblRowID);
-        //    //        foreach (int tblRowID in theTblRows)
+        //    //        foreach (Guid tblRowID in theTblRows)
         //    //            SetTradingStatusHierarchical(tblRowID, TypeOfObject.TblRow, newStatus);
         //    //        break;
 
         //    //    case TypeOfObject.PointsManager:
                     
         //    //        var theTbls = R8RDB.GetTable<Tbl>().Where(c => c.PointsManagerID == objectID && c.Status == (Byte)StatusOfObject.Active).Select(c => c.TblID);
-        //    //        foreach (int TblID in theTbls)
+        //    //        foreach (Guid TblID in theTbls)
         //    //            SetTradingStatusHierarchical(TblID, TypeOfObject.Tbl, newStatus);
         //    //        break;
         //    //}

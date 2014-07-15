@@ -8,9 +8,9 @@ namespace ClassLibrary1.EFModel
 
     public partial class TextFieldDefinition
     {
-        public int TextFieldDefinitionID { get; set; }
+        public Guid TextFieldDefinitionID { get; set; }
 
-        public int FieldDefinitionID { get; set; }
+        public Guid FieldDefinitionID { get; set; }
 
         public bool IncludeText { get; set; }
 

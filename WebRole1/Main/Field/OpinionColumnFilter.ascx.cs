@@ -19,8 +19,8 @@ public partial class OpinionColumnFilter : System.Web.UI.UserControl, IFilterFie
 {
     // These aren't really relevant here, but we need them to implement IFilterField
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID {get; set;}
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)

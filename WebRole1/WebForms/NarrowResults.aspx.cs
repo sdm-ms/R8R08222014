@@ -13,7 +13,7 @@ using ClassLibrary1.EFModel;
 public partial class NarrowResults : System.Web.UI.Page
 {
     FilterRules theFilterRules = null;
-    int TblID = 0;
+    Guid TblID = 0;
     int TblTabID = 0;
 
     protected void Page_Load(object sender, EventArgs e)

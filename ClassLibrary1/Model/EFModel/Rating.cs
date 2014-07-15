@@ -16,17 +16,17 @@ namespace ClassLibrary1.EFModel
             UserRatings = new HashSet<UserRating>();
         }
 
-        public int RatingID { get; set; }
+        public Guid RatingID { get; set; }
 
-        public int RatingGroupID { get; set; }
+        public Guid RatingGroupID { get; set; }
 
-        public int RatingCharacteristicsID { get; set; }
+        public Guid RatingCharacteristicsID { get; set; }
 
-        public int? OwnedRatingGroupID { get; set; }
+        public Guid? OwnedRatingGroupID { get; set; }
 
-        public int TopmostRatingGroupID { get; set; }
+        public Guid TopmostRatingGroupID { get; set; }
 
-        public int? MostRecentUserRatingID { get; set; }
+        public Guid? MostRecentUserRatingID { get; set; }
 
         public int NumInGroup { get; set; }
 
@@ -34,7 +34,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public decimal? CurrentValue { get; set; }
 

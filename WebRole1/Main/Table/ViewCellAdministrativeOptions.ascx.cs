@@ -21,7 +21,7 @@ public partial class Main_Table_ViewCellAdministrativeOptions : System.Web.UI.Us
 
     }
     //Property RatingId
-    public int RatingId
+    public Guid RatingId
     {
         get
         {

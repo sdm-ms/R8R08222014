@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class VolatilityTracker
     {
-        public int VolatilityTrackerID { get; set; }
+        public Guid VolatilityTrackerID { get; set; }
 
-        public int RatingGroupID { get; set; }
+        public Guid RatingGroupID { get; set; }
 
-        public int VolatilityTblRowTrackerID { get; set; }
+        public Guid VolatilityTblRowTrackerID { get; set; }
 
         public byte DurationType { get; set; }
 

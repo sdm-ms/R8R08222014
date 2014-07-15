@@ -9,11 +9,11 @@ namespace ClassLibrary1.EFModel
     public partial class UsersRight
     {
         [Key]
-        public int UsersRightsID { get; set; }
+        public Guid UsersRightsID { get; set; }
 
-        public int? UserID { get; set; }
+        public Guid? UserID { get; set; }
 
-        public int? PointsManagerID { get; set; }
+        public Guid? PointsManagerID { get; set; }
 
         public bool MayView { get; set; }
 
@@ -39,7 +39,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

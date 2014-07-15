@@ -17,11 +17,11 @@ namespace ClassLibrary1.EFModel
             TextFields = new HashSet<TextField>();
         }
 
-        public int FieldID { get; set; }
+        public Guid FieldID { get; set; }
 
-        public int TblRowID { get; set; }
+        public Guid TblRowID { get; set; }
 
-        public int FieldDefinitionID { get; set; }
+        public Guid FieldDefinitionID { get; set; }
 
         public byte Status { get; set; }
 

@@ -36,7 +36,7 @@ public partial class Row : System.Web.UI.Page
             throw new Exception("Internal error: Invalid mode for Row page.");
         
         R8RDataAccess DataAccess = new R8RDataAccess();
-        int? UserId = null;
+        Guid? userID = null;
         if (HttpContext.Current.Profile != null)
             UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserId == 0 || UserId == null)

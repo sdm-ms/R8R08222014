@@ -12,9 +12,9 @@ using ClassLibrary1.EFModel;
 
 public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
 {
-    public int? TopRatingGroupID { get; set; }
-    public int? TblRowID { get; set; }
-    public int? PointsManagerID { get; set; }
+    public Guid? TopRatingGroupID { get; set; }
+    public Guid? TblRowID { get; set; }
+    public Guid? PointsManagerID { get; set; }
     protected int? ColumnToSort;
     protected bool SortOrderAscending = true;
     protected bool rebinding = false;

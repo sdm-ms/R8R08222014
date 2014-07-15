@@ -208,14 +208,14 @@ namespace ClassLibrary1.Model
     public class TblColumnInfo
     {
         public TblColumnInfo() { }
-        public TblColumnInfo(int tblColumnID, string tblColumnName, bool defaultSortOrderAsc, bool sortable)
+        public TblColumnInfo(Guid tblColumnID, string tblColumnName, bool defaultSortOrderAsc, bool sortable)
         {
             TblColumnID = tblColumnID;
             TblColumnName = TblColumnName;
             DefaultSortOrderAsc = defaultSortOrderAsc;
             Sortable = sortable;
         }
-        public int TblColumnID { get; set; }
+        public Guid TblColumnID { get; set; }
         public string TblColumnName { get; set; }
         public bool DefaultSortOrderAsc { get; set; }
         public bool Sortable { get; set; }
@@ -267,7 +267,7 @@ namespace ClassLibrary1.Model
     {
         R8RDataAccess DataAccess { get; set; }
         FieldsBoxMode Mode { get; set; }
-        int? TblRowID { get; set; }
+        Guid? TblRowID { get; set; }
         int FieldDefinitionOrTblColumnID { get; set; }
         FilterRule GetFilterRule();
         FieldDataInfo GetFieldValue(FieldSetDataInfo theGroup);

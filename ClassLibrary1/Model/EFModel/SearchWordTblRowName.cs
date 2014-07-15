@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class SearchWordTblRowName
     {
-        public int SearchWordTblRowNameID { get; set; }
+        public Guid SearchWordTblRowNameID { get; set; }
 
-        public int TblRowID { get; set; }
+        public Guid TblRowID { get; set; }
 
-        public int SearchWordID { get; set; }
+        public Guid SearchWordID { get; set; }
 
         public virtual SearchWord SearchWord { get; set; }
 

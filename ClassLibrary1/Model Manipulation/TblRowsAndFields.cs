@@ -655,13 +655,13 @@ namespace ClassLibrary1.Model
         /// <param name="entityID">The entity</param>
         /// <param name="fieldNum">The field number</param>
         /// <returns>The field definition</returns>
-        //public FieldDefinition GetFieldDefinitionForTblRow(int? tblRowID, int fieldNum)
+        //public FieldDefinition GetFieldDefinitionForTblRow(Guid? tblRowID, int fieldNum)
         //{
         //    throw new Exception("This is no longer supported.");
         //    TblRow theTblRow = R8RDB.GetTable<TblRow>().SingleOrDefault(e => e.TblRowID == entityID);
         //    if (theTblRow == null)
         //        return null;
-        //    int TblID = theTblRow.TblID;
+        //    Guid TblID = theTblRow.TblID;
         //    FieldDefinition theFieldDefinition = R8RDB.GetTable<FieldDefinition>().SingleOrDefault(fd => fd.TblID == TblID && fd.FieldNum == fieldNum);
         //    if (theFieldDefinition == null)
         //        return null;
@@ -693,12 +693,12 @@ namespace ClassLibrary1.Model
             return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRow == tblRow && f.FieldDefinition == FieldDefinition && f.Status == (byte)StatusOfObject.Active);
         }
 
-        public Field GetFieldForTblRow(int? tblRowID, int? FieldDefinitionID)
+        public Field GetFieldForTblRow(Guid? tblRowID, Guid? FieldDefinitionID)
         {
             return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRowID == tblRowID && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
         }
 
-        public void GetFieldForTblRow(int? tblRowID, int? FieldDefinitionID, ref int? theFieldID, ref int? theSubfieldID, ref FieldTypes theFieldType)
+        public void GetFieldForTblRow(Guid? tblRowID, Guid? FieldDefinitionID, ref Guid? theFieldID, ref Guid? theSubfieldID, ref FieldTypes theFieldType)
         {
             theFieldID = null;
             theSubfieldID = null;
@@ -750,7 +750,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void GetFieldForTblRow(TblRow tblRow, int? FieldDefinitionID, ref Field theField, ref object theSubfield, ref FieldTypes theFieldType)
+        public void GetFieldForTblRow(TblRow tblRow, Guid? FieldDefinitionID, ref Field theField, ref object theSubfield, ref FieldTypes theFieldType)
         {
             theField = null;
             theSubfield = null;

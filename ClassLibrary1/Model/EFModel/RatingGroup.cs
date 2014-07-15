@@ -21,13 +21,13 @@ namespace ClassLibrary1.EFModel
             UserRatingGroups = new HashSet<UserRatingGroup>();
         }
 
-        public int RatingGroupID { get; set; }
+        public Guid RatingGroupID { get; set; }
 
-        public int RatingGroupAttributesID { get; set; }
+        public Guid RatingGroupAttributesID { get; set; }
 
-        public int TblRowID { get; set; }
+        public Guid TblRowID { get; set; }
 
-        public int TblColumnID { get; set; }
+        public Guid TblColumnID { get; set; }
 
         public decimal? CurrentValueOfFirstRating { get; set; }
 

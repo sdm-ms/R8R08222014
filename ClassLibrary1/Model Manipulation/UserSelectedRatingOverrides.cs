@@ -20,7 +20,7 @@ namespace ClassLibrary1.Model
         public UserSelectableRatingTypes theRatingType;
         public decimal? fromRange, toRange;
         public List<string> multipleChoices;
-        public int theColumnID;
+        public Guid theColumnID;
     }
 
         /// <summary>

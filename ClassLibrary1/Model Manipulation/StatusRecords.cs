@@ -19,11 +19,11 @@ namespace ClassLibrary1.Model
 
         public static bool RecordRecentChangesInStatusRecords = false; // We are disabling this feature. If enabling it, we would need to copy the TblRowStatusRecords to the denormalized database, so that we could then filter queries to figure out state of tables at particular time in the past.
 
-        internal static void RememberChangeForLater(IR8RDataContext R8RDB, string changeType, int changeNum)
+        internal static void RememberChangeForLater(IR8RDataContext R8RDB, string changeType, Guid changeNum)
         {
-            List<int> theList = R8RDB.TempCacheGet(changeType) as List<int>;
+            List<Guid> theList = R8RDB.TempCacheGet(changeType) as List<Guid>;
             if (theList == null)
-                theList = new List<int>();
+                theList = new List<Guid>();
             if (!theList.Contains(changeNum))
             {
                 theList.Add(changeNum);
@@ -45,17 +45,17 @@ namespace ClassLibrary1.Model
             RecordRememberedChangesOfType(R8RDB, "LastTblColumnRatingChange", RecordRatingChange);
         }
 
-        public static void PrepareToRecordRowStatusChange(IR8RDataContext R8RDB, int tblID)
+        public static void PrepareToRecordRowStatusChange(IR8RDataContext R8RDB, Guid tblID)
         {
             RememberChangeForLater(R8RDB, "TblStatusChangeList", tblID);
         }
 
-        public static void PrepareToRecordRatingChange(IR8RDataContext R8RDB, int tblColumnID)
+        public static void PrepareToRecordRatingChange(IR8RDataContext R8RDB, Guid tblColumnID)
         {
             RememberChangeForLater(R8RDB, "LastTblColumnRatingChange", tblColumnID);
         }
 
-        internal static void RecordRowStatusChange(int tblID)
+        internal static void RecordRowStatusChange(Guid tblID)
         {
             if (!StatusRecords.RecordRecentChangesInStatusRecords)
                 return;
@@ -71,7 +71,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        internal static void RecordRatingChange( int tblColumnID)
+        internal static void RecordRatingChange( Guid tblColumnID)
         {
             if (!StatusRecords.RecordRecentChangesInStatusRecords)
                 return;
@@ -87,7 +87,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public static bool RowStatusHasChangedSince(DateTime earliestTimeToConsider, int tblID)
+        public static bool RowStatusHasChangedSince(DateTime earliestTimeToConsider, Guid tblID)
         {
             if (!StatusRecords.RecordRecentChangesInStatusRecords)
                 throw new Exception("Cannot determine whether row status has changed.");
@@ -99,7 +99,7 @@ namespace ClassLibrary1.Model
                 return (theLastDateTime > earliestTimeToConsider);
         }
 
-        public static bool RatingHasBeenRecordedSince(DateTime earliestTimeToConsider, int tblColumnID)
+        public static bool RatingHasBeenRecordedSince(DateTime earliestTimeToConsider, Guid tblColumnID)
         {
             if (!StatusRecords.RecordRecentChangesInStatusRecords)
                 throw new Exception("Cannot determine whether rating has been changed recently.");

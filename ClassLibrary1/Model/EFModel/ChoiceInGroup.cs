@@ -16,9 +16,9 @@ namespace ClassLibrary1.EFModel
             TrustTrackerForChoiceInGroups = new HashSet<TrustTrackerForChoiceInGroup>();
         }
 
-        public int ChoiceInGroupID { get; set; }
+        public Guid ChoiceInGroupID { get; set; }
 
-        public int ChoiceGroupID { get; set; }
+        public Guid ChoiceGroupID { get; set; }
 
         public int ChoiceNum { get; set; }
 
@@ -26,7 +26,7 @@ namespace ClassLibrary1.EFModel
         [StringLength(50)]
         public string ChoiceText { get; set; }
 
-        public int? ActiveOnDeterminingGroupChoiceInGroupID { get; set; }
+        public Guid? ActiveOnDeterminingGroupChoiceInGroupID { get; set; }
 
         public byte Status { get; set; }
 

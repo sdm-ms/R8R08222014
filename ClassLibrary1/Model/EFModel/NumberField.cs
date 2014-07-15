@@ -8,9 +8,9 @@ namespace ClassLibrary1.EFModel
 
     public partial class NumberField
     {
-        public int NumberFieldID { get; set; }
+        public Guid NumberFieldID { get; set; }
 
-        public int FieldID { get; set; }
+        public Guid FieldID { get; set; }
 
         public decimal? Number { get; set; }
 

@@ -9,7 +9,7 @@ namespace ClassLibrary1.EFModel
     public partial class DatabaseStatus
     {
         [Key]
-        public int DatabaseStatusID { get; set; }
+        public Guid DatabaseStatusID { get; set; }
 
         public bool PreventChanges { get; set; }
     }

@@ -138,7 +138,7 @@ namespace ClassLibrary1.Misc
         public List<SQLCellInfo> SQLUpdateInfos = new List<SQLCellInfo>(); // contains ALL SQLUpdateInfos, regardless of table
         public bool IsAlreadyProcessed { get { return SQLUpdateInfos.All(x => x.AlreadyProcessed); } }
         public List<SQLInfoForCellsInRow_SingleTable> Subgroups = new List<SQLInfoForCellsInRow_SingleTable>();
-        public int? MainTablePrimaryKey = null;
+        public Guid? MainTablePrimaryKey = null;
 
         public SQLUpdateInfoTableSpecification DefaultTableSpec = null;
 
@@ -282,7 +282,7 @@ namespace ClassLibrary1.Misc
         public List<SQLCellInfo> SQLUpdateInfos = new List<SQLCellInfo>();
         public SQLUpdateInfoTableSpecification TableSpec;
         public bool MayNeedToCreateDestinationTableRow;
-        public int? PrimaryKey;
+        public Guid? PrimaryKey;
 
         public SQLInfoForCellsInRow_SingleTable(SQLUpdateInfoTableSpecification tableSpec)
         {
@@ -423,7 +423,7 @@ namespace ClassLibrary1.Misc
         public SQLInfoForCellsInRow_SingleTable RowInfo = null; // will be set by the row
 
         public string Fieldname = null;
-        public int? Rownum = null;
+        public Guid? Rownum = null;
         public string GroupingKey = null; // If a single row in the main table corresponds to multiple rows in secondary table, we separate out the rows in the secondary table by giving them separate grouping keys.
         public object Value = null;
         public SqlDbType DBtype = SqlDbType.Variant; // must override this

@@ -65,7 +65,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         public string Title { get; set; }
         public string Comment { get; set; }
         public string AuthorAndDate { get; set; }
-        public int CommentID { get; set; }
+        public Guid CommentID { get; set; }
         public int Status { get; set; }
     }
 
@@ -137,7 +137,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
 
     public void AddComment_Click(object sender, EventArgs e)
     {
-        int? userID = (int?) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (int?) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && (UserCanProposeComments || UserCanAddComments))
         {
@@ -163,7 +163,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         bool isProposed;
         bool isDeleted;
         GetCommentInfo((Button)sender, out commentID, out isProposed, out isDeleted);
-        int? userID = (int?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (int?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && UserCanDeleteComments)
             theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (int)userID, true, null);

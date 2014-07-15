@@ -13,16 +13,16 @@ namespace ClassLibrary1.EFModel
             TblColumns = new HashSet<TblColumn>();
         }
 
-        public int TblTabID { get; set; }
+        public Guid TblTabID { get; set; }
 
-        public int TblID { get; set; }
+        public Guid TblID { get; set; }
 
         public int NumInTbl { get; set; }
 
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int? DefaultSortTblColumnID { get; set; }
+        public Guid? DefaultSortTblColumnID { get; set; }
 
         public byte Status { get; set; }
 

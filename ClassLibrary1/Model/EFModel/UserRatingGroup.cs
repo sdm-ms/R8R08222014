@@ -13,11 +13,11 @@ namespace ClassLibrary1.EFModel
             UserRatings = new HashSet<UserRating>();
         }
 
-        public int UserRatingGroupID { get; set; }
+        public Guid UserRatingGroupID { get; set; }
 
-        public int RatingGroupID { get; set; }
+        public Guid RatingGroupID { get; set; }
 
-        public int RatingGroupPhaseStatusID { get; set; }
+        public Guid RatingGroupPhaseStatusID { get; set; }
 
         public DateTime WhenMade { get; set; }
 

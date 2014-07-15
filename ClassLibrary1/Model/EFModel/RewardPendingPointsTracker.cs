@@ -13,15 +13,15 @@ namespace ClassLibrary1.EFModel
             UserRatings = new HashSet<UserRating>();
         }
 
-        public int RewardPendingPointsTrackerID { get; set; }
+        public Guid RewardPendingPointsTrackerID { get; set; }
 
         public decimal? PendingRating { get; set; }
 
         public DateTime? TimeOfPendingRating { get; set; }
 
-        public int RewardTblRowID { get; set; }
+        public Guid RewardTblRowID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
         public virtual User User { get; set; }
 

@@ -18,10 +18,10 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
     ActionProcessor Obj = new ActionProcessor();
  
     Admin_Announcements_AddInsertableContents theInsertableContentsControl;
-     public int? TableId = null;
-     public int? SubtopicId = null;
-     public int? TopicId = null;
-     public int? AnnounceId = null;
+    public Guid? TableId = null;
+    public Guid? SubtopicId = null;
+    public Guid? TopicId = null;
+    public Guid? AnnounceId = null;
      public bool createAnnounceVisible;
      public int? changeAnnounceVisible;
   
@@ -34,7 +34,7 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
         DisplayModalPopupIfNecessary();
     }
 
-    public void Setup(int? TblID, int? pointsManagerID, int? domainID)
+    public void Setup(Guid? TblID, Guid? pointsManagerID, Guid? domainID)
     {
         TableId = TblID;
         SubtopicId = pointsManagerID;

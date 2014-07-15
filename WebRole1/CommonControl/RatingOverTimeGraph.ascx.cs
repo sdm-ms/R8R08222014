@@ -21,8 +21,8 @@ using ClassLibrary1.EFModel;
 
 public class RatingOverTimeInfoForRenderControl
 {
-    public int? RatingGroupID;
-    public int? SpecificRatingID;
+    public Guid? RatingGroupID;
+    public Guid? SpecificRatingID;
 }
 
 public partial class RatingOverTimeGraph : System.Web.UI.UserControl

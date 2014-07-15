@@ -172,7 +172,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public void DeleteUserRatingDataInTable(int tblID)
+        public void DeleteUserRatingDataInTable(Guid tblID)
         {
             int numTries = 0;
 
@@ -193,7 +193,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void DeleteAllDataInTable(int tblID)
+        public void DeleteAllDataInTable(Guid tblID)
         {
             int numTries = 0;
 
@@ -214,7 +214,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void DeleteAllDataInTableHelper(int tblID)
+        public void DeleteAllDataInTableHelper(Guid tblID)
         {
             var tbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
             var pmID = tbl.PointsManagerID;
@@ -292,7 +292,7 @@ namespace ClassLibrary1.Model
             DeleteAllOfType<TblRowFieldDisplay>(items32);
         }
 
-        private void DeleteUserRatingDataInTableHelper(int tblID)
+        private void DeleteUserRatingDataInTableHelper(Guid tblID)
         {
             var tbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
             var pmID = tbl.PointsManagerID;
@@ -317,7 +317,7 @@ namespace ClassLibrary1.Model
             ResetRatingsToNullInTable(tblID);
         }
 
-        private void ResetRatingsToNullInTable(int tblID)
+        private void ResetRatingsToNullInTable(Guid tblID)
         {
             const int numAtOnce = 100;
             bool keepGoing = true;
@@ -616,7 +616,7 @@ namespace ClassLibrary1.Model
 
         public void FixUnupdatedRatings()
         {
-            int tblID = 270; // restaurants
+            Guid tblID = 270; // restaurants
             bool done = false;
             while (!done)
             {
@@ -652,7 +652,7 @@ namespace ClassLibrary1.Model
 
         public void SetLastTrustedValueToCurrentValue()
         {
-            int tblID = 270; // restaurants
+            Guid tblID = 270; // restaurants
             bool done = false;
             while (!done)
             {
@@ -741,7 +741,7 @@ namespace ClassLibrary1.Model
         public void RatingGroupPhaseChange()
         {
             int ratingPhaseGroupID = 282; // MUST BE a group with one repeating phase
-            int tblID = 270;  // Restaurants table
+            Guid tblID = 270;  // Restaurants table
             DateTime currentPhaseCompleteTime = TestableDateTime.Now + new TimeSpan(3,0,0);
             DateTime highStakesKnownTime = TestableDateTime.Now + new TimeSpan(0, 30, 0);
             RatingPhaseGroup theRatingPhaseGroup = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == ratingPhaseGroupID); // one day with half life of two
@@ -802,7 +802,7 @@ namespace ClassLibrary1.Model
             DataContext.SubmitChanges();
         }
 
-        public void FinishKnownHighStakesSoon(int tblID)
+        public void FinishKnownHighStakesSoon(Guid tblID)
         {
             bool done = false;
             while (!done)
@@ -829,7 +829,7 @@ namespace ClassLibrary1.Model
 
         public void SetCompleteTimeForTbl()
         {
-            int tblID = 270;
+            Guid tblID = 270;
             DateTime endTimeEarliest = new DateTime(2011, 2, 13, 13, 0, 0);
             DateTime endTimeLatest = new DateTime(2011, 2, 13, 14, 0, 0);
             if (endTimeEarliest > endTimeLatest || endTimeEarliest < TestableDateTime.Now)
@@ -857,7 +857,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void TurnOffHighStakesForParticularUser(int tblID, int targetSpecificUser)
+        public void TurnOffHighStakesForParticularUser(Guid tblID, int targetSpecificUser)
         {
             DateTime willBecomeKnownAt = TestableDateTime.Now + new TimeSpan(0, 1, 0); // one minute from now
             DateTime endTime = TestableDateTime.Now + new TimeSpan(3, 0, 0); // three hours
@@ -893,7 +893,7 @@ namespace ClassLibrary1.Model
             DataContext.SubmitChanges();
         }
 
-        public void ChangeToHighStakes(int tblID, int forceHighStakesNum, int? targetSpecificUser)
+        public void ChangeToHighStakes(Guid tblID, int forceHighStakesNum, int? targetSpecificUser)
         {
             DateTime willBecomeKnownAt = TestableDateTime.Now + new TimeSpan(0,1,0); // one minute from now
             DateTime endTime = TestableDateTime.Now + new TimeSpan(1,0,0); // one hour

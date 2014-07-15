@@ -17,9 +17,9 @@ namespace ClassLibrary1.EFModel
             TextFieldDefinitions = new HashSet<TextFieldDefinition>();
         }
 
-        public int FieldDefinitionID { get; set; }
+        public Guid FieldDefinitionID { get; set; }
 
-        public int TblID { get; set; }
+        public Guid TblID { get; set; }
 
         public int FieldNum { get; set; }
 

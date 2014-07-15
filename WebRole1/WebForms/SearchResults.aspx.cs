@@ -18,7 +18,7 @@ using ClassLibrary1.EFModel;
 public partial class SearchResults : System.Web.UI.Page
 {
     static int maxResults = 150; // We are limiting results here for now, because we have to put everything in memory that we return.
-    internal int UserID;
+    internal Guid userID;
 
 
     protected int? ColumnToSort;

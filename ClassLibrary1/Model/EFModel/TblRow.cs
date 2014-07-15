@@ -20,11 +20,11 @@ namespace ClassLibrary1.EFModel
             VolatilityTblRowTrackers = new HashSet<VolatilityTblRowTracker>();
         }
 
-        public int TblRowID { get; set; }
+        public Guid TblRowID { get; set; }
 
-        public int TblID { get; set; }
+        public Guid TblID { get; set; }
 
-        public int TblRowFieldDisplayID { get; set; }
+        public Guid TblRowFieldDisplayID { get; set; }
 
         public string Name { get; set; }
 

@@ -90,7 +90,7 @@ namespace ClassLibrary1.Model
     /// </summary>
     public class FieldDisplayInfo
     {
-        public int FieldID { get; set; }
+        public Guid FieldID { get; set; }
         public int DisplaySettings { get; set; }
     }
 
@@ -281,14 +281,14 @@ namespace ClassLibrary1.Model
     public class FieldDefinitionInfo
     {
         public FieldDefinitionInfo() { }
-        public FieldDefinitionInfo(int fieldDefinitionID, string fieldName, FieldTypes fieldType, int fieldNum)
+        public FieldDefinitionInfo(Guid fieldDefinitionID, string fieldName, FieldTypes fieldType, int fieldNum)
         {
             FieldDefinitionID = fieldDefinitionID;
             FieldName = fieldName;
             FieldType = fieldType;
             FieldNum = fieldNum;
         }
-        public int FieldDefinitionID { get; set; }
+        public Guid FieldDefinitionID { get; set; }
         public string FieldName { get; set; }
         public FieldTypes FieldType { get; set; }
         public int FieldNum { get; set; }

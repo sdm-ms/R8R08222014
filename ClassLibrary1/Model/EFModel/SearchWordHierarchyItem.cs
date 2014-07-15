@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class SearchWordHierarchyItem
     {
-        public int SearchWordHierarchyItemID { get; set; }
+        public Guid SearchWordHierarchyItemID { get; set; }
 
-        public int HierarchyItemID { get; set; }
+        public Guid HierarchyItemID { get; set; }
 
-        public int SearchWordID { get; set; }
+        public Guid SearchWordID { get; set; }
 
         public virtual HierarchyItem HierarchyItem { get; set; }
 

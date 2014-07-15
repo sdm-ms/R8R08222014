@@ -64,7 +64,7 @@ namespace TestProject1
             var heterogeneousUsers = new List<HeterogeneousUser>();
             int subversiveUserCount = (int)Math.Ceiling(TestHelper.UserIds.Count() * subversivePercentage);
             int dominantUserCount = TestHelper.UserIds.Count() - subversiveUserCount;
-            foreach (int userId in TestHelper.UserIds)
+            foreach (Guid userID in TestHelper.UserIds)
             {
                 HeterogeneousUserType type = heterogeneousUsers.Count < dominantUserCount ?
                     HeterogeneousUserType.Dominant : HeterogeneousUserType.Subversive;

@@ -22,7 +22,7 @@ namespace ClassLibrary1.Model
     public class RatingHierarchyEntry
     {
         public string RatingName { get; set; }
-        public int? RatingID { get; set; }
+        public Guid? RatingID { get; set; }
         public decimal? Value { get; set; }
         public int HierarchyLevel { get; set; }
         public int DecimalPlaces { get; set; }
@@ -214,8 +214,8 @@ namespace ClassLibrary1.Model
     [Serializable()]
     public class UserRatingHierarchyEntry
     {
-        public int? RatingId;
-        public int? RatingGroupId;
+        public Guid? RatingId;
+        public Guid? RatingGroupId;
         public decimal? OriginalTrustedValue;
         public decimal? OriginalDisplayedRating;
         public decimal OriginalTrustedValueOrBasisForCalculatingPoints;
@@ -237,7 +237,7 @@ namespace ClassLibrary1.Model
             return EnteredValueOrCalculatedValue ?? (decimal)OriginalTrustedValue;
         }
 
-        public UserRatingHierarchyEntry(int? theRatingId, int? ratingGroupId, decimal? theOriginalTrustedValue, decimal? theOriginalDisplayedRating, decimal theOriginalDisplayedRatingOrBasisOfCalc, decimal? theNewValue, bool theDirectlyMade, bool theCannotBeChanged, int theHierarchyLevel, int theEntryNum, int? theSuperior)
+        public UserRatingHierarchyEntry(Guid? theRatingId, Guid? ratingGroupId, decimal? theOriginalTrustedValue, decimal? theOriginalDisplayedRating, decimal theOriginalDisplayedRatingOrBasisOfCalc, decimal? theNewValue, bool theDirectlyMade, bool theCannotBeChanged, int theHierarchyLevel, int theEntryNum, int? theSuperior)
         {
             RatingId = theRatingId;
             RatingGroupId = ratingGroupId;
@@ -274,7 +274,7 @@ namespace ClassLibrary1.Model
         public float LastWeekPushback;
         public float LastYearPushback;
         public List<TrustTrackerChoiceSummary> TrustTrackerChoiceSummaries;
-        public List<int> ChoiceInGroupIDsNotTrackedYet;
+        public List<Guid> ChoiceInGroupIDsNotTrackedYet;
 
         public UserRatingHierarchyAdditionalInfo(
              float adjustPct,
@@ -375,7 +375,7 @@ namespace ClassLibrary1.Model
             return UserRatingHierarchyEntries.Where(d => d.HierarchyLevel == hierarchyLevel && EntryIsWithinRatingGroup(d.EntryNum, (int)ratingGroupID));
         }
 
-        public void Add(int? ratingID, int? ratingGroupID, decimal? theOriginalTrustedValue, decimal? theOriginalDisplayedRating, decimal theOriginalDisplayedRatingOrBasisOfCalc, decimal? theNewValue, bool theDirectlyMade, bool theCannotBeChanged, int hierarchyLevel)
+        public void Add(Guid? ratingID, Guid? ratingGroupID, decimal? theOriginalTrustedValue, decimal? theOriginalDisplayedRating, decimal theOriginalDisplayedRatingOrBasisOfCalc, decimal? theNewValue, bool theDirectlyMade, bool theCannotBeChanged, int hierarchyLevel)
         {
             if (hierarchyLevel <= 0)
                 throw new UserRatingDataException("Invalid hierarchy.");
@@ -757,7 +757,7 @@ namespace ClassLibrary1.Model
         /// <param name="ratingID">The rating in which the prediction is made</param>
         /// <param name="theUserRating">The prediction made</param>
         /// <param name="theData">The prediction hierarchy</param>
-        public void AddUserRatingToUserRatingHierarchy(int ratingID, decimal theUserRating, ref UserRatingHierarchyData theData)
+        public void AddUserRatingToUserRatingHierarchy(Guid ratingID, decimal theUserRating, ref UserRatingHierarchyData theData)
         {
             UserRatingHierarchyEntry theEntry = theData.UserRatingHierarchyEntries.SingleOrDefault(d => d.RatingId == ratingID);
             if (theEntry != null)
@@ -773,7 +773,7 @@ namespace ClassLibrary1.Model
         /// <param name="ratingID">The rating</param>
         /// <param name="theUserRating">The prediction</param>
         /// <param name="theData">The prediction hierarchy data</param>
-        public void GetUserRatingHierarchyBasedOnUserRating(int ratingID, decimal? constrainedSum, int ratingGroupID, List<Rating> theRatings, List<RatingGroup> theRatingGroups, decimal theUserRatingEntered, float adjustPct, ref UserRatingHierarchyData theData)
+        public void GetUserRatingHierarchyBasedOnUserRating(Guid ratingID, decimal? constrainedSum, int ratingGroupID, List<Rating> theRatings, List<RatingGroup> theRatingGroups, decimal theUserRatingEntered, float adjustPct, ref UserRatingHierarchyData theData)
         {
             GetUserRatingHierarchyBasedOnUserRatings(new List<RatingIdAndUserRatingValue> { new RatingIdAndUserRatingValue { RatingID = ratingID, UserRatingValue = theUserRatingEntered } }, theRatings, theRatingGroups, constrainedSum, adjustPct, ref theData);
         }
@@ -1034,7 +1034,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public bool CheckWhetherRatingCanBeSetToValue(int ratingID, List<Rating> theRatings, List<RatingGroup> theRatingGroups, decimal theValue)
+        public bool CheckWhetherRatingCanBeSetToValue(Guid ratingID, List<Rating> theRatings, List<RatingGroup> theRatingGroups, decimal theValue)
         {
             RatingGroup theRatingGroup = theRatingGroups.Single(mg => mg.RatingGroupID == theRatings.Single(m => m.RatingID == ratingID).RatingGroupID);
             int ratingGroupID = theRatingGroup.RatingGroupID;
@@ -1051,7 +1051,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public bool CheckWhetherRatingCanBeSetWinner(int ratingID, List<Rating> theRatings, List<RatingGroup> theRatingGroups)
+        public bool CheckWhetherRatingCanBeSetWinner(Guid ratingID, List<Rating> theRatings, List<RatingGroup> theRatingGroups)
         {
             Rating theRating = theRatings.Single(m => m.RatingID == ratingID);
             int ratingGroupID = theRating.RatingGroupID;

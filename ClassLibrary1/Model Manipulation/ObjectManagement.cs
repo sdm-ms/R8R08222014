@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="objectID">The object id</param>
         /// <param name="theObjectType">The object type</param>
-        public void ConfirmObjectExists(int? objectID, TypeOfObject theObjectType)
+        public void ConfirmObjectExists(Guid? objectID, TypeOfObject theObjectType)
         {
             if (!ObjectExists(objectID, theObjectType))
                 throw new Exception("A specified object does not exist. Objectid = " + objectID.ToString() + " ; ObjectType = " + theObjectType.ToString());
@@ -755,7 +755,7 @@ namespace ClassLibrary1.Model
         /// <param name="theObjectType">The type of the object</param>
         /// <param name="userID">The id of the user who wishes to create the object (or null for system-created)</param>
         /// <param name="theName">The proposed name</param>
-        public void FindAvailableNameForObject(int objectID, TypeOfObject theObjectType, int? userID, ref String theName)
+        public void FindAvailableNameForObject(int objectID, TypeOfObject theObjectType, Guid? userID, ref String theName)
         {
             if (theName == "")
                 theName = "Unnamed 1";
@@ -774,7 +774,7 @@ namespace ClassLibrary1.Model
         /// <param name="userID">The id of the user who wishes to create the object (or null for system-created)</param>
         /// <param name="theName">The proposed name</param>
         /// <returns>True if and only if the name has not been used for the object</returns>
-        public bool NameIsAvailableForObject(int objectID, TypeOfObject theObjectType, int? userID, String theName)
+        public bool NameIsAvailableForObject(int objectID, TypeOfObject theObjectType, Guid? userID, String theName)
         {
             
             switch (theObjectType)
@@ -783,17 +783,17 @@ namespace ClassLibrary1.Model
                     int TblTabID = ObjDataAccess.GetTblColumn(objectID).TblTabID;
                     return !DataContext.GetTable<TblColumn>().Where(cd => cd.TblTab.TblTabID == TblTabID && cd.Name == theName && cd.Status != (byte)StatusOfObject.Proposed && cd.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.TblTab:
-                    int TblID = ObjDataAccess.GetTblTab(objectID).TblID;
+                    Guid TblID = ObjDataAccess.GetTblTab(objectID).TblID;
                     return !DataContext.GetTable<TblTab>().Where(cg => cg.TblID == TblID && cg.Name == theName && cg.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.ChoiceGroup:
                     return !DataContext.GetTable<ChoiceGroup>().Where(cg => (cg.Creator == userID || cg.Creator == null) && cg.Name == theName && cg.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.Tbl:
-                    int pointsManagerID = ObjDataAccess.GetTbl(objectID).PointsManagerID;
+                    Guid pointsManagerID = ObjDataAccess.GetTbl(objectID).PointsManagerID;
                     return !DataContext.GetTable<Tbl>().Where(c => c.PointsManagerID == pointsManagerID && c.Name == theName && c.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.Domain:
                     return !DataContext.GetTable<Domain>().Where(dom => dom.Name == theName && dom.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.TblRow:
-                    int TblID2 = ObjDataAccess.GetTblRow(objectID).TblID;
+                    Guid TblID2 = ObjDataAccess.GetTblRow(objectID).TblID;
                     return !DataContext.GetTable<TblRow>().Where(e => e.TblID == TblID2 && e.Name == theName && e.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.InsertableContent:
                     
@@ -812,7 +812,7 @@ namespace ClassLibrary1.Model
                 case TypeOfObject.SubsidyDensityRangeGroup:
                     return !DataContext.GetTable<SubsidyDensityRangeGroup>().Where(sdrg => (sdrg.Creator == userID || sdrg.Creator == null) && sdrg.Name == theName && sdrg.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.PointsManager:
-                    int domainID = ObjDataAccess.GetPointsManager(objectID).DomainID;
+                    Guid domainID = ObjDataAccess.GetPointsManager(objectID).DomainID;
                     return !DataContext.GetTable<PointsManager>().Where(u => u.DomainID == domainID && u.Name == theName && u.Status != (byte)StatusOfObject.Proposed).Any();
                 default:
                     throw new Exception("Internal error -- trying to change system name of field without a system name");
@@ -1020,7 +1020,7 @@ namespace ClassLibrary1.Model
         /// <param name="theObjectType">The type of the object</param>
         /// <param name="userID">The user who created the object</param>
         /// <param name="theName">The name of the object</param>
-        public void ChangeNameOfObject(int objectID, TypeOfObject theObjectType, int? userID, String theName)
+        public void ChangeNameOfObject(int objectID, TypeOfObject theObjectType, Guid? userID, String theName)
         {
             // We allow duplicative names for table rows, but not other objects.
             if (!NameIsAvailableForObject(objectID, theObjectType, userID, theName) && theObjectType != TypeOfObject.TblRow)

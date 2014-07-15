@@ -21,7 +21,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
 {
     protected Func<int?, TableSortRule, bool, IQueryable<TblRow>> GetFilteredAndSortedQueryFn { get; set; }
     protected Func<bool, bool, FilterRules> GetFilterRulesFn { get; set; }
-    protected int TblID { get; set; }
+    protected Guid TblID { get; set; }
     protected R8RDataAccess DataAccess { get; set; }
     public Main_Table_Table MainTable;
     public FieldsBox FieldsBox;
@@ -121,18 +121,18 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
         TableSelector.Visible = opinionColumnsCount > 1;
     }
 
-    public int GetTblTabID()
+    public Guid GetTblTabID()
     {
         var theString = DdlTab.SelectedValue;
         if (theString == "")
             throw new Exception("Internal error: Column not specified.");
         else
-            return Convert.ToInt32(theString);
+            return new Guid(theString);
     }
 
     public void UpdateMainTable(bool resetTableToTop, bool resetFields, bool resetColumns, bool resetSort, bool reloadFields)
     {
-        int TblTabID = GetTblTabID();
+        Guid TblTabID = GetTblTabID();
         if (MainTable != null)
         {
             MainTable.ReBind(TblTabID, resetTableToTop, resetSort, reloadFields);
@@ -162,7 +162,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
 
             bool userIsTrusted = false;
             IUserProfileInfo currentUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
-            int? userID = currentUser == null ? null : (int?) currentUser.GetProperty("UserID");
+            Guid? userID = currentUser == null ? null : (int?) currentUser.GetProperty("UserID");
             if (userID != null && userID != 0) // logged in user ==> probably a rater
             {
                 TblTab theTblTab;

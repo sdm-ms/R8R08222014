@@ -9,13 +9,13 @@ namespace ClassLibrary1.EFModel
     public partial class ProposalEvaluationRatingSetting
     {
         [Key]
-        public int ProposalEvaluationRatingSettingsID { get; set; }
+        public Guid ProposalEvaluationRatingSettingsID { get; set; }
 
-        public int? PointsManagerID { get; set; }
+        public Guid? PointsManagerID { get; set; }
 
-        public int? UserActionID { get; set; }
+        public Guid? UserActionID { get; set; }
 
-        public int RatingGroupAttributesID { get; set; }
+        public Guid RatingGroupAttributesID { get; set; }
 
         public decimal MinValueToApprove { get; set; }
 
@@ -29,7 +29,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

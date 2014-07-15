@@ -78,7 +78,7 @@ namespace ClassLibrary1.Model
             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + theTblRow.TblRowID.ToString());
         }
 
-        public FieldDisplayHtml GetFieldDisplayHtml(IR8RDataContext theDataContextToUse, int tblRowID, FieldsLocation theLocation)
+        public FieldDisplayHtml GetFieldDisplayHtml(IR8RDataContext theDataContextToUse, Guid tblRowID, FieldsLocation theLocation)
         {
 
             string myCacheKey = "FieldDisplay" + tblRowID.ToString() + "," + ((int)theLocation).ToString();
@@ -126,7 +126,7 @@ namespace ClassLibrary1.Model
             return theDisplayHtml;
         }
 
-        //public FieldDisplayHtml BuildFieldDisplayHtml(IR8RDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, int tblRowID)
+        //public FieldDisplayHtml BuildFieldDisplayHtml(IR8RDataContext theDataContextToUse, TblDimension theTblDimension, FieldsLocation theLocation, Guid tblRowID)
         //{
         //    TblRow theTblRow = theDataContextToUse.TblRows.Single(e => e.TblRowID == tblRowID);
         //    return BuildFieldDisplayHtml(theDataContextToUse, theTblDimension, theLocation, theTblRow);

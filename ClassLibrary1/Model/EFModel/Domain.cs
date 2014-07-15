@@ -14,16 +14,16 @@ namespace ClassLibrary1.EFModel
             PointsManagers = new HashSet<PointsManager>();
         }
 
-        public int DomainID { get; set; }
+        public int Guid { get; set; }
 
         public bool ActiveRatingWebsite { get; set; }
 
         [Required]
         public string Name { get; set; }
 
-        public int? TblDimensionsID { get; set; }
+        public Guid? TblDimensionsID { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

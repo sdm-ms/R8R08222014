@@ -49,7 +49,7 @@ namespace ClassLibrary1.Model
         /// <param name="currentPointsAdjustment">Positive or negative change to current points</param>
         /// <param name="pendingPointsAdjustment">Positive or negative change to pending points</param>
         /// <param name="pendingMaxLossAdjustment">Positive or negative change to maximum loss</param>
-        public void UpdateUserPoints(int userID, int pointsManagerID, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, decimal? cashPaymentToMake, bool submitChanges)
+        public void UpdateUserPoints(Guid userID, Guid pointsManagerID, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, decimal? cashPaymentToMake, bool submitChanges)
         {
             PointsManager thePointsManager = DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID ==pointsManagerID);
             User theUser = DataContext.GetTable<User>().Single(x => x.UserID == userID);
@@ -143,7 +143,7 @@ namespace ClassLibrary1.Model
         /// <param name="currentPointsAdjustment">Positive or negative change to current points</param>
         /// <param name="pendingPointsAdjustment">Positive or negative change to pending points</param>
         /// <param name="pendingMaxLossAdjustment">Positive or negative change to maximum loss</param>
-        public void UpdateUserPointsAndStatus(int userID, int pointsManagerID, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingPointsAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, bool submitChanges)
+        public void UpdateUserPointsAndStatus(Guid userID, Guid pointsManagerID, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingPointsAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, bool submitChanges)
         {
             User theUser = ObjDataAccess.GetUser(userID);
             PointsManager thePointsManager = ObjDataAccess.GetPointsManager(pointsManagerID);
@@ -182,9 +182,9 @@ namespace ClassLibrary1.Model
         }
 
         // The following are used in the next routine. We cannot use anonymous types, because those are immutable, and we want to make changes.
-        class UserWithPointsType { public int User = 0; public decimal TotalPoints = 0; public decimal CurrentPoints = 0; public PointsTotal PT = null; public bool Include = true; };
-        class UserWithPointsType2 { public int User = 0; public decimal PointsToCash = 0; public decimal CurrentPoints = 0; public decimal CashValue = 0; public PointsTotal PT = null; };
-        class UserWithPointsType3 { public int User = 0; public decimal PointsToCash = 0; public decimal PerPrizeProbability = 0; public decimal ProbRangeBottom = 0; public decimal ProbRangeTop = 0; public decimal Prize = 0; public PointsTotal PT = null; };
+        class UserWithPointsType { public Guid? User; public decimal TotalPoints = 0; public decimal CurrentPoints = 0; public PointsTotal PT = null; public bool Include = true; };
+        class UserWithPointsType2 { public Guid? User; public decimal PointsToCash = 0; public decimal CurrentPoints = 0; public decimal CashValue = 0; public PointsTotal PT = null; };
+        class UserWithPointsType3 { public Guid? User; public decimal PointsToCash = 0; public decimal PerPrizeProbability = 0; public decimal ProbRangeBottom = 0; public decimal ProbRangeTop = 0; public decimal Prize = 0; public PointsTotal PT = null; };
 
         /// <summary>
         /// Convert current points to cash payments at the end of a dollar subsidy period.

@@ -53,7 +53,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="ratingID">The rating (typically newly created)</param>
         /// <param name="ratingPlanID">The rating plan for the rating</param>
-        //public void RegisterRatingConditions(int ratingID, int ratingPlanID, bool updateConditionalRating)
+        //public void RegisterRatingConditions(Guid ratingID, int ratingPlanID, bool updateConditionalRating)
         //{
 
 
@@ -136,7 +136,7 @@ namespace ClassLibrary1.Model
             return returnVal;
         }
 
-        public void AddConditionalRatingForTbl(int TblColumnID,int? conditionTblColumnID,decimal? greaterThan,decimal? lessThan)
+        public void AddConditionalRatingForTbl(Guid TblColumnID,int? conditionTblColumnID,decimal? greaterThan,decimal? lessThan)
         {
            
             TblColumn theTblColumn = DataContext.GetTable<TblColumn>().Single(x=>x.TblColumnID==TblColumnID);

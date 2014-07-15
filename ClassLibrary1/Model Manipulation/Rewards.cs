@@ -50,7 +50,7 @@ namespace ClassLibrary1.Model
                 return GetNoviceHighStakesProbability(thePointsManager, thePointsTotal) * thePointsManager.DatabaseChangeSelectHighStakesNoviceNumPct;
             }
 
-            internal bool ShouldCreateRewardRating(int originalTblID, int userID, out decimal? baseMultiplierOverride)
+            internal bool ShouldCreateRewardRating(Guid originalTblID, Guid userID, out decimal? baseMultiplierOverride)
             {
                 baseMultiplierOverride = null;
                 User theUser = DataContext.GetTable<User>().Single(u => u.UserID == userID);
@@ -82,7 +82,7 @@ namespace ClassLibrary1.Model
             }
 
 
-            public FieldSetDataInfo CreateFieldSetDataForRewardRating(Tbl originalTbl, Tbl userChangesTbl, RewardableUserAction changeType, decimal? baseMultiplierOverride, decimal? supplementalMultiplier, int userID, string changeName, string changeDescription)
+            public FieldSetDataInfo CreateFieldSetDataForRewardRating(Tbl originalTbl, Tbl userChangesTbl, RewardableUserAction changeType, decimal? baseMultiplierOverride, decimal? supplementalMultiplier, Guid userID, string changeName, string changeDescription)
             {
 
                 R8RDataAccess theDataAccess = new R8RDataAccess();
@@ -125,13 +125,13 @@ namespace ClassLibrary1.Model
                 return theTbl.Name == "Changes";
             }
 
-            public bool TblIsRewardTbl(int TblID)
+            public bool TblIsRewardTbl(Guid TblID)
             {
                 Tbl theTbl = DataContext.GetTable<Tbl>().Single(c => c.TblID == TblID);
                 return TblIsRewardTbl(theTbl);
             }
 
-            public int? GetUserWhoMadeDatabaseChange(TblRow theTblRow)
+            public Guid? GetUserWhoMadeDatabaseChange(TblRow theTblRow)
             {
                 if (!TblIsRewardTbl(theTblRow.Tbl))
                     return null;
@@ -167,7 +167,7 @@ namespace ClassLibrary1.Model
                 }
             }
 
-            public void UpdateRewardPoints(int userID, int pointsManagerID, TblRow theRewardRatingTblRow, decimal rawFinalPointsDelta, decimal rawPendingPointsDelta)
+            public void UpdateRewardPoints(Guid userID, Guid pointsManagerID, TblRow theRewardRatingTblRow, decimal rawFinalPointsDelta, decimal rawPendingPointsDelta)
             {
                 if (rawFinalPointsDelta == 0 && rawPendingPointsDelta == 0)
                     return;
@@ -180,7 +180,7 @@ namespace ClassLibrary1.Model
                 UpdateUserPointsAndStatus(userID, pointsManagerID, theReason, rawFinalPointsDelta * multiplier, rawFinalPointsDelta * multiplier, rawPendingPointsDelta * multiplier, 0, 0, 0, true);
             }
 
-            public void UpdateRewardPointsPotentialMaxLossNotYetPending(int userID, int pointsManagerID, TblRow theRewardRatingTblRow, bool startingRewardRating)
+            public void UpdateRewardPointsPotentialMaxLossNotYetPending(Guid userID, Guid pointsManagerID, TblRow theRewardRatingTblRow, bool startingRewardRating)
             {
                 RewardRatingSetting theSettings = DataContext.GetTable<RewardRatingSetting>().SingleOrDefault(rms => rms.PointsManagerID == pointsManagerID);
                 decimal multiplier = GetMultiplierForRewardRatingTblRow(theRewardRatingTblRow);
@@ -190,7 +190,7 @@ namespace ClassLibrary1.Model
                 UpdateUserPointsAndStatus(userID, pointsManagerID, PointsAdjustmentReason.RatingsUpdate, 0, 0, 0, 0, (startingRewardRating) ? worstCaseScenario : 0 - worstCaseScenario, 0, true);
             }
 
-            internal void FinalizeReward(int userID, int pointsManagerID, TblRow theRewardRatingTblRow, decimal rawFinalPoints, bool isBeingUnresolved)
+            internal void FinalizeReward(Guid userID, Guid pointsManagerID, TblRow theRewardRatingTblRow, decimal rawFinalPoints, bool isBeingUnresolved)
             {
                 Trace.TraceInformation("Finalize reward");
                 if (isBeingUnresolved)
@@ -209,7 +209,7 @@ namespace ClassLibrary1.Model
                 if (TblIsRewardTbl(topRatingGroup.TblRow.Tbl))
                 {
                     decimal currentRating = topRatingGroup.CurrentValueOfFirstRating ?? 0; // only rating here
-                    int? theUser = GetUserWhoMadeDatabaseChange(topRatingGroup.TblRow);
+                    Guid? theUser = GetUserWhoMadeDatabaseChange(topRatingGroup.TblRow);
                     if (theUser == null)
                         return;
                     FinalizeReward((int)theUser, topRatingGroup.TblRow.Tbl.PointsManagerID, topRatingGroup.TblRow, currentRating, isBeingUnresolved);

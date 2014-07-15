@@ -15,9 +15,9 @@ namespace ClassLibrary1.EFModel
             ChoiceGroupsDependentOnThisChoiceGroup = new HashSet<ChoiceGroup>();
         }
 
-        public int ChoiceGroupID { get; set; }
+        public Guid ChoiceGroupID { get; set; }
 
-        public int PointsManagerID { get; set; }
+        public Guid PointsManagerID { get; set; }
 
         public bool AllowMultipleSelections { get; set; }
 
@@ -29,7 +29,7 @@ namespace ClassLibrary1.EFModel
 
         public bool PickViaAutoComplete { get; set; }
 
-        public int? DependentOnChoiceGroupID { get; set; }
+        public Guid? DependentOnChoiceGroupID { get; set; }
 
         public bool ShowAllPossibilitiesIfNoDependentChoice { get; set; }
 
@@ -41,7 +41,7 @@ namespace ClassLibrary1.EFModel
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

@@ -19,10 +19,10 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
 {
     ActionProcessor Obj = new ActionProcessor();
     public static int NumTable = 0;
-    public int? TopicId = null;
-    public int? SubtopicId = null;
-    public int? TableId = null;
-    public int? announce = null;
+    public Guid? TopicId = null;
+    public Guid? SubtopicId = null;
+    public Guid? TableId = null;
+    public Guid? announce = null;
 
    
    
@@ -70,7 +70,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
             announce = AnnounceId;
             Tdannouc.InnerHtml = "Change new Announcements";
 
-            int UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
                var ObjInsertableContent = Obj.DataAccess.GetInsertableContents((int)AnnounceId);
                 TxtName.Text = ObjInsertableContent.Name;
@@ -126,7 +126,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
     protected void implementannouncement()
     {     
         
-        int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     
         int? ChangeGroupId = null;
         string Name = TxtName.Text;

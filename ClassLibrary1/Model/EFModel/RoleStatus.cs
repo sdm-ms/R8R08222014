@@ -9,7 +9,7 @@ namespace ClassLibrary1.EFModel
     public partial class RoleStatus
     {
         [Key]
-        public int RoleStatusID { get; set; }
+        public Guid RoleStatusID { get; set; }
 
         public string RoleID { get; set; }
 

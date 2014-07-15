@@ -33,7 +33,7 @@ namespace ClassLibrary1.Model
     {
         // Methods for deletion of objects.
 
-        public void DeleteChangesGroup(int changesGroupID)
+        public void DeleteChangesGroup(Guid changesGroupID)
         {
             ChangesGroup theChangesGroup = DataContext.GetTable<ChangesGroup>().Single(x => x.ChangesGroupID == changesGroupID);
             var changesStatusOfObjects = DataContext.GetTable<ChangesStatusOfObject>().Where(csoo => csoo.ChangesGroupID == changesGroupID).ToList();
@@ -86,7 +86,7 @@ namespace ClassLibrary1.Model
         /// <param name="theField"></param>
     //    public void DeleteField(Field theField)
     //    {
-    //        int fieldID = theField.FieldID;
+    //        Guid fieldID = theField.FieldID;
     //        switch ((FieldTypes)theField.FieldDefinition.FieldType)
     //        {
     //            case FieldTypes.AddressField:

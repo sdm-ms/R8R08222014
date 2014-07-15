@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class PointsTotal
     {
-        public int PointsTotalID { get; set; }
+        public Guid PointsTotalID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
-        public int PointsManagerID { get; set; }
+        public Guid PointsManagerID { get; set; }
 
         public decimal CurrentPoints { get; set; }
 

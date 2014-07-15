@@ -26,9 +26,9 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
     protected int? LimitToThisTblColumn; // if not null, we'll show only the one cell
     protected int? TblColumnToSort;
     protected R8RDataAccess DataAccess; // don't make this a property -- we don't want to persist viewstate on this or we'll get stale values
-    protected int TblID { get; set; }
+    protected Guid TblID { get; set; }
     protected int TblTabID { get; set; }
-    protected int TblRowID { get; set; }
+    protected Guid TblRowID { get; set; }
     protected int RowNumber { get; set; }
     protected bool CanPredict { get; set; }
     protected bool CanAdminister { get; set; }
@@ -49,7 +49,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         }
     }
 
-    public void Setup(R8RDataAccess theDataAccess, int tblID, int tblTabID, int? limitToThisTblColumn, int? tblColumnToSort, int entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<int?, int?> theParentSelectionChangedHandler, string suppStyle)
+    public void Setup(R8RDataAccess theDataAccess, Guid tblID, int tblTabID, int? limitToThisTblColumn, int? tblColumnToSort, int entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<int?, int?> theParentSelectionChangedHandler, string suppStyle)
     {
         if (doRebind)
             ActivateRebinding();

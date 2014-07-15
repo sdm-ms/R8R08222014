@@ -40,8 +40,8 @@ public class AzureNotificationTableMetadata
 {
     public DateTime? oldestPossibleItemTime { get; set; }
     public DateTime? newestPossibleItemTime { get; set; }
-    public int? firstRowKeyInTable { get; set; }
-    public int? lastRowKeyInTable { get; set; }
+    public Guid? firstRowKeyInTable { get; set; }
+    public Guid? lastRowKeyInTable { get; set; }
 }
 
 public class AzureNotificationTableMetadataServiceEntity : TableServiceEntity

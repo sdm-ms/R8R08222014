@@ -14,11 +14,11 @@ namespace ClassLibrary1.EFModel
         }
 
         [Key]
-        public int RatingPhaseStatusID { get; set; }
+        public Guid RatingPhaseStatusID { get; set; }
 
-        public int RatingGroupPhaseStatusID { get; set; }
+        public Guid RatingGroupPhaseStatusID { get; set; }
 
-        public int RatingID { get; set; }
+        public Guid RatingID { get; set; }
 
         public decimal? ShortTermResolutionValue { get; set; }
 

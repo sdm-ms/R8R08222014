@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class ChoiceInField
     {
-        public int ChoiceInFieldID { get; set; }
+        public Guid ChoiceInFieldID { get; set; }
 
-        public int ChoiceFieldID { get; set; }
+        public Guid ChoiceFieldID { get; set; }
 
-        public int ChoiceInGroupID { get; set; }
+        public Guid ChoiceInGroupID { get; set; }
 
         public byte Status { get; set; }
 

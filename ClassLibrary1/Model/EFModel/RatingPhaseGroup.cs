@@ -15,13 +15,13 @@ namespace ClassLibrary1.EFModel
             RatingPhases = new HashSet<RatingPhase>();
         }
 
-        public int RatingPhaseGroupID { get; set; }
+        public Guid RatingPhaseGroupID { get; set; }
 
         public int NumPhases { get; set; }
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

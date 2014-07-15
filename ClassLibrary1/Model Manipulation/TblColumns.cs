@@ -32,7 +32,7 @@ namespace ClassLibrary1.Model
 
     public static class TblColumnsForTabCache
     {
-        public static List<TblColumn> GetTblColumnsForTab(IR8RDataContext dataContext, int tblID, int tabID)
+        public static List<TblColumn> GetTblColumnsForTab(IR8RDataContext dataContext, Guid tblID, int tabID)
         {
             string cacheKey = "TblColumnsForTab" + tabID.ToString();
             List<TblColumn> theList = CacheManagement.GetItemFromCache(cacheKey) as List<TblColumn>;
@@ -71,7 +71,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="TblID">The Tbl</param>
         /// <returns>The number of columns in the Tbl</returns>
-        public int CountColumnsForTbl(int TblID)
+        public int CountColumnsForTbl(Guid TblID)
         {
             var theTblTabs = DataContext.GetTable<TblTab>().Where(cg => cg.TblID == TblID && cg.Status == (Byte)StatusOfObject.Active);
             int total = 0;
@@ -85,7 +85,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="TblColumnID">The table column to delete</param>
         /// <returns></returns>
-        //public void DeleteTblColumn(int TblColumnID)
+        //public void DeleteTblColumn(Guid TblColumnID)
         //{
            
         //    TblColumn theTblColumn = R8RDB.GetTable<TblColumn>().Single(x=>x.TblColumnID==TblColumnID);
@@ -133,7 +133,7 @@ namespace ClassLibrary1.Model
 
         }
 
-        public void ChangeTblColumnSortOptions(int TblColumnID,bool useAsFilter,bool sortable,bool defaultSortOrderAscending)
+        public void ChangeTblColumnSortOptions(Guid TblColumnID,bool useAsFilter,bool sortable,bool defaultSortOrderAscending)
         {
             TblColumn tblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == TblColumnID);
             tblColumn.UseAsFilter = useAsFilter;

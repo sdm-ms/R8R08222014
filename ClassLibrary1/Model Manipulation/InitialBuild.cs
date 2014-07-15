@@ -349,8 +349,8 @@ namespace ClassLibrary1.Model
 
         public void CreateEstablishedUsers()
         {
-            int theUserID1 = Supporter.AddUserReturnId("zeroaccount", true, "adfadsf@x.com", "dsfgsdfgsdfg", false); // this is just to make sure that legitimate accounts do not have userid 0
-            int theUserID2 = Supporter.AddUserReturnId("admin", true, "mbabramo@yahoo.com", "finch2127248474", false);
+            Guid theUserID1 = Supporter.AddUserReturnId("zeroaccount", true, "adfadsf@x.com", "dsfgsdfgsdfg", false); // this is just to make sure that legitimate accounts do not have userid 0
+            Guid theUserID2 = Supporter.AddUserReturnId("admin", true, "mbabramo@yahoo.com", "finch2127248474", false);
             // theUserID = Supporter.AddUser("basic", false, "Anonymous", "User", "", "No address", "", "", "", "", "basic", "", "", "", "");
             //SetStatusOfObjectInitialBuild(theUserID, TypeOfObject.User, StatusOfObject.Active);
 

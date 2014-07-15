@@ -10,7 +10,7 @@ namespace ClassLibrary1.EFModel
     public partial class InvitedUser
     {
         [Key]
-        public int ActivationNumber { get; set; }
+        public Guid ActivationNumber { get; set; }
 
         [StringLength(50)]
         public string EmailId { get; set; }

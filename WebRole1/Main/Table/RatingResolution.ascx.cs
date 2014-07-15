@@ -17,8 +17,8 @@ using ClassLibrary1.EFModel;
 
 public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserControl
 {
-    public int RatingGroupID { get; set; }
-    public int UserID { get; set; }
+    public Guid RatingGroupID { get; set; }
+    public Guid userID { get; set; }
     public bool CanResolve = true;
 
     protected void Page_Load(object sender, EventArgs e)

@@ -20,7 +20,7 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
 {
     protected int TblTabID { get; set; }
     protected int? LimitToThisTblColumnID { get; set; }
-    protected int TblRowID { get; set; }
+    protected Guid TblRowID { get; set; }
     protected R8RDataAccess DataAccess { get; set; }
     protected bool rebinding = false;
 
@@ -37,7 +37,7 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
 
     class HeaderRowOnTblRowPageInfoType
     {
-        public int? TblColumnID { get; set; }
+        public Guid? TblColumnID { get; set; }
         public string Abbreviation { get; set; }
         public string Name { get; set; }
         public string WidthStyle { get; set; }
@@ -69,7 +69,7 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+            Guid? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
             if (TblColumnID == -1) // see note above
                 TblColumnID = null;
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];

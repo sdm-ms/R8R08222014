@@ -9,11 +9,11 @@ namespace ClassLibrary1.EFModel
     public partial class Comment
     {
         [Key]
-        public int CommentsID { get; set; }
+        public Guid CommentsID { get; set; }
 
-        public int TblRowID { get; set; }
+        public Guid TblRowID { get; set; }
 
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
         [Required]
         public string CommentTitle { get; set; }

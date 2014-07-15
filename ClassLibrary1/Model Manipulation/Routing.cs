@@ -172,7 +172,7 @@ namespace ClassLibrary1.Model
                     return;
                 }
                 tblRowString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[0]);
-                int tblRowID = 0;
+                Guid tblRowID = 0;
                 if (tblRowString != null && tblRowString != "")
                 {
                     try
@@ -195,7 +195,7 @@ namespace ClassLibrary1.Model
                         return;
                     }
                     tblColumnString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[1]);
-                    int TblColumnID = 0;
+                    Guid TblColumnID = 0;
                     try
                     {
                         TblColumnID = Convert.ToInt32(tblColumnString);
@@ -400,9 +400,9 @@ namespace ClassLibrary1.Model
 
     public class RoutingInfoRatings : RoutingInfo
     {
-        public int? userID;
+        public Guid? userID;
 
-        public RoutingInfoRatings(int? theUserID)
+        public RoutingInfoRatings(Guid? theUserID)
             : base(RouteID.Ratings)
         {
             userID = theUserID;
@@ -520,7 +520,7 @@ namespace ClassLibrary1.Model
 
         private static string OutgoingGetRouteRatings(RoutingInfo theRedirectInfo, RouteValueDictionary parameters)
         {
-            int? userID = ((RoutingInfoRatings)theRedirectInfo).userID;
+            Guid? userID = ((RoutingInfoRatings)theRedirectInfo).userID;
             if (userID == null)
                 return "ratings";
             string userIDString = userID.ToString();
@@ -654,7 +654,7 @@ namespace ClassLibrary1.Model
                 return new RoutingInfoRatings(null);
             try
             {
-                int userID = Convert.ToInt32(userIDString);
+                Guid userID = Convert.ToInt32(userIDString);
                 return new RoutingInfoRatings(userID);
             }
             catch

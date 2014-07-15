@@ -9,13 +9,13 @@ namespace ClassLibrary1.EFModel
     public partial class OverrideCharacteristic
     {
         [Key]
-        public int OverrideCharacteristicsID { get; set; }
+        public Guid OverrideCharacteristicsID { get; set; }
 
-        public int RatingGroupAttributesID { get; set; }
+        public Guid RatingGroupAttributesID { get; set; }
 
-        public int TblRowID { get; set; }
+        public Guid TblRowID { get; set; }
 
-        public int TblColumnID { get; set; }
+        public Guid TblColumnID { get; set; }
 
         public byte Status { get; set; }
 

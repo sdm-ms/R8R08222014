@@ -13,9 +13,9 @@ namespace ClassLibrary1.EFModel
             UserInteractionStats = new HashSet<UserInteractionStat>();
         }
 
-        public int TrustTrackerStatID { get; set; }
+        public Guid TrustTrackerStatID { get; set; }
 
-        public int TrustTrackerID { get; set; }
+        public Guid TrustTrackerID { get; set; }
 
         public short StatNum { get; set; }
 

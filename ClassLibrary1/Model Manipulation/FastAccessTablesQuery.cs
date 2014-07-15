@@ -55,7 +55,7 @@ namespace ClassLibrary1.Model
             return allColumns;
         }
 
-        internal static void GetOrderBy(IR8RDataContext iDataContext, TableSortRule tableSortRule, int tblID, int originalTblIndex, ref int sqlTblIndex, DateTime asOfDateTime, ref int paramNumber, List<SqlParameter> parameters, out string orderByString, out string joinString)
+        internal static void GetOrderBy(IR8RDataContext iDataContext, TableSortRule tableSortRule, Guid tblID, int originalTblIndex, ref int sqlTblIndex, DateTime asOfDateTime, ref int paramNumber, List<SqlParameter> parameters, out string orderByString, out string joinString)
         {
             joinString = "";
             orderByString = "";
@@ -174,7 +174,7 @@ namespace ClassLibrary1.Model
             return fd;
         }
 
-        internal static FieldDefinition GetFieldDefinition(IR8RDataContext iDataContext, int fieldDefinitionID)
+        internal static FieldDefinition GetFieldDefinition(IR8RDataContext iDataContext, Guid fieldDefinitionID)
         {
             IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
@@ -184,7 +184,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        internal static ChoiceGroupFieldDefinition GetChoiceGroupFieldDefinition(IR8RDataContext iDataContext, int fieldDefinitionID)
+        internal static ChoiceGroupFieldDefinition GetChoiceGroupFieldDefinition(IR8RDataContext iDataContext, Guid fieldDefinitionID)
         {
             IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
@@ -193,7 +193,7 @@ namespace ClassLibrary1.Model
             return cgfd;
         }
 
-        internal static void GetStatementsForFiltering(FilterRules filters, List<ChoiceFullFieldDefinition> choiceFDs, int originalSqlTableIndex, ref int sqlTableIndex, DateTime? asOfDateTime, int tblID, ref int paramNumber, ref List<SqlParameter> parameters, out string whereString, out string joinString)
+        internal static void GetStatementsForFiltering(FilterRules filters, List<ChoiceFullFieldDefinition> choiceFDs, int originalSqlTableIndex, ref int sqlTableIndex, DateTime? asOfDateTime, Guid tblID, ref int paramNumber, ref List<SqlParameter> parameters, out string whereString, out string joinString)
         {
             joinString = " ";
             List<string> whereClauses = new List<string>();
@@ -333,7 +333,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        //internal static string FilterBasedOnTblRowStatusRecordsWithStoredProcedure(string originalWhereStatement, ref int sqlTableIndex, ref int paramNumber, List<SqlParameter> parameters, DateTime asOfDateTime, int tblID)
+        //internal static string FilterBasedOnTblRowStatusRecordsWithStoredProcedure(string originalWhereStatement, ref int sqlTableIndex, ref int paramNumber, List<SqlParameter> parameters, DateTime asOfDateTime, Guid tblID)
         //{
         //    int sourceTableIndex = sqlTableIndex;
         //    sqlTableIndex++;
@@ -347,7 +347,7 @@ namespace ClassLibrary1.Model
         //        return "WHERE " + originalWhereStatement + " " + innerJoinString;
         //}
 
-        internal static string FilterBasedOnTblRowStatusRecords(string originalWhereStatement, int originalSqlTableIndex, ref int sqlTableIndex, ref int paramNumber, List<SqlParameter> parameters, DateTime asOfDateTime, int tblID, bool showDeletedRows)
+        internal static string FilterBasedOnTblRowStatusRecords(string originalWhereStatement, int originalSqlTableIndex, ref int sqlTableIndex, ref int paramNumber, List<SqlParameter> parameters, DateTime asOfDateTime, Guid tblID, bool showDeletedRows)
         {
             string broaderString;
             if (showDeletedRows)
@@ -368,7 +368,7 @@ namespace ClassLibrary1.Model
             return returnVal;
         }
 
-        internal static DataTable GetDataTable(IR8RDataContext iDataContext, DenormalizedTableAccess dta, List<string> variableList, TableSortRule tableSortRule, FilterRules filters, List<ChoiceFullFieldDefinition> choiceFieldDefinitions, int tblID, int skip, int take)
+        internal static DataTable GetDataTable(IR8RDataContext iDataContext, DenormalizedTableAccess dta, List<string> variableList, TableSortRule tableSortRule, FilterRules filters, List<ChoiceFullFieldDefinition> choiceFieldDefinitions, Guid tblID, int skip, int take)
         {
             IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)

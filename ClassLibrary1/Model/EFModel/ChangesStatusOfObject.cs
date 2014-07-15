@@ -9,9 +9,9 @@ namespace ClassLibrary1.EFModel
     [Table("ChangesStatusOfObject")]
     public partial class ChangesStatusOfObject
     {
-        public int ChangesStatusOfObjectID { get; set; }
+        public Guid ChangesStatusOfObjectID { get; set; }
 
-        public int ChangesGroupID { get; set; }
+        public Guid ChangesGroupID { get; set; }
 
         public byte ObjectType { get; set; }
 
@@ -34,9 +34,9 @@ namespace ClassLibrary1.EFModel
         [StringLength(50)]
         public string NewName { get; set; }
 
-        public int? NewObject { get; set; }
+        public Guid? NewObject { get; set; }
 
-        public int? ExistingObject { get; set; }
+        public Guid? ExistingObject { get; set; }
 
         public bool? NewValueBoolean { get; set; }
 

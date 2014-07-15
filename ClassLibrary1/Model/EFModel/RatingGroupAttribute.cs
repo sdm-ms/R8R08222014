@@ -20,13 +20,13 @@ namespace ClassLibrary1.EFModel
         }
 
         [Key]
-        public int RatingGroupAttributesID { get; set; }
+        public Guid RatingGroupAttributesID { get; set; }
 
-        public int RatingCharacteristicsID { get; set; }
+        public Guid RatingCharacteristicsID { get; set; }
 
-        public int? RatingConditionID { get; set; }
+        public Guid? RatingConditionID { get; set; }
 
-        public int? PointsManagerID { get; set; }
+        public Guid? PointsManagerID { get; set; }
 
         public decimal? ConstrainedSum { get; set; }
 
@@ -44,7 +44,7 @@ namespace ClassLibrary1.EFModel
 
         public int MinimumDaysToTrackLongTerm { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? creator { get; set; }
 
         public byte Status { get; set; }
 

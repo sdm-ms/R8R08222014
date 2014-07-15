@@ -19,7 +19,7 @@ using ClassLibrary1.EFModel;
 public partial class ChangePointsManager : System.Web.UI.Page
 {
     ActionProcessor Obj = new ActionProcessor();
-    public int? SubtopicId;
+    public Guid? SubtopicId;
 
     // Change PointsManager Page
     protected void Page_Load(object sender, EventArgs e)

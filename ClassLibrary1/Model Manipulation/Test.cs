@@ -71,18 +71,17 @@ namespace ClassLibrary1.Model
             BackgroundTaskManager = new BackgroundTaskManager();
         }
 
-        private int _superUserId;
-        public int SuperUserId
+        private Guid _superUserId;
+        public Guid SuperUserId
         {
             get
             {
-                if (_superUserId == 0)
-                    _superUserId = ActionProcessor.DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
+                _superUserId = ActionProcessor.DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
                 return _superUserId;
             }
         }
         public int NumUsers;
-        public int[] UserIds;
+        public Guid[] UserIds;
         public decimal[] UserUserRatingAccuracy; // from 0 to 1 -- weight of correct answer vs. some random factor
         public decimal[] UserConfidence; // from 0 to 1 -- weight of user's guess vs. current prediction
 
@@ -164,7 +163,7 @@ namespace ClassLibrary1.Model
             TblTab = RatingGroup.TblColumn.TblTab;
         }
 
-        public IEnumerable<TblRow> AddTblRowsToTbl(int TblID, int numTblRows)
+        public IEnumerable<TblRow> AddTblRowsToTbl(Guid TblID, int numTblRows)
         {
             List<TblRow> tblRows = new List<TblRow>();
             for (int i = 0; i < numTblRows; i++)
@@ -202,7 +201,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public decimal GetUserUserRating(decimal correctUserRating, decimal? currentUserRating, decimal minUserRating, decimal maxUserRating, int theUserNumber)
+        public decimal GetUserUserRating(decimal correctUserRating, decimal? currentUserRating, decimal minUserRating, decimal maxUserRating, Guid theUserNumber)
         {
             decimal randomUserRating = RandomGenerator.GetRandom(minUserRating, maxUserRating);
             decimal weightOfCorrectUserRating = UserUserRatingAccuracy[theUserNumber];
@@ -213,20 +212,20 @@ namespace ClassLibrary1.Model
             return weightUserInitialUserRating * userInitialUserRating + (1 - weightUserInitialUserRating) * (decimal)currentUserRating;
         }
 
-        public void AddUserRatingToRating(int ratingID, decimal correctUserRating)
+        public void AddUserRatingToRating(Guid ratingID, decimal correctUserRating)
         {
             AddUserRatingToRating(ratingID, correctUserRating, null);
         }
 
 
-        public void AddUserRatingToRating(int ratingID, decimal correctUserRating, decimal? specificUserRating)
+        public void AddUserRatingToRating(Guid ratingID, decimal correctUserRating, decimal? specificUserRating)
         {
             AddUserRatingToRating(ratingID, correctUserRating, specificUserRating, false);
         }
 
-        public void AddUserRatingToRating(int ratingID, decimal correctUserRating, decimal? specificUserRating, bool useSuperUser)
+        public void AddUserRatingToRating(Guid ratingID, decimal correctUserRating, decimal? specificUserRating, bool useSuperUser)
         {
-            int theUserNumber = RandomGenerator.GetRandom(0, NumUsers - 1);
+            Guid theUserNumber = RandomGenerator.GetRandom(0, NumUsers - 1);
             Rating theRating = ActionProcessor.DataContext.GetTable<Rating>().Single(m => m.RatingID == ratingID);
             decimal? currentUserRating = theRating.CurrentValue;
             decimal theUserRating;
@@ -806,7 +805,7 @@ namespace ClassLibrary1.Model
             return myRatingGroupAttributes;
         }
 
-        public void CreateChoiceGroups(int pointsManagerID)
+        public void CreateChoiceGroups(Guid pointsManagerID)
         {
             bool alreadyExist = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Where(x => x.PointsManagerID == pointsManagerID && !x.Name.Contains("Change choices") ).Any();
             if (alreadyExist)
@@ -817,27 +816,27 @@ namespace ClassLibrary1.Model
             {
                 theBasicGroup.AddChoiceToGroup("Choice S" + i.ToString());
             }
-            int choiceGroupBasicID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theBasicGroup, ChoiceGroupSettingsMask.GetStandardSetting(), null, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup single");
+            Guid choiceGroupBasicID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theBasicGroup, ChoiceGroupSettingsMask.GetStandardSetting(), null, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup single");
 
             ChoiceGroupData theMultipleGroup = new ChoiceGroupData();
             for (int i = 1; i <= 12; i++)
             {
                 theMultipleGroup.AddChoiceToGroup("Choice M" + i.ToString());
             }
-            int choiceGroupMultipleID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theMultipleGroup, ChoiceGroupSettingsMask.GetChoiceGroupSetting(true,false,false,false,false,false,false,false), null, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup multiple");
+            Guid choiceGroupMultipleID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theMultipleGroup, ChoiceGroupSettingsMask.GetChoiceGroupSetting(true, false, false, false, false, false, false, false), null, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup multiple");
 
             ChoiceGroupData theDependentGroup = new ChoiceGroupData();
             for (int i = 1; i <= 5; i++)
                 theDependentGroup.AddChoiceToGroup("Always here " + i.ToString(), null);
             for (int i = 1; i <= 12; i++)
             {
-                int choiceInSingleGroupID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceText == "Choice S" + i.ToString() && cig.ChoiceGroup.PointsManagerID == pointsManagerID).ChoiceInGroupID;
+                Guid choiceInSingleGroupID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceText == "Choice S" + i.ToString() && cig.ChoiceGroup.PointsManagerID == pointsManagerID).ChoiceInGroupID;
                 for (int j = 1; j <= 3; j++)
                 {
                     theDependentGroup.AddChoiceToGroup("Choice S" + i.ToString() + " " + j.ToString(), choiceInSingleGroupID);
                 }
             }
-            int choiceGroupDependentID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theDependentGroup, ChoiceGroupSettingsMask.GetStandardSetting(), choiceGroupBasicID, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup dependent");
+            Guid choiceGroupDependentID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theDependentGroup, ChoiceGroupSettingsMask.GetStandardSetting(), choiceGroupBasicID, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup dependent");
 
 
             ChoiceGroupData theDependentOnMultipleGroup = new ChoiceGroupData();
@@ -845,25 +844,25 @@ namespace ClassLibrary1.Model
                 theDependentOnMultipleGroup.AddChoiceToGroup("Always here " + i.ToString(), null);
             for (int i = 1; i <= 12; i++)
             {
-                int choiceInMultipleGroupID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceText == "Choice M" + i.ToString() && cig.ChoiceGroup.PointsManagerID == pointsManagerID).ChoiceInGroupID;
+                Guid choiceInMultipleGroupID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceText == "Choice M" + i.ToString() && cig.ChoiceGroup.PointsManagerID == pointsManagerID).ChoiceInGroupID;
                 for (int j = 1; j <= 12; j++)
                 {
                     theDependentOnMultipleGroup.AddChoiceToGroup("Choice M" + i.ToString() + " " + j.ToString(), choiceInMultipleGroupID);
                 }
             }
-            int choiceGroupDependentOnMultipleID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theDependentOnMultipleGroup, ChoiceGroupSettingsMask.GetStandardSetting(), choiceGroupMultipleID, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup dependonmult");
+            Guid choiceGroupDependentOnMultipleID = theTestHelper.ActionProcessor.ChoiceGroupCreate(pointsManagerID, theDependentOnMultipleGroup, ChoiceGroupSettingsMask.GetStandardSetting(), choiceGroupMultipleID, true, true, theTestHelper.SuperUserId, null, "ChoiceGroup dependonmult");
 
         }
 
-        protected void CreateFieldDefinitionsForTbl(int TblID, int numToCreate)
+        protected void CreateFieldDefinitionsForTbl(Guid TblID, int numToCreate)
         {
-            int pointsManagerID = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Single(c => c.TblID == TblID).PointsManagerID;
-            int choiceGroupBasicID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup single")).ChoiceGroupID;
-            int choiceGroupMultipleID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup multiple")).ChoiceGroupID;
-            int choiceGroupDependentID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup dependent")).ChoiceGroupID;
-            int choiceGroupDependentOnMultipleID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup dependonmult")).ChoiceGroupID;
-            int? lastBasicChoiceGroupField = null;
-            int? lastMultipleChoiceGroupField = null;
+            Guid pointsManagerID = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Single(c => c.TblID == TblID).PointsManagerID;
+            Guid choiceGroupBasicID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup single")).ChoiceGroupID;
+            Guid choiceGroupMultipleID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup multiple")).ChoiceGroupID;
+            Guid choiceGroupDependentID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup dependent")).ChoiceGroupID;
+            Guid choiceGroupDependentOnMultipleID = theTestHelper.ActionProcessor.DataContext.GetTable<ChoiceGroup>().Single(c => c.PointsManagerID == pointsManagerID && c.Name.Contains("ChoiceGroup dependonmult")).ChoiceGroupID;
+            Guid? lastBasicChoiceGroupField = null;
+            Guid? lastMultipleChoiceGroupField = null;
 
             for (int i = 1; i <= numToCreate; i++)
             {
@@ -1124,7 +1123,7 @@ namespace ClassLibrary1.Model
             return builder.ToString();
         }
 
-        protected void TestFillInFieldsForTblRowsInTbl(int TblID)
+        protected void TestFillInFieldsForTblRowsInTbl(Guid TblID)
         {
             var theTblRows = theTestHelper.ActionProcessor.DataContext.GetTable<TblRow>().Where(e => e.TblID == TblID  && e.Fields.Count() == 0).ToList();
             var theFieldDefinitions = theTestHelper.ActionProcessor.DataContext.GetTable<FieldDefinition>().Where(fd => fd.TblID == TblID).ToList();
@@ -1146,7 +1145,7 @@ namespace ClassLibrary1.Model
             return theTestHelper.ActionProcessor.TblCreate(thePointsManagerID, myRatingGroupAttributes, "table column group", true, true, theTestHelper.SuperUserId, myChangesGroup, name, false, oneRatingPerRatingGroup, "MyTblRow", "The table row addition criteria would be spelled out here.", true, true, "wf250","wf25");
         }
 
-        protected void PointsManagerChangeDollarSubsidySettings(int pointsManagerID)
+        protected void PointsManagerChangeDollarSubsidySettings(Guid pointsManagerID)
         {
             int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
 
@@ -1163,7 +1162,7 @@ namespace ClassLibrary1.Model
         protected int CreatePointsManager(string name, TestRatingGroupAttributesTypes myType, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, int theDomainID)
         {
             int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
-            int pointsManagerID = theTestHelper.ActionProcessor.PointsManagerCreate(theDomainID, null, true, true, theTestHelper.SuperUserId, myChangesGroup, name);
+            Guid pointsManagerID = theTestHelper.ActionProcessor.PointsManagerCreate(theDomainID, null, true, true, theTestHelper.SuperUserId, myChangesGroup, name);
             int? myRatingGroupAttributes = CreateRatingGroupAttributes(myType, theRatingPhase, theSubsidyDensityRange, theRatingCondition, pointsManagerID, myChangesGroup);
             PointsManagerChangeDollarSubsidySettings(pointsManagerID);
             CreateChoiceGroups(pointsManagerID); 
@@ -1240,7 +1239,7 @@ namespace ClassLibrary1.Model
             return theTblID;
         }
 
-        protected int CreateTblTab(string name, int TblID)
+        protected int CreateTblTab(string name, Guid TblID)
         {
             return theTestHelper.ActionProcessor.TblTabCreate(TblID, name, true, true, theTestHelper.SuperUserId, null);
         }
@@ -1483,7 +1482,7 @@ namespace ClassLibrary1.Model
 
         public void LaunchTestAddSingleTblRow()
         {
-            int TblID = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().First(c => c.Name != "Changes").TblID;
+            Guid TblID = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().First(c => c.Name != "Changes").TblID;
             AddTblRowsToTblFillInAndLaunch(1, TblID);
             
         }
@@ -1491,7 +1490,7 @@ namespace ClassLibrary1.Model
 
         public void LaunchTestAddTblRows(int theNum)
         {
-            int TblID = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().First(c => c.Name != "Changes").TblID;
+            Guid TblID = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().First(c => c.Name != "Changes").TblID;
             AddTblRowsToTblFillInAndLaunch(theNum, TblID);
         }
 

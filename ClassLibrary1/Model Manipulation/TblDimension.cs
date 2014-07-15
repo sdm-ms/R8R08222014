@@ -29,14 +29,14 @@ namespace ClassLibrary1.Model
             DataAccess = dataAccess;
         }
 
-        public int GetTblDimensionsIDForRegularTbl(int theTblID)
+        public Guid GetTblDimensionsIDForRegularTbl(Guid theTblID)
         {
-            int? x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).TblDimensionsID;
+            Guid? x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).TblDimensionsID;
             if (x == null)
                 x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).PointsManager.Domain.TblDimensionsID;
             if (x == null)
                 x = DataAccess.R8RDB.GetTable<TblDimension>().FirstOrDefault().TblDimensionsID;
-            return (int)x;
+            return (Guid)x;
         }
 
         public TblDimension GetTblDimensionsForRegularTbl(int theTblID)

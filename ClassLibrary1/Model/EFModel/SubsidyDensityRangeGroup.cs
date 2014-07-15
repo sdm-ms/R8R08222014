@@ -22,7 +22,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? creator { get; set; }
 
         public byte Status { get; set; }
 

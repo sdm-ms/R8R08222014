@@ -107,7 +107,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public static TblColumn GetTblColumn(R8RDataAccess dataAccess, int TblColumnID, int domainID)
+        public static TblColumn GetTblColumn(R8RDataAccess dataAccess, Guid TblColumnID, Guid domainID)
         {
             return dataAccess.GetTblColumn(TblColumnID);
         }
@@ -377,7 +377,7 @@ namespace ClassLibrary1.Model
             return theBodyOfRow;
         }
 
-        private static List<InfoForBodyRows> GetBodyRowsInfoListFromDatabase(R8RDataAccess theDataAccess, int theTblTabID, List<int> theTblRowIDs)
+        private static List<InfoForBodyRows> GetBodyRowsInfoListFromDatabase(R8RDataAccess theDataAccess, Guid theTblTabID, List<Guid> theTblRowIDs)
         {
             return theDataAccess.R8RDB.GetTable<RatingGroup>()
                                                 .Where(mg =>
@@ -415,14 +415,14 @@ namespace ClassLibrary1.Model
 
         }
 
-        public static string GetHtmlStringForCell(int topRatingGroupID, decimal? valueOfFirstRating, int decPlaces, int tblRowID, int tblColumnID, int? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool trusted, bool singleNumberOnly, bool includeOuterTD)
+        public static string GetHtmlStringForCell(int topRatingGroupID, decimal? valueOfFirstRating, int decPlaces, Guid tblRowID, Guid tblColumnID, int? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool trusted, bool singleNumberOnly, bool includeOuterTD)
         {
             StringBuilder builder = new StringBuilder();
             BuildHtmlForCell(builder, tblRowID, topRatingGroupID, valueOfFirstRating, decPlaces, tblColumnID, ratingIDIfSingleNumber, preformattedContentsIfAvailable, trusted, singleNumberOnly, includeOuterTD);
             return builder.ToString();
         }
 
-        private static void BuildHtmlForCell(StringBuilder builder, int tblRowID, int? topRatingGroupID, decimal? valueOfFirstRating, int? decPlaces, int tblColumnID, int? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool? trusted, bool singleNumberOnly, bool includeOuterTD)
+        private static void BuildHtmlForCell(StringBuilder builder, Guid tblRowID, int? topRatingGroupID, decimal? valueOfFirstRating, int? decPlaces, Guid tblColumnID, int? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool? trusted, bool singleNumberOnly, bool includeOuterTD)
         {
             string topRatingIDString = topRatingGroupID == null ? tblRowID.ToString() + "/" + tblColumnID.ToString() : topRatingGroupID.ToString();
             string nameAndTopRatingGroupID = "mg" + topRatingIDString;
@@ -448,7 +448,7 @@ namespace ClassLibrary1.Model
                 builder.Append("</td>");
         }
 
-        private static void BuildHtmlForComplexCellFromDatabase(StringBuilder builder, int topRatingGroupID, int tblRowID, int tblColumnID, bool trusted)
+        private static void BuildHtmlForComplexCellFromDatabase(StringBuilder builder, int topRatingGroupID, Guid tblRowID, Guid tblColumnID, bool trusted)
         {
             R8RDataAccess DataAccess = new R8RDataAccess();
             RatingHierarchyData theData = DataAccess.GetRatingHierarchyDataForRatingGroup(topRatingGroupID);
@@ -462,7 +462,7 @@ namespace ClassLibrary1.Model
             builder.Append("</div>");
         }
 
-        private static string GetStringForRatingInput(decimal? value, int? decPlaces, int TblRowID, int TblColumnID, int? ratingID, string theValuePreformatted, string suppClass = "")
+        private static string GetStringForRatingInput(decimal? value, int? decPlaces, Guid TblRowID, Guid TblColumnID, int? ratingID, string theValuePreformatted, string suppClass = "")
         {
             string ratingIDString = ratingID == null ? TblRowID.ToString() + "/" + TblColumnID.ToString() : ratingID.ToString();
             string theValue;
@@ -475,7 +475,7 @@ namespace ClassLibrary1.Model
             return "<input class=\"rtg " + suppClass + "\" name=\"mkt" + ratingIDString + "\" value=\"" + theValue + "\" readonly=\"true\">";
         }
 
-        private static void GetListForHierarchyLevel(StringBuilder theStringBuilder, int TblRowID, int TblColumnID, RatingHierarchyData theData, int hierarchyLevel, int? superior, bool trusted)
+        private static void GetListForHierarchyLevel(StringBuilder theStringBuilder, Guid TblRowID, Guid TblColumnID, RatingHierarchyData theData, int hierarchyLevel, int? superior, bool trusted)
         {
             theStringBuilder.Append("<ul>");
             var theItems = theData.RatingHierarchyEntries.Where(x => x.HierarchyLevel == hierarchyLevel && (superior == null || x.Superior == superior));

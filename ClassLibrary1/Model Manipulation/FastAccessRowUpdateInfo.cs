@@ -54,12 +54,12 @@ namespace ClassLibrary1.Model
             tblRow.FastAccessUpdateSpecified = true;
         }
 
-        public SQLUpdateInfoTableSpecification GetMainSqlUpdateInfoTableSpecification(int tblID)
+        public SQLUpdateInfoTableSpecification GetMainSqlUpdateInfoTableSpecification(Guid tblID)
         {
             return FastAccessTableInfo.GetSpecification(tblID);
         }
 
-        public SQLUpdateInfoTableSpecification GetMultipleChoicesTableSpecification(int fieldDefinitionID, int tblID)
+        public SQLUpdateInfoTableSpecification GetMultipleChoicesTableSpecification(Guid fieldDefinitionID, Guid tblID)
         {
             return FastAccessMultipleChoiceFieldTableInfo.GetSpecification(fieldDefinitionID, tblID);
         }
@@ -186,7 +186,7 @@ namespace ClassLibrary1.Model
     [Serializable]
     public abstract class FastAccessFieldUpdateInfo : FastAccessRowUpdateInfo
     {
-        public int FieldDefinitionID;
+        public Guid FieldDefinitionID;
     }
 
     [Serializable]
@@ -231,7 +231,7 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class FastAccessChoiceFieldSingleSelectionUpdateInfo : FastAccessFieldUpdateInfo
     {
-        public int? ChoiceInGroupID;
+        public Guid? ChoiceInGroupID;
         public override List<SQLCellInfo> GetSQLParameterInfo()
         {
             return new List<SQLCellInfo>()
@@ -243,8 +243,8 @@ namespace ClassLibrary1.Model
 
     public class FastAccessChoiceFieldMultipleSelectionUpdateInfo : FastAccessFieldUpdateInfo
     {
-        public int TblRowID;
-        public int ChoiceInGroupID;
+        public Guid TblRowID;
+        public Guid ChoiceInGroupID;
         public bool Delete;
         public override List<SQLCellInfo> GetSQLParameterInfo()
         {
@@ -279,7 +279,7 @@ namespace ClassLibrary1.Model
     [Serializable]
     public abstract class FastAccessCellUpdateInfo : FastAccessRowUpdateInfo
     {
-        public int TblColumnID;
+        public Guid TblColumnID;
     }
 
     [Serializable]
@@ -321,8 +321,8 @@ namespace ClassLibrary1.Model
     [Serializable]
     public class FastAccessRatingIDUpdatingInfo : FastAccessCellUpdateInfo
     {
-        public int RatingID;
-        public int RatingGroupID;
+        public Guid RatingID;
+        public Guid RatingGroupID;
         public override List<SQLCellInfo> GetSQLParameterInfo()
         {
             return new List<SQLCellInfo>()

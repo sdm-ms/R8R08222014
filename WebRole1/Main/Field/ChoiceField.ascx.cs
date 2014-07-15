@@ -20,13 +20,13 @@ using ClassLibrary1.EFModel;
 public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
 {
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID {get; set;}
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
     public bool AllowMultipleSelections;
     List<ChoiceMenuItem> theChoices = null;
-    public int ChoiceGroupID { get; set; }
-    public int FieldDefinitionID { get; set; }
+    public Guid ChoiceGroupID { get; set; }
+    public Guid FieldDefinitionID { get; set; }
     private ChoiceFieldFilter _DependsOn;
     ChoiceFieldFilter DependsOn
     {
@@ -117,9 +117,9 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
     }
 
     //This function return the choice number of selected choice
-    public int? GetValue()
+    public Guid? GetValue()
     {
-        int? ChoiceInGroupId = (DdlChoice.SelectedValue == "-1" || DdlChoice.SelectedValue == "") ? null : (int?)(Convert.ToInt32(DdlChoice.SelectedValue));
+        Guid? ChoiceInGroupId = (DdlChoice.SelectedValue == "-1" || DdlChoice.SelectedValue == "") ? null : (int?)(Convert.ToInt32(DdlChoice.SelectedValue));
         return ChoiceInGroupId;
     }
 

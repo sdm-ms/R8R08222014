@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class SearchWordChoice
     {
-        public int SearchWordChoiceID { get; set; }
+        public Guid SearchWordChoiceID { get; set; }
 
-        public int ChoiceInGroupID { get; set; }
+        public Guid ChoiceInGroupID { get; set; }
 
-        public int SearchWordID { get; set; }
+        public Guid SearchWordID { get; set; }
 
         public virtual ChoiceInGroup ChoiceInGroup { get; set; }
 

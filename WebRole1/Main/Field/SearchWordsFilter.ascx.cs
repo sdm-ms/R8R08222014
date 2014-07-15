@@ -18,11 +18,11 @@ using ClassLibrary1.EFModel;
 
 public partial class SearchWordsFilter : System.Web.UI.UserControl, IFilterField
 {
-    public int TblID {get; set;}
+    public Guid TblID {get; set;}
     // These aren't really relevant here, but we need them to implement IFilterField
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID { get; set; }
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)

@@ -8,11 +8,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class UserCheckIn
     {
-        public int UserCheckInID { get; set; }
+        public Guid UserCheckInID { get; set; }
 
         public DateTime CheckInTime { get; set; }
 
-        public int? UserID { get; set; }
+        public Guid? UserID { get; set; }
 
         public virtual User User { get; set; }
     }

@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
 
 
 
-        public int AddPointsManagerNewSettings(int pointsManagerID, decimal? currentPeriodDollarSubsidy, DateTime? endOfDollarSubsidyPeriod, decimal? nextPeriodDollarSubsidy, int? nextPeriodLength, short? numPrizes, decimal? minimumPayment)
+        public Guid AddPointsManagerNewSettings(Guid pointsManagerID, decimal? currentPeriodDollarSubsidy, DateTime? endOfDollarSubsidyPeriod, decimal? nextPeriodDollarSubsidy, int? nextPeriodLength, short? numPrizes, decimal? minimumPayment)
         {
             // Duplicate the original universe object, making changes as necessary.
             PointsManager originalPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == pointsManagerID);
@@ -130,7 +130,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="TblID"></param>
         /// <returns></returns>
-        public ProposalSetting GetProposalSettingForTbl(int TblID)
+        public ProposalSetting GetProposalSettingForTbl(Guid TblID)
         {
             ProposalSetting TheSetting = null;
             var ProposalSettings = DataContext.GetTable<ProposalSetting>().Where(m => m.TblID == TblID && m.Status == Convert.ToByte(StatusOfObject.Active));
@@ -424,7 +424,7 @@ namespace ClassLibrary1.Model
         /// or all fail.
         /// </summary>
         /// <param name="changesGroupID">The changes group (as an id)</param>
-        public void ImplementChangesGroup(int changesGroupID)
+        public void ImplementChangesGroup(Guid changesGroupID)
         {
 
             
@@ -515,7 +515,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="changeGroupID"></param>
         /// <returns></returns>
-        public bool ChangesGroupCanBeAugmented(int changesGroupID)
+        public bool ChangesGroupCanBeAugmented(Guid changesGroupID)
         {
             var theChangesGroups = DataContext.GetTable<ChangesGroup>().Where(cg => cg.ChangesGroupID == changesGroupID);
             if (theChangesGroups.Count() != 1)
@@ -534,7 +534,7 @@ namespace ClassLibrary1.Model
         /// <param name="pointsManagerID">The universe to which the changes will apply, or null (e.g., for changes to domain)</param>
         /// <param name="TblID">The Tbl to which the changes will apply, or null (e.g., for changes to universe)</param>
         /// <returns>True if we can proceed with the change, based on the users' rights and the status of the changes group</returns>
-        public bool ProceedWithChange(ref int? changesGroupID, int? userID, UserActionType theAction, bool proposalOnly, int? pointsManagerID, int? TblID, bool createChangesGroupIfNoneProvided)
+        public bool ProceedWithChange(ref Guid? changesGroupID, Guid? userID, UserActionType theAction, bool proposalOnly, Guid? pointsManagerID, Guid? TblID, bool createChangesGroupIfNoneProvided)
         {
             Tbl theTbl = null;
             string key = "Tbl" + TblID;
@@ -578,7 +578,7 @@ namespace ClassLibrary1.Model
             if (changesGroupID == null)
                 throw new Exception("Internal error -- changes group should have been created but wasn't.");
 
-            return ChangesGroupCanBeAugmented((int)changesGroupID);
+            return ChangesGroupCanBeAugmented((Guid)changesGroupID);
         }
 
 
@@ -891,52 +891,52 @@ namespace ClassLibrary1.Model
                 {
                     case TypeOfObject.AddressField:
                         {
-                            int tblRowID = DataContext.GetTable<AddressField>().Single(a => a.AddressFieldID == theChange.ExistingObject).Field.TblRowID;
+                            Guid tblRowID = DataContext.GetTable<AddressField>().Single(a => a.AddressFieldID == theChange.ExistingObject).Field.TblRowID;
                             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.TblColumn:
                         {
                             TblTab theTab = DataContext.GetTable<TblColumn>().Single(a => a.TblColumnID == theChange.ExistingObject).TblTab;
-                            int TblID = theTab.TblID;
+                            Guid TblID = theTab.TblID;
                             CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + TblID);
                         }
                         break;
                     case TypeOfObject.TblTab:
                         {
                             TblTab theTab = DataContext.GetTable<TblColumn>().Single(a => a.TblColumnID == theChange.ExistingObject).TblTab;
-                            int TblID = theTab.TblID;
+                            Guid TblID = theTab.TblID;
                             CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + TblID);
                         }
                         break;
                     case TypeOfObject.ChoiceField:
                         {
-                            int tblRowID = DataContext.GetTable<ChoiceField>().Single(a => a.ChoiceFieldID == theChange.ExistingObject).Field.TblRowID;
+                            Guid tblRowID = DataContext.GetTable<ChoiceField>().Single(a => a.ChoiceFieldID == theChange.ExistingObject).Field.TblRowID;
                             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.ChoiceGroup:
                         {
-                            int pointsManagerID = DataContext.GetTable<ChoiceGroup>().Single(a => a.ChoiceGroupID== theChange.ExistingObject).PointsManagerID;
+                            Guid pointsManagerID = DataContext.GetTable<ChoiceGroup>().Single(a => a.ChoiceGroupID== theChange.ExistingObject).PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
                         }
                         break;
 
                     case TypeOfObject.ChoiceGroupFieldDefinition:
                         {
-                            int pointsManagerID = DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(a => a.ChoiceGroupFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
+                            Guid pointsManagerID = DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(a => a.ChoiceGroupFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
                         }
                         break;
                     case TypeOfObject.ChoiceInField:
                         {
-                            int tblRowID = DataContext.GetTable<ChoiceInField>().Single(a => a.ChoiceInFieldID == theChange.ExistingObject).ChoiceField.Field.TblRowID;
+                            Guid tblRowID = DataContext.GetTable<ChoiceInField>().Single(a => a.ChoiceInFieldID == theChange.ExistingObject).ChoiceField.Field.TblRowID;
                             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.ChoiceInGroup:
                         {
-                            int pointsManagerID = DataContext.GetTable<ChoiceInGroup>().Single(a => a.ChoiceInGroupID == theChange.ExistingObject).ChoiceGroup.PointsManagerID;
+                            Guid pointsManagerID = DataContext.GetTable<ChoiceInGroup>().Single(a => a.ChoiceInGroupID == theChange.ExistingObject).ChoiceGroup.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
                         }
                         break;
@@ -955,13 +955,13 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.DateTimeField:
                         {
-                            int tblRowID = DataContext.GetTable<DateTimeField>().Single(a => a.DateTimeFieldID == theChange.ExistingObject).Field.TblRowID;
+                            Guid tblRowID = DataContext.GetTable<DateTimeField>().Single(a => a.DateTimeFieldID == theChange.ExistingObject).Field.TblRowID;
                             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.DateTimeFieldDefinition:
                         {
-                            int pointsManagerID = DataContext.GetTable<DateTimeFieldDefinition>().Single(a => a.DateTimeFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
+                            Guid pointsManagerID = DataContext.GetTable<DateTimeFieldDefinition>().Single(a => a.DateTimeFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
                         }
                         break;
@@ -973,43 +973,43 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.TblRow:
                         {
-                            int TblID = DataContext.GetTable<TblRow>().Single(a => a.TblRowID == theChange.ExistingObject).TblID;
+                            Guid TblID = DataContext.GetTable<TblRow>().Single(a => a.TblRowID == theChange.ExistingObject).TblID;
                             CacheManagement.InvalidateCacheDependency("TblRowForTblID" + TblID);
                         }
                         break;
                     case TypeOfObject.Field:
                         {
-                            int tblRowID = DataContext.GetTable<Field>().Single(a => a.FieldID == theChange.ExistingObject).TblRowID;
+                            Guid tblRowID = DataContext.GetTable<Field>().Single(a => a.FieldID == theChange.ExistingObject).TblRowID;
                             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.FieldDefinition:
                         {
-                            int pointsManagerID = DataContext.GetTable<FieldDefinition>().Single(a => a.FieldDefinitionID == theChange.ExistingObject).Tbl.PointsManagerID;
+                            Guid pointsManagerID = DataContext.GetTable<FieldDefinition>().Single(a => a.FieldDefinitionID == theChange.ExistingObject).Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
                         }
                         break;
                     case TypeOfObject.NumberField:
                         {
-                            int tblRowID = DataContext.GetTable<NumberField>().Single(a => a.NumberFieldID == theChange.ExistingObject).Field.TblRowID;
+                            Guid tblRowID = DataContext.GetTable<NumberField>().Single(a => a.NumberFieldID == theChange.ExistingObject).Field.TblRowID;
                             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.NumberFieldDefinition:
                         {
-                            int pointsManagerID = DataContext.GetTable<NumberFieldDefinition>().Single(a => a.NumberFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
+                            Guid pointsManagerID = DataContext.GetTable<NumberFieldDefinition>().Single(a => a.NumberFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
                         }
                         break;
                     case TypeOfObject.TextField:
                         {
-                            int tblRowID = DataContext.GetTable<TextField>().Single(a => a.TextFieldID == theChange.ExistingObject).Field.TblRowID;
+                            Guid tblRowID = DataContext.GetTable<TextField>().Single(a => a.TextFieldID == theChange.ExistingObject).Field.TblRowID;
                             CacheManagement.InvalidateCacheDependency("FieldForTblRowID" + tblRowID);
                         }
                         break;
                     case TypeOfObject.TextFieldDefinition:
                         {
-                            int pointsManagerID = DataContext.GetTable<TextFieldDefinition>().Single(a => a.TextFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
+                            Guid pointsManagerID = DataContext.GetTable<TextFieldDefinition>().Single(a => a.TextFieldDefinitionID == theChange.ExistingObject).FieldDefinition.Tbl.PointsManagerID;
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + pointsManagerID);
                         }
                         break;

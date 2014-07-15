@@ -13,9 +13,9 @@ namespace ClassLibrary1.EFModel
             RatingGroupAttributes = new HashSet<RatingGroupAttribute>();
         }
 
-        public int RatingConditionID { get; set; }
+        public Guid RatingConditionID { get; set; }
 
-        public int? ConditionRatingID { get; set; }
+        public Guid? ConditionRatingID { get; set; }
 
         public decimal? GreaterThan { get; set; }
 

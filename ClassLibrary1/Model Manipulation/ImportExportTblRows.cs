@@ -111,7 +111,7 @@ namespace ClassLibrary1.Model
                 dictionaryNameToID = new Dictionary<string, int>();
                 foreach (var fd in theFieldDefinitions)
                 {
-                    int theID = fd.FieldDefinitionID;
+                    Guid theID = fd.FieldDefinitionID;
                     string theName = RemoveSpecialCharacters(fd.FieldName);
 
                     dictionaryIDToName.Add(theID, theName);
@@ -136,7 +136,7 @@ namespace ClassLibrary1.Model
             return returnVal;
         }
 
-        public int GetFieldDefinitionID(string abbreviatedFieldName)
+        public Guid GetFieldDefinitionID(string abbreviatedFieldName)
         {
             InitializeDictionaries();
             int returnVal = 0;
@@ -177,7 +177,7 @@ namespace ClassLibrary1.Model
             {
                 public string abbreviatedFieldName = "";
                 public int fieldNum;
-                public int FieldDefinitionID;
+                public Guid FieldDefinitionID;
                 public FieldTypes theFieldType;
                 public bool allowsMultipleSelections;
                 public int firstOrOnlyColumnNumber;
@@ -199,7 +199,7 @@ namespace ClassLibrary1.Model
             public List<string> ColumnNames;
             public List<ExcelFileFieldInfo> FieldInfos = new List<ExcelFileFieldInfo>();
             public int? actionOnImportColumn;
-            public int? tblRowIDColumn;
+            public Guid? tblRowIDColumn;
             public int? initialStatusColumn;
             public int? statusChangeColumn;
             public int? rowNameColumn;
@@ -435,7 +435,7 @@ namespace ClassLibrary1.Model
             return theInfo;
         }
 
-        public void PerformImportHelper(string storedFileName, string storedLogName, string entityType, int UserId, int startingRecord, int lastRecord, bool copyValuesIntoTbl)
+        public void PerformImportHelper(string storedFileName, string storedLogName, string entityType, Guid userID, int startingRecord, int lastRecord, bool copyValuesIntoTbl)
         {
             R8RFile storedFile = new R8RFile("import", storedFileName);
             string storedFileLocation = storedFile.LoadPreviouslyStored();
@@ -557,7 +557,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void PerformImport(string sourceFileLocation, int UserId, bool copyValuesIntoTbl)
+        public void PerformImport(string sourceFileLocation, Guid userID, bool copyValuesIntoTbl)
         {
             ChooseImportFileNames();
             string storedFileLocation = mainFile.CreateTemporary();

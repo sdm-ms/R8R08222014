@@ -15,11 +15,11 @@ namespace ClassLibrary1.EFModel
         }
 
         [Key]
-        public int RatingCharacteristicsID { get; set; }
+        public Guid RatingCharacteristicsID { get; set; }
 
-        public int RatingPhaseGroupID { get; set; }
+        public Guid RatingPhaseGroupID { get; set; }
 
-        public int? SubsidyDensityRangeGroupID { get; set; }
+        public Guid? SubsidyDensityRangeGroupID { get; set; }
 
         public decimal MinimumUserRating { get; set; }
 
@@ -29,7 +29,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

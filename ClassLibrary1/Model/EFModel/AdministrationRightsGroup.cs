@@ -14,14 +14,14 @@ namespace ClassLibrary1.EFModel
             UsersAdministrationRightsGroups = new HashSet<UsersAdministrationRightsGroup>();
         }
 
-        public int AdministrationRightsGroupID { get; set; }
+        public Guid AdministrationRightsGroupID { get; set; }
 
-        public int? PointsManagerID { get; set; }
+        public Guid? PointsManagerID { get; set; }
 
         [Required]
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

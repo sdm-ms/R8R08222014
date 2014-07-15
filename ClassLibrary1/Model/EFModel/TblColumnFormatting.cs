@@ -9,9 +9,9 @@ namespace ClassLibrary1.EFModel
     [Table("TblColumnFormatting")]
     public partial class TblColumnFormatting
     {
-        public int TblColumnFormattingID { get; set; }
+        public Guid TblColumnFormattingID { get; set; }
 
-        public int TblColumnID { get; set; }
+        public Guid TblColumnID { get; set; }
 
         [StringLength(10)]
         public string Prefix { get; set; }

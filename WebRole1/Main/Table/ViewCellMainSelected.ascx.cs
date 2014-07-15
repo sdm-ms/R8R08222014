@@ -22,7 +22,7 @@ public partial class Main_Table_ViewCellMainSelected : System.Web.UI.UserControl
 {
     Action DeselectFn;
 
-    public void Setup(R8RDataAccess dataAccess, Action deselectFn, Action<int> selectFn, int columnNumber, int TblColumnID, int ratingGroupID, bool isInSortedColumn, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool canAdminister, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action deselectFn, Action<int> selectFn, int columnNumber, Guid TblColumnID, int ratingGroupID, bool isInSortedColumn, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool canAdminister, bool doRebind, string suppStyle)
     {
         string theCSSClass = "mainCellMarker";
         if (theTradingStatus == TradingStatus.Ended)

@@ -27,7 +27,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
 {
     protected Func<int?, TableSortRule, bool, IQueryable<TblRow>> GetFilteredAndSortedQueryFn;
     Func<bool, bool, FilterRules> GetFilterRulesFn;
-    protected int TblID;
+    protected Guid TblID;
     protected int TblTabID;
     protected TableSortRule theTableSortRule;
     protected bool rebinding = false;
@@ -43,7 +43,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     string SuppStyle, SuppStyleHeader;
   
 
-    public void Setup(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, int tblID, int tblTabID, string suppStyle, string suppStyleHeader)
+    public void Setup(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, Guid tblID, int tblTabID, string suppStyle, string suppStyleHeader)
     {
         DataAccess = new R8RDataAccess();
         GetFilteredAndSortedQueryFn = getFilteredAndSortedQueryFn;
@@ -79,7 +79,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         CanEditFields = false;
         if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
         {
-            int? UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid? userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             if (UserId == 0)
                 UserId = null;
             // Checking user rights to predict
@@ -231,7 +231,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     }
 
 
-    public void ResortTable(int? TblColumnID, bool NewSortOrder)
+    public void ResortTable(Guid? TblColumnID, bool NewSortOrder)
     {
         if (TblColumnID == null)
             theTableSortRule = new TableSortRuleRowName(NewSortOrder);

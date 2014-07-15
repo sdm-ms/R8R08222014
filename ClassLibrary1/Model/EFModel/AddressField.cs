@@ -8,9 +8,9 @@ namespace ClassLibrary1.EFModel
 
     public partial class AddressField
     {
-        public int AddressFieldID { get; set; }
+        public Guid AddressFieldID { get; set; }
 
-        public int FieldID { get; set; }
+        public Guid FieldID { get; set; }
 
         public string AddressString { get; set; }
 
