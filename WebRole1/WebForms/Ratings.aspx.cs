@@ -44,7 +44,7 @@ public partial class Ratings : System.Web.UI.Page
     {
         RoutingInfoRatings theRatingsInfo = Routing.IncomingRatings(Page.RouteData, theDataAccessModule.DataContext);
         if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-            UserIDOfBrowsingUser = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            UserIDOfBrowsingUser = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserIDOfBrowsingUser != null)
         {
             User browsingUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfBrowsingUser);
@@ -59,12 +59,12 @@ public partial class Ratings : System.Web.UI.Page
         {
             if (UserIDOfBrowsingUser == null)
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
-            UserIDOfRatingsBeingViewed = (int) UserIDOfBrowsingUser;
+            UserIDOfRatingsBeingViewed = (Guid)UserIDOfBrowsingUser;
             whoseRatings.Text = "My Ratings";
         }
         else
         {
-            UserIDOfRatingsBeingViewed = (int)theRatingsInfo.userID;
+            UserIDOfRatingsBeingViewed = (Guid)theRatingsInfo.userID;
             User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfRatingsBeingViewed);
             if (theUser == null)
                 Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));

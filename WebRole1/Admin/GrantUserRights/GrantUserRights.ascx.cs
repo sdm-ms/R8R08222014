@@ -60,7 +60,7 @@ namespace WebApplication1.Admin.GrantUserRights
         protected void SetAuthorized(bool authorize)
         {
 
-            int CurrentUserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid CurrentUserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             List<User> theList = GetUsers();
             foreach (User theUser in theList)
             {

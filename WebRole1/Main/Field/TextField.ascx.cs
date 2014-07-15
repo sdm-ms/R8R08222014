@@ -133,7 +133,7 @@ public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new TextFieldDataInfo(theFieldDefinition, MainText, LinkText, theGroup, DataAccess);
         }
     }

@@ -331,17 +331,17 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
         MyLoadViewState();
         if (AllowMultipleSelections)
         {
-            List<int> theChoiceInGroupIDs = new List<int>();
+            List<Guid> theChoiceInGroupIDs = new List<Guid>();
             if (theChoices != null && theChoices.Any())
             {
-                theChoiceInGroupIDs = theChoices.Select(x => Convert.ToInt32(x.Value)).ToList();
+                theChoiceInGroupIDs = theChoices.Select(x => new Guid(x.Value)).ToList();
             }
 
             List<ChoiceInGroup> theChoiceInGroups = new List<ChoiceInGroup>();
             foreach (var choiceInGroupID in theChoiceInGroupIDs)
                 theChoiceInGroups.Add(DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceInGroupID == choiceInGroupID) );
 
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new ChoiceFieldDataInfo(theFieldDefinition, theChoiceInGroups, theGroup, DataAccess);
         }
         else
@@ -350,7 +350,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
                 return null;
             else
             {
-                FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+                FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
                 ChoiceInGroup choiceInGroup = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == Convert.ToInt32(DdlChoice.SelectedValue));
                 return new ChoiceFieldDataInfo(theFieldDefinition, choiceInGroup, theGroup, DataAccess);
             }

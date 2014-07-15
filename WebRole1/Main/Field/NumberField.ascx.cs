@@ -79,7 +79,7 @@ public partial class NumberFieldFilter : System.Web.UI.UserControl, IFilterField
         else
         {
             decimal theNumber = Convert.ToDecimal(TxtTo.Text);
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new NumericFieldDataInfo(theFieldDefinition, theNumber, theGroup, DataAccess);
         }
     }

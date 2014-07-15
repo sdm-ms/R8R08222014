@@ -95,9 +95,9 @@ namespace ClassLibrary1.Model
         {
             ProposalSetting theSettings = null;
             if (theGroup.TblID != null)
-                theSettings = GetProposalSettingForTbl((int)theGroup.TblID);//GetTbl((int)theGroup.TblID).ProposalSetting;
+                theSettings = GetProposalSettingForTbl((Guid)theGroup.TblID);//GetTbl((int)theGroup.TblID).ProposalSetting;
             if (theSettings == null)
-                theSettings = GetProposalSettingForPointsManager((int)theGroup.PointsManagerID);//GetPointsManager((int)theGroup.PointsManagerID).ProposalSetting;
+                theSettings = GetProposalSettingForPointsManager((Guid)theGroup.PointsManagerID);//GetPointsManager((int)theGroup.PointsManagerID).ProposalSetting;
             if (theSettings == null)
                 throw new Exception("Internal error -- proposal settings undefined for ChangeGroup " + theGroup.ChangesGroupID.ToString());
             return theSettings;
@@ -153,19 +153,19 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="changesStatusOfObjectID"></param>
         /// <param name="changesResolveRatingOrGroupID"></param>
-        public void UpdateChangesGroupMembershipInfo(int? changesStatusOfObjectID)
+        public void UpdateChangesGroupMembershipInfo(Guid? changesStatusOfObjectID)
         {
 
-            
-            int? objectID = null;
+
+            Guid? objectID = null;
             TypeOfObject theObjectType;
-            int? TblID = null;
-            int? pointsManagerID = null;
+            Guid? TblID = null;
+            Guid? pointsManagerID = null;
             ChangesGroup theChangesGroup = null;
 
             if (changesStatusOfObjectID != null)
             {
-                ChangesStatusOfObject theChange = DataContext.GetTable<ChangesStatusOfObject>().Single(x=>x.ChangesStatusOfObjectID ==(int)changesStatusOfObjectID);
+                ChangesStatusOfObject theChange = DataContext.GetTable<ChangesStatusOfObject>().Single(x => x.ChangesStatusOfObjectID == (Guid)changesStatusOfObjectID);
                 theChangesGroup = theChange.ChangesGroup;
                 if (theChange.AddObject || theChange.ReplaceObject)
                     objectID = theChange.NewObject;
@@ -569,7 +569,7 @@ namespace ClassLibrary1.Model
                 //Will be Uncommented later
                 //if (!proposalOnly)
                 //{
-                //    if (!ObjDataAccess.GetUser((int)userID).SuperUser)
+                //    if (!ObjDataAccess.GetUser((Guid)userID).SuperUser)
                 //        return false;
                 //}
                 changesGroupID = AddChangesGroup(pointsManagerID, TblID, userID, null, null, StatusOfChanges.NotYetProposed, null, null);
@@ -600,25 +600,25 @@ namespace ClassLibrary1.Model
                     // name is unique, and if not, we change the name.
                     string theName = "";
                     int? theCreator = null;
-                    GetNameAndCreatorOfObject((int)theChange.NewObject, (TypeOfObject)theChange.ObjectType, ref theName, ref theCreator);
-                    ChangeNameOfObject((int)theChange.NewObject, (TypeOfObject)theChange.ObjectType, theCreator, theName);
+                    GetNameAndCreatorOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, ref theName, ref theCreator);
+                    ChangeNameOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, theCreator, theName);
                 }
-                SetStatusOfObject((int)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
+                SetStatusOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
                 changeMade = true;
 
                 switch ((TypeOfObject)theChange.ObjectType)
                 {
                     case TypeOfObject.TblColumn:
-                        AddRatingsAfterAddingColumnIfTblIsActive((int)theChange.NewObject);
+                        AddRatingsAfterAddingColumnIfTblIsActive((Guid)theChange.NewObject);
                         break;
                     case TypeOfObject.RatingGroupResolution:
                         break;
                     case TypeOfObject.PointsAdjustment:
-                        PointsAdjustment thePointsAdjustment = DataContext.GetTable<PointsAdjustment>().Single(x=>x.PointsAdjustmentID ==(int)theChange.NewObject);
+                        PointsAdjustment thePointsAdjustment = DataContext.GetTable<PointsAdjustment>().Single(x => x.PointsAdjustmentID == (Guid)theChange.NewObject);
                         UpdateUserPointsAndStatus(thePointsAdjustment.UserID, thePointsAdjustment.PointsManagerID, PointsAdjustmentReason.AdministrativeChange, thePointsAdjustment.TotalAdjustment, thePointsAdjustment.CurrentAdjustment, 0, 0, 0, 0, true);
                         break;
                     case TypeOfObject.PointsManager:
-                        SetTradingStatus((int)theChange.NewObject, TypeOfObject.PointsManager, TradingStatus.Active);
+                        SetTradingStatus((Guid)theChange.NewObject, TypeOfObject.PointsManager, TradingStatus.Active);
                         break;
                     default:
                         break;
@@ -628,7 +628,7 @@ namespace ClassLibrary1.Model
             {
                 if (theChange.ExistingObject == null)
                     throw new Exception("Internal error -- trying to change name of null object.");
-                ChangeNameOfObject((int)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, theChange.ChangesGroup.Creator, theChange.NewName);
+                ChangeNameOfObject((Guid)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, theChange.ChangesGroup.Creator, theChange.NewName);
                 changeMade = true;
             }
             if (theChange.ChangeOther)
@@ -642,7 +642,7 @@ namespace ClassLibrary1.Model
                         {
                             if (theChange.NewValueText.Length > 10)
                                 throw new Exception("The abbreviation must be no longer than 10 characters.");
-                            var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
+                            var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (Guid)theChange.ExistingObject);
                             theTblColumn.Abbreviation = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                             changeMade = true;
@@ -651,14 +651,14 @@ namespace ClassLibrary1.Model
                         {     
                             if (theChange.NewValueText.Length > 50)
                                 throw new Exception("The name must be no longer than 50 characters.");
-                            var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
+                            var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (Guid)theChange.ExistingObject);
                             theTblColumn.Name = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                             changeMade = true;
                         }
                         else if (!theChange.ChangeSetting1 && !theChange.ChangeSetting2)
                         {
-                            var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (int)theChange.ExistingObject);
+                            var theTblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == (Guid)theChange.ExistingObject);
                             theTblColumn.Explanation = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblColumn.TblTab.TblID);
                             changeMade = true;
@@ -685,19 +685,19 @@ namespace ClassLibrary1.Model
                                 useAsFilter = true;
                                 theNewValue -= 1;
                             }
-                            ChangeTblColumnSortOptions((int)theChange.ExistingObject, useAsFilter, sortable, defaultSortOrderAscending);
+                            ChangeTblColumnSortOptions((Guid)theChange.ExistingObject, useAsFilter, sortable, defaultSortOrderAscending);
 
                             changeMade = true;
                         }
                         break;
                     case TypeOfObject.TblTab:
-                        ChangeTblTabDefaultSort((int)theChange.ExistingObject, theChange.NewValueInteger);
+                        ChangeTblTabDefaultSort((Guid)theChange.ExistingObject, theChange.NewValueInteger);
                         var theTblTab = DataContext.GetTable<TblTab>().Single(cg => cg.TblTabID == theChange.ExistingObject);
                         CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblTab.TblID);
                         changeMade = true;
                         break;
                     case TypeOfObject.ChoiceInGroup:
-                        ChoiceInGroup theChoiceInGroup = DataContext.GetTable<ChoiceInGroup>().Single(x=>x.ChoiceInGroupID==(int)theChange.ExistingObject);
+                        ChoiceInGroup theChoiceInGroup = DataContext.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == (Guid)theChange.ExistingObject);
                         if (theChange.ChangeSetting1 && !theChange.ChangeSetting2)
                         {
                             if (theChange.NewValueInteger == null)
@@ -729,7 +729,7 @@ namespace ClassLibrary1.Model
                     case TypeOfObject.Tbl:
                         if (theChange.NewValueText == "TblDimension")
                         {
-                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject).TblDimensionsID = theChange.NewValueInteger;
+                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (Guid)theChange.ExistingObject).TblDimensionsID = theChange.NewValueInteger;
                             changeMade = true;
                         }
                         else if (theChange.NewValueText == "ChangeCommentSetting")
@@ -746,20 +746,20 @@ namespace ClassLibrary1.Model
                                 AllowUsersToAddComment = true;
                                 NewValue -= 1;
                             }
-                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject).AllowUsersToAddComments = AllowUsersToAddComment;
-                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject).LimitCommentsToUsersWhoCanMakeUserRatings = LimitComments;
+                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (Guid)theChange.ExistingObject).AllowUsersToAddComments = AllowUsersToAddComment;
+                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (Guid)theChange.ExistingObject).LimitCommentsToUsersWhoCanMakeUserRatings = LimitComments;
                             changeMade = true;
                         }
                         else if (theChange.NewValueText != ""  && theChange.ChangeSetting1 == true && theChange.ChangeSetting2 == false)
                         {
-                            Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject);
+                            Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (Guid)theChange.ExistingObject);
                             theTbl.WordToDescribeGroupOfColumnsInThisTbl = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theChange.ExistingObject);
                             changeMade = true;
                         }
                         else if (theChange.NewValueText != "" && theChange.ChangeSetting1 == false && theChange.ChangeSetting2 == true)
                         {
-                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject).TypeOfTblRow = theChange.NewValueText;
+                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (Guid)theChange.ExistingObject).TypeOfTblRow = theChange.NewValueText;
                             changeMade = true;
                         }
                         else if (theChange.NewValueText != "" && theChange.ChangeSetting1 == true && theChange.ChangeSetting2 == true)
@@ -767,7 +767,7 @@ namespace ClassLibrary1.Model
                             try
                             {
                                 string[] theStrings = theChange.NewValueText.Split('&');
-                                Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject);
+                                Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (Guid)theChange.ExistingObject);
                                 theTbl.SuppStylesHeader = theStrings[0];
                                 theTbl.SuppStylesMain = theStrings[1];
                                 CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theChange.ExistingObject);
@@ -815,7 +815,7 @@ namespace ClassLibrary1.Model
                             CacheManagement.InvalidateCacheDependency("DomainID" + theChange.ExistingObject);
                             if (theChange.NewValueText == "TblDimension")
                             {
-                                DataContext.GetTable<Domain>().Single(x => x.DomainID == (int)theChange.ExistingObject).TblDimensionsID = theChange.NewValueInteger;
+                                DataContext.GetTable<Domain>().Single(x => x.DomainID == (Guid)theChange.ExistingObject).TblDimensionsID = theChange.NewValueInteger;
                                 changeMade = true;
                             }
                         }
@@ -827,7 +827,7 @@ namespace ClassLibrary1.Model
                     case TypeOfObject.FieldDefinition:
                         if (theChange.ChangeSetting1)
                         {
-                            var theFieldDefinition = DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (int)theChange.ExistingObject);
+                            var theFieldDefinition = DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (Guid)theChange.ExistingObject);
                             if (theChange.NewValueText != "")
                             {
                                 theFieldDefinition.FieldName = theChange.NewValueText;
@@ -848,19 +848,19 @@ namespace ClassLibrary1.Model
                             CacheManagement.InvalidateCacheDependency("FieldInfoForPointsManagerID" + thePointsManagerID);
                             if (theChange.NewValueText == "DisplayInTableSetting")
                             {
-                                DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (int)theChange.ExistingObject).DisplayInTableSettings = (int)theChange.NewValueInteger;
+                                DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (Guid)theChange.ExistingObject).DisplayInTableSettings = (int)theChange.NewValueInteger;
                                 ResetTblRowFieldDisplay(theFieldDefinition.Tbl);
                                 changeMade = true;
                             }
                             if (theChange.NewValueText == "DisplayInPopUpSetting")
                             {
-                                DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (int)theChange.ExistingObject).DisplayInPopupSettings = (int)theChange.NewValueInteger;
+                                DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (Guid)theChange.ExistingObject).DisplayInPopupSettings = (int)theChange.NewValueInteger;
                                 ResetTblRowFieldDisplay(theFieldDefinition.Tbl);
                                 changeMade = true;
                             }
                             if (theChange.NewValueText == "DisplayInTblRowPageSetting")
                             {
-                                DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (int)theChange.ExistingObject).DisplayInTblRowPageSettings = (int)theChange.NewValueInteger;
+                                DataContext.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == (Guid)theChange.ExistingObject).DisplayInTblRowPageSettings = (int)theChange.NewValueInteger;
                                 ResetTblRowFieldDisplay(theFieldDefinition.Tbl);
                                 changeMade = true;
                             }
@@ -870,7 +870,7 @@ namespace ClassLibrary1.Model
                     case TypeOfObject.User:
                         if (theChange.NewValueBoolean != null)
                         {
-                            DataContext.GetTable<UserInfo>().Single(user => user.UserID == (int)theChange.ExistingObject).IsVerified = (bool)theChange.NewValueBoolean;
+                            DataContext.GetTable<UserInfo>().Single(user => user.UserID == (Guid)theChange.ExistingObject).IsVerified = (bool)theChange.NewValueBoolean;
                             changeMade = true;
                              
                         }
@@ -884,9 +884,9 @@ namespace ClassLibrary1.Model
             if (theChange.DeleteObject)
             {
                 if (theChange.ChangeSetting1 == true) // we're deleting
-                    SetStatusOfObject((int)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Unavailable);
+                    SetStatusOfObject((Guid)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Unavailable);
                 else // we're undeleting
-                    SetStatusOfObject((int)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
+                    SetStatusOfObject((Guid)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
                 switch ((TypeOfObject)theChange.ObjectType)
                 {
                     case TypeOfObject.AddressField:
@@ -1040,7 +1040,7 @@ namespace ClassLibrary1.Model
                             throw new Exception("Internal error: No default rating group attributes assigned when replacing object.");
 
                         // now, change the status of the new object
-                        SetStatusOfObject((int)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
+                        SetStatusOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
                         changeMade = true;
                     }
                     else
@@ -1050,20 +1050,20 @@ namespace ClassLibrary1.Model
                         //// even where we have an override on the default rating group attributes.
                         //if (theChange.ChangesGroup.Tbl != null)
                         //{
-                        //    EndRatingsForTblAtCurrentValues((int)theChange.ChangesGroup.TblID);
-                        //    theChange.ChangesGroup.Tbl.DefaultRatingGroupAttributesID = (int)theChange.NewObject;
+                        //    EndRatingsForTblAtCurrentValues((Guid)theChange.ChangesGroup.TblID);
+                        //    theChange.ChangesGroup.Tbl.DefaultRatingGroupAttributesID = (Guid)theChange.NewObject;
                         //}
                         //else
                         //{
                         //    var theTbls = R8RDB.GetTable<Tbl>().Where(c => c.PointsManagerID == theChange.ChangesGroup.PointsManagerID && c.Status == (Byte)StatusOfObject.Active && c.TradingStatus != (Byte)TradingStatus.Ended);
                         //    foreach (Tbl theTbl in theTbls)
                         //        EndRatingsForTblAtCurrentValues(theTbl.TblID);
-                        //    theChange.ChangesGroup.PointsManager.DefaultRatingGroupAttributesID = (int)theChange.NewObject;
+                        //    theChange.ChangesGroup.PointsManager.DefaultRatingGroupAttributesID = (Guid)theChange.NewObject;
                         //}
                         //// Now, add the new default attributes.
-                        //SetStatusOfObject((int)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
+                        //SetStatusOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
                         //// Now, restart trading.
-                        //SetTradingStatusHierarchical((int)theChange.NewObject, (TypeOfObject)theChange.ObjectType, TradingStatus.Active);
+                        //SetTradingStatusHierarchical((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, TradingStatus.Active);
                         //changeMade = true;
                     }
                 }
@@ -1075,15 +1075,15 @@ namespace ClassLibrary1.Model
                         throw new Exception("Internal error -- trying to replace object from null object.");
                     if ((TypeOfObject)theChange.ObjectType != TypeOfObject.PointsManager)
                     {
-                        SetStatusOfObject((int)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Unavailable);
-                        SetStatusOfObject((int)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
+                        SetStatusOfObject((Guid)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Unavailable);
+                        SetStatusOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, StatusOfObject.Active);
                         changeMade = true;
                     }
                     switch ((TypeOfObject)theChange.ObjectType)
                     {
                         case TypeOfObject.PointsManager:
-                            PointsManager originalPointsManager = DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID ==(int)theChange.ExistingObject);
-                            PointsManager newPointsManager = DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID==(int)theChange.NewObject);
+                            PointsManager originalPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == (Guid)theChange.ExistingObject);
+                            PointsManager newPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == (Guid)theChange.NewObject);
                             if (newPointsManager.CurrentPeriodDollarSubsidy > 0 && newPointsManager.EndOfDollarSubsidyPeriod == null)
                                 throw new Exception("An end time to the prize period must be specified.");
 
@@ -1131,7 +1131,7 @@ namespace ClassLibrary1.Model
             //            newTradingStatus = TradingStatus.SuspendedDirectly;
             //        if (theChange.NewValueInteger == 3)
             //            newTradingStatus = TradingStatus.Ended;
-            //        SetTradingStatus((int)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, newTradingStatus);
+            //        SetTradingStatus((Guid)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType, newTradingStatus);
                    
             //    }
             //    if (theChange.NewValueInteger >= 5)
@@ -1145,7 +1145,7 @@ namespace ClassLibrary1.Model
             //        {
             //            theNewStatus=StatusOfObject.Proposed ;
             //        }
-            //       SetStatusOfObject((int)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType,theNewStatus);
+            //       SetStatusOfObject((Guid)theChange.ExistingObject, (TypeOfObject)theChange.ObjectType,theNewStatus);
             //    }
             //    changeMade = true;
               

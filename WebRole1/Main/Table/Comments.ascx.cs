@@ -137,13 +137,13 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
 
     public void AddComment_Click(object sender, EventArgs e)
     {
-        Guid? userID = (int?) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (Guid?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && (UserCanProposeComments || UserCanAddComments))
         {
             string commentTitle = MoreStringManip.StripHtml(NewCommentTitle.Text).Replace("\n", "<br/>");
             string commentText = MoreStringManip.StripHtml(NewCommentText.Text).Replace("\n", "<br/>");
-            theProcess.CommentForTblRowCreate(theTblRowOrNullForEntireTable.TblRowID, commentTitle, commentText, TestableDateTime.Now, (int)userID, !UserCanAddComments, true, null);
+            theProcess.CommentForTblRowCreate(theTblRowOrNullForEntireTable.TblRowID, commentTitle, commentText, TestableDateTime.Now, (Guid)userID, !UserCanAddComments, true, null);
         }
         Routing.Redirect(Response, Routing.Incoming(Page.RouteData, theProcess.DataContext));
     }
@@ -166,7 +166,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         Guid? userID = (int?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && UserCanDeleteComments)
-            theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (int)userID, true, null);
+            theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (Guid)userID, true, null);
         Routing.Redirect(Response, Routing.Incoming(Page.RouteData, theProcess.DataContext));
     }
 

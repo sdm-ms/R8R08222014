@@ -18,7 +18,7 @@ public partial class Default2 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0))
+        if (!(HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null))
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
     }
 }

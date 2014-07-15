@@ -21,8 +21,8 @@ using ClassLibrary1.EFModel;
 
 public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 {
-   
-    protected int RowId;
+
+    protected Guid RowId;
     protected Guid TblID;
     protected Action<int?, bool> ResortCateDesFn;
     protected bool defaultSortOrderAsc;
@@ -82,14 +82,14 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 
     protected void DetermineUserRights()
     {
-        int SubtopicId = DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
+        Guid SubtopicId = DataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
 
         CanPredict = false;
         CanAdminister = false;
         CanEditFields = false;
-        if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
+        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null)
         {
-            Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, TblID);
@@ -122,11 +122,11 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 
     protected void PerformDeleteOrUndelete(bool delete)
     {
-        if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") == 0)
+        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") == null)
             throw new Exception("You must be logged in to make changes.");
 
         ActionProcessor theActionProcessor = new ActionProcessor();
-        theActionProcessor.TblRowDeleteOrUndelete(RowId, delete, true, (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
+        theActionProcessor.TblRowDeleteOrUndelete(RowId, delete, true, (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         theActionProcessor.DataContext.SubmitChanges();
         TblRow theTblRow = DataAccess.R8RDB.GetTable<TblRow>().Single(e => e.TblRowID == RowId);
         Routing.Redirect(Response, new RoutingInfoMainContent( theTblRow.Tbl, theTblRow, null));
@@ -167,7 +167,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         {
             rowBeingCreated++;
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int theTblTabID = (int)TblRowListView.DataKeys[dataItem.DisplayIndex].Values["TblTabID"];
+            Guid theTblTabID = (Guid)TblRowListView.DataKeys[dataItem.DisplayIndex].Values["TblTabID"];
             string theTblTabName = (string)TblRowListView.DataKeys[dataItem.DisplayIndex].Values["TblTabName"];
             ListViewDataItem CurrentItem = (ListViewDataItem)e.Item;
 
@@ -226,7 +226,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
             if (ViewState["SelectedRow"] != null)
             { // The previous selected row needs to be deselected and rebound.
                 ListViewDataItem dataItem = TblRowListView.Items[(int)ViewState["SelectedRow"] - 1];
-                int theTblRowID = (int)TblRowListView.DataKeys[dataItem.DisplayIndex].Value;
+                Guid theTblRowID = (Guid)TblRowListView.DataKeys[dataItem.DisplayIndex].Value;
                 PlaceHolder MainTableBodyRowPlaceHolder = (PlaceHolder)dataItem.FindControl("MainTableBodyRowPlaceHolder");
                 Main_Table_BodyRow MainTableBodyRow = (Main_Table_BodyRow)((System.Web.UI.Control)(MainTableBodyRowPlaceHolder)).Controls[0];
                 MainTableBodyRow.DeselectAndReBind();

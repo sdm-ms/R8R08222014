@@ -51,14 +51,14 @@ namespace ClassLibrary1.Model
         /// <param name="objectID"></param>
         /// <param name="theObjectType"></param>
         /// <returns></returns>
-        public bool ObjectExists(int? objectID, TypeOfObject theObjectType)
+        public bool ObjectExists(Guid? objectID, TypeOfObject theObjectType)
         {
-           
-            int objectID2;
+
+            Guid objectID2;
             if (objectID == null)
                 return false;
             else
-                objectID2 = (int)objectID;
+                objectID2 = (Guid)objectID;
 
             bool returnVal = true;
             bool unknownObjectType = false;
@@ -212,14 +212,14 @@ namespace ClassLibrary1.Model
         /// <param name="theObjectType"></param>
         /// <param name="TblID"></param>
         /// <param name="pointsManagerID"></param>
-        public void GetTblAndPointsManagerForObject(int? objectID, TypeOfObject theObjectType, out int? TblID, out int? pointsManagerID)
+        public void GetTblAndPointsManagerForObject(Guid? objectID, TypeOfObject theObjectType, out Guid? TblID, out Guid? pointsManagerID)
         {
            
             TblID = null;
             pointsManagerID = null;
             if (objectID == null)
                 return;
-            int objectID2 = (int)objectID;
+            Guid objectID2 = (Guid)objectID;
             switch (theObjectType)
             {
                 case TypeOfObject.AddressField:
@@ -323,7 +323,7 @@ namespace ClassLibrary1.Model
                     throw new Exception("Trying to find membership for an object of an unknown object type");
             }
             if (TblID != null)
-                pointsManagerID = ObjDataAccess.GetTbl((int)TblID).PointsManagerID;
+                pointsManagerID = ObjDataAccess.GetTbl((Guid)TblID).PointsManagerID;
         }
 
         /// <summary>

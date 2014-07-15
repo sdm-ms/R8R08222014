@@ -134,7 +134,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
                 return;
             }
 
-            Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             User theUser = DataAccess.R8RDB.GetTable<User>().Single(x => x.UserID == userID);
 
             myImportExport.PerformImport(fileLocation, userID, ChkIncValues.Checked && theUser.SuperUser);

@@ -410,10 +410,10 @@ namespace ClassLibrary1.Model
             }
             else
                 throw new Exception("Insufficient privileges");
-            return (int)newChoiceGroupID;
+            return (Guid)newChoiceGroupID;
         }
 
-        public void ChoiceGroupChange(int choiceGroupID, ChoiceGroupData newChoiceGroup, bool doItNow, Guid userID, Guid? changesGroupID)
+        public void ChoiceGroupChange(Guid choiceGroupID, ChoiceGroupData newChoiceGroup, bool doItNow, Guid userID, Guid? changesGroupID)
         {
 
             DataManipulation.ConfirmObjectExists(choiceGroupID, TypeOfObject.ChoiceGroup);
@@ -432,7 +432,7 @@ namespace ClassLibrary1.Model
                 {
                     if (newChoiceInGroup.choiceInGroupID == null)
                     { // This one is new -- let's add it to the database.
-                        int newChoiceInGroupID = DataManipulation.AddChoiceInGroup((int)choiceGroupID, newChoiceInGroup.choiceNum, newChoiceInGroup.text, newChoiceInGroup.determiningGroupValue);
+                        int newChoiceInGroupID = DataManipulation.AddChoiceInGroup((Guid)choiceGroupID, newChoiceInGroup.choiceNum, newChoiceInGroup.text, newChoiceInGroup.determiningGroupValue);
                         DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.ChoiceInGroup, true, false, false, false, false, false, false, false, "", newChoiceInGroupID, null, null, null, null, "", null);
                     }
                     else
@@ -509,25 +509,25 @@ namespace ClassLibrary1.Model
                     DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.FieldDefinition, true, false, false, false, false, false, false, false, "", FieldDefinitionID, null, null, null, null, "", null);
                 if (fieldType == FieldTypes.ChoiceField)
                 {
-                    int choiceGroupFieldDefinitionID = DataManipulation.AddChoiceGroupFieldDefinition((int) choiceGroupID,(int)FieldDefinitionID,dependentOnChoiceGroupFieldDefinitionID);
+                    int choiceGroupFieldDefinitionID = DataManipulation.AddChoiceGroupFieldDefinition((Guid)choiceGroupID, (Guid)FieldDefinitionID, dependentOnChoiceGroupFieldDefinitionID);
                     if (makeActive)
                         DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.ChoiceGroupFieldDefinition, true, false, false, false, false, false, false, false, "",choiceGroupFieldDefinitionID, null, null, null, null, "", null);
                 }
                 else if (fieldType == FieldTypes.NumberField)
                 {
-                    int numberFieldDefinitionID = DataManipulation.AddNumberFieldDefinition((int)FieldDefinitionID, minimum, maximum, (short) decimalPlaces);
+                    int numberFieldDefinitionID = DataManipulation.AddNumberFieldDefinition((Guid)FieldDefinitionID, minimum, maximum, (short)decimalPlaces);
                     if (makeActive)
                         DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.NumberFieldDefinition, true, false, false, false, false, false, false, false, "", numberFieldDefinitionID, null, null, null, null, "", null);
                 }
                 else if (fieldType == FieldTypes.DateTimeField)
                 {
-                    int dateTimeFieldDefinitionID = DataManipulation.AddDateTimeFieldDefinition((int)FieldDefinitionID, (bool)includeDate, (bool)includeTime);
+                    int dateTimeFieldDefinitionID = DataManipulation.AddDateTimeFieldDefinition((Guid)FieldDefinitionID, (bool)includeDate, (bool)includeTime);
                     if (makeActive)
                         DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.DateTimeFieldDefinition, true, false, false, false, false, false, false, false, "", dateTimeFieldDefinitionID, null, null, null, null, "", null);
                 }
                 else if (fieldType == FieldTypes.TextField)
                 {
-                    int textFieldDefinitionID = DataManipulation.AddTextFieldDefinition((int)FieldDefinitionID, (bool)includeText, (bool)includeLink, (bool)searchableTextField);
+                    int textFieldDefinitionID = DataManipulation.AddTextFieldDefinition((Guid)FieldDefinitionID, (bool)includeText, (bool)includeLink, (bool)searchableTextField);
                     if (makeActive)
                         DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.TextFieldDefinition, true, false, false, false, false, false, false, false, "", textFieldDefinitionID, null, null, null, null, "", null);
                 }
@@ -539,7 +539,7 @@ namespace ClassLibrary1.Model
             }
             else
                 throw new Exception("Insufficient privileges");
-            return (int)FieldDefinitionID;
+            return (Guid)FieldDefinitionID;
         }
 
         public Guid FieldDefinitionCreate(Guid TblID, String fieldName, FieldTypes fieldType, bool useAsFilter, bool makeActive, bool makeActiveNow, Guid userID, Guid? changesGroupID)
@@ -609,7 +609,7 @@ namespace ClassLibrary1.Model
                 DataManipulation.ConfirmObjectExists(FID, TypeOfObject.FieldDefinition);
             }
 
-            Guid TblID = DataAccess.GetFieldDefinition((int)FieldDefinitionID[0]).TblID;
+            Guid TblID = DataAccess.GetFieldDefinition((Guid)FieldDefinitionID[0]).TblID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, !doItNow, null, TblID, true))
             {
                 int? changesStatusObjectID = null;
@@ -617,15 +617,15 @@ namespace ClassLibrary1.Model
                 {
                     if ((int)displayInTableSetting[i] != -1)
                     {
-                        changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.FieldDefinition, false, false, false, false, true, false, true, false, "", null, (int)FieldDefinitionID[i], null, (int)displayInTableSetting[i], null, "DisplayInTableSetting", null);
+                        changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.FieldDefinition, false, false, false, false, true, false, true, false, "", null, (Guid)FieldDefinitionID[i], null, (int)displayInTableSetting[i], null, "DisplayInTableSetting", null);
                     }
                     if ((int)displayInPopUpSetting[i] != -1)
                     {
-                        changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.FieldDefinition, false, false, false, false, true, false, true, false, "", null, (int)FieldDefinitionID[i], null, (int)displayInPopUpSetting[i], null, "DisplayInPopUpSetting", null);
+                        changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.FieldDefinition, false, false, false, false, true, false, true, false, "", null, (Guid)FieldDefinitionID[i], null, (int)displayInPopUpSetting[i], null, "DisplayInPopUpSetting", null);
                     }
                     if ((int)displayInTblRowPageSetting[i] != -1)
                     {
-                        changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.FieldDefinition, false, false, false, false, true, false, true, false, "", null, (int)FieldDefinitionID[i], null, (int)displayInTblRowPageSetting[i], null, "DisplayInTblRowPageSetting", null);
+                        changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.FieldDefinition, false, false, false, false, true, false, true, false, "", null, (Guid)FieldDefinitionID[i], null, (int)displayInTblRowPageSetting[i], null, "DisplayInTblRowPageSetting", null);
                     }
 
                 }
@@ -684,7 +684,7 @@ namespace ClassLibrary1.Model
                 //ProfileSimple.End("FieldSetImplement");
                 //ProfileSimple.Start("RewardInTblRowCreateWithFields");
                 decimal? baseMultiplierOverride;
-                var shouldCreateReward = DataManipulation.ShouldCreateRewardRating((int)theFieldSetDataInfo.theTbl.TblID, userID, out baseMultiplierOverride);
+                var shouldCreateReward = DataManipulation.ShouldCreateRewardRating((Guid)theFieldSetDataInfo.theTbl.TblID, userID, out baseMultiplierOverride);
                 if (shouldCreateReward)
                     RewardRatingCreate((Guid)theFieldSetDataInfo.theTbl.TblID, RewardableUserAction.AddRow, baseMultiplierOverride, 1M, userID, "Added row: " + theFieldSetDataInfo.theRowName, theFieldSetDataInfo.GetDescription());
 
@@ -738,7 +738,7 @@ namespace ClassLibrary1.Model
                 FieldSetDataInfo oldSettings = new FieldSetDataInfo(theSet.theTblRow, theSet.theTbl, new R8RDataAccess());
                 oldSettings.LoadFromDatabase();
                 string changesList = theSet.GetComparison(oldSettings);
-                RewardRatingCreate((int)theSet.theTbl.TblID, RewardableUserAction.ChangeFields, baseMultiplierOverride, 0.75M, userID, "Changed info: " + theSet.theRowName, changesList);
+                RewardRatingCreate((Guid)theSet.theTbl.TblID, RewardableUserAction.ChangeFields, baseMultiplierOverride, 0.75M, userID, "Changed info: " + theSet.theRowName, changesList);
             }
             //ProfileSimple.End("RewardRating");
             //ProfileSimple.End("FieldSetImplement");
@@ -927,7 +927,7 @@ namespace ClassLibrary1.Model
             return field;
         }
 
-        public Field FieldCreateOrReplace(TblRow tblRow, Guid FieldDefinitionID, String textValue, String linkValue, Guid? singleChoice, List<int> multipleChoices, decimal? numericValue, decimal? latitude, decimal? longitude, DateTime? dateTimeValue, Guid userID, Guid? changesGroupID)
+        public Field FieldCreateOrReplace(TblRow tblRow, Guid FieldDefinitionID, String textValue, String linkValue, Guid? singleChoice, List<Guid> multipleChoices, decimal? numericValue, decimal? latitude, decimal? longitude, DateTime? dateTimeValue, Guid userID, Guid? changesGroupID)
         {
             Field theField = null;
             Guid? TblID = tblRow.TblID;
@@ -954,7 +954,7 @@ namespace ClassLibrary1.Model
                     if (!theChoiceGroupFieldDefinition.ChoiceGroup.AllowMultipleSelections)
                     {
                         if (singleChoice != null)
-                            ((List<int>) multipleChoices).Add((int) singleChoice);
+                            ((List<Guid>)multipleChoices).Add((Guid)singleChoice);
                     }
                     if (multipleChoices != null)
                     {
@@ -1250,7 +1250,7 @@ namespace ClassLibrary1.Model
             }
             else
                 throw new Exception("Insufficient privileges");
-            return (int) newObjectID;
+            return (Guid)newObjectID;
         }
 
         public void TblColumnDeleteOrUndelete(Guid TblColumnID, bool delete, bool doItNow, Guid userID, Guid? changesGroupID)
@@ -1746,7 +1746,7 @@ namespace ClassLibrary1.Model
                                 name, theUser);
                 if (makeActive)
                 {
-                    int? ExistingObjectId = null;
+                    Guid? ExistingObjectId = null;
 
                     if (userToAffectID == null)
                     {
@@ -1855,17 +1855,17 @@ namespace ClassLibrary1.Model
 
         public void ResolveRatingGroupByUnwinding(RatingGroup ratingGroup, bool doItNow, Guid userID, Guid? changesGroupID)
         {
-            int? TblID;
-            int? pointsManagerID;
+            Guid? TblID;
+            Guid? pointsManagerID;
             TblID = ratingGroup.TblRow.TblID;
             pointsManagerID = ratingGroup.TblRow.Tbl.PointsManagerID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ResolveRatings, !doItNow, pointsManagerID, TblID, false))
             {
                 RatingGroupResolution theResolution = DataManipulation.AddRatingGroupResolution(ratingGroup,false,true,null,userID);
                 decimal? baseMultiplierOverride;
-                if (TblID != null && DataManipulation.ShouldCreateRewardRating((int)TblID, userID, out baseMultiplierOverride))
+                if (TblID != null && DataManipulation.ShouldCreateRewardRating((Guid)TblID, userID, out baseMultiplierOverride))
                 {
-                    RewardRatingCreate((int)TblID, RewardableUserAction.ResolveTableCell, baseMultiplierOverride, 0.1M, userID, "Resolved table cell (assigning zero to unresolved ratings) " + ratingGroup.TblRow.Name + " " + ratingGroup.TblColumn.Name, "");
+                    RewardRatingCreate((Guid)TblID, RewardableUserAction.ResolveTableCell, baseMultiplierOverride, 0.1M, userID, "Resolved table cell (assigning zero to unresolved ratings) " + ratingGroup.TblRow.Name + " " + ratingGroup.TblColumn.Name, "");
                 }
                 if (doItNow)
                     DataManipulation.ImplementChangesGroup((Guid)changesGroupID);
@@ -1898,8 +1898,8 @@ namespace ClassLibrary1.Model
                     return;
                 }
             }
-            int? TblID;
-            int? pointsManagerID;
+            Guid? TblID;
+            Guid? pointsManagerID;
             TblID = ratingGroup.TblRow.TblID;
             pointsManagerID = ratingGroup.TblRow.Tbl.PointsManagerID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ResolveRatings, !doItNow, pointsManagerID, TblID, false))
@@ -1907,9 +1907,9 @@ namespace ClassLibrary1.Model
                 RatingGroupResolution theResolution = DataManipulation.AddRatingGroupResolution(ratingGroup, cancelPreviousResolutions, resolveByUnwinding, effectiveTime, userID); 
                 //Trace.TraceInformation("ResolveRatingGroup effective time" + effectiveTime);
                 decimal? baseMultiplierOverride;
-                if (TblID != null && DataManipulation.ShouldCreateRewardRating((int) TblID, userID, out baseMultiplierOverride))
+                if (TblID != null && DataManipulation.ShouldCreateRewardRating((Guid)TblID, userID, out baseMultiplierOverride))
                 {
-                    RewardRatingCreate((int)TblID, cancelPreviousResolutions ? RewardableUserAction.CancelResolve : RewardableUserAction.ResolveTableCell, baseMultiplierOverride, 0.1M, userID, (cancelPreviousResolutions ? "Canceled resolution of table cell" : "Resolved table cell ") + ratingGroup.TblRow.Name + " " + ratingGroup.TblColumn.Name,"Effective: " + (effectiveTime == null ? TestableDateTime.Now.ToString() : effectiveTime.ToString()));
+                    RewardRatingCreate((Guid)TblID, cancelPreviousResolutions ? RewardableUserAction.CancelResolve : RewardableUserAction.ResolveTableCell, baseMultiplierOverride, 0.1M, userID, (cancelPreviousResolutions ? "Canceled resolution of table cell" : "Resolved table cell ") + ratingGroup.TblRow.Name + " " + ratingGroup.TblColumn.Name, "Effective: " + (effectiveTime == null ? TestableDateTime.Now.ToString() : effectiveTime.ToString()));
                 }
             }
         }
@@ -1990,8 +1990,8 @@ namespace ClassLibrary1.Model
         public void UserRatingsAddFromService(List<Rating> allRatingsIfOneRatingPerCell, List<RatingAndUserRatingString> theUserRatingsString, User theUser, ref UserEditResponse theResponse)
         {
             theResponse = new UserEditResponse();
-            int? topRatingGroupID = -1;
-            int firstR8RID = 0;
+            Guid? topRatingGroupID = null;
+            Guid firstR8RID = 0;
 
             int numTries = 0;
             TryLabel:
@@ -2008,7 +2008,7 @@ namespace ClassLibrary1.Model
 
                 // convert string data to a numeric format
                 List<RatingIdAndUserRatingValue> theUserRatings = new List<RatingIdAndUserRatingValue>();
-                List<int> theRatingIDs = new List<int>();
+                List<Guid> theRatingIDs = new List<int>();
                 bool ratingIDsProperlyFormatted = true;
                 ratingIDsProperlyFormatted = RatingAndUserRatingStringConverter.AddRatingIDsToList(theUserRatingsString, theRatingIDs);
                 if (!ratingIDsProperlyFormatted)
@@ -2298,7 +2298,7 @@ namespace ClassLibrary1.Model
             }
 
 
-            return (int)theCommentId;
+            return (Guid)theCommentId;
         }
 
         public void CommentForTblRowDeleteOrUndelete(int CommentId, bool delete, Guid userID, bool considerCreatingRewardRating, Guid? changesGroupID)
@@ -2471,7 +2471,7 @@ namespace ClassLibrary1.Model
      
 
         }
-        public bool CheckUserRights(Guid? userID, UserActionType theAction, bool proposalOnly, int? pointsManagerID, int? TblID)
+        public bool CheckUserRights(Guid? userID, UserActionType theAction, bool proposalOnly, Guid? pointsManagerID, Guid? TblID)
         {
             return DataAccess.CheckUserRights(userID, theAction, proposalOnly, pointsManagerID, TblID);
         }
@@ -2488,7 +2488,7 @@ namespace ClassLibrary1.Model
                         DataManipulation.ImplementChangesGroup((Guid)changesGroupID);
                 }
             }
-            return (int)theRatingPhaseGroupId;
+            return (Guid)theRatingPhaseGroupId;
             
         }
 

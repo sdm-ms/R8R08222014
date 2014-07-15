@@ -338,10 +338,10 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsHelper(List<int> determiningGroupValues, int choiceGroupID, bool orderAlphabetically)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsHelper(List<Guid> determiningGroupValues, Guid choiceGroupID, bool orderAlphabetically)
         {
             if (determiningGroupValues == null)
-                determiningGroupValues = new List<int>();
+                determiningGroupValues = new List<Guid>();
             R8RDataAccess Obj = new R8RDataAccess();
             var myPredicateAllowableDeterminingGroupChoices = PredicateBuilder.False<ChoiceInGroup>();
 
@@ -349,7 +349,7 @@ namespace ClassLibrary1.Model
             myPredicate = myPredicate.And(x => x.ChoiceGroupID == choiceGroupID && x.Status == (Byte)(StatusOfObject.Active));
             myPredicate = myPredicate.And(x =>
                                             x.ActiveOnDeterminingGroupChoiceInGroupID == null ||
-                                            determiningGroupValues.Contains((int)x.ActiveOnDeterminingGroupChoiceInGroupID)
+                                            determiningGroupValues.Contains((Guid)x.ActiveOnDeterminingGroupChoiceInGroupID)
                                             );
 
             List<ChoiceMenuItem> noChoiceList = new List<ChoiceMenuItem> { new ChoiceMenuItem { Text = "", Value = "-1" } };

@@ -60,7 +60,7 @@ public partial class DateTimeFieldFilter : System.Web.UI.UserControl, IFilterFie
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new DateTimeFieldDataInfo(theFieldDefinition, (DateTime)ToDate.theDate, theGroup, DataAccess);
         }
     }

@@ -77,11 +77,11 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         CanPredict = false;
         CanAdminister = false;
         CanEditFields = false;
-        if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
+        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
         {
-            Guid? userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-            if (UserId == 0)
-                UserId = null;
+            Guid? UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            //if (UserId == 0)
+            //    UserId = null;
             // Checking user rights to predict
             CanPredict = dataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, TblID);
             CanAdminister = dataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, TblID);
@@ -203,7 +203,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         }
     }
 
-    public void ReBind(int tblTabID, bool resetToTop, bool resetSortToDefault, bool reloadFields)
+    public void ReBind(Guid tblTabID, bool resetToTop, bool resetSortToDefault, bool reloadFields)
     {
         rebinding = true;
         if (resetToTop)
@@ -225,7 +225,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             if (TblColumnToSort == null)
                 theTableSortRule = new TableSortRuleRowName(SortOrderAscending);
             else
-                theTableSortRule = new TableSortRuleTblColumn((int) TblColumnToSort, SortOrderAscending);
+                theTableSortRule = new TableSortRuleTblColumn((Guid)TblColumnToSort, SortOrderAscending);
             ViewState["TableSortRule"] = theTableSortRule;
         }
     }
@@ -236,7 +236,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         if (TblColumnID == null)
             theTableSortRule = new TableSortRuleRowName(NewSortOrder);
         else
-            theTableSortRule = new TableSortRuleTblColumn((int)TblColumnID, NewSortOrder);
+            theTableSortRule = new TableSortRuleTblColumn((Guid)TblColumnID, NewSortOrder);
         ViewState["TableSortRule"] = theTableSortRule;
         ReBind(TblTabID, resetToTop, false, false);
     }

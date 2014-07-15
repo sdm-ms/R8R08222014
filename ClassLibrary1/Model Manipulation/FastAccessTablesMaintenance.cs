@@ -23,17 +23,6 @@ namespace ClassLibrary1.Model
         public static bool DoBulkInserting = false; // We don't need this anymore, now that we've implemented individual updating, but we'll keep it in the code for the time being.
         public static bool DoBulkUpdating = false; // We don't need this either. Eventually, if we are sure that our current approach is satisfactory, we'll get rid of the underlying bulk code.
 
-        public static int CountHighestRecord(DenormalizedTableAccess dta, string tableName)
-        {
-            // Note: We may not be able to rely on this if we change from numeric IDs.
-            object result = SQLDirectManipulate.ExecuteSQLScalar(dta, String.Format("SELECT TOP 1 [ID] FROM [dbo].[{0}] ORDER BY [ID] DESC", tableName));
-            if (result == null)
-                return 0;
-            else
-                return (int)result;
-        }
-
-
         public static bool ContinueFastAccessMaintenance(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
 
@@ -240,7 +229,7 @@ namespace ClassLibrary1.Model
             {
                 Guid tblID = Convert.ToInt32(table.FirstOrDefault().Item.TableName.Substring(1));
                 Tbl theTbl = iDataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
-                bool newRowsAdded = table.Any(x => x.Item.TblRowID == -1); // we can't use update for this, because we don't know the TblRowID yet.
+                bool newRowsAdded = table.Any(x => x.Item.TblRowID == Guid.NewGuid()); // DEBUG -- test for whether it's new // we can't use update for this, because we don't know the TblRowID yet.
                 List<Guid> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
                 IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => tblRowIDs.Contains(x.TblRowID));
                 new FastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.FirstOrDefault().Item.UpdateRatings, table.FirstOrDefault().Item.UpdateFields);

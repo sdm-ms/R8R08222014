@@ -873,7 +873,7 @@ namespace ClassLibrary1.Model
 
             var highStakesToChange = highStakesAlreadyKnown
                 .Where(x => x.RatingGroup.UserRatingGroups.Any())
-                .Where(x => x.RatingGroup.UserRatingGroups.Any(y => y.UserRatings.Any(z => z.UserID == (int)targetSpecificUser)))
+                .Where(x => x.RatingGroup.UserRatingGroups.Any(y => y.UserRatings.Any(z => z.UserID == (Guid)targetSpecificUser)))
                 .OrderByDescending(x => x.ShortTermResolveTime);
             foreach (var toChange in highStakesToChange)
             {
@@ -893,7 +893,7 @@ namespace ClassLibrary1.Model
             DataContext.SubmitChanges();
         }
 
-        public void ChangeToHighStakes(Guid tblID, int forceHighStakesNum, int? targetSpecificUser)
+        public void ChangeToHighStakes(Guid tblID, int forceHighStakesNum, Guid? targetSpecificUser)
         {
             DateTime willBecomeKnownAt = TestableDateTime.Now + new TimeSpan(0,1,0); // one minute from now
             DateTime endTime = TestableDateTime.Now + new TimeSpan(1,0,0); // one hour
@@ -922,13 +922,13 @@ namespace ClassLibrary1.Model
                 if (targetSpecificUser == null)
                     notHighStakesCount = notHighStakesToChange.Count();
                 else
-                    notHighStakesCount = notHighStakesToChange.Where(x => x.RatingGroup.UserRatingGroups.Any(y => y.UserRatings.Any(z => z.UserID == (int)targetSpecificUser))).Count();
+                    notHighStakesCount = notHighStakesToChange.Where(x => x.RatingGroup.UserRatingGroups.Any(y => y.UserRatings.Any(z => z.UserID == (Guid)targetSpecificUser))).Count();
                 var numToSkip = RandomGenerator.GetRandom(0, Math.Max(notHighStakesCount - forceHighStakesNum - 1, 1));
                 if (targetSpecificUser == null)
                     notHighStakesToChange = notHighStakesToChange.Skip(numToSkip).Take(forceHighStakesNum)
                     .OrderByDescending(x => x.ShortTermResolveTime);
                 else
-                    notHighStakesToChange = notHighStakesToChange.Where(x => x.RatingGroup.UserRatingGroups.Any(y => y.UserRatings.Any(z => z.UserID == (int)targetSpecificUser)))
+                    notHighStakesToChange = notHighStakesToChange.Where(x => x.RatingGroup.UserRatingGroups.Any(y => y.UserRatings.Any(z => z.UserID == (Guid)targetSpecificUser)))
                     .Skip(numToSkip)
                     .Take(forceHighStakesNum)
                     .OrderByDescending(x => x.ShortTermResolveTime);

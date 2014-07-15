@@ -993,7 +993,7 @@ namespace ClassLibrary1.Model
         /// <param name="determiningGroupValue">If non-null only the choices with the ActiveOnDeterminingGroupChoiceInGroupID equal to this number
         /// will be returned.</param>
         /// <returns></returns>
-        public ChoiceGroupData GetChoiceGroupData(int choiceGroupID, bool availableChoicesOnly, int? determiningGroupValue)
+        public ChoiceGroupData GetChoiceGroupData(Guid choiceGroupID, bool availableChoicesOnly, int? determiningGroupValue)
         {
             ChoiceGroupData theData = new ChoiceGroupData();
             var theChoicesInGroup = R8RDB.GetTable<ChoiceInGroup>()
@@ -1048,7 +1048,7 @@ namespace ClassLibrary1.Model
             if (topRatingGroup == null)
                 return new UserRatingResult("The specified table cell was not found in the database.");
             Guid pointsManagerID = topRatingGroup.TblRow.Tbl.PointsManagerID;
-            UsersRight theUserRight = GetUsersRightsUsingCache((int) userID, pointsManagerID);
+            UsersRight theUserRight = GetUsersRightsUsingCache((Guid)userID, pointsManagerID);
             if (theUserRight == null)
                 return new UserRatingResult("The database could not be read to check your privileges.");
             if (theUserRight.MayPredict == false)
@@ -1120,7 +1120,7 @@ namespace ClassLibrary1.Model
         /// <param name="pointsManagerID"></param>
         /// <param name="TblID"></param>
         /// <returns></returns>
-        public bool CheckUserRights(Guid? userID, UserActionType theAction, bool proposalOnly, int? pointsManagerID, int? TblID)
+        public bool CheckUserRights(Guid? userID, UserActionType theAction, bool proposalOnly, Guid? pointsManagerID, Guid? TblID)
         {
             if (AllowNullOrUserID0UserForTestingAndInitialBuild && (userID == null || userID == 0))
                 return true;
@@ -1138,7 +1138,7 @@ namespace ClassLibrary1.Model
                 }
                 pointsManagerID = theTbl.PointsManagerID;
             }
-            if (userID == null || userID == 0)
+            if (userID == null)
             { // Anonymous user
                 if (theAction == UserActionType.View)
                 {
@@ -1147,7 +1147,7 @@ namespace ClassLibrary1.Model
                         returnVal = theRights.MayView;
                 }
             }
-            else if (GetUser((int)userID).SuperUser)
+            else if (GetUser((Guid)userID).SuperUser)
                 returnVal = true;
             else
             {
@@ -1326,12 +1326,12 @@ namespace ClassLibrary1.Model
         /// <param name="theTblRowID"></param>
         /// <param name="theTblColumnID"></param>
         /// <returns></returns>
-        public RatingHierarchyData GetRatingHierarchyDataForTblRowAndColumn(int theTblRowID, int theTblColumnID, ref int? ratingGroupID)
+        public RatingHierarchyData GetRatingHierarchyDataForTblRowAndColumn(Guid theTblRowID, Guid theTblColumnID, ref Guid? ratingGroupID)
         {
             RatingHierarchyData theData = new RatingHierarchyData();
             ratingGroupID = GetRatingGroupForTblRowAndColumn(theTblRowID, theTblColumnID);
             if (ratingGroupID != null)
-                AddRatingGroupToRatingHierarchyData((int)ratingGroupID, ref theData, 1);
+                AddRatingGroupToRatingHierarchyData((Guid)ratingGroupID, ref theData, 1);
             return theData;
         }
 
@@ -1401,7 +1401,7 @@ namespace ClassLibrary1.Model
             {
                 theData.Add(theRating.Name, theRating.RatingID, theRating.CurrentUserRatingOrFinalValue, hierarchyLevel, theRating.DecimalPlaces, theRating.MinVal, theRating.MaxVal, theRating.IsDate,  "");
                 if (theRating.OwnedRatingGroupID != null)
-                    AddRatingGroupToRatingHierarchyData((int)theRating.OwnedRatingGroupID, ref theData, hierarchyLevel + 1);
+                    AddRatingGroupToRatingHierarchyData((Guid)theRating.OwnedRatingGroupID, ref theData, hierarchyLevel + 1);
             }
         }
 

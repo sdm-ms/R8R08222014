@@ -44,10 +44,10 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
         if (CheckJavaScriptHelper.IsJavascriptEnabled)
         {
             LiteralControl myLiteral = new LiteralControl("<div class=\"outerDivAroundMainTable\"><div id=\"divAroundMainTable\" class=\"divAroundMainTable possibleBottom\"><div id=\"areaAroundTableHeader\"><table id=\"headert\" class=\"mainTable mainTablePositioning \"></table></div><div id=\"mainTableScrollArea\" class=\"mainTableScrollable\"><table id=\"maint\" class=\"mainTable " + SuppStyle + " " + SuppStyleHeader + " mainTablePositioning " + "\"></table></div></div><table><tr id=\"asteriskRow\" class=\"asteriskRowMain\"><td colspan=\"99\" class=\"asteriskRow\"><span></span></td></tr></table></div>");
-            MainTablePlaceholder.Controls.Add(myLiteral); 
-            int? TblTabID = GetTblTabID();
+            MainTablePlaceholder.Controls.Add(myLiteral);
+            Guid? TblTabID = GetTblTabID();
             if (TblTabID != null)
-                InsertTableInfo((int) TblTabID);
+                InsertTableInfo((Guid)TblTabID);
         }
         else
             SetupMainTable();
@@ -70,7 +70,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
         //        return;
         //}
 
-        int? TblTabID = GetTblTabID();
+        Guid? TblTabID = GetTblTabID();
         if (TblTabID == null)
         {
             MainTable = null;
@@ -78,7 +78,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
         else
         {
             MainTable = (Main_Table_Table)LoadControl("~/Main/Table/Table.ascx");
-            MainTable.Setup(GetFilteredAndSortedQueryFn, GetFilterRulesFn, TblID, (int)TblTabID, SuppStyle, SuppStyleHeader);
+            MainTable.Setup(GetFilteredAndSortedQueryFn, GetFilterRulesFn, TblID, (Guid)TblTabID, SuppStyle, SuppStyleHeader);
             MainTablePlaceholder.Controls.Add(MainTable);
         }
     }
@@ -148,11 +148,11 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
         UpdateMainTable(false, false, true, true, false);
     }
 
-    protected void InsertTableInfo(int TblTabID)
+    protected void InsertTableInfo(Guid TblTabID)
     {
         if (CheckJavaScriptHelper.IsJavascriptEnabled)
         {
-            int? TblColumnToSort = null;
+            Guid? TblColumnToSort = null;
             bool SortOrderAscending = true;
             DataAccess.GetDefaultSortForTblTab(TblTabID, ref TblColumnToSort, ref SortOrderAscending);
             TableInfo theInfo = new TableInfo();
@@ -162,14 +162,14 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
 
             bool userIsTrusted = false;
             IUserProfileInfo currentUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
-            Guid? userID = currentUser == null ? null : (int?) currentUser.GetProperty("UserID");
-            if (userID != null && userID != 0) // logged in user ==> probably a rater
+            Guid? userID = currentUser == null ? null : (Guid?)currentUser.GetProperty("UserID");
+            if (userID != null && userID != null) // logged in user ==> probably a rater
             {
                 TblTab theTblTab;
                 Tbl theTbl;
                 PointsManager thePointsManager;
                 TableLoading.GetTblAndPointsManagerForTblTab(DataAccess, TblTabID, out theTblTab, out theTbl, out thePointsManager);
-                userIsTrusted = DataAccess.UserIsTrustedAtLeastSomewhatToEnterRatings(thePointsManager.PointsManagerID, (int) userID);
+                userIsTrusted = DataAccess.UserIsTrustedAtLeastSomewhatToEnterRatings(thePointsManager.PointsManagerID, (Guid)userID);
                 if (userIsTrusted)
                     theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule( new TableSortRuleNeedsRating());
                 else
@@ -179,7 +179,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
                 // Note: The client may change this to load by distance on initially loading the page.
                 theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleRowName(true));
             else
-                theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleTblColumn((int)TblColumnToSort, SortOrderAscending));
+                theInfo.SortInstruction = TableSortRuleGenerator.GetStringRepresentationFromTableSortRule(new TableSortRuleTblColumn((Guid)TblColumnToSort, SortOrderAscending));
             theInfo.SortMenu = SortMenuGenerator.GetSortMenuForTblTab(DataAccess.R8RDB, TblTabID, userIsTrusted);
             theInfo.SuppStyle = SuppStyle;
             theInfo.Filters = GetFilterRulesFn(false, false);

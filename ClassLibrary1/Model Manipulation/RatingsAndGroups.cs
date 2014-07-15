@@ -306,7 +306,7 @@ namespace ClassLibrary1.Model
         //                oldStatus = (TradingStatus) theRatingGroup.TradingStatus;
         //                ratingGroupOwner = GetRatingGroupOwner(theRatingGroup.RatingGroupID);
         //                if (ratingGroupOwner != null)
-        //                    allowActive = R8RDB.NewOrSingle<Rating>(x=>x.RatingID==(int)ratingGroupOwner).RatingStatus.TradingStatus == (Byte)TradingStatus.Active;
+        //                    allowActive = R8RDB.NewOrSingle<Rating>(x=>x.RatingID==(Guid)ratingGroupOwner).RatingStatus.TradingStatus == (Byte)TradingStatus.Active;
         //                else
         //                    allowActive = R8RDB.GetTable<RatingGroup>().Single(x => x.RatingGroupID == objectID).TblRow.TradingStatus == (Byte)TradingStatus.Active;
         //                break;
@@ -356,7 +356,7 @@ namespace ClassLibrary1.Model
         //    //            {
         //    //                int? theRatingGroupID = GetTopRatingGroupForTblRowAndColumn(objectID, theTblColumn.TblColumnID);
         //    //                if (theRatingGroupID != null)
-        //    //                    SetTradingStatusHierarchical((int) theRatingGroupID, TypeOfObject.RatingGroup, newStatus);
+        //    //                    SetTradingStatusHierarchical((Guid) theRatingGroupID, TypeOfObject.RatingGroup, newStatus);
         //    //            }
         //    //        }
         //    //        break;

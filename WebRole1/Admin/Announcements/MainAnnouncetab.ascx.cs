@@ -117,7 +117,7 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
                         }
                         else
                         {
-                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((int)TopicId).Name + "]";
+                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((Guid)TopicId).Name + "]";
                         }
                     }
                     else
@@ -128,7 +128,7 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
                         }
                         else
                         {
-                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((int)TopicId).Name + "][inactive]";
+                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((Guid)TopicId).Name + "][inactive]";
                         }
                     }
                     TableCell AnnounceCell2 = new TableCell();

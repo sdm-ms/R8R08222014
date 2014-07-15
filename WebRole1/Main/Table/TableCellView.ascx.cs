@@ -41,7 +41,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         TblRowID = tblRowID;
         TblColumnID = tblColumnID;
         TblColumn theTblColumn = DataAccess.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
-        RatingGroupID = (int) DataAccess.GetRatingGroupForTblRowAndColumn(tblRowID, TblColumnID);
+        RatingGroupID = (Guid)DataAccess.GetRatingGroupForTblRowAndColumn(tblRowID, TblColumnID);
         int topRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
         Tbl theTbl = DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == TblRowID).Tbl;
         TblID = theTbl.TblID;
@@ -73,7 +73,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
 
         Main_Table_RatingGroupResolution RatingGroupResolution = (Main_Table_RatingGroupResolution)LoadControl("~/Main/Table/RatingResolution.ascx");
         RatingGroupResolution.RatingGroupID = RatingGroupID;
-        RatingGroupResolution.UserID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        RatingGroupResolution.UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         RatingGroupResolution.CanResolve = CanResolveRatings;
         ResolveRatingsPlaceHolder.Controls.Add(RatingGroupResolution);
     
@@ -88,7 +88,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         CanResolveRatings = false;
         if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
         {
-            Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, PointsManagerID, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, PointsManagerID, TblID);

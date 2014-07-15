@@ -212,7 +212,7 @@ namespace ClassLibrary1.Model
                     Guid? theUser = GetUserWhoMadeDatabaseChange(topRatingGroup.TblRow);
                     if (theUser == null)
                         return;
-                    FinalizeReward((int)theUser, topRatingGroup.TblRow.Tbl.PointsManagerID, topRatingGroup.TblRow, currentRating, isBeingUnresolved);
+                    FinalizeReward((Guid)theUser, topRatingGroup.TblRow.Tbl.PointsManagerID, topRatingGroup.TblRow, currentRating, isBeingUnresolved);
                 }
             }
 

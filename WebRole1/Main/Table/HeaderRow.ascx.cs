@@ -58,18 +58,18 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
                     //Tbl theTbl;
                     //PointsManager thePointsManager;
                     //TableLoading.GetTblAndPointsManagerForTblTab(DataAccess, theTblTab.TblTabID, out theTblTab2, out theTbl, out thePointsManager);
-                    //bool userIsTrusted = DataAccess.UserCounts(thePointsManager.PointsManagerID, (int)userID);
+                    //bool userIsTrusted = DataAccess.UserCounts(thePointsManager.PointsManagerID, (Guid)userID);
                     theTableSortRule = new TableSortRuleNeedsRating(); // Doesn't matter for purpose of header row whether the user is untrusted
                 }
             }
             else
-                theTableSortRule = new TableSortRuleTblColumn((int)TblColumnToSort, SortOrderAscending);
+                theTableSortRule = new TableSortRuleTblColumn((Guid)TblColumnToSort, SortOrderAscending);
             Setup(theHeaderRowInfo.dataAccess, theHeaderRowInfo.TblTabID, null, null, theTableSortRule);
             DataBind();
         }
     }
 
-    public void Setup(R8RDataAccess dataAccess, int tblTabID, int? limitToThisTblColumnID, Action<int?, bool>resortCateDesFn, TableSortRule theTableSortRule)
+    public void Setup(R8RDataAccess dataAccess, Guid tblTabID, Guid? limitToThisTblColumnID, Action<Guid?, bool> resortCateDesFn, TableSortRule theTableSortRule)
     {
        
         DataAccess = dataAccess;
@@ -107,7 +107,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
   //  if (String.Equals(e.CommandName, "CustomSort"))
   //  {
   //    ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-  //    TblColumnID = (int)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+    //    TblColumnID = (Guid)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
   //    CurrentlySorting = (bool)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["CurrentlySorting"];
   //    DoSortOrderAscending = (bool)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["DoSortOrderAscending"];
   //    if (CurrentlySorting)

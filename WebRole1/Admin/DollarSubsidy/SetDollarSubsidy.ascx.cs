@@ -42,11 +42,11 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
             PopUp.Show();
         }
     }
-    public void SetupDollarSubsidy(int? PointsManagerID)
+    public void SetupDollarSubsidy(Guid? PointsManagerID)
     {
         SubtopicId = PointsManagerID;
 
-        var ObjPointsManager = Obj.DataAccess.GetPointsManager((int)SubtopicId);
+        var ObjPointsManager = Obj.DataAccess.GetPointsManager((Guid)SubtopicId);
         // Loading Default setting for universe
         TxtCurrentPeriodDollersubsidy.Text = ObjPointsManager.CurrentPeriodDollarSubsidy.ToString();
         TextBox Txtdate = (TextBox)TxtDateTime.FindControl("TxtDate");
@@ -179,9 +179,9 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
         bool DoItNow = true;
 
         int? ChangeGroupId = null;
-        Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         // Calling the routines
-        Obj.PointsManagerChangeSettings((int)SubtopicId, CurrentPeriodDollerSubsidy, EndofDollerSubsidyPeriod, NextPeriodDollerSubsidy, NextPeriodLength, NumPrizes, MinPayment, DoItNow, UserId, ChangeGroupId);
+        Obj.PointsManagerChangeSettings((Guid)SubtopicId, CurrentPeriodDollerSubsidy, EndofDollerSubsidyPeriod, NextPeriodDollerSubsidy, NextPeriodLength, NumPrizes, MinPayment, DoItNow, UserId, ChangeGroupId);
         User_Control_ModalPopUp PopUp = (User_Control_ModalPopUp)Buttons.FindControl("PopUp");
         PopUp.MsgString = StringConstants.StringDollarSubsidyChanged;
         PopUp.Show();

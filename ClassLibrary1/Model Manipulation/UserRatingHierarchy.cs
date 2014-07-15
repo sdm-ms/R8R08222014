@@ -123,7 +123,7 @@ namespace ClassLibrary1.Model
             UserRatingHierarchyData myUserRatingData = new UserRatingHierarchyData();
             int lastHierarchy = -1;
             int numRatingGroupsCreated = 0;
-            int ratingGroupID = 0;
+            Guid ratingGroupID;
             int entryNum = -1;
             foreach (var entry in RatingHierarchyEntries)
             {
@@ -131,10 +131,10 @@ namespace ClassLibrary1.Model
                 if (entry.HierarchyLevel > lastHierarchy)
                 {
                     numRatingGroupsCreated++; // This will set only first in each rating group correctly.
-                    ratingGroupID = numRatingGroupsCreated;
+                    // DEBUG ratingGroupID = numRatingGroupsCreated;
                 }
                 else // Set rating group to that of the most recent entry on this hierarchy level.
-                    ratingGroupID = (int)myUserRatingData.UserRatingHierarchyEntries.Last(x => x.HierarchyLevel == entry.HierarchyLevel).RatingGroupId;
+                    ratingGroupID = (Guid)myUserRatingData.UserRatingHierarchyEntries.Last(x => x.HierarchyLevel == entry.HierarchyLevel).RatingGroupId;
                 lastHierarchy = entry.HierarchyLevel;
                 decimal? manualValue = manuallySetValues.RatingHierarchyEntries[entryNum].Value;
                 myUserRatingData.Add(entry.RatingID, ratingGroupID, entry.Value, entry.Value, manualValue ?? 0, manualValue, manualValue != null, manualValue != null, entry.HierarchyLevel);
@@ -359,7 +359,7 @@ namespace ClassLibrary1.Model
             return true;
         }
 
-        public bool EntryIsWithinRatingGroup(int entryNum, int theRatingGroupID)
+        public bool EntryIsWithinRatingGroup(int entryNum, Guid theRatingGroupID)
         {
             if (UserRatingHierarchyEntries[entryNum - 1].RatingGroupId == theRatingGroupID)
                 return true;
@@ -370,9 +370,9 @@ namespace ClassLibrary1.Model
             return EntryIsWithinRatingGroup((int)UserRatingHierarchyEntries[entryNum - 1].Superior, theRatingGroupID);
         }
 
-        public IEnumerable<UserRatingHierarchyEntry> GetTargetUserRatings(int hierarchyLevel, int ratingGroupID)
+        public IEnumerable<UserRatingHierarchyEntry> GetTargetUserRatings(int hierarchyLevel, Guid ratingGroupID)
         {
-            return UserRatingHierarchyEntries.Where(d => d.HierarchyLevel == hierarchyLevel && EntryIsWithinRatingGroup(d.EntryNum, (int)ratingGroupID));
+            return UserRatingHierarchyEntries.Where(d => d.HierarchyLevel == hierarchyLevel && EntryIsWithinRatingGroup(d.EntryNum, (Guid)ratingGroupID));
         }
 
         public void Add(Guid? ratingID, Guid? ratingGroupID, decimal? theOriginalTrustedValue, decimal? theOriginalDisplayedRating, decimal theOriginalDisplayedRatingOrBasisOfCalc, decimal? theNewValue, bool theDirectlyMade, bool theCannotBeChanged, int hierarchyLevel)
@@ -715,7 +715,7 @@ namespace ClassLibrary1.Model
                 decimal lastTrustedValueOrBasisOfCalc = theRating.LastTrustedValue ?? R8RDataManipulation.GetAlternativeBasisForCalcIfNoPreviousUserRating(DataContext, theRating.Rating, theRatingGroup.RatingGroupAttribute);
                 theData.Add(theRating.RatingID, theRating.RatingGroupID, theRating.LastTrustedValue, theRating.CurrentUserRatingOrFinalValue, lastTrustedValueOrBasisOfCalc, null, false, !theRatingGroup.RatingGroupAttribute.RatingsCanBeAutocalculated, hierarchyLevel);
                 if (theRating.OwnedRatingGroupID != null)
-                    AddRatingGroupToUserRatingHierarchy(theRatingGroups.Single(mg => mg.RatingGroupID == (int)theRating.OwnedRatingGroupID), theRatings, theRatingGroups, ref theData, hierarchyLevel + 1);
+                    AddRatingGroupToUserRatingHierarchy(theRatingGroups.Single(mg => mg.RatingGroupID == (Guid)theRating.OwnedRatingGroupID), theRatings, theRatingGroups, ref theData, hierarchyLevel + 1);
             }
             //// Check whether there is going to be a new prediction hierarchy shortly because of very recently added ratings.
             //if (hierarchyLevel == 1)
@@ -1037,12 +1037,12 @@ namespace ClassLibrary1.Model
         public bool CheckWhetherRatingCanBeSetToValue(Guid ratingID, List<Rating> theRatings, List<RatingGroup> theRatingGroups, decimal theValue)
         {
             RatingGroup theRatingGroup = theRatingGroups.Single(mg => mg.RatingGroupID == theRatings.Single(m => m.RatingID == ratingID).RatingGroupID);
-            int ratingGroupID = theRatingGroup.RatingGroupID;
+            Guid ratingGroupID = theRatingGroup.RatingGroupID;
             decimal? constrainedSum = theRatingGroups.Single(mg => mg.RatingGroupID == theRatings.FirstOrDefault().TopmostRatingGroupID).RatingGroupAttribute.ConstrainedSum;
             UserRatingHierarchyData theData = new UserRatingHierarchyData();
             try
             {
-                GetUserRatingHierarchyBasedOnUserRating(ratingID, constrainedSum, (int)ratingGroupID, theRatings, theRatingGroups, theValue, 1F /* we're not actually setting to this value, just checking */, ref theData);
+                GetUserRatingHierarchyBasedOnUserRating(ratingID, constrainedSum, (Guid)ratingGroupID, theRatings, theRatingGroups, theValue, 1F /* we're not actually setting to this value, just checking */, ref theData);
                 return true;
             }
             catch

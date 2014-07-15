@@ -72,7 +72,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
 
             Guid userID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
-               var ObjInsertableContent = Obj.DataAccess.GetInsertableContents((int)AnnounceId);
+            var ObjInsertableContent = Obj.DataAccess.GetInsertableContents((Guid)AnnounceId);
                 TxtName.Text = ObjInsertableContent.Name;
                 TxtContent.Text = ObjInsertableContent.Content;
                 ChkIncludeHtml.Checked = !ObjInsertableContent.IsTextOnly;
@@ -124,9 +124,9 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
         }
     }
     protected void implementannouncement()
-    {     
-        
-        Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+    {
+
+        Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     
         int? ChangeGroupId = null;
         string Name = TxtName.Text;
@@ -139,9 +139,9 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
        
         if (announce != null)
         {
-           
-          
-            int InsertableContentID = (int)announce;
+
+
+            Guid InsertableContentID = (Guid)announce;
             Obj.InsertableContentChange(InsertableContentID, Name, Content, IsTextOnly, IsOverridable, Location, IsActivate, UserId, ChangeGroupId);
             User_Control_ModalPopUp PopUp = (User_Control_ModalPopUp)Buttons.FindControl("PopUp");
             PopUp.MsgString = StringConstants.StringAnounceChange;

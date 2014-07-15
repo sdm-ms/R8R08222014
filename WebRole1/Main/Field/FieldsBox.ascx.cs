@@ -156,7 +156,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             FieldDefinitionInfo theFieldInfo = new FieldDefinitionInfo();
-            theFieldInfo.FieldDefinitionID = (int)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldDefinitionID"];
+            theFieldInfo.FieldDefinitionID = (Guid)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldDefinitionID"];
             theFieldInfo.FieldName = (string)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldName"];
             theFieldInfo.FieldType = (FieldTypes)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldType"];
             theFieldInfo.FieldNum = (int)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldNum"];
@@ -208,7 +208,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             TblColumnInfo theColumnInfo = new TblColumnInfo();
-            theColumnInfo.TblColumnID = (int)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+            theColumnInfo.TblColumnID = (Guid)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
             theColumnInfo.TblColumnName = (string)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnName"];
             theColumnInfo.DefaultSortOrderAsc = (bool)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["DefaultSortOrderAsc"];
             theColumnInfo.Sortable = (bool)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["Sortable"];

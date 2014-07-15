@@ -345,7 +345,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         internal class FastAddressFieldsInfo
         {
 #pragma warning disable 0649
-            public int FieldDefinitionID;
+            public Guid FieldDefinitionID;
             public SqlGeography Geo;
             public decimal? Longitude;
             public decimal? Latitude;
@@ -442,7 +442,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     if (rating.SingleNumber)
                         theRatingString = NumberandTableFormatter.FormatAsSpecified(rating.Value, rating.DecimalPlaces, rating.ColumnID);
                     else
-                        theRatingString = TableLoading.GetHtmlStringForCell((int)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false);
+                        theRatingString = TableLoading.GetHtmlStringForCell((Guid)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false);
                     dataRow["RS" + rating.ColumnID.ToString()] = theRatingString;
                     dataRow["RV" + rating.ColumnID.ToString()] = (object)rating.Value ?? (object)System.DBNull.Value;
                     dataRow["R" + rating.ColumnID.ToString()] = (object)rating.RatingID ?? (object)System.DBNull.Value;
@@ -537,7 +537,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                                     SingleNumber = (bool) singleNumber,
                                     RatingGroupID = y.RatingGroupID,
                                     DecimalPlaces = firstRating == null ? 0 : y.Ratings.FirstOrDefault().RatingCharacteristic.DecimalPlaces,
-                                    RatingID = firstRating == null || !singleNumber ? null : (int?)y.Ratings.FirstOrDefault().RatingID, 
+                                    RatingID = firstRating == null || !singleNumber ? null : (Guid?)y.Ratings.FirstOrDefault().RatingID, 
                                     RecentlyChanged = y.ValueRecentlyChanged
                                 },
                     AddressFields = x.Fields.SelectMany(z => z.AddressFields).Where(w => w.Status == (int)StatusOfObject.Active).Select(
@@ -844,7 +844,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                         if (rating.SingleNumber)
                             row.Add("RS" + rating.ColumnID.ToString(), NumberandTableFormatter.FormatAsSpecified(rating.Value, rating.DecimalPlaces, rating.ColumnID) + (rating.LastTrustedValue == rating.Value ? "" : "*"), SqlDbType.NVarChar);
                         else
-                            row.Add("RS" + rating.ColumnID.ToString(), TableLoading.GetHtmlStringForCell((int)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false), SqlDbType.NVarChar);
+                            row.Add("RS" + rating.ColumnID.ToString(), TableLoading.GetHtmlStringForCell((Guid)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false), SqlDbType.NVarChar);
                         row.Add("RV" + rating.ColumnID.ToString(), rating.Value, SqlDbType.Decimal);
                         row.Add("RC" + rating.ColumnID.ToString(), rating.RecentlyChanged, SqlDbType.Bit);
                         //rowInfo.Add("R" + rating.ColumnID.ToString(), rating.RatingID); doesn't change -- no need to update

@@ -18,13 +18,13 @@ using ClassLibrary1.EFModel;
 
 public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserControl
 {
-    protected int TblTabID { get; set; }
-    protected int? LimitToThisTblColumnID { get; set; }
+    protected Guid TblTabID { get; set; }
+    protected Guid? LimitToThisTblColumnID { get; set; }
     protected Guid TblRowID { get; set; }
     protected R8RDataAccess DataAccess { get; set; }
     protected bool rebinding = false;
 
-    public void Setup(R8RDataAccess dataAccess, int entityID, int theTblTabID, int? limitToThisTblColumnID)
+    public void Setup(R8RDataAccess dataAccess, Guid entityID, Guid theTblTabID, Guid? limitToThisTblColumnID)
     {
 
         DataAccess = dataAccess;

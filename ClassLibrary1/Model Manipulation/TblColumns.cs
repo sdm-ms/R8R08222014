@@ -32,7 +32,7 @@ namespace ClassLibrary1.Model
 
     public static class TblColumnsForTabCache
     {
-        public static List<TblColumn> GetTblColumnsForTab(IR8RDataContext dataContext, Guid tblID, int tabID)
+        public static List<TblColumn> GetTblColumnsForTab(IR8RDataContext dataContext, Guid tblID, Guid tabID)
         {
             string cacheKey = "TblColumnsForTab" + tabID.ToString();
             List<TblColumn> theList = CacheManagement.GetItemFromCache(cacheKey) as List<TblColumn>;
@@ -99,7 +99,7 @@ namespace ClassLibrary1.Model
         //    {
         //        int? ratingGroupID = GetTopRatingGroupForTblRowAndColumn(referringTblRow.TblRowID, TblColumnID);
         //        if (ratingGroupID != null)
-        //            EndRatingGroupAndSubgroupsAtCurrentValues((int)ratingGroupID);
+        //            EndRatingGroupAndSubgroupsAtCurrentValues((Guid)ratingGroupID);
         //    }
         //    R8RDB.GetTable<TblColumn>().DeleteOnSubmit(theTblColumn);
         //    R8RDB.SubmitChanges();

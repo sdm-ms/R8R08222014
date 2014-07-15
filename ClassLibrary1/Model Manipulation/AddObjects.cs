@@ -1084,7 +1084,7 @@ namespace ClassLibrary1.Model
                         bool inCacheAsNull = DataContext.TempCache.ContainsKey(key2);
                         if (!inCacheAsNull)
                         {
-                            ownedRatingGroupAttributes = DataContext.GetTable<RatingGroupAttribute>().Single(x => x.RatingGroupAttributesID == (int)thePlan.OwnedRatingGroupAttributesID);
+                            ownedRatingGroupAttributes = DataContext.GetTable<RatingGroupAttribute>().Single(x => x.RatingGroupAttributesID == (Guid)thePlan.OwnedRatingGroupAttributesID);
                             DataContext.TempCacheAdd(key2, ownedRatingGroupAttributes);
                         }
                     }
@@ -1811,7 +1811,7 @@ namespace ClassLibrary1.Model
             rating.UserRating = theUserRating; // now the new one is the most recent user rating
             if (rating.OwnedRatingGroupID != null)
             { // We must change the constrained sum of the owned rating group, if the sum is constrained
-                RatingGroup ownedRatingGroup = ratingGroups.First(x => x.RatingGroupID == (int)rating.OwnedRatingGroupID);
+                RatingGroup ownedRatingGroup = ratingGroups.First(x => x.RatingGroupID == (Guid)rating.OwnedRatingGroupID);
                 if (ownedRatingGroup.RatingGroupAttribute.ConstrainedSum != null)
                     ownedRatingGroup.RatingGroupAttribute.ConstrainedSum = newUserRatingValue;
             }
@@ -1870,7 +1870,7 @@ namespace ClassLibrary1.Model
             UserRatingsToAdd theUserRatingsData = new UserRatingsToAdd
             {
                 User = theUser,
-                TopRatingGroupID = (int) predictionHierarchyData.UserRatingHierarchyEntries.FirstOrDefault().RatingGroupId,
+                TopRatingGroupID = (Guid)predictionHierarchyData.UserRatingHierarchyEntries.FirstOrDefault().RatingGroupId,
                 UserRatingHierarchy = BinarySerializer.Serialize<UserRatingHierarchyData>(predictionHierarchyData)
             };
 

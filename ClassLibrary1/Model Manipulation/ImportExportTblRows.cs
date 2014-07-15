@@ -153,13 +153,13 @@ namespace ClassLibrary1.Model
 
         public int GetFieldNum(string abbreviatedFieldName)
         {
-            int FieldDefinitionID = GetFieldDefinitionID(abbreviatedFieldName);
+            Guid FieldDefinitionID = GetFieldDefinitionID(abbreviatedFieldName);
             return DataAccess.R8RDB.GetTable<FieldDefinition>().Single(f => f.FieldDefinitionID == FieldDefinitionID).FieldNum;
         }
 
         public FieldTypes GetFieldType(string abbreviatedFieldName, ref bool allowsMultipleSelections)
         {
-            int theFieldDefinitionID = GetFieldDefinitionID(abbreviatedFieldName);
+            Guid theFieldDefinitionID = GetFieldDefinitionID(abbreviatedFieldName);
             FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(x => x.FieldDefinitionID == theFieldDefinitionID);
             if (theFieldDefinition.FieldType != (int)FieldTypes.ChoiceField)
                 allowsMultipleSelections = false;
@@ -199,7 +199,7 @@ namespace ClassLibrary1.Model
             public List<string> ColumnNames;
             public List<ExcelFileFieldInfo> FieldInfos = new List<ExcelFileFieldInfo>();
             public int? actionOnImportColumn;
-            public Guid? tblRowIDColumn;
+            public int? tblRowIDColumn;
             public int? initialStatusColumn;
             public int? statusChangeColumn;
             public int? rowNameColumn;
@@ -435,7 +435,7 @@ namespace ClassLibrary1.Model
             return theInfo;
         }
 
-        public void PerformImportHelper(string storedFileName, string storedLogName, string entityType, Guid userID, int startingRecord, int lastRecord, bool copyValuesIntoTbl)
+        public void PerformImportHelper(string storedFileName, string storedLogName, string entityType, Guid UserID, int startingRecord, int lastRecord, bool copyValuesIntoTbl)
         {
             R8RFile storedFile = new R8RFile("import", storedFileName);
             string storedFileLocation = storedFile.LoadPreviouslyStored();

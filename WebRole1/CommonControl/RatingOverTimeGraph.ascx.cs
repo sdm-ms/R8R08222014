@@ -106,8 +106,8 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         RatingGroup theRatingGroup = DataAccess.R8RDB.GetTable<RatingGroup>().SingleOrDefault(mg => mg.RatingGroupID == RatingGroupID);
         if (theRatingGroup == null)
             return;
-        
-        bool canViewPage = DataAccess.CheckUserRights((int?) (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
+
+        bool canViewPage = DataAccess.CheckUserRights((int?)(Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
         if (!canViewPage)
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
 

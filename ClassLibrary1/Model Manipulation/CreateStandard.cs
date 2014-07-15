@@ -175,7 +175,7 @@ namespace ClassLibrary1.Model
             return theChoiceGroupID;
         }
 
-        public Guid CreateDependentChoiceGroup(Guid pointsManagerID, int choiceGroupThisIsDependentOnID, DepItemsLevel[] theDepItems, string name, int? choiceGroupSettings = null)
+        public Guid CreateDependentChoiceGroup(Guid pointsManagerID, Guid choiceGroupThisIsDependentOnID, DepItemsLevel[] theDepItems, string name, int? choiceGroupSettings = null)
         {
             if (choiceGroupSettings == null)
                 choiceGroupSettings = ChoiceGroupSettingsMask.GetChoiceGroupSetting(false, true, false, false, false, true, true, true);
@@ -966,11 +966,11 @@ namespace ClassLibrary1.Model
             CreateRating("Convenience", "Convenience of Location", "The convenience of the neighborhood, in terms of accessibility to shopping, workplaces, attractions, etc.", ratingGroup, myRatingPhase, true, true, false);
             if (saleGroup != null)
             {
-                CreateDollarForecastOrRating("Price if Sold", "Price if sold", "The price at which the property will sell if it is sold before being withdrawn from the rating", (int)saleGroup, myRatingPhase, 0, 0, 100000000, "wv20", true, true, false, true);
-                CreateEvent("30 days", "Sale Within 30 Days", "The probability that the property will sell within 30 days of its original listing date", (int)saleGroup, myRatingPhase, false, true, false);
-                CreateEvent("90 days", "Sale Within 90 Days", "The probability that the property will sell within 90 days of its original listing date", (int)saleGroup, myRatingPhase, false, true, false);
-                CreateEvent("1 year", "Sale Within 1 Year", "The probability that the property will sell within one year of its original listing date", (int)saleGroup, myRatingPhase, false, true, false);
-                CreateEvent("Ever", "Sale Before Withdrawal", "The probability that the property will sell before being withdrawn from the rating", (int)saleGroup, myRatingPhase, false, true, false);
+                CreateDollarForecastOrRating("Price if Sold", "Price if sold", "The price at which the property will sell if it is sold before being withdrawn from the rating", (Guid)saleGroup, myRatingPhase, 0, 0, 100000000, "wv20", true, true, false, true);
+                CreateEvent("30 days", "Sale Within 30 Days", "The probability that the property will sell within 30 days of its original listing date", (Guid)saleGroup, myRatingPhase, false, true, false);
+                CreateEvent("90 days", "Sale Within 90 Days", "The probability that the property will sell within 90 days of its original listing date", (Guid)saleGroup, myRatingPhase, false, true, false);
+                CreateEvent("1 year", "Sale Within 1 Year", "The probability that the property will sell within one year of its original listing date", (Guid)saleGroup, myRatingPhase, false, true, false);
+                CreateEvent("Ever", "Sale Before Withdrawal", "The probability that the property will sell before being withdrawn from the rating", (Guid)saleGroup, myRatingPhase, false, true, false);
             }
         }
 

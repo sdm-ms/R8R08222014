@@ -27,13 +27,13 @@ public partial class ChangePointsManager : System.Web.UI.Page
 
         RoutingInfoMainContent Location = Routing.IncomingMainContent(Page.RouteData, Obj.DataContext);
         PointsManager thePointsManager = Location.lastItemInHierarchy.Tbl.PointsManager;
-        int PointsManagerid = thePointsManager.PointsManagerID;
+        Guid PointsManagerid = thePointsManager.PointsManagerID;
 
             Response.Buffer = true;
             Response.ExpiresAbsolute = TestableDateTime.Now.AddDays(-1d);
             Response.Expires = -1500;
             Response.CacheControl = "no-cache";
-            if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
+            if (!(HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
             {
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 return;

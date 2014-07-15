@@ -58,7 +58,7 @@
                             indexoffset="1" runat="server" />
                     </td>
                     <td>
-                        <asp:Literal ID="Label4" runat="server" Text='<%# FormatLinkToUsersRatings(Eval("Username") as string, (int) Eval("Userid")) %>' />
+                        <asp:Literal ID="Label4" runat="server" Text='<%# FormatLinkToUsersRatings(Eval("Username") as string, (Guid) Eval("Userid")) %>' />
                     </td>
                     <td>
                         <asp:Label ID="Label1" runat="server" Text='<%# FormatPoints(Container.DataItem, "ExpectedWinnings")%>' />

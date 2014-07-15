@@ -37,7 +37,7 @@ public partial class ChangeTbl : System.Web.UI.Page
         Response.Expires = -1500;
         Response.CacheControl = "no-cache";
 
-        if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
+        if (!(HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
         {
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
             return;
@@ -56,7 +56,7 @@ public partial class ChangeTbl : System.Web.UI.Page
     //    {
     //         TableId = int.Parse(Request.QueryString["TableId"]);
     //        int? ChangeGroupId = null;
-    //    Guid userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+    //    Guid userID = (Guid) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     //    StatusOfObject Status = (StatusOfObject)Obj.ObjDataAccess.GetTbl(TableId).Status;
     //    if (Status ==  StatusOfObject.Active)
     //    {

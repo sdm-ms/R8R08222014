@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
                     {
                         //if (higherItem.HierarchyItemID == null)
                         //    throw new Exception("GetHierarchyFromStrings internal error: higherItem.HierarchyItemID was null. "); /* Could occur if we add a new hierarchy item and immediately search for it, but this does not seem likely to explain error received (?) */
-                        int higherItemHierarchyID = (int) higherItem.HierarchyItemID;
+                        Guid higherItemHierarchyID = (Guid)higherItem.HierarchyItemID;
                         nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStrings[i] && (x.HigherHierarchyItemID == higherItemHierarchyID));
                     }
                 }
@@ -75,10 +75,10 @@ namespace ClassLibrary1.Model
         public static HierarchyItem GetItemParent(HierarchyItem theItem)
         {
             /* Note: Because of extensive problems, we're not using automatic association properties on this table. */
-            int targetHierarchyItemID;
+            Guid targetHierarchyItemID;
             if (theItem.HigherHierarchyItemID == null)
                 return null;
-            targetHierarchyItemID = (int)theItem.HigherHierarchyItemID;
+            targetHierarchyItemID = (Guid)theItem.HigherHierarchyItemID;
             R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Single(x => x.HierarchyItemID == targetHierarchyItemID);
         }

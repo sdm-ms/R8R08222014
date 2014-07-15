@@ -402,7 +402,7 @@ namespace ClassLibrary1.Model
                                                 }).ToList();
         }
 
-        private static string GetUncachedColumnsOfBodyRowString(List<InfoForBodyRows> bodyRowsList, string suppStyle, int theTblRowID)
+        private static string GetUncachedColumnsOfBodyRowString(List<InfoForBodyRows> bodyRowsList, string suppStyle, Guid theTblRowID)
         {
             StringBuilder build = new StringBuilder();
             var resultsForTblRow = bodyRowsList.Where(e => e.TblRowID == theTblRowID);
@@ -415,14 +415,14 @@ namespace ClassLibrary1.Model
 
         }
 
-        public static string GetHtmlStringForCell(int topRatingGroupID, decimal? valueOfFirstRating, int decPlaces, Guid tblRowID, Guid tblColumnID, int? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool trusted, bool singleNumberOnly, bool includeOuterTD)
+        public static string GetHtmlStringForCell(Guid topRatingGroupID, decimal? valueOfFirstRating, int decPlaces, Guid tblRowID, Guid tblColumnID, Guid? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool trusted, bool singleNumberOnly, bool includeOuterTD)
         {
             StringBuilder builder = new StringBuilder();
             BuildHtmlForCell(builder, tblRowID, topRatingGroupID, valueOfFirstRating, decPlaces, tblColumnID, ratingIDIfSingleNumber, preformattedContentsIfAvailable, trusted, singleNumberOnly, includeOuterTD);
             return builder.ToString();
         }
 
-        private static void BuildHtmlForCell(StringBuilder builder, Guid tblRowID, int? topRatingGroupID, decimal? valueOfFirstRating, int? decPlaces, Guid tblColumnID, int? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool? trusted, bool singleNumberOnly, bool includeOuterTD)
+        private static void BuildHtmlForCell(StringBuilder builder, Guid tblRowID, Guid? topRatingGroupID, decimal? valueOfFirstRating, int? decPlaces, Guid tblColumnID, Guid? ratingIDIfSingleNumber, string preformattedContentsIfAvailable, bool? trusted, bool singleNumberOnly, bool includeOuterTD)
         {
             string topRatingIDString = topRatingGroupID == null ? tblRowID.ToString() + "/" + tblColumnID.ToString() : topRatingGroupID.ToString();
             string nameAndTopRatingGroupID = "mg" + topRatingIDString;
@@ -441,7 +441,7 @@ namespace ClassLibrary1.Model
                 {
                     if (topRatingGroupID == null)
                         throw new NotImplementedException("Must deal with this when adding support for multiple ratings in a cell.");
-                    BuildHtmlForComplexCellFromDatabase(builder, (int)topRatingGroupID, tblRowID, tblColumnID, (bool)trusted);
+                    BuildHtmlForComplexCellFromDatabase(builder, (Guid)topRatingGroupID, tblRowID, tblColumnID, (bool)trusted);
                 }
             }
             if (includeOuterTD)
@@ -497,7 +497,7 @@ namespace ClassLibrary1.Model
                 theStringBuilder.Append(item.RatingName);
                 theStringBuilder.Append("</a>");
 
-                theStringBuilder.Append(GetStringForRatingInput(item.Value, item.DecimalPlaces, TblRowID, TblColumnID, (int)item.RatingID, "", "rtgFixed"));
+                theStringBuilder.Append(GetStringForRatingInput(item.Value, item.DecimalPlaces, TblRowID, TblColumnID, (Guid)item.RatingID, "", "rtgFixed"));
                 if (theData.RatingHierarchyEntries.Any(x => x.Superior == item.EntryNum))
                     GetListForHierarchyLevel(theStringBuilder, TblRowID, TblColumnID, theData, hierarchyLevel + 1, item.EntryNum, trusted);
                 theStringBuilder.Append("</li>");

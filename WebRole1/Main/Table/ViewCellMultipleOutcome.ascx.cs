@@ -87,7 +87,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
 
             string ratingName = (string)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingName"];
-            Guid ratingID = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingID"];
+            Guid ratingID = (Guid)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingID"];
             decimal? value = (decimal?)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["value"];
             int hierarchyLevel = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["hierarchyLevel"];
             int decimalPlaces = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["decimalPlaces"];

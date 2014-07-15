@@ -201,7 +201,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public decimal GetUserUserRating(decimal correctUserRating, decimal? currentUserRating, decimal minUserRating, decimal maxUserRating, Guid theUserNumber)
+        public decimal GetUserUserRating(decimal correctUserRating, decimal? currentUserRating, decimal minUserRating, decimal maxUserRating, int theUserNumber)
         {
             decimal randomUserRating = RandomGenerator.GetRandom(minUserRating, maxUserRating);
             decimal weightOfCorrectUserRating = UserUserRatingAccuracy[theUserNumber];
@@ -225,7 +225,7 @@ namespace ClassLibrary1.Model
 
         public void AddUserRatingToRating(Guid ratingID, decimal correctUserRating, decimal? specificUserRating, bool useSuperUser)
         {
-            Guid theUserNumber = RandomGenerator.GetRandom(0, NumUsers - 1);
+            int theUserNumber = RandomGenerator.GetRandom(0, NumUsers - 1);
             Rating theRating = ActionProcessor.DataContext.GetTable<Rating>().Single(m => m.RatingID == ratingID);
             decimal? currentUserRating = theRating.CurrentValue;
             decimal theUserRating;

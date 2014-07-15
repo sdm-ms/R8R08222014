@@ -47,7 +47,7 @@ namespace WebRole1.Admin
             bool ConditionalGuaranteesAvailableForExistingUsers = Convert.ToBoolean(conditionalGuaranteesAvailableForExistingUsers.Text);
             int ConditionalGuaranteeTimeBlockInHours = Convert.ToInt32(conditionalGuaranteeTimeBlockInHours.Text);
 
-            theActionProcessor.PointsManagerGuaranteeSettings(pointsManagerID, DollarValuePerPoint, DiscountForGuarantees, MaximumTotalGuarantees, AllowApplicationsWhenNoConditionalGuaranteesAvailable, ConditionalGuaranteesAvailableForNewUsers, ConditionalGuaranteesAvailableForExistingUsers, ConditionalGuaranteeTimeBlockInHours, MaximumGuaranteePaymentPerHour, true, (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
+            theActionProcessor.PointsManagerGuaranteeSettings(pointsManagerID, DollarValuePerPoint, DiscountForGuarantees, MaximumTotalGuarantees, AllowApplicationsWhenNoConditionalGuaranteesAvailable, ConditionalGuaranteesAvailableForNewUsers, ConditionalGuaranteesAvailableForExistingUsers, ConditionalGuaranteeTimeBlockInHours, MaximumGuaranteePaymentPerHour, true, (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         }
     }
 }

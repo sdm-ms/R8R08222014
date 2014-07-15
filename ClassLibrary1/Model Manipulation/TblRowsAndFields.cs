@@ -297,7 +297,7 @@ namespace ClassLibrary1.Model
         public override bool MatchesDatabase()
         {
             AddressField theField = null;
-            if (TheGroup.theTblRow.TblRowID != -1)
+            if (TheGroup.theTblRow.TblRowID != Guid.NewGuid()) // DEBUG -- check for whether this is not new
                 theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int) StatusOfObject.Active);
             if (theField == null)
                 return (AddressShortText == "");
@@ -338,7 +338,7 @@ namespace ClassLibrary1.Model
         public override bool MatchesDatabase()
         {
             DateTimeField theField = null;
-            if (TheGroup.theTblRow.TblRowID != -1)
+            if (TheGroup.theTblRow.TblRowID != Guid.NewGuid() ) // DEBUG -- test for whether it isn't new
                 theField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (TheDateTime == null);
@@ -385,7 +385,7 @@ namespace ClassLibrary1.Model
         public override bool MatchesDatabase()
         {
             TextField theField = null;
-            if (TheGroup.theTblRow.TblRowID != -1)
+            if (TheGroup.theTblRow.TblRowID != Guid.NewGuid()) // DEBUG: test for whether this isn't new
                 theField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (TheText == "" && TheLink == "");
@@ -447,7 +447,7 @@ namespace ClassLibrary1.Model
         public override bool MatchesDatabase()
         {
             NumberField theField = null;
-            if (TheGroup.theTblRow.TblRowID != -1)
+            if (TheGroup.theTblRow.TblRowID != Guid.NewGuid()) // DEBUG
                 theField = DataAccess.R8RDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (false);
@@ -713,7 +713,7 @@ namespace ClassLibrary1.Model
             if (theFieldID != null)
             {
                 theFieldType = (FieldTypes)DataContext.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == FieldDefinitionID).FieldType;
-                int theFieldIDCopy = (int)theFieldID; // so we can use ref parameter in lambda expression
+                Guid theFieldIDCopy = (Guid)theFieldID; // so we can use ref parameter in lambda expression
 
                 if (theFieldType == FieldTypes.AddressField)
                 {

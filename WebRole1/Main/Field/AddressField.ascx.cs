@@ -57,7 +57,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
         if (TxtAddress.Text.Trim() == "")
             return null;
         else
-            return new AddressFilterRule((int)FieldDefinitionOrTblColumnID, TxtAddress.Text.Trim(), Convert.ToDecimal(mileText));
+            return new AddressFilterRule((Guid)FieldDefinitionOrTblColumnID, TxtAddress.Text.Trim(), Convert.ToDecimal(mileText));
     }
 
     public FieldDataInfo GetFieldValue(FieldSetDataInfo theGroup)

@@ -46,7 +46,7 @@ namespace ClassLibrary1.Model
         {
             if (TblColumnID == null)
                 return "";
-            TblColumnFormatting theFormatting = GetFormattingForTblColumn((int)TblColumnID);
+            TblColumnFormatting theFormatting = GetFormattingForTblColumn((Guid)TblColumnID);
             if (theFormatting == null)
                 return "";
             return theFormatting.SuppStylesMain;
@@ -56,7 +56,7 @@ namespace ClassLibrary1.Model
         {
             if (TblColumnID == null)
                 return "";
-            TblColumnFormatting theFormatting = GetFormattingForTblColumn((int)TblColumnID);
+            TblColumnFormatting theFormatting = GetFormattingForTblColumn((Guid)TblColumnID);
             if (theFormatting == null)
                 return "";
             return theFormatting.SuppStylesHeader;
