@@ -27,7 +27,7 @@ namespace ClassLibrary1.EFModel
         public int? DefaultRatingGroupAttributesID { get; set; }
 
         [StringLength(50)]
-        public string TblTabWord { get; set; }
+        public string WordToDescribeGroupOfColumnsInThisTbl { get; set; }
 
         public string Name { get; set; }
 

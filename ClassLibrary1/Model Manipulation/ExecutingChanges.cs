@@ -753,7 +753,7 @@ namespace ClassLibrary1.Model
                         else if (theChange.NewValueText != ""  && theChange.ChangeSetting1 == true && theChange.ChangeSetting2 == false)
                         {
                             Tbl theTbl = DataContext.GetTable<Tbl>().Single(x => x.TblID == (int)theChange.ExistingObject);
-                            theTbl.TblTabWord = theChange.NewValueText;
+                            theTbl.WordToDescribeGroupOfColumnsInThisTbl = theChange.NewValueText;
                             CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theChange.ExistingObject);
                             changeMade = true;
                         }

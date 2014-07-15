@@ -407,7 +407,7 @@ namespace ClassLibrary1.Model
             {
                 PointsManagerID = pointsManagerID,
                 DefaultRatingGroupAttributesID = defaultRatingGroupAttributesID,
-                TblTabWord = TblTabWord,
+                WordToDescribeGroupOfColumnsInThisTbl = TblTabWord,
                 Name = name,
                 Creator = creator,
                 Status = (Byte)StatusOfObject.Proposed,

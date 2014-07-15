@@ -24,6 +24,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,6 +54,14 @@
     </Reference>
     <Reference Include="aspnetforum">
       <HintPath>Dependencies\aspnetforum.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="GMaps, Version=3.2.0.1, Culture=neutral, PublicKeyToken=f43a93ab972291b8, processorArchitecture=MSIL">
       <HintPath>..\ClassLibrary1\Dependencies\GMaps.dll</HintPath>
@@ -88,8 +98,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Abstractions" />
@@ -1697,21 +1709,18 @@
     </Compile>
     <Compile Include="WebForms\Main.aspx.cs">
       <DependentUpon>Main.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\Main.aspx.designer.cs">
       <DependentUpon>Main.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\MyAccount.aspx.cs">
       <DependentUpon>MyAccount.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\MyAccount.aspx.designer.cs">
       <DependentUpon>MyAccount.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\MyPoints.aspx.cs">
       <DependentUpon>MyPoints.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\MyPoints.aspx.designer.cs">
       <DependentUpon>MyPoints.aspx</DependentUpon>
@@ -1725,7 +1734,6 @@
     </Compile>
     <Compile Include="WebForms\NewUser.aspx.cs">
       <DependentUpon>NewUser.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\NewUser.aspx.designer.cs">
       <DependentUpon>NewUser.aspx</DependentUpon>
@@ -1843,6 +1851,7 @@
     <Content Include="MasterPages\StandardPage.master" />
     <Content Include="MasterPages\TwoCol.master" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ar-SA\activate.aspx.ar-SA.resx" />
@@ -4161,4 +4170,5 @@
     </ItemGroup>
     <CompressorTask CssFiles="@(CssFiles)" DeleteCssFiles="false" CssOutputFile="$(CssOutputFile)" CssCompressionType="YuiStockCompression" JavaScriptFiles="@(JavaScriptFiles)" ObfuscateJavaScript="True" PreserveAllSemicolons="False" DisableOptimizations="Nope" EncodingType="Default" DeleteJavaScriptFiles="false" LineBreakPosition="-1" JavaScriptOutputFile="$(JavaScriptOutputFile)" LoggingType="ALittleBit" ThreadCulture="en-au" IsEvalIgnored="false" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

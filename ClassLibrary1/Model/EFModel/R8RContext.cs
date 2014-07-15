@@ -7,6 +7,11 @@ namespace ClassLibrary1.EFModel
 
     public partial class R8RContext : DbContext
     {
+        public R8RContext()
+            : base()
+        {
+        }
+
         public R8RContext(string connectionString)
             : base(connectionString)
         {
@@ -852,7 +857,7 @@ namespace ClassLibrary1.EFModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Tbl>()
-                .Property(e => e.TblTabWord)
+                .Property(e => e.WordToDescribeGroupOfColumnsInThisTbl)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Tbl>()

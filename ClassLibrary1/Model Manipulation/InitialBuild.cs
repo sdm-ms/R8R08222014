@@ -398,7 +398,7 @@ namespace ClassLibrary1.Model
         private static List<string> GetNamesOfTables(DbContext context)
         {
             var tableNames = context.Database.SqlQuery<string>("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT LIKE '%Migration%'").ToList();
-            return tableNames.Where(x => !x.Contains("Forum") && !x.Contains("aspnet")).ToList();
+            return tableNames.Where(x => !x.Contains("Forum") && !x.Contains("aspnet") && !x.Contains("MigrationHistory")).ToList();
             //var objectContext = ((IObjectContextAdapter)context).ObjectContext;
             //var entities = objectContext.MetadataWorkspace.GetEntityContainer(objectContext.DefaultContainerName, DataSpace.CSpace).BaseEntitySets;
             //var method = objectContext.GetType().GetMethods().First(x => x.Name == "CreateObjectSet");

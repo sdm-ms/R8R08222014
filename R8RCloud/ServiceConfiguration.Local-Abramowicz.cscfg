@@ -9,9 +9,9 @@
       <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
-      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
-      <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
-      <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
+      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="DeNorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=DeNorm0001;Integrated Security=True;Connect Timeout=30000" />
     </ConfigurationSettings>
   </Role>
   <Role name="WorkerRole1">
@@ -23,9 +23,9 @@
       <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
-      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
-      <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=300" />
-      <Setting name="Denorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=300" />
+      <Setting name="ApplicationServices" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="R8RConnectionString" value="Data Source=PC2012;Initial Catalog=Norm0001;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="DeNorm0001ConnectionString" value="Data Source=PC2012;Initial Catalog=DeNorm0001;Integrated Security=True;Connect Timeout=30000" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>
