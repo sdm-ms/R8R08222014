@@ -15,7 +15,7 @@ namespace WebRole1.Admin
         public ActionProcessor theActionProcessor;
         public Guid pointsManagerID;
 
-        public void Setup(int thePointsManagerID)
+        public void Setup(Guid thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
             theActionProcessor = new ActionProcessor();

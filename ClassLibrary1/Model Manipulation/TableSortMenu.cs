@@ -17,7 +17,7 @@ namespace ClassLibrary1.Model
 
     public static class SortMenuGenerator
     {
-        public static List<SortMenuItem> GetSortMenuForTblTab(IR8RDataContext theDataContext, int theTblTabID, bool trustedUser)
+        public static List<SortMenuItem> GetSortMenuForTblTab(IR8RDataContext theDataContext, Guid theTblTabID, bool trustedUser)
         {
             string cacheKey = "SortMenu" + theTblTabID + "," + trustedUser.ToString();
             List<SortMenuItem> theSortMenu = CacheManagement.GetItemFromCache(cacheKey) as List<SortMenuItem>;

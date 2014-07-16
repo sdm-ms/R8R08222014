@@ -349,7 +349,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             public SqlGeography Geo;
             public decimal? Longitude;
             public decimal? Latitude;
-            //public int FieldID; // rather than copy the Geo field, we will join AddressFields table, because of challenges of SQLGeography in Linq to SQL
+            //public Guid FieldID; // rather than copy the Geo field, we will join AddressFields table, because of challenges of SQLGeography in Linq to SQL
 #pragma warning restore 0649
         }
 

@@ -38,7 +38,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
     {
         
     }
-    public void SetupInsertableContent(int? domainID, int? pointsManagerID, int? TblID, int? AnnounceId)
+    public void SetupInsertableContent(Guid? domainID, Guid? pointsManagerID, Guid? TblID, int? AnnounceId)
     {
         TopicId = domainID;
         SubtopicId = pointsManagerID;

@@ -218,7 +218,7 @@ namespace ClassLibrary1.Misc
 
     public class InMemoryRepository<T> : IInMemoryRepositorySubmitChangesActions, IRepository<T> where T : class
     {
-        int maxPrimaryKeyID = 0;
+        Guid maxPrimaryKeyID = 0;
         List<T> ListOfEntities;
         List<T> EntitiesBeingInserted;
         List<T> EntitiesBeingDeleted;

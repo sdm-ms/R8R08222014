@@ -333,7 +333,7 @@ namespace ClassLibrary1.Model
         /// <param name="objectID">The object</param>
         /// <param name="theObjectType">The object's type</param>
         /// <param name="theStatus">The status of the object</param>
-        private void SetStatusOfObject(int objectID, TypeOfObject theObjectType, StatusOfObject theStatus)
+        private void SetStatusOfObject(Guid objectID, TypeOfObject theObjectType, StatusOfObject theStatus)
         {
            
             Byte newValue = (Byte)theStatus;
@@ -755,7 +755,7 @@ namespace ClassLibrary1.Model
         /// <param name="theObjectType">The type of the object</param>
         /// <param name="userID">The id of the user who wishes to create the object (or null for system-created)</param>
         /// <param name="theName">The proposed name</param>
-        public void FindAvailableNameForObject(int objectID, TypeOfObject theObjectType, Guid? userID, ref String theName)
+        public void FindAvailableNameForObject(Guid objectID, TypeOfObject theObjectType, Guid? userID, ref String theName)
         {
             if (theName == "")
                 theName = "Unnamed 1";
@@ -774,13 +774,13 @@ namespace ClassLibrary1.Model
         /// <param name="userID">The id of the user who wishes to create the object (or null for system-created)</param>
         /// <param name="theName">The proposed name</param>
         /// <returns>True if and only if the name has not been used for the object</returns>
-        public bool NameIsAvailableForObject(int objectID, TypeOfObject theObjectType, Guid? userID, String theName)
+        public bool NameIsAvailableForObject(Guid objectID, TypeOfObject theObjectType, Guid? userID, String theName)
         {
             
             switch (theObjectType)
             {
                 case TypeOfObject.TblColumn:
-                    int TblTabID = ObjDataAccess.GetTblColumn(objectID).TblTabID;
+                    Guid TblTabID = ObjDataAccess.GetTblColumn(objectID).TblTabID;
                     return !DataContext.GetTable<TblColumn>().Where(cd => cd.TblTab.TblTabID == TblTabID && cd.Name == theName && cd.Status != (byte)StatusOfObject.Proposed && cd.Status != (byte)StatusOfObject.Proposed).Any();
                 case TypeOfObject.TblTab:
                     Guid TblID = ObjDataAccess.GetTblTab(objectID).TblID;
@@ -825,7 +825,7 @@ namespace ClassLibrary1.Model
         /// <param name="objectID">The id of the object</param>
         /// <param name="theObjectType">The type of the object</param>
         /// <param name="theName">Passes back the name of the object</param>
-        public void GetNameOfObject(int objectID, TypeOfObject theObjectType, ref String theName)
+        public void GetNameOfObject(Guid objectID, TypeOfObject theObjectType, ref String theName)
         {
             if (!ObjectExists(objectID, theObjectType))
                 throw new Exception("Internal error -- trying to get name of nonexistent object.");
@@ -912,7 +912,7 @@ namespace ClassLibrary1.Model
         /// <param name="theObjectType">The type of the object</param>
         /// <param name="theName">Passes back the name of the object</param>
         /// <param name="theCreator">Passes back the creator of the object</param>
-        public void GetNameAndCreatorOfObject(int objectID, TypeOfObject theObjectType, ref String theName, ref int? theCreator)
+        public void GetNameAndCreatorOfObject(Guid objectID, TypeOfObject theObjectType, ref String theName, ref int? theCreator)
         {
             if (!ObjectExists(objectID, theObjectType))
                 throw new Exception("Internal error -- trying to get name of nonexistent object.");
@@ -1020,7 +1020,7 @@ namespace ClassLibrary1.Model
         /// <param name="theObjectType">The type of the object</param>
         /// <param name="userID">The user who created the object</param>
         /// <param name="theName">The name of the object</param>
-        public void ChangeNameOfObject(int objectID, TypeOfObject theObjectType, Guid? userID, String theName)
+        public void ChangeNameOfObject(Guid objectID, TypeOfObject theObjectType, Guid? userID, String theName)
         {
             // We allow duplicative names for table rows, but not other objects.
             if (!NameIsAvailableForObject(objectID, theObjectType, userID, theName) && theObjectType != TypeOfObject.TblRow)

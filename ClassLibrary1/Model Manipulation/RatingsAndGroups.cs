@@ -188,7 +188,7 @@ namespace ClassLibrary1.Model
         ///// <param name="objectID">The id of the object</param>
         ///// <param name="theType">The type of object (e.g., TypeOfObject.Tbl)</param>
         ///// <param name="theStatus">The new status to set this to. </param>
-        //internal void SetTradingStatusNonhierarchical(int objectID, TypeOfObject theType, TradingStatus newStatus)
+        //internal void SetTradingStatusNonhierarchical(Guid objectID, TypeOfObject theType, TradingStatus newStatus)
         //{
         //    TradingStatus currentStatus = (TradingStatus)TradingStatus.Active; // must set to something to avoid compiler error
         //    switch (theType)
@@ -244,7 +244,7 @@ namespace ClassLibrary1.Model
         ///// <param name="objectID">The object id</param>
         ///// <param name="theType">The type of object</param>
         ///// <returns>The trading status</returns>
-        //public TradingStatus GetTradingStatus(int objectID, TypeOfObject theType)
+        //public TradingStatus GetTradingStatus(Guid objectID, TypeOfObject theType)
         //{
         //    switch (theType)
         //    {
@@ -271,7 +271,7 @@ namespace ClassLibrary1.Model
         //    CacheManagement.InvalidateCacheDependency("RatingsForTblRowIDAndTblTabID" + theTopRatingGroup.TblRowID.ToString() + "," + theTopRatingGroup.TblColumn.TblTabID.ToString());
         //}
 
-        public void SetTradingStatus(int objectID, TypeOfObject theType, TradingStatus newStatus)
+        public void SetTradingStatus(Guid objectID, TypeOfObject theType, TradingStatus newStatus)
         {
             // This more general functionality is currently not in the project, so we have commented out the 
             // routine, with the body below.
@@ -286,7 +286,7 @@ namespace ClassLibrary1.Model
         ///// <param name="objectID">The id of the object</param>
         ///// <param name="theType">The type of object (e.g., TypeOfObject.Rating)</param>
         ///// <param name="newStatus">The new status of the rating</param>
-        //public void SetTradingStatus(int objectID, TypeOfObject theType, TradingStatus newStatus)
+        //public void SetTradingStatus(Guid objectID, TypeOfObject theType, TradingStatus newStatus)
         //{
         //    int? ratingGroupOwner = null;
         //    TradingStatus oldStatus = TradingStatus.Ended; // set below to correct value if necessary
@@ -354,7 +354,7 @@ namespace ClassLibrary1.Model
         //    //            var theTblColumns = R8RDB.GetTable<TblColumn>().Where(c => c.TblTabID == theTblTab.TblTabID && c.Status == (Byte)StatusOfObject.Active);
         //    //            foreach (TblColumn theTblColumn in theTblColumns)
         //    //            {
-        //    //                int? theRatingGroupID = GetTopRatingGroupForTblRowAndColumn(objectID, theTblColumn.TblColumnID);
+        //    //                Guid? theRatingGroupID = GetTopRatingGroupForTblRowAndColumn(objectID, theTblColumn.TblColumnID);
         //    //                if (theRatingGroupID != null)
         //    //                    SetTradingStatusHierarchical((Guid) theRatingGroupID, TypeOfObject.RatingGroup, newStatus);
         //    //            }

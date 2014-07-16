@@ -378,7 +378,7 @@ namespace ClassLibrary1.Model
         {
             ActionProcessor Action = new ActionProcessor();
             int superUser = DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
-            int theRatingPhaseID = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.Name == "Two week phases").RatingPhaseGroupID;
+            Guid theRatingPhaseID = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.Name == "Two week phases").RatingPhaseGroupID;
             int votesRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 9, 1, "Votes", true, true, superUser, null);
             int indVoteRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 1, 1, "Individual Vote", true, true, superUser, null);
             TblColumn supremeCourtVotesTableColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl.Name == "Supreme Court" && x.Abbreviation == "Votes" && x.Name == "Number of expected votes");
@@ -740,7 +740,7 @@ namespace ClassLibrary1.Model
 
         public void RatingGroupPhaseChange()
         {
-            int ratingPhaseGroupID = 282; // MUST BE a group with one repeating phase
+            Guid ratingPhaseGroupID = 282; // MUST BE a group with one repeating phase
             Guid tblID = 270;  // Restaurants table
             DateTime currentPhaseCompleteTime = TestableDateTime.Now + new TimeSpan(3,0,0);
             DateTime highStakesKnownTime = TestableDateTime.Now + new TimeSpan(0, 30, 0);

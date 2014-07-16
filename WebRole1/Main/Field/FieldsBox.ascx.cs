@@ -24,7 +24,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
     public FieldsBoxMode Mode { get; set; }
     protected bool rebinding = false;
     protected Guid TblID { get; set; }
-    protected int? TblTabID { get; set; }
+    protected Guid? TblTabID { get; set; }
     protected TblRow TheTblRow { get; set; }
     internal SearchWordsFilter searchWordsControl;
     internal List<AnyFieldFilter> fieldsControls = new List<AnyFieldFilter>();
@@ -48,7 +48,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         HighStakesOnly.Visible = Mode != FieldsBoxMode.addTblRow && Mode != FieldsBoxMode.modifyFields;
     }
 
-    public void SetupStandalonePage(int theTblID, int? theTblTabID)
+    public void SetupStandalonePage(Guid theTblID, Guid? theTblTabID)
     {
         SuppressHeading = true;
         ViewShowDeletedItems = true;
@@ -57,7 +57,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         Setup(theTblID, theTblTabID, FieldsBoxMode.filterWithButton);
     }
 
-    public void Setup(int theTblID, int? theTblTabID, FieldsBoxMode mode)
+    public void Setup(Guid theTblID, Guid? theTblTabID, FieldsBoxMode mode)
     {
         Mode = mode;
         TblID = theTblID;
@@ -116,7 +116,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         Setup(TheTblRow.TblID, null, mode, theAction);
     }
 
-    public void Setup(int theTblID, int? theTblTabID, FieldsBoxMode mode, Action<object, EventArgs> theAction)
+    public void Setup(Guid theTblID, Guid? theTblTabID, FieldsBoxMode mode, Action<object, EventArgs> theAction)
     {
         Setup(theTblID, theTblTabID, mode);
         TheAction = theAction;
@@ -246,7 +246,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         }
     }
 
-    public void ReBind(bool resetFields, bool resetColumns, int? tblTabID)
+    public void ReBind(bool resetFields, bool resetColumns, Guid? tblTabID)
     {
         rebinding = true;
         LoadFilters();

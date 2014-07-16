@@ -18,7 +18,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("Must revise this for multiple ratings in rating group, since after adding the rating group we'll need to get each individual rating.");
             foreach (RatingAndUserRatingString theRatingAndUserRatingString in theUserRatingsString)
             {
-                int aRatingID = -1;
+                Guid aRatingID = -1;
                 if (!MoreStringManip.IsInteger(theRatingAndUserRatingString.ratingID, ref aRatingID))
                     ratingIDsProperlyFormatted = false;
                 else

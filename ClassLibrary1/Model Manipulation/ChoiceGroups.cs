@@ -121,7 +121,7 @@ namespace ClassLibrary1.Model
         public int choiceNum; // The choice number -- the choices will be sorted by this number
         public Guid? choiceInGroupID; // Once this has been created in the database, this will be set to the object id for the ChoiceInGroup table
 
-        public ChoiceInGroupData(String theText, int? theDeterminingGroupValue, bool theIsAvailable, int theChoiceNum, int? theChoiceInGroupID)
+        public ChoiceInGroupData(String theText, int? theDeterminingGroupValue, bool theIsAvailable, int theChoiceNum, Guid? theChoiceInGroupID)
         {
             text = theText;
             determiningGroupValue = theDeterminingGroupValue;
@@ -227,7 +227,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        public void LoadFromChoiceGroupID(int choiceGroupID)
+        public void LoadFromChoiceGroupID(Guid choiceGroupID)
         {
             if (TheData.Count != 0)
                 throw new Exception("To load from choice group id, start with an empty choice group.");
@@ -272,7 +272,7 @@ namespace ClassLibrary1.Model
     public static class ChoiceMenuAccess
     {
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsForIndependentGroup(int choiceGroupID)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsForIndependentGroup(Guid choiceGroupID)
         {
             List<int> determiningGroupValues = new List<int>();
             R8RDataAccess Obj = new R8RDataAccess();
@@ -281,7 +281,7 @@ namespace ClassLibrary1.Model
             return GetChoiceMenuItemsHelper(determiningGroupValues, choiceGroupID, orderAlphabetically);
         }
 
-        public static string GetChoiceMenuItemsForDependentGroupAsHtml(string valueSelectedInDepender, string valueSelectedInDependee, List<int> availableOptionsInDependee, int choiceGroupID)
+        public static string GetChoiceMenuItemsForDependentGroupAsHtml(string valueSelectedInDepender, string valueSelectedInDependee, List<int> availableOptionsInDependee, Guid choiceGroupID)
         {
             List<ChoiceMenuItem> theList = null;
             if (valueSelectedInDependee == "-1") // no selection
@@ -304,12 +304,12 @@ namespace ClassLibrary1.Model
             return sb.ToString();
         }
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelection(int determiningGroupValue, int choiceGroupID)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelection(int determiningGroupValue, Guid choiceGroupID)
         {
             return GetChoiceMenuItemsForDependentGroupWithDependentSelections(new List<int> { determiningGroupValue }, choiceGroupID);
         }
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelections(List<int> determiningGroupValues, int choiceGroupID)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelections(List<int> determiningGroupValues, Guid choiceGroupID)
         {
             R8RDataAccess Obj = new R8RDataAccess();
             ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
@@ -317,7 +317,7 @@ namespace ClassLibrary1.Model
             return GetChoiceMenuItemsHelper(determiningGroupValues, choiceGroupID, orderAlphabetically);
         }
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(List<int> availableOptionsInDependee, int choiceGroupID)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(List<int> availableOptionsInDependee, Guid choiceGroupID)
         {
             R8RDataAccess Obj = new R8RDataAccess();
             ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
@@ -392,7 +392,7 @@ namespace ClassLibrary1.Model
 
     //    }
 
-    //    public bool ChoicesForFieldDefinitionVerifyOK(Guid tblRowID, int FieldDefinitionID, List<int> multipleChoices)
+    //    public bool ChoicesForFieldDefinitionVerifyOK(Guid tblRowID, Guid FieldDefinitionID, List<int> multipleChoices)
     //    {
     //        try
     //        {

@@ -30,13 +30,13 @@ namespace ClassLibrary1.Model
     //{
 
     //    int? numberToDoEachTime { get; set; }
-    //    int startingAtUserRatingID { get; set; }
+    //    Guid startingAtUserRatingID { get; set; }
     //    decimal? referenceUserRating { get; set; }
     //    DateTime? referenceTime { get; set; }
     //    bool updateUserRatingGroup { get; set; }
 
 
-    //    public UpdateUserRatingsProcessInfo(int? numberToDo, int startingAtUserRatingID, decimal? referenceUserRating, DateTime? referenceTime, bool updateUserRatingGroup)
+    //    public UpdateUserRatingsProcessInfo(int? numberToDo, Guid startingAtUserRatingID, decimal? referenceUserRating, DateTime? referenceTime, bool updateUserRatingGroup)
     //    {
     //        this.numberToDoEachTime = numberToDo;
     //        this.startingAtUserRatingID = startingAtUserRatingID;
@@ -45,7 +45,7 @@ namespace ClassLibrary1.Model
     //        this.updateUserRatingGroup = updateUserRatingGroup;
     //    }
 
-    //    public int? Continue(int? currentUserRatingID, Guid ratingID, int ratingPhaseStatusID, UserRatingUpdatingReason theResolutionType)
+    //    public int? Continue(Guid? currentUserRatingID, Guid ratingID, Guid ratingPhaseStatusID, UserRatingUpdatingReason theResolutionType)
     //    {
     //        if (currentUserRatingID == null)
     //            currentUserRatingID = startingAtUserRatingID;
@@ -191,7 +191,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        //public int AddOrResetLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, int? object1ID, int? object2ID, int priority, UpdateUserRatingsProcessInfo myUpdateInfo)
+        //public int AddOrResetLongProcess(LongProcessTypes typeOfProcess, int? delayBeforeReset, Guid? object1ID, Guid? object2ID, int priority, UpdateUserRatingsProcessInfo myUpdateInfo)
         //{
         //    BinaryFormatter binFormat = new BinaryFormatter();
         //    using (MemoryStream mStream = new MemoryStream())
@@ -290,7 +290,7 @@ namespace ClassLibrary1.Model
                 }
                 catch
                 {
-                    int myLongProcessID = myLongProcess.LongProcessID;
+                    Guid myLongProcessID = myLongProcess.LongProcessID;
                     ResetDataContexts();
                     LongProcess longProcess2 = DataContext.GetTable<LongProcess>().Single(x => x.LongProcessID == myLongProcessID);
                     longProcess2.EarliestRestart = TestableDateTime.Now + new TimeSpan(0, 10, 0);

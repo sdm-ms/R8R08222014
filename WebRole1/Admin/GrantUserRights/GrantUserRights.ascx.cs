@@ -15,7 +15,7 @@ namespace WebApplication1.Admin.GrantUserRights
         public ActionProcessor theActionProcessor;
         public Guid pointsManagerID;
 
-        public void Setup(int thePointsManagerID)
+        public void Setup(Guid thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
             theActionProcessor = new ActionProcessor();

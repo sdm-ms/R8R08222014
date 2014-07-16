@@ -112,7 +112,7 @@ namespace ClassLibrary1.Model
             return dataAccess.GetTblColumn(TblColumnID);
         }
 
-        public static void GetTblAndPointsManagerForTblTab(R8RDataAccess dataAccess, int TblTabID, out TblTab theTblTab, out Tbl theTbl, out PointsManager thePointsManager)
+        public static void GetTblAndPointsManagerForTblTab(R8RDataAccess dataAccess, Guid TblTabID, out TblTab theTblTab, out Tbl theTbl, out PointsManager thePointsManager)
         {
             theTblTab = dataAccess.GetTblTab(TblTabID);
             theTbl = CacheManagement.GetItemFromCache("TblForTblTab" + TblTabID) as Tbl;
@@ -330,9 +330,9 @@ namespace ClassLibrary1.Model
 
 
 
-        public static string GetBodyRowString(R8RDataAccess theDataAccess, int rowNumber, int theTblRowID, bool tblRowDeleted, int theTblID, PointsManager thePointsManager, int theTblTabID, string suppStyle, TblDimension theTblDimension, List<InfoForBodyRows> bodyRowInfoList)
+        public static string GetBodyRowString(R8RDataAccess theDataAccess, int rowNumber, Guid theTblRowID, bool tblRowDeleted, Guid theTblID, PointsManager thePointsManager, Guid theTblTabID, string suppStyle, TblDimension theTblDimension, List<InfoForBodyRows> bodyRowInfoList)
         {
-            int thePointsManagerID = thePointsManager.PointsManagerID;
+            Guid thePointsManagerID = thePointsManager.PointsManagerID;
 
             string entireRow = "<tr id=\"maintr{0}\" class=\"somerow prow {1}\"><td class=\"nmcl\">{2}</td><td><div class=\"rowHead\">{3}</div></td>{4}</tr>";
             string extraCSSClass, theRowHeading, theBodyOfRow;
@@ -356,7 +356,7 @@ namespace ClassLibrary1.Model
             return entireRow;
         }
 
-        private static string GetColumnsOfBodyRowString(int theTblTabID, string suppStyle, int theTblRowID, int theTblID, List<InfoForBodyRows> bodyRowInfoQuery)
+        private static string GetColumnsOfBodyRowString(Guid theTblTabID, string suppStyle, Guid theTblRowID, Guid theTblID, List<InfoForBodyRows> bodyRowInfoQuery)
         {
             string theBodyOfRow;
             // currently disabling caching, because some of our dependencies are not working properly.
@@ -448,7 +448,7 @@ namespace ClassLibrary1.Model
                 builder.Append("</td>");
         }
 
-        private static void BuildHtmlForComplexCellFromDatabase(StringBuilder builder, int topRatingGroupID, Guid tblRowID, Guid tblColumnID, bool trusted)
+        private static void BuildHtmlForComplexCellFromDatabase(StringBuilder builder, Guid topRatingGroupID, Guid tblRowID, Guid tblColumnID, bool trusted)
         {
             R8RDataAccess DataAccess = new R8RDataAccess();
             RatingHierarchyData theData = DataAccess.GetRatingHierarchyDataForRatingGroup(topRatingGroupID);
@@ -462,7 +462,7 @@ namespace ClassLibrary1.Model
             builder.Append("</div>");
         }
 
-        private static string GetStringForRatingInput(decimal? value, int? decPlaces, Guid TblRowID, Guid TblColumnID, int? ratingID, string theValuePreformatted, string suppClass = "")
+        private static string GetStringForRatingInput(decimal? value, int? decPlaces, Guid TblRowID, Guid TblColumnID, Guid? ratingID, string theValuePreformatted, string suppClass = "")
         {
             string ratingIDString = ratingID == null ? TblRowID.ToString() + "/" + TblColumnID.ToString() : ratingID.ToString();
             string theValue;
@@ -505,7 +505,7 @@ namespace ClassLibrary1.Model
             theStringBuilder.Append("</ul>");
         }
 
-        //private static string LoadBodyOfRowFromWebServiceForComplexTbl(UserRatingDataAccess theDataAccess, int theTblTabID, string suppStyle, int theTblRowID, int theTblID)
+        //private static string LoadBodyOfRowFromWebServiceForComplexTbl(UserRatingDataAccess theDataAccess, Guid theTblTabID, string suppStyle, Guid theTblRowID, Guid theTblID)
         //{ 
         //    // We could improve performance by taking approach similar to simple Tbl approach.
 
@@ -520,7 +520,7 @@ namespace ClassLibrary1.Model
         //    return theBodyOfRow;
         //}
 
-        private static string GetBodyRowHeading(R8RDataAccess theDataAccess, TblDimension theTblDimension, int theTblRowID, int theTblID, int thePointsManagerID)
+        private static string GetBodyRowHeading(R8RDataAccess theDataAccess, TblDimension theTblDimension, Guid theTblRowID, Guid theTblID, Guid thePointsManagerID)
         {
             string theRowHeading;
             string myCacheKeyRowHeading = "RowHeading" + theTblRowID.ToString();
@@ -544,7 +544,7 @@ namespace ClassLibrary1.Model
             return theRowHeading;
         }
 
-        private static string LoadHeaderRowFromWebService(R8RDataAccess theDataAccess, int TblTabID, int? TblColumnToSortID, bool sortByTblRowName, bool ascending, int theTblID)
+        private static string LoadHeaderRowFromWebService(R8RDataAccess theDataAccess, Guid TblTabID, Guid? TblColumnToSortID, bool sortByTblRowName, bool ascending, Guid theTblID)
         {
             string theHeaderRow;
             string myCacheKeyHeaderRow = "HeaderRow" + TblTabID + TblColumnToSortID + ascending;

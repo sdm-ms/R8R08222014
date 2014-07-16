@@ -27,7 +27,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
     public FieldsBox FieldsBox;
     string SuppStyle, SuppStyleHeader;
 
-    public void SetupBeforeFieldsBox(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, int theTblID, R8RDataAccess dataAccess, string suppStyle, string suppStyleHeader)
+    public void SetupBeforeFieldsBox(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, Guid theTblID, R8RDataAccess dataAccess, string suppStyle, string suppStyleHeader)
     {
         GetFilteredAndSortedQueryFn = getFilteredAndSortedQueryFn;
         GetFilterRulesFn = getFilterRulesFn;

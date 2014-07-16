@@ -58,8 +58,8 @@ namespace ClassLibrary1.Model
                 else if (theUserSelectedRatingInfo.theRatingType == UserSelectableRatingTypes.multipleChoice)
                     ratingType = RatingGroupTypes.probabilityMultipleOutcomes;
 
-                int ratingCharacteristicsID = AddRatingCharacteristics(existingRatingCharacteristic.RatingPhaseGroupID, existingRatingCharacteristic.SubsidyDensityRangeGroupID, minimumUserRating, maximumUserRating, decimalPlaces, "Override Rating", null);
-                int ratingGroupAttributesID = AddRatingGroupAttributes(ratingCharacteristicsID, null, constrainedSum, "OverrideRating", ratingType, "OverrideRating", null, theTblRow.Tbl.PointsManagerID, ratingEndingTimeVaries, true, 0.50M);
+                Guid ratingCharacteristicsID = AddRatingCharacteristics(existingRatingCharacteristic.RatingPhaseGroupID, existingRatingCharacteristic.SubsidyDensityRangeGroupID, minimumUserRating, maximumUserRating, decimalPlaces, "Override Rating", null);
+                Guid ratingGroupAttributesID = AddRatingGroupAttributes(ratingCharacteristicsID, null, constrainedSum, "OverrideRating", ratingType, "OverrideRating", null, theTblRow.Tbl.PointsManagerID, ratingEndingTimeVaries, true, 0.50M);
                 if (theUserSelectedRatingInfo.theRatingType == UserSelectableRatingTypes.multipleChoice)
                 {
                     int totalChoices = theUserSelectedRatingInfo.multipleChoices.Count();

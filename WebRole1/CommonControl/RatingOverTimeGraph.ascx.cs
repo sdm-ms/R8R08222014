@@ -32,11 +32,11 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
     internal bool SuppressDrilledInSeriesName = false;
 
     internal R8RDataAccess DataAccess = new R8RDataAccess();
-    public int? RatingGroupID { get; set; }
-    public int? SpecificRatingID { get; set; }
+    public Guid? RatingGroupID { get; set; }
+    public Guid? SpecificRatingID { get; set; }
     public bool AxesBasedOnData;
 
-    public void Manual_Setup(int? ratingGroupID, int? specificRatingID)
+    public void Manual_Setup(Guid? ratingGroupID, Guid? specificRatingID)
     {
         AxesBasedOnData = true;
         RatingGroupID = ratingGroupID;
@@ -202,7 +202,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         DateTime lastDateTime = TestableDateTime.Now;
         if (numberSeconds == 5000 * 24 * 60 * 60)
         {
-            int topmostRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
+            Guid topmostRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
             RatingGroupResolution theResolution = DataAccess.R8RDB.GetTable<RatingGroupResolution>()
                 .Where(mg => mg.RatingGroupID == topmostRatingGroupID)
                 .OrderByDescending(mg => mg.ExecutionTime)
@@ -263,7 +263,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
 
         foreach (var aSeries in theSerieses)
         {
-            int theRatingID = aSeries.SeriesInfo.RatingID;
+            Guid theRatingID = aSeries.SeriesInfo.RatingID;
             decimal? theEarlierValue = null;
             var theEarlierUserRatings = DataAccess.R8RDB.GetTable<UserRating>()
                 .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenMade < firstDateTime)

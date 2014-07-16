@@ -36,7 +36,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
         rebinding = true;
     }
 
-    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid tblColumnID, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid tblColumnID, Guid ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
     {
         SuppStyle = suppStyle;
         if (doRebind)
@@ -58,7 +58,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
         List<RatingIdAndUserRatingValue> theList = new List<RatingIdAndUserRatingValue>();
         foreach (var mv in TheSelectedRatingValues)
         {
-            int thisRatingID = 0;
+            Guid thisRatingID = 0;
             decimal? thisUserRating = 0;
             mv.GetRatingAndProposedValue(ref thisRatingID, ref thisUserRating);
             if (thisUserRating != null)

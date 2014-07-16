@@ -21,11 +21,11 @@ using ClassLibrary1.EFModel;
 public partial class Main_Table_TableCellView : System.Web.UI.UserControl
 {
 
-    protected int RatingGroupID;
+    protected Guid RatingGroupID;
     protected Guid TblRowID;
     protected Guid TblColumnID;
     protected Guid TblID;
-    protected int PointsManagerID;
+    protected Guid PointsManagerID;
     protected bool CanPredict;
     protected bool CanAdminister;
     protected bool CanEditFields;
@@ -42,7 +42,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         TblColumnID = tblColumnID;
         TblColumn theTblColumn = DataAccess.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
         RatingGroupID = (Guid)DataAccess.GetRatingGroupForTblRowAndColumn(tblRowID, TblColumnID);
-        int topRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
+        Guid topRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
         Tbl theTbl = DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == TblRowID).Tbl;
         TblID = theTbl.TblID;
         PointsManagerID = theTbl.PointsManagerID;

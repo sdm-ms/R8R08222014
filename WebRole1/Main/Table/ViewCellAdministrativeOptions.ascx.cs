@@ -15,7 +15,7 @@ using System.Xml.Linq;
 public partial class Main_Table_ViewCellAdministrativeOptions : System.Web.UI.UserControl
 {
     //Rating reolution user control
-    int RatingID;
+    Guid RatingID;
     protected void Page_Load(object sender, EventArgs e)
     {
 

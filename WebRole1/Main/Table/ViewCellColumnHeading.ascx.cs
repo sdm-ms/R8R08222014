@@ -32,7 +32,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
     protected Guid? TblRowIDForChartButton;
     protected Action<int?, bool> SortFn;
 
-    public void Setup(R8RDataAccess dataAccess, Action<int?, bool> sortFn, Guid? tblColumnID, int? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
+    public void Setup(R8RDataAccess dataAccess, Action<int?, bool> sortFn, Guid? tblColumnID, Guid? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
     {
         DataAccess = dataAccess;
         SortFn = sortFn;
@@ -165,7 +165,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
                 string href = "";
                 if (ChartButton || SubstituteRefreshButton)
                 {
-                    int? RatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn((Guid)TblRowIDForChartButton, (Guid)TblColumnID);
+                    Guid? RatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn((Guid)TblRowIDForChartButton, (Guid)TblColumnID);
                     if (RatingGroupID != null)
                     {
                         TblColumn theCD = DataAccess.R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnID);

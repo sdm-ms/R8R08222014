@@ -61,7 +61,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="TblTabID">The table column group</param>
         /// <returns>The number of columns within that table column group</returns>
-        public int CountTblColumnsForTblTab(int TblTabID)
+        public int CountTblColumnsForTblTab(Guid TblTabID)
         {
             return DataContext.GetTable<TblColumn>().Where(c => c.TblTabID == TblTabID && c.Status == (Byte)StatusOfObject.Active).Count();
         }
@@ -97,7 +97,7 @@ namespace ClassLibrary1.Model
         //    var referringTblRows = R8RDB.GetTable<TblRow>().Where(e => e.Status == (Byte)StatusOfObject.Active && e.TblID == theTblColumn.TblTab.TblID);
         //    foreach (var referringTblRow in referringTblRows)
         //    {
-        //        int? ratingGroupID = GetTopRatingGroupForTblRowAndColumn(referringTblRow.TblRowID, TblColumnID);
+        //        Guid? ratingGroupID = GetTopRatingGroupForTblRowAndColumn(referringTblRow.TblRowID, TblColumnID);
         //        if (ratingGroupID != null)
         //            EndRatingGroupAndSubgroupsAtCurrentValues((Guid)ratingGroupID);
         //    }
@@ -109,7 +109,7 @@ namespace ClassLibrary1.Model
         /// Deletes a table column group (including all table columns and ratings within)
         /// </summary>
         /// <param name="TblTabID"></param>
-        //public void DeleteTblTab(int TblTabID)
+        //public void DeleteTblTab(Guid TblTabID)
         //{
             
         //    TblTab theGroup = R8RDB.GetTable<TblTab>().Single(x=>x.TblTabID==TblTabID);
@@ -125,7 +125,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="TblTabID">The table column group Id to change</param>
         /// <param name="defaultSortTblColumnID">The table column id to set as default sort</param>
-        public void ChangeTblTabDefaultSort(int TblTabID,int? defaultSortTblColumnID)
+        public void ChangeTblTabDefaultSort(Guid TblTabID,Guid? defaultSortTblColumnID)
         {
             TblTab theGroup = DataContext.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID);
             theGroup.DefaultSortTblColumnID = defaultSortTblColumnID;

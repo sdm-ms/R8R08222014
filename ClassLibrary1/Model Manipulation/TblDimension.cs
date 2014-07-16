@@ -39,7 +39,7 @@ namespace ClassLibrary1.Model
             return (Guid)x;
         }
 
-        public TblDimension GetTblDimensionsForRegularTbl(int theTblID)
+        public TblDimension GetTblDimensionsForRegularTbl(Guid theTblID)
         {
             TblDimension theTblDimension = CacheManagement.GetItemFromCache("TableDim" + theTblID) as TblDimension;
             if (theTblDimension != null)

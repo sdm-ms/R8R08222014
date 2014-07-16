@@ -800,7 +800,7 @@ namespace ClassLibrary1.Model
             string alreadyReset = DataContext.TempCacheGet("TblRowFieldDisplayResetForTbl" + theTbl.TblID) as string;
             if (!(alreadyReset == "Yes"))
             {
-                int highestIDCompleted = 0;
+                Guid highestIDCompleted = 0;
                 bool moreWorkToDo = true;
                 while (moreWorkToDo)
                 {

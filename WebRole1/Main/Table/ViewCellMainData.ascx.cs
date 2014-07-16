@@ -28,7 +28,7 @@ public partial class Main_Table_ViewCellMainData : System.Web.UI.UserControl
     int ColumnNumber;
     Guid TblColumnID;
 
-    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid tblColumnID, int? ratingGroupID, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid tblColumnID, Guid? ratingGroupID, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
     {
         SelectFn = selectFn;
         ColumnNumber = columnNumber;

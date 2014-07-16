@@ -119,7 +119,7 @@ namespace ClassLibrary1.Model
                     {
                         if (RatingGroupTypesList.singleItemNotDate.Contains(resolution.RatingGroup.TypeOfRatingGroup))
                         {
-                            int tblColID = resolution.RatingGroup.TblColumnID;
+                            Guid tblColID = resolution.RatingGroup.TblColumnID;
                             var farui = new FastAccessRatingUpdatingInfo()
                             {
                                 TblColumnID = tblColID,

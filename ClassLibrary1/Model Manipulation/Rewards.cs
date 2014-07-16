@@ -100,7 +100,7 @@ namespace ClassLibrary1.Model
                 FieldDefinition descriptionFieldDefinition = theRewardFieldDefinitions.Single(x => x.FieldName == "Description");
                 FieldDefinition multiplierFieldDefinition = theRewardFieldDefinitions.Single(x => x.FieldName == "Multiplier");
 
-                int changeChoicesGroupID = DataContext.GetTable<ChoiceGroup>().Single(cg => cg.Name.StartsWith("Change choices") && cg.PointsManagerID == originalTbl.PointsManagerID).ChoiceGroupID;
+                Guid changeChoicesGroupID = DataContext.GetTable<ChoiceGroup>().Single(cg => cg.Name.StartsWith("Change choices") && cg.PointsManagerID == originalTbl.PointsManagerID).ChoiceGroupID;
                 string theChangeString = StringEnum.GetStringValue(changeType);
                 ChoiceInGroup choiceInGroup = DataContext.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceGroupID == changeChoicesGroupID && cig.ChoiceText == theChangeString);
                 ChoiceFieldDataInfo theChangeType = new ChoiceFieldDataInfo(changeTypeFieldDefinition, choiceInGroup, theFieldSetDataInfo, theDataAccess);

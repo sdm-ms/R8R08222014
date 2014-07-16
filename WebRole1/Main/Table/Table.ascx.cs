@@ -28,7 +28,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     protected Func<int?, TableSortRule, bool, IQueryable<TblRow>> GetFilteredAndSortedQueryFn;
     Func<bool, bool, FilterRules> GetFilterRulesFn;
     protected Guid TblID;
-    protected int TblTabID;
+    protected Guid TblTabID;
     protected TableSortRule theTableSortRule;
     protected bool rebinding = false;
     protected int rowBeingCreated = 0;
@@ -43,7 +43,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     string SuppStyle, SuppStyleHeader;
   
 
-    public void Setup(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, Guid tblID, int tblTabID, string suppStyle, string suppStyleHeader)
+    public void Setup(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, Guid tblID, Guid tblTabID, string suppStyle, string suppStyleHeader)
     {
         DataAccess = new R8RDataAccess();
         GetFilteredAndSortedQueryFn = getFilteredAndSortedQueryFn;
@@ -100,7 +100,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             if ( ViewState["SelectedRow"] != null)
             { // The previous selected row needs to be deselected and rebound.
                 ListViewDataItem dataItem = MainListView.Items[(int) ViewState["SelectedRow"] - 1];
-                int theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
+                Guid theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
                 PlaceHolder MainTableBodyRowPlaceHolder = (PlaceHolder)dataItem.FindControl("MainTableBodyRowPlaceHolder");
                 Main_Table_BodyRow MainTableBodyRow = (Main_Table_BodyRow)((System.Web.UI.Control)(MainTableBodyRowPlaceHolder)).Controls[0];
                 MainTableBodyRow.DeselectAndReBind();
@@ -141,7 +141,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         {
             rowBeingCreated++;
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
+            Guid theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
             ListViewDataItem CurrentItem = (ListViewDataItem)e.Item;
             Main_Table_ViewCellRowHeading MainTableViewCellRowHeading = (Main_Table_ViewCellRowHeading)e.Item.FindControl("MainTableViewCellRowHeading");
             MainTableViewCellRowHeading.Setup(DataAccess, TheTblDimensions, TblID, theTblRowID, CommentsEnabled, CanEditFields, rebinding);

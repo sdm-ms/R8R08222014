@@ -148,7 +148,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         Routing.Redirect(Response, Routing.Incoming(Page.RouteData, theProcess.DataContext));
     }
 
-    private void GetCommentInfo(Button theButton, out int commentID, out bool isProposed, out bool isDeleted)
+    private void GetCommentInfo(Button theButton, out Guid commentID, out bool isProposed, out bool isDeleted)
     {
         string[] commandData = theButton.CommandArgument.Split(',');
         commentID = Int32.Parse(commandData[0]);
@@ -159,7 +159,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
 
     public void DeleteComment_Click(object sender, EventArgs e)
     {
-        int commentID;
+        Guid commentID;
         bool isProposed;
         bool isDeleted;
         GetCommentInfo((Button)sender, out commentID, out isProposed, out isDeleted);

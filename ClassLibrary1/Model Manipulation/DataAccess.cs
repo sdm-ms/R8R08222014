@@ -1335,7 +1335,7 @@ namespace ClassLibrary1.Model
             return theData;
         }
 
-        public RatingHierarchyData GetRatingHierarchyDataForRatingGroup(int ratingGroupID)
+        public RatingHierarchyData GetRatingHierarchyDataForRatingGroup(Guid ratingGroupID)
         {
             RatingHierarchyData theData = new RatingHierarchyData();
             AddRatingGroupToRatingHierarchyData((int)ratingGroupID, ref theData, 1);
@@ -1348,7 +1348,7 @@ namespace ClassLibrary1.Model
         /// <param name="theTblRowID">The row</param>
         /// <param name="theTblColumnID">The column</param>
         /// <returns></returns>
-        public Guid GetRatingGroupAttributesForTblRowAndColumn(int theTblRowID, int theTblColumnID)
+        public Guid GetRatingGroupAttributesForTblRowAndColumn(Guid theTblRowID, Guid theTblColumnID)
         {
             throw new NotImplementedException(); // we have disabled this functionality for now.
             //TblColumn tblColumn = R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == theTblColumnID); // TODO: Check Cache
@@ -1364,7 +1364,7 @@ namespace ClassLibrary1.Model
         /// <param name="theTblRowID"></param>
         /// <param name="theTblColumnID"></param>
         /// <returns></returns>
-        public Guid? GetRatingGroupForTblRowAndColumn(int theTblRowID, int theTblColumnID)
+        public Guid? GetRatingGroupForTblRowAndColumn(Guid theTblRowID, Guid theTblColumnID)
         {
             var theRatingGroups = R8RDB.GetTable<RatingGroup>().Where(mg => (mg.Status == (Byte)StatusOfObject.Active || mg.Status == (Byte)StatusOfObject.DerivativelyUnavailable) &&
                                             mg.TblRowID == theTblRowID && mg.TblColumnID == theTblColumnID
@@ -1383,7 +1383,7 @@ namespace ClassLibrary1.Model
         /// <param name="ratingGroupID">The rating group whose data should be added to the hierarchy</param>
         /// <param name="theData">The rating hierarchy data so far</param>
         /// <param name="hierarchyLevel">The level at which this rating group should be added.</param>
-        public void AddRatingGroupToRatingHierarchyData(int ratingGroupID, ref RatingHierarchyData theData, int hierarchyLevel)
+        public void AddRatingGroupToRatingHierarchyData(Guid ratingGroupID, ref RatingHierarchyData theData, int hierarchyLevel)
         {
             var theRatings = R8RDB.GetTable<Rating>().Where(m => m.RatingGroupID == ratingGroupID).Select(m => new
             {
@@ -1405,7 +1405,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void GetDefaultSortForTblTab(int TblTabID, ref int? TblColumnToSort, ref bool sortOrderAscending)
+        public void GetDefaultSortForTblTab(Guid TblTabID, ref int? TblColumnToSort, ref bool sortOrderAscending)
         {
             TblTab theTblTab = R8RDB.GetTable<TblTab>().Single(cg => cg.TblTabID == TblTabID);
             TblColumnToSort = theTblTab.DefaultSortTblColumnID;

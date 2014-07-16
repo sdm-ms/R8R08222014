@@ -19,10 +19,10 @@ using ClassLibrary1.EFModel;
 
 public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 {
-    protected int TblTabID { get; set; }
+    protected Guid TblTabID { get; set; }
     protected Action<int?, bool>ResortCateDesFn;
-    protected int? LimitToThisTblColumnID;
-    protected int? TblColumnToSortID;
+    protected Guid? LimitToThisTblColumnID;
+    protected Guid? TblColumnToSortID;
     protected bool SortByEntityName = false;
     protected bool  DoSortOrderAscending;
     protected R8RDataAccess DataAccess { get; set; }
@@ -228,7 +228,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 
     }
 
-    public void ReBind(int tblTabID, TableSortRule aTableSortRule)
+    public void ReBind(Guid tblTabID, TableSortRule aTableSortRule)
     {
         rebinding = true;
         TblTabID = tblTabID;

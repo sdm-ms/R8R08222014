@@ -121,7 +121,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public string GetAbbreviatedFieldName(int FieldDefinitionID)
+        public string GetAbbreviatedFieldName(Guid FieldDefinitionID)
         {
             InitializeDictionaries();
             string returnVal;
@@ -199,7 +199,7 @@ namespace ClassLibrary1.Model
             public List<string> ColumnNames;
             public List<ExcelFileFieldInfo> FieldInfos = new List<ExcelFileFieldInfo>();
             public int? actionOnImportColumn;
-            public int? tblRowIDColumn;
+            public Guid? tblRowIDColumn;
             public int? initialStatusColumn;
             public int? statusChangeColumn;
             public int? rowNameColumn;
@@ -392,7 +392,7 @@ namespace ClassLibrary1.Model
                     theInfo.theRowName = theField.Value;
                 else
                 {
-                    int FieldDefinitionID = dictionaryNameToID[theField.Name.ToString()];
+                    Guid FieldDefinitionID = dictionaryNameToID[theField.Name.ToString()];
                     FieldDefinition theFieldDefinition = DataAccess.R8RDB.TempCacheGet("FieldDefinition" + FieldDefinitionID) as FieldDefinition;
                     if (theFieldDefinition == null)
                     {
@@ -472,7 +472,7 @@ namespace ClassLibrary1.Model
                     XAttribute InitialStatusAttribute = theTblRowElement.Attribute("InitialStatus");
                     XAttribute StatusChangeAttribute = theTblRowElement.Attribute("StatusChange");
 
-                    int? ExistingTblRowID = null;
+                    Guid? ExistingTblRowID = null;
                     TblRow theTblRow = null;
                     // Check correctness of InitialStatusAttribute and corresponding TblRowIDAttribute
                     if (InitialStatusAttribute.Value == "notexist" && TblRowIDAttribute.Value != "")

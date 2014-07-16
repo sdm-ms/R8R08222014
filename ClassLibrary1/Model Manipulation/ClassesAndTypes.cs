@@ -268,7 +268,7 @@ namespace ClassLibrary1.Model
         R8RDataAccess DataAccess { get; set; }
         FieldsBoxMode Mode { get; set; }
         Guid? TblRowID { get; set; }
-        int FieldDefinitionOrTblColumnID { get; set; }
+        Guid FieldDefinitionOrTblColumnID { get; set; }
         FilterRule GetFilterRule();
         FieldDataInfo GetFieldValue(FieldSetDataInfo theGroup);
         bool InputDataValidatesOK(ref string errorMessage);

@@ -154,7 +154,7 @@ namespace ClassLibrary1.Model
             Add(name, null, theValue, hierarchyLevel, 0, null, null, false, description);
         }
 
-        public void Add(string ratingName, int? ratingID, decimal? theValue, int hierarchyLevel, int decimalPlaces, decimal? minVal, decimal? maxVal, bool isDate, string description)
+        public void Add(string ratingName, Guid? ratingID, decimal? theValue, int hierarchyLevel, int decimalPlaces, decimal? minVal, decimal? maxVal, bool isDate, string description)
         {
             if (hierarchyLevel <= 0)
                 throw new UserRatingDataException("Invalid hierarchy.");
@@ -176,7 +176,7 @@ namespace ClassLibrary1.Model
 
             
         //public string RatingName { get; set; }
-        //public int? RatingID { get; set; }
+        //public Guid? RatingID { get; set; }
         //public decimal? Value { get; set; }
         //public int HierarchyLevel { get; set; }
         //public int DecimalPlaces { get; set; }
@@ -773,7 +773,7 @@ namespace ClassLibrary1.Model
         /// <param name="ratingID">The rating</param>
         /// <param name="theUserRating">The prediction</param>
         /// <param name="theData">The prediction hierarchy data</param>
-        public void GetUserRatingHierarchyBasedOnUserRating(Guid ratingID, decimal? constrainedSum, int ratingGroupID, List<Rating> theRatings, List<RatingGroup> theRatingGroups, decimal theUserRatingEntered, float adjustPct, ref UserRatingHierarchyData theData)
+        public void GetUserRatingHierarchyBasedOnUserRating(Guid ratingID, decimal? constrainedSum, Guid ratingGroupID, List<Rating> theRatings, List<RatingGroup> theRatingGroups, decimal theUserRatingEntered, float adjustPct, ref UserRatingHierarchyData theData)
         {
             GetUserRatingHierarchyBasedOnUserRatings(new List<RatingIdAndUserRatingValue> { new RatingIdAndUserRatingValue { RatingID = ratingID, UserRatingValue = theUserRatingEntered } }, theRatings, theRatingGroups, constrainedSum, adjustPct, ref theData);
         }
@@ -1054,7 +1054,7 @@ namespace ClassLibrary1.Model
         public bool CheckWhetherRatingCanBeSetWinner(Guid ratingID, List<Rating> theRatings, List<RatingGroup> theRatingGroups)
         {
             Rating theRating = theRatings.Single(m => m.RatingID == ratingID);
-            int ratingGroupID = theRating.RatingGroupID;
+            Guid ratingGroupID = theRating.RatingGroupID;
             decimal? constrainedSum = theRatingGroups.Single(mg => mg.RatingGroupID == theRating.TopmostRatingGroupID).RatingGroupAttribute.ConstrainedSum;
             if (constrainedSum == null)
                 return false;

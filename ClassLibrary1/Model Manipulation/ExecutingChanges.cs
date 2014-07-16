@@ -43,7 +43,7 @@ namespace ClassLibrary1.Model
         {
             // Duplicate the original universe object, making changes as necessary.
             PointsManager originalPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == pointsManagerID);
-            Guid $3 = AddPointsManager(originalPointsManager.DomainID, originalPointsManager.Name, originalPointsManager.Creator);
+            Guid newPointsManagerID = AddPointsManager(originalPointsManager.DomainID, originalPointsManager.Name, originalPointsManager.Creator);
             PointsManager newPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == newPointsManagerID);
 
 
