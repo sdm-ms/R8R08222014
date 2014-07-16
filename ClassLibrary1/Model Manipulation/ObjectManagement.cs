@@ -400,7 +400,7 @@ namespace ClassLibrary1.Model
                     DataContext.GetTable<Tbl>().Single(x => x.TblID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.Comment:
-                    Comment theComment = DataContext.GetTable<Comment>().Single(x => x.CommentsID == objectID);
+                    Comment theComment = DataContext.GetTable<Comment>().Single(x => x.CommentID == objectID);
                     theComment.Status = newValue;
                     if (newValue == (byte) StatusOfObject.Unavailable)
                         theComment.LastDeletedDate = TestableDateTime.Now;
@@ -475,7 +475,7 @@ namespace ClassLibrary1.Model
                     DataContext.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingPlan:
-                    DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID == objectID).Status = newValue;
+                    DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlanID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingGroupResolution:
                     DataContext.GetTable<RatingGroupResolution>().Single(x => x.RatingGroupResolutionID == objectID).Status = newValue;
@@ -861,7 +861,7 @@ namespace ClassLibrary1.Model
                     theName = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == objectID).Name;
                     break;
                 case TypeOfObject.RatingPlan:
-                    theName = DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID == objectID).Name;
+                    theName = DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlanID == objectID).Name;
                     break;
                 case TypeOfObject.RewardRatingSettings:
                     theName = DataContext.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Name;
@@ -948,7 +948,7 @@ namespace ClassLibrary1.Model
                     theName = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == objectID).Name;
                     break;
                 case TypeOfObject.RatingPlan:
-                    theName = DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID == objectID).Name;
+                    theName = DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlanID == objectID).Name;
                     break;
                 case TypeOfObject.RewardRatingSettings:
                     theName = DataContext.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Name;
@@ -995,7 +995,7 @@ namespace ClassLibrary1.Model
                     theCreator = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == objectID).Creator;
                     break;
                 case TypeOfObject.RatingPlan:
-                    theCreator = DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID == objectID).Creator;
+                    theCreator = DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlanID == objectID).Creator;
                     break;
                 case TypeOfObject.RewardRatingSettings:
                     theCreator = DataContext.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Creator;
@@ -1076,7 +1076,7 @@ namespace ClassLibrary1.Model
                     DataContext.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID==objectID).Name = theName;
                     break;
                 case TypeOfObject.RatingPlan:
-                    DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlansID==objectID).Name = theName;
+                    DataContext.GetTable<RatingPlan>().Single(x => x.RatingPlanID==objectID).Name = theName;
                     break;
                 case TypeOfObject.RewardRatingSettings:
                     DataContext.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Name = theName;

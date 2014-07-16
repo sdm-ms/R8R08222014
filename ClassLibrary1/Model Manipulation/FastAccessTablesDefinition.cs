@@ -45,8 +45,8 @@ namespace ClassLibrary1.Model
             Guid tblColumnID = tblColumn.TblColumnID;
             ratingStringColumn = new SQLTableColumnDescription() { Name = "RS" + tblColumnID.ToString(), ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
             ratingValueColumn = new SQLTableColumnDescription() { Name = "RV" + tblColumnID.ToString(), ColType = SQLColumnType.typeDecimal, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
-            ratingIDColumn = new SQLTableColumnDescription() { Name = "R" + tblColumnID.ToString(), ColType = SQLColumnType.typeInt, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
-            ratingGroupIDColumn = new SQLTableColumnDescription() { Name = "RG" + tblColumnID.ToString(), ColType = SQLColumnType.typeInt, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            ratingIDColumn = new SQLTableColumnDescription() { Name = "R" + tblColumnID.ToString(), ColType = SQLColumnType.typeGuid, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            ratingGroupIDColumn = new SQLTableColumnDescription() { Name = "RG" + tblColumnID.ToString(), ColType = SQLColumnType.typeGuid, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
             ratingRecentlyChangedColumn = new SQLTableColumnDescription() { Name = "RC" + tblColumnID.ToString(), ColType = SQLColumnType.typeBit, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
         }
 
@@ -73,7 +73,7 @@ namespace ClassLibrary1.Model
                     index = true; // spatial index
                     break;
                 case (int) FieldTypes.ChoiceField:
-                    colType = SQLColumnType.typeInt;
+                    colType = SQLColumnType.typeGuid;
                     index = true; // index of integers -- note that we never call this constructor if we are dealing with a choice group with AllowMultipleSelectios = TRUE (in which case we would not have a column here, but instead another table)
                     break;
                 case (int)FieldTypes.DateTimeField:
@@ -118,9 +118,9 @@ namespace ClassLibrary1.Model
             TheFieldDefinition = theFieldDefinition;
             TheChoiceGroup = TheFieldDefinition.ChoiceGroupFieldDefinitions.FirstOrDefault().ChoiceGroup;
 
-            idColumn = new SQLTableColumnDescription() { Name = "MCID" /* distinctive name avoids complication of ambiguous column names when querying */, ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = true, NonclusteredIndex = false, ClusteredIndex = false }; 
-            tblRowIDColumn = new SQLTableColumnDescription() { Name = "TRID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
-            choiceColumn = new SQLTableColumnDescription() { Name = "CHO", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true, Ascending = true };
+            idColumn = new SQLTableColumnDescription() { Name = "MCID" /* distinctive name avoids complication of ambiguous column names when querying */, ColType = SQLColumnType.typeGuid, Nullable = false, PrimaryKey = true, AutoIncrement = true, NonclusteredIndex = false, ClusteredIndex = false };
+            tblRowIDColumn = new SQLTableColumnDescription() { Name = "TRID", ColType = SQLColumnType.typeGuid, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
+            choiceColumn = new SQLTableColumnDescription() { Name = "CHO", ColType = SQLColumnType.typeGuid, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true, Ascending = true };
         }
 
         public SQLTableDescription GetSQLTableDescription()
@@ -160,7 +160,7 @@ namespace ClassLibrary1.Model
         public FastAccessTableInfo(IR8RDataContext iDataContext, Tbl theTbl)
         {
             TheTbl = theTbl;
-            idColumn = new SQLTableColumnDescription() { Name = "ID", ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true /* NOTE: Because we use a spatial index, the clustered index MUST be for the primary key */ };
+            idColumn = new SQLTableColumnDescription() { Name = "ID", ColType = SQLColumnType.typeGuid, Nullable = false, PrimaryKey = true, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true /* NOTE: Because we use a spatial index, the clustered index MUST be for the primary key */ };
             nameColumn = new SQLTableColumnDescription() { Name = "NME", ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, Ascending = true };
             nameShortenedForIndexingColumn = new SQLTableColumnDescription() { Name = "NS", ColType = SQLColumnType.typeString4Chars, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, Ascending = true, ComputedColumnSpecification = " AS CAST(LEFT(NME,4) AS NCHAR(4)) PERSISTED " };
             rowFieldDisplay = new SQLTableColumnDescription() { Name = "RH", ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };

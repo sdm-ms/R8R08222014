@@ -12,7 +12,7 @@ namespace ClassLibrary1.Model
     {
         public static TblColumnFormatting GetBlankCDFormatting()
         {
-            TblColumnFormatting theFormatting = new TblColumnFormatting();
+            TblColumnFormatting theFormatting = new TblColumnFormatting() { TblColumnFormattingID = Guid.NewGuid() };
             theFormatting.Prefix = "";
             theFormatting.Suffix = "";
             return theFormatting;

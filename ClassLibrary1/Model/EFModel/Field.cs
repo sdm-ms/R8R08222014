@@ -25,6 +25,8 @@ namespace ClassLibrary1.EFModel
 
         public byte Status { get; set; }
 
+        public bool NotYetAddedToDatabase { get; set; }
+
         public virtual ICollection<AddressField> AddressFields { get; set; }
 
         public virtual ICollection<ChoiceField> ChoiceFields { get; set; }

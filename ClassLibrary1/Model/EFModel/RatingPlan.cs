@@ -9,7 +9,7 @@ namespace ClassLibrary1.EFModel
     public partial class RatingPlan
     {
         [Key]
-        public Guid RatingPlansID { get; set; }
+        public Guid RatingPlanID { get; set; }
 
         public Guid RatingGroupAttributesID { get; set; }
 

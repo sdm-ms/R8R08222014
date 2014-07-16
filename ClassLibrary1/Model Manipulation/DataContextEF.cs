@@ -4,6 +4,10 @@ using System.Data.Linq;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.EFModel;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using ClassLibrary1.Nonmodel_Code;
+using System;
 
 namespace ClassLibrary1.Model
 {
@@ -64,7 +68,29 @@ namespace ClassLibrary1.Model
 
         public override void BeforeSubmitChanges()
         {
+            foreach (ObjectStateEntry entry in
+                GetObjectContext().ObjectStateManager.GetObjectStateEntries(
+                EntityState.Added)) // | EntityState.Modified))
+            {
+                if (!entry.IsRelationship && entry.Entity.GetType() == typeof(TblRow))
+                {
+                    TblRow tblRow = entry.Entity as TblRow;
+                    tblRow.NotYetAddedToDatabase = false;
+                }
+                else if (!entry.IsRelationship && entry.Entity.GetType() == typeof(TblColumn))
+                {
+                    TblColumn tblColumn = entry.Entity as TblColumn;
+                    tblColumn.NotYetAddedToDatabase = false;
+                }
+                else if (!entry.IsRelationship && entry.Entity.GetType() == typeof(Field))
+                {
+                    Field field = entry.Entity as Field;
+                    field.NotYetAddedToDatabase = false;
+                }
+            }
+
             base.BeforeSubmitChanges();
+
         }
 
         public System.Linq.IQueryable<AddressField> UDFDistanceWithin(float? latitude, float? longitude, float? distance)

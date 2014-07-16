@@ -73,6 +73,7 @@ namespace ClassLibrary1.Model
                 lastGeocode = TestableDateTime.Now;
             AddressField theAddressField = new AddressField
             {
+                AddressFieldID = Guid.NewGuid(),
                 Field = field,
                 AddressString = addressString,
                 Latitude = latitude,
@@ -109,6 +110,7 @@ namespace ClassLibrary1.Model
                 Name = name,
                 Explanation = explanation,
                 WidthStyle = widthStyle,
+                NotYetAddedToDatabase = true,
                 Status = (Byte)StatusOfObject.Proposed
             };
             DataContext.GetTable<TblColumn>().InsertOnSubmit(theTblColumn);
@@ -121,6 +123,7 @@ namespace ClassLibrary1.Model
         {
             TblColumnFormatting theTblColumnFormatting = new TblColumnFormatting
             {
+                TblColumnFormattingID = Guid.NewGuid(),
                 TblColumnID = TblColumnID,
                 Prefix = prefix,
                 Suffix = suffix,
@@ -150,6 +153,7 @@ namespace ClassLibrary1.Model
         {
             TblTab theTblTab = new TblTab
             {
+                TblTabID = Guid.NewGuid(),
                 TblID = TblID,
                 NumInTbl = numInTbl,
                 Name = name,
@@ -179,6 +183,7 @@ namespace ClassLibrary1.Model
            
             ChangesGroup theChangesGroup = new ChangesGroup
             {
+                ChangesGroupID = Guid.NewGuid(),
                 PointsManagerID = pointsManagerID,
                 TblID = TblID,
                 Creator = creator,
@@ -221,6 +226,7 @@ namespace ClassLibrary1.Model
         {
             ChangesStatusOfObject theChangesStatusOfObject = new ChangesStatusOfObject
             {
+                ChangesStatusOfObjectID = new Guid(),
                 ChangesGroupID = changesGroupID,
                 ObjectType = (Byte)objectType,
                 AddObject = addObject,
@@ -261,6 +267,7 @@ namespace ClassLibrary1.Model
         {
             ChoiceField theChoiceField = new ChoiceField
             {
+                ChoiceFieldID = Guid.NewGuid(),
                 Field = field,
                 Status = (Byte)StatusOfObject.Active
             };
@@ -283,6 +290,7 @@ namespace ClassLibrary1.Model
         {
             ChoiceGroupFieldDefinition theChoiceGroupFieldDefinition = new ChoiceGroupFieldDefinition
             {
+                ChoiceGroupFieldDefinitionID = Guid.NewGuid(),
                 ChoiceGroupID = choiceGroupID,
                 FieldDefinitionID = FieldDefinitionID,
                 DependentOnChoiceGroupFieldDefinitionID = DependentOnChoiceGroupFieldDefinitionID,
@@ -325,6 +333,7 @@ namespace ClassLibrary1.Model
         {
             ChoiceGroup theChoiceGroup = new ChoiceGroup
             {
+                ChoiceGroupID = Guid.NewGuid(),
                 PointsManagerID = pointsManagerID,
                 AllowMultipleSelections = allowMultipleSelections,
                 Alphabetize = alphabetize,
@@ -355,6 +364,7 @@ namespace ClassLibrary1.Model
         {
             ChoiceInField theChoiceInField = new ChoiceInField
             {
+                ChoiceInFieldID = Guid.NewGuid(),
                 ChoiceField = choiceField,
                 ChoiceInGroup = choiceInGroup,
                 Status = (Byte)StatusOfObject.Active
@@ -380,6 +390,7 @@ namespace ClassLibrary1.Model
         {
             ChoiceInGroup theChoiceInGroup = new ChoiceInGroup
             {
+                ChoiceInGroupID = Guid.NewGuid(),
                 ChoiceGroupID = choiceGroupID,
                 ChoiceNum = choiceNum,
                 ChoiceText = choiceText,
@@ -406,6 +417,7 @@ namespace ClassLibrary1.Model
         {
             Tbl theTbl = new Tbl
             {
+                TblID = Guid.NewGuid(),
                 PointsManagerID = pointsManagerID,
                 DefaultRatingGroupAttributesID = defaultRatingGroupAttributesID,
                 WordToDescribeGroupOfColumnsInThisTbl = TblTabWord,
@@ -445,6 +457,7 @@ namespace ClassLibrary1.Model
         {
             Comment theComment = new Comment
             {
+                CommentID = Guid.NewGuid(),
                 TblRowID = tblRowID,
                 UserID = userId,
                 CommentTitle = commentTitle,
@@ -456,7 +469,7 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<Comment>().InsertOnSubmit(theComment);
             DataContext.SubmitChanges();
             CacheManagement.InvalidateCacheDependency("CommentForTblRowID" + tblRowID);
-            return theComment.CommentsID;
+            return theComment.CommentID;
 
         }
 
@@ -471,6 +484,7 @@ namespace ClassLibrary1.Model
         {
             DateTimeField theDateTimeField = new DateTimeField
             {
+                DateTimeFieldID = Guid.NewGuid(),
                 Field = field,
                 DateTime = theDateTime,
                 Status = (Byte)StatusOfObject.Active
@@ -483,7 +497,7 @@ namespace ClassLibrary1.Model
 
         public DatabaseStatus AddDatabaseStatus()
         {
-            DatabaseStatus theDatabaseStatus = new DatabaseStatus { PreventChanges = false };
+            DatabaseStatus theDatabaseStatus = new DatabaseStatus { DatabaseStatusID = Guid.NewGuid(), PreventChanges = false };
             DataContext.GetTable<DatabaseStatus>().InsertOnSubmit(theDatabaseStatus);
             DataContext.RegisterObjectToBeInserted(theDatabaseStatus);
             return theDatabaseStatus;
@@ -501,6 +515,7 @@ namespace ClassLibrary1.Model
         {
             DateTimeFieldDefinition theDateTimeFieldDefinition = new DateTimeFieldDefinition
             {
+                DateTimeFieldDefinitionID = Guid.NewGuid(),
                 FieldDefinitionID = FieldDefinitionID,
                 IncludeDate = includeDate,
                 IncludeTime = includeTime,
@@ -522,6 +537,7 @@ namespace ClassLibrary1.Model
 
             Domain theDomain = new Domain
             {
+                DomainID = Guid.NewGuid(),
                 ActiveRatingWebsite = activeRatingWebsite,
                 Name = name,
                 Creator = creator,
@@ -556,6 +572,7 @@ namespace ClassLibrary1.Model
                 Name = name,
                 FastAccessInitialCopy = true, // must copy this to the denormalized fast access table
                 InitialFieldsDisplaySet = false, // we can't set the fields display now, because we don't have an id
+                NotYetAddedToDatabase = true, // we will change this just before SaveChanges
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<TblRow>().InsertOnSubmit(theTblRow);
@@ -593,6 +610,7 @@ namespace ClassLibrary1.Model
         {
             TblRowFieldDisplay fieldDisplay = new TblRowFieldDisplay
             { // these must be set later, after we get an ID
+                TblRowFieldDisplayID = Guid.NewGuid(),
                 Row = null, 
                 PopUp = null,
                 TblRowPage = null,
@@ -616,6 +634,7 @@ namespace ClassLibrary1.Model
             tblRow.StatusRecentlyChanged = true;
             TblRowStatusRecord record = new TblRowStatusRecord
             {
+                TblRowStatusRecordID = Guid.NewGuid(),
                 TblRow = tblRow,
                 TimeChanged = timeChanged,
                 Deleting = deleting,
@@ -637,8 +656,10 @@ namespace ClassLibrary1.Model
         {
             Field theField = new Field
             {
+                FieldID = Guid.NewGuid(),
                 TblRow = tblRow,
                 FieldDefinition = FieldDefinition,
+                NotYetAddedToDatabase = true,
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<Field>().InsertOnSubmit(theField);
@@ -665,6 +686,7 @@ namespace ClassLibrary1.Model
         {
             FieldDefinition theFieldDefinition = new FieldDefinition
             {
+                FieldDefinitionID = Guid.NewGuid(),
                 TblID = TblID,
                 FieldNum = fieldNum,
                 FieldName = fieldName,
@@ -719,6 +741,7 @@ namespace ClassLibrary1.Model
         {
             InsertableContent theInsertableContent = new InsertableContent
                                     {
+                                        InsertableContentID = Guid.NewGuid(),
                                         Name=name,
                                         DomainID=domainId,
                                         PointsManagerID=universeId,
@@ -785,6 +808,7 @@ namespace ClassLibrary1.Model
         {
             LongProcess theLongProcess = new LongProcess
             {
+                LongProcessID = Guid.NewGuid(),
                 TypeOfProcess = (int)typeOfProcess,
                 Object1ID = object1ID,
                 Object2ID = object2ID,
@@ -826,6 +850,7 @@ namespace ClassLibrary1.Model
 
             Rating theRating = new Rating
             {
+                RatingID = Guid.NewGuid(),
                 RatingGroup = ratingGroup,
                 RatingCharacteristic = RatingCharacteristics,
                 OwnedRatingGroup = null,
@@ -871,7 +896,7 @@ namespace ClassLibrary1.Model
         {
             RatingCharacteristic theCharacteristics = new RatingCharacteristic
             {
-                
+                RatingCharacteristicsID = Guid.NewGuid(),
                 RatingPhaseGroupID = RatingPhaseGroupID,
                 SubsidyDensityRangeGroupID = SubsidyDensityRangeGroupID,
                 MinimumUserRating = minimumUserRating,
@@ -904,6 +929,7 @@ namespace ClassLibrary1.Model
 
             RatingCondition theCondition = new RatingCondition
             {
+                RatingConditionID = Guid.NewGuid(),
                 Rating = conditionRating,
                 GreaterThan = greaterThan,
                 LessThan = lessThan,
@@ -927,6 +953,7 @@ namespace ClassLibrary1.Model
             byte? MType = ratingGroupAttributes.TypeOfRatingGroup;
             RatingGroup theGroup = new RatingGroup
             {
+                RatingGroupID = Guid.NewGuid(),
                 TblRow = tblRow,
                 TblColumn = TblColumn,
                 RatingGroupAttribute = ratingGroupAttributes,
@@ -1040,7 +1067,7 @@ namespace ClassLibrary1.Model
             if (!recursiveCall)
             { // We're at the top of the hierarchy. Let's make sure this rating group doesn't already exist.
                 IQueryable<RatingGroup> existingRatingGroups = null;
-                if (tblRow.TblRowID != Guid.NewGuid()) // DEBUG -- test for whether it is a pre-existing row
+                if (!tblRow.NotYetAddedToDatabase)
                 {
                     existingRatingGroups = DataContext.WhereFromNewOrDatabase<RatingGroup>(mg => mg.TblRow == tblRow
                                                    && mg.TblColumn == TblColumn
@@ -1135,7 +1162,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroupAttribute theGroupAttributes;
             OverrideCharacteristic overrideCharacteristics = null;
-            if (theTblRow.TblRowID != Guid.NewGuid() /* DEBUG -- test for whether it is a pre-existing row */ && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
+            if (!theTblRow.NotYetAddedToDatabase && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
                 overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theColumn.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
             if (overrideCharacteristics == null)
                 theGroupAttributes = theColumn.RatingGroupAttribute;
@@ -1161,6 +1188,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroupAttribute theRatingGroupAttributes = new RatingGroupAttribute
             {
+                RatingGroupAttributesID = Guid.NewGuid(),
                PointsManagerID=pointsManagerID,
                 RatingCharacteristicsID = ratingCharacteristicsID,
                 RatingConditionID = ratingConditionID,
@@ -1204,6 +1232,7 @@ namespace ClassLibrary1.Model
 
             RatingPhase thePhase = new RatingPhase
             {
+                RatingPhaseID = Guid.NewGuid(),
                 RatingPhaseGroupID = RatingPhaseGroupID,
                 NumberInGroup = theGroup.NumPhases,
                 SubsidyLevel = subsidyLevel,
@@ -1235,6 +1264,7 @@ namespace ClassLibrary1.Model
         {
             RatingPhaseGroup theGroup = new RatingPhaseGroup
             {
+                RatingPhaseGroupID = Guid.NewGuid(),
                 NumPhases = 0,
                 Name = name,
                 Creator = creator,
@@ -1268,6 +1298,7 @@ namespace ClassLibrary1.Model
 
             RatingGroupPhaseStatus theStatus = new RatingGroupPhaseStatus
             {
+                RatingGroupPhaseStatusID = Guid.NewGuid(),
                 RatingPhaseGroup = ratingPhaseGroup,
                 RatingPhase = thePhase,
                 RatingGroup = topRatingGroup,
@@ -1299,6 +1330,7 @@ namespace ClassLibrary1.Model
         {
             RatingPhaseStatus theStatus = new RatingPhaseStatus
             {
+                RatingPhaseStatusID = Guid.NewGuid(),
                 Rating = theRating,
                 RatingGroupPhaseStatus = theRatingGroupPhaseStatus,
                 ShortTermResolutionValue = null,
@@ -1324,6 +1356,7 @@ namespace ClassLibrary1.Model
         {
             RatingPlan thePlan = new RatingPlan
             {
+                RatingPlanID = Guid.NewGuid(),
                 RatingGroupAttributesID = ratingGroupAttributesID,
                 OwnedRatingGroupAttributesID = null,
                 NumInGroup = numInGroup,
@@ -1335,7 +1368,7 @@ namespace ClassLibrary1.Model
             };
             DataContext.GetTable<RatingPlan>().InsertOnSubmit(thePlan);
             DataContext.SubmitChanges();
-            return thePlan.RatingPlansID;
+            return thePlan.RatingPlanID;
         }
 
         /// <summary>
@@ -1357,6 +1390,7 @@ namespace ClassLibrary1.Model
 
             RatingGroupResolution theResolution = new RatingGroupResolution
             {
+                RatingGroupResolutionID = Guid.NewGuid(),
                 RatingGroup = ratingGroup,
                 CancelPreviousResolutions = cancelPreviousResolutions,
                 ResolveByUnwinding = resolveByUnwinding,
@@ -1385,6 +1419,7 @@ namespace ClassLibrary1.Model
         {
             NumberField theNumberField = new NumberField
             {
+                NumberFieldID = Guid.NewGuid(),
                 Field = field,
                 Number = number,
                 Status = (Byte)StatusOfObject.Active
@@ -1408,6 +1443,7 @@ namespace ClassLibrary1.Model
         {
             NumberFieldDefinition theNumberFieldDefinition = new NumberFieldDefinition
             {
+                NumberFieldDefinitionID = Guid.NewGuid(),
                 FieldDefinitionID = FieldDefinitionID,
                 Minimum = minimum,
                 Maximum = maximum,
@@ -1433,6 +1469,7 @@ namespace ClassLibrary1.Model
         {
             OverrideCharacteristic theOverrideCharacteristics = new OverrideCharacteristic
             {
+                OverrideCharacteristicsID = Guid.NewGuid(),
                 RatingGroupAttribute = theRatingGroupAttributes,
                 TblRow = theTblRow,
                 TblColumn = theTblColumn,
@@ -1458,6 +1495,7 @@ namespace ClassLibrary1.Model
         {
             PointsAdjustment theAdjustment = new PointsAdjustment
             {
+                PointsAdjustmentID = Guid.NewGuid(),
                 User = theUser,
                 PointsManager = thePointsManager,
                 Reason = (int)theReason,
@@ -1486,6 +1524,7 @@ namespace ClassLibrary1.Model
                 return existingTotal;
             PointsTotal theTotal = new PointsTotal
             {
+                PointsTotalID = Guid.NewGuid(),
                 User = user,
                 PointsManager = pointsManager,
                 CurrentPoints = 0,
@@ -1507,6 +1546,7 @@ namespace ClassLibrary1.Model
         {
             UserCheckIn theCheckIn = new UserCheckIn
             {
+                UserCheckInID = Guid.NewGuid(),
                 User = user,
                 CheckInTime = checkInTime
             };
@@ -1540,6 +1580,7 @@ namespace ClassLibrary1.Model
 
             UserRatingGroup theGroup = new UserRatingGroup
             {
+                UserRatingGroupID = Guid.NewGuid(),
                 RatingGroup = topRatingGroup,
                 RatingGroupPhaseStatus = currentRatingGroupPhaseStatus,
                 WhenMade = TestableDateTime.Now
@@ -1671,6 +1712,7 @@ namespace ClassLibrary1.Model
 
             UserRating theUserRating = new UserRating
             {
+                UserRatingID = Guid.NewGuid(),
                 UserRatingGroup = userRatingGroup,
                 Rating = rating,
                 RatingPhaseStatus = ratingPhaseStatus,
@@ -1822,23 +1864,13 @@ namespace ClassLibrary1.Model
             return theUserRating;
         }
 
-        public class UserRatingToAddViaAzure
-        {
-           // Guid userID;
-
-        }
-
-        public void AddUserRatingsToAddViaAzure(User theUser, UserRatingHierarchyData predictionHierarchyData)
-        {
-            throw new NotImplementedException();
-        }
-
         public UserRatingsToAdd AddUserRatingsToAdd(User theUser, UserRatingHierarchyData predictionHierarchyData)
         {
             //Trace.TraceInformation("AddUserRatingsToAdd entered " + predictionHierarchyData.TheData[0].enteredValueOrCalculatedValue + " afteradjustment:" + predictionHierarchyData.TheData[0].newValueAfterAdjustment);
 
             UserRatingsToAdd theUserRatingsData = new UserRatingsToAdd
             {
+                UserRatingsToAddID = Guid.NewGuid(),
                 User = theUser,
                 TopRatingGroupID = (Guid)predictionHierarchyData.UserRatingHierarchyEntries.FirstOrDefault().RatingGroupId,
                 UserRatingHierarchy = BinarySerializer.Serialize<UserRatingHierarchyData>(predictionHierarchyData)
@@ -1903,6 +1935,7 @@ namespace ClassLibrary1.Model
         {
             ProposalSetting theProposalSettings = new ProposalSetting
             {
+                ProposalSettingsID = Guid.NewGuid(),
                 PointsManagerID = pointsManagerID,
                 TblID = TblID,
                 UsersMayProposeAddingTbls = usersMayProposeAddingTbls,
@@ -1951,6 +1984,7 @@ namespace ClassLibrary1.Model
 
             SubsidyAdjustment theAdjustment = new SubsidyAdjustment
             {
+                SubsidyAdjustmentID = Guid.NewGuid(),
                 RatingGroupPhaseStatusID = ratingPhaseStatusID,
                 SubsidyAdjustmentFactor = subsidyAdjustmentFactor,
                 EffectiveTime = TestableDateTime.Now,
@@ -1968,6 +2002,7 @@ namespace ClassLibrary1.Model
         {
             RewardPendingPointsTracker theRewardPendingPointsTracker = new RewardPendingPointsTracker
             {
+                RewardPendingPointsTrackerID = Guid.NewGuid(),
                 PendingRating = null,
                 TimeOfPendingRating = null,
                 TblRow = rewardTblRow,
@@ -1985,6 +2020,7 @@ namespace ClassLibrary1.Model
 
             RewardRatingSetting theRewardRatingSetting = new RewardRatingSetting
             {
+                RewardRatingSettingsID = Guid.NewGuid(),
                 PointsManagerID = pointsManagerID,
                 UserActionID = userActionID,
                 RatingGroupAttributesID = ratingGroupAttributesID,
@@ -2012,6 +2048,7 @@ namespace ClassLibrary1.Model
 
             SubsidyDensityRange theRange = new SubsidyDensityRange
             {
+                SubsidyDensityRangeID = Guid.NewGuid(),
                 SubsidyDensityRangeGroupID = theSubsidyDensityRangeGroupID,
                 Status = (Byte)StatusOfObject.Proposed
             };
@@ -2156,6 +2193,7 @@ namespace ClassLibrary1.Model
         {
             SubsidyDensityRangeGroup theGroup = new SubsidyDensityRangeGroup
             {
+                SubsidyDensityRangeGroupID = Guid.NewGuid(),
                 UseLogarithmBase = theBase,
                 CumDensityTotal = 1,
                 Name = name,
@@ -2178,6 +2216,7 @@ namespace ClassLibrary1.Model
         {
             TblDimension theTblDimension = new TblDimension
             {
+                TblDimensionsID = Guid.NewGuid(),
                 MaxWidthOfImageInRowHeaderCell = maxWidthOfImageInRowHeaderCell,
                 MaxHeightOfImageInRowHeaderCell = maxHeightOfImageInRowHeaderCell,
                 MaxWidthOfImageInTblRowPopUpWindow = maxWidthOfImageInTblRowPopUpWindow,
@@ -2202,6 +2241,7 @@ namespace ClassLibrary1.Model
             text = text.Trim();
             TextField theTextField = new TextField
             {
+                TextFieldID = Guid.NewGuid(),
                 Field = field,
                 Text = text,
                 Link = link,
@@ -2219,6 +2259,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("Text field must include text, link, or both.");
             TextFieldDefinition theTextFieldDefinition = new TextFieldDefinition
             {
+                TextFieldDefinitionID = Guid.NewGuid(),
                 FieldDefinitionID = FieldDefinitionID,
                 IncludeText = includeText,
                 IncludeLink = includeLink,
@@ -2245,6 +2286,7 @@ namespace ClassLibrary1.Model
 
             PointsManager thePointsManagers = new PointsManager
             {
+                PointsManagerID = Guid.NewGuid(),
                 DomainID = domainID,
                 TrustTrackerUnit = AddTrustTrackerUnit(),
                 CurrentPeriodDollarSubsidy = 0,
@@ -2275,6 +2317,7 @@ namespace ClassLibrary1.Model
         {
             TrustTrackerForChoiceInGroup theTracker = new TrustTrackerForChoiceInGroup
             {
+                TrustTrackerForChoiceInGroupID = Guid.NewGuid(),
                 User = theUser,
                 ChoiceInGroup = theChoiceInGroup,
                 Tbl = theTbl,
@@ -2293,6 +2336,7 @@ namespace ClassLibrary1.Model
         {
             TrustTrackerForChoiceInGroupsUserRatingLink theLink = new TrustTrackerForChoiceInGroupsUserRatingLink
             {
+                TrustTrackerForChoiceInGroupsUserRatingLinkID = Guid.NewGuid(),
                 UserRating = theUserRating,
                 TrustTrackerForChoiceInGroup = theTrustTrackerForChoiceInGroup
             };
@@ -2326,6 +2370,7 @@ namespace ClassLibrary1.Model
 
             UserInfo theUserInfo = new UserInfo
             {
+                UserInfoID = Guid.NewGuid(),
                 UserID = userID,
                 FirstName = firstName,
                 LastName = lastname,
@@ -2376,6 +2421,7 @@ namespace ClassLibrary1.Model
         {
             UsersRight theUsersRights = new UsersRight
             {
+                UsersRightsID = Guid.NewGuid(),
                 UserID = userID,
                 PointsManagerID = pointsManagerID,
                 MayView = mayView,
@@ -2402,6 +2448,7 @@ namespace ClassLibrary1.Model
         {
             TrustTrackerUnit ttu = new TrustTrackerUnit()
                 {
+                    TrustTrackerUnitID = Guid.NewGuid(),
                     ExtendIntervalMultiplier = TrustTrackerUnit.DefaultExtendIntervalMultiplier,
                     MinUpdateIntervalSeconds = TrustTrackerUnit.DefaultMinUpdateIntervalSeconds,
                     MaxUpdateIntervalSeconds = TrustTrackerUnit.DefaultMaxUpdateIntervalSeconds,
@@ -2420,7 +2467,7 @@ namespace ClassLibrary1.Model
         {
             UniquenessLock ul = new UniquenessLock()
             {
-                Id = MD5HashGenerator.GetDeterministicGuid(objectToHashIntoUniquenessLock),
+                Id = MD5HashGenerator.GetDeterministicGuid(objectToHashIntoUniquenessLock), // Note: It's critical NOT to just create a regular Guid
                 DeletionTime = deletionTime
             };
             DataContext.GetTable<UniquenessLock>().InsertOnSubmit(ul);
@@ -2453,6 +2500,7 @@ namespace ClassLibrary1.Model
             else
                 theUserProfileInfo = UserProfileCollection.CreateUser(userName, password, email);
             User theUser = new User {
+                UserID = Guid.NewGuid(),
                 Username = userName,
                 SuperUser = isSuperUser,
                 Status = (Byte)StatusOfObject.Active
@@ -2476,7 +2524,7 @@ namespace ClassLibrary1.Model
         {
             UserAction theUserAction = new UserAction
             {
-                UserActionID = userActionID,
+                UserActionID = userActionID, // i.e. deterministic IDs
                 Text = text,
                 SuperUser = superUser
             };
@@ -2490,6 +2538,7 @@ namespace ClassLibrary1.Model
             DateTime currentTime = TestableDateTime.Now;
             VolatilityTblRowTracker theTracker = new VolatilityTblRowTracker
             {
+                VolatilityTblRowTrackerID = Guid.NewGuid(),
                 TblRow = theTblRow,
                 DurationType = (byte) theTimeFrame,
                 TotalMovement = 0,
@@ -2510,6 +2559,7 @@ namespace ClassLibrary1.Model
             TimeSpan theTimeSpan = VolatilityTracking.GetTimeSpanForVolatilityTiming(theTimeFrame);
             VolatilityTracker theTracker = new VolatilityTracker
             {
+                VolatilityTrackerID = Guid.NewGuid(),
                 RatingGroup = theRatingGroup,
                 DurationType = (byte) theTimeFrame,
                 EndTime = currentTime,

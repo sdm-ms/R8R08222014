@@ -92,9 +92,14 @@ namespace ClassLibrary1.Misc
         public IRepository<T> GetTable<T>() where T : class
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
-            ObjectContext objectContext = ((IObjectContextAdapter)UnderlyingDbContext).ObjectContext;  
+            ObjectContext objectContext = GetObjectContext();  
             ObjectSet<T> objectSet = objectContext.CreateObjectSet<T>();
             return new EFRepository<T>(objectSet);
+        }
+
+        internal ObjectContext GetObjectContext()
+        {
+            return ((IObjectContextAdapter)UnderlyingDbContext).ObjectContext;
         }
 
         public virtual void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
@@ -121,7 +126,7 @@ namespace ClassLibrary1.Misc
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }

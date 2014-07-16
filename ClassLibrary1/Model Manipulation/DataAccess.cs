@@ -281,7 +281,7 @@ namespace ClassLibrary1.Model
     /// <returns></returns>
         public Comment GetComment(Guid theID)
         {
-            return R8RDB.GetTable<Comment>().Single(x => x.CommentsID == theID);
+            return R8RDB.GetTable<Comment>().Single(x => x.CommentID == theID);
 
         }
 
@@ -578,7 +578,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public RatingPlan GetRatingPlan(Guid theID)
         {
-            return R8RDB.GetTable<RatingPlan>().Single(x => x.RatingPlansID == theID);
+            return R8RDB.GetTable<RatingPlan>().Single(x => x.RatingPlanID == theID);
         }
 
 
@@ -1101,8 +1101,6 @@ namespace ClassLibrary1.Model
                 return false; // useful for testing purposes -- password is "badrater"
             if (thePointsTotal == null)
                 thePointsTotal = theUser.PointsTotals.SingleOrDefault(pt => pt.PointsManager == thePointsManager && pt.User == theUser); 
-            if (thePointsTotal == null)
-                thePointsTotal = new PointsTotal(); // all points are zero
 
             bool userIsTrusted = true; // we are now making it so that all users are trusted to make database changes, but some might automatically be rolled back (theRules.TrustPointsRatioTotalsMinForAutoTrust != null && theUser.TrustPointsRatioTotals >= theRules.TrustPointsRatioTotalsMinForAutoTrust) || thePointsTotal.TrustPointsRatio >= 1 || (thePointsTotal.TrustPointsRatio * Math.Max(thePointsManager.CurrentPointsToCount, (decimal)0.0001) / Math.Max(theRules.UltimatePointsToCount, (decimal)0.0001) >= 1) || (thePointsTotal.TrustPoints >= thePointsManager.CurrentPointsToCount);
             return userIsTrusted;

@@ -205,55 +205,14 @@ namespace ClassLibrary1.Model
             iDataContext.TempCacheAdd("fasttablerowupdate", null);
         }
 
-        internal static bool ContinueUpdate_AzureVersion(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
-        {
-            // We should probably not resurrect this, as the AzureQueueWithErrorRecovery simply drops the entire table and rebuilds if it runs into trouble.
-            IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
-            if (dataContext == null)
-                return false;
-            const int numAtOnce = 25; // 100 produced an error for too many parameters, presumably because we enumerate the tbl rows we want and then query for the fields. 
-
-            var queue = new AzureQueueWithErrorRecovery(10, null);
-            List<FastAccessRowRequiringUpdate> theRows = new List<FastAccessRowRequiringUpdate>();
-            var theMessages = queue.GetMessages("fasttablerowupdate", numAtOnce);
-            foreach (var setOfRows in theMessages)
-                theRows.AddRange(((RowsRequiringUpdate)setOfRows).Rows);
-            if (!FastAccessTablesQuery.FastAccessTablesEnabled())
-            {
-                queue.ConfirmProperExecution("fasttablerowupdate");
-                return theRows.Any();
-            }
-            var theRowsByTableAndUpdateInstruction = theRows.Select(x => new { Item = x, GroupByInstruct = x.TableName + x.UpdateFields.ToString() + x.UpdateRatings.ToString() }).GroupBy(x => x.GroupByInstruct);
-            bool anyNewRowsAdded = false;
-            foreach (var table in theRowsByTableAndUpdateInstruction)
-            {
-                Guid tblID = new Guid(table.FirstOrDefault().Item.TableName.Substring(1));
-                Tbl theTbl = iDataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
-                bool newRowsAdded = table.Any(x => x.Item.TblRowID == Guid.NewGuid()); // DEBUG -- test for whether it's new // we can't use update for this, because we don't know the TblRowID yet.
-                List<Guid> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();
-                IQueryable<TblRow> tblRows = iDataContext.GetTable<TblRow>().Where(x => tblRowIDs.Contains(x.TblRowID));
-                new FastAccessTableInfo(iDataContext, theTbl).UpdateRows(dta, tblRows, table.FirstOrDefault().Item.UpdateRatings, table.FirstOrDefault().Item.UpdateFields);
-                if (newRowsAdded && theTbl.FastTableSyncStatus == (int)FastAccessTableStatus.apparentlySynchronized)
-                {
-                    theTbl.FastTableSyncStatus = (int)FastAccessTableStatus.newRowsMustBeCopied;
-                    CacheManagement.InvalidateCacheDependency("TblID" + theTbl.TblID);
-                    dataContext.SubmitChanges();
-                    anyNewRowsAdded = true;
-                }
-            }
-            queue.ConfirmProperExecution("fasttablerowupdate");
-            if (anyNewRowsAdded)
-                ContinueAddingNewRows(iDataContext, dta);
-            return theRows.Count() == numAtOnce; // more work to do
-        }
-
         internal static bool ContinueBulkUpdating(IR8RDataContext iDataContext, DenormalizedTableAccess dta)
         {
             if (!DoBulkUpdating && !DoBulkInserting)
                 return false;
 
             if (useAzureQueuesToDesignateRowsToUpdate)
-                return ContinueUpdate_AzureVersion(iDataContext, dta); // seems to create more problems but we'll keep the code around for now in case we change our mind
+                throw new NotImplementedException();
+
             IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return false;

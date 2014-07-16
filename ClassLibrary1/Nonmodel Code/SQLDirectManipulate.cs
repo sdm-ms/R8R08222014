@@ -23,7 +23,8 @@ namespace ClassLibrary1.Misc
         typeDecimal,
         typeGeography,
         typeDateTime,
-        typeBit
+        typeBit,
+        typeGuid
     }
 
     public class SQLTableColumnDescription
@@ -54,6 +55,8 @@ namespace ClassLibrary1.Misc
                     return "[geography]";
                 case SQLColumnType.typeInt:
                     return "[int]";
+                case SQLColumnType.typeGuid:
+                    return "[uniqueidentifier]";
                 case SQLColumnType.typeStringUnlimited:
                     if (NonclusteredIndex || ClusteredIndex)
                         throw new Exception("Can't create an index on a string of unlimited size."); // MAX can't be used on indexed columns -- can create a smaller column and index on that. Then sort on that followed by this
@@ -81,6 +84,8 @@ namespace ClassLibrary1.Misc
                     return typeof(Microsoft.SqlServer.Types.SqlGeography);
                 case SQLColumnType.typeInt:
                     return System.Type.GetType("System.Int32");
+                case SQLColumnType.typeGuid:
+                    return System.Type.GetType("System.Guid");
                 case SQLColumnType.typeStringUnlimited:
                     return System.Type.GetType("System.String");
                 default:

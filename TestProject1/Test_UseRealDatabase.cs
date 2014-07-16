@@ -139,6 +139,7 @@ namespace TestProject1
             IR8RDataContext myDataContext = new R8REFDataContext();
 
             User newUser =  new User {
+                UserID = Guid.NewGuid(),
                 Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),
                 SuperUser = false,
                 Status = (Byte)StatusOfObject.Active

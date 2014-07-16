@@ -44,7 +44,7 @@ namespace ClassLibrary1.Model
         /// <param name="ownerRatingPlanID">The rating plan for the hierarchically above rating</param>
         public void RelateRatingPlanAndGroupAttributes(Guid ownedRatingGroupAttributesID, Guid ownerRatingPlanID)
         {
-            RatingPlan thePlan = DataContext.GetTable<RatingPlan>().Single(x=>x.RatingPlansID==ownerRatingPlanID);
+            RatingPlan thePlan = DataContext.GetTable<RatingPlan>().Single(x=>x.RatingPlanID==ownerRatingPlanID);
             RatingGroupAttribute theAttributes = DataContext.GetTable<RatingGroupAttribute>().Single(x=>x.RatingGroupAttributesID==ownedRatingGroupAttributesID);
 
             thePlan.OwnedRatingGroupAttributesID = ownedRatingGroupAttributesID;

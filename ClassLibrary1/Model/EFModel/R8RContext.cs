@@ -4,6 +4,7 @@ namespace ClassLibrary1.EFModel
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using System.Data.Entity.Core.Objects;
 
     public partial class R8RContext : DbContext
     {
@@ -1216,5 +1217,6 @@ namespace ClassLibrary1.EFModel
                 .Property(e => e.PushbackProportion)
                 .HasPrecision(18, 4);
         }
+
     }
 }

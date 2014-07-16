@@ -59,8 +59,6 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         LimitToThisTblColumn = limitToThisTblColumn;
         TblColumnToSort = tblColumnToSort;
         TblRowID = entityID;
-        if (TblRowID == Guid.NewGuid()) // DEBUG -- test for new row
-            throw new Exception("Internal error: row id must be specified.");
         RowNumber = rowNumber;
         CanPredict = canPredict;
         CanAdminister = canAdminister;

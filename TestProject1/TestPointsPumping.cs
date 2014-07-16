@@ -116,7 +116,7 @@ namespace TestProject1
             // Setup 
             for (int i = 0; i < n; i++)
             {
-                UserRating ur = new UserRating();
+                UserRating ur = new UserRating() { UserRatingID = Guid.NewGuid() };
                 if (i == 0)
                     ur.PreviousRatingOrVirtualRating = previousRatingOrVirtualRating;
                 else
@@ -127,7 +127,7 @@ namespace TestProject1
                 else
                     ur.MaxGain = assumedMaxGain; // we just need an assumption 
                 urList.Add(ur);
-                PointsTotal pt = new PointsTotal();
+                PointsTotal pt = new PointsTotal() { PointsTotalID = Guid.NewGuid() };
                 if (usersHaveSufficientPoints[i])
                     pt.TotalPoints = 1000000; // gives user sufficient points
                 // assuming this is the first user rating

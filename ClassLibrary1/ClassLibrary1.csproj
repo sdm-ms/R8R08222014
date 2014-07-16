@@ -269,6 +269,7 @@
     <Compile Include="Nonmodel Code\GeoCalc.cs" />
     <Compile Include="Nonmodel Code\GoogleGeocode.cs" />
     <Compile Include="Nonmodel Code\GooglePagerField.cs" />
+    <Compile Include="Nonmodel Code\GuidManipulation.cs" />
     <Compile Include="Nonmodel Code\LinqExcelProvider.cs" />
     <Compile Include="Nonmodel Code\MapquestGeocode.cs" />
     <Compile Include="Nonmodel Code\MD5HashGenerator.cs" />

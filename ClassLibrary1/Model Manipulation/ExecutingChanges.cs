@@ -940,7 +940,7 @@ namespace ClassLibrary1.Model
                         break;
                     case TypeOfObject.Comment:
                         {
-                            Comment theComment = DataContext.GetTable<Comment>().Single(a => a.CommentsID == theChange.ExistingObject);
+                            Comment theComment = DataContext.GetTable<Comment>().Single(a => a.CommentID == theChange.ExistingObject);
                             CacheManagement.InvalidateCacheDependency("CommentForTblRowID" + theComment.TblRowID);
                         }
                         break;

@@ -82,7 +82,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
                     Title = x.CommentTitle,
                     Comment = x.CommentText, 
                     AuthorAndDate = x.User.Username + " " + x.DateTime.ToString(), 
-                    CommentID = x.CommentsID, 
+                    CommentID = x.CommentID, 
                     Status = x.Status 
                 });
         e.Result = theQuery;

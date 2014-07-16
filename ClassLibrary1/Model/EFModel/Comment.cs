@@ -9,7 +9,7 @@ namespace ClassLibrary1.EFModel
     public partial class Comment
     {
         [Key]
-        public Guid CommentsID { get; set; }
+        public Guid CommentID { get; set; }
 
         public Guid TblRowID { get; set; }
 

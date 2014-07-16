@@ -26,7 +26,7 @@ namespace ClassLibrary1.Model
             if (tableSpec == null)
             {
                 tableSpec = GetTableSpecification(tblRow);
-                if (tblRow.TblRowID != Guid.NewGuid()) // DEBUG -- test for whether it is a pre-existing row
+                if (!tblRow.NotYetAddedToDatabase)
                     dataIsAlreadyInDatabase = true;
             }
             
@@ -71,7 +71,7 @@ namespace ClassLibrary1.Model
                 updates = new SQLInfoForCellsInRow_MainAndSecondaryTables();
             else
                 updates = BinarySerializer.Deserialize<SQLInfoForCellsInRow_MainAndSecondaryTables>(tblRow.FastAccessUpdated.ToArray());
-            if (tblRow.TblRowID != Guid.NewGuid()) // DEBUG -- test for whether it is a pre-existing row
+            if (!tblRow.NotYetAddedToDatabase) 
                 updates.SetMainTablePrimaryKey(tblRow.TblRowID, true);
             return updates;
         }

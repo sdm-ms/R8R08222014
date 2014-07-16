@@ -620,7 +620,7 @@ namespace ClassLibrary1.Model
                     R8RDB.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RatingPlan:
-                    R8RDB.GetTable<RatingPlan>().Single(x => x.RatingPlansID == objectID).Status = newValue;
+                    R8RDB.GetTable<RatingPlan>().Single(x => x.RatingPlanID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.NumberField:
                     R8RDB.GetTable<NumberField>().Single(x => x.NumberFieldID == objectID).Status = newValue;

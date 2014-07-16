@@ -52,6 +52,8 @@ namespace ClassLibrary1.EFModel
 
         public bool FastAccessUpdateSpecified { get; set; }
 
+        public bool NotYetAddedToDatabase { get; set; }
+
         public byte[] FastAccessUpdated { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }

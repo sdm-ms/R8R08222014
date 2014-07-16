@@ -10,7 +10,7 @@ namespace ClassLibrary1.EFModel
     public partial class TblRowStatusRecord
     {
         [Key]
-        public Guid RecordId { get; set; }
+        public Guid TblRowStatusRecordID { get; set; }
 
         public Guid TblRowId { get; set; }
 

@@ -715,7 +715,7 @@ namespace ClassLibrary1.Model
                     FieldChange(theFieldData, userID);
                 }
 
-                if (theSet.theTblRow.TblRowID != Guid.NewGuid()) // DEBUG -- test for pre-existing row
+                if (!theSet.theTblRow.NotYetAddedToDatabase) 
                 {
                     FieldsDisplayCreator theFieldsDisplayCreator = new FieldsDisplayCreator();
                     theFieldsDisplayCreator.SetFieldDisplayHtml(theSet.theTblRow);
@@ -865,7 +865,7 @@ namespace ClassLibrary1.Model
 
         internal void FieldDelete(TblRow tblRow, FieldDefinition theFieldDefinition, Guid userID)
         {
-            if (tblRow.TblRowID == Guid.NewGuid() /* DEBUG -- replace iwth test for whether new */)
+            if (tblRow.NotYetAddedToDatabase)
                 return; // Shouldn't be a field to delete for table row that hasn't been added yet.
             Field theField = DataManipulation.GetFieldForTblRow(tblRow, theFieldDefinition);
             if (theField != null)
@@ -886,7 +886,7 @@ namespace ClassLibrary1.Model
             Field field = null;
             object subfield = null;
             FieldTypes theFieldType = FieldTypes.AddressField; // must initialize before passing as ref below
-            if (tblRow.TblRowID != Guid.NewGuid() /* DEBUG -- REPLACE WITH TEST FOR WHETHER THE OBJECT IS NEW */)
+            if (!tblRow.NotYetAddedToDatabase)
                 DataManipulation.GetFieldForTblRow(tblRow, FieldDefinitionID, ref field, ref subfield, ref theFieldType);
             if (field == null)
             {
@@ -1938,7 +1938,7 @@ namespace ClassLibrary1.Model
 
             int theUserRatingCount = theUserRatings.Count();
             RatingGroup topRatingGroup = null;
-            Guid topMostRatingID = Guid.NewGuid(); // assignment needed to initialize
+            Guid topMostRatingID = new Guid(); // assignment needed to initialize
             for (int i = 0; i < theUserRatingCount; i++)
             {
                 theUserRatings[i].UserRatingValue = Math.Round(theUserRatings[i].UserRatingValue, 4);

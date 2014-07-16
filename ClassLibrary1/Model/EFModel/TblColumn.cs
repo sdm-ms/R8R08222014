@@ -58,6 +58,8 @@ namespace ClassLibrary1.EFModel
 
         public bool AutomaticallyCreateMissingRatings { get; set; }
 
+        public bool NotYetAddedToDatabase { get; set; }
+
         public byte Status { get; set; }
 
         public virtual ICollection<OverrideCharacteristic> OverrideCharacteristics { get; set; }

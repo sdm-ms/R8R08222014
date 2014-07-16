@@ -101,7 +101,7 @@ namespace ClassLibrary1.Model
             DatabaseStatus theStatus = GetStatus(theDataContext);
             if (theStatus == null)
             {
-                theStatus = new DatabaseStatus { PreventChanges = doPrevent };
+                theStatus = new DatabaseStatus { DatabaseStatusID = Guid.NewGuid(), PreventChanges = doPrevent };
                 theDataContext.GetTable<DatabaseStatus>().InsertOnSubmit(theStatus);
             }
             theStatus.PreventChanges = doPrevent;
