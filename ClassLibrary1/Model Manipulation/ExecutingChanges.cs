@@ -43,7 +43,7 @@ namespace ClassLibrary1.Model
         {
             // Duplicate the original universe object, making changes as necessary.
             PointsManager originalPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == pointsManagerID);
-            int newPointsManagerID = AddPointsManager(originalPointsManager.DomainID, originalPointsManager.Name, originalPointsManager.Creator);
+            Guid $3 = AddPointsManager(originalPointsManager.DomainID, originalPointsManager.Name, originalPointsManager.Creator);
             PointsManager newPointsManager = DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == newPointsManagerID);
 
 
@@ -107,7 +107,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="PointsManagerID"></param>
         /// <returns></returns>
-        public ProposalSetting GetProposalSettingForPointsManager(int PointsManagerID)
+        public ProposalSetting GetProposalSettingForPointsManager(Guid PointsManagerID)
         {
             ProposalSetting TheSetting = null;
             var ProposalSettings = DataContext.GetTable<ProposalSetting>().Where(m => m.PointsManagerID == PointsManagerID && m.Status == Convert.ToByte(StatusOfObject.Active));
@@ -691,10 +691,7 @@ namespace ClassLibrary1.Model
                         }
                         break;
                     case TypeOfObject.TblTab:
-                        ChangeTblTabDefaultSort((Guid)theChange.ExistingObject, theChange.NewValueInteger);
-                        var theTblTab = DataContext.GetTable<TblTab>().Single(cg => cg.TblTabID == theChange.ExistingObject);
-                        CacheManagement.InvalidateCacheDependency("ColumnsForTblID" + theTblTab.TblID);
-                        changeMade = true;
+                        changeMade = false;
                         break;
                     case TypeOfObject.ChoiceInGroup:
                         ChoiceInGroup theChoiceInGroup = DataContext.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == (Guid)theChange.ExistingObject);

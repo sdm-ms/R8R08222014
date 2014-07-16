@@ -69,10 +69,10 @@ namespace TestProject1
         public void RepositoryItem_CanGetAndSetPrimaryKey()
         {
             User theUser = new User();
-            int primaryKey = (int) RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
+            Guid primaryKey = (Guid)RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
             primaryKey.Should().Be(0);
             RepositoryItemPrimaryKeys.SetPrimaryKeyFieldValue(theUser, 5);
-            primaryKey = (int) RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
+            primaryKey = (Guid)RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(theUser);
             primaryKey.Should().Be(5);
         }
 

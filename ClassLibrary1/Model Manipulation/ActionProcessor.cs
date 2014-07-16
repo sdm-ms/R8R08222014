@@ -432,7 +432,7 @@ namespace ClassLibrary1.Model
                 {
                     if (newChoiceInGroup.choiceInGroupID == null)
                     { // This one is new -- let's add it to the database.
-                        int newChoiceInGroupID = DataManipulation.AddChoiceInGroup((Guid)choiceGroupID, newChoiceInGroup.choiceNum, newChoiceInGroup.text, newChoiceInGroup.determiningGroupValue);
+                        Guid newChoiceInGroupID = DataManipulation.AddChoiceInGroup((Guid)choiceGroupID, newChoiceInGroup.choiceNum, newChoiceInGroup.text, newChoiceInGroup.determiningGroupValue);
                         DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.ChoiceInGroup, true, false, false, false, false, false, false, false, "", newChoiceInGroupID, null, null, null, null, "", null);
                     }
                     else
@@ -445,7 +445,7 @@ namespace ClassLibrary1.Model
                         }
                         if (newChoiceInGroup.determiningGroupValue != originalChoiceInGroup.determiningGroupValue)
                         {
-                            Guid changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.ChoiceInGroup, false, false, false, false, true, false, true, false, "", null, originalChoiceInGroup.choiceInGroupID, null, newChoiceInGroup.determiningGroupValue, null, "", null);
+                            Guid changesStatusObjectID = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.ChoiceInGroup, false, false, false, false, true, false, true, false, "", null, originalChoiceInGroup.choiceInGroupID, null, null, null, "", null, newChoiceInGroup.determiningGroupValue);
                         }
                         if (newChoiceInGroup.text != originalChoiceInGroup.text)
                         {
@@ -1163,22 +1163,10 @@ namespace ClassLibrary1.Model
             else
                 throw new Exception("Insufficient privileges");
         }
-        public void TblTabChangeDefaultSort(int TblTabID, int? defaultSortTblColumnID, bool doItNow, Guid userID, Guid? changesGroupID)
+        public void TblTabChangeDefaultSort(Guid TblTabID, Guid? defaultSortTblColumnID, bool doItNow, Guid userID, Guid? changesGroupID)
         {
-            DataManipulation.ConfirmObjectExists(TblTabID, TypeOfObject.TblTab);
             TblTab theTblTab = DataAccess.GetTblTab(TblTabID);
-            if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeColumns, !doItNow, null, theTblTab.TblID, true))
-            {
-                Guid? theUser = userID;
-                if (DataAccess.GetUser(userID).SuperUser)
-                    theUser = null;
-                Guid theChange = DataManipulation.AddChangesStatusOfObject((Guid)changesGroupID, TypeOfObject.TblTab, false, false, false, false, true, false, false, false, "", null, TblTabID, null, defaultSortTblColumnID, null, "", null);
-                if (doItNow)
-                    DataManipulation.ImplementChangesGroup((Guid)changesGroupID);
-            }
-            else
-                throw new Exception("Insufficient privileges");
-
+            theTblTab.DefaultSortTblColumnID = defaultSortTblColumnID;
         }
 
         public Guid TblColumnFormattingCreate(Guid TblColumnID, string prefix, string suffix, bool omitLeadingZero, decimal? extraDecimalPlaceAbove, decimal? extraDecimalPlace2Above, decimal? extraDecimalPlace3Above, string suppStylesHeader, string suppStylesMain, bool makeActive, bool makeActiveNow, Guid userID, Guid? changesGroupID)
@@ -2173,12 +2161,12 @@ namespace ClassLibrary1.Model
                 {
                     if (ratingIDString.Contains("/"))
                         continue;
-                    Guid ratingID = Convert.ToInt32(ratingIDString);
+                    Guid ratingID = new Guid(ratingIDString);
                     Rating theRating = DataManipulation.DataContext.GetTable<Rating>()
                         .Single(m => m.RatingID == ratingID);
                     decimal? theUserRating = theRating.CurrentValue;
                     int decimalPlaces = theRating.RatingCharacteristic.DecimalPlaces;
-                    int topRatingGroupID = theRating.TopmostRatingGroupID;
+                    Guid topRatingGroupID = theRating.TopmostRatingGroupID;
                     theFormatting = NumberandTableFormatter.GetFormattingForTblColumn(DataManipulation.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == topRatingGroupID).TblColumnID);
                     string formattedResult = NumberandTableFormatter.FormatAsSpecified(theUserRating,decimalPlaces,theFormatting);
                     RatingAndUserRatingString theRatingAndUserRating = new RatingAndUserRatingString();
@@ -2227,11 +2215,11 @@ namespace ClassLibrary1.Model
         //    //}
         //    else throw new Exception("You don't have privileges to set the trading status.");
         //}
-        public void TradingStatusSet(int objectID, TypeOfObject theObjectType, TradingStatus newStatus, bool doItNow, Guid userID, Guid? changesGroupID)
+        public void TradingStatusSet(Guid objectID, TypeOfObject theObjectType, TradingStatus newStatus, bool doItNow, Guid userID, Guid? changesGroupID)
         {
             DataManipulation.ConfirmObjectExists(objectID, theObjectType);
-            int? TblID;
-            int? pointsManagerID;
+            Guid? TblID;
+            Guid? pointsManagerID;
             DataManipulation.GetTblAndPointsManagerForObject(objectID, theObjectType, out TblID, out pointsManagerID);
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.AddTblsAndChangePointsManagers, false, pointsManagerID, TblID, true))
             {
@@ -2277,10 +2265,10 @@ namespace ClassLibrary1.Model
 
         public Guid CommentForTblRowCreate(Guid tblRowID, string commentTitle, string commentText, DateTime date, Guid userID, bool proposeOnly, bool considerCreatingRewardRating, Guid? changesGroupID)
         {
-            int? theCommentId = null;
+            Guid? theCommentId = null;
             DataManipulation.ConfirmObjectExists(tblRowID, TypeOfObject.TblRow);
             Tbl theTbl = DataAccess.GetTblRow(tblRowID).Tbl;
-            int? PointsManagerID = theTbl.PointsManagerID;
+            Guid? PointsManagerID = theTbl.PointsManagerID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, false, PointsManagerID, null, true))
             {
                 theCommentId = DataManipulation.AddComment(tblRowID, userID, commentTitle, commentText, date, proposeOnly ? StatusOfObject.Proposed : StatusOfObject.Active);
@@ -2301,12 +2289,12 @@ namespace ClassLibrary1.Model
             return (Guid)theCommentId;
         }
 
-        public void CommentForTblRowDeleteOrUndelete(int CommentId, bool delete, Guid userID, bool considerCreatingRewardRating, Guid? changesGroupID)
+        public void CommentForTblRowDeleteOrUndelete(Guid CommentId, bool delete, Guid userID, bool considerCreatingRewardRating, Guid? changesGroupID)
         {
             DataManipulation.ConfirmObjectExists(CommentId, TypeOfObject.Comment);
             Comment theComment = DataAccess.GetComment(CommentId);
             Tbl theTbl = theComment.TblRow.Tbl;
-            int? PointsManagerID = theTbl.PointsManagerID;
+            Guid? PointsManagerID = theTbl.PointsManagerID;
             if (DataManipulation.ProceedWithChange(ref changesGroupID, userID, UserActionType.ChangeTblRows, false, PointsManagerID, null, true))
             {
                 Guid? theUser = userID;

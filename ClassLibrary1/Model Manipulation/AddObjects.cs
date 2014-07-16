@@ -212,12 +212,12 @@ namespace ClassLibrary1.Model
         /// <param name="newValueText">The new Text value</param>
         /// <returns></returns>
         /// 
-        public Guid AddChangesStatusOfObject(Guid changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, Guid? newObject, Guid? existingObject, bool? newValueBoolean, int? newValueInteger, decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime)
+        public Guid AddChangesStatusOfObject(Guid changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, Guid? newObject, Guid? existingObject, bool? newValueBoolean, int? newValueInteger,  decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime, Guid? newValueGuid = null)
         {
-            return AddChangesStatusOfObject(changesGroupID, objectType, addObject, deleteObject, replaceObject, changeName, changeOther, changeSetting1, changeSetting2, mayAffectRunningRating, newName, newObject, existingObject, newValueBoolean, newValueInteger, newValueDecimal, newValueText, newValueDateTime, "");
+            return AddChangesStatusOfObject(changesGroupID, objectType, addObject, deleteObject, replaceObject, changeName, changeOther, changeSetting1, changeSetting2, mayAffectRunningRating, newName, newObject, existingObject, newValueBoolean, newValueInteger, newValueGuid, newValueDecimal, newValueText, newValueDateTime, "");
         }
 
-        public Guid AddChangesStatusOfObject(Guid changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, Guid? newObject, Guid? existingObject, bool? newValueBoolean, int? newValueInteger, decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime, string changeDescription)
+        public Guid AddChangesStatusOfObject(Guid changesGroupID, TypeOfObject objectType, bool addObject, bool deleteObject, bool replaceObject, bool changeName, bool changeOther, bool changeSetting1, bool changeSetting2, bool mayAffectRunningRating, String newName, Guid? newObject, Guid? existingObject, bool? newValueBoolean, int? newValueInteger, Guid? newValueGuid, decimal? newValueDecimal, String newValueText, DateTime? newValueDateTime, string changeDescription)
         {
             ChangesStatusOfObject theChangesStatusOfObject = new ChangesStatusOfObject
             {
@@ -237,6 +237,7 @@ namespace ClassLibrary1.Model
                 NewValueBoolean = newValueBoolean,
                 NewValueDecimal = newValueDecimal,
                 NewValueInteger = newValueInteger,
+                NewValueGuid = newValueGuid,
                 NewValueText = newValueText,
                 NewValueDateTime = newValueDateTime,
                 ChangeDescription = changeDescription

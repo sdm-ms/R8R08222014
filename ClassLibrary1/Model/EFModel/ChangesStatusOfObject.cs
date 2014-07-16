@@ -42,6 +42,8 @@ namespace ClassLibrary1.EFModel
 
         public int? NewValueInteger { get; set; }
 
+        public Guid? NewValueGuid { get; set; }
+
         public decimal? NewValueDecimal { get; set; }
 
         public string NewValueText { get; set; }

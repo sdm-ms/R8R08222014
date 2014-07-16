@@ -4038,7 +4038,9 @@
     <Content Include="Forums\App_LocalResources\zh-CN\messages.aspx.zh-cn.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Forums\App_LocalResources\zh-CN\mysubscriptions.aspx.zh-cn.resx" />
+    <Content Include="Forums\App_LocalResources\zh-CN\mysubscriptions.aspx.zh-cn.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Forums\App_LocalResources\zh-CN\privateinbox.aspx.zh-cn.resx" />
