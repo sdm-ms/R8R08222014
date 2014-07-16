@@ -196,5 +196,19 @@ namespace TestProject1
                 }
             }
         }
+
+        [TestMethod]
+        [Category("UnitTest")]
+        public void TestCanResetDatabaseAndAddItem()
+        {
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            var builder = new R8RBuilder();
+            builder.DeleteEverythingAndAddDatabaseStatus();
+            builder.Supporter.DataContext.SubmitChanges();
+            builder.Supporter.ResetDataContexts();
+            var entries = builder.Supporter.DataContext.GetTable<DatabaseStatus>().Where(x => true).ToList();
+            if (entries.Count() != 1)
+                throw new Exception("Number of entries in database was " + entries.Count());
+        }
     }
 }

@@ -162,9 +162,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201407151904004_InitialCreate.cs" />
-    <Compile Include="Migrations\201407151904004_InitialCreate.Designer.cs">
-      <DependentUpon>201407151904004_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201407162244139_InitialCreate.cs" />
+    <Compile Include="Migrations\201407162244139_InitialCreate.Designer.cs">
+      <DependentUpon>201407162244139_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -250,6 +250,27 @@
     <Compile Include="Model\EFModel\UsersRight.cs" />
     <Compile Include="Model\EFModel\VolatilityTblRowTracker.cs" />
     <Compile Include="Model\EFModel\VolatilityTracker.cs" />
+    <Compile Include="Model\EFModel\Forum.cs" />
+    <Compile Include="Model\EFModel\ForumAdministrator.cs" />
+    <Compile Include="Model\EFModel\ForumComplaint.cs" />
+    <Compile Include="Model\EFModel\ForumGroup.cs" />
+    <Compile Include="Model\EFModel\ForumGroupPermission.cs" />
+    <Compile Include="Model\EFModel\ForumMessage.cs" />
+    <Compile Include="Model\EFModel\ForumMessageRating.cs" />
+    <Compile Include="Model\EFModel\ForumModerator.cs" />
+    <Compile Include="Model\EFModel\ForumNewTopicSubscription.cs" />
+    <Compile Include="Model\EFModel\ForumPersonalMessage.cs" />
+    <Compile Include="Model\EFModel\ForumPoll.cs" />
+    <Compile Include="Model\EFModel\ForumPollAnswer.cs" />
+    <Compile Include="Model\EFModel\ForumPollOption.cs" />
+    <Compile Include="Model\EFModel\ForumSubforum.cs" />
+    <Compile Include="Model\EFModel\ForumSubscription.cs" />
+    <Compile Include="Model\EFModel\ForumTopic.cs" />
+    <Compile Include="Model\EFModel\ForumUploadedFile.cs" />
+    <Compile Include="Model\EFModel\ForumUploadedPersonalFile.cs" />
+    <Compile Include="Model\EFModel\ForumUser.cs" />
+    <Compile Include="Model\EFModel\ForumUserGroup.cs" />
+    <Compile Include="Model\EFModel\ForumUsersInGroup.cs" />
     <Compile Include="Nonmodel Code\AzureChartControlBlobHandler.cs" />
     <Compile Include="Nonmodel Code\AzureCloudDrive.cs" />
     <Compile Include="Nonmodel Code\AzureNotifications.cs" />
@@ -408,8 +429,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407151904004_InitialCreate.resx">
-      <DependentUpon>201407151904004_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407162244139_InitialCreate.resx">
+      <DependentUpon>201407162244139_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

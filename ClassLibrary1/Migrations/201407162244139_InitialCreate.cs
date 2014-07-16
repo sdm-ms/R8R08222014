@@ -11,8 +11,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.AddressFields",
                 c => new
                     {
-                        AddressFieldID = c.Int(nullable: false, identity: true),
-                        FieldID = c.Int(nullable: false),
+                        AddressFieldID = c.Guid(nullable: false),
+                        FieldID = c.Guid(nullable: false),
                         AddressString = c.String(),
                         Latitude = c.Decimal(precision: 18, scale: 8),
                         Longitude = c.Decimal(precision: 18, scale: 8),
@@ -28,10 +28,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.Fields",
                 c => new
                     {
-                        FieldID = c.Int(nullable: false, identity: true),
-                        TblRowID = c.Int(nullable: false),
-                        FieldDefinitionID = c.Int(nullable: false),
+                        FieldID = c.Guid(nullable: false),
+                        TblRowID = c.Guid(nullable: false),
+                        FieldDefinitionID = c.Guid(nullable: false),
                         Status = c.Byte(nullable: false),
+                        NotYetAddedToDatabase = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.FieldID)
                 .ForeignKey("dbo.FieldDefinitions", t => t.FieldDefinitionID)
@@ -43,8 +44,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.ChoiceFields",
                 c => new
                     {
-                        ChoiceFieldID = c.Int(nullable: false, identity: true),
-                        FieldID = c.Int(nullable: false),
+                        ChoiceFieldID = c.Guid(nullable: false),
+                        FieldID = c.Guid(nullable: false),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.ChoiceFieldID)
@@ -55,9 +56,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.ChoiceInFields",
                 c => new
                     {
-                        ChoiceInFieldID = c.Int(nullable: false, identity: true),
-                        ChoiceFieldID = c.Int(nullable: false),
-                        ChoiceInGroupID = c.Int(nullable: false),
+                        ChoiceInFieldID = c.Guid(nullable: false),
+                        ChoiceFieldID = c.Guid(nullable: false),
+                        ChoiceInGroupID = c.Guid(nullable: false),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.ChoiceInFieldID)
@@ -70,11 +71,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.ChoiceInGroups",
                 c => new
                     {
-                        ChoiceInGroupID = c.Int(nullable: false, identity: true),
-                        ChoiceGroupID = c.Int(nullable: false),
+                        ChoiceInGroupID = c.Guid(nullable: false),
+                        ChoiceGroupID = c.Guid(nullable: false),
                         ChoiceNum = c.Int(nullable: false),
                         ChoiceText = c.String(nullable: false, maxLength: 50),
-                        ActiveOnDeterminingGroupChoiceInGroupID = c.Int(),
+                        ActiveOnDeterminingGroupChoiceInGroupID = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.ChoiceInGroupID)
@@ -87,19 +88,19 @@ namespace ClassLibrary1.Migrations
                 "dbo.ChoiceGroups",
                 c => new
                     {
-                        ChoiceGroupID = c.Int(nullable: false, identity: true),
-                        PointsManagerID = c.Int(nullable: false),
+                        ChoiceGroupID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(nullable: false),
                         AllowMultipleSelections = c.Boolean(nullable: false),
                         Alphabetize = c.Boolean(nullable: false),
                         InvisibleWhenEmpty = c.Boolean(nullable: false),
                         ShowTagCloud = c.Boolean(nullable: false),
                         PickViaAutoComplete = c.Boolean(nullable: false),
-                        DependentOnChoiceGroupID = c.Int(),
+                        DependentOnChoiceGroupID = c.Guid(),
                         ShowAllPossibilitiesIfNoDependentChoice = c.Boolean(nullable: false),
                         AlphabetizeWhenShowingAllPossibilities = c.Boolean(nullable: false),
                         AllowAutoAddWhenAddingFields = c.Boolean(nullable: false),
                         Name = c.String(nullable: false, maxLength: 50),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.ChoiceGroupID)
@@ -114,10 +115,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.ChoiceGroupFieldDefinitions",
                 c => new
                     {
-                        ChoiceGroupFieldDefinitionID = c.Int(nullable: false, identity: true),
-                        ChoiceGroupID = c.Int(nullable: false),
-                        FieldDefinitionID = c.Int(nullable: false),
-                        DependentOnChoiceGroupFieldDefinitionID = c.Int(),
+                        ChoiceGroupFieldDefinitionID = c.Guid(nullable: false),
+                        ChoiceGroupID = c.Guid(nullable: false),
+                        FieldDefinitionID = c.Guid(nullable: false),
+                        DependentOnChoiceGroupFieldDefinitionID = c.Guid(),
                         TrackTrustBasedOnChoices = c.Boolean(nullable: false),
                         Status = c.Byte(nullable: false),
                     })
@@ -133,8 +134,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.FieldDefinitions",
                 c => new
                     {
-                        FieldDefinitionID = c.Int(nullable: false, identity: true),
-                        TblID = c.Int(nullable: false),
+                        FieldDefinitionID = c.Guid(nullable: false),
+                        TblID = c.Guid(nullable: false),
                         FieldNum = c.Int(nullable: false),
                         FieldName = c.String(nullable: false, maxLength: 50),
                         FieldType = c.Int(nullable: false),
@@ -157,8 +158,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.DateTimeFieldDefinitions",
                 c => new
                     {
-                        DateTimeFieldDefinitionID = c.Int(nullable: false, identity: true),
-                        FieldDefinitionID = c.Int(nullable: false),
+                        DateTimeFieldDefinitionID = c.Guid(nullable: false),
+                        FieldDefinitionID = c.Guid(nullable: false),
                         IncludeDate = c.Boolean(nullable: false),
                         IncludeTime = c.Boolean(nullable: false),
                         Status = c.Byte(nullable: false),
@@ -171,8 +172,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.NumberFieldDefinitions",
                 c => new
                     {
-                        NumberFieldDefinitionID = c.Int(nullable: false, identity: true),
-                        FieldDefinitionID = c.Int(nullable: false),
+                        NumberFieldDefinitionID = c.Guid(nullable: false),
+                        FieldDefinitionID = c.Guid(nullable: false),
                         Minimum = c.Decimal(precision: 18, scale: 4),
                         Maximum = c.Decimal(precision: 18, scale: 4),
                         DecimalPlaces = c.Byte(nullable: false),
@@ -186,14 +187,14 @@ namespace ClassLibrary1.Migrations
                 "dbo.Tbls",
                 c => new
                     {
-                        TblID = c.Int(nullable: false, identity: true),
-                        PointsManagerID = c.Int(nullable: false),
-                        DefaultRatingGroupAttributesID = c.Int(),
-                        TblTabWord = c.String(maxLength: 50, unicode: false),
+                        TblID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(nullable: false),
+                        DefaultRatingGroupAttributesID = c.Guid(),
+                        WordToDescribeGroupOfColumnsInThisTbl = c.String(maxLength: 50, unicode: false),
                         Name = c.String(),
                         TypeOfTblRow = c.String(maxLength: 50, unicode: false),
-                        TblDimensionsID = c.Int(),
-                        Creator = c.Int(),
+                        TblDimensionID = c.Guid(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                         AllowOverrideOfRatingGroupCharacterstics = c.Boolean(nullable: false),
                         AllowUsersToAddComments = c.Boolean(nullable: false),
@@ -207,25 +208,26 @@ namespace ClassLibrary1.Migrations
                         FastTableSyncStatus = c.Byte(nullable: false),
                         NumTblRowsActive = c.Int(nullable: false),
                         NumTblRowsDeleted = c.Int(nullable: false),
+                        TblDimension_TblDimensionsID = c.Guid(),
                     })
                 .PrimaryKey(t => t.TblID)
                 .ForeignKey("dbo.Users", t => t.Creator)
-                .ForeignKey("dbo.TblDimensions", t => t.TblDimensionsID)
+                .ForeignKey("dbo.TblDimensions", t => t.TblDimension_TblDimensionsID)
                 .ForeignKey("dbo.PointsManagers", t => t.PointsManagerID)
                 .Index(t => t.PointsManagerID)
-                .Index(t => t.TblDimensionsID)
-                .Index(t => t.Creator);
+                .Index(t => t.Creator)
+                .Index(t => t.TblDimension_TblDimensionsID);
             
             CreateTable(
                 "dbo.ChangesGroup",
                 c => new
                     {
-                        ChangesGroupID = c.Int(nullable: false, identity: true),
-                        PointsManagerID = c.Int(),
-                        TblID = c.Int(),
-                        Creator = c.Int(),
-                        MakeChangeRatingID = c.Int(),
-                        RewardRatingID = c.Int(),
+                        ChangesGroupID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(),
+                        TblID = c.Guid(),
+                        Creator = c.Guid(),
+                        MakeChangeRatingID = c.Guid(),
+                        RewardRatingID = c.Guid(),
                         StatusOfChanges = c.Byte(nullable: false),
                         ScheduleApprovalOrRejection = c.DateTime(),
                         ScheduleImplementation = c.DateTime(),
@@ -244,8 +246,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.ChangesStatusOfObject",
                 c => new
                     {
-                        ChangesStatusOfObjectID = c.Int(nullable: false, identity: true),
-                        ChangesGroupID = c.Int(nullable: false),
+                        ChangesStatusOfObjectID = c.Guid(nullable: false),
+                        ChangesGroupID = c.Guid(nullable: false),
                         ObjectType = c.Byte(nullable: false),
                         AddObject = c.Boolean(nullable: false),
                         DeleteObject = c.Boolean(nullable: false),
@@ -256,10 +258,11 @@ namespace ClassLibrary1.Migrations
                         ChangeSetting2 = c.Boolean(nullable: false),
                         MayAffectRunningRating = c.Boolean(nullable: false),
                         NewName = c.String(maxLength: 50),
-                        NewObject = c.Int(),
-                        ExistingObject = c.Int(),
+                        NewObject = c.Guid(),
+                        ExistingObject = c.Guid(),
                         NewValueBoolean = c.Boolean(),
                         NewValueInteger = c.Int(),
+                        NewValueGuid = c.Guid(),
                         NewValueDecimal = c.Decimal(precision: 18, scale: 4),
                         NewValueText = c.String(),
                         NewValueDateTime = c.DateTime(),
@@ -273,9 +276,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.PointsManagers",
                 c => new
                     {
-                        PointsManagerID = c.Int(nullable: false, identity: true),
-                        DomainID = c.Int(nullable: false),
-                        TrustTrackerUnitID = c.Int(),
+                        PointsManagerID = c.Guid(nullable: false),
+                        DomainID = c.Guid(nullable: false),
+                        TrustTrackerUnitID = c.Guid(),
                         CurrentPeriodDollarSubsidy = c.Decimal(nullable: false, precision: 18, scale: 2),
                         EndOfDollarSubsidyPeriod = c.DateTime(),
                         NextPeriodDollarSubsidy = c.Decimal(precision: 18, scale: 2),
@@ -312,7 +315,7 @@ namespace ClassLibrary1.Migrations
                         ConditionalGuaranteeTimeBlockInHours = c.Int(nullable: false),
                         ConditionalGuaranteeApplicationsReceived = c.Int(nullable: false),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.PointsManagerID)
@@ -325,10 +328,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.AdministrationRightsGroups",
                 c => new
                     {
-                        AdministrationRightsGroupID = c.Int(nullable: false, identity: true),
-                        PointsManagerID = c.Int(),
+                        AdministrationRightsGroupID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(),
                         Name = c.String(nullable: false),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.AdministrationRightsGroupID)
@@ -339,9 +342,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.AdministrationRights",
                 c => new
                     {
-                        AdministrationRightID = c.Int(nullable: false, identity: true),
-                        AdministrationRightsGroupID = c.Int(nullable: false),
-                        UserActionID = c.Int(),
+                        AdministrationRightID = c.Guid(nullable: false),
+                        AdministrationRightsGroupID = c.Guid(nullable: false),
+                        UserActionID = c.Guid(),
                         AllowUserToMakeImmediateChanges = c.Boolean(nullable: false),
                         AllowUserToMakeProposals = c.Boolean(nullable: false),
                         AllowUserToSeekRewards = c.Boolean(nullable: false),
@@ -358,7 +361,7 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserActions",
                 c => new
                     {
-                        UserActionID = c.Int(nullable: false, identity: true),
+                        UserActionID = c.Guid(nullable: false),
                         Text = c.String(unicode: false),
                         SuperUser = c.Boolean(nullable: false),
                     })
@@ -368,17 +371,17 @@ namespace ClassLibrary1.Migrations
                 "dbo.ProposalEvaluationRatingSettings",
                 c => new
                     {
-                        ProposalEvaluationRatingSettingsID = c.Int(nullable: false, identity: true),
-                        PointsManagerID = c.Int(),
-                        UserActionID = c.Int(),
-                        RatingGroupAttributesID = c.Int(nullable: false),
+                        ProposalEvaluationRatingSettingsID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(),
+                        UserActionID = c.Guid(),
+                        RatingGroupAttributesID = c.Guid(nullable: false),
                         MinValueToApprove = c.Decimal(nullable: false, precision: 18, scale: 4),
                         MaxValueToReject = c.Decimal(nullable: false, precision: 18, scale: 4),
                         TimeRequiredBeyondThreshold = c.Int(nullable: false),
                         MinProportionOfThisTime = c.Decimal(nullable: false, precision: 18, scale: 4),
                         HalfLifeForResolvingAtFinalValue = c.Int(nullable: false),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.ProposalEvaluationRatingSettingsID)
@@ -393,10 +396,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingGroupAttributes",
                 c => new
                     {
-                        RatingGroupAttributesID = c.Int(nullable: false, identity: true),
-                        RatingCharacteristicsID = c.Int(nullable: false),
-                        RatingConditionID = c.Int(),
-                        PointsManagerID = c.Int(),
+                        RatingGroupAttributesID = c.Guid(nullable: false),
+                        RatingCharacteristicsID = c.Guid(nullable: false),
+                        RatingConditionID = c.Guid(),
+                        PointsManagerID = c.Guid(),
                         ConstrainedSum = c.Decimal(precision: 18, scale: 4),
                         Name = c.String(),
                         TypeOfRatingGroup = c.Byte(),
@@ -405,7 +408,7 @@ namespace ClassLibrary1.Migrations
                         RatingsCanBeAutocalculated = c.Boolean(nullable: false),
                         LongTermPointsWeight = c.Decimal(nullable: false, precision: 18, scale: 4),
                         MinimumDaysToTrackLongTerm = c.Int(nullable: false),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.RatingGroupAttributesID)
@@ -420,10 +423,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.OverrideCharacteristics",
                 c => new
                     {
-                        OverrideCharacteristicsID = c.Int(nullable: false, identity: true),
-                        RatingGroupAttributesID = c.Int(nullable: false),
-                        TblRowID = c.Int(nullable: false),
-                        TblColumnID = c.Int(nullable: false),
+                        OverrideCharacteristicsID = c.Guid(nullable: false),
+                        RatingGroupAttributesID = c.Guid(nullable: false),
+                        TblRowID = c.Guid(nullable: false),
+                        TblColumnID = c.Guid(nullable: false),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.OverrideCharacteristicsID)
@@ -438,11 +441,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.TblColumns",
                 c => new
                     {
-                        TblColumnID = c.Int(nullable: false, identity: true),
-                        TblTabID = c.Int(nullable: false),
-                        DefaultRatingGroupAttributesID = c.Int(nullable: false),
-                        ConditionTblColumnID = c.Int(),
-                        TrustTrackerUnitID = c.Int(),
+                        TblColumnID = c.Guid(nullable: false),
+                        TblTabID = c.Guid(nullable: false),
+                        DefaultRatingGroupAttributesID = c.Guid(nullable: false),
+                        ConditionTblColumnID = c.Guid(),
+                        TrustTrackerUnitID = c.Guid(),
                         ConditionGreaterThan = c.Decimal(precision: 18, scale: 4),
                         ConditionLessThan = c.Decimal(precision: 18, scale: 4),
                         CategoryNum = c.Int(nullable: false),
@@ -458,6 +461,7 @@ namespace ClassLibrary1.Migrations
                         Sortable = c.Boolean(nullable: false),
                         DefaultSortOrderAscending = c.Boolean(nullable: false),
                         AutomaticallyCreateMissingRatings = c.Boolean(nullable: false),
+                        NotYetAddedToDatabase = c.Boolean(nullable: false),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.TblColumnID)
@@ -474,10 +478,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingGroups",
                 c => new
                     {
-                        RatingGroupID = c.Int(nullable: false, identity: true),
-                        RatingGroupAttributesID = c.Int(nullable: false),
-                        TblRowID = c.Int(nullable: false),
-                        TblColumnID = c.Int(nullable: false),
+                        RatingGroupID = c.Guid(nullable: false),
+                        RatingGroupAttributesID = c.Guid(nullable: false),
+                        TblRowID = c.Guid(nullable: false),
+                        TblColumnID = c.Guid(nullable: false),
                         CurrentValueOfFirstRating = c.Decimal(precision: 18, scale: 4),
                         ValueRecentlyChanged = c.Boolean(nullable: false),
                         ResolutionTime = c.DateTime(),
@@ -497,10 +501,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingGroupPhaseStatus",
                 c => new
                     {
-                        RatingGroupPhaseStatusID = c.Int(nullable: false, identity: true),
-                        RatingPhaseGroupID = c.Int(nullable: false),
-                        RatingPhaseID = c.Int(nullable: false),
-                        RatingGroupID = c.Int(nullable: false),
+                        RatingGroupPhaseStatusID = c.Guid(nullable: false),
+                        RatingPhaseGroupID = c.Guid(nullable: false),
+                        RatingPhaseID = c.Guid(nullable: false),
+                        RatingGroupID = c.Guid(nullable: false),
                         RoundNum = c.Int(nullable: false),
                         RoundNumThisPhase = c.Int(nullable: false),
                         StartTime = c.DateTime(nullable: false),
@@ -527,8 +531,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingPhases",
                 c => new
                     {
-                        RatingPhaseID = c.Int(nullable: false, identity: true),
-                        RatingPhaseGroupID = c.Int(nullable: false),
+                        RatingPhaseID = c.Guid(nullable: false),
+                        RatingPhaseGroupID = c.Guid(nullable: false),
                         NumberInGroup = c.Int(nullable: false),
                         SubsidyLevel = c.Decimal(nullable: false, precision: 18, scale: 4),
                         ScoringRule = c.Short(nullable: false),
@@ -549,10 +553,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingPhaseGroups",
                 c => new
                     {
-                        RatingPhaseGroupID = c.Int(nullable: false, identity: true),
+                        RatingPhaseGroupID = c.Guid(nullable: false),
                         NumPhases = c.Int(nullable: false),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.RatingPhaseGroupID)
@@ -563,14 +567,14 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingCharacteristics",
                 c => new
                     {
-                        RatingCharacteristicsID = c.Int(nullable: false, identity: true),
-                        RatingPhaseGroupID = c.Int(nullable: false),
-                        SubsidyDensityRangeGroupID = c.Int(),
+                        RatingCharacteristicsID = c.Guid(nullable: false),
+                        RatingPhaseGroupID = c.Guid(nullable: false),
+                        SubsidyDensityRangeGroupID = c.Guid(),
                         MinimumUserRating = c.Decimal(nullable: false, precision: 18, scale: 4),
                         MaximumUserRating = c.Decimal(nullable: false, precision: 18, scale: 4),
                         DecimalPlaces = c.Byte(nullable: false),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.RatingCharacteristicsID)
@@ -585,16 +589,17 @@ namespace ClassLibrary1.Migrations
                 "dbo.Ratings",
                 c => new
                     {
-                        RatingID = c.Int(nullable: false, identity: true),
-                        RatingGroupID = c.Int(nullable: false),
-                        RatingCharacteristicsID = c.Int(nullable: false),
-                        OwnedRatingGroupID = c.Int(),
-                        TopmostRatingGroupID = c.Int(nullable: false),
-                        MostRecentUserRatingID = c.Int(),
+                        RatingID = c.Guid(nullable: false),
+                        RatingGroupID = c.Guid(nullable: false),
+                        RatingCharacteristicsID = c.Guid(nullable: false),
+                        OwnedRatingGroupID = c.Guid(),
+                        TopmostRatingGroupID = c.Guid(nullable: false),
+                        MostRecentUserRatingID = c.Guid(),
                         NumInGroup = c.Int(nullable: false),
                         TotalUserRatings = c.Int(nullable: false),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        CreationTime = c.DateTime(nullable: false),
+                        Creator = c.Guid(),
                         CurrentValue = c.Decimal(precision: 18, scale: 4),
                         LastTrustedValue = c.Decimal(precision: 18, scale: 4),
                         LastModifiedResolutionTimeOrCurrentValue = c.DateTime(nullable: false),
@@ -618,8 +623,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingConditions",
                 c => new
                     {
-                        RatingConditionID = c.Int(nullable: false, identity: true),
-                        ConditionRatingID = c.Int(),
+                        RatingConditionID = c.Guid(nullable: false),
+                        ConditionRatingID = c.Guid(),
                         GreaterThan = c.Decimal(precision: 18, scale: 4),
                         LessThan = c.Decimal(precision: 18, scale: 4),
                         Status = c.Byte(nullable: false),
@@ -632,9 +637,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingPhaseStatus",
                 c => new
                     {
-                        RatingPhaseStatusID = c.Int(nullable: false, identity: true),
-                        RatingGroupPhaseStatusID = c.Int(nullable: false),
-                        RatingID = c.Int(nullable: false),
+                        RatingPhaseStatusID = c.Guid(nullable: false),
+                        RatingGroupPhaseStatusID = c.Guid(nullable: false),
+                        RatingID = c.Guid(nullable: false),
                         ShortTermResolutionValue = c.Decimal(precision: 18, scale: 4),
                         NumUserRatingsMadeDuringPhase = c.Int(nullable: false),
                         TriggerUserRatingsUpdate = c.Boolean(nullable: false),
@@ -649,14 +654,14 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserRatings",
                 c => new
                     {
-                        UserRatingID = c.Int(nullable: false, identity: true),
-                        UserRatingGroupID = c.Int(nullable: false),
-                        RatingID = c.Int(nullable: false),
-                        RatingPhaseStatusID = c.Int(nullable: false),
-                        UserID = c.Int(nullable: false),
-                        TrustTrackerUnitID = c.Int(),
-                        RewardPendingPointsTrackerID = c.Int(),
-                        MostRecentUserRatingID = c.Int(),
+                        UserRatingID = c.Guid(nullable: false),
+                        UserRatingGroupID = c.Guid(nullable: false),
+                        RatingID = c.Guid(nullable: false),
+                        RatingPhaseStatusID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
+                        TrustTrackerUnitID = c.Guid(),
+                        RewardPendingPointsTrackerID = c.Guid(),
+                        MostRecentUserRatingID = c.Guid(),
                         PreviousRatingOrVirtualRating = c.Decimal(nullable: false, precision: 18, scale: 4),
                         PreviousDisplayedRating = c.Decimal(precision: 18, scale: 4),
                         EnteredUserRating = c.Decimal(nullable: false, precision: 18, scale: 4),
@@ -718,11 +723,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.RewardPendingPointsTrackers",
                 c => new
                     {
-                        RewardPendingPointsTrackerID = c.Int(nullable: false, identity: true),
+                        RewardPendingPointsTrackerID = c.Guid(nullable: false),
                         PendingRating = c.Decimal(precision: 18, scale: 4),
                         TimeOfPendingRating = c.DateTime(),
-                        RewardTblRowID = c.Int(nullable: false),
-                        UserID = c.Int(nullable: false),
+                        RewardTblRowID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.RewardPendingPointsTrackerID)
                 .ForeignKey("dbo.Users", t => t.UserID)
@@ -734,9 +739,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.TblRows",
                 c => new
                     {
-                        TblRowID = c.Int(nullable: false, identity: true),
-                        TblID = c.Int(nullable: false),
-                        TblRowFieldDisplayID = c.Int(nullable: false),
+                        TblRowID = c.Guid(nullable: false),
+                        TblID = c.Guid(nullable: false),
+                        TblRowFieldDisplayID = c.Guid(nullable: false),
                         Name = c.String(),
                         Status = c.Byte(nullable: false),
                         StatusRecentlyChanged = c.Boolean(nullable: false),
@@ -750,6 +755,7 @@ namespace ClassLibrary1.Migrations
                         FastAccessUpdateFields = c.Boolean(nullable: false),
                         FastAccessUpdateRatings = c.Boolean(nullable: false),
                         FastAccessUpdateSpecified = c.Boolean(nullable: false),
+                        NotYetAddedToDatabase = c.Boolean(nullable: false),
                         FastAccessUpdated = c.Binary(),
                     })
                 .PrimaryKey(t => t.TblRowID)
@@ -762,16 +768,16 @@ namespace ClassLibrary1.Migrations
                 "dbo.Comments",
                 c => new
                     {
-                        CommentsID = c.Int(nullable: false, identity: true),
-                        TblRowID = c.Int(nullable: false),
-                        UserID = c.Int(nullable: false),
+                        CommentID = c.Guid(nullable: false),
+                        TblRowID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
                         CommentTitle = c.String(nullable: false, unicode: false),
                         CommentText = c.String(nullable: false, unicode: false),
                         DateTime = c.DateTime(nullable: false),
                         LastDeletedDate = c.DateTime(),
                         Status = c.Byte(nullable: false),
                     })
-                .PrimaryKey(t => t.CommentsID)
+                .PrimaryKey(t => t.CommentID)
                 .ForeignKey("dbo.Users", t => t.UserID)
                 .ForeignKey("dbo.TblRows", t => t.TblRowID)
                 .Index(t => t.TblRowID)
@@ -781,7 +787,7 @@ namespace ClassLibrary1.Migrations
                 "dbo.Users",
                 c => new
                     {
-                        UserID = c.Int(nullable: false, identity: true),
+                        UserID = c.Guid(nullable: false),
                         Username = c.String(maxLength: 50),
                         SuperUser = c.Boolean(nullable: false),
                         TrustPointsRatioTotals = c.Decimal(nullable: false, precision: 18, scale: 4),
@@ -793,9 +799,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.PointsAdjustments",
                 c => new
                     {
-                        PointsAdjustmentID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(nullable: false),
-                        PointsManagerID = c.Int(nullable: false),
+                        PointsAdjustmentID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(nullable: false),
                         Reason = c.Int(nullable: false),
                         TotalAdjustment = c.Decimal(nullable: false, precision: 18, scale: 4),
                         CurrentAdjustment = c.Decimal(nullable: false, precision: 18, scale: 4),
@@ -813,9 +819,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.PointsTotals",
                 c => new
                     {
-                        PointsTotalID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(nullable: false),
-                        PointsManagerID = c.Int(nullable: false),
+                        PointsTotalID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(nullable: false),
                         CurrentPoints = c.Decimal(nullable: false, precision: 18, scale: 4),
                         TotalPoints = c.Decimal(nullable: false, precision: 18, scale: 4),
                         PotentialMaxLossOnNotYetPending = c.Decimal(nullable: false, precision: 18, scale: 4),
@@ -857,13 +863,13 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingGroupResolutions",
                 c => new
                     {
-                        RatingGroupResolutionID = c.Int(nullable: false, identity: true),
-                        RatingGroupID = c.Int(nullable: false),
+                        RatingGroupResolutionID = c.Guid(nullable: false),
+                        RatingGroupID = c.Guid(nullable: false),
                         CancelPreviousResolutions = c.Boolean(nullable: false),
                         ResolveByUnwinding = c.Boolean(nullable: false),
                         EffectiveTime = c.DateTime(nullable: false),
                         ExecutionTime = c.DateTime(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.RatingGroupResolutionID)
@@ -876,17 +882,17 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingPlans",
                 c => new
                     {
-                        RatingPlansID = c.Int(nullable: false, identity: true),
-                        RatingGroupAttributesID = c.Int(nullable: false),
+                        RatingPlanID = c.Guid(nullable: false),
+                        RatingGroupAttributesID = c.Guid(nullable: false),
                         NumInGroup = c.Int(nullable: false),
-                        OwnedRatingGroupAttributesID = c.Int(),
+                        OwnedRatingGroupAttributesID = c.Guid(),
                         DefaultUserRating = c.Decimal(precision: 18, scale: 4),
                         Name = c.String(),
                         Description = c.String(unicode: false),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
-                .PrimaryKey(t => t.RatingPlansID)
+                .PrimaryKey(t => t.RatingPlanID)
                 .ForeignKey("dbo.Users", t => t.Creator)
                 .ForeignKey("dbo.RatingGroupAttributes", t => t.RatingGroupAttributesID)
                 .ForeignKey("dbo.RatingGroupAttributes", t => t.OwnedRatingGroupAttributesID)
@@ -898,11 +904,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.SubsidyDensityRangeGroups",
                 c => new
                     {
-                        SubsidyDensityRangeGroupID = c.Int(nullable: false, identity: true),
+                        SubsidyDensityRangeGroupID = c.Guid(nullable: false),
                         UseLogarithmBase = c.Decimal(precision: 18, scale: 4),
                         CumDensityTotal = c.Decimal(nullable: false, precision: 18, scale: 4),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.SubsidyDensityRangeGroupID)
@@ -913,8 +919,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.SubsidyDensityRanges",
                 c => new
                     {
-                        SubsidyDensityRangeID = c.Int(nullable: false, identity: true),
-                        SubsidyDensityRangeGroupID = c.Int(nullable: false),
+                        SubsidyDensityRangeID = c.Guid(nullable: false),
+                        SubsidyDensityRangeGroupID = c.Guid(nullable: false),
                         RangeBottom = c.Decimal(nullable: false, precision: 18, scale: 4),
                         RangeTop = c.Decimal(nullable: false, precision: 18, scale: 4),
                         LiquidityFactor = c.Decimal(nullable: false, precision: 18, scale: 4),
@@ -930,10 +936,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.TrustTrackerForChoiceInGroups",
                 c => new
                     {
-                        TrustTrackerForChoiceInGroupID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(nullable: false),
-                        ChoiceInGroupID = c.Int(nullable: false),
-                        TblID = c.Int(nullable: false),
+                        TrustTrackerForChoiceInGroupID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
+                        ChoiceInGroupID = c.Guid(nullable: false),
+                        TblID = c.Guid(nullable: false),
                         SumAdjustmentPctTimesRatingMagnitude = c.Single(nullable: false),
                         SumRatingMagnitudes = c.Single(nullable: false),
                         TrustLevelForChoice = c.Single(nullable: false),
@@ -950,9 +956,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.TrustTrackerForChoiceInGroupsUserRatingLinks",
                 c => new
                     {
-                        TrustTrackerForChoiceInGroupsUserRatingLinkID = c.Int(nullable: false, identity: true),
-                        UserRatingID = c.Int(nullable: false),
-                        TrustTrackerForChoiceInGroupID = c.Int(nullable: false),
+                        TrustTrackerForChoiceInGroupsUserRatingLinkID = c.Guid(nullable: false),
+                        UserRatingID = c.Guid(nullable: false),
+                        TrustTrackerForChoiceInGroupID = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.TrustTrackerForChoiceInGroupsUserRatingLinkID)
                 .ForeignKey("dbo.TrustTrackerForChoiceInGroups", t => t.TrustTrackerForChoiceInGroupID)
@@ -964,9 +970,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.TrustTrackers",
                 c => new
                     {
-                        TrustTrackerID = c.Int(nullable: false, identity: true),
-                        TrustTrackerUnitID = c.Int(nullable: false),
-                        UserID = c.Int(nullable: false),
+                        TrustTrackerID = c.Guid(nullable: false),
+                        TrustTrackerUnitID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
                         OverallTrustLevel = c.Double(nullable: false),
                         OverallTrustLevelAtLastReview = c.Double(nullable: false),
                         DeltaOverallTrustLevel = c.Double(nullable: false),
@@ -988,8 +994,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.TrustTrackerStats",
                 c => new
                     {
-                        TrustTrackerStatID = c.Int(nullable: false, identity: true),
-                        TrustTrackerID = c.Int(nullable: false),
+                        TrustTrackerStatID = c.Guid(nullable: false),
+                        TrustTrackerID = c.Guid(nullable: false),
                         StatNum = c.Short(nullable: false),
                         TrustValue = c.Double(nullable: false),
                         Trust_Numer = c.Double(nullable: false),
@@ -1004,9 +1010,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserInteractionStats",
                 c => new
                     {
-                        UserInteractionStatID = c.Int(nullable: false, identity: true),
-                        UserInteractionID = c.Int(nullable: false),
-                        TrustTrackerStatID = c.Int(nullable: false),
+                        UserInteractionStatID = c.Guid(nullable: false),
+                        UserInteractionID = c.Guid(nullable: false),
+                        TrustTrackerStatID = c.Guid(nullable: false),
                         StatNum = c.Short(nullable: false),
                         SumAdjustPctTimesWeight = c.Double(nullable: false),
                         SumWeights = c.Double(nullable: false),
@@ -1022,10 +1028,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserInteractions",
                 c => new
                     {
-                        UserInteractionID = c.Int(nullable: false, identity: true),
-                        TrustTrackerUnitID = c.Int(nullable: false),
-                        OrigRatingUserID = c.Int(nullable: false),
-                        LatestRatingUserID = c.Int(nullable: false),
+                        UserInteractionID = c.Guid(nullable: false),
+                        TrustTrackerUnitID = c.Guid(nullable: false),
+                        OrigRatingUserID = c.Guid(nullable: false),
+                        LatestRatingUserID = c.Guid(nullable: false),
                         NumTransactions = c.Int(nullable: false),
                         LatestUserEgalitarianTrust = c.Double(nullable: false),
                         WeightInCalculatingTrustTotal = c.Double(nullable: false),
@@ -1043,7 +1049,7 @@ namespace ClassLibrary1.Migrations
                 "dbo.TrustTrackerUnits",
                 c => new
                     {
-                        TrustTrackerUnitID = c.Int(nullable: false, identity: true),
+                        TrustTrackerUnitID = c.Guid(nullable: false),
                         SkepticalTrustThreshhold = c.Short(nullable: false),
                         LastSkepticalTrustThreshhold = c.Short(nullable: false),
                         MinUpdateIntervalSeconds = c.Int(nullable: false),
@@ -1057,9 +1063,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserCheckIns",
                 c => new
                     {
-                        UserCheckInID = c.Int(nullable: false, identity: true),
+                        UserCheckInID = c.Guid(nullable: false),
                         CheckInTime = c.DateTime(nullable: false),
-                        UserID = c.Int(),
+                        UserID = c.Guid(),
                     })
                 .PrimaryKey(t => t.UserCheckInID)
                 .ForeignKey("dbo.Users", t => t.UserID)
@@ -1069,8 +1075,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserInfo",
                 c => new
                     {
-                        UserInfoID = c.Int(nullable: false),
-                        UserID = c.Int(nullable: false),
+                        UserInfoID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
                         FirstName = c.String(maxLength: 50, unicode: false),
                         LastName = c.String(maxLength: 50, unicode: false),
                         Email = c.String(maxLength: 250, unicode: false),
@@ -1094,9 +1100,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserRatingsToAdd",
                 c => new
                     {
-                        UserRatingsToAddID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(nullable: false),
-                        TopRatingGroupID = c.Int(nullable: false),
+                        UserRatingsToAddID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
+                        TopRatingGroupID = c.Guid(nullable: false),
                         UserRatingHierarchy = c.Binary(),
                     })
                 .PrimaryKey(t => t.UserRatingsToAddID)
@@ -1109,10 +1115,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.UsersAdministrationRightsGroups",
                 c => new
                     {
-                        UsersAdministrationRightsGroupID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(),
-                        PointsManagerID = c.Int(nullable: false),
-                        AdministrationRightsGroupID = c.Int(nullable: false),
+                        UsersAdministrationRightsGroupID = c.Guid(nullable: false),
+                        UserID = c.Guid(),
+                        PointsManagerID = c.Guid(nullable: false),
+                        AdministrationRightsGroupID = c.Guid(nullable: false),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.UsersAdministrationRightsGroupID)
@@ -1127,9 +1133,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.UsersRights",
                 c => new
                     {
-                        UsersRightsID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(),
-                        PointsManagerID = c.Int(),
+                        UsersRightsID = c.Guid(nullable: false),
+                        UserID = c.Guid(),
+                        PointsManagerID = c.Guid(),
                         MayView = c.Boolean(nullable: false),
                         MayPredict = c.Boolean(nullable: false),
                         MayAddTbls = c.Boolean(nullable: false),
@@ -1142,7 +1148,7 @@ namespace ClassLibrary1.Migrations
                         MayAdjustPoints = c.Boolean(nullable: false),
                         MayChangeProposalSettings = c.Boolean(nullable: false),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.UsersRightsID)
@@ -1155,9 +1161,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.SearchWordTblRowNames",
                 c => new
                     {
-                        SearchWordTblRowNameID = c.Int(nullable: false, identity: true),
-                        TblRowID = c.Int(nullable: false),
-                        SearchWordID = c.Int(nullable: false),
+                        SearchWordTblRowNameID = c.Guid(nullable: false),
+                        TblRowID = c.Guid(nullable: false),
+                        SearchWordID = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.SearchWordTblRowNameID)
                 .ForeignKey("dbo.SearchWords", t => t.SearchWordID)
@@ -1169,7 +1175,7 @@ namespace ClassLibrary1.Migrations
                 "dbo.SearchWords",
                 c => new
                     {
-                        SearchWordID = c.Int(nullable: false, identity: true),
+                        SearchWordID = c.Guid(nullable: false),
                         TheWord = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.SearchWordID);
@@ -1178,9 +1184,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.SearchWordChoices",
                 c => new
                     {
-                        SearchWordChoiceID = c.Int(nullable: false, identity: true),
-                        ChoiceInGroupID = c.Int(nullable: false),
-                        SearchWordID = c.Int(nullable: false),
+                        SearchWordChoiceID = c.Guid(nullable: false),
+                        ChoiceInGroupID = c.Guid(nullable: false),
+                        SearchWordID = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.SearchWordChoiceID)
                 .ForeignKey("dbo.SearchWords", t => t.SearchWordID)
@@ -1192,9 +1198,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.SearchWordHierarchyItems",
                 c => new
                     {
-                        SearchWordHierarchyItemID = c.Int(nullable: false, identity: true),
-                        HierarchyItemID = c.Int(nullable: false),
-                        SearchWordID = c.Int(nullable: false),
+                        SearchWordHierarchyItemID = c.Guid(nullable: false),
+                        HierarchyItemID = c.Guid(nullable: false),
+                        SearchWordID = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.SearchWordHierarchyItemID)
                 .ForeignKey("dbo.HierarchyItems", t => t.HierarchyItemID)
@@ -1206,10 +1212,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.HierarchyItems",
                 c => new
                     {
-                        HierarchyItemID = c.Int(nullable: false, identity: true),
-                        HigherHierarchyItemID = c.Int(),
-                        HigherHierarchyItemForRoutingID = c.Int(),
-                        TblID = c.Int(),
+                        HierarchyItemID = c.Guid(nullable: false),
+                        HigherHierarchyItemID = c.Guid(),
+                        HigherHierarchyItemForRoutingID = c.Guid(),
+                        TblID = c.Guid(),
                         HierarchyItemName = c.String(),
                         FullHierarchyWithHtml = c.String(),
                         FullHierarchyNoHtml = c.String(),
@@ -1228,9 +1234,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.SearchWordTextFields",
                 c => new
                     {
-                        SearchWordTextFieldID = c.Int(nullable: false, identity: true),
-                        TextFieldID = c.Int(nullable: false),
-                        SearchWordID = c.Int(nullable: false),
+                        SearchWordTextFieldID = c.Guid(nullable: false),
+                        TextFieldID = c.Guid(nullable: false),
+                        SearchWordID = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.SearchWordTextFieldID)
                 .ForeignKey("dbo.TextFields", t => t.TextFieldID)
@@ -1242,8 +1248,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.TextFields",
                 c => new
                     {
-                        TextFieldID = c.Int(nullable: false, identity: true),
-                        FieldID = c.Int(nullable: false),
+                        TextFieldID = c.Guid(nullable: false),
+                        FieldID = c.Guid(nullable: false),
                         Text = c.String(),
                         Link = c.String(),
                         Status = c.Byte(nullable: false),
@@ -1256,7 +1262,7 @@ namespace ClassLibrary1.Migrations
                 "dbo.TblRowFieldDisplays",
                 c => new
                     {
-                        TblRowFieldDisplayID = c.Int(nullable: false, identity: true),
+                        TblRowFieldDisplayID = c.Guid(nullable: false),
                         Row = c.String(),
                         PopUp = c.String(),
                         TblRowPage = c.String(),
@@ -1268,13 +1274,13 @@ namespace ClassLibrary1.Migrations
                 "dbo.TblRowStatusRecord",
                 c => new
                     {
-                        RecordId = c.Int(nullable: false, identity: true),
-                        TblRowId = c.Int(nullable: false),
+                        TblRowStatusRecordID = c.Guid(nullable: false),
+                        TblRowId = c.Guid(nullable: false),
                         TimeChanged = c.DateTime(nullable: false),
                         Adding = c.Boolean(nullable: false),
                         Deleting = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.RecordId)
+                .PrimaryKey(t => t.TblRowStatusRecordID)
                 .ForeignKey("dbo.TblRows", t => t.TblRowId)
                 .Index(t => t.TblRowId);
             
@@ -1282,8 +1288,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.VolatilityTblRowTrackers",
                 c => new
                     {
-                        VolatilityTblRowTrackerID = c.Int(nullable: false, identity: true),
-                        TblRowID = c.Int(nullable: false),
+                        VolatilityTblRowTrackerID = c.Guid(nullable: false),
+                        TblRowID = c.Guid(nullable: false),
                         DurationType = c.Byte(nullable: false),
                         TotalMovement = c.Decimal(nullable: false, precision: 18, scale: 4),
                         DistanceFromStart = c.Decimal(nullable: false, precision: 18, scale: 4),
@@ -1298,9 +1304,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.VolatilityTrackers",
                 c => new
                     {
-                        VolatilityTrackerID = c.Int(nullable: false, identity: true),
-                        RatingGroupID = c.Int(nullable: false),
-                        VolatilityTblRowTrackerID = c.Int(nullable: false),
+                        VolatilityTrackerID = c.Guid(nullable: false),
+                        RatingGroupID = c.Guid(nullable: false),
+                        VolatilityTblRowTrackerID = c.Guid(nullable: false),
                         DurationType = c.Byte(nullable: false),
                         StartTime = c.DateTime(nullable: false),
                         EndTime = c.DateTime(nullable: false),
@@ -1319,9 +1325,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.UserRatingGroups",
                 c => new
                     {
-                        UserRatingGroupID = c.Int(nullable: false, identity: true),
-                        RatingGroupID = c.Int(nullable: false),
-                        RatingGroupPhaseStatusID = c.Int(nullable: false),
+                        UserRatingGroupID = c.Guid(nullable: false),
+                        RatingGroupID = c.Guid(nullable: false),
+                        RatingGroupPhaseStatusID = c.Guid(nullable: false),
                         WhenMade = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.UserRatingGroupID)
@@ -1334,8 +1340,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.SubsidyAdjustments",
                 c => new
                     {
-                        SubsidyAdjustmentID = c.Int(nullable: false, identity: true),
-                        RatingGroupPhaseStatusID = c.Int(nullable: false),
+                        SubsidyAdjustmentID = c.Guid(nullable: false),
+                        RatingGroupPhaseStatusID = c.Guid(nullable: false),
                         SubsidyAdjustmentFactor = c.Decimal(nullable: false, precision: 18, scale: 4),
                         EffectiveTime = c.DateTime(nullable: false),
                         EndingTime = c.DateTime(),
@@ -1350,8 +1356,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.RatingGroupStatusRecords",
                 c => new
                     {
-                        RatingGroupStatusRecordID = c.Int(nullable: false, identity: true),
-                        RatingGroupID = c.Int(nullable: false),
+                        RatingGroupStatusRecordID = c.Guid(nullable: false),
+                        RatingGroupID = c.Guid(nullable: false),
                         OldValueOfFirstRating = c.Decimal(precision: 18, scale: 4, storeType: "numeric"),
                         NewValueTime = c.DateTime(nullable: false),
                     })
@@ -1363,8 +1369,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.TblColumnFormatting",
                 c => new
                     {
-                        TblColumnFormattingID = c.Int(nullable: false, identity: true),
-                        TblColumnID = c.Int(nullable: false),
+                        TblColumnFormattingID = c.Guid(nullable: false),
+                        TblColumnID = c.Guid(nullable: false),
                         Prefix = c.String(maxLength: 10),
                         Suffix = c.String(maxLength: 10),
                         OmitLeadingZero = c.Boolean(nullable: false),
@@ -1383,11 +1389,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.TblTabs",
                 c => new
                     {
-                        TblTabID = c.Int(nullable: false, identity: true),
-                        TblID = c.Int(nullable: false),
+                        TblTabID = c.Guid(nullable: false),
+                        TblID = c.Guid(nullable: false),
                         NumInTbl = c.Int(nullable: false),
                         Name = c.String(maxLength: 50),
-                        DefaultSortTblColumnID = c.Int(),
+                        DefaultSortTblColumnID = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.TblTabID)
@@ -1398,14 +1404,14 @@ namespace ClassLibrary1.Migrations
                 "dbo.RewardRatingSettings",
                 c => new
                     {
-                        RewardRatingSettingsID = c.Int(nullable: false, identity: true),
-                        PointsManagerID = c.Int(),
-                        UserActionID = c.Int(),
-                        RatingGroupAttributesID = c.Int(nullable: false),
+                        RewardRatingSettingsID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(),
+                        UserActionID = c.Guid(),
+                        RatingGroupAttributesID = c.Guid(nullable: false),
                         ProbOfRewardEvaluation = c.Decimal(nullable: false, precision: 18, scale: 4),
                         Multiplier = c.Decimal(precision: 18, scale: 4),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.RewardRatingSettingsID)
@@ -1420,11 +1426,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.Domains",
                 c => new
                     {
-                        DomainID = c.Int(nullable: false, identity: true),
+                        DomainID = c.Guid(nullable: false),
                         ActiveRatingWebsite = c.Boolean(nullable: false),
                         Name = c.String(nullable: false),
-                        TblDimensionsID = c.Int(),
-                        Creator = c.Int(),
+                        TblDimensionsID = c.Guid(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.DomainID)
@@ -1435,11 +1441,11 @@ namespace ClassLibrary1.Migrations
                 "dbo.InsertableContents",
                 c => new
                     {
-                        InsertableContentID = c.Int(nullable: false, identity: true),
+                        InsertableContentID = c.Guid(nullable: false),
                         Name = c.String(maxLength: 50, unicode: false),
-                        DomainID = c.Int(),
-                        PointsManagerID = c.Int(),
-                        TblID = c.Int(),
+                        DomainID = c.Guid(),
+                        PointsManagerID = c.Guid(),
+                        TblID = c.Guid(),
                         Content = c.String(unicode: false),
                         IsTextOnly = c.Boolean(nullable: false),
                         Overridable = c.Boolean(nullable: false),
@@ -1458,13 +1464,13 @@ namespace ClassLibrary1.Migrations
                 "dbo.TblDimensions",
                 c => new
                     {
-                        TblDimensionsID = c.Int(nullable: false, identity: true),
+                        TblDimensionsID = c.Guid(nullable: false),
                         MaxWidthOfImageInRowHeaderCell = c.Int(nullable: false),
                         MaxHeightOfImageInRowHeaderCell = c.Int(nullable: false),
                         MaxWidthOfImageInTblRowPopUpWindow = c.Int(nullable: false),
                         MaxHeightOfImageInTblRowPopUpWindow = c.Int(nullable: false),
                         WidthOfTblRowPopUpWindow = c.Int(nullable: false),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(),
                     })
                 .PrimaryKey(t => t.TblDimensionsID);
@@ -1473,9 +1479,9 @@ namespace ClassLibrary1.Migrations
                 "dbo.ProposalSettings",
                 c => new
                     {
-                        ProposalSettingsID = c.Int(nullable: false, identity: true),
-                        PointsManagerID = c.Int(),
-                        TblID = c.Int(),
+                        ProposalSettingsID = c.Guid(nullable: false),
+                        PointsManagerID = c.Guid(),
+                        TblID = c.Guid(),
                         UsersMayProposeAddingTbls = c.Boolean(nullable: false),
                         UsersMayProposeResolvingRatings = c.Boolean(nullable: false),
                         UsersMayProposeChangingTblRows = c.Boolean(nullable: false),
@@ -1498,7 +1504,7 @@ namespace ClassLibrary1.Migrations
                         HalfLifeForResolvingAtFinalValue = c.Int(nullable: false),
                         RequiredPointsToMakeProposal = c.Decimal(nullable: false, precision: 18, scale: 4),
                         Name = c.String(),
-                        Creator = c.Int(),
+                        Creator = c.Guid(),
                         Status = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.ProposalSettingsID)
@@ -1511,8 +1517,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.TextFieldDefinitions",
                 c => new
                     {
-                        TextFieldDefinitionID = c.Int(nullable: false, identity: true),
-                        FieldDefinitionID = c.Int(nullable: false),
+                        TextFieldDefinitionID = c.Guid(nullable: false),
+                        FieldDefinitionID = c.Guid(nullable: false),
                         IncludeText = c.Boolean(nullable: false),
                         IncludeLink = c.Boolean(nullable: false),
                         Searchable = c.Boolean(nullable: false),
@@ -1526,8 +1532,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.DateTimeFields",
                 c => new
                     {
-                        DateTimeFieldID = c.Int(nullable: false, identity: true),
-                        FieldID = c.Int(nullable: false),
+                        DateTimeFieldID = c.Guid(nullable: false),
+                        FieldID = c.Guid(nullable: false),
                         DateTime = c.DateTime(),
                         Status = c.Byte(nullable: false),
                     })
@@ -1539,8 +1545,8 @@ namespace ClassLibrary1.Migrations
                 "dbo.NumberFields",
                 c => new
                     {
-                        NumberFieldID = c.Int(nullable: false, identity: true),
-                        FieldID = c.Int(nullable: false),
+                        NumberFieldID = c.Guid(nullable: false),
+                        FieldID = c.Guid(nullable: false),
                         Number = c.Decimal(precision: 18, scale: 4),
                         Status = c.Byte(nullable: false),
                     })
@@ -1552,16 +1558,254 @@ namespace ClassLibrary1.Migrations
                 "dbo.DatabaseStatus",
                 c => new
                     {
-                        DatabaseStatusID = c.Int(nullable: false, identity: true),
+                        DatabaseStatusID = c.Guid(nullable: false),
                         PreventChanges = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.DatabaseStatusID);
             
             CreateTable(
+                "dbo.ForumAdministrators",
+                c => new
+                    {
+                        UserID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.UserID);
+            
+            CreateTable(
+                "dbo.ForumComplaints",
+                c => new
+                    {
+                        UserID = c.Int(nullable: false),
+                        MessageID = c.Int(nullable: false),
+                        ComplainText = c.String(storeType: "ntext"),
+                    })
+                .PrimaryKey(t => new { t.UserID, t.MessageID });
+            
+            CreateTable(
+                "dbo.ForumGroupPermissions",
+                c => new
+                    {
+                        ForumID = c.Int(nullable: false),
+                        GroupID = c.Int(nullable: false),
+                        AllowReading = c.Boolean(nullable: false),
+                        AllowPosting = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.ForumID, t.GroupID });
+            
+            CreateTable(
+                "dbo.ForumGroups",
+                c => new
+                    {
+                        GroupID = c.Int(nullable: false, identity: true),
+                        GroupName = c.String(nullable: false, maxLength: 50),
+                    })
+                .PrimaryKey(t => t.GroupID);
+            
+            CreateTable(
+                "dbo.ForumMessageRating",
+                c => new
+                    {
+                        MessageID = c.Int(nullable: false),
+                        VoterUserID = c.Int(nullable: false),
+                        Score = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.MessageID, t.VoterUserID });
+            
+            CreateTable(
+                "dbo.ForumMessages",
+                c => new
+                    {
+                        MessageID = c.Int(nullable: false, identity: true),
+                        TopicID = c.Int(nullable: false),
+                        UserID = c.Int(nullable: false),
+                        Body = c.String(nullable: false, storeType: "ntext"),
+                        CreationDate = c.DateTime(nullable: false),
+                        Visible = c.Boolean(nullable: false),
+                        IPAddress = c.String(maxLength: 50, unicode: false),
+                        Rating = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.MessageID);
+            
+            CreateTable(
+                "dbo.ForumModerators",
+                c => new
+                    {
+                        UserID = c.Int(nullable: false),
+                        ForumID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserID, t.ForumID });
+            
+            CreateTable(
+                "dbo.ForumNewTopicSubscriptions",
+                c => new
+                    {
+                        UserID = c.Int(nullable: false),
+                        ForumID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserID, t.ForumID });
+            
+            CreateTable(
+                "dbo.ForumPersonalMessages",
+                c => new
+                    {
+                        MessageID = c.Int(nullable: false, identity: true),
+                        FromUserID = c.Int(nullable: false),
+                        ToUserID = c.Int(nullable: false),
+                        Body = c.String(nullable: false, storeType: "ntext"),
+                        CreationDate = c.DateTime(nullable: false),
+                        New = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.MessageID);
+            
+            CreateTable(
+                "dbo.ForumPollAnswers",
+                c => new
+                    {
+                        UserID = c.Int(nullable: false),
+                        OptionID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserID, t.OptionID });
+            
+            CreateTable(
+                "dbo.ForumPollOptions",
+                c => new
+                    {
+                        OptionID = c.Int(nullable: false, identity: true),
+                        PollID = c.Int(nullable: false),
+                        OptionText = c.String(nullable: false, maxLength: 50),
+                    })
+                .PrimaryKey(t => t.OptionID);
+            
+            CreateTable(
+                "dbo.ForumPolls",
+                c => new
+                    {
+                        PollID = c.Int(nullable: false, identity: true),
+                        TopicID = c.Int(nullable: false),
+                        Question = c.String(nullable: false, maxLength: 255),
+                    })
+                .PrimaryKey(t => t.PollID);
+            
+            CreateTable(
+                "dbo.Forums",
+                c => new
+                    {
+                        ForumID = c.Int(nullable: false, identity: true),
+                        Title = c.String(nullable: false, maxLength: 50),
+                        Description = c.String(nullable: false, maxLength: 255),
+                        Premoderated = c.Boolean(nullable: false),
+                        GroupID = c.Int(nullable: false),
+                        MembersOnly = c.Boolean(nullable: false),
+                        OrderByNumber = c.Int(nullable: false),
+                        RestrictTopicCreation = c.Boolean(nullable: false),
+                        IconFile = c.String(maxLength: 50),
+                    })
+                .PrimaryKey(t => t.ForumID);
+            
+            CreateTable(
+                "dbo.ForumSubforums",
+                c => new
+                    {
+                        ParentForumID = c.Int(nullable: false),
+                        SubForumID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.ParentForumID, t.SubForumID });
+            
+            CreateTable(
+                "dbo.ForumSubscriptions",
+                c => new
+                    {
+                        UserID = c.Int(nullable: false),
+                        TopicID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserID, t.TopicID });
+            
+            CreateTable(
+                "dbo.ForumTopics",
+                c => new
+                    {
+                        TopicID = c.Int(nullable: false, identity: true),
+                        ForumID = c.Int(nullable: false),
+                        UserID = c.Int(nullable: false),
+                        Subject = c.String(nullable: false, maxLength: 255),
+                        Visible = c.Boolean(nullable: false),
+                        LastMessageID = c.Int(nullable: false),
+                        IsSticky = c.Int(nullable: false),
+                        IsClosed = c.Boolean(nullable: false),
+                        ViewsCount = c.Int(nullable: false),
+                        RepliesCount = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.TopicID);
+            
+            CreateTable(
+                "dbo.ForumUploadedFiles",
+                c => new
+                    {
+                        FileID = c.Int(nullable: false, identity: true),
+                        FileName = c.String(nullable: false, maxLength: 255),
+                        MessageID = c.Int(nullable: false),
+                        UserID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.FileID);
+            
+            CreateTable(
+                "dbo.ForumUploadedPersonalFiles",
+                c => new
+                    {
+                        FileID = c.Int(nullable: false, identity: true),
+                        FileName = c.String(nullable: false, maxLength: 255),
+                        MessageID = c.Int(nullable: false),
+                        UserID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.FileID);
+            
+            CreateTable(
+                "dbo.ForumUserGroups",
+                c => new
+                    {
+                        GroupID = c.Int(nullable: false, identity: true),
+                        Title = c.String(nullable: false, maxLength: 50),
+                    })
+                .PrimaryKey(t => t.GroupID);
+            
+            CreateTable(
+                "dbo.ForumUsers",
+                c => new
+                    {
+                        UserID = c.Int(nullable: false, identity: true),
+                        UserName = c.String(nullable: false, maxLength: 50),
+                        FirstName = c.String(maxLength: 100),
+                        LastName = c.String(maxLength: 100),
+                        Email = c.String(nullable: false, maxLength: 50),
+                        Password = c.String(nullable: false, maxLength: 50),
+                        Homepage = c.String(maxLength: 50),
+                        Interests = c.String(maxLength: 255),
+                        PostsCount = c.Int(nullable: false),
+                        RegistrationDate = c.DateTime(nullable: false),
+                        Disabled = c.Boolean(nullable: false),
+                        ActivationCode = c.String(nullable: false, maxLength: 50),
+                        AvatarFileName = c.String(maxLength: 50),
+                        Signature = c.String(maxLength: 1000),
+                        LastLogonDate = c.DateTime(),
+                        ReputationCache = c.Int(nullable: false),
+                        OpenIdUserName = c.String(maxLength: 255),
+                    })
+                .PrimaryKey(t => t.UserID);
+            
+            CreateTable(
+                "dbo.ForumUsersInGroup",
+                c => new
+                    {
+                        GroupID = c.Int(nullable: false),
+                        UserID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.GroupID, t.UserID });
+            
+            CreateTable(
                 "dbo.InvitedUser",
                 c => new
                     {
-                        ActivationNumber = c.Int(nullable: false, identity: true),
+                        ActivationNumber = c.Guid(nullable: false),
                         EmailId = c.String(maxLength: 50),
                         MayView = c.Boolean(nullable: false),
                         MayPredict = c.Boolean(nullable: false),
@@ -1582,10 +1826,10 @@ namespace ClassLibrary1.Migrations
                 "dbo.LongProcesses",
                 c => new
                     {
-                        LongProcessID = c.Int(nullable: false, identity: true),
+                        LongProcessID = c.Guid(nullable: false),
                         TypeOfProcess = c.Int(nullable: false),
-                        Object1ID = c.Int(),
-                        Object2ID = c.Int(),
+                        Object1ID = c.Guid(),
+                        Object2ID = c.Guid(),
                         Priority = c.Int(nullable: false),
                         AdditionalInfo = c.Binary(),
                         ProgressInfo = c.Int(),
@@ -1601,7 +1845,7 @@ namespace ClassLibrary1.Migrations
                 "dbo.RoleStatus",
                 c => new
                     {
-                        RoleStatusID = c.Int(nullable: false, identity: true),
+                        RoleStatusID = c.Guid(nullable: false),
                         RoleID = c.String(),
                         LastCheckIn = c.DateTime(),
                         IsWorkerRole = c.Boolean(nullable: false),
@@ -1657,7 +1901,7 @@ namespace ClassLibrary1.Migrations
             DropForeignKey("dbo.ProposalSettings", "PointsManagerID", "dbo.PointsManagers");
             DropForeignKey("dbo.PointsTotals", "PointsManagerID", "dbo.PointsManagers");
             DropForeignKey("dbo.PointsAdjustments", "PointsManagerID", "dbo.PointsManagers");
-            DropForeignKey("dbo.Tbls", "TblDimensionsID", "dbo.TblDimensions");
+            DropForeignKey("dbo.Tbls", "TblDimension_TblDimensionsID", "dbo.TblDimensions");
             DropForeignKey("dbo.Domains", "TblDimensionsID", "dbo.TblDimensions");
             DropForeignKey("dbo.PointsManagers", "DomainID", "dbo.Domains");
             DropForeignKey("dbo.InsertableContents", "TblID", "dbo.Tbls");
@@ -1901,8 +2145,8 @@ namespace ClassLibrary1.Migrations
             DropIndex("dbo.ChangesGroup", new[] { "Creator" });
             DropIndex("dbo.ChangesGroup", new[] { "TblID" });
             DropIndex("dbo.ChangesGroup", new[] { "PointsManagerID" });
+            DropIndex("dbo.Tbls", new[] { "TblDimension_TblDimensionsID" });
             DropIndex("dbo.Tbls", new[] { "Creator" });
-            DropIndex("dbo.Tbls", new[] { "TblDimensionsID" });
             DropIndex("dbo.Tbls", new[] { "PointsManagerID" });
             DropIndex("dbo.NumberFieldDefinitions", new[] { "FieldDefinitionID" });
             DropIndex("dbo.DateTimeFieldDefinitions", new[] { "FieldDefinitionID" });
@@ -1926,6 +2170,27 @@ namespace ClassLibrary1.Migrations
             DropTable("dbo.RoleStatus");
             DropTable("dbo.LongProcesses");
             DropTable("dbo.InvitedUser");
+            DropTable("dbo.ForumUsersInGroup");
+            DropTable("dbo.ForumUsers");
+            DropTable("dbo.ForumUserGroups");
+            DropTable("dbo.ForumUploadedPersonalFiles");
+            DropTable("dbo.ForumUploadedFiles");
+            DropTable("dbo.ForumTopics");
+            DropTable("dbo.ForumSubscriptions");
+            DropTable("dbo.ForumSubforums");
+            DropTable("dbo.Forums");
+            DropTable("dbo.ForumPolls");
+            DropTable("dbo.ForumPollOptions");
+            DropTable("dbo.ForumPollAnswers");
+            DropTable("dbo.ForumPersonalMessages");
+            DropTable("dbo.ForumNewTopicSubscriptions");
+            DropTable("dbo.ForumModerators");
+            DropTable("dbo.ForumMessages");
+            DropTable("dbo.ForumMessageRating");
+            DropTable("dbo.ForumGroups");
+            DropTable("dbo.ForumGroupPermissions");
+            DropTable("dbo.ForumComplaints");
+            DropTable("dbo.ForumAdministrators");
             DropTable("dbo.DatabaseStatus");
             DropTable("dbo.NumberFields");
             DropTable("dbo.DateTimeFields");

@@ -17,6 +17,7 @@ namespace ClassLibrary1.EFModel
             TextFields = new HashSet<TextField>();
         }
 
+        [Key]
         public Guid FieldID { get; set; }
 
         public Guid TblRowID { get; set; }

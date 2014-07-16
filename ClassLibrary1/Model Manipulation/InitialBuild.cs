@@ -368,7 +368,6 @@ namespace ClassLibrary1.Model
 
         public void CreateStandardStuff()
         {
-            Supporter.AddDatabaseStatus();
             CreateEstablishedUsers();
             CreateCssTemplates();
         }
@@ -376,10 +375,16 @@ namespace ClassLibrary1.Model
 
         public void DeleteAndRebuild()
         {
-            DeleteDatabase();
-            ResetDataContexts();
+            DeleteEverythingAndAddDatabaseStatus();
             CreateStandardStuff();
             ResetDataContexts();
+        }
+
+        public void DeleteEverythingAndAddDatabaseStatus()
+        {
+            DeleteDatabase();
+            ResetDataContexts();
+            Supporter.AddDatabaseStatus();
         }
 
 

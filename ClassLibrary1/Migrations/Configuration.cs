@@ -9,7 +9,7 @@ namespace ClassLibrary1.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(ClassLibrary1.EFModel.R8RContext context)

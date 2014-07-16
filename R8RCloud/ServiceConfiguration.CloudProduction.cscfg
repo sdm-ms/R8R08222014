@@ -8,7 +8,7 @@
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="ApplicationServices" value="mustupdate" />
       <Setting name="R8RConnectionString" value="mustupdate" />
-      <Setting name="DeNorm0001ConnectionString" value="mustupdate" />
+      <Setting name="DeNrml0003ConnectionString" value="mustupdate" />
     </ConfigurationSettings>
   </Role>
   <Role name="WorkerRole1">
@@ -19,7 +19,7 @@
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="ApplicationServices" value="mustupdate" />
       <Setting name="R8RConnectionString" value="mustupdate" />
-      <Setting name="DeNorm0001ConnectionString" value="mustupdate" />
+      <Setting name="DeNrml0003ConnectionString" value="mustupdate" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

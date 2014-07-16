@@ -13,7 +13,7 @@
       <Setting name="BlobConnectionString" />
       <Setting name="ApplicationServices" />
       <Setting name="R8RConnectionString" />
-      <Setting name="DeNorm0001ConnectionString" />
+      <Setting name="DeNrml0003ConnectionString" />
       <Setting name="DataConnectionString" />
     </ConfigurationSettings>
     <LocalResources>
@@ -33,7 +33,7 @@
       <Setting name="BlobConnectionString" />
       <Setting name="ApplicationServices" />
       <Setting name="R8RConnectionString" />
-      <Setting name="DeNorm0001ConnectionString" />
+      <Setting name="DeNrml0003ConnectionString" />
       <Setting name="DataConnectionString" />
     </ConfigurationSettings>
     <LocalResources>
