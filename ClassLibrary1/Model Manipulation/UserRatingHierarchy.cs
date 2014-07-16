@@ -947,7 +947,7 @@ namespace ClassLibrary1.Model
                                 UserRatingsToAdd = urta,
                                 //FirstRating = urta.RatingGroup.Ratings.First(),
                                 PointsTotal = urta.User.PointsTotals.SingleOrDefault(pt =>
-                                    pt.User.UserGuid == urta.User.UserGuid &&
+                                    pt.User.UserID == urta.User.UserID &&
                                     pt.PointsManager == urta.RatingGroup.TblRow.Tbl.PointsManager)
                             })
                             .ToList();

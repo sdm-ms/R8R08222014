@@ -413,7 +413,7 @@ namespace ClassLibrary1.Model
 
         public virtual void Create()
         {
-            superUser = Action.DataContext.GetTable<User>().Single(u => u.Username == "admin").UserGuid;
+            superUser = Action.DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
             myChangesGroup = Action.ChangesGroupCreate(null, null, superUser, null, null, null, null);
 
             standardDomain = Action.DataContext.GetTable<Domain>().SingleOrDefault(d => d.Name == "R8RStandard");

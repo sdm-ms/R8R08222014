@@ -522,7 +522,7 @@ namespace ClassLibrary1.Model
                     DataContext.GetTable<PointsManager>().Single(x => x.PointsManagerID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.User:
-                    DataContext.GetTable<User>().Single(x => x.UserGuid == objectID).Status = newValue;
+                    DataContext.GetTable<User>().Single(x => x.UserID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.RewardRatingSettings: 
                     DataContext.GetTable<RewardRatingSetting>().Single(x => x.RewardRatingSettingsID == objectID).Status = newValue;

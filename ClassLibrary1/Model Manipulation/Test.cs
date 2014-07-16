@@ -76,7 +76,7 @@ namespace ClassLibrary1.Model
         {
             get
             {
-                _superUserId = ActionProcessor.DataContext.GetTable<User>().Single(u => u.Username == "admin").UserGuid;
+                _superUserId = ActionProcessor.DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
                 return _superUserId;
             }
         }
@@ -194,7 +194,7 @@ namespace ClassLibrary1.Model
                 if (existingUser == null)
                     UserIds[i] = ActionProcessor.UserAdd("user" + i.ToString(), false, "mbabramo@gmail.com", "password" + i.ToString(), false);
                 else
-                    UserIds[i] = existingUser.UserGuid;
+                    UserIds[i] = existingUser.UserID;
                 //Action.SetUserVerificationStatus(theUsers[i], true, null);
                 UserUserRatingAccuracy[i] = (decimal) RandomGenerator.GetRandom();
                 UserConfidence[i] = (decimal)RandomGenerator.GetRandom();
@@ -400,7 +400,7 @@ namespace ClassLibrary1.Model
                     {
                         decimal randomUserRating = RandomGenerator.GetRandom(theRating.RatingCharacteristic.MinimumUserRating, theRating.RatingCharacteristic.MaximumUserRating);
                         UserEditResponse theResponse = new UserEditResponse();
-                        ActionProcessor.UserRatingAdd(theRating.RatingID, randomUserRating, theAdmin.UserGuid, ref theResponse);
+                        ActionProcessor.UserRatingAdd(theRating.RatingID, randomUserRating, theAdmin.UserID, ref theResponse);
                         countSoFar++;
                         if (countSoFar % 1000 == 0)
                             ActionProcessor.DataContext.SubmitChanges();

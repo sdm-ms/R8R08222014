@@ -555,7 +555,7 @@ namespace ClassLibrary1.Model
             {
                 if (theTbl.Name == "Changes")
                 {
-                    User theUser = DataContext.GetTable<User>().SingleOrDefault(u => u.UserGuid == userID);
+                    User theUser = DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == userID);
                     if (theUser == null || theUser.SuperUser == false)
                         return false;
                 }

@@ -65,9 +65,9 @@ namespace WebApplication1.Admin.GrantUserRights
             foreach (User theUser in theList)
             {
                 if (authorize)
-                    theActionProcessor.UsersRightsCreate(theUser.UserGuid, pointsManagerID, true, true, false, true, true, false, false, false, false, false, false, "Partial administrative privileges", true, true, CurrentUserID, null);
+                    theActionProcessor.UsersRightsCreate(theUser.UserID, pointsManagerID, true, true, false, true, true, false, false, false, false, false, false, "Partial administrative privileges", true, true, CurrentUserID, null);
                 else
-                    theActionProcessor.UsersRightsCreate(theUser.UserGuid, pointsManagerID, false, false, false, false, false, false, false, false, false, false, false, "No privileges", true, true, CurrentUserID, null);
+                    theActionProcessor.UsersRightsCreate(theUser.UserID, pointsManagerID, false, false, false, false, false, false, false, false, false, false, false, "No privileges", true, true, CurrentUserID, null);
             }
             Setup(pointsManagerID);
             usernames.Text = "";

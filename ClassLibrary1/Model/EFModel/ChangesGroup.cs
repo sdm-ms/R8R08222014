@@ -20,7 +20,7 @@ namespace ClassLibrary1.EFModel
 
         public Guid? TblID { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public Guid? MakeChangeRatingID { get; set; }
 

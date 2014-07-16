@@ -36,7 +36,7 @@ namespace ClassLibrary1.EFModel
 
         public DateTime CreationTime { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public decimal? CurrentValue { get; set; }
 

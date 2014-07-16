@@ -133,7 +133,7 @@ namespace ClassLibrary1.Model
                 List<double> newTrusts = urSet.NewTrustLevel.ToList();
                 int numAdminUserRatingsAlreadyAtEnd = 0;
                 for (int u = numUserRatings - 1; u >= 0; u--)
-                    if (urs[u].UserID == adminAccount.UserGuid)
+                    if (urs[u].UserID == adminAccount.UserID)
                         numAdminUserRatingsAlreadyAtEnd++;
                     else
                         break;

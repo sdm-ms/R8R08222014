@@ -20,7 +20,7 @@ namespace ClassLibrary1.EFModel
 
         public DateTime? ExecutionTime { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

@@ -5,13 +5,13 @@
     <Setting Name="R8RConnectionString" Type="System.String" Scope="User">
       <Value Profile="(Default)">Ignored</Value>
     </Setting>
-    <Setting Name="Norm0006ConnectionString" Type="(Connection string)" Scope="Application">
+    <Setting Name="Norm0005ConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=PC2012;Initial Catalog=Norm0006;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=PC2012;Initial Catalog=Norm0005;Integrated Security=True&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=PC2012;Initial Catalog=Norm0006;Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=PC2012;Initial Catalog=Norm0005;Integrated Security=True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

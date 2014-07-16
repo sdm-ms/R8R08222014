@@ -27,7 +27,7 @@ public partial class Admin_DollarSubsidy_DollarSubsidyInfo : System.Web.UI.UserC
         ActionProcessor Obj = new ActionProcessor();
         var CheckRights = Obj.DataContext.GetTable<UsersRight>().SingleOrDefault(x => x.UserID == UserId && x.PointsManagerID == SubtopicId);
         //Checking for superuser
-        bool CheckSuperUser = Obj.DataContext.GetTable<User>().SingleOrDefault(x => x.UserGuid == UserId).SuperUser;
+        bool CheckSuperUser = Obj.DataContext.GetTable<User>().SingleOrDefault(x => x.UserID == UserId).SuperUser;
         bool MayAddTbl = false;
         if (CheckRights != null)
         {

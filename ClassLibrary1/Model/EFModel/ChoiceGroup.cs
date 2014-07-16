@@ -41,7 +41,7 @@ namespace ClassLibrary1.EFModel
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int? Creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

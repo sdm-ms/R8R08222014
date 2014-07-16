@@ -47,7 +47,7 @@ public partial class Ratings : System.Web.UI.Page
             UserIDOfBrowsingUser = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserIDOfBrowsingUser != null)
         {
-            User browsingUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserGuid == UserIDOfBrowsingUser);
+            User browsingUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfBrowsingUser);
             if (browsingUser != null)
             {
                 browsingUserIsAdmin = browsingUser.Username == "admin";
@@ -65,7 +65,7 @@ public partial class Ratings : System.Web.UI.Page
         else
         {
             UserIDOfRatingsBeingViewed = (Guid)theRatingsInfo.userID;
-            User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserGuid == UserIDOfRatingsBeingViewed);
+            User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfRatingsBeingViewed);
             if (theUser == null)
                 Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
             whoseRatings.Text = theUser.Username + "&#146;s Ratings";

@@ -199,7 +199,7 @@ namespace TestProject1
                             userRating.EnteredUserRating, userRating.NewUserRating));
                         Debug.WriteLine(String.Format(
                             "\t\t<User {0}> OverallTrustLevel={1} SkepticalTrustLevel={2}",
-                            userRating.User.UserGuid, trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
+                            userRating.User.UserID, trustTracker.OverallTrustLevel, trustTracker.SkepticalTrustLevel));
                     }
                 }
             }

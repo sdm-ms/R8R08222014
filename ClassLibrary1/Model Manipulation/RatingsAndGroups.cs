@@ -523,7 +523,7 @@ namespace ClassLibrary1.Model
             {
                 bool resolveByUnwinding = topRatingGroup.CurrentValueOfFirstRating == null;
                 User theSuperUser = DataContext.GetTable<User>().Single(u => u.Username == "admin");
-                RatingGroupResolution ratingResolution = AddRatingGroupResolution(topRatingGroup, false, resolveByUnwinding, thePhaseStatus.ActualCompleteTime, theSuperUser.UserGuid);
+                RatingGroupResolution ratingResolution = AddRatingGroupResolution(topRatingGroup, false, resolveByUnwinding, thePhaseStatus.ActualCompleteTime, theSuperUser.UserID);
                 // Actual resolution will take place following ResolveRatingsNeedingResolving
             }
         }
