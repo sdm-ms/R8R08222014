@@ -136,7 +136,7 @@ namespace ClassLibrary1.Model
             return returnVal;
         }
 
-        public void AddConditionalRatingForTbl(Guid TblColumnID,int? conditionTblColumnID,decimal? greaterThan,decimal? lessThan)
+        public void AddConditionalRatingForTbl(Guid TblColumnID, Guid? conditionTblColumnID, decimal? greaterThan, decimal? lessThan)
         {
            
             TblColumn theTblColumn = DataContext.GetTable<TblColumn>().Single(x=>x.TblColumnID==TblColumnID);

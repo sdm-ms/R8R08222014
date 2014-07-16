@@ -800,21 +800,16 @@ namespace ClassLibrary1.Model
             string alreadyReset = DataContext.TempCacheGet("TblRowFieldDisplayResetForTbl" + theTbl.TblID) as string;
             if (!(alreadyReset == "Yes"))
             {
-                Guid highestIDCompleted = 0;
                 bool moreWorkToDo = true;
                 while (moreWorkToDo)
                 {
-                    // NOTE: This use of order by ID is very problematic (given the plan to switch to GUID), BUT since we are going to be deleting this code, it's not worth fixing right now.
-                    var theTblRowFieldDisplays = DataContext.GetTable<TblRowFieldDisplay>().OrderBy(x => x.TblRowFieldDisplayID).Where(e => e.TblRowFieldDisplayID > highestIDCompleted &&
- e.TblRows.FirstOrDefault().Tbl == theTbl && !e.ResetNeeded).Take(5000);
+                    var theTblRowFieldDisplays = DataContext.GetTable<TblRowFieldDisplay>().Where(e => e.TblRows.FirstOrDefault().Tbl == theTbl && !e.ResetNeeded).Take(5000);
                     moreWorkToDo = theTblRowFieldDisplays.Any();
                     if (moreWorkToDo)
                     {
                         foreach (var theTblRowFieldDisplay in theTblRowFieldDisplays)
                         {
                             theTblRowFieldDisplay.ResetNeeded = true;
-                            if (theTblRowFieldDisplay.TblRowFieldDisplayID > highestIDCompleted)
-                                highestIDCompleted = theTblRowFieldDisplay.TblRowFieldDisplayID;
                         }
                         DataContext.SubmitChanges();
                     }

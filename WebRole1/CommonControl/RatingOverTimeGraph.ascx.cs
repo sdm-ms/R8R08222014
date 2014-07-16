@@ -67,14 +67,14 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
     {
         if (ViewState["SpecificRatingID"] != null)
         {
-            SpecificRatingID = Convert.ToInt32(ViewState["SpecificRatingID"]);
+            SpecificRatingID = new Guid(ViewState["SpecificRatingID"].ToString());
             Rating specificRatingRequested = DataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.RatingID == SpecificRatingID);
             RatingGroupID = specificRatingRequested.RatingGroupID;
             Further_Setup();
         }
         else if (ViewState["RatingGroupID"] != null)
         {
-            RatingGroupID = Convert.ToInt32(ViewState["RatingGroupID"]);
+            RatingGroupID = new Guid(ViewState["RatingGroupID"].ToString());
             SpecificRatingID = null;
             Further_Setup();
         }
@@ -107,7 +107,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         if (theRatingGroup == null)
             return;
 
-        bool canViewPage = DataAccess.CheckUserRights((int?)(Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
+        bool canViewPage = DataAccess.CheckUserRights((Guid?)(Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
         if (!canViewPage)
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
 
@@ -345,13 +345,13 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         string[] theStrings = e.PostBackValue.Split(',');
         if (theStrings[0] == "MG")
         {
-            RatingGroupID = Convert.ToInt32(theStrings[1]);
+            RatingGroupID = new Guid(theStrings[1]);
             SpecificRatingID = null;
         }
         else
         {
-            SpecificRatingID = Convert.ToInt32(theStrings[1]);
-            RatingGroupID = Convert.ToInt32(theStrings[2]);
+            SpecificRatingID = new Guid(theStrings[1]);
+            RatingGroupID = new Guid(theStrings[2]);
         }
         ViewState["RatingGroupID"] = RatingGroupID;
         ViewState["SpecificRatingID"] = SpecificRatingID;

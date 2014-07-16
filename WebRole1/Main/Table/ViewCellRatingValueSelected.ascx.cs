@@ -16,7 +16,7 @@ using ClassLibrary1.EFModel;
 
 public partial class Main_Table_ViewCellRatingValueSelected : System.Web.UI.UserControl
 {
-    int RatingID;
+    Guid RatingID;
     decimal? Value;
     int DecimalPlaces;
     decimal? MinVal;

@@ -68,14 +68,14 @@ namespace WebServices
             ActionProcessor actionProcessor = new ActionProcessor();
             R8RDataManipulation dataManipulation = new R8RDataManipulation();
             actionProcessor.ResetDataContexts();
-            List<int> specifiedRatingIDs = new List<int>();
+            List<Guid> specifiedRatingIDs = new List<Guid>();
 
             foreach (var userRatingsStringList in theUserRatings)
             {
                 foreach (var rurs in userRatingsStringList)
                     if (rurs.ratingID.Contains('/'))
                     {
-                        Tuple<int,int> ratingIDAndRatingGroupID = dataManipulation.AddMissingRatingGroupAndRatings(rurs.ratingID);
+                        Tuple<Guid, Guid> ratingIDAndRatingGroupID = dataManipulation.AddMissingRatingGroupAndRatings(rurs.ratingID);
                         rurs.ratingID = ratingIDAndRatingGroupID.Item1.ToString();
                     }
                 RatingAndUserRatingStringConverter.AddRatingIDsToList(userRatingsStringList, specifiedRatingIDs);
@@ -131,7 +131,7 @@ namespace WebServices
         [WebMethod]
         public MyPointsSidebarInfo GetSidebarInfo(string pointsManagerIDString, UserAccessInfo theUserAccessInfo)
         {
-            Guid pointsManagerID = Convert.ToInt32(pointsManagerIDString);
+            Guid pointsManagerID = new Guid(pointsManagerIDString);
             UserEditResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo);
             if (theResponse != null)
                 return null;

@@ -31,8 +31,8 @@ namespace ClassLibrary1.Model
     {
         internal Tbl TheTbl;
         internal bool dictionariesInitialized = false;
-        internal Dictionary<string, int> dictionaryNameToID;
-        internal Dictionary<int, string> dictionaryIDToName;
+        internal Dictionary<string, Guid> dictionaryNameToID;
+        internal Dictionary<Guid, string> dictionaryIDToName;
         internal R8RDataAccess DataAccess;
 
         public ImportExport(Tbl theTbl, R8RDataAccess theDataAccess)
@@ -107,8 +107,8 @@ namespace ClassLibrary1.Model
             if (!dictionariesInitialized)
             {
                 var theFieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.Tbl == TheTbl);
-                dictionaryIDToName = new Dictionary<int, string>();
-                dictionaryNameToID = new Dictionary<string, int>();
+                dictionaryIDToName = new Dictionary<Guid, string>();
+                dictionaryNameToID = new Dictionary<string, Guid>();
                 foreach (var fd in theFieldDefinitions)
                 {
                     Guid theID = fd.FieldDefinitionID;
@@ -139,7 +139,7 @@ namespace ClassLibrary1.Model
         public Guid GetFieldDefinitionID(string abbreviatedFieldName)
         {
             InitializeDictionaries();
-            int returnVal = 0;
+            Guid returnVal = new Guid();
             try
             {
                 returnVal = dictionaryNameToID[abbreviatedFieldName];
@@ -199,7 +199,7 @@ namespace ClassLibrary1.Model
             public List<string> ColumnNames;
             public List<ExcelFileFieldInfo> FieldInfos = new List<ExcelFileFieldInfo>();
             public int? actionOnImportColumn;
-            public Guid? tblRowIDColumn;
+            public int? tblRowIDColumn; // this is a column number, NOT a Guid tblRowID
             public int? initialStatusColumn;
             public int? statusChangeColumn;
             public int? rowNameColumn;
@@ -435,7 +435,7 @@ namespace ClassLibrary1.Model
             return theInfo;
         }
 
-        public void PerformImportHelper(string storedFileName, string storedLogName, string entityType, Guid UserID, int startingRecord, int lastRecord, bool copyValuesIntoTbl)
+        public void PerformImportHelper(string storedFileName, string storedLogName, string entityType, Guid userID, int startingRecord, int lastRecord, bool copyValuesIntoTbl)
         {
             R8RFile storedFile = new R8RFile("import", storedFileName);
             string storedFileLocation = storedFile.LoadPreviouslyStored();
@@ -489,7 +489,7 @@ namespace ClassLibrary1.Model
                     {
                         try
                         {
-                            ExistingTblRowID = int.Parse(TblRowIDAttribute.Value);
+                            ExistingTblRowID = new Guid(TblRowIDAttribute.Value);
                         }
                         catch
                         {
@@ -512,12 +512,12 @@ namespace ClassLibrary1.Model
                             FieldSetDataInfo theFieldSetDataInfo = ConvertXElementToFieldSetDataInfo(theTblRowElement, theTblRow, copyValuesIntoTbl);
                             //ProfileSimple.End("ConvertXElement");
                             if (ActionOnImportAttribute.Value == "updatefields" && ExistingTblRowID != null)
-                                theActionProcessor.FieldSetImplement(theFieldSetDataInfo, UserId, false, false); // No rewards currently on mass import
+                                theActionProcessor.FieldSetImplement(theFieldSetDataInfo, userID, false, false); // No rewards currently on mass import
                             else
                             {
                                 //ProfileSimple.Start("TblRowCreateWithFields");
                                 if (!String.IsNullOrWhiteSpace(theFieldSetDataInfo.theRowName)) // skip unnamed table rows
-                                    theTblRow = theActionProcessor.TblRowCreateWithFields(theFieldSetDataInfo, UserId);
+                                    theTblRow = theActionProcessor.TblRowCreateWithFields(theFieldSetDataInfo, userID);
                                 //ProfileSimple.End("TblRowCreateWithFields");
                             }
 
@@ -532,9 +532,9 @@ namespace ClassLibrary1.Model
 
                     ActionProcessor Obj = new ActionProcessor();
                     if (StatusChangeAttribute.Value == "activate" && theTblRow != null && theTblRow.Status != (int)StatusOfObject.Active)
-                        Obj.TblRowDeleteOrUndelete(theTblRow.TblRowID, false, true, UserId, null);
+                        Obj.TblRowDeleteOrUndelete(theTblRow.TblRowID, false, true, userID, null);
                     else if (StatusChangeAttribute.Value == "inactivate" && theTblRow != null && (theTblRow.Status == (int)StatusOfObject.Active || theTblRow.Status == (int)StatusOfObject.DerivativelyUnavailable))
-                        Obj.TblRowDeleteOrUndelete(theTblRow.TblRowID, true, true, UserId, null);
+                        Obj.TblRowDeleteOrUndelete(theTblRow.TblRowID, true, true, userID, null);
                     //ProfileSimple.End("TblRow import");
                 }
 
@@ -578,7 +578,7 @@ namespace ClassLibrary1.Model
             // initiate a long process to actually perform the upload
             R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             const int numToImportAtATime = 100;
-            UploadTblRowsInfo theInfo = new UploadTblRowsInfo(TheTbl.TblID, 1, elementCount, numToImportAtATime, mainFile.FileName, logFile.FileName, tblRowType, UserId, copyValuesIntoTbl);
+            UploadTblRowsInfo theInfo = new UploadTblRowsInfo(TheTbl.TblID, 1, elementCount, numToImportAtATime, mainFile.FileName, logFile.FileName, tblRowType, userID, copyValuesIntoTbl);
             theDataAccessModule.AddOrResetLongProcess(R8RDataManipulation.LongProcessTypes.uploadTblRows, 120, null, null, R8RDataManipulation.GetBasePriorityLevelForLongProcess(R8RDataManipulation.LongProcessTypes.uploadTblRows), theInfo);
 
             mainFile.StorePermanently();

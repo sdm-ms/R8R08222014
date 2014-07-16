@@ -43,7 +43,7 @@ namespace ClassLibrary1.Model
         {
         }
 
-        public FilterRule(int relevantID) // could be TblColumnID, FieldDefinitionID, or TblID 
+        public FilterRule(Guid relevantID) // could be TblColumnID, FieldDefinitionID, or TblID 
         {
             theID = relevantID;
             FilterOn = true;
@@ -111,11 +111,11 @@ namespace ClassLibrary1.Model
             theFilterRules.Add(theFilterRule);
         }
 
-        public IQueryable<int> GetFilteredQuery(IR8RDataContext theDataContext, int? maxNumResults)
+        public IQueryable<Guid> GetFilteredQuery(IR8RDataContext theDataContext, int? maxNumResults)
         {
             IQueryable<TblRow> theQuery = GetFilteredQueryAsTblRows(theDataContext, maxNumResults);
-            var theQueryInt = theQuery.Select(x => x.TblRowID);
-            return theQueryInt;
+            var theQueryGuid = theQuery.Select(x => x.TblRowID);
+            return theQueryGuid;
         }
 
         public class TblRowsToIncludeOrExclude
@@ -249,7 +249,7 @@ namespace ClassLibrary1.Model
             return theTblRowsWithRatings;
         }
 
-        public IQueryable<TblRow> GetFilteredQuerySortedByColumn(IR8RDataContext theDataContext, int? maxNumResults, int TblColumnToSort, bool ascending)
+        public IQueryable<TblRow> GetFilteredQuerySortedByColumn(IR8RDataContext theDataContext, int? maxNumResults, Guid TblColumnToSort, bool ascending)
         {
 
 
@@ -404,7 +404,7 @@ namespace ClassLibrary1.Model
         public string Address { get; set; }
         public decimal? Mile { get; set; }
 
-        public AddressFilterRule(int FieldDefinitionID, string address, decimal? maximumMilesDistance)
+        public AddressFilterRule(Guid FieldDefinitionID, string address, decimal? maximumMilesDistance)
             : base(FieldDefinitionID)
         {
             Address = address;
@@ -446,7 +446,7 @@ namespace ClassLibrary1.Model
         {
         }
 
-        public ChoiceFilterRule(int FieldDefinitionID, Guid choiceInGroupID)
+        public ChoiceFilterRule(Guid FieldDefinitionID, Guid choiceInGroupID)
             : base(FieldDefinitionID)
         {
             ChoiceInGroupID = choiceInGroupID;
@@ -475,7 +475,7 @@ namespace ClassLibrary1.Model
         public DateTime? MinValue { get; set; }
         public DateTime? MaxValue { get; set; }
 
-        public DateTimeFilterRule(int FieldDefinitionID, DateTime? minValue, DateTime? maxValue)
+        public DateTimeFilterRule(Guid FieldDefinitionID, DateTime? minValue, DateTime? maxValue)
             : base(FieldDefinitionID)
         {
             MinValue = minValue;
@@ -505,7 +505,7 @@ namespace ClassLibrary1.Model
         public decimal? MinValue { get; set; }
         public decimal? MaxValue { get; set; }
 
-        public NumberFilterRule(int FieldDefinitionID, decimal? minValue, decimal? maxValue)
+        public NumberFilterRule(Guid FieldDefinitionID, decimal? minValue, decimal? maxValue)
             : base(FieldDefinitionID)
         {
             MinValue = minValue;
@@ -532,7 +532,7 @@ namespace ClassLibrary1.Model
     {
         public string TextTags { get; set; }
 
-        public TextFilterRule(int FieldDefinitionID, string textTags)
+        public TextFilterRule(Guid FieldDefinitionID, string textTags)
             : base(FieldDefinitionID)
         {
             TextTags = textTags;
@@ -706,12 +706,12 @@ namespace ClassLibrary1.Model
                 decimal? miles = null;
                 if (dictionary["miles"] != null)
                     miles = Convert.ToDecimal(dictionary["miles"]);
-                return new AddressFilterRule((int)dictionary["id"], (string)dictionary["address"], miles);
+                return new AddressFilterRule((Guid)dictionary["id"], (string)dictionary["address"], miles);
             }
             if (theType == "choice")
             {
-                int choice = Convert.ToInt32(dictionary["choice"]);
-                return new ChoiceFilterRule((int)dictionary["id"], choice);
+                Guid choice = (Guid)(dictionary["choice"]);
+                return new ChoiceFilterRule((Guid)dictionary["id"], choice);
             }
             if (theType == "datetime")
             {
@@ -721,7 +721,7 @@ namespace ClassLibrary1.Model
                     min = Convert.ToDateTime(dictionary["min"]);
                 if (dictionary["max"] != null)
                     max = Convert.ToDateTime(dictionary["max"]);
-                return new DateTimeFilterRule((int)dictionary["id"], min, max);
+                return new DateTimeFilterRule((Guid)dictionary["id"], min, max);
             }
             if (theType == "number")
             {
@@ -731,11 +731,11 @@ namespace ClassLibrary1.Model
                     min = Convert.ToDecimal(dictionary["min"]);
                 if (dictionary["max"] != null)
                     max = Convert.ToDecimal(dictionary["max"]);
-                return new NumberFilterRule((int)dictionary["id"], min, max);
+                return new NumberFilterRule((Guid)dictionary["id"], min, max);
             }
             if (theType == "text")
             {
-                return new TextFilterRule((int)dictionary["id"], (string)dictionary["texttags"]);
+                return new TextFilterRule((Guid)dictionary["id"], (string)dictionary["texttags"]);
             }
             if (theType == "tblColumn")
             {
@@ -745,11 +745,11 @@ namespace ClassLibrary1.Model
                     min = Convert.ToDecimal(dictionary["min"]);
                 if (dictionary["max"] != null)
                     max = Convert.ToDecimal(dictionary["max"]);
-                return new TblColumnFilterRule((int)dictionary["id"], min, max);
+                return new TblColumnFilterRule((Guid)dictionary["id"], min, max);
             }
             if (theType == "search")
             {
-                return new SearchWordsFilterRule((int)dictionary["id"], (string)dictionary["search"]);
+                return new SearchWordsFilterRule((Guid)dictionary["id"], (string)dictionary["search"]);
             }
             return null;
         }

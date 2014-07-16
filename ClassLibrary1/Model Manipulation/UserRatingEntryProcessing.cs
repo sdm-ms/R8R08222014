@@ -11,18 +11,18 @@ namespace ClassLibrary1.Model
 {
     public static class RatingAndUserRatingStringConverter
     {
-        public static bool AddRatingIDsToList(List<RatingAndUserRatingString> theUserRatingsString, List<int> theRatingIDs)
+        public static bool AddRatingIDsToList(List<RatingAndUserRatingString> theUserRatingsString, List<Guid> theRatingIDs)
         {
             bool ratingIDsProperlyFormatted = true;
             if (theUserRatingsString.Count() > 1)
                 throw new Exception("Must revise this for multiple ratings in rating group, since after adding the rating group we'll need to get each individual rating.");
             foreach (RatingAndUserRatingString theRatingAndUserRatingString in theUserRatingsString)
             {
-                Guid aRatingID = -1;
-                if (!MoreStringManip.IsInteger(theRatingAndUserRatingString.ratingID, ref aRatingID))
-                    ratingIDsProperlyFormatted = false;
-                else
-                    theRatingIDs.Add(aRatingID);
+                Guid aRatingID = new Guid();
+                //if (!MoreStringManip.IsInteger(theRatingAndUserRatingString.ratingID, ref aRatingID))
+                //    ratingIDsProperlyFormatted = false;
+                //else
+               theRatingIDs.Add(aRatingID);
             }
             return ratingIDsProperlyFormatted;
         }

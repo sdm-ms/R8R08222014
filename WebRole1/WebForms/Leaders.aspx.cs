@@ -17,7 +17,7 @@ using ClassLibrary1.EFModel;
 
 public partial class Leaders : System.Web.UI.Page
 {
-    internal Guid userID;
+    internal Guid UserID;
 
     RoutingInfoMainContent theLocation;
     R8RDataAccess DataAccess;

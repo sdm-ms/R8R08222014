@@ -36,10 +36,10 @@ public partial class Row : System.Web.UI.Page
             throw new Exception("Internal error: Invalid mode for Row page.");
         
         R8RDataAccess DataAccess = new R8RDataAccess();
-        Guid? userID = null;
+        Guid? UserId = null;
         if (HttpContext.Current.Profile != null)
             UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-        if (UserId == 0 || UserId == null)
+        if (UserId == null)
             Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, DataAccess.R8RDB)));
 
         bool someUsersHaveRights = DataAccess.CheckUserRights(UserId, UserActionType.ChangeTblRows, false, Location.thePointsManager.PointsManagerID, Location.theTbl.TblID);
@@ -50,7 +50,7 @@ public partial class Row : System.Web.UI.Page
         Guid? anyUserID = null;
         if (HttpContext.Current.Profile != null)
             anyUserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-        if (anyUserID == 0)
+        if (anyUserID == new Guid())
             anyUserID = null;
         bool canChangeTblRows = theActionProcessor.CheckUserRights(anyUserID, UserActionType.ChangeTblRows, false, null, Location.theTbl.TblID);
         if (!canChangeTblRows)

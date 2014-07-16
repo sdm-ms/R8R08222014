@@ -40,7 +40,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
     string SuppStyleHeader;
 
 
-    public void Setup(int entityId, string suppStyle, string suppStyleHeader)
+    public void Setup(Guid entityId, string suppStyle, string suppStyleHeader)
     {
         DataAccess = new R8RDataAccess();
 
@@ -89,7 +89,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         CanEditFields = false;
         if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null)
         {
-            Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, TblID);

@@ -68,7 +68,7 @@ namespace ClassLibrary1.Model
 
                 string theHeaderRow = "";
                 if (includeHeaderRow)
-                    theHeaderRow = LoadHeaderRowFromWebService(theDataAccess, theTableInfo.TblTabID, (theTableSortRule is TableSortRuleTblColumn ? (int?)((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTableSortRule is TableSortRuleRowName, theTableSortRule.Ascending, theTbl.TblID);
+                    theHeaderRow = LoadHeaderRowFromWebService(theDataAccess, theTableInfo.TblTabID, (theTableSortRule is TableSortRuleTblColumn ? (Guid?)((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTableSortRule is TableSortRuleRowName, theTableSortRule.Ascending, theTbl.TblID);
 
                 //ProfileSimple.Start("GetTablePopulateResponse"); // QUERYTIMING
                 TablePopulateResponse theResponse = GetTablePopulateResponse(firstRowNum, numRows, populatingInitially, cacheString, myDependencies, theDataAccess, theTableInfo, tableInfoForReset, maxNumResults, theTableSortRule, thePointsManager, theTbl, theHeaderRow, rowCountOverride);
@@ -223,13 +223,13 @@ namespace ClassLibrary1.Model
             //ProfileSimple.Start("GetMainRowsString beginning");
             StringBuilder theMainRows = new StringBuilder();
             int rowCount = 0;
-            List<int> theTblRowIDs = null;
+            List<Guid> theTblRowIDs = null;
             List<bool> tblRowDeleted = null;
             if (theInfoToPopulatePage == null)
             {
                 if (!bodyRowInfoList.Any())
                     return "";
-                int aColumn = bodyRowInfoList.FirstOrDefault().TblColumnID;
+                Guid aColumn = bodyRowInfoList.FirstOrDefault().TblColumnID;
                 theTblRowIDs = bodyRowInfoList.Where(x => x.TblColumnID == aColumn).Select(x => x.TblRowID).ToList();
                 tblRowDeleted = bodyRowInfoList.Where(x => x.TblColumnID == aColumn).Select(x => x.Deleted).ToList();
                 rowCount = theTblRowIDs.Count();

@@ -258,7 +258,7 @@ namespace ClassLibrary1.Model
                         if (user.CashValue < user.PT.GuaranteedPaymentsEarnedThisRewardPeriod)
                             user.CashValue = user.PT.GuaranteedPaymentsEarnedThisRewardPeriod;
                         decimal pointsToCash = usePendingPointsOnly ? 0 : 0 - user.PointsToCash;
-                        UpdateUserPoints(user.User, thePointsManager.PointsManagerID, PointsAdjustmentReason.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.CashValue, true);
+                        UpdateUserPoints((Guid)user.User, thePointsManager.PointsManagerID, PointsAdjustmentReason.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.CashValue, true);
                         PaymentGuarantees.EndOfRewardPeriodTasks(user.PT, user.CashValue);
                     }
                 }
@@ -292,7 +292,7 @@ namespace ClassLibrary1.Model
                         if (user.Prize < user.PT.GuaranteedPaymentsEarnedThisRewardPeriod)
                             user.Prize = user.PT.GuaranteedPaymentsEarnedThisRewardPeriod;
                         decimal pointsToCash = usePendingPointsOnly ? 0 : 0 - user.PointsToCash;
-                        UpdateUserPoints(user.User, thePointsManager.PointsManagerID, PointsAdjustmentReason.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.Prize, true);
+                        UpdateUserPoints((Guid)user.User, thePointsManager.PointsManagerID, PointsAdjustmentReason.PointsCashed, 0, pointsToCash, 0, 0, 0, 0, user.Prize, true);
                         PaymentGuarantees.EndOfRewardPeriodTasks(user.PT, user.Prize );
                     }
                 }

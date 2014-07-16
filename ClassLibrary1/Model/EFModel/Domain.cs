@@ -14,7 +14,7 @@ namespace ClassLibrary1.EFModel
             PointsManagers = new HashSet<PointsManager>();
         }
 
-        public int Guid { get; set; }
+        public Guid DomainID { get; set; }
 
         public bool ActiveRatingWebsite { get; set; }
 

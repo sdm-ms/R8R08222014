@@ -31,7 +31,7 @@ namespace ClassLibrary1.Model
 
         public Guid GetTblDimensionsIDForRegularTbl(Guid theTblID)
         {
-            Guid? x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).TblDimensionsID;
+            Guid? x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).TblDimensionID;
             if (x == null)
                 x = DataAccess.R8RDB.GetTable<Tbl>().Single(c => c.TblID == theTblID).PointsManager.Domain.TblDimensionsID;
             if (x == null)

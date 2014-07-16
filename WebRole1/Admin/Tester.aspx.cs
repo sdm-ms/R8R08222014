@@ -52,10 +52,10 @@ public partial class Tester : System.Web.UI.Page
     {
         R8RDataManipulation manip = new R8RDataManipulation();
         int numRatings = Convert.ToInt32(ForceHighStakesNumRatingGroups.Text);
-        Guid tblID = Convert.ToInt32(ForceHighStakesTblID.Text);
+        Guid tblID = new Guid(ForceHighStakesTblID.Text);
         Guid? userID = null;
         if (ForceHighStakesUserID.Text != "")
-            userID = Convert.ToInt32(ForceHighStakesUserID.Text);
+            userID = new Guid(ForceHighStakesUserID.Text);
         manip.ChangeToHighStakes(tblID, numRatings, userID);
     }
 
@@ -63,7 +63,7 @@ public partial class Tester : System.Web.UI.Page
     protected void ForceHighStakesEnd_Click(object sender, EventArgs e)
     {
         R8RDataManipulation manip = new R8RDataManipulation();
-        Guid tblID = Convert.ToInt32(EndKnownHighStakesTblID.Text);
+        Guid tblID = new Guid(EndKnownHighStakesTblID.Text);
         manip.FinishKnownHighStakesSoon(tblID);
     }
 
@@ -222,14 +222,14 @@ public partial class Tester : System.Web.UI.Page
     protected void DeleteAllDataFromTable_Click(object sender, EventArgs e)
     {
         R8RDataManipulation DataTransitions = new R8RDataManipulation();
-        DataTransitions.DeleteAllDataInTable(Convert.ToInt32(TblID.Text));
+        DataTransitions.DeleteAllDataInTable(new Guid(TblID.Text));
 
     }
 
     protected void DeleteUserRatingDataFromTable_Click(object sender, EventArgs e)
     {
         R8RDataManipulation DataTransitions = new R8RDataManipulation();
-        DataTransitions.DeleteUserRatingDataInTable(Convert.ToInt32(TblID2.Text));
+        DataTransitions.DeleteUserRatingDataInTable(new Guid(TblID2.Text));
 
     }
 

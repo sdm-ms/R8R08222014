@@ -178,8 +178,8 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
         }
         bool DoItNow = true;
 
-        int? ChangeGroupId = null;
-        Guid UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? ChangeGroupId = null;
+        Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         // Calling the routines
         Obj.PointsManagerChangeSettings((Guid)SubtopicId, CurrentPeriodDollerSubsidy, EndofDollerSubsidyPeriod, NextPeriodDollerSubsidy, NextPeriodLength, NumPrizes, MinPayment, DoItNow, UserId, ChangeGroupId);
         User_Control_ModalPopUp PopUp = (User_Control_ModalPopUp)Buttons.FindControl("PopUp");

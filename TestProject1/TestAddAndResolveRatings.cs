@@ -40,7 +40,6 @@ namespace TestProject1
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             TestHelper = new TestHelper();
@@ -52,8 +51,8 @@ namespace TestProject1
         public void RatingGroupIDsWork()
         {
             TestHelper.CreateSimpleTestTable(true);
-            TestHelper.Rating.RatingGroupID.Should().NotBe(0);
-            TestHelper.RatingGroup.RatingGroupID.Should().NotBe(0);
+            TestHelper.Rating.RatingGroupID.Should().NotBe(new Guid());
+            TestHelper.RatingGroup.RatingGroupID.Should().NotBe(new Guid());
             TestHelper.Rating.TopmostRatingGroupID.Should().Be(TestHelper.RatingGroup.RatingGroupID);
             DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == TestHelper.RatingGroup.RatingGroupID).RatingGroupID.Should().Equals(TestHelper.RatingGroup.RatingGroupID);
             DataAccess.DataContext.GetTable<Rating>().Single(x => x.TopmostRatingGroupID == TestHelper.RatingGroup.RatingGroupID).RatingGroup.RatingGroupID.Should().Equals(TestHelper.RatingGroup.RatingGroupID);

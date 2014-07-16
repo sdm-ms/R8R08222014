@@ -44,7 +44,7 @@ namespace ClassLibrary1.EFModel
 
         public int MinimumDaysToTrackLongTerm { get; set; }
 
-        public Guid? creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

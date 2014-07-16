@@ -34,7 +34,7 @@ namespace ClassLibrary1.EFModel
         [StringLength(50)]
         public string TypeOfTblRow { get; set; }
 
-        public Guid? TblDimensionsID { get; set; }
+        public Guid? TblDimensionID { get; set; }
 
         public Guid? Creator { get; set; }
 

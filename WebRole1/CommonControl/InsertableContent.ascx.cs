@@ -19,15 +19,15 @@ using ClassLibrary1.EFModel;
 
 public partial class User_Control_InsertableContent : System.Web.UI.UserControl
 {
-    int? DomainID { get; set; }
-    int? PointsManagerID { get; set; }
-    int? TblID { get; set; }
+    Guid? DomainID { get; set; }
+    Guid? PointsManagerID { get; set; }
+    Guid? TblID { get; set; }
     InsertableLocation Location { get; set; }
     public bool ContainsContent { get; internal set; }
 
     internal R8RDataAccess DataAccess;
 
-    public void Setup(int? domainID, int? pointsManagerID, int? tblID, InsertableLocation location, R8RDataAccess theDataAccess)
+    public void Setup(Guid? domainID, Guid? pointsManagerID, Guid? tblID, InsertableLocation location, R8RDataAccess theDataAccess)
     {
         DomainID = domainID;
         PointsManagerID = pointsManagerID;

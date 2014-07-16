@@ -245,7 +245,7 @@ namespace ClassLibrary1.Model
             if (state == null)
                 return base.ConvertFrom(context, culture, value);
             String[] parts = state.Split('#');
-            return new TblColumnInfo(Convert.ToInt32(parts[0]), parts[1], Convert.ToBoolean(parts[2]), Convert.ToBoolean(parts[3]));
+            return new TblColumnInfo(new Guid(parts[0]), parts[1], Convert.ToBoolean(parts[2]), Convert.ToBoolean(parts[3]));
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)

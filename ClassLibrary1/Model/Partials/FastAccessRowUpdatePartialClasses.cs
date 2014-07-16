@@ -222,7 +222,7 @@ namespace ClassLibrary1.EFModel
                 Status = (byte)StatusOfObject.Unavailable;
                 return;
             }
-            int? choice = null;
+            Guid? choice = null;
             if (Status == (byte)StatusOfObject.Active)
                 choice = ChoiceInGroupID;
             var updater = new FastAccessChoiceFieldSingleSelectionUpdateInfo() { FieldDefinitionID = this.ChoiceField.Field.FieldDefinitionID, ChoiceInGroupID = choice };

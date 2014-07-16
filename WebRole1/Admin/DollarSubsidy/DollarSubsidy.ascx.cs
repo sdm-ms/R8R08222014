@@ -16,7 +16,7 @@ public partial class Admin_DollarSubsidy_DollarSubsidy : System.Web.UI.UserContr
     Admin_DollarSubsidy_SetDollarSubsidy dollarsubs;
     public Guid? SubtopicId = null;
 
-    public void Setup(int subtopicId)
+    public void Setup(Guid subtopicId)
     {
         SubtopicId = subtopicId;
         dollarsubs = (Admin_DollarSubsidy_SetDollarSubsidy)LoadControl("~/Admin/DollarSubsidy/SetDollarSubsidy.ascx");

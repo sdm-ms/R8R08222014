@@ -40,7 +40,6 @@ namespace TestProject1
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
@@ -383,7 +382,7 @@ namespace TestProject1
             TestHelper.WaitIdleTasks();
 
             Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingID).First(); // TODO this is an example of where TestHelper is not being useful; relying upon the highest ID rating to be the most recent is bad form.  It's probably always correct, but it would make for one heck of a bug if for some reason it were not.  It would be much better if TestHelper had something like TestHelper.CreateRating(...) returning the Rating.
-            int rating2Id = rating2.RatingID;
+            Guid rating2Id = rating2.RatingID;
 
             decimal user1Rating2UserRatingValue = 9.5M;
             TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user1Rating2UserRatingValue, TestHelper.UserIds[1], ref theResponse);
@@ -543,7 +542,7 @@ namespace TestProject1
             TestHelper.WaitIdleTasks();
 
             Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingID).First(); // TODO this is an example of where TestHelper is not being useful; relying upon the highest ID rating to be the most recent is bad form.  It's probably always correct, but it would make for one heck of a bug if for some reason it were not.  It would be much better if TestHelper had something like TestHelper.CreateRating(...) returning the Rating.
-            int rating2Id = rating2.RatingID;
+            Guid rating2Id = rating2.RatingID;
 
             decimal user1Rating2UserRatingValue = 9.5M;
             TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user1Rating2UserRatingValue, TestHelper.UserIds[1], ref theResponse);
@@ -1054,7 +1053,7 @@ namespace TestProject1
                 Guid fieldDefinitionID = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", FieldTypes.ChoiceField, true, theChoiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
                 for (int rowNum = 0; rowNum < numTblRows; rowNum++)
                 {
-                    int? theChoiceId = null;
+                    Guid? theChoiceId = null;
                     // Every tenth rating gets a the first choice
                     if (rowNum % 10 == 3)
                         theChoiceId = choiceInGroups[0].ChoiceInGroupID; // these are the ones we are going to focus on.
@@ -1511,8 +1510,9 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
 
-            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == 2); // I think the first user is the super user, created by TestHelper
-            IEnumerable<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().Where(u => u.UserID > 2 && u.UserID < 2 + otherUserCount);
+            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[1]); // I think the first user is the super user, created by TestHelper
+            List<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().Where(u => TestHelper.UserIds.Skip(2).ToList().Contains(u.UserID)).Take(otherUserCount).ToList(); 
+
 
             decimal targetRating = (decimal)((decimal)random.NextDouble() * (maxRatingValue - minRatingValue));
             Debug.WriteLine(String.Format("Target Rating: {0}", targetRating));
@@ -1571,8 +1571,8 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
 
-            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == 2); // I think the first user is the super user, created by TestHelper
-            IEnumerable<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().Where(u => u.UserID > 2 && u.UserID < 2 + otherUserCount);
+            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[1]); // I think the first user is the super user, created by TestHelper
+            List<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().Where(u => TestHelper.UserIds.Skip(2).ToList().Contains(u.UserID)).Take(otherUserCount).ToList(); 
 
             decimal targetRating = (decimal)((decimal)random.NextDouble() * (maxRatingValue - minRatingValue));
             Debug.WriteLine(String.Format("Target Rating: {0}", targetRating));
@@ -1726,9 +1726,9 @@ x.UserID == TestHelper.UserIds[1]);
             ChoiceGroup choiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
             var choiceInGroups = choiceGroup.ChoiceInGroups.ToList();
             int choiceInGroupsCount = choiceInGroups.Count();
-            int fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice",
+            Guid fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice",
                 FieldTypes.ChoiceField, true, choiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
-            int[] randomChoiceInGroupIds = new int[parameters.NumTblRows];
+            Guid[] randomChoiceInGroupIds = new Guid[parameters.NumTblRows];
             for (int rowNum = 0; rowNum < parameters.NumTblRows; rowNum++)
             {
                 randomChoiceInGroupIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
@@ -1761,6 +1761,8 @@ x.UserID == TestHelper.UserIds[1]);
             //int minUserId = _dataManipulation.DataContext.GetTable<User>().Min(u => u.UserID);
             //Guid userIDsUnderWhichUserWillTargetWrongValues = minUserId + numUsersWhoTargetWrongValues;
 
+            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).Select(x => x.RatingID).ToList();
+
             for (int batchNum = 0; batchNum < parameters.NumBatchesOfUserRatings; batchNum++)
             {
                 for (int userRatingNum = 0; userRatingNum < parameters.NumUserRatingsPerBatch; userRatingNum++)
@@ -1772,7 +1774,7 @@ x.UserID == TestHelper.UserIds[1]);
                     decimal valueForUserToTarget = userTargetsWrongValue ?
                         wrongValues[randomRowNum] :
                         correctValues[randomRowNum];
-                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == randomRowNum + 1);
+                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingIDs[randomRowNum]);
                     decimal currentValue = theRating.CurrentValue ?? (parameters.MaxRatingValue - parameters.MinRatingValue) / 2;
                     // AdjustmentFactor is defined as:
                     //  (adjustedRating - basisRating) / 
@@ -1908,9 +1910,9 @@ x.UserID == TestHelper.UserIds[1]);
             ChoiceGroup choiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
             var choiceInGroups = choiceGroup.ChoiceInGroups.ToList();
             int choiceInGroupsCount = choiceInGroups.Count();
-            int fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", 
+            Guid fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", 
                 FieldTypes.ChoiceField, true, choiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
-            int[] randomChoiceIds = new int[numTblRows];
+            Guid[] randomChoiceIds = new Guid[numTblRows];
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
             {
                 randomChoiceIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
@@ -1920,9 +1922,11 @@ x.UserID == TestHelper.UserIds[1]);
             }
 
             // The ChoiceInGroups that will trigger a different adj factor for this user
-            int[] choiceInGroupIdThatTriggersSpecialAdjustmentFactor = new int[numUsers];
+            Guid[] choiceInGroupIdThatTriggersSpecialAdjustmentFactor = new Guid[numUsers];
             for (int i = 0; i < numUsers; i++)
-                choiceInGroupIdThatTriggersSpecialAdjustmentFactor[i] = RandomGenerator.GetRandom(0, choiceInGroupsCount - 1); 
+                choiceInGroupIdThatTriggersSpecialAdjustmentFactor[i] = choiceInGroups[RandomGenerator.GetRandom(0, choiceInGroupsCount - 1)].ChoiceInGroupID;
+
+            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).Select(x => x.RatingID).ToList();
 
             for (int batchNum = 0; batchNum < numBatchesOfUserRatings; batchNum++)
             {
@@ -1937,7 +1941,7 @@ x.UserID == TestHelper.UserIds[1]);
                     decimal valueForUserToTarget = RandomGenerator.GetRandom() < proportionOfUsersTargettingWrongValues ?
                         wrongValues[randomRowNum] :
                         correctValues[randomRowNum];
-                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == randomRowNum + 1);
+                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingIDs[randomRowNum]);
                     decimal currentValue = theRating.CurrentValue ?? (maxRatingValue - minRatingValue) / 2;
                     // Since AdjustmentFactor is defined as:
                     //  (adjustedRating - basisRating) / 

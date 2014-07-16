@@ -28,7 +28,7 @@ public partial class Main_Table_ViewCellRowHeading : System.Web.UI.UserControl
         }
     }
 
-    public void Setup(R8RDataAccess theDataAccess, TblDimension theTblDimension, int theTblID, int theTblRowID, bool commentsEnabled, bool canEditFields, bool doRebind)
+    public void Setup(R8RDataAccess theDataAccess, TblDimension theTblDimension, Guid theTblID, Guid theTblRowID, bool commentsEnabled, bool canEditFields, bool doRebind)
     {
         FieldDisplayHtml mainFieldDisplayHtml = new FieldDisplayHtml();
         Main_Table_FieldsDisplay theMainFieldsDisplay = (Main_Table_FieldsDisplay) LoadControl("~/Main/Table/FieldsDisplay.ascx");
@@ -53,7 +53,7 @@ public partial class Main_Table_ViewCellRowHeading : System.Web.UI.UserControl
         SetupLinks(commentsEnabled, canEditFields, theTblRowID);
     }
 
-    protected void SetupLinks(bool commentsEnabled, bool canEditFields, int entityID)
+    protected void SetupLinks(bool commentsEnabled, bool canEditFields, Guid entityID)
     {
         //if (commentsEnabled || canEditFields)
         //{

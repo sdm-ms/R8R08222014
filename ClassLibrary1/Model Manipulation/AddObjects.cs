@@ -100,7 +100,7 @@ namespace ClassLibrary1.Model
         {
             TblColumn theTblColumn = new TblColumn
             {
-                TblColumnID = -1,
+                TblColumnID = Guid.NewGuid(),
                 TblTabID = TblTabID,
                 DefaultRatingGroupAttributesID = defaultRatingGroupAttributesID,
                 TrustTrackerUnit = trackTrustWithinTableColumn ? AddTrustTrackerUnit() : null,
@@ -550,7 +550,7 @@ namespace ClassLibrary1.Model
             //ProfileSimple.Start("AddTblRow");
             TblRow theTblRow = new TblRow
             {
-                TblRowID = -1,
+                TblRowID = Guid.NewGuid(),
                 Tbl = Tbl,
                 TblRowFieldDisplay = theFieldDisplay,
                 Name = name,
@@ -686,13 +686,13 @@ namespace ClassLibrary1.Model
             // Note: Initially, the Linq to SQL data model had child and parent properties for routing and menu, but this seemed
             // to cause a number of problems in Linq to SQL (bad query translation and duplicated items). So, we are avoiding the 
             // properties for now, which means that we need to have the ID variable
-            if (higherHierarchyItem != null && higherHierarchyItem.HierarchyItemID == -1)
+            if (higherHierarchyItem != null /* DEBUG && higherHierarchyItem.HierarchyItemID == -1 */)
                 throw new Exception("Internal error: Must submit changes on hierarchy item before using as basis for higher hierarchy item.");
 
             HierarchyItem theHierarchyItem = new HierarchyItem
             {
-                HierarchyItemID = -1,
-                HigherHierarchyItemID = higherHierarchyItem == null ? (int?) null : (int?) higherHierarchyItem.HierarchyItemID,
+                HierarchyItemID = Guid.NewGuid(),
+                HigherHierarchyItemID = higherHierarchyItem == null ? (Guid?)null : (Guid?)higherHierarchyItem.HierarchyItemID,
                 Tbl = associatedTbl,
                 IncludeInMenu = includeInMenu,
                 HierarchyItemName = name
@@ -832,6 +832,7 @@ namespace ClassLibrary1.Model
                 TopRatingGroup = topRatingGroup,
                 NumInGroup = ratingPlan.NumInGroup,
                 Name = ratingPlan.Name,
+                CreationTime = TestableDateTime.Now,
                 Creator = ratingPlan.Creator,
                 CurrentValue = null,
                 LastModifiedResolutionTimeOrCurrentValue = TestableDateTime.Now
@@ -973,8 +974,8 @@ namespace ClassLibrary1.Model
             Guid tblRowID, tblColumnID;
             try
             {
-                tblRowID = Convert.ToInt32(components[0]);
-                tblColumnID = Convert.ToInt32(components[1]);
+                tblRowID = new Guid(components[0]);
+                tblColumnID = new Guid(components[1]);
             }
             catch
             {
@@ -1015,7 +1016,7 @@ namespace ClassLibrary1.Model
 
         public RatingGroup AddRatingGroupAndRatings(TblRow tblRow, TblColumn tblColumn, RatingGroupAttribute ratingGroupAttributes)
         {
-            if (!(tblRow.TblRowID == -1 || tblColumn.TblColumnID == -1)) // if 0's ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
+            if (false) // DEBUG -- test for whether it's a preexisting row/column (!(tblRow.TblRowID == -1 || tblColumn.TblColumnID == -1)) // if it's a new row ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
                 AddUniquenessLock(new TblRowIDAndTblColumnIDUniquenessGenerator() { TblRowID = tblRow.TblRowID, TblColumnID = tblColumn.TblColumnID }, TestableDateTime.Now + TimeSpan.FromDays(1)); // will prevent anyone else from adding to the same cell simultaneously (note that 1 day is a bit arbitrary -- key is that we want to avoid scenario where we check for ratings and don't find any, and add just an instant later than another web role doing the same thing)
             RatingGroup theRatingGroup = AddRatingGroupAndRatings(tblRow, tblColumn, ratingGroupAttributes, null, null);
             AdvanceRatingGroupToNextRatingPhase(theRatingGroup);
@@ -1039,7 +1040,7 @@ namespace ClassLibrary1.Model
             if (!recursiveCall)
             { // We're at the top of the hierarchy. Let's make sure this rating group doesn't already exist.
                 IQueryable<RatingGroup> existingRatingGroups = null;
-                if (tblRow.TblRowID != -1)
+                if (tblRow.TblRowID != Guid.NewGuid()) // DEBUG -- test for whether it is a pre-existing row
                 {
                     existingRatingGroups = DataContext.WhereFromNewOrDatabase<RatingGroup>(mg => mg.TblRow == tblRow
                                                    && mg.TblColumn == TblColumn
@@ -1102,41 +1103,9 @@ namespace ClassLibrary1.Model
             return theGroup;
         }
 
-        /// <summary>
-        /// Adds ratings for a column if the Tbl is active. Used to add a category to running ratings.
-        /// </summary>
-        /// <param name="columnID"></param>
-        public void AddRatingsAfterAddingColumnIfTblIsActive(Guid columnID)
-        {
-
-            Tbl theTbl = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == columnID).TblTab.Tbl;
-            // Check whether this is a Tbl to which ratings have already been added. If not, we'll add them later.
-            var aRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow.TblID == theTbl.TblID);
-
-            if (aRating != null)
-            {
-                DataContext.SubmitChanges();
-                StartAddingMissingRatingsForTbl(theTbl.TblID);
-            }
-        }
-
-        bool missingRatingsLongProcessedEnabled = false; // we don't want to do this any more because users may add larger numbers of columns, so we'll create ratings on an as-needed basis
-        public void StartAddingMissingRatingsForTbl(Guid TblID)
-        {
-            if (!missingRatingsLongProcessedEnabled)
-                return;
-
-            // AddRatingsForSomeTblRowsInTblAndStartTrading(TblID, null, 0);
-            bool tblRowsExist = DataContext.GetTable<TblRow>().Any(x => x.TblID == TblID);
-            if (tblRowsExist)
-            {
-                CreateMissingRatingsInfo myInfo = new CreateMissingRatingsInfo(5, 0);
-                AddOrResetLongProcess(LongProcessTypes.createMissingRatings, 600, TblID, null, GetBasePriorityLevelForLongProcess(LongProcessTypes.createMissingRatings), myInfo);
-            }
-        }
 
         /// <summary>
-        /// Add the ratings for a row.
+        /// Add the ratings for a row. Not currently in use.
         /// </summary>
         public void AddMissingRatingsForTblRow(TblRow theTblRow)
         {
@@ -1166,7 +1135,7 @@ namespace ClassLibrary1.Model
         {
             RatingGroupAttribute theGroupAttributes;
             OverrideCharacteristic overrideCharacteristics = null;
-            if (theTblRow.TblRowID != -1 && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
+            if (theTblRow.TblRowID != Guid.NewGuid() /* DEBUG -- test for whether it is a pre-existing row */ && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
                 overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theColumn.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
             if (overrideCharacteristics == null)
                 theGroupAttributes = theColumn.RatingGroupAttribute;
@@ -2072,9 +2041,9 @@ namespace ClassLibrary1.Model
             if (theRangeBottom < 0 || theRangeTop > 1 || theRangeBottom > theRangeTop)
                 throw new Exception("Invalid liquidity range to create");
 
-            int SubsidyDensityRangeNum = AddSubsidyDensityRange(theSubsidyDensityRangeGroupID);
+            Guid subsidyDensityRangeID = AddSubsidyDensityRange(theSubsidyDensityRangeGroupID);
 
-            SubsidyDensityRange theRange =DataContext.GetTable<SubsidyDensityRange>().Single(x=>x.SubsidyDensityRangeID==SubsidyDensityRangeNum);
+            SubsidyDensityRange theRange =DataContext.GetTable<SubsidyDensityRange>().Single(x=>x.SubsidyDensityRangeID==subsidyDensityRangeID);
             theRange.RangeBottom = theRangeBottom;
             theRange.RangeTop = theRangeTop;
             theRange.LiquidityFactor = theLiquidityFactor;
@@ -2084,7 +2053,7 @@ namespace ClassLibrary1.Model
 
             if (fixGroup)
             {
-                Func<SubsidyDensityRange, bool> otherRangesInGroup = range => range.SubsidyDensityRangeGroupID == theSubsidyDensityRangeGroupID && range.SubsidyDensityRangeID != SubsidyDensityRangeNum;
+                Func<SubsidyDensityRange, bool> otherRangesInGroup = range => range.SubsidyDensityRangeGroupID == theSubsidyDensityRangeGroupID && range.SubsidyDensityRangeID != subsidyDensityRangeID;
 
                 // Let's check to see if this is the first range added. If so, then we should make a surrounding range
                 // (which the subsequent code will break up).
@@ -2093,8 +2062,8 @@ namespace ClassLibrary1.Model
                                         Count();
                 if (previousRanges == 0)
                 {
-                    int newRangeNum = AddSubsidyDensityRange(theSubsidyDensityRangeGroupID);
-                    SubsidyDensityRange newRange = DataContext.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID==newRangeNum);
+                    Guid newRangeID = AddSubsidyDensityRange(theSubsidyDensityRangeGroupID);
+                    SubsidyDensityRange newRange = DataContext.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID==newRangeID);
                     newRange.RangeBottom = 0;
                     newRange.RangeTop = 1;
                     newRange.LiquidityFactor = 1;
@@ -2122,8 +2091,8 @@ namespace ClassLibrary1.Model
                                         ToList();
                 foreach (SubsidyDensityRange r in rangesToDuplicate) // should be only one
                 {
-                    int newRangeNum = AddSubsidyDensityRange(theSubsidyDensityRangeGroupID);
-                    SubsidyDensityRange newRange = DataContext.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID==newRangeNum);
+                    Guid newRangeID = AddSubsidyDensityRange(theSubsidyDensityRangeGroupID);
+                    SubsidyDensityRange newRange = DataContext.GetTable<SubsidyDensityRange>().Single(x => x.SubsidyDensityRangeID==newRangeID);
                     newRange.RangeBottom = theRangeTop;
                     newRange.RangeTop = r.RangeTop;
                     newRange.LiquidityFactor = r.LiquidityFactor;
@@ -2171,7 +2140,7 @@ namespace ClassLibrary1.Model
 
             }
 
-            return SubsidyDensityRangeNum;
+            return subsidyDensityRangeID;
         }
 
         /// <summary>

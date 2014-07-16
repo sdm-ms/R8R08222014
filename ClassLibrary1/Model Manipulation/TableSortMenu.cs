@@ -103,10 +103,10 @@ namespace ClassLibrary1.Model
                 switch (split[0])
                 {
                     case "C":
-                        return new TableSortRuleTblColumn(Convert.ToInt32(split[1]), Convert.ToBoolean(split[2]));
+                        return new TableSortRuleTblColumn(new Guid(split[1]), Convert.ToBoolean(split[2]));
 
                     case "D":
-                        return new TableSortRuleDistance((float)Convert.ToDecimal(split[1]), (float)Convert.ToDecimal(split[2]), Convert.ToInt32(split[3]), Convert.ToBoolean(split[4]));
+                        return new TableSortRuleDistance((float)Convert.ToDecimal(split[1]), (float)Convert.ToDecimal(split[2]), new Guid(split[3]), Convert.ToBoolean(split[4]));
 
                     case "E":
                         return new TableSortRuleRowName(Convert.ToBoolean(split[1]));

@@ -69,8 +69,8 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            Guid? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
-            if (TblColumnID == -1) // see note above
+            Guid? TblColumnID = (Guid?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+            if (TblColumnID == new Guid()) // DEBUG
                 TblColumnID = null;
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];
             string theName = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Name"];

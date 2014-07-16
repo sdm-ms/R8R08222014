@@ -45,7 +45,6 @@ namespace TestProject1
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds());
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;

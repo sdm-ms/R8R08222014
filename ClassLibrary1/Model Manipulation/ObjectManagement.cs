@@ -349,7 +349,6 @@ namespace ClassLibrary1.Model
                     
                     theTblColumn.Status = newValue;
                     DataContext.SubmitChanges();
-                    StartAddingMissingRatingsForTbl(theTblColumn.TblTab.TblID);
                     break;
                 case TypeOfObject.TblColumnFormatting:
                     TblColumnFormatting theTblColumnFormatting = DataContext.GetTable<TblColumnFormatting>().Single(x => x.TblColumnFormattingID == objectID);
@@ -912,7 +911,7 @@ namespace ClassLibrary1.Model
         /// <param name="theObjectType">The type of the object</param>
         /// <param name="theName">Passes back the name of the object</param>
         /// <param name="theCreator">Passes back the creator of the object</param>
-        public void GetNameAndCreatorOfObject(Guid objectID, TypeOfObject theObjectType, ref String theName, ref int? theCreator)
+        public void GetNameAndCreatorOfObject(Guid objectID, TypeOfObject theObjectType, ref String theName, ref Guid? theCreator)
         {
             if (!ObjectExists(objectID, theObjectType))
                 throw new Exception("Internal error -- trying to get name of nonexistent object.");

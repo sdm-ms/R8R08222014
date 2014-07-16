@@ -144,7 +144,7 @@ namespace ClassLibrary1.Misc
 
         public List<SQLCellInfo> itemsToUpdateWithMainTablePrimaryKeyOnceAvailable = new List<SQLCellInfo>();
 
-        public void SetMainTablePrimaryKey(int primaryKey, bool isAlreadyInDatabase)
+        public void SetMainTablePrimaryKey(Guid primaryKey, bool isAlreadyInDatabase)
         {
             if (MainTablePrimaryKey != null && MainTablePrimaryKey != primaryKey)
                 throw new Exception("Cannot change primary key.");

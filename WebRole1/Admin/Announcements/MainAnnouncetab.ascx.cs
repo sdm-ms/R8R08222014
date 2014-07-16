@@ -23,14 +23,14 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
     public Guid? TopicId = null;
     public Guid? AnnounceId = null;
      public bool createAnnounceVisible;
-     public int? changeAnnounceVisible;
+     public new Guid? changeAnnounceVisible;
   
     protected void Page_Load(object sender, EventArgs e)
     {
         if (ViewState["createAnnounceVisible"] != null)
             createAnnounceVisible = (bool) ViewState["createAnnounceVisible"];
         if (ViewState["changeAnnounceVisible"] != null)
-            changeAnnounceVisible = (int?) ViewState["changeAnnounceVisible"];
+            changeAnnounceVisible = (Guid?)ViewState["changeAnnounceVisible"];
         DisplayModalPopupIfNecessary();
     }
 
@@ -172,7 +172,7 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
     {
 
         Button BtnChange = (Button)sender;
-        int AnnounceId = int.Parse(BtnChange.CommandArgument);
+        Guid AnnounceId = new Guid(BtnChange.CommandArgument);
         createAnnounceVisible = false;
         changeAnnounceVisible = AnnounceId;
         ViewState["createAnnounceVisible"] = false;

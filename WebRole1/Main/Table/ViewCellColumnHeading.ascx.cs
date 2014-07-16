@@ -30,9 +30,9 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
     protected bool VerticalText;
     protected bool ChartButton;
     protected Guid? TblRowIDForChartButton;
-    protected Action<int?, bool> SortFn;
+    protected Action<Guid?, bool> SortFn;
 
-    public void Setup(R8RDataAccess dataAccess, Action<int?, bool> sortFn, Guid? tblColumnID, Guid? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
+    public void Setup(R8RDataAccess dataAccess, Action<Guid?, bool> sortFn, Guid? tblColumnID, Guid? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
     {
         DataAccess = dataAccess;
         SortFn = sortFn;
@@ -48,7 +48,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
         ChartButton = false;
         TblRowIDForChartButton = entityIDForChartButton;
 
-        if (TblColumnID != null && entityIDForChartButton != null && TblColumnID != -1 && entityIDForChartButton != -1)
+        if (TblColumnID != null && entityIDForChartButton != null && TblColumnID != new Guid() && entityIDForChartButton != new Guid())
         {
             //if (substituteRefreshButton)
             //    ; // THIS FEATURE NOT CURRENTLY SUPPORTED ColumnPopUpMouseOverArea.AddAttribute("class", "refreshCell");

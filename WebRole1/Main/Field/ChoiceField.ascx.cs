@@ -119,7 +119,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
     //This function return the choice number of selected choice
     public Guid? GetValue()
     {
-        Guid? ChoiceInGroupId = (DdlChoice.SelectedValue == "-1" || DdlChoice.SelectedValue == "") ? null : (int?)(Convert.ToInt32(DdlChoice.SelectedValue));
+        Guid? ChoiceInGroupId = (DdlChoice.SelectedValue == new Guid().ToString() || DdlChoice.SelectedValue == "") ? null : (Guid?)new Guid(DdlChoice.SelectedValue);
         return ChoiceInGroupId;
     }
 
@@ -142,19 +142,19 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
             List<ChoiceMenuItem> dependsOnChoices = DependsOn.GetSelectedChoices();
             if (dependsOnChoices == null || !dependsOnChoices.Any())
             {
-                List<int> availableOptionsInDepended = null;
+                List<Guid> availableOptionsInDepended = null;
                 if (DependsOn.DdlChoice.Items != null)
                 {
                     availableOptionsInDepended = DependsOn.DdlChoice.Items.Cast<ListItem>()
                              .Where(x => x.Value != "-1")
-                             .Select(x => Convert.ToInt32(x.Value))
+                             .Select(x => new Guid(x.Value))
                              .ToList();
                 }
                 dropDownItems = ChoiceMenuAccess.GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(availableOptionsInDepended, ChoiceGroupID);
             }
             else
             {
-                List<int> determiningGroupValues = dependsOnChoices.Select(x => Convert.ToInt32(x.Value)).ToList();
+                List<Guid> determiningGroupValues = dependsOnChoices.Select(x => new Guid(x.Value)).ToList();
                 dropDownItems = ChoiceMenuAccess.GetChoiceMenuItemsForDependentGroupWithDependentSelections(determiningGroupValues, ChoiceGroupID);
             }
         }
@@ -321,7 +321,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
         if (DdlChoice.SelectedIndex <= 0)
             return null;
 
-        int ChoiceValue = int.Parse(DdlChoice.SelectedValue);
+        Guid ChoiceValue = new Guid(DdlChoice.SelectedValue);
         return new ChoiceFilterRule(FieldDefinitionOrTblColumnID, ChoiceValue);
     }
 
@@ -351,7 +351,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
             else
             {
                 FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
-                ChoiceInGroup choiceInGroup = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == Convert.ToInt32(DdlChoice.SelectedValue));
+                ChoiceInGroup choiceInGroup = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == new Guid(DdlChoice.SelectedValue));
                 return new ChoiceFieldDataInfo(theFieldDefinition, choiceInGroup, theGroup, DataAccess);
             }
         }

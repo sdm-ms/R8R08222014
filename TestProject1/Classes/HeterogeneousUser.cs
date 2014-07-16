@@ -16,7 +16,7 @@ namespace TestProject1
     class HeterogeneousUser
     {
         TestHelper TestHelper { get; set; }
-        public Guid userID { get; private set; }
+        public Guid UserId { get; private set; }
         public HeterogeneousUserType Type { get; private set; }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace TestProject1
         public int UserRatingEstimateWeight { get; private set; }
 
         public HeterogeneousUser(
-            TestHelper testHelper, 
-            Guid userID,
+            TestHelper testHelper,
+            Guid userId,
             HeterogeneousUserType type,
             double quality,
             int userRatingEstimateWeight)

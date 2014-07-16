@@ -38,7 +38,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
     {
         
     }
-    public void SetupInsertableContent(Guid? domainID, Guid? pointsManagerID, Guid? TblID, int? AnnounceId)
+    public void SetupInsertableContent(Guid? domainID, Guid? pointsManagerID, Guid? TblID, Guid? AnnounceId)
     {
         TopicId = domainID;
         SubtopicId = pointsManagerID;
@@ -70,7 +70,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
             announce = AnnounceId;
             Tdannouc.InnerHtml = "Change new Announcements";
 
-            Guid userID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
             var ObjInsertableContent = Obj.DataAccess.GetInsertableContents((Guid)AnnounceId);
                 TxtName.Text = ObjInsertableContent.Name;
@@ -126,9 +126,9 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
     protected void implementannouncement()
     {
 
-        Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-    
-        int? ChangeGroupId = null;
+        Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+
+        Guid? ChangeGroupId = null;
         string Name = TxtName.Text;
         string Content = TxtContent.Text;
         bool IsTextOnly = !ChkIncludeHtml.Checked;

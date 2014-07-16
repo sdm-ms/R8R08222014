@@ -73,7 +73,6 @@ namespace TestProject1
             R8RDataManipulation _dataManipulation;
 
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
@@ -119,7 +118,8 @@ namespace TestProject1
         private static long TestMemoryLeaks_Helper(TestHelper _testHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
         {
             UserEditResponse theResponse = new UserEditResponse();
-            _testHelper.ActionProcessor.UserRatingAdd(1, 5.0M, 5, ref theResponse);
+            Guid ratingID = _testHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).First().RatingID;
+            _testHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, _testHelper.UserIds[5], ref theResponse);
             CacheManagement.ClearCache();
             _testHelper.FinishUserRatingAdd(_dataManipulation);
             if (waitIdleTasks)

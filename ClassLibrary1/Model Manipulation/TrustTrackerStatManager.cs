@@ -96,7 +96,7 @@ namespace ClassLibrary1.Model
             Rating theRating, User theUser, PointsTotal pointsTotal,
             decimal enteredRating, 
             List<TrustTrackerChoiceSummary> trustTrackerForChoiceFieldsSummary, 
-            List<int> otherChoiceInFieldIDs, 
+            List<Guid> otherChoiceInFieldIDs, 
             out UserRatingHierarchyAdditionalInfo additionalInfo)
         {
             TrustTrackerChoiceSummary = trustTrackerForChoiceFieldsSummary;

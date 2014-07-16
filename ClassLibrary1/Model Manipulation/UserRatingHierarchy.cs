@@ -123,7 +123,7 @@ namespace ClassLibrary1.Model
             UserRatingHierarchyData myUserRatingData = new UserRatingHierarchyData();
             int lastHierarchy = -1;
             int numRatingGroupsCreated = 0;
-            Guid ratingGroupID;
+            Guid ratingGroupID = new Guid();
             int entryNum = -1;
             foreach (var entry in RatingHierarchyEntries)
             {
@@ -283,7 +283,7 @@ namespace ClassLibrary1.Model
              float lastWeekPushback,
              float lastYearPushback,
              List<TrustTrackerChoiceSummary> theTrustTrackerChoiceSummaries,
-             List<int> choiceInFieldIDsNotTrackedYet
+             List<Guid> choiceInFieldIDsNotTrackedYet
         )
         {
             AdjustPct = adjustPct;
@@ -835,7 +835,7 @@ namespace ClassLibrary1.Model
 
                 RatingIdAndUserRatingValue firstUserRating = ratingIdAndUserRatingValues.First();
                 UserRatingHierarchyAdditionalInfo additionalInfo;
-                List<int> choiceInGroupIDs = topRatingGroup.TblRow.Fields
+                List<Guid> choiceInGroupIDs = topRatingGroup.TblRow.Fields
                     .SelectMany(y => y.ChoiceFields)
                     .Where(y => y.Field.FieldDefinition.ChoiceGroupFieldDefinitions
                         .Any(z => z.TrackTrustBasedOnChoices)) // there really should be no more than 1

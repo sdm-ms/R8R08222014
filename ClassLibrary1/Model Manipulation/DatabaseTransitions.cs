@@ -120,23 +120,6 @@ namespace ClassLibrary1.Model
             DataContext.SubmitChanges();
         }
 
-        public void TestSimpleJoinQuery()
-        {
-            var ActorsTable = DataContext.GetTable<Tbl>().First(x => x.Name.Contains("Actors"));
-            var ActorsColumns = DataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == ActorsTable.TblID).Select(x => x.TblColumnID).ToList();
-            var TextFields = DataContext.GetTable<TextField>().Where(x => x.Field.FieldDefinition.TblID == ActorsTable.TblID).Select(x => x.Field.FieldDefinitionID).Distinct().ToList(); 
-            var AllFields = DataContext.GetTable<FieldDefinition>().Where(x => x.TblID == 254).ToList();
-            var ratings = from tblRows in DataContext.GetTable<TblRow>().Where(x => x.TblID == 254)
-                          join r0 in DataContext.GetTable<RatingGroup>().Where(x => x.TblColumnID == 660) on tblRows.TblRowID equals r0.TblRowID
-                          join r1 in DataContext.GetTable<RatingGroup>().Where(x => x.TblColumnID == 661) on tblRows.TblRowID equals r1.TblRowID
-                          join r2 in DataContext.GetTable<RatingGroup>().Where(x => x.TblColumnID == 662) on tblRows.TblRowID equals r2.TblRowID
-                          join f0 in DataContext.GetTable<TextField>().Where(x => x.Field.FieldDefinitionID == 1300) on tblRows.TblRowID equals f0.Field.TblRowID
-                          join f1 in DataContext.GetTable<TextField>().Where(x => x.Field.FieldDefinitionID == 1303) on tblRows.TblRowID equals f1.Field.TblRowID
-                          select new { Name = r0.TblRow.Name, C660 = r0.CurrentValueOfFirstRating, C661 = r1.CurrentValueOfFirstRating, C662 = r2.CurrentValueOfFirstRating, TV1300 = f0.Text, TL1300 = f0.Link, TV1303 = f1.Text, TL1303 = f1.Link, FDRow = tblRows.TblRowFieldDisplay.Row, FDPopUp = tblRows.TblRowFieldDisplay.PopUp, FDTblRowPage = tblRows.TblRowFieldDisplay.TblRowPage };
-                // R8RDB.GetTable<RatingGroup>().Where(x => x.TblColumn.TblID == 254).GroupBy(x => x.TblColumnID).
-            Trace.TraceInformation(ActorsTable.TblID + " " + ActorsColumns + " " + TextFields);
-        }
-
         public void DeleteAllOfType<K>(IQueryable<K> theItems) where K : class
         {
             int numTries = 0;
@@ -377,10 +360,10 @@ namespace ClassLibrary1.Model
         public void ChangeSupremeCourtMembership()
         {
             ActionProcessor Action = new ActionProcessor();
-            int superUser = DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
+            Guid superUser = DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
             Guid theRatingPhaseID = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.Name == "Two week phases").RatingPhaseGroupID;
-            int votesRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 9, 1, "Votes", true, true, superUser, null);
-            int indVoteRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 1, 1, "Individual Vote", true, true, superUser, null);
+            Guid votesRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 9, 1, "Votes", true, true, superUser, null);
+            Guid indVoteRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 1, 1, "Individual Vote", true, true, superUser, null);
             TblColumn supremeCourtVotesTableColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl.Name == "Supreme Court" && x.Abbreviation == "Votes" && x.Name == "Number of expected votes");
             PointsManager supremeCourtPointsManager = supremeCourtVotesTableColumn.TblTab.Tbl.PointsManager;
 
@@ -443,7 +426,7 @@ namespace ClassLibrary1.Model
             var data = DataContext.GetTable<PointsTotal>().Select(x => new { PT = x, NumRatings = x.User.UserRatings.Where(y => y.PointsHaveBecomePending).Select(y => y.UserRatingGroup).Distinct().Count() });
             foreach (var d in data)
             {
-                if (d.PT.TotalTimeEver == 0 && d.PT.PointsManagerID == 135) // doing this only for restaurants table
+                if (d.PT.TotalTimeEver == 0)
                 {
                     decimal totalTime = (decimal)RaterTime.GetTimeForUser(d.PT.UserID, new DateTime(2000, 1, 1), TestableDateTime.Now).TotalHours; // technically, this is all tables; but at time of this transition, it should be almost all restaurants table
                     if (totalTime == 0)
@@ -614,9 +597,10 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void FixUnupdatedRatings()
+        public void FixUnupdatedRatings(Guid? tblID = null)
         {
-            Guid tblID = 270; // restaurants
+            if (tblID == null)
+                return;
             bool done = false;
             while (!done)
             {
@@ -652,7 +636,7 @@ namespace ClassLibrary1.Model
 
         public void SetLastTrustedValueToCurrentValue()
         {
-            Guid tblID = 270; // restaurants
+            Guid tblID = new Guid("asdf"); // set this to applicable GUID
             bool done = false;
             while (!done)
             {
@@ -673,24 +657,6 @@ namespace ClassLibrary1.Model
                     Trace.WriteLine(ex.Message);
                 }
             }
-        }
-
-        public void AffectUser60()
-        {
-            var badRatingsToFix = DataContext.GetTable<UserRating>()
-                            .Where(x => x.UserID == 60 /* && (x.PotentialPointsShortTerm < -1000 || x.PotentialPointsShortTerm > 1000) */);
-            decimal totalPoints = badRatingsToFix.Sum(x => x.PotentialPointsShortTerm);
-
-            //foreach (var item in badRatingsToFix)
-            //{
-            //    //if (item.PotentialPointsShortTerm > 0)
-            //     //   item.PotentialPointsShortTerm = 0 - item.PotentialPointsShortTerm;
-            //    totalChange += Math.Abs(item.PotentialPointsShortTerm); // two negatives = +
-            //}
-            var pointsTotal = DataContext.GetTable<PointsTotal>().Single(x => x.UserID == 60 && x.PointsManager.Tbls.Any(y => y.TblID == 270));
-            pointsTotal.CurrentPoints = totalPoints;
-            pointsTotal.TotalPoints = totalPoints;
-            DataContext.SubmitChanges();
         }
 
         public void ChangeShortTermResolveTime()
@@ -740,8 +706,8 @@ namespace ClassLibrary1.Model
 
         public void RatingGroupPhaseChange()
         {
-            Guid ratingPhaseGroupID = 282; // MUST BE a group with one repeating phase
-            Guid tblID = 270;  // Restaurants table
+            Guid ratingPhaseGroupID = new Guid("asdf");  // MUST BE a group with one repeating phase
+            Guid tblID = new Guid("asdf"); // set this to applicable GUID table
             DateTime currentPhaseCompleteTime = TestableDateTime.Now + new TimeSpan(3,0,0);
             DateTime highStakesKnownTime = TestableDateTime.Now + new TimeSpan(0, 30, 0);
             RatingPhaseGroup theRatingPhaseGroup = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.RatingPhaseGroupID == ratingPhaseGroupID); // one day with half life of two
@@ -829,7 +795,7 @@ namespace ClassLibrary1.Model
 
         public void SetCompleteTimeForTbl()
         {
-            Guid tblID = 270;
+            Guid tblID = new Guid("asdf"); // set this to applicable GUID
             DateTime endTimeEarliest = new DateTime(2011, 2, 13, 13, 0, 0);
             DateTime endTimeLatest = new DateTime(2011, 2, 13, 14, 0, 0);
             if (endTimeEarliest > endTimeLatest || endTimeEarliest < TestableDateTime.Now)
@@ -857,7 +823,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void TurnOffHighStakesForParticularUser(Guid tblID, int targetSpecificUser)
+        public void TurnOffHighStakesForParticularUser(Guid tblID, Guid targetSpecificUser)
         {
             DateTime willBecomeKnownAt = TestableDateTime.Now + new TimeSpan(0, 1, 0); // one minute from now
             DateTime endTime = TestableDateTime.Now + new TimeSpan(3, 0, 0); // three hours

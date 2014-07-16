@@ -86,7 +86,7 @@ namespace ClassLibrary1.Model
         public decimal[] UserConfidence; // from 0 to 1 -- weight of user's guess vs. current prediction
 
 
-        public static Guid uniqueTestIDForCreatingUsers = 0;
+        public static Guid uniqueTestIDForCreatingUsers = new Guid();
 
         // We want to reload from the database each time we request these
 
@@ -180,7 +180,7 @@ namespace ClassLibrary1.Model
         public void CreateUsers(int theNumUsers, bool usersForThisTestOnly = false)
         {
             NumUsers = theNumUsers;
-            UserIds = new int[NumUsers];
+            UserIds = new Guid[NumUsers];
             UserUserRatingAccuracy = new decimal[NumUsers];
             UserConfidence = new decimal[NumUsers];
 
@@ -315,7 +315,7 @@ namespace ClassLibrary1.Model
 
             var theRatingsGroups = theRatings
                 .Select(x => x.TopmostRatingGroupID).Distinct().ToList(); // all rating groups
-            List<int> theRatings2 = new List<int>();
+            List<Guid> theRatings2 = new List<Guid>();
             foreach (var mg in theRatingsGroups)
             { // Add one rating from each set of rating group hierarchies to the list to close.
                 IQueryable<Rating> theRatingsInGroup = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.TopmostRatingGroupID == mg);
@@ -528,7 +528,7 @@ namespace ClassLibrary1.Model
             address
         }
 
-        protected int CreateRatingPhaseGroup(TestPhasesTypes myPhasesType, int myChangesGroup)
+        protected Guid CreateRatingPhaseGroup(TestPhasesTypes myPhasesType, Guid myChangesGroup)
         {
             if (myPhasesType == TestPhasesTypes.pickAtRandom)
             {
@@ -536,7 +536,7 @@ namespace ClassLibrary1.Model
                 Trace.TraceInformation("Random phase type: " + myPhasesType.ToString());
             }
 
-            int myRatingPhaseGroup = -1;
+            Guid myRatingPhaseGroup = new Guid();
 
             switch (myPhasesType)
             {
@@ -617,7 +617,7 @@ namespace ClassLibrary1.Model
             return myRatingPhaseGroup;
         }
 
-        protected int CreateRatingCharacteristic(TestRatingCharacteristicsTypes myType, int myRatingPhase, int? subsidyDensityRange, int myChangesGroup)
+        protected Guid CreateRatingCharacteristic(TestRatingCharacteristicsTypes myType, Guid myRatingPhase, Guid? subsidyDensityRange, Guid myChangesGroup)
         {
             if (myType == TestRatingCharacteristicsTypes.pickAtRandom)
             {
@@ -625,7 +625,7 @@ namespace ClassLibrary1.Model
                 Trace.TraceInformation("Random rating characteristic: " + myType.ToString());
             }
 
-            int myRatingCharacteristic = -1;
+            Guid myRatingCharacteristic = new Guid();
 
             switch (myType)
             {
@@ -657,7 +657,7 @@ namespace ClassLibrary1.Model
         }
 
 
-        protected int? CreateRatingGroupAttributes(TestRatingGroupAttributesTypes myType, int theRatingPhase,  int? theSubsidyDensityRange, int? theRatingCondition, Guid thePointsManagerID, int myChangesGroup)
+        protected Guid? CreateRatingGroupAttributes(TestRatingGroupAttributesTypes myType, Guid theRatingPhase,  Guid? theSubsidyDensityRange, Guid? theRatingCondition, Guid thePointsManagerID, Guid myChangesGroup)
         {
             if (myType == TestRatingGroupAttributesTypes.pickAtRandom)
             {
@@ -665,8 +665,8 @@ namespace ClassLibrary1.Model
                 Trace.TraceInformation("Random rating attributes: " + myType.ToString());
             }
 
-            int? myRatingGroupAttributes = -1;
-            int myRatingCharacteristic = -1;
+            Guid? myRatingGroupAttributes = new Guid();
+            Guid myRatingCharacteristic = new Guid();
 
             RatingHierarchyData theHierarchy = new RatingHierarchyData();
 
@@ -943,7 +943,7 @@ namespace ClassLibrary1.Model
 
         protected void TestCreateFieldDisplaySettings(Guid theTblID)
         {
-            List<int> theFieldDefinitions = new List<int>();
+            List<Guid> theFieldDefinitions = new List<Guid>();
             List<int> displayInTableDisplaySettings = new List<int>();
             List<int> displayInPopUpDisplaySettings  = new List<int>();
             List<int> displayInTblRowPageDisplaySettings = new List<int>();
@@ -1023,7 +1023,7 @@ namespace ClassLibrary1.Model
                     if (theCGFieldDefinition.ChoiceGroup.AllowMultipleSelections)
                     {
                         int numChoicesToMake = RandomGenerator.GetRandom(0, Math.Min(4,numChoices));
-                        List<int> multipleChoices = new List<int>();
+                        List<Guid> multipleChoices = new List<Guid>();
                         for (int choiceNum = 1; choiceNum <= numChoicesToMake; choiceNum++)
                         {
                             Guid theChoiceInGroupID = theChoicesAvailable.Skip(RandomGenerator.GetRandom(0, numChoices - 1)).FirstOrDefault().ChoiceInGroupID;
@@ -1137,17 +1137,17 @@ namespace ClassLibrary1.Model
             }
         }
 
-        protected int CreateTbl(string name, TestRatingGroupAttributesTypes myType, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, Guid thePointsManagerID)
+        protected Guid CreateTbl(string name, TestRatingGroupAttributesTypes myType, Guid theRatingPhase, Guid? theSubsidyDensityRange, Guid? theRatingCondition, Guid thePointsManagerID)
         {
-            int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
-            int? myRatingGroupAttributes = CreateRatingGroupAttributes(myType,theRatingPhase,theSubsidyDensityRange,theRatingCondition,thePointsManagerID,myChangesGroup);
+            Guid myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
+            Guid? myRatingGroupAttributes = CreateRatingGroupAttributes(myType, theRatingPhase, theSubsidyDensityRange, theRatingCondition, thePointsManagerID, myChangesGroup);
             bool oneRatingPerRatingGroup = new[] { TestRatingGroupAttributesTypes.predictEvent, TestRatingGroupAttributesTypes.predictEventWithDefault, TestRatingGroupAttributesTypes.predictNumberFromRangeMinusToPlus, TestRatingGroupAttributesTypes.predictNumberFromRangeOnlyPlus, TestRatingGroupAttributesTypes.rating }.Contains(myType);
             return theTestHelper.ActionProcessor.TblCreate(thePointsManagerID, myRatingGroupAttributes, "table column group", true, true, theTestHelper.SuperUserId, myChangesGroup, name, false, oneRatingPerRatingGroup, "MyTblRow", "The table row addition criteria would be spelled out here.", true, true, "wf250","wf25");
         }
 
         protected void PointsManagerChangeDollarSubsidySettings(Guid pointsManagerID)
         {
-            int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
+            Guid myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
 
             decimal currentPeriodDollarSubsidy = 1000;
             DateTime endOfDollarSubsidyPeriod = TestableDateTime.Now.AddMinutes(3);
@@ -1159,11 +1159,11 @@ namespace ClassLibrary1.Model
             theTestHelper.ActionProcessor.PointsManagerChangeSettings(thePointsManager.PointsManagerID, currentPeriodDollarSubsidy, endOfDollarSubsidyPeriod, nextPeriodDollarSubsidy, nextPeriodLength, numPrizes, minimumPayment, true, theTestHelper.SuperUserId, myChangesGroup);
         }
 
-        protected int CreatePointsManager(string name, TestRatingGroupAttributesTypes myType, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition, Guid theDomainID)
+        protected Guid CreatePointsManager(string name, TestRatingGroupAttributesTypes myType, Guid theRatingPhase, Guid? theSubsidyDensityRange, Guid? theRatingCondition, Guid theDomainID)
         {
-            int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
+            Guid myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
             Guid pointsManagerID = theTestHelper.ActionProcessor.PointsManagerCreate(theDomainID, null, true, true, theTestHelper.SuperUserId, myChangesGroup, name);
-            int? myRatingGroupAttributes = CreateRatingGroupAttributes(myType, theRatingPhase, theSubsidyDensityRange, theRatingCondition, pointsManagerID, myChangesGroup);
+            Guid? myRatingGroupAttributes = CreateRatingGroupAttributes(myType, theRatingPhase, theSubsidyDensityRange, theRatingCondition, pointsManagerID, myChangesGroup);
             PointsManagerChangeDollarSubsidySettings(pointsManagerID);
             CreateChoiceGroups(pointsManagerID); 
             myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
@@ -1173,9 +1173,9 @@ namespace ClassLibrary1.Model
             return pointsManagerID;
         }
 
-        protected int CreateDomain(string name, TestRatingGroupAttributesTypes myType, int theRatingPhase, int? theSubsidyDensityRange, int? theRatingCondition)
+        protected Guid CreateDomain(string name, TestRatingGroupAttributesTypes myType, Guid theRatingPhase, Guid? theSubsidyDensityRange, Guid? theRatingCondition)
         {
-            int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
+            Guid myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
             Guid theDomainID = theTestHelper.ActionProcessor.DomainCreate(true,true,false,true,false,theTestHelper.SuperUserId,myChangesGroup,name);
             Guid theTblDimensionsID = theTestHelper.ActionProcessor.DataContext.GetTable<TblDimension>().FirstOrDefault().TblDimensionsID;
             theTestHelper.ActionProcessor.DomainChangeAppearance(theDomainID, theTblDimensionsID, true, theTestHelper.SuperUserId, myChangesGroup);
@@ -1219,9 +1219,9 @@ namespace ClassLibrary1.Model
             }
         }
 
-        protected int CreateDomainPointsManagerAndTbl(string name, TestPhasesTypes myPhaseType, TestRatingGroupAttributesTypes myType)
+        protected Guid CreateDomainPointsManagerAndTbl(string name, TestPhasesTypes myPhaseType, TestRatingGroupAttributesTypes myType)
         {
-            int myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
+            Guid myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
             Guid theRatingPhaseID = CreateRatingPhaseGroup(myPhaseType, myChangesGroup);
             Guid theDomainID = CreateDomain(name, myType, theRatingPhaseID, null, null);
             myChangesGroup = theTestHelper.ActionProcessor.ChangesGroupCreate(null, null, theTestHelper.SuperUserId, null, null, null, null);
@@ -1239,19 +1239,19 @@ namespace ClassLibrary1.Model
             return theTblID;
         }
 
-        protected int CreateTblTab(string name, Guid TblID)
+        protected Guid CreateTblTab(string name, Guid TblID)
         {
             return theTestHelper.ActionProcessor.TblTabCreate(TblID, name, true, true, theTestHelper.SuperUserId, null);
         }
 
-        protected int CreateTblColumn(string abbreviation, string name, string explanation, int TblTab, int defaultRatingGroupAttributes, string prefixString, string suffixString, decimal? extraDecimalPlaceAbove)
+        protected Guid CreateTblColumn(string abbreviation, string name, string explanation, Guid TblTab, Guid defaultRatingGroupAttributes, string prefixString, string suffixString, decimal? extraDecimalPlaceAbove)
         {
             return CreateTblColumn(abbreviation, name, explanation, TblTab, defaultRatingGroupAttributes, prefixString, suffixString, extraDecimalPlaceAbove, "", "");
         }
 
-        protected int CreateTblColumn(string abbreviation, string name, string explanation, int TblTab, int defaultRatingGroupAttributes, string prefixString, string suffixString, decimal? extraDecimalPlaceAbove, string suppStylesMain, string suppStylesHeader, bool trackTrustWithinTableColumn = false)
+        protected Guid CreateTblColumn(string abbreviation, string name, string explanation, Guid TblTab, Guid defaultRatingGroupAttributes, string prefixString, string suffixString, decimal? extraDecimalPlaceAbove, string suppStylesMain, string suppStylesHeader, bool trackTrustWithinTableColumn = false)
         {
-            int theCatDesc = theTestHelper.ActionProcessor.TblColumnCreate(TblTab, defaultRatingGroupAttributes, abbreviation, name, explanation,"wv1",trackTrustWithinTableColumn, true, true, theTestHelper.SuperUserId, null);
+            Guid theCatDesc = theTestHelper.ActionProcessor.TblColumnCreate(TblTab, defaultRatingGroupAttributes, abbreviation, name, explanation, "wv1", trackTrustWithinTableColumn, true, true, theTestHelper.SuperUserId, null);
             if (prefixString != "" || suffixString != "" || extraDecimalPlaceAbove != null)
                 theTestHelper.ActionProcessor.TblColumnFormattingCreate(theCatDesc, prefixString, suffixString, false, extraDecimalPlaceAbove, null, null, suppStylesHeader, suppStylesMain, true, true, theTestHelper.SuperUserId, null);
             return theCatDesc;
@@ -1274,7 +1274,7 @@ namespace ClassLibrary1.Model
                     Guid theTblID = CreateDomainPointsManagerAndTbl("test " + i.ToString(), myPhases, (TestRatingGroupAttributesTypes)i);
                     for (int j = 0; j < TblTabsPerTbl; j++)
                     {
-                        int theTblTab = CreateTblTab("Group " + j.ToString(), theTblID);
+                        Guid theTblTab = CreateTblTab("Group " + j.ToString(), theTblID);
                         for (int k = 0; k < TblColumnsPerTblTab; k++)
                         {
                             Guid? theDefaultRatingGroupAttributesID = theTestHelper.ActionProcessor.DataContext.GetTable<Tbl>().Single(c => c.TblID == theTblID).DefaultRatingGroupAttributesID;
@@ -1298,7 +1298,7 @@ namespace ClassLibrary1.Model
                             }
                             if (i == (int)TestRatingGroupAttributesTypes.rating)
                                 addDecimalPlaceAbove = 9.9M;
-                            CreateTblColumn("G" + j.ToString() + "C" + k.ToString(), "cat descr " + j.ToString() + " " + k.ToString(), "Explanation of column " + j.ToString() + " " + k.ToString(), theTblTab, (int)theDefaultRatingGroupAttributesID, prefixString, suffixString, addDecimalPlaceAbove, suppStyleMain, suppStyleHeader);
+                            CreateTblColumn("G" + j.ToString() + "C" + k.ToString(), "cat descr " + j.ToString() + " " + k.ToString(), "Explanation of column " + j.ToString() + " " + k.ToString(), theTblTab, (Guid)theDefaultRatingGroupAttributesID, prefixString, suffixString, addDecimalPlaceAbove, suppStyleMain, suppStyleHeader);
 
                         }
 

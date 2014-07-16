@@ -602,7 +602,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                                   SingleNumber = (bool)singleNumber,
                                   RatingGroupID = y.RatingGroupID,
                                   DecimalPlaces = firstRating == null ? 0 : y.Ratings.FirstOrDefault().RatingCharacteristic.DecimalPlaces,
-                                  RatingID = firstRating == null || !singleNumber ? null : (int?)y.Ratings.FirstOrDefault().RatingID,
+                                  RatingID = firstRating == null || !singleNumber ? null : (Guid?)y.Ratings.FirstOrDefault().RatingID,
                                   RecentlyChanged = y.ValueRecentlyChanged
                               }
                 }).ToList();
@@ -771,7 +771,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLCellInfo>() { new SQLCellInfo() { DBtype = SqlDbType.Int, Value = tblRowID, Fieldname = "trid" } });
         }
 
-        internal void AddChoicesToMCTable(DenormalizedTableAccess dta, Guid fieldDefinitionID, Guid tblRowID, List<int> choiceInGroupIDs)
+        internal void AddChoicesToMCTable(DenormalizedTableAccess dta, Guid fieldDefinitionID, Guid tblRowID, List<Guid> choiceInGroupIDs)
         {
             string tableName = "dbo.VFMC" + fieldDefinitionID.ToString();
             foreach (Guid choiceInGroupID in choiceInGroupIDs)

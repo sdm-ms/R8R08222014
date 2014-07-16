@@ -500,10 +500,10 @@ namespace ClassLibrary1.Model
                     InfoForBodyRows info = new InfoForBodyRows
                     {
                         RowHeadingWithPopup = row["RH"] as string,
-                        TblRowID = row["ID"] is System.DBNull ? 0 : (int)row["ID"],
+                        TblRowID = row["ID"] is System.DBNull ? new Guid() : (Guid)row["ID"],
                         TblColumnID = col.TblColumnID,
-                        TopRatingGroupID = row["RG" + colS] is System.DBNull ? (int?)null : (int?)row["RG" + colS],
-                        FirstRatingID = row["R" + colS] is System.DBNull ? (int?)null : (int?)row["R" + colS],
+                        TopRatingGroupID = row["RG" + colS] is System.DBNull ? (Guid?)null : (Guid?)row["RG" + colS],
+                        FirstRatingID = row["R" + colS] is System.DBNull ? (Guid?)null : (Guid?)row["R" + colS],
                         DecPlaces = null, // ignored
                         ValueOfFirstRating = null, // ignored
                         SingleNumberOnly = !(row["RS" + colS] as string ?? "").Contains("<"),

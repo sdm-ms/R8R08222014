@@ -139,36 +139,4 @@ namespace ClassLibrary1.Model
 
     }
 
-    public static class CacheInvalidityNotification
-    {
-        internal class CacheInvalidityNotificationProcessor
-        {
-            TimeSpan minTimeBetweenReadChecks = new TimeSpan(0, 0, 5);
-            TimeSpan minTimeBetweenDeleteChecks = new TimeSpan(0, 2, 0);
-            DateTime? lastReadTime = null;
-            DateTime? lastDeleteCheck = null;
-
-            public List<string> GetNewNotifications()
-            {
-                DateTime currentTime = TestableDateTime.Now;
-                if (lastReadTime == null)
-                {
-                    CacheManagement.ClearCache(); // should be near empty anyway
-                    lastReadTime = currentTime;
-                    return new List<string>();
-                }
-                if (currentTime - (DateTime)lastReadTime > minTimeBetweenReadChecks)
-                {
-                    //Trace.TraceInformation("Reading all notifications from " + lastReadTime.ToString());
-                    List<string> theNotifications = AzureNotificationProcessor.ReadNewNotifications(lastReadTime, "cache");
-                    lastReadTime = currentTime;
-                    return theNotifications;
-                }
-                else
-                    return new List<string>();
-            }
-
-        }
-
-    }
 }

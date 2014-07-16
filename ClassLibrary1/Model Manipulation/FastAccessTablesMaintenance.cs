@@ -227,7 +227,7 @@ namespace ClassLibrary1.Model
             bool anyNewRowsAdded = false;
             foreach (var table in theRowsByTableAndUpdateInstruction)
             {
-                Guid tblID = Convert.ToInt32(table.FirstOrDefault().Item.TableName.Substring(1));
+                Guid tblID = new Guid(table.FirstOrDefault().Item.TableName.Substring(1));
                 Tbl theTbl = iDataContext.GetTable<Tbl>().Single(x => x.TblID == tblID);
                 bool newRowsAdded = table.Any(x => x.Item.TblRowID == Guid.NewGuid()); // DEBUG -- test for whether it's new // we can't use update for this, because we don't know the TblRowID yet.
                 List<Guid> tblRowIDs = table.Select(x => x.Item.TblRowID).OrderBy(x => x).Distinct().ToList();

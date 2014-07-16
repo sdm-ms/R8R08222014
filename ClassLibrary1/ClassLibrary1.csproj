@@ -263,7 +263,6 @@
     <Compile Include="Nonmodel Code\DataContextExtensions.cs" />
     <Compile Include="Nonmodel Code\DataContextRepositories.cs" />
     <Compile Include="Nonmodel Code\DataContextRepositoriesEF.cs" />
-    <Compile Include="Nonmodel Code\DataContextRepositoriesInMemory.cs" />
     <Compile Include="Nonmodel Code\DataContextRepositoryExtensions.cs" />
     <Compile Include="Nonmodel Code\DateTimeManip.cs" />
     <Compile Include="Nonmodel Code\EntityHelper.cs" />
@@ -308,7 +307,6 @@
     <Compile Include="Model Manipulation\DatabaseAndRoleStatus.cs" />
     <Compile Include="Model Manipulation\DatabaseTransitions.cs" />
     <Compile Include="Model Manipulation\DataContextAbstract.cs" />
-    <Compile Include="Model Manipulation\DataContextInMemory.cs" />
     <Compile Include="Model Manipulation\DataContextManagement.cs" />
     <Compile Include="Model Manipulation\DeleteObjects.cs" />
     <Compile Include="Model Manipulation\Email.cs" />

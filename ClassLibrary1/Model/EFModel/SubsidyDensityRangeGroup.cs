@@ -14,7 +14,7 @@ namespace ClassLibrary1.EFModel
             SubsidyDensityRanges = new HashSet<SubsidyDensityRange>();
         }
 
-        public int SubsidyDensityRangeGroupID { get; set; }
+        public Guid SubsidyDensityRangeGroupID { get; set; }
 
         public decimal? UseLogarithmBase { get; set; }
 
@@ -22,7 +22,7 @@ namespace ClassLibrary1.EFModel
 
         public string Name { get; set; }
 
-        public Guid? creator { get; set; }
+        public Guid? Creator { get; set; }
 
         public byte Status { get; set; }
 

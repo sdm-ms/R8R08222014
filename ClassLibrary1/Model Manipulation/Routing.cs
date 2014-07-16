@@ -172,12 +172,12 @@ namespace ClassLibrary1.Model
                     return;
                 }
                 tblRowString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[0]);
-                Guid tblRowID = 0;
+                Guid tblRowID = new Guid();
                 if (tblRowString != null && tblRowString != "")
                 {
                     try
                     {
-                        tblRowID = Convert.ToInt32(tblRowString);
+                        tblRowID = new Guid(tblRowString);
                     }
                     catch
                     {
@@ -195,15 +195,15 @@ namespace ClassLibrary1.Model
                         return;
                     }
                     tblColumnString = PrettyURLEncode.UrlTextDecode(remainderOfHierarchy[1]);
-                    Guid TblColumnID = 0;
+                    Guid TblColumnID = new Guid();
                     try
                     {
-                        TblColumnID = Convert.ToInt32(tblColumnString);
+                        TblColumnID = new Guid(tblColumnString);
                     }
                     catch
                     {
                     }
-                    if (TblColumnID != -1)
+                    if (TblColumnID != new Guid()) // DEBUG
                         theTblColumn = theDataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl == theTbl && x.TblColumnID == TblColumnID);
                 }
             }
@@ -654,7 +654,7 @@ namespace ClassLibrary1.Model
                 return new RoutingInfoRatings(null);
             try
             {
-                Guid userID = Convert.ToInt32(userIDString);
+                Guid userID = new Guid(userIDString);
                 return new RoutingInfoRatings(userID);
             }
             catch

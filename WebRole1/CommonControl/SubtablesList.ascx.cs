@@ -39,9 +39,9 @@ using ClassLibrary1.EFModel;
             theLocation = location;
             R8RDB = theDataContext;
 
-            Guid? userID = null;
+            Guid? UserID = null;
             if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-                UserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+                UserID = (Guid?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             PointsManager firstPointsManager = null;
             if (location != null)
             {

@@ -31,9 +31,9 @@ namespace ClassLibrary1.Model
             }
         }
 
-        internal static void RecordRememberedChangesOfType(IR8RDataContext R8RDB, string changeType, Action<int> theAction)
+        internal static void RecordRememberedChangesOfType(IR8RDataContext R8RDB, string changeType, Action<Guid> theAction)
         {
-            List<int> theList = R8RDB.TempCacheGet(changeType) as List<int>;
+            List<Guid> theList = R8RDB.TempCacheGet(changeType) as List<Guid>;
             if (theList != null)
                 foreach (var item in theList)
                     theAction(item);

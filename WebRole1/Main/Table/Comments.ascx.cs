@@ -151,7 +151,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
     private void GetCommentInfo(Button theButton, out Guid commentID, out bool isProposed, out bool isDeleted)
     {
         string[] commandData = theButton.CommandArgument.Split(',');
-        commentID = Int32.Parse(commandData[0]);
+        commentID = new Guid(commandData[0]);
         int status = Int32.Parse(commandData[1]);
         isProposed = status == (int)StatusOfObject.Proposed;
         isDeleted = status == (int)StatusOfObject.Unavailable;
@@ -163,7 +163,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         bool isProposed;
         bool isDeleted;
         GetCommentInfo((Button)sender, out commentID, out isProposed, out isDeleted);
-        Guid? userID = (int?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (Guid?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && UserCanDeleteComments)
             theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (Guid)userID, true, null);

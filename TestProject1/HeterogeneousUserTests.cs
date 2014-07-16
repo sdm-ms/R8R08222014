@@ -37,7 +37,6 @@ namespace TestProject1
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
@@ -280,7 +279,7 @@ namespace TestProject1
                 int countCurrentTblRows = _testHelper.ActionProcessor.DataContext.GetTable<TblRow>().Select(x => x).Count();
                 List<TblRow> tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration).ToList();
                 _testHelper.WaitIdleTasks();
-                List<int> tblRowIDs = _testHelper.ActionProcessor.DataContext.GetTable<TblRow>().Where(x => !(x.RatingGroups.SelectMany(y => y.Ratings.SelectMany(z => z.UserRatings))).Any()).Select(x => x.TblRowID).ToList(); // TblRows without any user ratings
+                List<Guid> tblRowIDs = _testHelper.ActionProcessor.DataContext.GetTable<TblRow>().Where(x => !(x.RatingGroups.SelectMany(y => y.Ratings.SelectMany(z => z.UserRatings))).Any()).Select(x => x.TblRowID).ToList(); // TblRows without any user ratings
                 Func<List<Rating>> reload_ratings = () => _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
                         .Where(r => tblRowIDs.Contains(r.RatingGroup.TblRowID)).ToList(); // load ratings from the most recent set of tbl rows -- must do this after each background task
                 List<Rating> ratings = reload_ratings();

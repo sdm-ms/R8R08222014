@@ -15,7 +15,7 @@ namespace WebRole1.Admin
     {
         public string FileName { get; set; }
         public string Username { get; set; }
-        public Guid userID { get; set; }
+        public Guid UserID { get; set; }
     }
 
     public partial class GuaranteeApplications : System.Web.UI.UserControl
@@ -64,7 +64,7 @@ namespace WebRole1.Admin
         public GuaranteeApplicationsItem GetGuaranteeApplicationsItemFromCommandArgument(string commandArgument)
         {
             string[] split = commandArgument.Split('$');
-            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = Convert.ToInt32(split[1]), Username = theDataAccessModule.R8RDB.GetTable<User>().Single(x => x.UserID == Convert.ToInt32(split[1])).Username };
+            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = new Guid(split[1]), Username = theDataAccessModule.R8RDB.GetTable<User>().Single(x => x.UserID == new Guid(split[1])).Username };
             return item;
         }
 

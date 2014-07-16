@@ -18,7 +18,7 @@ using ClassLibrary1.EFModel;
 public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserControl
 {
     public Guid RatingGroupID { get; set; }
-    public Guid userID { get; set; }
+    public Guid UserID { get; set; }
     public bool CanResolve = true;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -30,7 +30,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
     {
         R8RDataManipulation DataAccess = new R8RDataManipulation();
 
-        if (RatingGroupID == -1)
+        if (RatingGroupID == new Guid())
             throw new Exception("Rating group must be specified before rating resolution can be shown.");
         RatingGroup ratingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == RatingGroupID);
         bool ratingGroupIsConcluded = DataAccess.RatingGroupIsResolved(ratingGroup);

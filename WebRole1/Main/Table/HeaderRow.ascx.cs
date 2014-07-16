@@ -20,7 +20,7 @@ using ClassLibrary1.EFModel;
 public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 {
     protected Guid TblTabID { get; set; }
-    protected Action<int?, bool>ResortCateDesFn;
+    protected Action<Guid?, bool>ResortCateDesFn;
     protected Guid? LimitToThisTblColumnID;
     protected Guid? TblColumnToSortID;
     protected bool SortByEntityName = false;
@@ -33,7 +33,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
     {
         if (theHeaderRowInfo != null)
         {
-            int? TblColumnToSort;
+            Guid? TblColumnToSort;
             bool SortOrderAscending = true; // may change below
             TblTab theTblTab = theHeaderRowInfo.dataAccess.R8RDB.GetTable<TblTab>().Single(cg => cg.TblTabID == theHeaderRowInfo.TblTabID);
             TblColumnToSort = theHeaderRowInfo.TblColumnToSortID;
@@ -157,7 +157,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
        Tbl theTbl = DataAccess.R8RDB.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
        HeaderRowInfoType numColumnHeader = new HeaderRowInfoType
        {
-           TblColumnID = -1,
+           TblColumnID = Guid.NewGuid(),
            Abbreviation = "#",
            Name = "#",
            WidthStyle = "nmcl " + theTbl.WidthStyleNumCol,
@@ -169,7 +169,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
        string theNameForTblRow = theTbl.TypeOfTblRow;
        HeaderRowInfoType nameColumnHeader = new HeaderRowInfoType
                 {
-                    TblColumnID = -1, // using null here causes problem on postback; we'll change it back below
+                    TblColumnID = new Guid(), // using null here causes problem on postback; we'll change it back below
                     Abbreviation = "",
                     Name = theNameForTblRow,
                     WidthStyle = theTbl.WidthStyleEntityCol,
@@ -192,8 +192,8 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            Guid? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
-            if (TblColumnID == -1) // see note above
+            Guid? TblColumnID = (Guid)(HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"]);
+            if (TblColumnID == new Guid()) // DEBUG
                 TblColumnID = null; 
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];
             string theName = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Name"];

@@ -49,7 +49,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         }
     }
 
-    public void Setup(R8RDataAccess theDataAccess, Guid tblID, Guid tblTabID, Guid? limitToThisTblColumn, Guid? tblColumnToSort, Guid entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<Guid?, Guid?> theParentSelectionChangedHandler, string suppStyle)
+    public void Setup(R8RDataAccess theDataAccess, Guid tblID, Guid tblTabID, Guid? limitToThisTblColumn, Guid? tblColumnToSort, Guid entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<int?, int?> theParentSelectionChangedHandler, string suppStyle)
     {
         if (doRebind)
             ActivateRebinding();
@@ -59,7 +59,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         LimitToThisTblColumn = limitToThisTblColumn;
         TblColumnToSort = tblColumnToSort;
         TblRowID = entityID;
-        if (TblRowID == -1)
+        if (TblRowID == Guid.NewGuid()) // DEBUG -- test for new row
             throw new Exception("Internal error: row id must be specified.");
         RowNumber = rowNumber;
         CanPredict = canPredict;

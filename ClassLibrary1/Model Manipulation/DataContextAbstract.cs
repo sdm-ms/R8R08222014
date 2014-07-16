@@ -22,7 +22,7 @@ namespace ClassLibrary1.Model
             if (UseRealDatabase)
                 return new R8REFDataContext();
             else
-                return new R8RInMemoryDataContext();
+                throw new NotImplementedException();
         }
     }
 

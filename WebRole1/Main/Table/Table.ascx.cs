@@ -72,14 +72,14 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
 
     protected void DetermineUserRights(R8RDataAccess dataAccess)
     {
-        int SubtopicId = dataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
+        Guid SubtopicId = dataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
 
         CanPredict = false;
         CanAdminister = false;
         CanEditFields = false;
-        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
+        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid())
         {
-            Guid? UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid? UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             //if (UserId == 0)
             //    UserId = null;
             // Checking user rights to predict
@@ -100,7 +100,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             if ( ViewState["SelectedRow"] != null)
             { // The previous selected row needs to be deselected and rebound.
                 ListViewDataItem dataItem = MainListView.Items[(int) ViewState["SelectedRow"] - 1];
-                Guid theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
+                Guid theTblRowID = (Guid)MainListView.DataKeys[dataItem.DisplayIndex].Value;
                 PlaceHolder MainTableBodyRowPlaceHolder = (PlaceHolder)dataItem.FindControl("MainTableBodyRowPlaceHolder");
                 Main_Table_BodyRow MainTableBodyRow = (Main_Table_BodyRow)((System.Web.UI.Control)(MainTableBodyRowPlaceHolder)).Controls[0];
                 MainTableBodyRow.DeselectAndReBind();
@@ -141,7 +141,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         {
             rowBeingCreated++;
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            Guid theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
+            Guid theTblRowID = (Guid)MainListView.DataKeys[dataItem.DisplayIndex].Value;
             ListViewDataItem CurrentItem = (ListViewDataItem)e.Item;
             Main_Table_ViewCellRowHeading MainTableViewCellRowHeading = (Main_Table_ViewCellRowHeading)e.Item.FindControl("MainTableViewCellRowHeading");
             MainTableViewCellRowHeading.Setup(DataAccess, TheTblDimensions, TblID, theTblRowID, CommentsEnabled, CanEditFields, rebinding);
@@ -164,7 +164,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             {
                 // Create control from scratch.
                 Main_Table_BodyRow MainTableBodyRow = (Main_Table_BodyRow)LoadControl("~/Main/Table/BodyRow.ascx");
-                MainTableBodyRow.Setup(DataAccess, TblID, TblTabID, null, (theTableSortRule is TableSortRuleTblColumn ? (int?) ((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTblRowID, rowBeingCreated, CanPredict, CanAdminister, rebinding, SelectionChanged, SuppStyle);
+                MainTableBodyRow.Setup(DataAccess, TblID, TblTabID, null, (theTableSortRule is TableSortRuleTblColumn ? (Guid?)((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTblRowID, rowBeingCreated, CanPredict, CanAdminister, rebinding, SelectionChanged, SuppStyle);
                 if (!disableCaching)
                     MainTableBodyRow.DataBind();
                 theControlToUseAsBodyRow = MainTableBodyRow;
@@ -219,7 +219,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     {
         if (!Page.IsPostBack || resetSortToDefaultSettings)
         {
-            int? TblColumnToSort = null;
+            Guid? TblColumnToSort = null;
             bool SortOrderAscending = false;
             DataAccess.GetDefaultSortForTblTab(TblTabID, ref TblColumnToSort, ref SortOrderAscending);
             if (TblColumnToSort == null)

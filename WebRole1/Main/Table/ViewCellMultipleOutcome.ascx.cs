@@ -58,7 +58,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
         List<RatingIdAndUserRatingValue> theList = new List<RatingIdAndUserRatingValue>();
         foreach (var mv in TheSelectedRatingValues)
         {
-            Guid thisRatingID = 0;
+            Guid thisRatingID = new Guid();
             decimal? thisUserRating = 0;
             mv.GetRatingAndProposedValue(ref thisRatingID, ref thisUserRating);
             if (thisUserRating != null)

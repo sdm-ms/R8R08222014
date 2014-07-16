@@ -248,62 +248,62 @@ namespace ClassLibrary1.Model
         public void CreateStandardRatingPhaseGroups()
         {
             ScoringRules standardScoringRules = ScoringRules.Quadratic;
-            int singlePhaseGroupNum = Supporter.AddRatingPhaseGroup("Indefinite duration", null);
+            Guid singlePhaseGroupNum = Supporter.AddRatingPhaseGroup("Indefinite duration", null);
             SetStatusOfObjectInitialBuild(singlePhaseGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int singlePhase = Supporter.AddRatingPhase(singlePhaseGroupNum, 1000, standardScoringRules, false, false, null, null, 86400, true, null);
+            Guid singlePhase = Supporter.AddRatingPhase(singlePhaseGroupNum, 1000, standardScoringRules, false, false, null, null, 86400, true, null);
             SetStatusOfObjectInitialBuild(singlePhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int oneYearPhasesGroupNum = Supporter.AddRatingPhaseGroup("One year phases", null);
+            Guid oneYearPhasesGroupNum = Supporter.AddRatingPhaseGroup("One year phases", null);
             SetStatusOfObjectInitialBuild(oneYearPhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int oneYearPhase = Supporter.AddRatingPhase(oneYearPhasesGroupNum, 1000, standardScoringRules, true, false, null, 31536000, 604800, true, null);
+            Guid oneYearPhase = Supporter.AddRatingPhase(oneYearPhasesGroupNum, 1000, standardScoringRules, true, false, null, 31536000, 604800, true, null);
             SetStatusOfObjectInitialBuild(oneYearPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int thirtyDayPhasesGroupNum = Supporter.AddRatingPhaseGroup("Thirty day phases", null);
+            Guid thirtyDayPhasesGroupNum = Supporter.AddRatingPhaseGroup("Thirty day phases", null);
             SetStatusOfObjectInitialBuild(thirtyDayPhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int thirtyDayPhase = Supporter.AddRatingPhase(thirtyDayPhasesGroupNum, 1000, standardScoringRules, true, false, null, 2592000, 604800, true, null);
+            Guid thirtyDayPhase = Supporter.AddRatingPhase(thirtyDayPhasesGroupNum, 1000, standardScoringRules, true, false, null, 2592000, 604800, true, null);
             SetStatusOfObjectInitialBuild(thirtyDayPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int oneWeekPhasesGroupNum = Supporter.AddRatingPhaseGroup("One week phases", null);
+            Guid oneWeekPhasesGroupNum = Supporter.AddRatingPhaseGroup("One week phases", null);
             SetStatusOfObjectInitialBuild(oneWeekPhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int oneWeekPhase = Supporter.AddRatingPhase(oneWeekPhasesGroupNum, 1000, standardScoringRules, true, false, null, 604800, 86400, true, null);
+            Guid oneWeekPhase = Supporter.AddRatingPhase(oneWeekPhasesGroupNum, 1000, standardScoringRules, true, false, null, 604800, 86400, true, null);
             SetStatusOfObjectInitialBuild(oneWeekPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int oneDayPhasesGroupNum = Supporter.AddRatingPhaseGroup("One day phases", null);
+            Guid oneDayPhasesGroupNum = Supporter.AddRatingPhaseGroup("One day phases", null);
             SetStatusOfObjectInitialBuild(oneDayPhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int oneDayPhase = Supporter.AddRatingPhase(oneDayPhasesGroupNum, 1000, standardScoringRules, true, false, null, 86400, 86400, true, null);
+            Guid oneDayPhase = Supporter.AddRatingPhase(oneDayPhasesGroupNum, 1000, standardScoringRules, true, false, null, 86400, 86400, true, null);
             SetStatusOfObjectInitialBuild(oneDayPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int oneHourPhasesGroupNum = Supporter.AddRatingPhaseGroup("One hour phases", null);
+            Guid oneHourPhasesGroupNum = Supporter.AddRatingPhaseGroup("One hour phases", null);
             SetStatusOfObjectInitialBuild(oneHourPhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int oneHourPhase = Supporter.AddRatingPhase(oneHourPhasesGroupNum, 1000, standardScoringRules, true, false, null, 3600, 3600, true, null);
+            Guid oneHourPhase = Supporter.AddRatingPhase(oneHourPhasesGroupNum, 1000, standardScoringRules, true, false, null, 3600, 3600, true, null);
             SetStatusOfObjectInitialBuild(oneHourPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int fifteenMinutePhasesGroupNum = Supporter.AddRatingPhaseGroup("Fifteen minute phases", null);
+            Guid fifteenMinutePhasesGroupNum = Supporter.AddRatingPhaseGroup("Fifteen minute phases", null);
             SetStatusOfObjectInitialBuild(fifteenMinutePhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int fifteenMinutePhase = Supporter.AddRatingPhase(fifteenMinutePhasesGroupNum, 1000, standardScoringRules, true, false, null, 900, 900, true, null);
+            Guid fifteenMinutePhase = Supporter.AddRatingPhase(fifteenMinutePhasesGroupNum, 1000, standardScoringRules, true, false, null, 900, 900, true, null);
             SetStatusOfObjectInitialBuild(fifteenMinutePhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int oneMinutePhasesGroupNum = Supporter.AddRatingPhaseGroup("One minute phases", null);
+            Guid oneMinutePhasesGroupNum = Supporter.AddRatingPhaseGroup("One minute phases", null);
             SetStatusOfObjectInitialBuild(oneMinutePhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int oneMinutePhase = Supporter.AddRatingPhase(oneMinutePhasesGroupNum, 1000, standardScoringRules, true, false, null, 60, 60, true, null);
+            Guid oneMinutePhase = Supporter.AddRatingPhase(oneMinutePhasesGroupNum, 1000, standardScoringRules, true, false, null, 60, 60, true, null);
             SetStatusOfObjectInitialBuild(oneMinutePhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int tenSecondPhasesGroupNum = Supporter.AddRatingPhaseGroup("Ten second phases", null);
+            Guid tenSecondPhasesGroupNum = Supporter.AddRatingPhaseGroup("Ten second phases", null);
             SetStatusOfObjectInitialBuild(tenSecondPhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int tenSecondPhase = Supporter.AddRatingPhase(tenSecondPhasesGroupNum, 1000, standardScoringRules, true, false, null, 10, 10, true, null);
+            Guid tenSecondPhase = Supporter.AddRatingPhase(tenSecondPhasesGroupNum, 1000, standardScoringRules, true, false, null, 10, 10, true, null);
             SetStatusOfObjectInitialBuild(tenSecondPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int oneSecondPhasesGroupNum = Supporter.AddRatingPhaseGroup("One second phases", null);
+            Guid oneSecondPhasesGroupNum = Supporter.AddRatingPhaseGroup("One second phases", null);
             SetStatusOfObjectInitialBuild(oneSecondPhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int oneSecondPhase = Supporter.AddRatingPhase(oneSecondPhasesGroupNum, 1000, standardScoringRules, true, false, null, 1, 1, true, null);
+            Guid oneSecondPhase = Supporter.AddRatingPhase(oneSecondPhasesGroupNum, 1000, standardScoringRules, true, false, null, 1, 1, true, null);
             SetStatusOfObjectInitialBuild(oneSecondPhase, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int multiplePhasesGroupNum = Supporter.AddRatingPhaseGroup("Short initial phases, followed by one week phases", null);
+            Guid multiplePhasesGroupNum = Supporter.AddRatingPhaseGroup("Short initial phases, followed by one week phases", null);
             SetStatusOfObjectInitialBuild(multiplePhasesGroupNum, TypeOfObject.RatingPhaseGroup, StatusOfObject.Active);
-            int phase1 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 50, standardScoringRules, true, false, null, 3600, 3600, false, 3);
+            Guid phase1 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 50, standardScoringRules, true, false, null, 3600, 3600, false, 3);
             SetStatusOfObjectInitialBuild(phase1, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int phase2 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 100, standardScoringRules, true, false, null, 86400, 86400, false, 1);
+            Guid phase2 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 100, standardScoringRules, true, false, null, 86400, 86400, false, 1);
             SetStatusOfObjectInitialBuild(phase2, TypeOfObject.RatingPhase, StatusOfObject.Active);
-            int phase3 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 1000, standardScoringRules, true, false, null, 604800, 86400, true, null);
+            Guid phase3 = Supporter.AddRatingPhase(multiplePhasesGroupNum, 1000, standardScoringRules, true, false, null, 604800, 86400, true, null);
             SetStatusOfObjectInitialBuild(phase3, TypeOfObject.RatingPhase, StatusOfObject.Active);
 
         }
 
         public void CreateStandardSubsidyDensityRangeGroups()
         {
-            int testGroupNum = Supporter.AddSubsidyDensityRangeGroup("Extra subsidy near middle of spectrum", null);
+            Guid testGroupNum = Supporter.AddSubsidyDensityRangeGroup("Extra subsidy near middle of spectrum", null);
             SetStatusOfObjectInitialBuild(testGroupNum, TypeOfObject.SubsidyDensityRangeGroup, StatusOfObject.Active);
-            int rangeNum = Supporter.AddSubsidyDensityRange(testGroupNum, (decimal)0.3, (decimal)0.7, (decimal)1.5, true);
+            Guid rangeNum = Supporter.AddSubsidyDensityRange(testGroupNum, (decimal)0.3, (decimal)0.7, (decimal)1.5, true);
             SetStatusOfObjectInitialBuild(rangeNum, TypeOfObject.SubsidyDensityRange, StatusOfObject.Active);
             rangeNum = Supporter.AddSubsidyDensityRange(testGroupNum, (decimal)0.4, (decimal)0.6, (decimal)2.0, true);
             SetStatusOfObjectInitialBuild(rangeNum, TypeOfObject.SubsidyDensityRange, StatusOfObject.Active);
@@ -322,13 +322,13 @@ namespace ClassLibrary1.Model
             CreateStandardRatingPhaseGroups();
             RatingPhaseGroup theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "Thirty day phases");
             CreateStandardSubsidyDensityRangeGroups();
-            int? theSubsidyDensityRangeGroupID = null;
+            Guid? theSubsidyDensityRangeGroupID = null;
             SubsidyDensityRangeGroup theSubsidyDensityRangeGroup = null;
             // Use the following to use varied subsidy density: 
             //R8RDB.GetTable<SubsidyDensityRangeGroup>().Single(g => g.Name == "Extra subsidy near middle of spectrum");
             if (theSubsidyDensityRangeGroup != null)
                 theSubsidyDensityRangeGroupID = theSubsidyDensityRangeGroup.SubsidyDensityRangeGroupID;
-            int defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "Thirty-day phase 0 to 100 rating", null);
+            Guid defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "Thirty-day phase 0 to 100 rating", null);
             SetStatusOfObjectInitialBuild(defaultRatingCharacteristicsID, TypeOfObject.RatingCharacteristics, StatusOfObject.Active);
             theRatingPhaseGroup = R8RDB.GetTable<RatingPhaseGroup>().Single(g => g.Name == "One minute phases");
             defaultRatingCharacteristicsID = Supporter.AddRatingCharacteristics(theRatingPhaseGroup.RatingPhaseGroupID, theSubsidyDensityRangeGroupID, 0, 100, 1, "One-minute phase 0 to 100 rating", null);
@@ -360,7 +360,7 @@ namespace ClassLibrary1.Model
         public void CreateCssTemplates()
         {
 
-            int theTblDimensionId1 = Supporter.AddTblDimensions( 150, 250, 100, 175, 275); /* note: last number is currently ignored; we would need to put it in the html and have it read by jquery */
+            Guid theTblDimensionId1 = Supporter.AddTblDimensions(150, 250, 100, 175, 275); /* note: last number is currently ignored; we would need to put it in the html and have it read by jquery */
 
 
         }
@@ -477,8 +477,6 @@ namespace ClassLibrary1.Model
 
                 manipulator.ResetDataContexts();
             }
-            else
-                SimulatedPermanentStorage.Reset();
 
             UserProfileCollection.DeleteAllUsers();
 
@@ -489,7 +487,7 @@ namespace ClassLibrary1.Model
 
         }
 
-        public void SetStatusOfObjectInitialBuild(int objectID, TypeOfObject theObjectType, StatusOfObject theStatus)
+        public void SetStatusOfObjectInitialBuild(Guid objectID, TypeOfObject theObjectType, StatusOfObject theStatus)
         {
 
             Byte newValue = (Byte)theStatus;

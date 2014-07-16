@@ -45,7 +45,7 @@ namespace ClassLibrary1.Model
         /// <param name="overridable"></param>
         /// <param name="location"></param>
         /// <param name="isActivate"></param>
-        public void ChangeInsertableContents(int insertableContentId, string name, string contents, bool isTextOnly, bool overridable, InsertableLocation location, bool isActivate)
+        public void ChangeInsertableContents(Guid insertableContentId, string name, string contents, bool isTextOnly, bool overridable, InsertableLocation location, bool isActivate)
         {
             // To do: Make it so that this is called by executing changes, rather than directly by ActionProcess
             InsertableContent theInsertableContent = DataContext.GetTable<InsertableContent>().Single(x => x.InsertableContentID == insertableContentId);
@@ -81,7 +81,7 @@ namespace ClassLibrary1.Model
             {
                 if (content != "")
                 {
-                    int newID = AddInsertableContents("Current prize info", null, pointsManagerID, null, content, true, false, InsertableLocation.TopOfViewTblContent);
+                    Guid newID = AddInsertableContents("Current prize info", null, pointsManagerID, null, content, true, false, InsertableLocation.TopOfViewTblContent);
                     SetStatusOfObject(newID, TypeOfObject.InsertableContent, StatusOfObject.Active);
                 }
             }

@@ -67,7 +67,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new AddressFieldDataInfo(theFieldDefinition, addressText, Latitude, Longitude, theGroup, DataAccess);
         }
     }

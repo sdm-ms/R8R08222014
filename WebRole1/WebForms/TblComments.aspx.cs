@@ -29,14 +29,14 @@ namespace WebApplication1
 
         protected void DetermineUserRights()
         {
-            int SubtopicId = theLocation.theTbl.PointsManagerID;
+            Guid SubtopicId = theLocation.theTbl.PointsManagerID;
 
             CanPredict = false;
             CanAdminister = false;
             CanEditFields = false;
             if (ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
             {
-                Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+                Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
                 bool canView = DataAccess.CheckUserRights(UserId, UserActionType.View, false, SubtopicId, theLocation.theTbl.TblID);
                 if (!canView)
                     Routing.Redirect(Response, new RoutingInfo(RouteID.Login));

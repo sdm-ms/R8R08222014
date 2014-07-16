@@ -19,8 +19,8 @@ using ClassLibrary1.Misc;
 
 public partial class Ratings : System.Web.UI.Page
 {
-    internal Guid userIDOfRatingsBeingViewed;
-    internal Guid? userIDOfBrowsingUser;
+    internal Guid UserIDOfRatingsBeingViewed;
+    internal Guid? UserIDOfBrowsingUser;
     protected bool browsingUserIsTrusted = false;
     protected bool browsingUserIsAdmin = false;
 

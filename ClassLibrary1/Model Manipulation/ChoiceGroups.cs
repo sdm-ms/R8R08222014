@@ -121,7 +121,7 @@ namespace ClassLibrary1.Model
         public int choiceNum; // The choice number -- the choices will be sorted by this number
         public Guid? choiceInGroupID; // Once this has been created in the database, this will be set to the object id for the ChoiceInGroup table
 
-        public ChoiceInGroupData(String theText, int? theDeterminingGroupValue, bool theIsAvailable, int theChoiceNum, Guid? theChoiceInGroupID)
+        public ChoiceInGroupData(String theText, Guid? theDeterminingGroupValue, bool theIsAvailable, int theChoiceNum, Guid? theChoiceInGroupID)
         {
             text = theText;
             determiningGroupValue = theDeterminingGroupValue;
@@ -135,7 +135,7 @@ namespace ClassLibrary1.Model
             text = theText;
         }
 
-        public void ChangeDeterminingGroupValue(int? theDeterminingGroupValue)
+        public void ChangeDeterminingGroupValue(Guid? theDeterminingGroupValue)
         {
             determiningGroupValue = theDeterminingGroupValue;
         }
@@ -180,12 +180,12 @@ namespace ClassLibrary1.Model
             AddChoiceToGroup(text, null, true, null);
         }
 
-        public void AddChoiceToGroup(String text, int? determiningGroupValue)
+        public void AddChoiceToGroup(String text, Guid? determiningGroupValue)
         {
             AddChoiceToGroup(text, determiningGroupValue, true, null);
         }
 
-        public void AddChoiceToGroup(String text, int? determiningGroupValue, bool isAvailable, Guid? choiceInGroupID)
+        public void AddChoiceToGroup(String text, Guid? determiningGroupValue, bool isAvailable, Guid? choiceInGroupID)
         {
             int choiceNum = theData.Count + 1; // This is the default -- add it to the end of the group.
             theData.Add(new ChoiceInGroupData(text, determiningGroupValue, isAvailable, choiceNum, choiceInGroupID));
@@ -274,20 +274,20 @@ namespace ClassLibrary1.Model
 
         public static List<ChoiceMenuItem> GetChoiceMenuItemsForIndependentGroup(Guid choiceGroupID)
         {
-            List<int> determiningGroupValues = new List<int>();
+            List<Guid> determiningGroupValues = new List<Guid>();
             R8RDataAccess Obj = new R8RDataAccess();
             ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
             bool orderAlphabetically = theChoiceGroup.Alphabetize;
             return GetChoiceMenuItemsHelper(determiningGroupValues, choiceGroupID, orderAlphabetically);
         }
 
-        public static string GetChoiceMenuItemsForDependentGroupAsHtml(string valueSelectedInDepender, string valueSelectedInDependee, List<int> availableOptionsInDependee, Guid choiceGroupID)
+        public static string GetChoiceMenuItemsForDependentGroupAsHtml(string valueSelectedInDepender, string valueSelectedInDependee, List<Guid> availableOptionsInDependee, Guid choiceGroupID)
         {
             List<ChoiceMenuItem> theList = null;
             if (valueSelectedInDependee == "-1") // no selection
                 theList = GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(availableOptionsInDependee, choiceGroupID);
             else
-                theList = GetChoiceMenuItemsForDependentGroupWithDependentSelection(Convert.ToInt32(valueSelectedInDependee), choiceGroupID);
+                theList = GetChoiceMenuItemsForDependentGroupWithDependentSelection(new Guid(valueSelectedInDependee), choiceGroupID);
             StringBuilder sb = new StringBuilder();
             sb.Append("<select>");
             foreach (var option in theList)
@@ -304,12 +304,12 @@ namespace ClassLibrary1.Model
             return sb.ToString();
         }
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelection(int determiningGroupValue, Guid choiceGroupID)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelection(Guid determiningGroupValue, Guid choiceGroupID)
         {
-            return GetChoiceMenuItemsForDependentGroupWithDependentSelections(new List<int> { determiningGroupValue }, choiceGroupID);
+            return GetChoiceMenuItemsForDependentGroupWithDependentSelections(new List<Guid> { determiningGroupValue }, choiceGroupID);
         }
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelections(List<int> determiningGroupValues, Guid choiceGroupID)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithDependentSelections(List<Guid> determiningGroupValues, Guid choiceGroupID)
         {
             R8RDataAccess Obj = new R8RDataAccess();
             ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
@@ -317,7 +317,7 @@ namespace ClassLibrary1.Model
             return GetChoiceMenuItemsHelper(determiningGroupValues, choiceGroupID, orderAlphabetically);
         }
 
-        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(List<int> availableOptionsInDependee, Guid choiceGroupID)
+        public static List<ChoiceMenuItem> GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(List<Guid> availableOptionsInDependee, Guid choiceGroupID)
         {
             R8RDataAccess Obj = new R8RDataAccess();
             ChoiceGroup theChoiceGroup = Obj.R8RDB.GetTable<ChoiceGroup>().Single(cg => cg.ChoiceGroupID == choiceGroupID);
@@ -328,13 +328,13 @@ namespace ClassLibrary1.Model
             {
                 bool orderAlphabetically = theChoiceGroup.AlphabetizeWhenShowingAllPossibilities;
                 if (availableOptionsInDependee == null)
-                    availableOptionsInDependee = new List<int>();
+                    availableOptionsInDependee = new List<Guid>();
                 return GetChoiceMenuItemsHelper(availableOptionsInDependee, choiceGroupID, orderAlphabetically);
             }
             else
             {
                 bool orderAlphabetically = theChoiceGroup.Alphabetize;
-                return GetChoiceMenuItemsHelper(new List<int>(), choiceGroupID, orderAlphabetically);
+                return GetChoiceMenuItemsHelper(new List<Guid>(), choiceGroupID, orderAlphabetically);
             }
         }
 
@@ -392,7 +392,7 @@ namespace ClassLibrary1.Model
 
     //    }
 
-    //    public bool ChoicesForFieldDefinitionVerifyOK(Guid tblRowID, Guid FieldDefinitionID, List<int> multipleChoices)
+    //    public bool ChoicesForFieldDefinitionVerifyOK(Guid tblRowID, Guid FieldDefinitionID, List<Guid> multipleChoices)
     //    {
     //        try
     //        {
@@ -416,7 +416,7 @@ namespace ClassLibrary1.Model
     //        }
     //    }
 
-    //    public bool ChoicesForFieldNumVerifyOK(Guid tblRowID, int fieldNum, List<int> multipleChoices)
+    //    public bool ChoicesForFieldNumVerifyOK(Guid tblRowID, int fieldNum, List<Guid> multipleChoices)
     //    {
     //        FieldDefinition theFieldDefinition = DataAccessModule.GetFieldDefinitionForTblRow(entityID, fieldNum);
     //        return ChoicesForFieldDefinitionVerifyOK(tblRowID, theFieldDefinition.FieldDefinitionID, multipleChoices);

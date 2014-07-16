@@ -184,8 +184,8 @@ namespace ClassLibrary1.Model
                 binFormat.Serialize(mStream, myUploadInfo);
                 byte[] theData = mStream.GetBuffer();
 
-                DataContext.SubmitChanges(); 
-                int returnVal = AddOrResetLongProcess(typeOfProcess, delayBeforeReset, object1ID, object2ID, priority, theData);
+                DataContext.SubmitChanges();
+                Guid returnVal = AddOrResetLongProcess(typeOfProcess, delayBeforeReset, object1ID, object2ID, priority, theData);
 
                 return returnVal;
             }
@@ -251,11 +251,7 @@ namespace ClassLibrary1.Model
 
                     if (myLongProcess.TypeOfProcess == (int)LongProcessTypes.createMissingRatings)
                     {
-                        Trace.TraceInformation("About to continue missing ratings long process.");
-                        CreateMissingRatingsInfo myUpdateInfo = null;
-                        myUpdateInfo = (CreateMissingRatingsInfo)binFormat.Deserialize(mStream);
-                        if (myUpdateInfo != null)
-                            myLongProcess.ProgressInfo = myUpdateInfo.Continue(myLongProcess.ProgressInfo, (int)myLongProcess.Object1ID);
+                        throw new NotImplementedException(); // this has been deleted
                     }
 
                     if (myLongProcess.TypeOfProcess == (int)LongProcessTypes.uploadTblRows)

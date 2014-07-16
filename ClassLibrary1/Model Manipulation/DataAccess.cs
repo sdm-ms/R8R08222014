@@ -410,7 +410,7 @@ namespace ClassLibrary1.Model
         /// </summary>
         /// <param name="activationNumber">Unique activation number of invited user</param>
         /// <returns></returns>
-        public InvitedUser GetInvitedUser(int activationNumber)
+        public InvitedUser GetInvitedUser(Guid activationNumber)
         {
             return R8RDB.GetTable<InvitedUser>().Single(x => x.ActivationNumber == activationNumber);
         }
@@ -993,7 +993,7 @@ namespace ClassLibrary1.Model
         /// <param name="determiningGroupValue">If non-null only the choices with the ActiveOnDeterminingGroupChoiceInGroupID equal to this number
         /// will be returned.</param>
         /// <returns></returns>
-        public ChoiceGroupData GetChoiceGroupData(Guid choiceGroupID, bool availableChoicesOnly, int? determiningGroupValue)
+        public ChoiceGroupData GetChoiceGroupData(Guid choiceGroupID, bool availableChoicesOnly, Guid? determiningGroupValue)
         {
             ChoiceGroupData theData = new ChoiceGroupData();
             var theChoicesInGroup = R8RDB.GetTable<ChoiceInGroup>()
@@ -1122,7 +1122,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public bool CheckUserRights(Guid? userID, UserActionType theAction, bool proposalOnly, Guid? pointsManagerID, Guid? TblID)
         {
-            if (AllowNullOrUserID0UserForTestingAndInitialBuild && (userID == null || userID == 0))
+            if (AllowNullOrUserID0UserForTestingAndInitialBuild && (userID == null))
                 return true;
 
             bool returnVal = false;
@@ -1338,7 +1338,7 @@ namespace ClassLibrary1.Model
         public RatingHierarchyData GetRatingHierarchyDataForRatingGroup(Guid ratingGroupID)
         {
             RatingHierarchyData theData = new RatingHierarchyData();
-            AddRatingGroupToRatingHierarchyData((int)ratingGroupID, ref theData, 1);
+            AddRatingGroupToRatingHierarchyData((Guid)ratingGroupID, ref theData, 1);
             return theData;
         }
 
@@ -1405,13 +1405,13 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void GetDefaultSortForTblTab(Guid TblTabID, ref int? TblColumnToSort, ref bool sortOrderAscending)
+        public void GetDefaultSortForTblTab(Guid TblTabID, ref Guid? TblColumnToSort, ref bool sortOrderAscending)
         {
             TblTab theTblTab = R8RDB.GetTable<TblTab>().Single(cg => cg.TblTabID == TblTabID);
             TblColumnToSort = theTblTab.DefaultSortTblColumnID;
             if (TblColumnToSort != null)
             {
-                int? theTblColumnToSort = TblColumnToSort;
+                Guid? theTblColumnToSort = TblColumnToSort;
                 TblColumn theSortCD = R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == theTblColumnToSort && cd.TblTabID == TblTabID && cd.Status == (Byte)StatusOfObject.Active);
                 if (theSortCD == null)
                     TblColumnToSort = null;

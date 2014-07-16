@@ -599,7 +599,7 @@ namespace ClassLibrary1.Model
                     // When we originally add the proposed object, we attach a name to it. Now, we make sure that
                     // name is unique, and if not, we change the name.
                     string theName = "";
-                    int? theCreator = null;
+                    Guid? theCreator = null;
                     GetNameAndCreatorOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, ref theName, ref theCreator);
                     ChangeNameOfObject((Guid)theChange.NewObject, (TypeOfObject)theChange.ObjectType, theCreator, theName);
                 }
@@ -609,7 +609,6 @@ namespace ClassLibrary1.Model
                 switch ((TypeOfObject)theChange.ObjectType)
                 {
                     case TypeOfObject.TblColumn:
-                        AddRatingsAfterAddingColumnIfTblIsActive((Guid)theChange.NewObject);
                         break;
                     case TypeOfObject.RatingGroupResolution:
                         break;
@@ -702,7 +701,7 @@ namespace ClassLibrary1.Model
                             theChoiceInGroup.ChoiceNum = (int)theChange.NewValueInteger;
                         }
                         else if (!theChange.ChangeSetting1 && theChange.ChangeSetting2)
-                            theChoiceInGroup.ActiveOnDeterminingGroupChoiceInGroupID = theChange.NewValueInteger;
+                            theChoiceInGroup.ActiveOnDeterminingGroupChoiceInGroupID = theChange.NewValueGuid;
                         else if (theChange.ChangeSetting1 && theChange.ChangeSetting2)
                         {
                             theChoiceInGroup.ChoiceText = theChange.NewValueText;
@@ -724,12 +723,7 @@ namespace ClassLibrary1.Model
                         break;
 
                     case TypeOfObject.Tbl:
-                        if (theChange.NewValueText == "TblDimension")
-                        {
-                            DataContext.GetTable<Tbl>().Single(x => x.TblID == (Guid)theChange.ExistingObject).TblDimensionsID = theChange.NewValueInteger;
-                            changeMade = true;
-                        }
-                        else if (theChange.NewValueText == "ChangeCommentSetting")
+                        if (theChange.NewValueText == "ChangeCommentSetting")
                         {
                             bool AllowUsersToAddComment = false, LimitComments = false;
                             int NewValue = (int)theChange.NewValueInteger;
@@ -801,7 +795,7 @@ namespace ClassLibrary1.Model
                                 //activeUserRatingWebsite = true;
                                 //theNewValue -= 1;
                             }
-                            Domain theDomain = DataContext.GetTable<Domain>().Single(x => x.DomainID == (int)theChange.ExistingObject);
+                            Domain theDomain = DataContext.GetTable<Domain>().Single(x => x.DomainID == (Guid)theChange.ExistingObject);
                             theDomain.ActiveRatingWebsite = activeRatingWebsite;
                             CacheManagement.InvalidateCacheDependency("DomainID" + theDomain.DomainID);
 
@@ -812,7 +806,7 @@ namespace ClassLibrary1.Model
                             CacheManagement.InvalidateCacheDependency("DomainID" + theChange.ExistingObject);
                             if (theChange.NewValueText == "TblDimension")
                             {
-                                DataContext.GetTable<Domain>().Single(x => x.DomainID == (Guid)theChange.ExistingObject).TblDimensionsID = theChange.NewValueInteger;
+                                DataContext.GetTable<Domain>().Single(x => x.DomainID == (Guid)theChange.ExistingObject).TblDimensionsID = theChange.NewValueGuid;
                                 changeMade = true;
                             }
                         }
@@ -1032,7 +1026,7 @@ namespace ClassLibrary1.Model
                     if (theChange.ChangeSetting1)
                     {
                         if (theChange.ChangesGroup.Tbl != null)
-                            theChange.ChangesGroup.Tbl.DefaultRatingGroupAttributesID = (int)theChange.NewObject;
+                            theChange.ChangesGroup.Tbl.DefaultRatingGroupAttributesID = (Guid)theChange.NewObject;
                         else
                             throw new Exception("Internal error: No default rating group attributes assigned when replacing object.");
 
