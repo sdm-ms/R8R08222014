@@ -360,7 +360,7 @@ namespace ClassLibrary1.Model
         public void ChangeSupremeCourtMembership()
         {
             ActionProcessor Action = new ActionProcessor();
-            Guid superUser = DataContext.GetTable<User>().Single(u => u.Username == "admin").UserID;
+            Guid superUser = DataContext.GetTable<User>().Single(u => u.Username == "admin").UserGuid;
             Guid theRatingPhaseID = DataContext.GetTable<RatingPhaseGroup>().Single(x => x.Name == "Two week phases").RatingPhaseGroupID;
             Guid votesRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 9, 1, "Votes", true, true, superUser, null);
             Guid indVoteRating = Action.RatingCharacteristicsCreate(theRatingPhaseID, null, 0, 1, 1, "Individual Vote", true, true, superUser, null);

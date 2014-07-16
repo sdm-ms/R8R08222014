@@ -91,7 +91,7 @@ public partial class Leaders : System.Web.UI.Page
                              select new
                              {
                                  Username = p.User.Username,
-                                 Userid = p.User.UserID,
+                                 Userid = p.User.UserGuid,
                                  PointsManagerName = p.PointsManager.Name,
                                  FirstTable = p.PointsManager.Tbls.FirstOrDefault(x => x.Name != "Changes"),
                                  Lifetime = p.TotalPoints,

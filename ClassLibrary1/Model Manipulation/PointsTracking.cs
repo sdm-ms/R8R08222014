@@ -52,7 +52,7 @@ namespace ClassLibrary1.Model
         public void UpdateUserPoints(Guid userID, Guid pointsManagerID, PointsAdjustmentReason theReason, decimal totalPointsAdjustment, decimal currentPointsAdjustment, decimal pendingPointsAdjustment, decimal notYetPendingAdjustment, decimal pendingMaxLossAdjustment, decimal longTermUnweightedAdjustment, decimal? cashPaymentToMake, bool submitChanges)
         {
             PointsManager thePointsManager = DataContext.GetTable<PointsManager>().Single(x=>x.PointsManagerID ==pointsManagerID);
-            User theUser = DataContext.GetTable<User>().Single(x => x.UserID == userID);
+            User theUser = DataContext.GetTable<User>().Single(x => x.UserGuid == userID);
             UpdateUserPoints(theUser, thePointsManager, theReason, totalPointsAdjustment, currentPointsAdjustment, pendingPointsAdjustment, notYetPendingAdjustment, pendingMaxLossAdjustment, longTermUnweightedAdjustment, cashPaymentToMake, submitChanges);
 
         }

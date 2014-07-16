@@ -53,7 +53,7 @@ public partial class Main_Table_ViewCellMainSelected : System.Web.UI.UserControl
         List<RatingIdAndUserRatingValue> theList = CellData.GetRatingsAndUserRatings();
         ActionProcessor theActionProcessor = new ActionProcessor();
         UserEditResponse theResponse = new UserEditResponse();
-        User theUser = theActionProcessor.DataContext.GetTable<User>().Single(u => u.UserID == (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+        User theUser = theActionProcessor.DataContext.GetTable<User>().Single(u => u.UserGuid == (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
         theActionProcessor.UserRatingsAdd(theList, theUser, ref theResponse);
         DeselectFn();
     }

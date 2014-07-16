@@ -27,7 +27,7 @@ namespace ClassLibrary1.EFModel
 
         public int WidthOfTblRowPopUpWindow { get; set; }
 
-        public Guid? Creator { get; set; }
+        public int? Creator { get; set; }
 
         public byte? Status { get; set; }
 

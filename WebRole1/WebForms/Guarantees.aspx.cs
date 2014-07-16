@@ -24,7 +24,7 @@ namespace WebRole1.WebForms
             theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.DataContext);
             ItemPath1.theHierarchyItem = theLocation.lastItemInHierarchy;
             if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-                TheUser = DataAccess.DataContext.GetTable<User>().SingleOrDefault(x => x.UserID == (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+                TheUser = DataAccess.DataContext.GetTable<User>().SingleOrDefault(x => x.UserGuid == (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
             if (TheUser == null)
                 Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
 

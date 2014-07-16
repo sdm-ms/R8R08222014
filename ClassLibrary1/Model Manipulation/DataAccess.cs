@@ -896,7 +896,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         public User GetUser(Guid theID)
         {
-            User theUser = R8RDB.GetTable<User>().SingleOrDefault(x => x.UserID == theID);
+            User theUser = R8RDB.GetTable<User>().SingleOrDefault(x => x.UserGuid == theID);
             if (theUser == null)
                 throw new Exception("Your user account could not be found in the database. Please try logging in again.");
             return theUser;

@@ -34,7 +34,10 @@ namespace ClassLibrary1.EFModel
             UsersRights = new HashSet<UsersRight>();
         }
 
-        public Guid UserID { get; set; }
+        [Key]
+        public int UserID { get; set; }
+
+        public Guid UserGuid { get; set; }
 
         [StringLength(50)]
         public string Username { get; set; }

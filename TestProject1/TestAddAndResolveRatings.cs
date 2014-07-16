@@ -124,7 +124,7 @@ namespace TestProject1
             /* before pending */
             TestCreateTableAndAddUserRatingFromFirstUser(true);
             UserRating theUserRating = DataAccess.DataContext.GetTable<UserRating>().Single();
-            User theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]);
+            User theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]);
             PointsTotal thePointsTotal = theUser.PointsTotals.Single();
             RatingGroup theRatingGroup = theUserRating.Rating.RatingGroup;
             TestHelper.WaitIdleTasks(); 
@@ -178,7 +178,7 @@ namespace TestProject1
             decimal shortTermPointsEarnedInitially = theUserRating.PointsEarnedShortTerm;
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeFalse();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             TestableDateTime.SleepOrSkipTime(5000);
@@ -206,7 +206,7 @@ namespace TestProject1
             decimal longTermResolutionValueAfterInitialResolution = (decimal) theUserRating.LongTermResolutionValue;
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeFalse();
             decimal longTermPointsEarnedInitially = theUserRating.PointsEarnedLongTerm;
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially + longTermPointsEarnedInitially);
             DateTime timeImmediatelyAfterInitialLongTermResolution = TestableDateTime.Now;
@@ -225,7 +225,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeFalse();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             DateTime timeImmediatelyAfterCancellation = TestableDateTime.Now;
@@ -244,7 +244,7 @@ namespace TestProject1
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionValue.Should().Be(longTermResolutionValueAfterInitialResolution);
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially + longTermPointsEarnedInitially);
 
@@ -283,7 +283,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeFalse();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             cancelPreviousResolutions = false;
@@ -298,7 +298,7 @@ namespace TestProject1
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionValue.Should().Be(longTermResolutionValueAfterInitialResolution);
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially + longTermPointsEarnedInitially);
 
@@ -316,7 +316,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeFalse();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             cancelPreviousResolutions = false;
@@ -347,7 +347,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeFalse();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             cancelPreviousResolutions = false;
@@ -362,7 +362,7 @@ namespace TestProject1
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionValue.Should().Be(longTermResolutionValueAfterInitialResolution);
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially + longTermPointsEarnedInitially);
 
@@ -382,7 +382,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             (thePointsTotal.TotalPoints == 0).Should().BeTrue();
 
@@ -398,7 +398,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
 
@@ -414,7 +414,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
-            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == TestHelper.UserIds[0]); // reload user ...
+            theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserGuid == TestHelper.UserIds[0]); // reload user ...
             thePointsTotal = theUser.PointsTotals.Single(); // ... to reload pointstotal
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
         }

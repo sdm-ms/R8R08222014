@@ -166,8 +166,8 @@ namespace TestProject1
 
             UserInteraction userInteraction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(x =>
-                    x.User.UserID == _testHelper.UserIds[1] &&
-                    x.User1.UserID == _testHelper.UserIds[2]);
+                    x.User.UserGuid == _testHelper.UserIds[1] &&
+                    x.User1.UserGuid == _testHelper.UserIds[2]);
             
             List<UserInteractionStat> userInteractionStats = userInteraction.UserInteractionStats.ToList();
 

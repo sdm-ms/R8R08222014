@@ -179,7 +179,7 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
             RecentRatingInfo theInfo = (RecentRatingInfo)dataItem.DataItem;
 
             HtmlAnchor theAnchor = (HtmlAnchor)e.Item.FindControl("UserLink");
-            theAnchor.HRef = Routing.Outgoing(new RoutingInfoRatings(theInfo.User.UserID));
+            theAnchor.HRef = Routing.Outgoing(new RoutingInfoRatings(theInfo.User.UserGuid));
             theAnchor.InnerText = theInfo.User.Username;
 
             Label theUserPointsLabel = (Label)e.Item.FindControl("UserPoints");

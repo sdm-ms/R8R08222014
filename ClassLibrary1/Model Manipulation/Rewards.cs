@@ -53,7 +53,7 @@ namespace ClassLibrary1.Model
             internal bool ShouldCreateRewardRating(Guid originalTblID, Guid userID, out decimal? baseMultiplierOverride)
             {
                 baseMultiplierOverride = null;
-                User theUser = DataContext.GetTable<User>().Single(u => u.UserID == userID);
+                User theUser = DataContext.GetTable<User>().Single(u => u.UserGuid == userID);
                 if (theUser.SuperUser)
                     return false;
                 Tbl theTbl = DataContext.GetTable<Tbl>().Single(c => c.TblID == originalTblID);
@@ -88,7 +88,7 @@ namespace ClassLibrary1.Model
                 R8RDataAccess theDataAccess = new R8RDataAccess();
                 FieldSetDataInfo theFieldSetDataInfo = new FieldSetDataInfo(null, userChangesTbl, theDataAccess);
                 theFieldSetDataInfo.theRowName = changeName;
-                User theUser = DataContext.GetTable<User>().Single(u => u.UserID == userID);
+                User theUser = DataContext.GetTable<User>().Single(u => u.UserGuid == userID);
                 RewardRatingSetting theRMS = DataContext.GetTable<RewardRatingSetting>().Single(rms => rms.PointsManagerID == userChangesTbl.PointsManagerID && rms.Status == (Byte)(StatusOfObject.Active));
                 decimal totalMultiplier = (baseMultiplierOverride ?? theRMS.Multiplier ?? 1M) * (supplementalMultiplier ?? 1M);
 
@@ -141,7 +141,7 @@ namespace ClassLibrary1.Model
                 User theUser = DataContext.GetTable<User>().SingleOrDefault(u => u.Username == theField.Text);
                 if (theUser == null)
                     return null;
-                return theUser.UserID;
+                return theUser.UserGuid;
             }
 
             public decimal GetMultiplierForRewardRatingTblRow(TblRow theRewardRatingTblRow)

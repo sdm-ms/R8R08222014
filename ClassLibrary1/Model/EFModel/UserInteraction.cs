@@ -17,9 +17,9 @@ namespace ClassLibrary1.EFModel
 
         public Guid TrustTrackerUnitID { get; set; }
 
-        public Guid OrigRatingUserID { get; set; }
+        public int OrigRatingUserID { get; set; }
 
-        public Guid LatestRatingUserID { get; set; }
+        public int LatestRatingUserID { get; set; }
 
         public int NumTransactions { get; set; }
 

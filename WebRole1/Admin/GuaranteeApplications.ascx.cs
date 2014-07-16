@@ -37,7 +37,7 @@ namespace WebRole1.Admin
 
         public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
-            var theQuery = theDataAccessModule.R8RDB.GetTable<PointsTotal>().Where(x => x.PointsManager == theLocation.thePointsManager && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserID });
+            var theQuery = theDataAccessModule.R8RDB.GetTable<PointsTotal>().Where(x => x.PointsManager == theLocation.thePointsManager && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserGuid });
             e.Result = theQuery;
         }
 
@@ -64,7 +64,7 @@ namespace WebRole1.Admin
         public GuaranteeApplicationsItem GetGuaranteeApplicationsItemFromCommandArgument(string commandArgument)
         {
             string[] split = commandArgument.Split('$');
-            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = new Guid(split[1]), Username = theDataAccessModule.R8RDB.GetTable<User>().Single(x => x.UserID == new Guid(split[1])).Username };
+            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = new Guid(split[1]), Username = theDataAccessModule.R8RDB.GetTable<User>().Single(x => x.UserGuid == new Guid(split[1])).Username };
             return item;
         }
 

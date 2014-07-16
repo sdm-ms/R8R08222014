@@ -218,7 +218,7 @@ namespace ClassLibrary1.Model
 
             RewardRatingSetting theSetting = DataContext.GetTable<RewardRatingSetting>().SingleOrDefault(rms => rms.PointsManagerID == originalTbl.PointsManagerID && rms.Status == (Byte)StatusOfObject.Active);
             User theSuperUser = DataContext.GetTable<User>().SingleOrDefault(u => u.Username == "admin"); // this is created by admin, but a field above tracks the creating user for purpose of giving credit
-            TblRow theRewardTblRow = TblRowCreateWithFields(theData, theSuperUser.UserID);
+            TblRow theRewardTblRow = TblRowCreateWithFields(theData, theSuperUser.UserGuid);
 
             if (theRewardTblRow != null && theSetting != null)
             {
@@ -1663,7 +1663,7 @@ namespace ClassLibrary1.Model
                 if (DataAccess.GetUser(userID).SuperUser)
                     theUser = null;
 
-                User theUserToAdjust = DataContext.GetTable<User>().Single(u => u.UserID == userToAdjustID);
+                User theUserToAdjust = DataContext.GetTable<User>().Single(u => u.UserGuid == userToAdjustID);
                 PointsManager thePointsManager = DataContext.GetTable<PointsManager>().Single(p => p.PointsManagerID == pointsManagerID);
                 PointsAdjustment thePointsAdjustment = DataManipulation.AddPointsAdjustment(theUserToAdjust, thePointsManager, PointsAdjustmentReason.AdministrativeChange, adjustmentToTotal, adjustmentToCurrent, null);
                 return thePointsAdjustment;
@@ -1904,7 +1904,7 @@ namespace ClassLibrary1.Model
 
         public void UserRatingAdd(Guid aRatingID, decimal aUserRating, Guid userID, ref UserEditResponse theResponse)
         {
-            User theUser = DataContext.GetTable<User>().Single(u => u.UserID == userID);
+            User theUser = DataContext.GetTable<User>().Single(u => u.UserGuid == userID);
             UserRatingAdd(aRatingID, aUserRating, theUser, ref theResponse);
         }
 
@@ -1970,7 +1970,7 @@ namespace ClassLibrary1.Model
                 //    return new UserRatingResult("Entering ratings is currently disabled for this table cell.");
             }
 
-            theResponse.result = DataAccess.ConfirmUserRatingRightsForTableCell(theUser.UserID, topRatingGroup);
+            theResponse.result = DataAccess.ConfirmUserRatingRightsForTableCell(theUser.UserGuid, topRatingGroup);
             if (theResponse.result.success)
                 DataManipulation.AddUserRatingsBasedOnOneOrMore(theUserRatings, theRatings, theRatingGroups, theUser, ref theResponse);
         }
@@ -2045,7 +2045,7 @@ namespace ClassLibrary1.Model
                         Rating theRating = theRatings.Single(m => m.RatingID == firstR8RID);
                         if (DataManipulation.TblIsRewardTbl(theRating.RatingGroup.TblRow.Tbl))
                         {
-                            if (theUser.UserID == DataManipulation.GetUserWhoMadeDatabaseChange(theRating.RatingGroup.TblRow))
+                            if (theUser.UserGuid == DataManipulation.GetUserWhoMadeDatabaseChange(theRating.RatingGroup.TblRow))
                             {
                                 theResponse.result = new UserRatingResult("You may not rate a database change that you made.");
                                 return;

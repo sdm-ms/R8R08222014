@@ -667,7 +667,7 @@ namespace ClassLibrary1.Model
                     R8RDB.GetTable<PointsManager>().Single(x => x.PointsManagerID == objectID).Status = newValue;
                     break;
                 case TypeOfObject.User:
-                    R8RDB.GetTable<User>().Single(x => x.UserID == objectID).Status = newValue;
+                    R8RDB.GetTable<User>().Single(x => x.UserGuid == objectID).Status = newValue;
                     break;
                 case TypeOfObject.AdministrationRightsGroup:
                     R8RDB.GetTable<AdministrationRightsGroup>().Single(x => x.AdministrationRightsGroupID == objectID).Status = newValue;

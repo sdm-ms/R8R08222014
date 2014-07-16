@@ -20,7 +20,7 @@ namespace WebRole1.WebForms
             if (!(HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null))
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
             R8RDataAccess myDataAccess = new R8RDataAccess();
-            User theUser = myDataAccess.R8RDB.GetTable<User>().Single(x => x.UserID == (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+            User theUser = myDataAccess.R8RDB.GetTable<User>().Single(x => x.UserGuid == (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
             if (theUser.Username != "admin")
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
         }

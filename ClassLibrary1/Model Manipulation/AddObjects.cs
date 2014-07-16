@@ -2500,7 +2500,7 @@ namespace ClassLibrary1.Model
             else
                 theUserProfileInfo = UserProfileCollection.CreateUser(userName, password, email);
             User theUser = new User {
-                UserID = Guid.NewGuid(),
+                UserGuid = Guid.NewGuid(),
                 Username = userName,
                 SuperUser = isSuperUser,
                 Status = (Byte)StatusOfObject.Active
@@ -2509,14 +2509,14 @@ namespace ClassLibrary1.Model
             DataContext.GetTable<User>().InsertOnSubmit(theUser);
             DataContext.SubmitChanges();
 
-            theUserProfileInfo.SetProperty("UserID", theUser.UserID);
+            theUserProfileInfo.SetProperty("UserID", theUser.UserGuid);
 
             return theUser;
         }
 
         public Guid AddUserReturnId(String userName, bool isSuperUser, string email, string password, bool profileAlreadyAdded)
         {
-            return AddUser(userName, email, password, isSuperUser, profileAlreadyAdded).UserID;
+            return AddUser(userName, email, password, isSuperUser, profileAlreadyAdded).UserGuid;
         }
 
 
