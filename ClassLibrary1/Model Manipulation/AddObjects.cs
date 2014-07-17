@@ -705,11 +705,12 @@ namespace ClassLibrary1.Model
 
         public HierarchyItem AddHierarchyItem(HierarchyItem higherHierarchyItem, Tbl associatedTbl, bool includeInMenu, string name)
         {
+            // The following is probably not relevant any more.
             // Note: Initially, the Linq to SQL data model had child and parent properties for routing and menu, but this seemed
             // to cause a number of problems in Linq to SQL (bad query translation and duplicated items). So, we are avoiding the 
             // properties for now, which means that we need to have the ID variable
-            if (higherHierarchyItem != null /* DEBUG && higherHierarchyItem.HierarchyItemID == -1 */)
-                throw new Exception("Internal error: Must submit changes on hierarchy item before using as basis for higher hierarchy item.");
+            //if (higherHierarchyItem != null && higherHierarchyItem.HierarchyItemID == -1)
+            //    throw new Exception("Internal error: Must submit changes on hierarchy item before using as basis for higher hierarchy item.");
 
             HierarchyItem theHierarchyItem = new HierarchyItem
             {

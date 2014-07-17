@@ -5,6 +5,7 @@ namespace ClassLibrary1.EFModel
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Data.Entity.Core.Objects;
+    using System.Collections.Generic;
 
     public partial class R8RContext : DbContext
     {
@@ -125,6 +126,8 @@ namespace ClassLibrary1.EFModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            
+
             modelBuilder.Entity<AddressField>()
                 .Property(e => e.Latitude)
                 .HasPrecision(18, 8);
@@ -199,11 +202,11 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<Comment>()
                 .Property(e => e.CommentTitle)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<Comment>()
                 .Property(e => e.CommentText)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<Domain>()
                 .HasMany(e => e.PointsManagers)
@@ -277,11 +280,11 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<InsertableContent>()
                 .Property(e => e.Name)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<InsertableContent>()
                 .Property(e => e.Content)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<NumberFieldDefinition>()
                 .Property(e => e.Minimum)
@@ -532,7 +535,7 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<RatingGroupAttribute>()
                 .Property(e => e.Description)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<RatingGroupAttribute>()
                 .Property(e => e.LongTermPointsWeight)
@@ -626,8 +629,15 @@ namespace ClassLibrary1.EFModel
                 .HasForeignKey(e => e.RatingGroupID)
                 .WillCascadeOnDelete(false);
 
+            // TODO: Fix this. (We're not using this relationship now, but if we do we should fix it.)
+            // Every Rating can have zero or 1 OwnedRatingGroup, using foreign key OwnedRatingGroupID.
+            // But the RatingGroup can be owned by zero or 1 Rating, and there is no foreign key on the RatingGroup side of the relationship.
+            // So, instead of RatingsAboveThisRatingGroupInHierarchy we should have RatingAboveThisRatingGroupInHierarchy, referring to a single one.
+            // But I haven't been able to get that to work in a way that specifies the foreign key.
+            // Using Map is a possibility but I would prefer to use HasKey.
+            // See email with Leader/Follower example.
             modelBuilder.Entity<RatingGroup>()
-                .HasMany(e => e.RatingsAboveThisRatingGroupInHierarchy) // DEBUG -- should be only 1
+                .HasMany(e => e.RatingsAboveThisRatingGroupInHierarchy) 
                 .WithOptional(e => e.OwnedRatingGroup)
                 .HasForeignKey(e => e.OwnedRatingGroupID);
 
@@ -685,7 +695,7 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<RatingPlan>()
                 .Property(e => e.Description)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<Rating>()
                 .Property(e => e.CurrentValue)
@@ -881,11 +891,11 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<Tbl>()
                 .Property(e => e.WordToDescribeGroupOfColumnsInThisTbl)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<Tbl>()
                 .Property(e => e.TypeOfTblRow)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<Tbl>()
                 .HasMany(e => e.FieldDefinitions)
@@ -942,39 +952,39 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<UserAction>()
                 .Property(e => e.Text)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.FirstName)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.LastName)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.Email)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.Address1)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.Address2)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.WorkPhone)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.HomePhone)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.MobilePhone)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.Password)
@@ -982,19 +992,19 @@ namespace ClassLibrary1.EFModel
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.ZipCode)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.City)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.State)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.Country)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<UserRatingGroup>()
                 .HasMany(e => e.UserRatings)
