@@ -162,9 +162,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201407162244139_InitialCreate.cs" />
-    <Compile Include="Migrations\201407162244139_InitialCreate.Designer.cs">
-      <DependentUpon>201407162244139_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201407162313044_InitialCreate.cs" />
+    <Compile Include="Migrations\201407162313044_InitialCreate.Designer.cs">
+      <DependentUpon>201407162313044_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -429,8 +429,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407162244139_InitialCreate.resx">
-      <DependentUpon>201407162244139_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407162313044_InitialCreate.resx">
+      <DependentUpon>201407162313044_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -226,7 +226,7 @@ namespace ClassLibrary1.Model
         {
             ChangesStatusOfObject theChangesStatusOfObject = new ChangesStatusOfObject
             {
-                ChangesStatusOfObjectID = new Guid(),
+                ChangesStatusOfObjectID = Guid.NewGuid(),
                 ChangesGroupID = changesGroupID,
                 ObjectType = (Byte)objectType,
                 AddObject = addObject,

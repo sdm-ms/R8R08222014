@@ -136,6 +136,7 @@ namespace ClassLibrary1.Model
             {
                 TrustTrackerStat theTrustTrackerStat = new TrustTrackerStat
                 {
+                    TrustTrackerStatID = Guid.NewGuid(),
                     TrustTracker = theTrustTracker,
                     StatNum = (short)i,
                     TrustValue = 1,

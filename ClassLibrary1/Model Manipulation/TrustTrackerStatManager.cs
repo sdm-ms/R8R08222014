@@ -215,7 +215,7 @@ namespace ClassLibrary1.Model
         /// <returns></returns>
         internal TrustTrackerStat[] ConvertTrustTrackerChoiceSummaryToTrustTrackerStats()
         {
-            return TrustTrackerChoiceSummary.Select(x => new TrustTrackerStat { StatNum = -1, Trust_Numer = x.SumAdjustmentPctTimesRatingMagnitude, Trust_Denom = x.SumRatingMagnitudes, TrustValue = x.TrustValueForChoice }).ToArray();
+            return TrustTrackerChoiceSummary.Select(x => new TrustTrackerStat { TrustTrackerStatID = Guid.NewGuid(), StatNum = -1, Trust_Numer = x.SumAdjustmentPctTimesRatingMagnitude, Trust_Denom = x.SumRatingMagnitudes, TrustValue = x.TrustValueForChoice }).ToArray();
         }
 
         /// <summary>

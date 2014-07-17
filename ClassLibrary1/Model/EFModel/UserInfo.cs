@@ -9,6 +9,7 @@ namespace ClassLibrary1.EFModel
     [Table("UserInfo")]
     public partial class UserInfo
     {
+        [Key]
         public Guid UserInfoID { get; set; }
 
         public Guid UserID { get; set; }
