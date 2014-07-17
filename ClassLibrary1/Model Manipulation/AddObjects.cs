@@ -1095,7 +1095,7 @@ namespace ClassLibrary1.Model
             List<RatingPlan> theRatingPlans = DataContext.TempCacheGet(key) as List<RatingPlan>;
             if (theRatingPlans == null)
             {
-                theRatingPlans = DataContext.GetTable<RatingPlan>().Where(p => p.RatingGroupAttribute == ratingGroupAttributes && p.Status == (Byte)StatusOfObject.Active).ToList();
+                theRatingPlans = DataContext.GetTable<RatingPlan>().Where(p => p.RatingGroupAttribute.RatingGroupAttributesID == ratingGroupAttributes.RatingGroupAttributesID && p.Status == (Byte)StatusOfObject.Active).ToList();
                 DataContext.TempCacheAdd(key, theRatingPlans);
             }
             int numRatingsBeingAdded = theRatingPlans.Count();
@@ -1770,7 +1770,7 @@ namespace ClassLibrary1.Model
             DataContext.RegisterObjectToBeInserted(theUserRating);
 
             List<Guid> allChoiceInGroupIDsToBeTrustTracked = additionalInfo.ChoiceInGroupIDsNotTrackedYet.Union(additionalInfo.TrustTrackerChoiceSummaries.Select(x => x.ChoiceInGroupID)).ToList();
-            List<TrustTrackerForChoiceInGroup> choiceInGroupsInDatabaseAlready = DataContext.GetTable<TrustTrackerForChoiceInGroup>().Where(x => allChoiceInGroupIDsToBeTrustTracked.Contains(x.ChoiceInGroupID) && x.User == user).ToList();
+            List<TrustTrackerForChoiceInGroup> choiceInGroupsInDatabaseAlready = DataContext.GetTable<TrustTrackerForChoiceInGroup>().Where(x => allChoiceInGroupIDsToBeTrustTracked.Contains(x.ChoiceInGroupID) && x.User.UserID == user.UserID).ToList();
             List<Guid> notYetInsertedInt = allChoiceInGroupIDsToBeTrustTracked.Except(choiceInGroupsInDatabaseAlready.Select(x => x.ChoiceInGroupID)).ToList();
             List<ChoiceInGroup> notYetInserted = DataContext.GetTable<ChoiceInGroup>().Where(x => additionalInfo.ChoiceInGroupIDsNotTrackedYet.Contains(x.ChoiceInGroupID)).ToList();
             List<TrustTrackerForChoiceInGroup> allTrustTrackersForChoiceInGroups = new List<TrustTrackerForChoiceInGroup>();

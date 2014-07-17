@@ -595,7 +595,7 @@ namespace ClassLibrary1.EFModel
                 .HasPrecision(18, 4);
 
             modelBuilder.Entity<RatingGroup>()
-                .HasMany(e => e.RatingGroupPhaseStatus)
+                .HasMany(e => e.RatingGroupPhaseStatuses)
                 .WithRequired(e => e.RatingGroup)
                 .WillCascadeOnDelete(false);
 
@@ -652,7 +652,7 @@ namespace ClassLibrary1.EFModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RatingPhaseGroup>()
-                .HasMany(e => e.RatingGroupPhaseStatus)
+                .HasMany(e => e.RatingGroupPhaseStatuses)
                 .WithRequired(e => e.RatingPhaseGroup)
                 .WillCascadeOnDelete(false);
 

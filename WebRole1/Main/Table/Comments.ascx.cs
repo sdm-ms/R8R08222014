@@ -72,9 +72,10 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
     public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
         DateTime alwaysHideCommentsDeletedBeforeThisTime = TestableDateTime.Now - new TimeSpan(7,0,0,0);
+        bool isEntireTableQuery = theTblRowOrNullForEntireTable == null;
         var theQuery = theDataAccessModule.DataContext.GetTable<Comment>()
             .Where(x => 
-                ((theTblRowOrNullForEntireTable != null && x.TblRow == theTblRowOrNullForEntireTable) || (theTblOrNullForRowOnly != null && x.TblRow.Tbl == theTblOrNullForRowOnly))
+                ((!isEntireTableQuery && x.TblRow.TblRowID == theTblRowOrNullForEntireTable.TblRowID) || (isEntireTableQuery && x.TblRow.Tbl.TblID == theTblOrNullForRowOnly.TblID))
                 && (x.Status == (int)StatusOfObject.Active || (UserCanDeleteComments && ShowDeletedAndProposedComments && x.LastDeletedDate > alwaysHideCommentsDeletedBeforeThisTime)))
             .OrderByDescending(x => x.DateTime).Select(
                 x => new CommentData { 

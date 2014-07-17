@@ -92,7 +92,7 @@ namespace ClassLibrary1.Model
         public IQueryable<Rating> GetRatingsForGroup(RatingGroup ratingGroup)
         {
             //RatingGroup theGroup = ObjDataAccess.GetRatingGroup(ratingGroupID);
-            return DataContext.GetTable<Rating>().Where(m => m.RatingGroup == ratingGroup);
+            return DataContext.GetTable<Rating>().Where(m => m.RatingGroup.RatingGroupID == ratingGroup.RatingGroupID);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace ClassLibrary1.Model
                 return firstRating.TopRatingGroup;
 
             // otherwise, use longer method.
-            var theRatingGroups = DataContext.GetTable<RatingGroup>().Where(mg => mg.TblRow == tblRow && mg.TblColumn == TblColumn && mg.Status == (Byte)StatusOfObject.Active);
+            var theRatingGroups = DataContext.GetTable<RatingGroup>().Where(mg => mg.TblRow.TblRowID == tblRow.TblRowID && mg.TblColumn.TblColumnID == TblColumn.TblColumnID && mg.Status == (Byte)StatusOfObject.Active);
             foreach (RatingGroup aGroup in theRatingGroups)
             {
                 if (GetRatingGroupOwner(aGroup) == null)
@@ -416,7 +416,7 @@ namespace ClassLibrary1.Model
                                            where rg.TypeOfRatingGroup != (int)RatingGroupTypes.hierarchyNumbersBelow && rg.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityHierarchyBelow && rg.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy
                                            let activeResolution = rg.RatingGroupResolutions.OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.RatingGroupResolutionID).FirstOrDefault()
                                            where activeResolution == null || activeResolution.CancelPreviousResolutions
-                                           let ratingGroupPhaseStatusLast = rg.RatingGroupPhaseStatus.OrderByDescending(x => x.ActualCompleteTime).FirstOrDefault()
+                                           let ratingGroupPhaseStatusLast = rg.RatingGroupPhaseStatuses.OrderByDescending(x => x.ActualCompleteTime).FirstOrDefault()
                                            where ratingGroupPhaseStatusLast != null
                                            let currentPhase = ratingGroupPhaseStatusLast.RatingPhase
                                            where !currentPhase.RepeatIndefinitely // when repeating indefinitely, we don't want to create excess phases in the database, so we wait for the user to do it
@@ -537,7 +537,7 @@ namespace ClassLibrary1.Model
             if (theRating.RatingPhaseStatus.Any())
                 return theRating.RatingPhaseStatus.OrderByDescending(x => x.RatingPhaseStatusID).FirstOrDefault();
 
-            return DataContext.GetTable<RatingPhaseStatus>().Where(x => x.Rating == theRating).OrderByDescending(x => x.RatingPhaseStatusID).First();
+            return DataContext.GetTable<RatingPhaseStatus>().Where(x => x.Rating.RatingID == theRating.RatingID).OrderByDescending(x => x.RatingPhaseStatusID).First();
         }
 
         public RatingGroupPhaseStatus GetRatingGroupPhaseStatus(RatingGroup topRatingGroup)
@@ -546,10 +546,10 @@ namespace ClassLibrary1.Model
             if (alreadyEntered != null)
                 return alreadyEntered;
 
-            if (topRatingGroup.RatingGroupPhaseStatus.Any())
-                return topRatingGroup.RatingGroupPhaseStatus.OrderByDescending(x => x.RatingGroupPhaseStatusID).FirstOrDefault();
+            if (topRatingGroup.RatingGroupPhaseStatuses.Any())
+                return topRatingGroup.RatingGroupPhaseStatuses.OrderByDescending(x => x.RatingGroupPhaseStatusID).FirstOrDefault();
 
-            return DataContext.GetTable<RatingGroupPhaseStatus>().Where(x => x.RatingGroup == topRatingGroup).OrderByDescending(x => x.RatingGroupPhaseStatusID).First();
+            return DataContext.GetTable<RatingGroupPhaseStatus>().Where(x => x.RatingGroup.RatingGroupID == topRatingGroup.RatingGroupID).OrderByDescending(x => x.RatingGroupPhaseStatusID).First();
         }
 
         /// <summary>

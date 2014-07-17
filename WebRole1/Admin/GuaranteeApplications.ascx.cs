@@ -37,7 +37,7 @@ namespace WebRole1.Admin
 
         public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
-            var theQuery = theDataAccessModule.R8RDB.GetTable<PointsTotal>().Where(x => x.PointsManager == theLocation.thePointsManager && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserID });
+            var theQuery = theDataAccessModule.R8RDB.GetTable<PointsTotal>().Where(x => x.PointsManager.PointsManagerID == theLocation.thePointsManager.PointsManagerID && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserID });
             e.Result = theQuery;
         }
 

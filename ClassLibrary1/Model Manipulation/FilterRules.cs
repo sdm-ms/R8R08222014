@@ -160,7 +160,7 @@ namespace ClassLibrary1.Model
                         || /* there have been recent changes, but either ... */
                         x.StatusRecentlyChanged == true &&
                             /* none of these recent changes was after the relevant time and it's still active */
-                            ((x.Status == (int)StatusOfObject.Active && !x.TblRowStatusRecords.Any(yield => yield.TimeChanged > AsOfDateTime))) ||
+                            ((x.Status == (int)StatusOfObject.Active && !x.TblRowStatusRecords.Any(y => y.TimeChanged > AsOfDateTime))) ||
                             /* first change indicates that it was active as of the relevant time */
                             (x.TblRowStatusRecords.Where(y => y.TimeChanged > AsOfDateTime)
                                     .OrderBy(y => y.TimeChanged)
@@ -175,7 +175,7 @@ namespace ClassLibrary1.Model
                         || /* there have been recent changes, but either ... */
                         x.StatusRecentlyChanged == true &&
                             /* none of these recent changes was after the relevant time */
-                            ((!x.TblRowStatusRecords.Any(yield => yield.TimeChanged > AsOfDateTime))) ||
+                            ((!x.TblRowStatusRecords.Any(y => y.TimeChanged > AsOfDateTime))) ||
                             /* first change indicates that it was in existence as of the relevant time */
                             (x.TblRowStatusRecords.Where(y => y.TimeChanged > AsOfDateTime)
                                     .OrderBy(y => y.TimeChanged)

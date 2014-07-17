@@ -165,7 +165,7 @@ namespace TestProject1
                     subversiveUserIgnoresPreviousRatings);
                 _testHelper.WaitIdleTasks();
                 IEnumerable<Rating> interRatings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                    .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
+                    .Where(r => r.RatingGroup.TblRow.Tbl.TblID == _testHelper.Tbl.TblID);
                 float interProportion = CalculateProportionWithinTolerance(interRatings, correctRatingValue, tolerance);
                 #region Debug
                 Debug.WriteLine(String.Format("Round {0}: {1}% within tolerance", i, interProportion * 100));
@@ -179,12 +179,12 @@ namespace TestProject1
              * Analyze Results
              */
             IEnumerable<Rating> ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
+                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == _testHelper.Tbl.TblID);
             float proportion = CalculateProportionWithinTolerance(ratings, correctRatingValue, tolerance);
             #region Debug
             pool.PrintOutUsersInfo();
             IEnumerable<Rating> ratings2 = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
+                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == _testHelper.Tbl.TblID);
             foreach (Rating rating in ratings)
             {
                 if (Math.Abs(rating.CurrentValue.Value - correctRatingValue) > tolerance)

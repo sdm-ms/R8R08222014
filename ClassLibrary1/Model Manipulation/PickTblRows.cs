@@ -140,7 +140,7 @@ namespace ClassLibrary1.Model
                     // Not clear why this is running fast while the Any() approach keeps hitting a timeout.
                     //var anyURG = theTbl.TblRows.SelectMany(x => x.RatingGroups).SelectMany(x => x.UserRatingGroups).Where(x => x.WhenMade > aDayAgo).Any();
                     //var anyURG = theTbl.TblRows.Any(x => x.RatingGroups.Any(y => y.UserRatingGroups.Any(z => z.WhenMade > aDayAgo)));
-                    var anyGroups = theDataContext.GetTable<UserRatingGroup>().Where(pg => pg.RatingGroup.TblRow.Tbl == theTbl && pg.WhenMade > aDayAgo).Count() > 0;
+                    var anyGroups = theDataContext.GetTable<UserRatingGroup>().Where(pg => pg.RatingGroup.TblRow.Tbl.TblID == theTbl.TblID && pg.WhenMade > aDayAgo).Count() > 0;
                     if (!anyGroups)
                         bigList.Remove(theTbl);
                 }
@@ -188,7 +188,7 @@ namespace ClassLibrary1.Model
 
             IQueryable<VolatilityTblRowTracker> theQuery = null;
 
-            theQuery = theDataContext.GetTable<VolatilityTblRowTracker>().Where(x => x.TblRow.Tbl == theTbl);
+            theQuery = theDataContext.GetTable<VolatilityTblRowTracker>().Where(x => x.TblRow.Tbl.TblID == theTbl.TblID);
             theQuery = theQuery.Where(t => t.DurationType == (int)theTimeFrame).OrderByDescending(t => t.Pushback);
             theQuery = theQuery.Take((int) numToConsider); 
             IQueryable<TblRow> theQueryAsTblRows = theQuery.Select(t => t.TblRow);
@@ -214,7 +214,7 @@ namespace ClassLibrary1.Model
 
             IQueryable<RatingGroup> theQuery = null;
 
-            theQuery = theDataContext.GetTable<RatingGroup>().Where(mg => mg.TblRow.Tbl == theTbl && mg.TblColumn == theTbl.TblTabs.FirstOrDefault().TblColumns.First(cd => cd.RatingGroupAttribute.Name.StartsWith("Rating"))).OrderByDescending(mg => mg.CurrentValueOfFirstRating);
+            theQuery = theDataContext.GetTable<RatingGroup>().Where(mg => mg.TblRow.Tbl.TblID == theTbl.TblID && mg.TblColumn.TblColumnID == theTbl.TblTabs.FirstOrDefault().TblColumns.First(cd => cd.RatingGroupAttribute.Name.StartsWith("Rating")).TblColumnID).OrderByDescending(mg => mg.CurrentValueOfFirstRating);
             IQueryable<TblRow> theQueryAsTblRows = theQuery.Take(numToReturn * 2).Select(mg => mg.TblRow);
             theQueryAsTblRows = theQueryAsTblRows.Distinct().Take((int)numToReturn);
             queryForTblRowsToConsider = theQueryAsTblRows.ToList();

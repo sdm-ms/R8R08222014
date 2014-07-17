@@ -61,7 +61,7 @@ namespace ClassLibrary1.Model
             {
                 if (thePointTotals.Any(u => u.PointsManager == y))
                 {
-                    y.CurrentUserPoints = thePointTotals.Where(u => u.PointsManager == y).Sum(u => u.CurrentPoints);
+                    y.CurrentUserPoints = thePointTotals.Where(u => u.PointsManager.PointsManagerID == y.PointsManagerID).Sum(u => u.CurrentPoints);
                     y.TotalUserPoints = y.CurrentUserPoints;
                     if (y.Name == "Blogs")
                     {
@@ -219,9 +219,9 @@ namespace ClassLibrary1.Model
             DeleteAllOfType<SubsidyAdjustment>(items9);
             IQueryable<RatingGroupPhaseStatus> items10 = DataContext.GetTable<RatingGroupPhaseStatus>().Where(x => x.RatingGroup.TblRow.TblID == tblID);
             DeleteAllOfType<RatingGroupPhaseStatus>(items10);
-            IQueryable<RatingPhase> items11 = DataContext.GetTable<RatingPhase>().Where(x => x.RatingPhaseGroup.RatingGroupPhaseStatus.Any() && x.RatingPhaseGroup.RatingGroupPhaseStatus.FirstOrDefault().RatingGroup.TblRow.TblID == tblID);
+            IQueryable<RatingPhase> items11 = DataContext.GetTable<RatingPhase>().Where(x => x.RatingPhaseGroup.RatingGroupPhaseStatuses.Any() && x.RatingPhaseGroup.RatingGroupPhaseStatuses.FirstOrDefault().RatingGroup.TblRow.TblID == tblID);
             DeleteAllOfType<RatingPhase>(items11);
-            IQueryable<RatingPhaseGroup> items11a = DataContext.GetTable<RatingPhaseGroup>().Where(x => x.RatingGroupPhaseStatus.Any() && x.RatingGroupPhaseStatus.FirstOrDefault().RatingGroup.TblRow.TblID == tblID);
+            IQueryable<RatingPhaseGroup> items11a = DataContext.GetTable<RatingPhaseGroup>().Where(x => x.RatingGroupPhaseStatuses.Any() && x.RatingGroupPhaseStatuses.FirstOrDefault().RatingGroup.TblRow.TblID == tblID);
             DeleteAllOfType<RatingPhaseGroup>(items11a);
             IQueryable<RatingGroupResolution> items12 = DataContext.GetTable<RatingGroupResolution>().Where(x => x.RatingGroup.TblRow.TblID == tblID);
             DeleteAllOfType<RatingGroupResolution>(items12);
@@ -490,7 +490,7 @@ namespace ClassLibrary1.Model
             {
                 try
                 {
-                    var results = DataContext.GetTable<UserRating>().Where(x => true ).Skip(totalRowsComplete).Take(numAtOnce).Select(x => new { UR = x, R = x.Rating, RG = x.UserRatingGroup.RatingGroup, URG = x.UserRatingGroup, RGPS = x.Rating.RatingGroup.RatingGroupPhaseStatus.FirstOrDefault(y => y.StartTime <= x.UserRatingGroup.WhenMade && x.UserRatingGroup.WhenMade <= y.ActualCompleteTime), LTPW = x.UserRatingGroup.RatingGroup.RatingGroupAttribute.LongTermPointsWeight });
+                    var results = DataContext.GetTable<UserRating>().Where(x => true ).Skip(totalRowsComplete).Take(numAtOnce).Select(x => new { UR = x, R = x.Rating, RG = x.UserRatingGroup.RatingGroup, URG = x.UserRatingGroup, RGPS = x.Rating.RatingGroup.RatingGroupPhaseStatuses.FirstOrDefault(y => y.StartTime <= x.UserRatingGroup.WhenMade && x.UserRatingGroup.WhenMade <= y.ActualCompleteTime), LTPW = x.UserRatingGroup.RatingGroup.RatingGroupAttribute.LongTermPointsWeight });
                     foreach (var result in results)
                     {
                         decimal maxLoss, maxGain, profit, potentialPointsLongTermUnweighted;
@@ -731,10 +731,10 @@ namespace ClassLibrary1.Model
                 try
                 {
                     ResetDataContexts();
-                    var ratingGroups = DataContext.GetTable<RatingGroup>().Where(x => x.TblRow.TblID == tblID && x.RatingGroupPhaseStatus.Any() && x.RatingGroupPhaseStatus.OrderByDescending(y => y.EarliestCompleteTime).FirstOrDefault().ActualCompleteTime != currentPhaseCompleteTime /* RatingPhaseGroupID != theRatingPhaseGroup.RatingPhaseGroupID */).Take(20);
+                    var ratingGroups = DataContext.GetTable<RatingGroup>().Where(x => x.TblRow.TblID == tblID && x.RatingGroupPhaseStatuses.Any() && x.RatingGroupPhaseStatuses.OrderByDescending(y => y.EarliestCompleteTime).FirstOrDefault().ActualCompleteTime != currentPhaseCompleteTime /* RatingPhaseGroupID != theRatingPhaseGroup.RatingPhaseGroupID */).Take(20);
                     foreach (var ratingGroup in ratingGroups)
                     {
-                        RatingGroupPhaseStatus theRGPS = ratingGroup.RatingGroupPhaseStatus.OrderByDescending(x => x.EarliestCompleteTime).FirstOrDefault();
+                        RatingGroupPhaseStatus theRGPS = ratingGroup.RatingGroupPhaseStatuses.OrderByDescending(x => x.EarliestCompleteTime).FirstOrDefault();
                         if (theRGPS != null)
                         {
                             theRGPS.RatingPhaseGroupID = theRatingPhaseGroup.RatingPhaseGroupID;
@@ -762,7 +762,7 @@ namespace ClassLibrary1.Model
 
         public void CorrectHighStakesKnown()
         {
-            var incorrect = DataContext.GetTable<RatingGroup>().Where(x => x.HighStakesKnown != x.RatingGroupPhaseStatus.OrderByDescending(y => y.ActualCompleteTime).FirstOrDefault().HighStakesKnown);
+            var incorrect = DataContext.GetTable<RatingGroup>().Where(x => x.HighStakesKnown != x.RatingGroupPhaseStatuses.OrderByDescending(y => y.ActualCompleteTime).FirstOrDefault().HighStakesKnown);
             foreach (var item in incorrect)
                 item.HighStakesKnown = !item.HighStakesKnown;
             DataContext.SubmitChanges();

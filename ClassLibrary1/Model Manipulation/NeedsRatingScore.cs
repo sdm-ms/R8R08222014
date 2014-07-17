@@ -20,7 +20,7 @@ namespace ClassLibrary1.Model
                 HighStakesKnownCount = x.RatingGroups
                                     .Where(y => !excludedRatingGroupTypes.Contains((int)y.TypeOfRatingGroup))
                                     .Where(y => y.TblColumn.Status == (int)StatusOfObject.Active)
-                                    .Count(y => y.HighStakesKnown && y.RatingGroupPhaseStatus.OrderByDescending(z => z.ActualCompleteTime).FirstOrDefault().HighStakesBecomeKnown < now),
+                                    .Count(y => y.HighStakesKnown && y.RatingGroupPhaseStatuses.OrderByDescending(z => z.ActualCompleteTime).FirstOrDefault().HighStakesBecomeKnown < now),
                 NonNullCount = x.RatingGroups
                                     .Where(y => !excludedRatingGroupTypes.Contains((int)y.TypeOfRatingGroup))
                                     .Where(y => y.TblColumn.Status == (int) StatusOfObject.Active)

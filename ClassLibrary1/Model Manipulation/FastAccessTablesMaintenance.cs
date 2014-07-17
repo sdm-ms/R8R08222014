@@ -90,7 +90,7 @@ namespace ClassLibrary1.Model
 
             List<TblRow> tblRowsToDeleteBecauseOfPastFailure = iDataContext
                 .GetTable<TblRow>()
-                .Where(x => x.Tbl == theTbl && x.InitialFieldsDisplaySet == true && x.FastAccessDeleteThenRecopy == true)
+                .Where(x => x.Tbl.TblID == theTbl.TblID && x.InitialFieldsDisplaySet == true && x.FastAccessDeleteThenRecopy == true)
                 .Take(numToTake)
                 .ToList();
             if (tblRowsToDeleteBecauseOfPastFailure.Any())
@@ -105,7 +105,7 @@ namespace ClassLibrary1.Model
 
             List<TblRow> tblRowsToAdd = iDataContext
                 .GetTable<TblRow>()
-                .Where(x => x.Tbl == theTbl && x.InitialFieldsDisplaySet == true && x.FastAccessInitialCopy == true)
+                .Where(x => x.Tbl.TblID == theTbl.TblID && x.InitialFieldsDisplaySet == true && x.FastAccessInitialCopy == true)
                 .Take(numToTake)
                 .ToList();
 

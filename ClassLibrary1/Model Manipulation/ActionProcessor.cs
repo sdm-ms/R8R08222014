@@ -1866,7 +1866,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("You cannot resolve a table cell in Changes.");
             RatingGroupResolution currentRatingGroupResolution = 
                 DataAccess.R8RDB.GetTable<RatingGroupResolution>().Where
-                    (mr => mr.RatingGroup == ratingGroup)
+                    (mr => mr.RatingGroup.RatingGroupID == ratingGroup.RatingGroupID)
                     .OrderByDescending(mr => mr.ExecutionTime)
                     .ThenByDescending(mr => mr.RatingGroupResolutionID)
                     .FirstOrDefault();
@@ -2022,7 +2022,7 @@ namespace ClassLibrary1.Model
                 List<Rating> theRatings = new List<Rating>();
                 if (theTypeForFirstRating != RatingGroupTypes.probabilitySingleOutcome && theTypeForFirstRating != RatingGroupTypes.singleDate && theTypeForFirstRating != RatingGroupTypes.singleNumber)
                 {
-                    theRatings = DataContext.GetTable<Rating>().Where(x => x.TopRatingGroup == theTopRatingGroup).ToList(); // all ratings sharing same top rating group
+                    theRatings = DataContext.GetTable<Rating>().Where(x => x.TopRatingGroup.RatingGroupID == theTopRatingGroup.RatingGroupID).ToList(); // all ratings sharing same top rating group
                 }
                 else
                     theRatings.Add(firstRating);

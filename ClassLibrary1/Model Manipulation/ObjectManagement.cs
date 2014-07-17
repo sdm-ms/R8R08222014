@@ -698,7 +698,7 @@ namespace ClassLibrary1.Model
                         :
                         ((StatusOfObject)x.Status == StatusOfObject.DerivativelyUnavailable && (StatusOfObject)x.TblColumn.Status == StatusOfObject.Active && (StatusOfObject)x.TblRow.Status == StatusOfObject.Active)
                         )
-                        .Select(x => new { Item = x, RatingGroupPhaseStatus = x.RatingGroupPhaseStatus.OrderByDescending(y => y.ActualCompleteTime).FirstOrDefault() });
+                        .Select(x => new { Item = x, RatingGroupPhaseStatus = x.RatingGroupPhaseStatuses.OrderByDescending(y => y.ActualCompleteTime).FirstOrDefault() });
                     if (RatingGroupsToCheck.Any())
                     {
                         var RatingGroupsToFix = RatingGroupsToCheck.Take(maxAtOnce);

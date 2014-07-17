@@ -106,7 +106,7 @@ namespace ClassLibrary1.Model
         {
             if (!dictionariesInitialized)
             {
-                var theFieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.Tbl == TheTbl);
+                var theFieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.Tbl.TblID == TheTbl.TblID);
                 dictionaryIDToName = new Dictionary<Guid, string>();
                 dictionaryNameToID = new Dictionary<string, Guid>();
                 foreach (var fd in theFieldDefinitions)

@@ -10,7 +10,7 @@ namespace ClassLibrary1.EFModel
     {
         public RatingGroup()
         {
-            RatingGroupPhaseStatus = new HashSet<RatingGroupPhaseStatus>();
+            RatingGroupPhaseStatuses = new HashSet<RatingGroupPhaseStatus>();
             RatingGroupResolutions = new HashSet<RatingGroupResolution>();
             RatingGroupStatusRecords = new HashSet<RatingGroupStatusRecord>();
             UserRatingsToAdds = new HashSet<UserRatingsToAdd>();
@@ -43,7 +43,7 @@ namespace ClassLibrary1.EFModel
 
         public virtual RatingGroupAttribute RatingGroupAttribute { get; set; }
 
-        public virtual ICollection<RatingGroupPhaseStatus> RatingGroupPhaseStatus { get; set; }
+        public virtual ICollection<RatingGroupPhaseStatus> RatingGroupPhaseStatuses { get; set; }
 
         public virtual ICollection<RatingGroupResolution> RatingGroupResolutions { get; set; }
 

@@ -158,7 +158,7 @@ namespace ClassLibrary1.Model
             var currentHighStakesCompleteButNotResolved = (from x in DataContext.GetTable<RatingGroup>()
                                             where 
                 x.HighStakesKnown &&
-                x.RatingGroupPhaseStatus.OrderByDescending(y => y.RatingGroupPhaseStatusID).FirstOrDefault().ActualCompleteTime < now &&
+                x.RatingGroupPhaseStatuses.OrderByDescending(y => y.RatingGroupPhaseStatusID).FirstOrDefault().ActualCompleteTime < now &&
                 x.TypeOfRatingGroup != (int)RatingGroupTypes.hierarchyNumbersBelow && x.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityHierarchyBelow && x.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy
                 let resolution = x.RatingGroupResolutions.OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.RatingGroupResolutionID).FirstOrDefault()
                 where resolution == null || resolution.CancelPreviousResolutions

@@ -610,7 +610,7 @@ namespace ClassLibrary1.Model
             if (theField == null)
                 existingList = new List<ChoiceInGroup>();
             else
-                existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField == theField && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceText).ThenBy(x => x.ChoiceInGroupID).ToList();  // OK to order by ID to get consistent ordering for purpose of making comparison
+                existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField.ChoiceFieldID == theField.ChoiceFieldID && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceText).ThenBy(x => x.ChoiceInGroupID).ToList();  // OK to order by ID to get consistent ordering for purpose of making comparison
             DataAccess.R8RDB.TempCache[cacheKey] = existingList;
             return existingList;
         }
@@ -630,7 +630,8 @@ namespace ClassLibrary1.Model
             if (TheChoices.Count == 0)
                 return "";
             theDescription = base.GetDescription();
-            List<string> descriptions = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Where(x => TheChoices.Contains(x)).Select(x => x.ChoiceText).OrderBy(x => x).ToList();
+            List<Guid> theChoicesIDs = TheChoices.Select(x => x.ChoiceInGroupID).ToList();
+            List<string> descriptions = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Where(x => theChoicesIDs.Contains(x.ChoiceInGroupID)).Select(x => x.ChoiceText).OrderBy(x => x).ToList();
             for (int i = 0; i < TheChoices.Count; i++)
             {
                 theDescription += descriptions[i];
@@ -640,7 +641,6 @@ namespace ClassLibrary1.Model
             return theDescription;
         }
     }
-
 
     /// <summary>
     /// Summary description for R8RSupport
@@ -803,7 +803,7 @@ namespace ClassLibrary1.Model
                 bool moreWorkToDo = true;
                 while (moreWorkToDo)
                 {
-                    var theTblRowFieldDisplays = DataContext.GetTable<TblRowFieldDisplay>().Where(e => e.TblRows.FirstOrDefault().Tbl == theTbl && !e.ResetNeeded).Take(5000);
+                    var theTblRowFieldDisplays = DataContext.GetTable<TblRowFieldDisplay>().Where(e => e.TblRows.FirstOrDefault().Tbl.TblID == theTbl.TblID && !e.ResetNeeded).Take(5000);
                     moreWorkToDo = theTblRowFieldDisplays.Any();
                     if (moreWorkToDo)
                     {

@@ -140,7 +140,7 @@ namespace TestProject1
             (theUserRating.PointsEarnedShortTerm == 0).Should().BeTrue();
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
             DateTime timeBeforePending = TestableDateTime.Now;
-            var theRatingGroupPhaseStatusInitial = theUserRating.Rating.RatingGroup.RatingGroupPhaseStatus.OrderByDescending(x => x.ActualCompleteTime).First();
+            var theRatingGroupPhaseStatusInitial = theUserRating.Rating.RatingGroup.RatingGroupPhaseStatuses.OrderByDescending(x => x.ActualCompleteTime).First();
 
             /* before short term resolution */
             TimeSpan timeUntilPending = (DateTime) theUserRating.WhenPointsBecomePending - TestableDateTime.Now + TimeSpan.FromMinutes(1);
@@ -810,7 +810,7 @@ namespace TestProject1
                     theUserRating.ShortTermResolutionReflected, //18
                     theUserRating.LongTermResolutionReflected //19
                     ));
-                var theMPS = theUserRating.UserRatingGroup.RatingGroup.RatingGroupPhaseStatus.Single(x => x.StartTime <= theUserRating.UserRatingGroup.WhenMade && (x.ActualCompleteTime == null || x.ActualCompleteTime >= theUserRating.UserRatingGroup.WhenMade));
+                var theMPS = theUserRating.UserRatingGroup.RatingGroup.RatingGroupPhaseStatuses.Single(x => x.StartTime <= theUserRating.UserRatingGroup.WhenMade && (x.ActualCompleteTime == null || x.ActualCompleteTime >= theUserRating.UserRatingGroup.WhenMade));
                 Debug.Write(String.Format(" ROUND={0} START_TIME={1} END_TIME={2} \n", theMPS.RoundNum, theMPS.StartTime.ToLongTimeString(), theMPS.ActualCompleteTime.ToLongTimeString()));
                 Debug.WriteLine("");
             }

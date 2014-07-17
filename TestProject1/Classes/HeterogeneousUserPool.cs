@@ -92,7 +92,7 @@ namespace TestProject1
             int userRatingsPerRating, bool subversiveUserIgnoresPreviousRatings)
         {
             List<Rating> ratings = TestHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(tbl)).ToList();
+                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == tbl.TblID).ToList();
             PerformRatings(ratings, correctRatingValue, subversiveUserRatingValue, userRatingsPerRating, subversiveUserIgnoresPreviousRatings);
         }
 

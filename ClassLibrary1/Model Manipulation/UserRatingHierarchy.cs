@@ -325,7 +325,10 @@ namespace ClassLibrary1.Model
             if (UserRatingHierarchyEntries.Count == 1)
                 loadedData = new List<RatingAndGroup> { new RatingAndGroup { Rating = theUserRatings.RatingGroup.Ratings.First(), RatingGroup = theUserRatings.RatingGroup } };
             else
-                loadedData = theDataContext.GetTable<Rating>().Where(x => UserRatingHierarchyEntries.Select(y => y.RatingId).Contains(x.RatingID)).Select(x => new RatingAndGroup { Rating = x, RatingGroup = x.RatingGroup }).ToList();
+            {
+                List<Guid?> userRatingHierarchyEntriesRatingIDs = UserRatingHierarchyEntries.Select(x => x.RatingId).ToList();
+                loadedData = theDataContext.GetTable<Rating>().Where(x => userRatingHierarchyEntriesRatingIDs.Contains(x.RatingID)).Select(x => new RatingAndGroup { Rating = x, RatingGroup = x.RatingGroup }).ToList();
+            }
             theRatings = UserRatingHierarchyEntries.Select(x => loadedData.First(y => y.Rating.RatingID == x.RatingId).Rating).ToList();
             theRatingGroups = UserRatingHierarchyEntries.Select(x => loadedData.First(y => y.RatingGroup.RatingGroupID == x.RatingGroupId).RatingGroup).Distinct().ToList();
             topRatingGroup = theRatingGroups.Single(x => x.RatingGroupID == UserRatingHierarchyEntries.First(y => y.HierarchyLevel == 1).RatingGroupId);
