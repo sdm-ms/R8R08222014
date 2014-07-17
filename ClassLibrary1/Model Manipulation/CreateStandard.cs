@@ -371,7 +371,7 @@ namespace ClassLibrary1.Model
             HierarchyItem theHierarchyItem = Action.HierarchyItemCreate(higherItem, associatedTbl, includeInMenu, name, superUser, null);
             if (associatedTblID != null)
             {
-                Tbl rewardTable = Action.DataContext.NewOrFirst<Tbl>(x => x.PointsManager == theHierarchyItem.Tbl.PointsManager && x.Name.StartsWith("Changes"));
+                Tbl rewardTable = Action.DataContext.NewOrFirst<Tbl>(x => x.PointsManager.PointsManagerID == theHierarchyItem.Tbl.PointsManager.PointsManagerID && x.Name.StartsWith("Changes"));
                 if (rewardTable != null)
                     Action.HierarchyItemCreate(theHierarchyItem, rewardTable, false, "Changes", superUser, null);
             }

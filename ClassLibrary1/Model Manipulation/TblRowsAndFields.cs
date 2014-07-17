@@ -757,7 +757,7 @@ namespace ClassLibrary1.Model
             if (tblRow == null || FieldDefinitionID == null)
                 return;
 
-            theField = DataContext.NewOrSingleOrDefault<Field>(f => f.TblRow == tblRow && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
+            theField = DataContext.NewOrSingleOrDefault<Field>(f => f.TblRow.TblRowID == tblRow.TblRowID && f.FieldDefinitionID == FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
 
 
             if (theField != null)
@@ -767,23 +767,23 @@ namespace ClassLibrary1.Model
 
                 if (theFieldType == FieldTypes.AddressField)
                 {
-                    theSubfield = DataContext.NewOrSingleOrDefault<AddressField>(sf => sf.Field == theFieldCopy && (sf.Status == (int)StatusOfObject.Active));
+                    theSubfield = DataContext.NewOrSingleOrDefault<AddressField>(sf => sf.Field.FieldID == theFieldCopy.FieldID && (sf.Status == (int)StatusOfObject.Active));
                 }
                 else if (theFieldType == FieldTypes.ChoiceField)
                 {
-                     theSubfield = DataContext.NewOrSingleOrDefault<ChoiceField>(sf => sf.Field == theFieldCopy && (sf.Status == (int)StatusOfObject.Active));
+                    theSubfield = DataContext.NewOrSingleOrDefault<ChoiceField>(sf => sf.Field.FieldID == theFieldCopy.FieldID && (sf.Status == (int)StatusOfObject.Active));
                 }
                 else if (theFieldType == FieldTypes.DateTimeField)
                 {
-                    theSubfield = DataContext.NewOrSingleOrDefault<DateTimeField>(sf => sf.Field == theFieldCopy && (sf.Status == (int)StatusOfObject.Active));
+                    theSubfield = DataContext.NewOrSingleOrDefault<DateTimeField>(sf => sf.Field.FieldID == theFieldCopy.FieldID && (sf.Status == (int)StatusOfObject.Active));
                 }
                 else if (theFieldType == FieldTypes.NumberField)
                 {
-                     theSubfield = DataContext.NewOrSingleOrDefault<NumberField>(sf => sf.Field == theFieldCopy && (sf.Status == (int)StatusOfObject.Active));
+                    theSubfield = DataContext.NewOrSingleOrDefault<NumberField>(sf => sf.Field.FieldID == theFieldCopy.FieldID && (sf.Status == (int)StatusOfObject.Active));
                 }
                 else if (theFieldType == FieldTypes.TextField)
                 {
-                     theSubfield = DataContext.NewOrSingleOrDefault<TextField>(sf => sf.Field == theFieldCopy && (sf.Status == (int)StatusOfObject.Active));
+                    theSubfield = DataContext.NewOrSingleOrDefault<TextField>(sf => sf.Field.FieldID == theFieldCopy.FieldID && (sf.Status == (int)StatusOfObject.Active));
                 }
                 else
                     throw new Exception("Unknown field type.");

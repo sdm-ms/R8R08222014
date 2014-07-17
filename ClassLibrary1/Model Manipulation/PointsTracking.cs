@@ -65,7 +65,7 @@ namespace ClassLibrary1.Model
             }
 
             if (theTotals == null)
-                theTotals = DataContext.NewOrSingleOrDefault<PointsTotal>(pt => pt.User == theUser && pt.PointsManagerID == thePointsManager.PointsManagerID);
+                theTotals = DataContext.NewOrSingleOrDefault<PointsTotal>(pt => pt.User.UserID == theUser.UserID && pt.PointsManagerID == thePointsManager.PointsManagerID);
             if (theTotals == null)
             {
                 theTotals = AddPointsTotal(theUser, thePointsManager);

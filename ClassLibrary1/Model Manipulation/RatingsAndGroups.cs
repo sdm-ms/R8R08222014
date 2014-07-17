@@ -102,7 +102,7 @@ namespace ClassLibrary1.Model
         /// <returns>The rating above the group, or null</returns>
         public Rating GetRatingGroupOwner(RatingGroup ratingGroup)
         {
-            Rating theRating = DataContext.NewOrSingleOrDefault<Rating>(m => m.OwnedRatingGroup == ratingGroup);
+            Rating theRating = DataContext.NewOrSingleOrDefault<Rating>(m => m.OwnedRatingGroup.RatingGroupID == ratingGroup.RatingGroupID);
             return theRating;
         }
 
@@ -115,14 +115,14 @@ namespace ClassLibrary1.Model
         {
             RatingGroup theCurrentRatingGroup = prediction.Rating.RatingGroup;
             UserRatingGroup theUserRatingGroup = prediction.UserRatingGroup;
-            Rating theRatingOwner = ObjDataAccess.R8RDB.NewOrSingle<Rating>(m => m.OwnedRatingGroup == theCurrentRatingGroup);
+            Rating theRatingOwner = ObjDataAccess.R8RDB.NewOrSingle<Rating>(m => m.OwnedRatingGroup.RatingGroupID == theCurrentRatingGroup.RatingGroupID);
             if (theRatingOwner == null)
                 return null;
             else
             {
                 UserRating higherUserRating = DataContext.NewOrSingleOrDefault<UserRating>(
-                                                p => p.UserRatingGroup == theUserRatingGroup
-                                                && p.Rating == theRatingOwner);
+                                                p => p.UserRatingGroup.UserRatingGroupID == theUserRatingGroup.UserRatingGroupID
+                                                && p.Rating.RatingID == theRatingOwner.RatingID);
                 if (higherUserRating == null)
                     return null;
                 else
@@ -148,7 +148,7 @@ namespace ClassLibrary1.Model
         /// <returns>The topmost rating group</returns>
         public RatingGroup GetTopRatingGroupForTblRowAndColumn(TblRow tblRow, TblColumn TblColumn)
         {
-            var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow == tblRow && m.RatingGroup.TblColumn == TblColumn);
+            var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.TblRow.TblRowID == tblRow.TblRowID && m.RatingGroup.TblColumn.TblColumnID == TblColumn.TblColumnID);
             if (firstRating != null)
                 return firstRating.TopRatingGroup;
 
@@ -169,11 +169,11 @@ namespace ClassLibrary1.Model
         /// <returns>The topmost rating group</returns>
         public RatingGroup GetTopRatingGroup(RatingGroup ratingGroup)
         {
-            var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup == ratingGroup);
+            var firstRating = DataContext.NewOrFirstOrDefault<Rating>(m => m.RatingGroup.RatingGroupID == ratingGroup.RatingGroupID);
             if (firstRating != null)
                 return firstRating.TopRatingGroup;
 
-            Rating theOwnerRating =  DataContext.NewOrSingleOrDefault<Rating>(m => m.OwnedRatingGroup == ratingGroup);
+            Rating theOwnerRating =  DataContext.NewOrSingleOrDefault<Rating>(m => m.OwnedRatingGroup.RatingGroupID == ratingGroup.RatingGroupID);
             if (theOwnerRating == null)
                 return ratingGroup;
             else
@@ -473,8 +473,8 @@ namespace ClassLibrary1.Model
             //ProfileSimple.Start("AdvanceRatingGroupToNextRatingPhase");
             //ProfileSimple.Start("AllTopmostRatingGroups");
             var allTopmostRatingGroups = DataContext.WhereFromNewOrDatabase<RatingGroup>(rg => 
-                rg.TblRow == aTopmostRatingGroup.TblRow 
-                && rg.RatingGroupAttribute.RatingCharacteristic.RatingPhaseGroup == aTopmostRatingGroup.RatingGroupAttribute.RatingCharacteristic.RatingPhaseGroup 
+                rg.TblRow.TblRowID == aTopmostRatingGroup.TblRow.TblRowID
+                && rg.RatingGroupAttribute.RatingCharacteristic.RatingPhaseGroup.RatingPhaseGroupID == aTopmostRatingGroup.RatingGroupAttribute.RatingCharacteristic.RatingPhaseGroup.RatingPhaseGroupID 
                 && rg.TypeOfRatingGroup != (int)RatingGroupTypes.hierarchyNumbersBelow && rg.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityHierarchyBelow && rg.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy).ToList();
             //ProfileSimple.End("AllTopmostRatingGroups");
             RatingGroupPhaseStatus newRatingGroupPhaseStatus = null;
@@ -483,7 +483,7 @@ namespace ClassLibrary1.Model
             {
                 //ProfileSimple.Start("topmostRatingGroup");
                 //ProfileSimple.Start("LoadTheRatings");
-                var theRatings = DataContext.WhereFromNewOrDatabase<Rating>(m => m.TopRatingGroup == topmostRatingGroup).ToList();
+                var theRatings = DataContext.WhereFromNewOrDatabase<Rating>(m => m.TopRatingGroup.RatingGroupID == topmostRatingGroup.RatingGroupID).ToList();
                 //ProfileSimple.End("LoadTheRatings");
                 //ProfileSimple.Start("GetRatingGroupPhaseStatus");
                 RatingGroupPhaseStatus theRatingGroupPhaseStatus = GetRatingGroupPhaseStatus(topmostRatingGroup); 
@@ -575,7 +575,7 @@ namespace ClassLibrary1.Model
                 newPhase = DataContext.TempCacheGet(key) as RatingPhase;
                 if (newPhase == null)
                 {
-                    newPhase = DataContext.NewOrSingle<RatingPhase>(p => p.RatingPhaseGroup == thePhase.RatingPhaseGroup
+                    newPhase = DataContext.NewOrSingle<RatingPhase>(p => p.RatingPhaseGroup.RatingPhaseGroupID == thePhase.RatingPhaseGroup.RatingPhaseGroupID
                         && p.NumberInGroup == 1
                         && p.Status == (Byte)StatusOfObject.Active);
                     DataContext.TempCacheAdd(key, newPhase);
@@ -606,7 +606,7 @@ namespace ClassLibrary1.Model
                     if (newPhase == null)
                     {
                         newPhase = DataContext.NewOrSingle<RatingPhase>(
-                            p => p.RatingPhaseGroup == thePhase.RatingPhaseGroup
+                            p => p.RatingPhaseGroup.RatingPhaseGroupID == thePhase.RatingPhaseGroup.RatingPhaseGroupID
                             && p.NumberInGroup == thePhase.NumberInGroup
                             && p.Status == (Byte)StatusOfObject.Active);
                         DataContext.TempCacheAdd(cacheKey, newPhase);
@@ -615,7 +615,7 @@ namespace ClassLibrary1.Model
                 else
                 {
                     newPhase = DataContext.NewOrSingle<RatingPhase>(
-                        p => p.RatingPhaseGroup == thePhase.RatingPhaseGroup
+                        p => p.RatingPhaseGroup.RatingPhaseGroupID == thePhase.RatingPhaseGroup.RatingPhaseGroupID
                         && p.NumberInGroup == thePhase.NumberInGroup + 1
                         && p.Status == (Byte)StatusOfObject.Active);
                 }

@@ -1069,8 +1069,8 @@ namespace ClassLibrary1.Model
                 IQueryable<RatingGroup> existingRatingGroups = null;
                 if (!tblRow.NotYetAddedToDatabase)
                 {
-                    existingRatingGroups = DataContext.WhereFromNewOrDatabase<RatingGroup>(mg => mg.TblRow == tblRow
-                                                   && mg.TblColumn == TblColumn
+                    existingRatingGroups = DataContext.WhereFromNewOrDatabase<RatingGroup>(mg => mg.TblRow.TblRowID == tblRow.TblRowID
+                                                   && mg.TblColumn.TblColumnID == TblColumn.TblColumnID
                                                    && mg.Status == (Byte)StatusOfObject.Active)
                                                    ;
                     if (existingRatingGroups.Count() >= 1)
@@ -1519,7 +1519,7 @@ namespace ClassLibrary1.Model
         /// <returns>The id of the added object</returns>
         public PointsTotal AddPointsTotal(User user, PointsManager pointsManager)
         {
-            var existingTotal = DataContext.NewOrFirstOrDefault<PointsTotal>(x => x.User == user && x.PointsManager == pointsManager); // could have just been added
+            var existingTotal = DataContext.NewOrFirstOrDefault<PointsTotal>(x => x.User.UserID == user.UserID && x.PointsManager.PointsManagerID == pointsManager.PointsManagerID); // could have just been added
             if (existingTotal != null)
                 return existingTotal;
             PointsTotal theTotal = new PointsTotal
