@@ -11,7 +11,7 @@ namespace TestProject1
 {
     class HeterogeneousUserPool
     {
-        public TestHelper TestHelper { get; private set; }
+        public TestHelper theTestHelper { get; private set; }
         /// <summary>
         /// The number of HeterogeneousUsers in this pool
         /// </summary>
@@ -56,19 +56,19 @@ namespace TestProject1
         public HeterogeneousUserPool(TestHelper testHelper, double quality, int userRatingEstimateWeight,
             float subversivePercentage, Action afterEachRatingAction = null, Action afterEachUserRatingAction = null)
         {
-            TestHelper = testHelper;
+            theTestHelper = testHelper;
             PercentageSubversive = subversivePercentage;
             AfterEachRatingAction = afterEachRatingAction;
             AfterEachUserRatingAction = afterEachUserRatingAction;
             
             var heterogeneousUsers = new List<HeterogeneousUser>();
-            int subversiveUserCount = (int)Math.Ceiling(TestHelper.UserIds.Count() * subversivePercentage);
-            int dominantUserCount = TestHelper.UserIds.Count() - subversiveUserCount;
-            foreach (Guid userId in TestHelper.UserIds)
+            int subversiveUserCount = (int)Math.Ceiling(theTestHelper.UserIds.Count() * subversivePercentage);
+            int dominantUserCount = theTestHelper.UserIds.Count() - subversiveUserCount;
+            foreach (Guid userId in theTestHelper.UserIds)
             {
                 HeterogeneousUserType type = heterogeneousUsers.Count < dominantUserCount ?
                     HeterogeneousUserType.Dominant : HeterogeneousUserType.Subversive;
-                var heterogeneousUser = new HeterogeneousUser(TestHelper, userId, type, quality, 
+                var heterogeneousUser = new HeterogeneousUser(theTestHelper, userId, type, quality, 
                     userRatingEstimateWeight);
                 heterogeneousUsers.Add(heterogeneousUser);
             }
@@ -91,7 +91,7 @@ namespace TestProject1
         public void PerformRatings(decimal correctRatingValue, decimal subversiveUserRatingValue, Tbl tbl,
             int userRatingsPerRating, bool subversiveUserIgnoresPreviousRatings)
         {
-            List<Rating> ratings = TestHelper.ActionProcessor.DataContext.GetTable<Rating>()
+            List<Rating> ratings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
                 .Where(r => r.RatingGroup.TblRow.Tbl.TblID == tbl.TblID).ToList();
             PerformRatings(ratings, correctRatingValue, subversiveUserRatingValue, userRatingsPerRating, subversiveUserIgnoresPreviousRatings);
         }

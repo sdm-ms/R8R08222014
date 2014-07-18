@@ -69,7 +69,7 @@ namespace TestProject1
 
             // before switching to NUnit, this test was failing, with dramatic increases in memory, even though we were not getting the same result when running the same test through a console application. It's not clear why using MSTest should make a difference, particularly since we are using the same vstest execution engine with NUnit, but it appears to make a difference.
 
-            TestHelper _testHelper;
+            TestHelper theTestHelper;
             R8RDataManipulation _dataManipulation;
 
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
@@ -78,10 +78,10 @@ namespace TestProject1
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             CacheManagement.DisableCaching = true; 
 
-            _testHelper = new TestHelper(true);
+            theTestHelper = new TestHelper(true);
             _dataManipulation = new R8RDataManipulation();
-            _testHelper.CreateSimpleTestTable(true);
-            _testHelper.CreateUsers(20); 
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(20); 
 
             // When we had a memory leak:
             // Creation of extra users is SUFFICIENT to create memory leaks. 
@@ -95,7 +95,7 @@ namespace TestProject1
             int initialRepetitions = 20;
 
             for (int r = 0; r < initialRepetitions; r++)
-                TestMemoryLeaks_Helper(_testHelper, _dataManipulation, r == initialRepetitions - 1 || r % 5 == 0);
+                TestMemoryLeaks_Helper(theTestHelper, _dataManipulation, r == initialRepetitions - 1 || r % 5 == 0);
             int repetitions = 100;
             double avgMemory = 0;
             GC.Collect();
@@ -104,7 +104,7 @@ namespace TestProject1
             double timesMemoryWentDown = 0.0;
             for (int r = 0; r < repetitions; r++)
             {
-                long newMemory = TestMemoryLeaks_Helper(_testHelper, _dataManipulation, r == repetitions - 1 || r % 5 == 0);
+                long newMemory = TestMemoryLeaks_Helper(theTestHelper, _dataManipulation, r == repetitions - 1 || r % 5 == 0);
                 if (newMemory > lastMemory)
                     timesMemoryWentUp += 1.0;
                 else
@@ -115,17 +115,17 @@ namespace TestProject1
             avgMemory.Should().BeLessThan(10000.0); // it's hard to settle on a value here, since memory goes up and down even when using GC.Collect. With many repetitions, we can use a lower number.
         }
 
-        private static long TestMemoryLeaks_Helper(TestHelper _testHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
+        private static long TestMemoryLeaks_Helper(TestHelper theTestHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
         {
             UserEditResponse theResponse = new UserEditResponse();
-            Guid ratingID = _testHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).First().RatingID;
-            _testHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, _testHelper.UserIds[5], ref theResponse);
+            Guid ratingID = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).First().RatingID;
+            theTestHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, theTestHelper.UserIds[5], ref theResponse);
             CacheManagement.ClearCache();
-            _testHelper.FinishUserRatingAdd(_dataManipulation);
+            theTestHelper.FinishUserRatingAdd(_dataManipulation);
             if (waitIdleTasks)
-                _testHelper.WaitIdleTasks();
-            _testHelper.ActionProcessor.DataContext.SubmitChanges();
-            _testHelper.ActionProcessor.ResetDataContexts();
+                theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.SubmitChanges();
+            theTestHelper.ActionProcessor.ResetDataContexts();
 
             GC.Collect();
             WeakReferenceTracker.CheckUncollected();

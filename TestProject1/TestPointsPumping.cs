@@ -29,7 +29,7 @@ namespace TestProject1
         const float Precision = 0.0001f;
 
         R8RDataManipulation _dataManipulation;
-        TestHelper TestHelper;
+        TestHelper theTestHelper;
         Random _random;
 
         public void Initialize()
@@ -38,7 +38,7 @@ namespace TestProject1
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds());
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
-            TestHelper = new TestHelper();
+            theTestHelper = new TestHelper();
             _dataManipulation = new R8RDataManipulation();
 
             _random = new Random();
@@ -49,31 +49,31 @@ namespace TestProject1
         public void SimplePointsPumpingInitiativeCounteracted()
         {
             Initialize();
-            TestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateSimpleTestTable(true);
             int numFakeUsers = 100;
-            TestHelper.CreateUsers(100 + 1);
+            theTestHelper.CreateUsers(100 + 1);
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
             UserEditResponse theResponse = new UserEditResponse();
             int fakeUserNumber = 1;
 
-            Guid user0 = TestHelper.UserIds[0];
+            Guid user0 = theTestHelper.UserIds[0];
             for (int i = 1; i <= numFakeUsers * 2; i++)
             {
                 if (i % 2 == 1)
-                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 4.0M, user0, ref theResponse);
+                    theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, 4.0M, user0, ref theResponse);
                 else
                 {
-                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 5.0M, TestHelper.UserIds[fakeUserNumber], ref theResponse);
+                    theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, 5.0M, theTestHelper.UserIds[fakeUserNumber], ref theResponse);
                     fakeUserNumber++;
                 }
-                TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation); // must do this, otherwise next user rating will get an adjustment factor of 0.
+                theTestHelper.FinishUserRatingAdd(theTestHelper.ActionProcessor.DataManipulation); // must do this, otherwise next user rating will get an adjustment factor of 0.
                 if (i % 10 == 0)
-                    TestHelper.WaitIdleTasks();
+                    theTestHelper.WaitIdleTasks();
             }
-            TestHelper.WaitIdleTasks();
+            theTestHelper.WaitIdleTasks();
 
-            decimal? ppp = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == user0).FirstOrDefault().PointsPumpingProportion;
+            decimal? ppp = theTestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == user0).FirstOrDefault().PointsPumpingProportion;
             ppp.Should().Equals(1.0M);
         }
 

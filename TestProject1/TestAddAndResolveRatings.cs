@@ -33,7 +33,7 @@ namespace TestProject1
     [TestClass]
     public class TestAddAndResolveRatings
     {
-        public TestHelper TestHelper;
+        public TestHelper theTestHelper;
         public R8RDataManipulation DataAccess;
 
         [TestInitialize()]
@@ -42,7 +42,7 @@ namespace TestProject1
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
             TestableDateTime.UseFakeTimes();
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
-            TestHelper = new TestHelper();
+            theTestHelper = new TestHelper();
             DataAccess = new R8RDataManipulation();
         }
 
@@ -50,33 +50,33 @@ namespace TestProject1
         [Category("IntegrationTest")]
         public void RatingGroupIDsWork()
         {
-            TestHelper.CreateSimpleTestTable(true);
-            TestHelper.Rating.RatingGroupID.Should().NotBe(new Guid());
-            TestHelper.RatingGroup.RatingGroupID.Should().NotBe(new Guid());
-            TestHelper.Rating.TopmostRatingGroupID.Should().Be(TestHelper.RatingGroup.RatingGroupID);
-            DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == TestHelper.RatingGroup.RatingGroupID).RatingGroupID.Should().Equals(TestHelper.RatingGroup.RatingGroupID);
-            DataAccess.DataContext.GetTable<Rating>().Single(x => x.TopmostRatingGroupID == TestHelper.RatingGroup.RatingGroupID).RatingGroup.RatingGroupID.Should().Equals(TestHelper.RatingGroup.RatingGroupID);
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.Rating.RatingGroupID.Should().NotBe(new Guid());
+            theTestHelper.RatingGroup.RatingGroupID.Should().NotBe(new Guid());
+            theTestHelper.Rating.TopmostRatingGroupID.Should().Be(theTestHelper.RatingGroup.RatingGroupID);
+            DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theTestHelper.RatingGroup.RatingGroupID).RatingGroupID.Should().Equals(theTestHelper.RatingGroup.RatingGroupID);
+            DataAccess.DataContext.GetTable<Rating>().Single(x => x.TopmostRatingGroupID == theTestHelper.RatingGroup.RatingGroupID).RatingGroup.RatingGroupID.Should().Equals(theTestHelper.RatingGroup.RatingGroupID);
         }
         
         public void TestCreateTableAndAddUserRatingFromFirstUser(bool isEvent)
         {
             if (isEvent)
-                TestHelper.CreateSimpleEventTestTable();
+                theTestHelper.CreateSimpleEventTestTable();
             else
-                TestHelper.CreateSimpleTestTable(true);
-            TestHelper.CreateUsers(7);
+                theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(7);
             UserEditResponse theResponse = new UserEditResponse();
-            Guid user0 = TestHelper.UserIds[0]; 
-            Guid user1 = TestHelper.UserIds[1];
-            Guid user2 = TestHelper.UserIds[2];
-            Guid user3 = TestHelper.UserIds[3];
-            Guid user4 = TestHelper.UserIds[4];
-            Guid user5 = TestHelper.UserIds[5];
-            Guid user6 = TestHelper.UserIds[6];
+            Guid user0 = theTestHelper.UserIds[0]; 
+            Guid user1 = theTestHelper.UserIds[1];
+            Guid user2 = theTestHelper.UserIds[2];
+            Guid user3 = theTestHelper.UserIds[3];
+            Guid user4 = theTestHelper.UserIds[4];
+            Guid user5 = theTestHelper.UserIds[5];
+            Guid user6 = theTestHelper.UserIds[6];
 
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, isEvent ? 70M : 7M, user0, ref theResponse);
-            TestHelper.WaitIdleTasks();
-            Rating theRating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingID == TestHelper.Rating.RatingID);
+            theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, isEvent ? 70M : 7M, user0, ref theResponse);
+            theTestHelper.WaitIdleTasks();
+            Rating theRating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingID == theTestHelper.Rating.RatingID);
             theRating.CurrentValue.Should().Be(isEvent ? 70M : 7M);
         }
 
@@ -84,27 +84,27 @@ namespace TestProject1
         [Category("Long")]
         public void TestCreateTableAndAddLotsOfUserRatingFromFirstUser()
         {
-            TestHelper.CreateSimpleEventTestTable();
-            TestHelper.CreateUsers(7);            
-            Guid user1 = TestHelper.UserIds[1];
-            Guid user2 = TestHelper.UserIds[2];
-            Guid user3 = TestHelper.UserIds[3];
-            Guid user4 = TestHelper.UserIds[4];
-            Guid user5 = TestHelper.UserIds[5];
-            Guid user6 = TestHelper.UserIds[6];
+            theTestHelper.CreateSimpleEventTestTable();
+            theTestHelper.CreateUsers(7);            
+            Guid user1 = theTestHelper.UserIds[1];
+            Guid user2 = theTestHelper.UserIds[2];
+            Guid user3 = theTestHelper.UserIds[3];
+            Guid user4 = theTestHelper.UserIds[4];
+            Guid user5 = theTestHelper.UserIds[5];
+            Guid user6 = theTestHelper.UserIds[6];
 
             UserEditResponse theResponse = new UserEditResponse();
             int numToAdd = 1100;
             decimal random = 0;
-            Guid user0 = TestHelper.UserIds[0];
+            Guid user0 = theTestHelper.UserIds[0];
             for (int i = 1; i <= numToAdd; i++)
             {
                 random = (decimal)Math.Round(RandomGenerator.GetRandom(), 3) * 100;
-                TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, random, user0, ref theResponse);
+                theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, random, user0, ref theResponse);
                 if (i % 50 == 0)
-                    TestHelper.FinishUserRatingAdd(DataAccess);
+                    theTestHelper.FinishUserRatingAdd(DataAccess);
             }
-            TestHelper.WaitIdleTasks();
+            theTestHelper.WaitIdleTasks();
             (DataAccess.DataContext.GetTable<UserRating>().Count() >= numToAdd).Should().BeTrue();
         }
 
@@ -116,10 +116,10 @@ namespace TestProject1
                 random = 0.701M; // so it's not exactly same as first rating -- needed for our assertions to be correct
             UserEditResponse theResponse = new UserEditResponse();
             int userNumber = RandomGenerator.GetRandom(1, 6); // exclude first user who we are testing things about
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, isEvent ? random * 100 : random * 10, TestHelper.UserIds[userNumber], ref theResponse);
+            theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, isEvent ? random * 100 : random * 10, theTestHelper.UserIds[userNumber], ref theResponse);
             Trace.TraceInformation("Trying to add another HERE after UserRatingAdd " + random + " response of " + theResponse.result.success + " " + theResponse.currentValues.FirstOrDefault().theUserRating);
-            TestHelper.WaitIdleTasks();
-            Rating theRating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingID == TestHelper.Rating.RatingID);
+            theTestHelper.WaitIdleTasks();
+            Rating theRating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingID == theTestHelper.Rating.RatingID);
             theRating.CurrentValue.Should().Be(isEvent ? random * 100 : random * 10);
         }
 
@@ -140,11 +140,11 @@ namespace TestProject1
             /* before pending */
             TestCreateTableAndAddUserRatingFromFirstUser(true);
             UserRating theUserRating = DataAccess.DataContext.GetTable<UserRating>().Single();
-            Guid user0 = TestHelper.UserIds[0];
+            Guid user0 = theTestHelper.UserIds[0];
             User theUser = DataAccess.DataContext.GetTable<User>().Single(u => u.UserID == user0);
             PointsTotal thePointsTotal = theUser.PointsTotals.Single();
             RatingGroup theRatingGroup = theUserRating.Rating.RatingGroup;
-            TestHelper.WaitIdleTasks(); 
+            theTestHelper.WaitIdleTasks(); 
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().Single(); // reload
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
@@ -165,7 +165,7 @@ namespace TestProject1
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
             else
-                TestHelper.WaitIdleTasks();
+                theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             theUserRating.PointsHaveBecomePending.Should().BeTrue();
             (theUserRating.NotYetPendingPointsLongTerm == 0).Should().BeTrue();
@@ -184,7 +184,7 @@ namespace TestProject1
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
             else
-                TestHelper.WaitIdleTasks();
+                theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             if (addAdditionalUserRatingsAfterFirst)
@@ -210,12 +210,12 @@ namespace TestProject1
             bool cancelPreviousResolutions = false;
             bool resolveByUnwinding = false;
             DateTime effectiveTimeOfInitialResolution = TestableDateTime.Now;
-            decimal valueAtTimeOfInitialResolution = (decimal)TestHelper.Rating.CurrentValue;
+            decimal valueAtTimeOfInitialResolution = (decimal)theTestHelper.Rating.CurrentValue;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
-            TestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
+            theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             theUserRating.PointsEarnedShortTerm.Should().Be(shortTermPointsEarnedInitially);
             theUserRating.ShortTermResolutionReflected.Should().BeTrue();
             theUserRating.LongTermResolutionReflected.Should().BeTrue();
@@ -232,9 +232,9 @@ namespace TestProject1
             TestableDateTime.SleepOrSkipTime(5000);
             cancelPreviousResolutions = true;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
@@ -250,11 +250,11 @@ namespace TestProject1
             /* recreating initial long term resolution */
             cancelPreviousResolutions = false;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
-            TestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
+            theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
-            TestHelper.Rating.CurrentValue.Should().Be(valueAtTimeOfInitialResolution);
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.Rating.CurrentValue.Should().Be(valueAtTimeOfInitialResolution);
             theUserRating.PointsEarnedShortTerm.Should().Be(shortTermPointsEarnedInitially);
             if (!addAdditionalUserRatingsAfterFirst)
                 theUserRating.PointsEarnedLongTerm.Should().Be(shortTermPointsEarnedInitially, "because short and long term are of equal weight");
@@ -268,18 +268,18 @@ namespace TestProject1
             /* now cancel the resolution and re-resolve it as of an earlier time before short term resolution */
             cancelPreviousResolutions = true;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             cancelPreviousResolutions = false;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeWhenPendingButNotResolvedShortTerm, user0, null);
-            TestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeWhenPendingButNotResolvedShortTerm, user0, null);
+            theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             theUserRating.ShortTermResolutionReflected.Should().BeFalse("because the final resolution is now BEFORE the short-term resolution");
             theUserRating.ResolvedShortTerm.Should().BeTrue("because the short term is still resolved when the long term is");
             theUserRating.ShortTermResolutionValue.Should().Be(theUserRating.LongTermResolutionValue);
@@ -290,9 +290,9 @@ namespace TestProject1
             TestableDateTime.SleepOrSkipTime(5000);
             cancelPreviousResolutions = true;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
@@ -305,10 +305,10 @@ namespace TestProject1
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             cancelPreviousResolutions = false;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
-            TestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
+            theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             theUserRating.PointsEarnedShortTerm.Should().Be(shortTermPointsEarnedInitially);
             if (!addAdditionalUserRatingsAfterFirst)
                 theUserRating.PointsEarnedLongTerm.Should().Be(shortTermPointsEarnedInitially, "because short and long term are of equal weight");
@@ -323,9 +323,9 @@ namespace TestProject1
             TestableDateTime.SleepOrSkipTime(5000);
             cancelPreviousResolutions = true;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
@@ -338,8 +338,8 @@ namespace TestProject1
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             cancelPreviousResolutions = false;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeBeforePending, user0, null);
-            TestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeBeforePending, user0, null);
+            theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             theUserRating.PointsHaveBecomePending.Should().BeTrue("because we're now after the points have become pending even though resolution was earlier");
             (theUserRating.NotYetPendingPointsLongTerm == 0).Should().BeTrue();
@@ -353,10 +353,10 @@ namespace TestProject1
             TestableDateTime.SleepOrSkipTime(5000);
             cancelPreviousResolutions = true;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
-            TestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution /* shouldn't matter */, user0, null);
+            theTestHelper.WaitIdleTasks();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             if (addAdditionalUserRatingsAfterFirst)
                 TestAddRandomUserRatingFromAnotherUser(true);
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
@@ -369,9 +369,9 @@ namespace TestProject1
             thePointsTotal.TotalPoints.Should().Be(shortTermPointsEarnedInitially);
             cancelPreviousResolutions = false;
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, effectiveTimeOfInitialResolution, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             theUserRating.PointsEarnedShortTerm.Should().Be(shortTermPointsEarnedInitially);
             if (!addAdditionalUserRatingsAfterFirst)
@@ -391,9 +391,9 @@ namespace TestProject1
             /* first, before short term resolution */
             TestableDateTime.SleepOrSkipTime(5000);
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeWhenPendingButNotResolvedShortTerm, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeWhenPendingButNotResolvedShortTerm, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             (theUserRating.PointsEarnedShortTerm == 0).Should().BeTrue();
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
@@ -407,9 +407,9 @@ namespace TestProject1
             /* second, after short term resolution before initial long term resolution */
             TestableDateTime.SleepOrSkipTime(5000);
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterShortTermResolution, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             (theUserRating.PointsEarnedShortTerm == 0).Should().BeFalse();
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
@@ -423,9 +423,9 @@ namespace TestProject1
             /* third, after initial long term resolution (should have same results) */
             TestableDateTime.SleepOrSkipTime(5000);
             theRatingGroup = DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theRatingGroup.RatingGroupID); // reload
-            TestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterInitialLongTermResolution, user0, null);
-            TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
+            theTestHelper.ActionProcessor.ResolveRatingGroup(theRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, timeImmediatelyAfterInitialLongTermResolution, user0, null);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.GetTable<RatingGroupResolution>().FirstOrDefault(x => x.Status == (int)StatusOfObject.Proposed).Should().BeNull();
             theUserRating = DataAccess.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingID).First(); // reload
             (theUserRating.PointsEarnedShortTerm == 0).Should().BeFalse();
             (theUserRating.PointsEarnedLongTerm == 0).Should().BeTrue();
@@ -440,7 +440,7 @@ namespace TestProject1
         [Category("Long")]
         public void TestRatingResolution_AlternativeMethod()
         {
-            TestHelper.CreateSimpleEventTestTable();
+            theTestHelper.CreateSimpleEventTestTable();
             new TestRatingResolution().RatingResolutionTest(); 
         }
 
@@ -454,28 +454,28 @@ namespace TestProject1
             const decimal minRating = 0M;
             const decimal maxRating = 10M;
 
-            TestHelper.CreateSimpleTestTable(true);
-            TestHelper.CreateUsers(10);
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(10);
 
-            Guid user0 = TestHelper.UserIds[0];
-            Guid user1 = TestHelper.UserIds[1];
-            Guid user2 = TestHelper.UserIds[2];
-            Guid user3 = TestHelper.UserIds[3];
-            Guid user4 = TestHelper.UserIds[4];
-            Guid user5 = TestHelper.UserIds[5];
-            Guid user6 = TestHelper.UserIds[6];
+            Guid user0 = theTestHelper.UserIds[0];
+            Guid user1 = theTestHelper.UserIds[1];
+            Guid user2 = theTestHelper.UserIds[2];
+            Guid user3 = theTestHelper.UserIds[3];
+            Guid user4 = theTestHelper.UserIds[4];
+            Guid user5 = theTestHelper.UserIds[5];
+            Guid user6 = theTestHelper.UserIds[6];
             // we don't care about user 1 but will add a user rating just to get things started at a particular rating value
             UserEditResponse theResponse = new UserEditResponse();
             decimal basis = 5M; // midpoint, in absence of ratings
             decimal user1RatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, user1, ref theResponse);
-            TestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user1RatingValue, user1, ref theResponse);
+            theTestHelper.WaitIdleTasks();
 
             float volatilityObservedDay;
             float volatilityObservedHour;
             float volatilityObservedWeek;
             float volatilityObservedYear;
-            GetVolatilityTotalMovementForRating(TestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
             float expectedAbsoluteVolatility = (float)Math.Abs(user1RatingValue - basis);
             float maximumVolatility = (float)(maxRating - minRating);
             float expectedRelativeVolatility = expectedAbsoluteVolatility / maximumVolatility; // starting from 0 volatility
@@ -487,7 +487,7 @@ namespace TestProject1
             float distanceFromStartObservedHour;
             float distanceFromStartObservedWeek;
             float distanceFromStartObservedYear;
-            GetVolatilityDistanceFromStartForRating(TestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
             float expectedDistanceFromStart = (float)(user1RatingValue - basis);
             float maximumDistanceFromStart = (float)(maxRating - minRating);
             float expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
@@ -498,9 +498,9 @@ namespace TestProject1
 
 
             decimal user2RatingValue = 8M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, user2, ref theResponse);
-            TestHelper.WaitIdleTasks();
-            GetVolatilityTotalMovementForRating(TestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
+            theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user2RatingValue, user2, ref theResponse);
+            theTestHelper.WaitIdleTasks();
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
             expectedAbsoluteVolatility = (float)Math.Abs(user2RatingValue - user1RatingValue);
             maximumVolatility = (float)(maxRating - minRating);
             expectedRelativeVolatility += expectedAbsoluteVolatility / maximumVolatility; // add to previous
@@ -508,7 +508,7 @@ namespace TestProject1
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedYear.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
-            GetVolatilityDistanceFromStartForRating(TestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
             expectedDistanceFromStart = (float)(user2RatingValue - basis);
             maximumDistanceFromStart = (float)(maxRating - minRating);
             expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
@@ -517,18 +517,18 @@ namespace TestProject1
             distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
             distanceFromStartObservedYear.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
             float pushbackObservedHour, pushbackObservedDay, pushbackObservedWeek, pushbackObservedYear;
-            GetPushbackFromStartForRating(TestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek, out pushbackObservedYear);
+            GetPushbackFromStartForRating(theTestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek, out pushbackObservedYear);
             float pushback = (expectedRelativeVolatility - Math.Abs(expectedRelativeDistanceFromStart));
             pushbackObservedHour.Should().BeApproximately(pushback, 0.01F);
             float pushbackProportionObservedHour, pushbackProportionObservedDay, pushbackProportionObservedWeek, pushbackProportionObservedYear;
-            GetPushbackProportionFromStartForRating(TestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek, out pushbackProportionObservedYear);
+            GetPushbackProportionFromStartForRating(theTestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek, out pushbackProportionObservedYear);
             float pushbackProportion = expectedRelativeVolatility == 0 ? 0 : pushback/expectedRelativeVolatility;
             pushbackProportionObservedHour.Should().BeApproximately(pushbackProportion, 0.01F);
 
             decimal user3RatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, user3, ref theResponse);
-            TestHelper.WaitIdleTasks();
-            GetVolatilityTotalMovementForRating(TestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
+            theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user3RatingValue, user3, ref theResponse);
+            theTestHelper.WaitIdleTasks();
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
             expectedAbsoluteVolatility = (float)Math.Abs(user3RatingValue - user2RatingValue);
             maximumVolatility = (float)(maxRating - minRating);
             expectedRelativeVolatility += expectedAbsoluteVolatility / maximumVolatility; // add to previous
@@ -536,7 +536,7 @@ namespace TestProject1
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedYear.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
-            GetVolatilityDistanceFromStartForRating(TestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
             expectedDistanceFromStart = (float)(user3RatingValue - basis);
             maximumDistanceFromStart = (float)(maxRating - minRating);
             expectedRelativeDistanceFromStart = expectedDistanceFromStart / maximumDistanceFromStart; // starting from 0 distanceFromStart
@@ -544,13 +544,13 @@ namespace TestProject1
             distanceFromStartObservedDay.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
             distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
             distanceFromStartObservedYear.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
-            GetPushbackFromStartForRating(TestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek, out pushbackObservedYear);
+            GetPushbackFromStartForRating(theTestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek, out pushbackObservedYear);
             pushback = (expectedRelativeVolatility - Math.Abs(expectedRelativeDistanceFromStart));
             pushbackObservedHour.Should().BeApproximately(pushback, 0.01F);
             pushbackObservedDay.Should().BeApproximately(pushback, 0.01F);
             pushbackObservedWeek.Should().BeApproximately(pushback, 0.01F);
             pushbackObservedYear.Should().BeApproximately(pushback, 0.01F);
-            GetPushbackProportionFromStartForRating(TestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek, out pushbackObservedYear);
+            GetPushbackProportionFromStartForRating(theTestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek, out pushbackObservedYear);
             pushbackProportion = pushback / expectedRelativeVolatility;
             pushbackProportionObservedHour.Should().BeApproximately(pushbackProportion, 0.01F);
             pushbackProportionObservedDay.Should().BeApproximately(pushbackProportion, 0.01F);
@@ -594,21 +594,21 @@ namespace TestProject1
 
             // now, add time
             TestableDateTime.SleepOrSkipTime((long) TimeSpan.FromHours(23.1).TotalMilliseconds);
-            TestHelper.WaitIdleTasks();
-            GetVolatilityTotalMovementForRating(TestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
+            theTestHelper.WaitIdleTasks();
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
             volatilityObservedHour.Should().BeApproximately(0, 0.01F);
             volatilityObservedDay.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
-            GetVolatilityDistanceFromStartForRating(TestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
+            GetVolatilityDistanceFromStartForRating(theTestHelper.Rating, out distanceFromStartObservedHour, out distanceFromStartObservedDay, out distanceFromStartObservedWeek, out distanceFromStartObservedYear);
             distanceFromStartObservedHour.Should().BeApproximately(0, 0.01F);
             distanceFromStartObservedDay.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
             distanceFromStartObservedWeek.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
             distanceFromStartObservedYear.Should().BeApproximately(expectedRelativeDistanceFromStart, 0.01F);
-            GetPushbackFromStartForRating(TestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek, out pushback);
+            GetPushbackFromStartForRating(theTestHelper.Rating, out pushbackObservedHour, out pushbackObservedDay, out pushbackObservedWeek, out pushback);
             pushbackObservedHour.Should().BeApproximately(0, 0.01F);
             pushbackObservedDay.Should().BeApproximately(pushback, 0.01F);
             pushbackObservedWeek.Should().BeApproximately(pushback, 0.01F);
-            GetPushbackProportionFromStartForRating(TestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek, out pushbackProportionObservedYear);
+            GetPushbackProportionFromStartForRating(theTestHelper.Rating, out pushbackProportionObservedHour, out pushbackProportionObservedDay, out pushbackProportionObservedWeek, out pushbackProportionObservedYear);
             pushbackProportionObservedHour.Should().BeApproximately(0, 0.01F);
             pushbackProportionObservedDay.Should().BeApproximately(pushbackProportion, 0.01F);
             pushbackProportionObservedWeek.Should().BeApproximately(pushbackProportion, 0.01F);
@@ -616,24 +616,24 @@ namespace TestProject1
 
             // now just test whether further time cancels out the TotalMovement user rating (in which case others will follow)
             TestableDateTime.SleepOrSkipTime((long) TimeSpan.FromDays(5).TotalMilliseconds);
-            TestHelper.WaitIdleTasks();
-            GetVolatilityTotalMovementForRating(TestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
+            theTestHelper.WaitIdleTasks();
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
             volatilityObservedHour.Should().BeApproximately(0, 0.01F);
             volatilityObservedDay.Should().BeApproximately(0, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
             volatilityObservedYear.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
 
             TestableDateTime.SleepOrSkipTime((long)TimeSpan.FromDays(3).TotalMilliseconds);
-            TestHelper.WaitIdleTasks();
-            GetVolatilityTotalMovementForRating(TestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
+            theTestHelper.WaitIdleTasks();
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
             volatilityObservedHour.Should().BeApproximately(0, 0.01F);
             volatilityObservedDay.Should().BeApproximately(0, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(0, 0.01F);
             volatilityObservedYear.Should().BeApproximately(expectedRelativeVolatility, 0.01F);
 
             TestableDateTime.SleepOrSkipTime((long)TimeSpan.FromDays(367).TotalMilliseconds);
-            TestHelper.WaitIdleTasks();
-            GetVolatilityTotalMovementForRating(TestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
+            theTestHelper.WaitIdleTasks();
+            GetVolatilityTotalMovementForRating(theTestHelper.Rating, out volatilityObservedHour, out volatilityObservedDay, out volatilityObservedWeek, out volatilityObservedYear);
             volatilityObservedHour.Should().BeApproximately(0, 0.01F);
             volatilityObservedDay.Should().BeApproximately(0, 0.01F);
             volatilityObservedWeek.Should().BeApproximately(0, 0.01F);
