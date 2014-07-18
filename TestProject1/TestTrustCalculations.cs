@@ -166,6 +166,9 @@ namespace TestProject1
             theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user2UserRatingValue, user2, ref theResponse);
             theTestHelper.WaitIdleTasks();
 
+            var userInteractionsAll = _dataManipulation.DataContext.GetTable<UserInteraction>().Where(x => true).ToList();
+            var userRatingsAll = _dataManipulation.DataContext.GetTable<UserRating>().Where(x => true).ToList();
+
             UserInteraction userInteraction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(x =>
                     x.User.UserID == user1 &&

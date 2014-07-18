@@ -33,14 +33,17 @@ namespace ClassLibrary1.Model
                 /* This also explains why we are copying the id into a local variable. */
                 try
                 {
+                    string theStringi = theStrings[i]; // must convert to variable before Linq to Entities query
                     if (higherItem == null)
-                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStrings[i] && (x.HigherHierarchyItemID == null));
+                    {
+                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStringi && (x.HigherHierarchyItemID == null));
+                    }
                     else
                     {
                         //if (higherItem.HierarchyItemID == null)
                         //    throw new Exception("GetHierarchyFromStrings internal error: higherItem.HierarchyItemID was null. "); /* Could occur if we add a new hierarchy item and immediately search for it, but this does not seem likely to explain error received (?) */
                         Guid higherItemHierarchyID = (Guid)higherItem.HierarchyItemID;
-                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStrings[i] && (x.HigherHierarchyItemID == higherItemHierarchyID));
+                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStringi && (x.HigherHierarchyItemID == higherItemHierarchyID));
                     }
                 }
                 catch
