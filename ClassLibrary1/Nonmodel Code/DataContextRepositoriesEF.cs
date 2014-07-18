@@ -38,6 +38,12 @@ namespace ClassLibrary1.Misc
             return UnderlyingTable.AsQueryable().GetEnumerator();
         }
 
+        public IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path)
+        {
+            // return QueryableExtensions.Include<T, TProperty>(UnderlyingTable.AsQueryable(), path);
+            return UnderlyingTable.Include<T, TProperty>(path);
+        }
+
         private void SetEntityKey<TEntity>(ObjectContext context, TEntity entity) where TEntity : EntityObject, new()
         {
             entity.EntityKey = context.CreateEntityKey(GetEntitySetName(context, entity.GetType()), entity);

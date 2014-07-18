@@ -1044,7 +1044,7 @@ namespace ClassLibrary1.Model
 
         public RatingGroup AddRatingGroupAndRatings(TblRow tblRow, TblColumn tblColumn, RatingGroupAttribute ratingGroupAttributes)
         {
-            if (false) // DEBUG -- test for whether it's a preexisting row/column (!(tblRow.TblRowID == -1 || tblColumn.TblColumnID == -1)) // if it's a new row ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process.
+            if (!(tblRow.NotYetAddedToDatabase || tblColumn.NotYetAddedToDatabase)) // if it's a new row ==> no uniqueness constraint needed -- because we must be doing this from a background worker process that is executing in an orderly process. If it's an old row/column, then we are dynamically adding content to a particular cell, and there is a danger that we're doing this in two places at once
                 AddUniquenessLock(new TblRowIDAndTblColumnIDUniquenessGenerator() { TblRowID = tblRow.TblRowID, TblColumnID = tblColumn.TblColumnID }, TestableDateTime.Now + TimeSpan.FromDays(1)); // will prevent anyone else from adding to the same cell simultaneously (note that 1 day is a bit arbitrary -- key is that we want to avoid scenario where we check for ratings and don't find any, and add just an instant later than another web role doing the same thing)
             RatingGroup theRatingGroup = AddRatingGroupAndRatings(tblRow, tblColumn, ratingGroupAttributes, null, null);
             AdvanceRatingGroupToNextRatingPhase(theRatingGroup);
@@ -1291,7 +1291,7 @@ namespace ClassLibrary1.Model
             RatingPhase thePhase = DataContext.TempCacheGet(key) as RatingPhase;
             if (thePhase == null)
             {
-                thePhase = DataContext.GetTable<RatingPhase>().Single(p => p.RatingPhaseGroup == ratingPhaseGroup && p.NumberInGroup == 1);
+                thePhase = DataContext.GetTable<RatingPhase>().Single(p => p.RatingPhaseGroupID == ratingPhaseGroup.RatingPhaseGroupID && p.NumberInGroup == 1);
                 DataContext.TempCacheAdd(key, thePhase);
             }
 

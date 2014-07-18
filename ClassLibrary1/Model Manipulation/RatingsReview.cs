@@ -95,7 +95,7 @@ namespace ClassLibrary1.Model
             var userRatingsGrouped = from ur in userRatingsInitialQuery
                                      group ur by ur.Rating into grouped
                                      let pointsManager = grouped.Key.RatingGroup.RatingGroupAttribute.PointsManager
-                                     let adminPointsTotals = pointsManager.PointsTotals.SingleOrDefault(x => x.User.Username == "admin")
+                                     let adminPointsTotals = pointsManager.PointsTotals.FirstOrDefault(x => x.User.Username == "admin")
                                      let adminUserAccount = adminPointsTotals == null ? null : adminPointsTotals.User
                                      let rating = grouped.Key
                                      let ratingGroup = rating.RatingGroup
@@ -112,9 +112,9 @@ namespace ClassLibrary1.Model
                                          TrustTrackerUnit = pointsManager.TrustTrackerUnit,
                                          AdminAccount = adminUserAccount,
                                          AdminPointsTotals = adminPointsTotals,
-                                         NewTrustLevel = grouped.Select(x => 
-                                             x.User.TrustTrackers.SingleOrDefault(tt => 
-                                                 tt.TrustTrackerUnit.PointsManagers.Any() && tt.TrustTrackerUnit.PointsManagers.First() == pointsManager)
+                                         NewTrustLevel = grouped.Select(x =>
+                                             x.User.TrustTrackers.FirstOrDefault(tt => 
+                                                 tt.TrustTrackerUnit.PointsManagers.Any() && tt.TrustTrackerUnit.PointsManagers.FirstOrDefault() == pointsManager)
                                                  .OverallTrustLevelAtLastReview
                                             )
                                      };

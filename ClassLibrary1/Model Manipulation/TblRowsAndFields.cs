@@ -297,7 +297,7 @@ namespace ClassLibrary1.Model
         public override bool MatchesDatabase()
         {
             AddressField theField = null;
-            if (!TheGroup.theTblRow.NotYetAddedToDatabase) // DEBUG -- check for whether this is not new
+            if (!TheGroup.theTblRow.NotYetAddedToDatabase) // check for whether this is not new
                 theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int) StatusOfObject.Active);
             if (theField == null)
                 return (AddressShortText == "");

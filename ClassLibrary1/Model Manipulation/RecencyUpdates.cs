@@ -52,9 +52,9 @@ namespace ClassLibrary1
                               let mostRecentUserRatingRecordedInUserRating = ur.UserRating1 // this previously was the latest user rating
                               let user = ur.User
                               let pmID = ur.Rating.RatingGroup.TblRow.Tbl.PointsManagerID
-                              let pointsTotal = user.PointsTotals.Single(pt => pt.PointsManagerID == pmID)
-                              let currentlyRecordedUserInteraction = ur.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
-                              let originalUserTrustTracker = ur.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
+                              let pointsTotal = user.PointsTotals.FirstOrDefault(pt => pt.PointsManagerID == pmID)
+                              let currentlyRecordedUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
+                              let originalUserTrustTracker = ur.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                               where ur.NextRecencyUpdateAtUserRatingNum != null
                                         && ur.NextRecencyUpdateAtUserRatingNum <= pointsTotal.NumUserRatings
                               select new 
@@ -97,26 +97,26 @@ namespace ClassLibrary1
                 if (originalIsMostRecent10Pct && !ur.IsMostRecent10Pct)
                     RemoveUserRatingFromRecencyUserInteractionStat(
                         ur, 
-                        item.RecencyUserInteractionStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent10PercentOfUsersUserRatings), 
-                        item.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent10PercentOfUsersUserRatings),
+                        item.RecencyUserInteractionStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent10PercentOfUsersUserRatings),
+                        item.TrustTrackerStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent10PercentOfUsersUserRatings),
                         ratingMagnitude, adjustFactor);
                 if (originalIsMostRecent30Pct && !ur.IsMostRecent10Pct)
                     RemoveUserRatingFromRecencyUserInteractionStat(
                         ur,
-                        item.RecencyUserInteractionStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent30PercentOfUsersUserRatings),
-                        item.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent30PercentOfUsersUserRatings),
+                        item.RecencyUserInteractionStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent30PercentOfUsersUserRatings),
+                        item.TrustTrackerStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent30PercentOfUsersUserRatings),
                         ratingMagnitude, adjustFactor);
                 if (originalIsMostRecent70Pct && !ur.IsMostRecent10Pct)
                     RemoveUserRatingFromRecencyUserInteractionStat(
                         ur,
-                        item.RecencyUserInteractionStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent70PercentOfUsersUserRatings),
-                        item.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent70PercentOfUsersUserRatings),
+                        item.RecencyUserInteractionStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent70PercentOfUsersUserRatings),
+                        item.TrustTrackerStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent70PercentOfUsersUserRatings),
                         ratingMagnitude, adjustFactor);
                 if (originalIsMostRecent90Pct && !ur.IsMostRecent90Pct)
                     RemoveUserRatingFromRecencyUserInteractionStat(
                         ur,
-                        item.RecencyUserInteractionStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent90PercentOfUsersUserRatings),
-                        item.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.IsMostRecent90PercentOfUsersUserRatings),
+                        item.RecencyUserInteractionStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent90PercentOfUsersUserRatings),
+                        item.TrustTrackerStats.FirstOrDefault(x => x.StatNum == (int)TrustStat.IsMostRecent90PercentOfUsersUserRatings),
                         ratingMagnitude, adjustFactor);
             }
             return itemsToUpdate.Count() == maxToUpdate; // more work to do

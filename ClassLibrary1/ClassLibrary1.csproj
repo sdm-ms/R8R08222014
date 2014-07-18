@@ -170,6 +170,10 @@
     <Compile Include="Migrations\201407171527031_ChangedUnicode.Designer.cs">
       <DependentUpon>201407171527031_ChangedUnicode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407171655201_July17at1pm.cs" />
+    <Compile Include="Migrations\201407171655201_July17at1pm.Designer.cs">
+      <DependentUpon>201407171655201_July17at1pm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
     <Compile Include="Model\EFModel\AdministrationRight.cs" />
@@ -438,6 +442,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407171527031_ChangedUnicode.resx">
       <DependentUpon>201407171527031_ChangedUnicode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407171655201_July17at1pm.resx">
+      <DependentUpon>201407171655201_July17at1pm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

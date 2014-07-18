@@ -122,11 +122,7 @@ namespace TestProject1
                     else
                         user.Rate(rating, subversiveUserRatingValue, subversiveUserIgnoresPreviousRatings);
                     numberUserRatings++;
-                    GC.Collect(); // DEBUG
-                    //Debug.WriteLine("DEBUG1 average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
-                    TestHelper.ActionProcessor.ResetDataContexts(); // DEBUG -- delete this
-                    GC.Collect(); // DEBUG
-                   // Debug.WriteLine("DEBUG average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
+                    GC.Collect(); // This is here for testing purposes, so we can test for a memory leak.
                 }
             }
         }

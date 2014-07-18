@@ -30,6 +30,7 @@ namespace ClassLibrary1.Misc
         void InsertOnSubmit(T theObject);
         //void InsertOnSubmitIfNotAlreadyInserted(T theObject);
         void DeleteOnSubmit(T theObject);
+        IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path);
     }
 
     public static class IRepositoryExtensions 

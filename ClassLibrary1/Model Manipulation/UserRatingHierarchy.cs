@@ -131,7 +131,7 @@ namespace ClassLibrary1.Model
                 if (entry.HierarchyLevel > lastHierarchy)
                 {
                     numRatingGroupsCreated++; // This will set only first in each rating group correctly.
-                    // DEBUG ratingGroupID = numRatingGroupsCreated;
+                    ratingGroupID = new Guid(numRatingGroupsCreated.ToString()); // note that we're not adding this to the database
                 }
                 else // Set rating group to that of the most recent entry on this hierarchy level.
                     ratingGroupID = (Guid)myUserRatingData.UserRatingHierarchyEntries.Last(x => x.HierarchyLevel == entry.HierarchyLevel).RatingGroupId;
@@ -856,7 +856,7 @@ namespace ClassLibrary1.Model
                         }).ToList();
                 var otherChoiceInGroupIDs = choiceInGroupIDs.Where(x => !choiceTrustTrackers.Any(y => y.ChoiceInGroupID == x)).ToList(); // that is, no choice trust tracker is created yet
                 Rating theRating = theRatings.Single(x => x.RatingID == firstUserRating.RatingID);
-                PointsTotal thePointsTotal = DataContext.GetTable<PointsTotal>().SingleOrDefault(x => x.User == theUser && x.PointsManager == theRating.RatingGroup.RatingGroupAttribute.PointsManager);
+                PointsTotal thePointsTotal = DataContext.GetTable<PointsTotal>().SingleOrDefault(x => x.User.UserID == theUser.UserID && x.PointsManager.PointsManagerID == theRating.RatingGroup.RatingGroupAttribute.PointsManager.PointsManagerID);
                 TrustTrackerStatManager theManager = new TrustTrackerStatManager(
                     DataContext, 
                     theRating,
@@ -949,7 +949,7 @@ namespace ClassLibrary1.Model
                             {
                                 UserRatingsToAdd = urta,
                                 //FirstRating = urta.RatingGroup.Ratings.First(),
-                                PointsTotal = urta.User.PointsTotals.SingleOrDefault(pt =>
+                                PointsTotal = urta.User.PointsTotals.FirstOrDefault(pt =>
                                     pt.User.UserID == urta.User.UserID &&
                                     pt.PointsManager == urta.RatingGroup.TblRow.Tbl.PointsManager)
                             })

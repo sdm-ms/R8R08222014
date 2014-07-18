@@ -71,7 +71,7 @@ namespace ClassLibrary1.Model
             // Looking for UserInteractions where the LatestUserEgalitarianTrust is not up to date.
             var query = 
                 from x in R8RDB.GetTable<UserInteraction>()
-                let trustTracker = x.TrustTrackerUnit.TrustTrackers.SingleOrDefault(y => y.UserID == x.LatestRatingUserID)
+                let trustTracker = x.TrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.UserID == x.LatestRatingUserID)
                 where trustTracker.MustUpdateUserInteractionEgalitarianTrustLevel
                 select new TrustTrackerAndUserInteraction { TrustTracker = trustTracker, UserInteraction = x };
 
@@ -113,6 +113,7 @@ namespace ClassLibrary1.Model
         {
             TrustTracker theTrustTracker = new TrustTracker
             {
+                TrustTrackerID = Guid.NewGuid(),
                 TrustTrackerUnit = theTrustTrackerUnit,
                 User = theUser,
                 //SkepticalTrustLevel = theTrustTrackerUnit.SkepticalTrustThreshhold == 0 ? 1.0F : 0F, // new users on a new table will be trusted
@@ -156,6 +157,7 @@ namespace ClassLibrary1.Model
             {
                 UserInteractionStat theUserInteractionStat = new UserInteractionStat
                 {
+                    UserInteractionStatID = Guid.NewGuid(),
                     UserInteraction = theUserInteraction,
                     TrustTrackerStat = originalUserTrustTrackerStats[i],
                     StatNum = (short)i,
@@ -197,6 +199,7 @@ namespace ClassLibrary1.Model
 
                 theUserInteraction = new UserInteraction 
                 { 
+                    UserInteractionID = Guid.NewGuid(),
                     User = originalUserRating.User, 
                     User1 = latestUserRating.User, 
                     TrustTrackerUnit = latestUserRating.TrustTrackerUnit, 

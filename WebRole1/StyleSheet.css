@@ -1213,7 +1213,7 @@ a.text1:hover {
 	font-weight:normal;
 	color: black;
 	position:relative;
-	top:15px; /* DEBUG STYLES -- used 525px when the other area was absolutely positioned */
+	top:15px;
 }
 .asteriskRowMain
 {

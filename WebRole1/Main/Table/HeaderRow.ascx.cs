@@ -193,7 +193,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             Guid? TblColumnID = (Guid)(HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"]);
-            if (TblColumnID == new Guid()) // DEBUG
+            if (TblColumnID == new Guid())
                 TblColumnID = null; 
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];
             string theName = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Name"];

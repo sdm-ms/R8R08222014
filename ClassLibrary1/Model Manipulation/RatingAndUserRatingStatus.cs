@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Transactions;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
+using System.Data.Entity;
 using MoreStrings;
 
 using System.Threading;
@@ -60,37 +61,45 @@ namespace ClassLibrary1.Model
         public bool IdleTaskImplementResolutions()
         {
             const int maxAtOnce = 10;
-            var resolutions = (from x in (DataContext.GetTable<RatingGroupResolution>()
-                .Where(x => x.Status == (int)StatusOfObject.Proposed)
-                .OrderBy(x => x.ExecutionTime).ThenBy(x => x.RatingGroupResolutionID) // OK to order by ID just to get a consistent ordering
-                .Take(maxAtOnce))
-                let RatingResolution = x
-                let RatingGroup = x.RatingGroup
-                let Ratings = RatingGroup.RatingsWithinTopRatingGroupHierarchy
-                let UserRatings = Ratings.SelectMany(y => y.UserRatings)
-                let TblRow = RatingGroup.TblRow
-                let TblColumn = RatingGroup.TblColumn
-                let Tbl = TblRow.Tbl
-                let Users = UserRatings.Select(y => y.User).Distinct()
-                let PointsTotals = Users.SelectMany(y => y.PointsTotals.Where(z => z.PointsManager == x.RatingGroup.TblRow.Tbl.PointsManager)).Distinct()
-                select new 
-                    {
-                        RatingResolution = RatingResolution,
-                        RatingGroup = RatingGroup,
-                        Ratings = Ratings.ToList(),
-                        //PreviousRatingResolution = Ratings.FirstOrDefault().RatingGroup2.RatingGroupResolutions
-                        //    .Where(rgr => rgr.ExecutionTime < x.ExecutionTime && rgr.Status == (int) StatusOfObject.Active)
-                        //    .OrderByDescending(rgr => rgr.ExecutionTime)
-                        //    .ThenByDescending(rgr => rgr.RatingGroupResolutionID)
-                        //    .FirstOrDefault(),
-                        UserRatings = UserRatings.ToList(),
-                        TblRow = TblRow,
-                        TblColumn = TblColumn,
-                        Tbl = Tbl,
-                        Users = Users.ToList(),
-                        PointsTotals = PointsTotals.ToList()
-                    })
-                .ToList();
+
+            var resolutions =
+            (
+            from x in
+                (
+                DataContext.GetTable<RatingGroupResolution>()
+               .Include
+                   (
+                   v => v.RatingGroup.RatingsWithinTopRatingGroupHierarchy
+                   .Select(y => y.UserRatings.Select(z => z.User))
+                   )
+               .Where(x => x.Status == (int)StatusOfObject.Proposed)
+               .Take(maxAtOnce)
+               )
+            let RatingResolution = x
+            let RatingGroup = x.RatingGroup
+            let Ratings = RatingGroup.RatingsWithinTopRatingGroupHierarchy
+            let TblRow = RatingGroup.TblRow
+            let TblColumn = RatingGroup.TblColumn
+            let Tbl = TblRow.Tbl
+            let UserRatings = Ratings.SelectMany(y => y.UserRatings)
+            let Users = UserRatings.Select(y => y.User).Distinct()
+            let PointsTotals = Users.SelectMany(y => y.PointsTotals.Where(z => z.PointsManager == x.RatingGroup.TblRow.Tbl.PointsManager)).Distinct()
+            select new
+            {
+                RatingResolution = RatingResolution,
+                RatingGroup = RatingGroup,
+                Ratings = Ratings.ToList(),
+                UserRatings = Ratings.SelectMany(y => y.UserRatings),
+                TblRow = TblRow,
+                TblColumn = TblColumn,
+                Tbl = Tbl,
+                Users = Users.ToList(),
+                PointsTotals = PointsTotals
+            })
+            .ToList()
+            .OrderBy(x => x.RatingResolution.ExecutionTime).ThenBy(x => x.RatingResolution.RatingGroupResolutionID) // OK to order by ID just to get a consistent ordering; // Note: Placing this within the middle of the query led to a NullReferenceException, presumably due to a bug
+            .ToList();
+
             DateTime currentTime = TestableDateTime.Now;
             foreach (var resolution in resolutions)
             {
@@ -193,11 +202,11 @@ namespace ClassLibrary1.Model
                                       let mostRecentUserRatingRecordedInUserRating = ur.UserRating1 // this previously was the latest user rating
                                       let mostRecentUserRatingRecordedInRating = ur.Rating.UserRating // this now is the latest user rating
                                       let user = ur.User
-                                      let pointsTotal = user.PointsTotals.Single(pt => pt.PointsManagerID == ur.Rating.RatingGroup.RatingGroupAttribute.PointsManagerID)
-                                      let currentlyRecordedUserInteraction = ur.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
-                                      let replacementUserInteraction = ur.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.User == user && y.User1 == mostRecentUserRatingRecordedInRating.User)
-                                      let originalUserTrustTracker = ur.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
-                                      let mostRecentUserTrustTracker = mostRecentUserRatingRecordedInRating.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
+                                      let pointsTotal = user.PointsTotals.FirstOrDefault(pt => pt.PointsManagerID == ur.Rating.RatingGroup.RatingGroupAttribute.PointsManagerID)
+                                      let currentlyRecordedUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
+                                      let replacementUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.User == user && y.User1 == mostRecentUserRatingRecordedInRating.User)
+                                      let originalUserTrustTracker = ur.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
+                                      let mostRecentUserTrustTracker = mostRecentUserRatingRecordedInRating.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                                       select new
                                       {
                                           UserRating = ur,
@@ -209,7 +218,7 @@ namespace ClassLibrary1.Model
                                           RatingGroup = ur.UserRatingGroup.RatingGroup,
                                           RatingGroupAttribute = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute,
                                           RatingCharacteristic = ur.UserRatingGroup.RatingGroup.RatingGroupAttribute.RatingCharacteristic,
-                                          PointsTotal = ur.User.PointsTotals.SingleOrDefault(y => y.PointsManager == ur.Rating.RatingGroup.TblRow.Tbl.PointsManager),
+                                          PointsTotal = ur.User.PointsTotals.FirstOrDefault(y => y.PointsManager == ur.Rating.RatingGroup.TblRow.Tbl.PointsManager),
                                           OriginalUserTrustTracker = originalUserTrustTracker,
                                           MostRecentUserTrustTracker = mostRecentUserTrustTracker,
                                           CurrentlyRecordedUserInteraction = currentlyRecordedUserInteraction,
@@ -257,7 +266,7 @@ namespace ClassLibrary1.Model
         {
             DateTime currentTime = TestableDateTime.Now;
             const int maxToTake = 400;
-            // DEBUG: Now that this is not called in response to a new UserRating -- only in response to some other need to update points -- 
+            // TODO: Now that this is not called in response to a new UserRating -- only in response to some other need to update points -- 
             // we probably don't need to load all the trust-related data here.
             var userRatingInfoQuery = from x in DataContext.GetTable<UserRating>()
                                       where
@@ -269,10 +278,10 @@ namespace ClassLibrary1.Model
                                         let mostRecentUserRatingRecordedInUserRating = x.UserRating1 // this previously was the latest user rating
                                         let mostRecentUserRatingRecordedInRating = x.Rating.UserRating // this now is the latest user rating
                                         let user = x.User
-                                      let currentlyRecordedUserInteraction = x.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
-                                      let replacementUserInteraction = x.User.UserInteractions.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.User == user && y.User1 == mostRecentUserRatingRecordedInRating.User)
-                                      let originalUserTrustTracker = x.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
-                                      let mostRecentUserTrustTracker = mostRecentUserRatingRecordedInRating.User.TrustTrackers.SingleOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
+                                      let currentlyRecordedUserInteraction = x.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
+                                      let replacementUserInteraction = x.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.User == user && y.User1 == mostRecentUserRatingRecordedInRating.User)
+                                      let originalUserTrustTracker = x.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
+                                      let mostRecentUserTrustTracker = mostRecentUserRatingRecordedInRating.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                                       select new
                                       {
                                           UserRating = x,
@@ -283,7 +292,7 @@ namespace ClassLibrary1.Model
                                           RatingGroup = x.UserRatingGroup.RatingGroup,
                                           RatingGroupAttribute = x.UserRatingGroup.RatingGroup.RatingGroupAttribute,
                                           RatingCharacteristic = x.UserRatingGroup.RatingGroup.RatingGroupAttribute.RatingCharacteristic,
-                                          PointsTotal = x.User.PointsTotals.SingleOrDefault(y => y.PointsManager == x.Rating.RatingGroup.TblRow.Tbl.PointsManager)
+                                          PointsTotal = x.User.PointsTotals.FirstOrDefault(y => y.PointsManager == x.Rating.RatingGroup.TblRow.Tbl.PointsManager)
                                       }
                    ;
             var userRatingInfos = userRatingInfoQuery.Take(maxToTake).ToList();

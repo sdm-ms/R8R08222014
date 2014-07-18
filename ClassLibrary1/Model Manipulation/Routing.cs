@@ -203,7 +203,7 @@ namespace ClassLibrary1.Model
                     catch
                     {
                     }
-                    if (TblColumnID != new Guid()) // DEBUG
+                    if (TblColumnID != new Guid())
                         theTblColumn = theDataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl == theTbl && x.TblColumnID == TblColumnID);
                 }
             }

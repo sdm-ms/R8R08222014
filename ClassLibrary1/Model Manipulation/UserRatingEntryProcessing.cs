@@ -41,7 +41,7 @@ namespace ClassLibrary1.Model
                           let pmTrustTrackerUnit = pointsManager.TrustTrackerUnit
                           let tcTrustTrackerUnit = tblColumn.TrustTrackerUnit
                           let trustTrackerUnit = tcTrustTrackerUnit ?? pmTrustTrackerUnit // Note: Cannot access properties on this.
-                          let trustTracker = (tcTrustTrackerUnit == null) ? pmTrustTrackerUnit.TrustTrackers.SingleOrDefault(y => y.User == theUser) : pmTrustTrackerUnit.TrustTrackers.SingleOrDefault(y => y.User == theUser)
+                           let trustTracker = (tcTrustTrackerUnit == null) ? pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User == theUser) : pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User == theUser)
                           let ratingCharacteristic = x.RatingCharacteristic
                           let tblRow = ratingGroup.TblRow
                            let tbl = tblRow.Tbl

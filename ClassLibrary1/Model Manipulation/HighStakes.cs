@@ -170,6 +170,7 @@ namespace ClassLibrary1.Model
         }
 
         static DateTime? waitUntilTime = null;
+        //TODO: Must change this so that it isn't static now that we can have multiple background tasks simultaneously
         static int numToSkipToConsiderDemoting = 0;
         static TimeSpan timeWithinWhichWontDemote = new TimeSpan(0, 1, 0);
         public bool IdleTaskConsiderDemotingHighStakesPrematurely()
@@ -178,20 +179,38 @@ namespace ClassLibrary1.Model
                 return false; // no work to do now.
             const int numAtOnce = 100;
             DateTime now = TestableDateTime.Now;
-            var activeHighStakes = DataContext.GetTable<RatingGroupPhaseStatus>()
-                .Where(x => x.HighStakesReflected && x.ActualCompleteTime > now + timeWithinWhichWontDemote)
-                .Where(x => x.RatingGroup.Status == (int) (StatusOfObject.Active))
-                .Select(x => new { 
-                    RGPS = x, 
+            var activeHighStakes0 = DataContext.GetTable<RatingGroupPhaseStatus>()
+                .Where(x => x.HighStakesReflected && x.ActualCompleteTime > System.Data.Entity.DbFunctions.AddSeconds(now, (int?) (timeWithinWhichWontDemote.TotalSeconds + 1)))
+                .Where(x => x.RatingGroup.Status == (byte)(StatusOfObject.Active));
+            var activeHighStakes1 = activeHighStakes0
+                .Select(x => new
+                {
+                    RGPS = x,
                     UserRatingCount = x.UserRatingGroups
-                                        .Where(y => y.UserRatings.FirstOrDefault().User.PointsTotals.SingleOrDefault(z => z.PointsManagerID == x.RatingGroup.TblRow.Tbl.PointsManagerID).TotalPoints > 0) // where the user rating group is made by a user with positive points
+                                        .Where(y => y.UserRatings.FirstOrDefault().User.PointsTotals.FirstOrDefault(z => z.PointsManagerID == x.RatingGroup.TblRow.Tbl.PointsManagerID).TotalPoints > (decimal)0) // where the user rating group is made by a user with positive points
                                         .Select(y => y.UserRatings.FirstOrDefault().User)
-                                        .Distinct().Count()                
-                })
+                                        .Distinct().Count()
+                });
+            var activeHighStakes = activeHighStakes1
+                .OrderBy(x => x.RGPS.ActualCompleteTime)
                 .Skip(numToSkipToConsiderDemoting)
                 .Take(numAtOnce)
                 .GroupBy(x => x.RGPS.RatingGroup.TblRow)
                 .ToList();
+            //var activeHighStakes = DataContext.GetTable<RatingGroupPhaseStatus>()
+            //    .Where(x => x.HighStakesReflected && x.ActualCompleteTime > now + timeWithinWhichWontDemote)
+            //    .Where(x => x.RatingGroup.Status == (byte) (StatusOfObject.Active))
+            //    .Select(x => new { 
+            //        RGPS = x, 
+            //        UserRatingCount = x.UserRatingGroups
+            //                            .Where(y => y.UserRatings.FirstOrDefault().User.PointsTotals.SingleOrDefault(z => z.PointsManagerID == x.RatingGroup.TblRow.Tbl.PointsManagerID).TotalPoints > (decimal) 0) // where the user rating group is made by a user with positive points
+            //                            .Select(y => y.UserRatings.FirstOrDefault().User)
+            //                            .Distinct().Count()                
+            //    })
+            //    .Skip(numToSkipToConsiderDemoting)
+            //    .Take(numAtOnce)
+            //    .GroupBy(x => x.RGPS.RatingGroup.TblRow)
+            //    .ToList();
             foreach (var a in activeHighStakes)
             {
                 if (ShouldDemoteHighStakesInMostNeedsRankingSort(a.FirstOrDefault().RGPS, (int) a.Average(x => (decimal) x.UserRatingCount)))

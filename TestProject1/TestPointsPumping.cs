@@ -56,10 +56,12 @@ namespace TestProject1
 
             UserEditResponse theResponse = new UserEditResponse();
             int fakeUserNumber = 1;
+
+            Guid user0 = TestHelper.UserIds[0];
             for (int i = 1; i <= numFakeUsers * 2; i++)
             {
                 if (i % 2 == 1)
-                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 4.0M, TestHelper.UserIds[0], ref theResponse);
+                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 4.0M, user0, ref theResponse);
                 else
                 {
                     TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 5.0M, TestHelper.UserIds[fakeUserNumber], ref theResponse);
@@ -70,7 +72,8 @@ namespace TestProject1
                     TestHelper.WaitIdleTasks();
             }
             TestHelper.WaitIdleTasks();
-            decimal? ppp = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == TestHelper.UserIds[0]).FirstOrDefault().PointsPumpingProportion;
+
+            decimal? ppp = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == user0).FirstOrDefault().PointsPumpingProportion;
             ppp.Should().Equals(1.0M);
         }
 
