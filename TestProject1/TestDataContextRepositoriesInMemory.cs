@@ -193,7 +193,7 @@ namespace TestProject1
             theUserInfo.User.Should().BeNull();
         }
 
-        static InMemoryRepositoryList repoList;
+        static InMemoryDataContext repoList;
         static InMemoryRepository<AddressField> theInMemoryRepositoryAddressField;
         static InMemoryRepository<UniquenessLock> theInMemoryRepositoryUniquenessLock;
         static InMemoryRepository<UniquenessLockReference> theInMemoryRepositoryUniquenessLockReference;
@@ -201,7 +201,7 @@ namespace TestProject1
 
         public void InitializeInMemoryRepositoryList()
         {
-            repoList = new InMemoryRepositoryList(UnderlyingR8RDataContext);
+            repoList = new InMemoryDataContext(UnderlyingR8RDataContext);
             theInMemoryRepositoryAddressField = repoList.GetRepository<AddressField>() as InMemoryRepository<AddressField>;
             theInMemoryRepositoryUniquenessLock = repoList.GetRepository<UniquenessLock>() as InMemoryRepository<UniquenessLock>;
             theInMemoryRepositoryUniquenessLockReference = repoList.GetRepository<UniquenessLockReference>() as InMemoryRepository<UniquenessLockReference>;
@@ -310,8 +310,8 @@ namespace TestProject1
             theInMemoryRepositoryField.InsertOnSubmit(theField);
             theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
             theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep2();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep2();
+            theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
+            theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theAddressField.Field.Should().Equals(theField);
         }
 
@@ -327,8 +327,8 @@ namespace TestProject1
             theInMemoryRepositoryAddressField.InsertOnSubmit(theAddressField);
             theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
             theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep2();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep2();
+            theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
+            theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theField.FieldID.Should().Be(5);
             theAddressField.FieldID.Should().Be(5);
         }
@@ -346,8 +346,8 @@ namespace TestProject1
             theInMemoryRepositoryField.InsertOnSubmit(theField);
             theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
             theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep2();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep2();
+            theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
+            theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theAddressField.FieldID.Should().Be(5);
         }
 
@@ -364,8 +364,8 @@ namespace TestProject1
             theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
             theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
             theField.FieldID.Should().Be(1);
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep2();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep2();
+            theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
+            theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theAddressField.FieldID.Should().Be(1);
         }
 
@@ -380,8 +380,8 @@ namespace TestProject1
             theInMemoryRepositoryField.InsertOnSubmit(theField);
             theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
             theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep2();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep2();
+            theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
+            theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theAddressField.FieldID.Should().Be(theField.FieldID);
         }
 
@@ -391,7 +391,7 @@ namespace TestProject1
 		[Category("UnitTest")]
         public void RepositoryItemAssociationInfo_CompleteInsertOnSubmit_WhereMultipleSimilarPropertiesExist()
         {
-            var repoList2 = new InMemoryRepositoryList(UnderlyingR8RDataContext);
+            var repoList2 = new InMemoryDataContext(UnderlyingR8RDataContext);
             var theInMemoryRepositoryRating = repoList2.GetRepository<Rating>() as InMemoryRepository<Rating>;
             var theInMemoryRepositoryRatingGroup = repoList2.GetRepository<RatingGroup>() as InMemoryRepository<RatingGroup>;
 
@@ -406,8 +406,8 @@ namespace TestProject1
 
             theInMemoryRepositoryRating.CompleteInsertOnSubmitStep1();
             theInMemoryRepositoryRatingGroup.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryRating.CompleteInsertOnSubmitStep2();
-            theInMemoryRepositoryRatingGroup.CompleteInsertOnSubmitStep2();
+            theInMemoryRepositoryRating.SetNavigationPropertiesForEntitiesBeingInserted();
+            theInMemoryRepositoryRatingGroup.SetNavigationPropertiesForEntitiesBeingInserted();
 
             theRating.RatingGroup.Should().Equals(theRatingGroup);
             theRating.RatingGroup2.Should().BeNull();
@@ -517,7 +517,7 @@ namespace TestProject1
             theInMemoryRepositoryAddressField.GetItemByID(1).Should().Equals(theAddressField);
             theInMemoryRepositoryField.GetItemByID(1).Should().Equals(theField);
 
-            InMemoryRepositoryList repoList2 = new InMemoryRepositoryList(UnderlyingR8RDataContext, repoList);
+            InMemoryDataContext repoList2 = new InMemoryDataContext(UnderlyingR8RDataContext, repoList);
             InMemoryRepository<AddressField> repoAddress2 = repoList2.GetRepository<AddressField>() as InMemoryRepository<AddressField>;
             InMemoryRepository<Field> repoField2 = repoList2.GetRepository<Field>() as InMemoryRepository<Field>;
 

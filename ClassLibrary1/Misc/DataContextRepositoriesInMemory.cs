@@ -342,21 +342,21 @@ namespace ClassLibrary1.Misc
     public interface IInMemoryRepositoryWithSubmitChangesSupport
     {
         void CompleteInsertOnSubmitStep1();
-        void CompleteInsertOnSubmitStep2();
+        void SetNavigationPropertiesForEntitiesBeingInserted();
         void CompleteDeleteOnSubmit();
         bool ItemIsNotInRepositoryOrIsSetToDelete(object item);
         bool ItemIsInRepositoryAndNotSetToDelete(object item);
-        IInMemoryRepositoryWithSubmitChangesSupport CloneTo(InMemoryRepositoryList newOwner);
+        IInMemoryRepositoryWithSubmitChangesSupport CloneTo(InMemoryDataContext newOwner);
         object GetItemByID(object ID);
     }
 
     public class InMemoryRepository<T> : IInMemoryRepositoryWithSubmitChangesSupport, IRepository<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
     {
         int maxPrimaryKeyID = 0;
-        List<T> ListOfEntities;
-        List<T> EntitiesBeingInserted;
-        List<T> EntitiesBeingDeleted;
-        public InMemoryRepositoryList Owner { get; set; }
+        HashSet<T> EntitiesInRepository;
+        HashSet<T> EntitiesBeingInserted;
+        HashSet<T> EntitiesBeingDeleted;
+        public InMemoryDataContext Owner { get; set; }
         internal List<RepositoryItemAssociationInfo> _PropertiesForThisItemType;
         public List<RepositoryItemAssociationInfo> PropertiesForThisItemType
         {
@@ -368,20 +368,20 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public InMemoryRepository(List<T> listOfEntities, InMemoryRepositoryList owner)
+        public InMemoryRepository(HashSet<T> entitiesInRepository, InMemoryDataContext owner)
         {
-            if (listOfEntities == null)
-                ListOfEntities = new List<T>();
+            if (entitiesInRepository == null)
+                EntitiesInRepository = new HashSet<T>();
             else
-                ListOfEntities = listOfEntities;
-            if (ListOfEntities.Any())
+                EntitiesInRepository = entitiesInRepository;
+            if (EntitiesInRepository.Any())
             {
-                bool primaryKeyIsInt = RepositoryItemPrimaryKeys.PrimaryKeyFieldIsInt(listOfEntities.First());
+                bool primaryKeyIsInt = RepositoryItemPrimaryKeys.PrimaryKeyFieldIsInt(entitiesInRepository.First());
                 if (primaryKeyIsInt)
-                    maxPrimaryKeyID = ListOfEntities.Max(x => (int) RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x));
+                    maxPrimaryKeyID = EntitiesInRepository.Max(x => (int) RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x));
             }
-            EntitiesBeingDeleted = new List<T>();
-            EntitiesBeingInserted = new List<T>();
+            EntitiesBeingDeleted = new HashSet<T>();
+            EntitiesBeingInserted = new HashSet<T>();
             Owner = owner;
         }
 
@@ -397,43 +397,44 @@ namespace ClassLibrary1.Misc
         }
 
 
-        public IInMemoryRepositoryWithSubmitChangesSupport CloneTo(InMemoryRepositoryList newOwner)
+        public IInMemoryRepositoryWithSubmitChangesSupport CloneTo(InMemoryDataContext newOwner)
         {
-            List<T> newList = new List<T>();
-            newList.AddRange(ListOfEntities); // cloning the objects isn't working right now, largely because the entityset connections are messed up .Select(x => CloneObject<T>(x)));
-            return new InMemoryRepository<T>(newList, newOwner);
+            HashSet<T> newSet = new HashSet<T>();
+            foreach (var entityInRepository in EntitiesInRepository)
+                newSet.Add(entityInRepository); // cloning the objects isn't working right now, largely because the entityset connections are messed up .Select(x => CloneObject<T>(x)));
+            return new InMemoryRepository<T>(newSet, newOwner);
         }
 
-        public Type ElementType { get { return ListOfEntities.AsQueryable().ElementType; } }
-        public Expression Expression { get { return ListOfEntities.AsQueryable().Expression; } }
-        public IQueryProvider Provider { get { return ListOfEntities.AsQueryable().Provider; } }
+        public Type ElementType { get { return EntitiesInRepository.AsQueryable().ElementType; } }
+        public Expression Expression { get { return EntitiesInRepository.AsQueryable().Expression; } }
+        public IQueryProvider Provider { get { return EntitiesInRepository.AsQueryable().Provider; } }
 
         public bool ItemIsNotInRepositoryOrIsSetToDelete(object item)
         {
-            return !ListOfEntities.Contains(item) || EntitiesBeingDeleted.Contains(item);
+            return !EntitiesInRepository.Contains(item) || EntitiesBeingDeleted.Contains(item);
         }
 
         public bool ItemIsInRepositoryAndNotSetToDelete(object item)
         {
-            return ListOfEntities.Contains(item) && !EntitiesBeingDeleted.Contains(item);
+            return EntitiesInRepository.Contains(item) && !EntitiesBeingDeleted.Contains(item);
         }
 
         public object GetItemByID(object ID)
         {
-            return ListOfEntities.Single(x => RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x).Equals(ID));
+            return EntitiesInRepository.Single(x => RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x).Equals(ID));
         }
 
         public void InsertOnSubmit(T theObject)
         {
-            if (ListOfEntities.Contains(theObject))
+            if (EntitiesInRepository.Contains(theObject))
                 throw new Exception("Trying to insert an object that has already been inserted into the table.");
-            ListOfEntities.Add(theObject);
+            EntitiesInRepository.Add(theObject);
             EntitiesBeingInserted.Add(theObject);
         }
 
         public void InsertOnSubmitIfNotAlreadyInserted(T theObject)
         {
-            if (!ListOfEntities.Contains(theObject))
+            if (!EntitiesInRepository.Contains(theObject))
             {
                 InsertOnSubmit(theObject);
             }
@@ -441,9 +442,9 @@ namespace ClassLibrary1.Misc
 
         public void DeleteOnSubmit(T theObject)
         {
-            if (ListOfEntities.Contains(theObject))
+            if (EntitiesInRepository.Contains(theObject))
             {
-                ListOfEntities.Remove(theObject);
+                EntitiesInRepository.Remove(theObject);
                 EntitiesBeingDeleted.Add(theObject);
             }
         }
@@ -467,7 +468,7 @@ namespace ClassLibrary1.Misc
 
         internal void SetUnsetPrimaryKeys()
         {
-            IEnumerable<T> theUnset = ListOfEntities.Where(x => RepositoryItemPrimaryKeys.unsetPrimaryKeyValues.Any(y => y == RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x)));
+            IEnumerable<T> theUnset = EntitiesInRepository.Where(x => RepositoryItemPrimaryKeys.unsetPrimaryKeyValues.Any(y => y == RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x)));
             foreach (var unset in theUnset)
                 SetUnsetPrimaryKey(unset);
         }
@@ -525,13 +526,13 @@ namespace ClassLibrary1.Misc
         }
 
 
-        public void CompleteInsertOnSubmitStep2()
+        public void SetNavigationPropertiesForEntitiesBeingInserted()
         {
             foreach (var item in EntitiesBeingInserted)
             {
                 SetPropertiesBasedOnForeignKeyIDAndViceVersa(item);
             }
-            EntitiesBeingInserted = new List<T>(); // clear out the list
+            EntitiesBeingInserted = new HashSet<T>(); // clear out the list
         }
 
         internal List<object> GetAllAssociatedObjects(T item)
@@ -572,28 +573,28 @@ namespace ClassLibrary1.Misc
                 RemoveAssociationsWithOtherItems(item);
                 //ConfirmNoAssociationWithNondeletedItem(item); We now remove associations. E.g., ChangesGroup has a User. We want to delete the ChangesGroup, not the User.
             }
-            EntitiesBeingDeleted = new List<T>();
+            EntitiesBeingDeleted = new HashSet<T>();
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return ListOfEntities.GetEnumerator();
+            return EntitiesInRepository.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ListOfEntities.GetEnumerator();
+            return EntitiesInRepository.GetEnumerator();
         }
     }
 
-    public class InMemoryRepositoryList
+    public class InMemoryDataContext
     {
         public Dictionary<Type, IInMemoryRepositoryWithSubmitChangesSupport> inMemoryRepositoryDictionary;
         public List<IInMemoryRepositoryWithSubmitChangesSupport> inMemoryRepositoryList;
         public DataContext UnderlyingDataContext { get; set; }
         public List<RepositoryItemAssociationInfo> MappingInfo { get; set; }
 
-        public InMemoryRepositoryList(DataContext underlyingDataContext)
+        public InMemoryDataContext(DataContext underlyingDataContext)
         {
             UnderlyingDataContext = underlyingDataContext;
             MappingInfo = MappingInfoProcessor.GetMappingInfoForDataContext(underlyingDataContext);
@@ -601,14 +602,14 @@ namespace ClassLibrary1.Misc
             inMemoryRepositoryList = new List<IInMemoryRepositoryWithSubmitChangesSupport>();
         }
 
-        public InMemoryRepositoryList(DataContext underlyingDataContext, InMemoryRepositoryList listToClone)
+        public InMemoryDataContext(DataContext underlyingDataContext, InMemoryDataContext listToClone)
         {
             UnderlyingDataContext = underlyingDataContext;
             MappingInfo = MappingInfoProcessor.GetMappingInfoForDataContext(underlyingDataContext);
             CloneFrom(listToClone);
         }
 
-        public void CloneFrom(InMemoryRepositoryList listToClone)
+        public void CloneFrom(InMemoryDataContext listToClone)
         {
             inMemoryRepositoryDictionary = new Dictionary<Type, IInMemoryRepositoryWithSubmitChangesSupport>();
             inMemoryRepositoryList = new List<IInMemoryRepositoryWithSubmitChangesSupport>();
@@ -656,7 +657,7 @@ namespace ClassLibrary1.Misc
             }
             for (int i = 0; i < count; i++)
             {
-                inMemoryRepositoryList[i].CompleteInsertOnSubmitStep2();
+                inMemoryRepositoryList[i].SetNavigationPropertiesForEntitiesBeingInserted();
             }
         }
 
@@ -675,7 +676,7 @@ namespace ClassLibrary1.Misc
             return repository.GetItemByID(ID);
         }
 
-        public void ConfirmNotAlreadyInAnotherDataContext(Dictionary<object, InMemoryRepositoryList> originalDataContexts, object item)
+        public void ConfirmNotAlreadyInAnotherDataContext(Dictionary<object, InMemoryDataContext> originalDataContexts, object item)
         {
             if (originalDataContexts.ContainsKey(item))
             {
@@ -703,32 +704,32 @@ namespace ClassLibrary1.Misc
 
     public static class SimulatedPermanentStorage
     {
-        public static Dictionary<Type, InMemoryRepositoryList> inMemoryRepositoryDictionary;
-        public static Dictionary<object, InMemoryRepositoryList> originalInMemoryRepositoryList = new Dictionary<object, InMemoryRepositoryList>();
+        public static Dictionary<Type, InMemoryDataContext> inMemoryRepositoryDictionary;
+        public static Dictionary<object, InMemoryDataContext> originalInMemoryRepositoryList = new Dictionary<object, InMemoryDataContext>();
 
-        public static InMemoryRepositoryList GetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext)
+        public static InMemoryDataContext GetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext)
         {
             Type theType = underlyingDataContext.GetType();
 
             if (inMemoryRepositoryDictionary == null)
-                inMemoryRepositoryDictionary = new Dictionary<Type, InMemoryRepositoryList>();
+                inMemoryRepositoryDictionary = new Dictionary<Type, InMemoryDataContext>();
 
             if (inMemoryRepositoryDictionary.ContainsKey(theType))
                 return inMemoryRepositoryDictionary[theType];
             else
             {
-                InMemoryRepositoryList newPermanentStorage = new InMemoryRepositoryList(underlyingDataContext);
+                InMemoryDataContext newPermanentStorage = new InMemoryDataContext(underlyingDataContext);
                 inMemoryRepositoryDictionary.Add(theType, newPermanentStorage);
                 return newPermanentStorage;
             }
         }
 
-        public static void SetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext, InMemoryRepositoryList inMemoryRepositoryList)
+        public static void SetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext, InMemoryDataContext inMemoryRepositoryList)
         { // This is a faster way of doing submit changes. 
             Type theType = underlyingDataContext.GetType();
 
             if (inMemoryRepositoryDictionary == null)
-                inMemoryRepositoryDictionary = new Dictionary<Type, InMemoryRepositoryList>();
+                inMemoryRepositoryDictionary = new Dictionary<Type, InMemoryDataContext>();
 
             if (inMemoryRepositoryDictionary.ContainsKey(theType))
                 inMemoryRepositoryDictionary[theType] = inMemoryRepositoryList;
@@ -739,14 +740,14 @@ namespace ClassLibrary1.Misc
         public static void Reset()
         {
             inMemoryRepositoryDictionary = null;
-            originalInMemoryRepositoryList = new Dictionary<object, InMemoryRepositoryList>();
+            originalInMemoryRepositoryList = new Dictionary<object, InMemoryDataContext>();
         }
     }
 
 
     public class InMemoryContext : IDataContext
     {
-        public InMemoryRepositoryList inMemoryRepositories;
+        public InMemoryDataContext inMemoryRepositories;
 
         public DataContext UnderlyingDataContext { get; set; }
 
@@ -769,7 +770,7 @@ namespace ClassLibrary1.Misc
             if (UseFasterSubmitChanges.setting)
                 inMemoryRepositories = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext);
             else
-                inMemoryRepositories = new InMemoryRepositoryList(UnderlyingDataContext, SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext));
+                inMemoryRepositories = new InMemoryDataContext(UnderlyingDataContext, SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext));
         }
 
         public IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
@@ -799,7 +800,7 @@ namespace ClassLibrary1.Misc
                 SimulatedPermanentStorage.SetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext, inMemoryRepositories);
             else
             {
-                InMemoryRepositoryList permanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext);
+                InMemoryDataContext permanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext);
                 permanentStorage.CloneFrom(inMemoryRepositories);
             }
         }
