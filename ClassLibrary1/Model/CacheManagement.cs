@@ -146,7 +146,6 @@ namespace ClassLibrary1.Model
             TimeSpan minTimeBetweenReadChecks = new TimeSpan(0, 0, 5);
             TimeSpan minTimeBetweenDeleteChecks = new TimeSpan(0, 2, 0);
             DateTime? lastReadTime = null;
-            DateTime? lastDeleteCheck = null;
 
             public List<string> GetNewNotifications()
             {

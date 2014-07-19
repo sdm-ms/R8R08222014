@@ -1121,7 +1121,9 @@ namespace ClassLibrary1.Model
 
         public int? AddMissingRatingsForSomeTblRows(int TblID, int? numToDo, int startingTblRowID)
         {
-            throw new Exception("Internal error. We should not be adding missing ratings for entire TblRows anymore. This code remains just in case it is needed in the future.");
+            bool isSupported = false;
+            if (!isSupported)
+                throw new Exception("Internal error. We should not be adding missing ratings for entire TblRows anymore. This code remains just in case it is needed in the future.");
 
             var theTblRows = DataContext.GetTable<TblRow>().Where(e => e.TblID == TblID &&
                    e.Status == (Byte)StatusOfObject.Active && e.TblRowID >= startingTblRowID);
