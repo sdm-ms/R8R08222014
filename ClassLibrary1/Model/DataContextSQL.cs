@@ -34,12 +34,12 @@ namespace ClassLibrary1.Model
         //}
 
 
-        //public void ClearContextCache()
-        //{
-        //    const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
-        //    var method = this.GetType().GetMethod("ClearCache", FLAGS);
-        //    method.Invoke(this, null);
-        //}
+        public void ClearContextCache()
+        {
+            const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
+            var method = this.GetType().GetMethod("ClearCache", FLAGS);
+            method.Invoke(this, null);
+        }
 
     }
 
@@ -191,6 +191,38 @@ namespace ClassLibrary1.Model
             }
         }
 
+        public void SetUserRatingAddOptions()
+        {
+            //Connection.Open();
+            _underlyingR8RDataContext.ExecuteCommand("SET DEADLOCK_PRIORITY HIGH;");
+        }
+
+        public void SetPageLoadOptions()
+        {
+            //Connection.Open();
+            _underlyingR8RDataContext.ExecuteCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;");
+            return;
+            // Experimentation seems to indicate that using eager loading, even only a bit, slows things down on the main page a lot. This may be because I keep calling the database multiple times anyway, instead of using properties based on initial calls.
+            //if (PageDataLoadOptions == null)
+            //{
+            //    DataLoadOptions dl = new DataLoadOptions();
+            //    dl.LoadWith<TblRow>(x => x.Tbl);
+            //    dl.LoadWith<Tbl>(x => x.PointsManager);
+            //    dl.LoadWith<PointsManager>(x => x.Domain);
+            //    dl.LoadWith<Tbl>(x => x.TblTabs);
+            //    dl.LoadWith<TblTab>(x => x.TblColumns);
+            //    dl.LoadWith<TblColumn>(x => x.TblColumnFormattings);
+            //    dl.LoadWith<Tbl>(x => x.FieldDefinitions);
+            //    dl.LoadWith<FieldDefinition>(x => x.ChoiceGroupFieldDefinitions);
+            //    dl.LoadWith<FieldDefinition>(x => x.NumberFieldDefinitions);
+            //    dl.LoadWith<FieldDefinition>(x => x.DateTimeFieldDefinitions);
+            //    dl.LoadWith<FieldDefinition>(x => x.TextFieldDefinitions);
+            //    dl.LoadWith<ChoiceGroupFieldDefinition>(x => x.ChoiceGroup);
+            //    dl.LoadWith<ChoiceGroup>(x => x.ChoiceInGroups);
+            //    PageDataLoadOptions = dl;
+            //}
+            //LoadOptions = PageDataLoadOptions;
+        }
 
         public void LoadStatsWithTrustTrackersAndUserInteractions()
         {
@@ -199,6 +231,25 @@ namespace ClassLibrary1.Model
             DataLoadOptions dl = new DataLoadOptions();
             dl.LoadWith<TrustTracker>(x => x.TrustTrackerStats);
             dl.LoadWith<UserInteraction>(x => x.UserInteractionStats);
+            _underlyingR8RDataContext.LoadOptions = dl;
+            TooLateToSetPageLoadOptions = true;
+        }
+
+        public void SetUserRatingUpdatingLoadOptions()
+        {
+            if (TooLateToSetPageLoadOptions)
+                return;
+            DataLoadOptions dl = new DataLoadOptions();
+            dl.LoadWith<RatingGroup>(x => x.RatingGroupAttribute);
+            dl.LoadWith<RatingGroupAttribute>(x => x.RatingCharacteristic);
+            dl.LoadWith<RatingCharacteristic>(x => x.RatingPhaseGroup);
+            dl.LoadWith<RatingCharacteristic>(x => x.SubsidyDensityRangeGroup);
+            dl.LoadWith<RatingPhaseGroup>(x => x.RatingPhases);
+            dl.LoadWith<SubsidyDensityRangeGroup>(x => x.SubsidyDensityRanges);
+            dl.LoadWith<RatingGroup>(x => x.TblRow);
+            dl.LoadWith<TblRow>(x => x.Tbl);
+            dl.LoadWith<Tbl>(x => x.PointsManager);
+
             _underlyingR8RDataContext.LoadOptions = dl;
             TooLateToSetPageLoadOptions = true;
         }

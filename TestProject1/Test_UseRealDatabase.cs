@@ -143,7 +143,7 @@ namespace TestProject1
             };
             myDataContext.GetTable<User>().InsertOnSubmit(newUser);
             myDataContext.SubmitChanges();
-            // DEBUG myDataContext.ClearContextCache();
+            myDataContext.ClearContextCache();
         }
 
 

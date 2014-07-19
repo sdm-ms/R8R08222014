@@ -136,7 +136,7 @@ namespace ClassLibrary1.Model
             Trace.TraceInformation(ActorsTable.TblID + " " + ActorsColumns + " " + TextFields);
         }
 
-        public void DeleteAllOfType<K>(IQueryable<K> theItems) where K : class
+        public void DeleteAllOfType<K>(IQueryable<K> theItems) where K : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             int numTries = 0;
 
@@ -157,7 +157,7 @@ namespace ClassLibrary1.Model
             }
         }
 
-        public void DeleteAllOfTypeHelper<K>(IQueryable<K> theItems) where K : class
+        public void DeleteAllOfTypeHelper<K>(IQueryable<K> theItems) where K : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             const int numAtTime = 100;
             IQueryable<K> items = theItems.Take(numAtTime);

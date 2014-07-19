@@ -38,6 +38,7 @@ public partial class ViewTbl : System.Web.UI.Page
     protected void Page_Init(object sender, EventArgs e)
     {
         CacheManagement.DisablePageCaching(); // No browser caching (we will use server caching)
+        DataAccess.R8RDB.SetPageLoadOptions();
         try
         {
             theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.R8RDB);

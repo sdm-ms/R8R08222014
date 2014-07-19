@@ -47,21 +47,14 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        internal static void InsertOnSubmitObjectsToBeInserted<T>(this IDataContextExtended theDataContext) where T : class
+        internal static void InsertOnSubmitObjectsToBeInserted<T>(this IDataContextExtended theDataContext) where T : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             var theDBTable = theDataContext.GetTable<T>();
             foreach (var theObject in theDataContext.RegisteredToBeInserted.OfType<T>())
                 theDBTable.InsertOnSubmitIfNotAlreadyInserted(theObject);
         }
 
-        /// <summary>
-        /// Returns objects that either have been registered to be inserted or are in the database.
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <param name="theDataContext"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public static IQueryable<TSource> WhereFromNewOrDatabase<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
+        public static IQueryable<TSource> WhereFromNewOrDatabase<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             IQueryable<TSource> newObjects = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().Where<TSource>(predicate);
             if (newObjects.Any())
@@ -70,7 +63,7 @@ namespace ClassLibrary1.Misc
             return theTable.Where<TSource>(predicate);
         }
 
-        public static IQueryable<TSource> WhereFromNewAndDatabase<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
+        public static IQueryable<TSource> WhereFromNewAndDatabase<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             List<TSource> newObjects = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().Where<TSource>(predicate).ToList();
             var theTable = theDataContext.GetTable<TSource>();
@@ -79,13 +72,13 @@ namespace ClassLibrary1.Misc
             return combined;
         }
 
-        public static TSource NewOrFirst<TSource>(this IDataContextExtended theDataContext) where TSource : class
+        public static TSource NewOrFirst<TSource>(this IDataContextExtended theDataContext) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             var thePredicate = PredicateBuilder.True<TSource>();
             return NewOrFirst(theDataContext, thePredicate);
         }
 
-        public static TSource NewOrFirst<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
+        public static TSource NewOrFirst<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().FirstOrDefault(predicate);
             if (newObject != null)
@@ -94,13 +87,13 @@ namespace ClassLibrary1.Misc
             return theTable.First<TSource>(predicate);
         }
 
-        public static TSource NewOrFirstOrDefault<TSource>(this IDataContextExtended theDataContext) where TSource : class
+        public static TSource NewOrFirstOrDefault<TSource>(this IDataContextExtended theDataContext) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             var thePredicate = PredicateBuilder.True<TSource>();
             return NewOrFirstOrDefault(theDataContext, thePredicate);
         }
 
-        public static TSource NewOrFirstOrDefault<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
+        public static TSource NewOrFirstOrDefault<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().FirstOrDefault(predicate);
             if (newObject != null)
@@ -109,13 +102,13 @@ namespace ClassLibrary1.Misc
             return theTable.FirstOrDefault<TSource>(predicate);
         }
 
-        public static TSource NewOrSingle<TSource>(this IDataContextExtended theDataContext) where TSource : class
+        public static TSource NewOrSingle<TSource>(this IDataContextExtended theDataContext) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             var thePredicate = PredicateBuilder.True<TSource>();
             return NewOrSingle(theDataContext, thePredicate);
         }
 
-        public static TSource NewOrSingle<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
+        public static TSource NewOrSingle<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().SingleOrDefault(predicate);
             if (newObject != null)
@@ -124,13 +117,13 @@ namespace ClassLibrary1.Misc
             return theTable.Single<TSource>(predicate);
         }
 
-        public static TSource NewOrSingleOrDefault<TSource>(this IDataContextExtended theDataContext) where TSource : class
+        public static TSource NewOrSingleOrDefault<TSource>(this IDataContextExtended theDataContext) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             var thePredicate = PredicateBuilder.True<TSource>();
             return NewOrSingleOrDefault(theDataContext, thePredicate);
         }
 
-        public static TSource NewOrSingleOrDefault<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
+        public static TSource NewOrSingleOrDefault<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().SingleOrDefault<TSource>(predicate);
             if (newObject != null)
