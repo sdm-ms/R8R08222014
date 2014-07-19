@@ -88,19 +88,7 @@ namespace ClassLibrary1.Model
             underlyingR8RDataContext = (R8RDataContext)UnderlyingDataContext;
         }
 
-
-        public void SetUserRatingAddOptions()
-        {
-        }
-
-        public void SetPageLoadOptions()
-        {
-        }
-
         public void LoadStatsWithTrustTrackersAndUserInteractions()
-        {
-        }
-        public void SetUserRatingUpdatingLoadOptions()
         {
         }
 

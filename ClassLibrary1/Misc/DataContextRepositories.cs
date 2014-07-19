@@ -16,7 +16,7 @@ namespace ClassLibrary1.Misc
 
     public interface IDataContext
     {
-        IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged;
+        IRepository<T> GetTable<T>() where T : class;
         void SubmitChanges();
         void SubmitChanges(System.Data.Linq.ConflictMode conflictMode);
         void CompleteSubmitChanges(System.Data.Linq.ConflictMode conflictMode);
@@ -24,26 +24,23 @@ namespace ClassLibrary1.Misc
         bool TooLateToSetPageLoadOptions { get; set; }
     }
 
-    public interface IRepository<T> : IQueryable<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+    public interface IRepository<T> : IQueryable<T> where T : class
     {
         void InsertOnSubmit(T theObject);
         void InsertOnSubmitIfNotAlreadyInserted(T theObject);
         void DeleteOnSubmit(T theObject);
-
-        // As far as I know, this method just appeared...should we delete it?
-        //UserInteraction Single(Func<UserInteraction, bool> func);
     }
 
     public static class IRepositoryExtensions 
     {
-        public static void DeleteAllOnSubmit<T>(this IRepository<T> iRepository, IEnumerable<T> entities) where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+        public static void DeleteAllOnSubmit<T>(this IRepository<T> iRepository, IEnumerable<T> entities) where T : class
         {
             foreach (var entity in entities)
                 iRepository.DeleteOnSubmit(entity);
         }
 
 
-        public static void InsertAllOnSubmit<T>(this IRepository<T> iRepository, IEnumerable<T> entities) where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+        public static void InsertAllOnSubmit<T>(this IRepository<T> iRepository, IEnumerable<T> entities) where T : class
         {
             foreach (var entity in entities)
                 iRepository.InsertOnSubmit(entity);

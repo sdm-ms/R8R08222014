@@ -11,7 +11,7 @@ using System.Reflection;
 namespace ClassLibrary1.Misc
 {
 
-    public class SQLRepository<T> : IRepository<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+    public class SQLRepository<T> : IRepository<T> where T : class
     {
         System.Data.Linq.Table<T> UnderlyingTable;
 
@@ -87,7 +87,7 @@ namespace ClassLibrary1.Misc
             TooLateToSetPageLoadOptions = false;
         }
 
-        public IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+        public IRepository<T> GetTable<T>() where T : class
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
             var theTable = UnderlyingDataContext.GetTable<T>();
