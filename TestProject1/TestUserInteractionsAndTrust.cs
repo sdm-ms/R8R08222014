@@ -106,7 +106,6 @@ namespace TestProject1
             Guid user0 = TestHelper.UserIds[0];
             Guid user1 = TestHelper.UserIds[1];
             Guid user2 = TestHelper.UserIds[2];
-            Guid user3 = TestHelper.UserIds[3];
 
             UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
