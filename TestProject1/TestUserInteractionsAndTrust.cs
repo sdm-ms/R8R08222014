@@ -339,7 +339,7 @@ namespace TestProject1
                 .Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, Precision);
 
             /* updating the rating shouldn't change this */
-            var mostRecentUserRating = _dataManipulation.DataContext.GetTable<UserRating>().OrderByDescending(x => x.UserRatingID).First();
+            var mostRecentUserRating = _dataManipulation.DataContext.GetTable<UserRating>().OrderByDescending(x => x.UserRatingGroup.WhenCreated).First();
             mostRecentUserRating.ForceRecalculate = true;
             _dataManipulation.DataContext.SubmitChanges();
             TestHelper.WaitIdleTasks();
@@ -406,7 +406,7 @@ namespace TestProject1
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
 
-            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingID).First(); // TODO this is an example of where TestHelper is not being useful; relying upon the highest ID rating to be the most recent is bad form.  It's probably always correct, but it would make for one heck of a bug if for some reason it were not.  It would be much better if TestHelper had something like TestHelper.CreateRating(...) returning the Rating.
+            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingGroup.WhenCreated).First(); 
             Guid rating2Id = rating2.RatingID;
 
             decimal user1Rating2UserRatingValue = 9.5M;
@@ -570,7 +570,7 @@ namespace TestProject1
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
 
-            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingID).First(); // TODO this is an example of where TestHelper is not being useful; relying upon the highest ID rating to be the most recent is bad form.  It's probably always correct, but it would make for one heck of a bug if for some reason it were not.  It would be much better if TestHelper had something like TestHelper.CreateRating(...) returning the Rating.
+            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingGroup.WhenCreated).First(); 
             Guid rating2Id = rating2.RatingID;
 
             decimal user1Rating2UserRatingValue = 9.5M;
@@ -1109,7 +1109,7 @@ namespace TestProject1
             if (applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
             {
                 R8RTestEnvironmentCreator testEnv = new R8RTestEnvironmentCreator(TestHelper);
-                PointsManager pm = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
+                PointsManager pm = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.Name).First();
                 testEnv.CreateChoiceGroups(pm.PointsManagerID);
                 ChoiceGroup theChoiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single"); // this is just a test choice group that was added where one can only select a single choice from the group
                 var choiceInGroups = theChoiceGroup.ChoiceInGroups.ToList();
@@ -1124,7 +1124,7 @@ namespace TestProject1
                     // Otherwise there's a 50% chance that we will set theChoiceId to a random choice other than the first one
                     else if (RandomGenerator.GetRandom() > 0.5)
                         theChoiceId = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                    TblRow theTblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here -- this produces a consistent order, but it doesn't really matter what order we insert userratings in
+                    TblRow theTblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here -- this produces a consistent order, but it doesn't really matter what order we insert userratings in
                     // If we leave theChoice == null, then this means that there is no choice for this field.
                     TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(theTblRow, fieldDefinitionID, theChoiceId, TestHelper.SuperUserId, null);
                 }
@@ -1135,7 +1135,7 @@ namespace TestProject1
             // Initialize, each tbl row to the initial value.
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
             {
-                Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).ToList()
+                Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToList()
                     .Skip(rowNum).First();
                 theRating.CurrentValue = initialValue;
                 theRating.LastTrustedValue = initialValue;
@@ -1219,7 +1219,7 @@ x.UserID == user1);
 
             // Check the last rating entered
             int ratingIndexToUse = numTblRows - 1;
-            Rating theRating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First(); 
+            Rating theRating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First(); 
             
             UserRating lastUserRating = theRating2.UserRatings.Single(x => x.UserID == user1);
             float adjPctApplied = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
@@ -1233,7 +1233,7 @@ x.UserID == user1);
             {
                 while (ratingIndexToUse % 10 != 3)
                     ratingIndexToUse--;
-                Rating theRatingToAssess = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
+                Rating theRatingToAssess = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First();
 
                 lastUserRating = theRatingToAssess.UserRatings.Single(x => x.UserID == user1);
                 adjPctApplied = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
@@ -1539,7 +1539,7 @@ x.UserID == user1);
 
             // Check the first rating entered to make sure it has been updated
             int ratingIndexToUse = 0;
-            Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
+            Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First();
             UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == user0);
             TrustTracker tt = firstUserRatingForFirstRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
             float appliedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
@@ -1553,7 +1553,7 @@ x.UserID == user1);
             // second rating may get rerated a small distance, so the following doesn't apply.
             //// Check to make sure admin has not rerated the rating in the second tblrow
             //ratingIndexToUse = 1;
-            //rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
+            //rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First();
             //UserRating lastNonAdminUserRating = rating.UserRatings.Where(x => x.User.Username != "admin").Last();
             //TrustTracker lastNonAdminTT = lastNonAdminUserRating.User.TrustTrackers.First();
             //UserRating adminUserRating = rating.UserRatings.SingleOrDefault(x => x.User.Username == "admin");
@@ -1797,7 +1797,7 @@ x.UserID == user1);
             TestHelper.WaitIdleTasks();
 
             var testEnv = new R8RTestEnvironmentCreator(TestHelper);
-            PointsManager pointsManager = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
+            PointsManager pointsManager = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.Name).First();
             testEnv.CreateChoiceGroups(pointsManager.PointsManagerID);
             ChoiceGroup choiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
             var choiceInGroups = choiceGroup.ChoiceInGroups.ToList();
@@ -1808,7 +1808,7 @@ x.UserID == user1);
             for (int rowNum = 0; rowNum < parameters.NumTblRows; rowNum++)
             {
                 randomChoiceInGroupIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID here, as we're just trying to get a consistent ordering, not an ordering by time.
+                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First(); 
                 TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(tblRow, fieldDefinitionId, randomChoiceInGroupIds[rowNum],
                     TestHelper.SuperUserId, null);
             }
@@ -1837,7 +1837,7 @@ x.UserID == user1);
             //int minUserId = _dataManipulation.DataContext.GetTable<User>().Min(u => u.UserID);
             //Guid userIDsUnderWhichUserWillTargetWrongValues = minUserId + numUsersWhoTargetWrongValues;
 
-            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).Select(x => x.RatingID).ToList();
+            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Select(x => x.RatingID).ToList();
 
             for (int batchNum = 0; batchNum < parameters.NumBatchesOfUserRatings; batchNum++)
             {
@@ -1992,7 +1992,7 @@ x.UserID == user1);
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
             {
                 randomChoiceIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here, since just getting a consistent ordering
+                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here, since just getting a consistent ordering
                 TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(tblRow, fieldDefinitionId, randomChoiceIds[rowNum], 
                     TestHelper.SuperUserId, null);
             }
@@ -2002,7 +2002,7 @@ x.UserID == user1);
             for (int i = 0; i < numUsers; i++)
                 choiceInGroupIdThatTriggersSpecialAdjustmentFactor[i] = choiceInGroups[RandomGenerator.GetRandom(0, choiceInGroupsCount - 1)].ChoiceInGroupID;
 
-            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).Select(x => x.RatingID).ToList();
+            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Select(x => x.RatingID).ToList();
 
             for (int batchNum = 0; batchNum < numBatchesOfUserRatings; batchNum++)
             {
@@ -2068,13 +2068,13 @@ x.UserID == user1);
             decimal user2RatingValue = 8M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
-            
+
             UserInteraction user1User2Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(ui =>
                     ui.OrigRatingUserID == user1 &&
                     ui.LatestRatingUserID == user2);
             user1User2Interaction.Should().NotBeNull();
-
+    
             decimal user3RatingValue = 5M;
             TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();

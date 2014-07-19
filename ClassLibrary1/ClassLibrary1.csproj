@@ -53,6 +53,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Effort">
+      <HintPath>..\packages\Effort.EF6.1.1.0\lib\net45\Effort.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
@@ -116,6 +119,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NMemory">
+      <HintPath>..\packages\NMemory.1.0.0\lib\net45\NMemory.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -173,6 +179,10 @@
     <Compile Include="Migrations\201407171655201_July17at1pm.cs" />
     <Compile Include="Migrations\201407171655201_July17at1pm.Designer.cs">
       <DependentUpon>201407171655201_July17at1pm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407190256104_AddedWhenCreatedFields.cs" />
+    <Compile Include="Migrations\201407190256104_AddedWhenCreatedFields.Designer.cs">
+      <DependentUpon>201407190256104_AddedWhenCreatedFields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -445,6 +455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407171655201_July17at1pm.resx">
       <DependentUpon>201407171655201_July17at1pm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407190256104_AddedWhenCreatedFields.resx">
+      <DependentUpon>201407190256104_AddedWhenCreatedFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

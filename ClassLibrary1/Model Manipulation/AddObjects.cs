@@ -573,6 +573,7 @@ namespace ClassLibrary1.Model
                 FastAccessInitialCopy = true, // must copy this to the denormalized fast access table
                 InitialFieldsDisplaySet = false, // we can't set the fields display now, because we don't have an id
                 NotYetAddedToDatabase = true, // we will change this just before SaveChanges
+                WhenCreated = TestableDateTime.Now,
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<TblRow>().InsertOnSubmit(theTblRow);
@@ -858,7 +859,6 @@ namespace ClassLibrary1.Model
                 TopRatingGroup = topRatingGroup,
                 NumInGroup = ratingPlan.NumInGroup,
                 Name = ratingPlan.Name,
-                CreationTime = TestableDateTime.Now,
                 Creator = ratingPlan.Creator,
                 CurrentValue = null,
                 LastModifiedResolutionTimeOrCurrentValue = TestableDateTime.Now
@@ -962,6 +962,7 @@ namespace ClassLibrary1.Model
                 ValueRecentlyChanged = false,
                 HighStakesKnown = false, /* assume that rating group will not currently be high stakes */
                 TypeOfRatingGroup = (Byte)MType,
+                WhenCreated = TestableDateTime.Now,
                 Status = (Byte)StatusOfObject.Active
             };
             DataContext.GetTable<RatingGroup>().InsertOnSubmit(theGroup);
@@ -1308,7 +1309,8 @@ namespace ClassLibrary1.Model
                 StartTime = currentTime,
                 ActualCompleteTime = currentTime,
                 EarliestCompleteTime = currentTime,
-                ShortTermResolveTime = currentTime
+                ShortTermResolveTime = currentTime,
+                WhenCreated = TestableDateTime.Now,
             };
             DataContext.GetTable<RatingGroupPhaseStatus>().InsertOnSubmit(theStatus);
             DataContext.RegisterObjectToBeInserted(theStatus);
@@ -1397,6 +1399,7 @@ namespace ClassLibrary1.Model
                 ResolveByUnwinding = resolveByUnwinding,
                 EffectiveTime = (DateTime) effectiveTime,
                 ExecutionTime = currentTime, // note: not necessarily unique
+                WhenCreated = TestableDateTime.Now,
                 Creator = creator,
                 Status = (Byte)StatusOfObject.Proposed // will be changed to active after the resolution is accomplished.
             };
@@ -1584,7 +1587,7 @@ namespace ClassLibrary1.Model
                 UserRatingGroupID = Guid.NewGuid(),
                 RatingGroup = topRatingGroup,
                 RatingGroupPhaseStatus = currentRatingGroupPhaseStatus,
-                WhenMade = TestableDateTime.Now
+                WhenCreated = TestableDateTime.Now
             };
             DataContext.GetTable<UserRatingGroup>().InsertOnSubmit(theGroup);
             DataContext.RegisterObjectToBeInserted(theGroup);
@@ -1664,7 +1667,7 @@ namespace ClassLibrary1.Model
 
             decimal maxLossLongTerm, maxGainLongTerm, profitLongTerm, maxLossShortTerm, maxGainShortTerm, profitShortTerm;
 
-            DateTime currentTime = userRatingGroup.WhenMade;
+            DateTime currentTime = userRatingGroup.WhenCreated;
 
             decimal? oldLastTrustedUserRating = rating.LastTrustedValue;
             decimal? newLastTrustedUserRating;
@@ -1707,7 +1710,7 @@ namespace ClassLibrary1.Model
 
 
             User previousUser = (rating.UserRating == null) ? null : rating.UserRating.User;
-            //UserRating thePreviousUserRating = theRating.UserRatings.OrderByDescending(x => x.UserRatingID).FirstOrDefault();
+            //UserRating thePreviousUserRating = theRating.UserRatings.OrderByDescending(x => x.UserRatingGroup.WhenMade).FirstOrDefault();
             //if (thePreviousUserRating != null)
             //    previousUser = thePreviousUserRating.User;
 
@@ -1765,7 +1768,7 @@ namespace ClassLibrary1.Model
             if (theUserRating.NewUserRating - theUserRating.EnteredUserRating <= 0 != theUserRating.EnteredUserRating - theUserRating.PreviousDisplayedRating >= 0 && theUserRating.PreviousDisplayedRating != null && theUserRating.NewUserRating != theUserRating.EnteredUserRating && theUserRating.EnteredUserRating != theUserRating.PreviousDisplayedRating && theUserRating.NewUserRating != theUserRating.PreviousDisplayedRating)
                 throw new Exception("User rating moved in wrong direction. Internal error.");
 
-            UpdateUserRatingHighStakesKnownFields(theUserRating, ratingGroupPhaseStatus, userRatingGroup.WhenMade);
+            UpdateUserRatingHighStakesKnownFields(theUserRating, ratingGroupPhaseStatus, userRatingGroup.WhenCreated);
 
             DataContext.GetTable<UserRating>().InsertOnSubmit(theUserRating);
             DataContext.RegisterObjectToBeInserted(theUserRating);
@@ -1808,15 +1811,18 @@ namespace ClassLibrary1.Model
             if (rating.LastTrustedValue != rating.CurrentValue && rating.CurrentValue != null)
                 throw new Exception("Internal error: Trusted value should equal current value, since trust concept is eliminated.");
             rating.LastModifiedResolutionTimeOrCurrentValue = currentTime;
+            // DEBUG  Shouldn't we be updating user ratings even where we have only 1 in a phase so that we adjust the user interaction
             ratingPhaseStatus.NumUserRatingsMadeDuringPhase++;
             pointsTotal.NumUserRatings++;
-            if (ratingPhaseStatus.NumUserRatingsMadeDuringPhase > 1) // i.e., there are earlier UserRatings
+            if (ratingPhaseStatus.NumUserRatingsMadeDuringPhase > 1) // i.e., there are earlier UserRatings in this phase
+            {
                 ratingPhaseStatus.TriggerUserRatingsUpdate = true;
+            }
             else
             {
                 theUserRating.PointsPumpingProportion = 1.0M; // 100% of points that can be earned are real, because there are no prior users who might not have earned their points from whom these points will come
-                pointsTotal.PointsPumpingProportionAvg_Numer += (float) (theUserRating.MaxGain * 1.0M);
-                pointsTotal.PointsPumpingProportionAvg_Denom += (float) theUserRating.MaxGain;
+                pointsTotal.PointsPumpingProportionAvg_Numer += (float)(theUserRating.MaxGain * 1.0M);
+                pointsTotal.PointsPumpingProportionAvg_Denom += (float)theUserRating.MaxGain;
                 pointsTotal.PointsPumpingProportionAvg = R8RDataManipulation.CalculatePointsPumpingProportionAvg(pointsTotal.PointsPumpingProportionAvg_Numer, pointsTotal.PointsPumpingProportionAvg_Denom, pointsTotal.NumUserRatings);
             }
             if (rating.UserRating != null)
@@ -1874,7 +1880,8 @@ namespace ClassLibrary1.Model
                 UserRatingsToAddID = Guid.NewGuid(),
                 User = theUser,
                 TopRatingGroupID = (Guid)predictionHierarchyData.UserRatingHierarchyEntries.FirstOrDefault().RatingGroupId,
-                UserRatingHierarchy = BinarySerializer.Serialize<UserRatingHierarchyData>(predictionHierarchyData)
+                UserRatingHierarchy = BinarySerializer.Serialize<UserRatingHierarchyData>(predictionHierarchyData),
+                WhenCreated = TestableDateTime.Now
             };
 
             // At some point we might decide not to use SQL Server to store these.

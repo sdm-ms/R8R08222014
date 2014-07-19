@@ -490,14 +490,14 @@ namespace ClassLibrary1.Model
             {
                 try
                 {
-                    var results = DataContext.GetTable<UserRating>().Where(x => true ).Skip(totalRowsComplete).Take(numAtOnce).Select(x => new { UR = x, R = x.Rating, RG = x.UserRatingGroup.RatingGroup, URG = x.UserRatingGroup, RGPS = x.Rating.RatingGroup.RatingGroupPhaseStatuses.FirstOrDefault(y => y.StartTime <= x.UserRatingGroup.WhenMade && x.UserRatingGroup.WhenMade <= y.ActualCompleteTime), LTPW = x.UserRatingGroup.RatingGroup.RatingGroupAttribute.LongTermPointsWeight });
+                    var results = DataContext.GetTable<UserRating>().Where(x => true ).Skip(totalRowsComplete).Take(numAtOnce).Select(x => new { UR = x, R = x.Rating, RG = x.UserRatingGroup.RatingGroup, URG = x.UserRatingGroup, RGPS = x.Rating.RatingGroup.RatingGroupPhaseStatuses.FirstOrDefault(y => y.StartTime <= x.UserRatingGroup.WhenCreated && x.UserRatingGroup.WhenCreated <= y.ActualCompleteTime), LTPW = x.UserRatingGroup.RatingGroup.RatingGroupAttribute.LongTermPointsWeight });
                     foreach (var result in results)
                     {
                         decimal maxLoss, maxGain, profit, potentialPointsLongTermUnweighted;
                         // Note: To do short term scores, we would need to figure out what the rating was at the relevant time.
                         if (result.RGPS != null)
                         {
-                            CalculatePointsInfo(result.R, result.RG, result.RGPS, result.URG.WhenMade, result.UR.PreviousRatingOrVirtualRating, (decimal) result.UR.NewUserRating, result.R.CurrentValue, false, result.LTPW, result.UR.HighStakesMultiplierOverride, result.UR.PastPointsPumpingProportion, out maxLoss, out maxGain, out profit, out potentialPointsLongTermUnweighted);
+                            CalculatePointsInfo(result.R, result.RG, result.RGPS, result.URG.WhenCreated, result.UR.PreviousRatingOrVirtualRating, (decimal) result.UR.NewUserRating, result.R.CurrentValue, false, result.LTPW, result.UR.HighStakesMultiplierOverride, result.UR.PastPointsPumpingProportion, out maxLoss, out maxGain, out profit, out potentialPointsLongTermUnweighted);
                             result.UR.MaxLoss = result.UR.MaxLossShortTerm + result.UR.MaxLossLongTerm;
                             result.UR.PotentialPointsLongTerm = profit;
                             result.UR.PotentialPointsLongTermUnweighted = potentialPointsLongTermUnweighted;
@@ -609,7 +609,7 @@ namespace ClassLibrary1.Model
                     var unupdatedRatings = from x in DataContext.GetTable<RatingGroup>()
                                            where x.TblRow.TblID == tblID
                                            where x.Ratings.Any()
-                                           let lastUserRating = x.Ratings.SelectMany(y => y.UserRatings).OrderByDescending(y => y.UserRatingGroup.WhenMade).FirstOrDefault()
+                                           let lastUserRating = x.Ratings.SelectMany(y => y.UserRatings).OrderByDescending(y => y.UserRatingGroup.WhenCreated).FirstOrDefault()
                                            where lastUserRating != null &&
                                              (lastUserRating.NewUserRating != x.CurrentValueOfFirstRating ||
                                              lastUserRating.NewUserRating == null && x.CurrentValueOfFirstRating != null ||

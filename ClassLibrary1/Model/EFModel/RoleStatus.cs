@@ -13,6 +13,8 @@ namespace ClassLibrary1.EFModel
 
         public string RoleID { get; set; }
 
+        public DateTime WhenCreated { get; set; }
+
         public DateTime? LastCheckIn { get; set; }
 
         public bool IsWorkerRole { get; set; }

@@ -140,7 +140,7 @@ namespace ClassLibrary1.Model
                     // Not clear why this is running fast while the Any() approach keeps hitting a timeout.
                     //var anyURG = theTbl.TblRows.SelectMany(x => x.RatingGroups).SelectMany(x => x.UserRatingGroups).Where(x => x.WhenMade > aDayAgo).Any();
                     //var anyURG = theTbl.TblRows.Any(x => x.RatingGroups.Any(y => y.UserRatingGroups.Any(z => z.WhenMade > aDayAgo)));
-                    var anyGroups = theDataContext.GetTable<UserRatingGroup>().Where(pg => pg.RatingGroup.TblRow.Tbl.TblID == theTbl.TblID && pg.WhenMade > aDayAgo).Count() > 0;
+                    var anyGroups = theDataContext.GetTable<UserRatingGroup>().Where(pg => pg.RatingGroup.TblRow.Tbl.TblID == theTbl.TblID && pg.WhenCreated > aDayAgo).Count() > 0;
                     if (!anyGroups)
                         bigList.Remove(theTbl);
                 }

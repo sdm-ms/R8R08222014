@@ -142,8 +142,7 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
             beginningOfQuery = theDataAccessModule.DataContext.GetTable<UserRating>().Where(p => p.Rating.TopmostRatingGroupID == TopRatingGroupID);
 
         IQueryable<RecentRatingInfo> theQuery = beginningOfQuery
-            .OrderByDescending(p => p.UserRatingGroup.WhenMade)
-            .ThenByDescending(p => p.UserRatingGroupID)
+            .OrderByDescending(p => p.UserRatingGroup.WhenCreated)
             .ThenBy(p => p.Rating.NumInGroup)
             .Select(p => new RecentRatingInfo
             {
@@ -151,7 +150,7 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
                 Rating = p.Rating,
                 User = p.User,
                 PointsTotal = p.User.PointsTotals.SingleOrDefault(x => x.PointsManagerID == p.Rating.RatingGroup.TblRow.Tbl.PointsManagerID),
-                Date = p.UserRatingGroup.WhenMade,
+                Date = p.UserRatingGroup.WhenCreated,
                 Previous = (p.PreviousDisplayedRating != null) ? (decimal?) p.PreviousRatingOrVirtualRating : (decimal?) null,
                 Trusted = ((p.Rating.CurrentValue == p.Rating.LastTrustedValue) || (p.Rating.CurrentValue != p.NewUserRating)) || p.Rating.CurrentValue == null, 
                 NewRating = p.NewUserRating,

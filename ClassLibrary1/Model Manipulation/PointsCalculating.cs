@@ -357,7 +357,7 @@ namespace ClassLibrary1.Model
                 m.Name == theRating.Name);
             if (theQuery.Count() > 4)
             { // get average based on 100 ratings
-                theAlternativeBasis = theQuery.OrderByDescending(m => m.RatingID).Select(x => x.CurrentValue).Where(x => x != null).Take(100).Average(x => (decimal)x);
+                theAlternativeBasis = theQuery.OrderByDescending(m => m.RatingGroup.WhenCreated).Select(x => x.CurrentValue).Where(x => x != null).Take(100).Average(x => (decimal)x);
             }
             else // not enough data
             {

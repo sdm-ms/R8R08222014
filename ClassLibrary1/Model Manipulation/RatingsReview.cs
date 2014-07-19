@@ -91,7 +91,7 @@ namespace ClassLibrary1.Model
                                        select r
                                    )
                                    .Take(NumRatingsToReviewAtOnce)
-                                   .SelectMany(x => x.UserRatings.Where(y => y.UserRatingGroup.WhenMade > cutoffTime));
+                                   .SelectMany(x => x.UserRatings.Where(y => y.UserRatingGroup.WhenCreated > cutoffTime));
             var userRatingsGrouped = from ur in userRatingsInitialQuery
                                      group ur by ur.Rating into grouped
                                      let pointsManager = grouped.Key.RatingGroup.RatingGroupAttribute.PointsManager
@@ -107,8 +107,8 @@ namespace ClassLibrary1.Model
                                          TblColumn = ratingGroup.TblColumn,
                                          RatingCharacteristic = rating.RatingCharacteristic,
                                          RatingGroupAttribute = ratingGroup.RatingGroupAttribute,
-                                         RatingPhaseStatus = rating.RatingPhaseStatus.OrderByDescending(x => x.RatingPhaseStatusID).FirstOrDefault(),
-                                         UserRatings = grouped.OrderBy(x => x.UserRatingGroup.WhenMade),
+                                         RatingPhaseStatus = rating.RatingPhaseStatus.OrderByDescending(x => x.RatingGroupPhaseStatus.WhenCreated).FirstOrDefault(),
+                                         UserRatings = grouped.OrderBy(x => x.UserRatingGroup.WhenCreated),
                                          TrustTrackerUnit = pointsManager.TrustTrackerUnit,
                                          AdminAccount = adminUserAccount,
                                          AdminPointsTotals = adminPointsTotals,

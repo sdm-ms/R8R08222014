@@ -54,6 +54,8 @@ namespace ClassLibrary1.EFModel
 
         public bool NotYetAddedToDatabase { get; set; }
 
+        public DateTime WhenCreated { get; set; }
+
         public byte[] FastAccessUpdated { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }

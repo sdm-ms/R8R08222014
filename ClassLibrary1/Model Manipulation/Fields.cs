@@ -168,7 +168,6 @@ namespace ClassLibrary1.Model
                             ((f.FieldDefinition.DisplayInPopupSettings & visibleMask) == visibleMask))
                         ))
                     .OrderBy(f => f.FieldDefinition.FieldNum)
-                    .ThenBy(f => f.FieldDefinitionID)
                     .Select(f => new FieldDisplayInfoComplete
                     {
                         Field = f,
@@ -210,7 +209,6 @@ namespace ClassLibrary1.Model
                             PointsManager = x.Key.Tbl.PointsManager,
                             Fields = x
                                 .OrderBy(f => f.FieldDefinition.FieldNum)
-                                .ThenBy(f => f.FieldDefinitionID)
                                 .Select(f => new FieldDisplayInfoComplete
                                 {
                                     Field = f,

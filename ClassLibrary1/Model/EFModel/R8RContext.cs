@@ -6,6 +6,7 @@ namespace ClassLibrary1.EFModel
     using System.Linq;
     using System.Data.Entity.Core.Objects;
     using System.Collections.Generic;
+using System.Data.Common;
 
     public partial class R8RContext : DbContext
     {
@@ -16,6 +17,11 @@ namespace ClassLibrary1.EFModel
 
         public R8RContext(string connectionString)
             : base(connectionString)
+        {
+        }
+
+        public R8RContext(DbConnection connection)
+            : base(connection, true)
         {
         }
 
@@ -1252,6 +1258,34 @@ namespace ClassLibrary1.EFModel
             modelBuilder.Entity<ForumMessage>()
                 .Property(e => e.IPAddress)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<RatingGroup>()
+                .Property(f => f.WhenCreated)
+                .HasColumnType("datetime2");
+
+            modelBuilder.Entity<RatingGroupPhaseStatus>()
+                .Property(f => f.WhenCreated)
+                .HasColumnType("datetime2");
+
+            modelBuilder.Entity<RatingGroupResolution>()
+                .Property(f => f.WhenCreated)
+                .HasColumnType("datetime2");
+
+            modelBuilder.Entity<RoleStatus>()
+                .Property(f => f.WhenCreated)
+                .HasColumnType("datetime2");
+
+            modelBuilder.Entity<TblRow>()
+                .Property(f => f.WhenCreated)
+                .HasColumnType("datetime2");
+
+            modelBuilder.Entity<UserRatingGroup>()
+                .Property(f => f.WhenCreated)
+                .HasColumnType("datetime2");
+
+            modelBuilder.Entity<UserRatingsToAdd>()
+                .Property(f => f.WhenCreated)
+                .HasColumnType("datetime2");
         }
 
     }

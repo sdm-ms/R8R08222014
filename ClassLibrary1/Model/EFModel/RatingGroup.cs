@@ -35,6 +35,8 @@ namespace ClassLibrary1.EFModel
 
         public DateTime? ResolutionTime { get; set; }
 
+        public DateTime WhenCreated { get; set; }
+
         public byte TypeOfRatingGroup { get; set; }
 
         public byte Status { get; set; }

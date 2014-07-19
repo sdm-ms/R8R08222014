@@ -52,7 +52,7 @@ namespace ClassLibrary1.Model
         // of whether the predictions have been processed. 
         public bool RatingGroupIsResolved(RatingGroup theTopRatingGroup)
         {
-            RatingGroupResolution activeResolution = theTopRatingGroup.RatingGroupResolutions.Where(x => x.RatingGroup == theTopRatingGroup).OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.RatingGroupResolutionID).FirstOrDefault();
+            RatingGroupResolution activeResolution = theTopRatingGroup.RatingGroupResolutions.Where(x => x.RatingGroup == theTopRatingGroup).OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.WhenCreated).FirstOrDefault();
             if (activeResolution == null)
                 return false;
             return !activeResolution.CancelPreviousResolutions;
@@ -97,7 +97,7 @@ namespace ClassLibrary1.Model
                 PointsTotals = PointsTotals
             })
             .ToList()
-            .OrderBy(x => x.RatingResolution.ExecutionTime).ThenBy(x => x.RatingResolution.RatingGroupResolutionID) // OK to order by ID just to get a consistent ordering; // Note: Placing this within the middle of the query led to a NullReferenceException, presumably due to a bug
+            .OrderBy(x => x.RatingResolution.ExecutionTime).ThenBy(x => x.RatingResolution.WhenCreated) // OK to order by ID just to get a consistent ordering; // Note: Placing this within the middle of the query led to a NullReferenceException, presumably due to a bug
             .ToList();
 
             DateTime currentTime = TestableDateTime.Now;
@@ -112,12 +112,12 @@ namespace ClassLibrary1.Model
                     TblColumn = resolution.TblColumn,
                     Tbl = resolution.Tbl,
                     ReferenceUserRating = x.UserRatings
-                        .Where(y => y.UserRatingGroup.WhenMade < resolution.RatingResolution.EffectiveTime) 
-                        .OrderByDescending(y => y.UserRatingGroup.WhenMade)
+                        .Where(y => y.UserRatingGroup.WhenCreated < resolution.RatingResolution.EffectiveTime) 
+                        .OrderByDescending(y => y.UserRatingGroup.WhenCreated)
                         .FirstOrDefault(),
                     ReferenceLastTrustedUserRating = x.UserRatings
-                        .Where(y => y.IsTrusted && y.UserRatingGroup.WhenMade < resolution.RatingResolution.EffectiveTime)
-                        .OrderByDescending(y => y.UserRatingGroup.WhenMade)
+                        .Where(y => y.IsTrusted && y.UserRatingGroup.WhenCreated < resolution.RatingResolution.EffectiveTime)
+                        .OrderByDescending(y => y.UserRatingGroup.WhenCreated)
                         .FirstOrDefault()
                 });
                 foreach (var z in ratingsWithlastUserRatings)
@@ -229,7 +229,7 @@ namespace ClassLibrary1.Model
 
             var userRatingInfosGrouped = from ur in userRatingInfoQuery
                                          group ur by ur.RatingPhaseStatus into grouped
-                                         select new { RatingPhaseStatus = grouped.Key, UserRatingInfos = grouped.OrderBy(x => x.UserRating.UserRatingGroup.WhenMade) };
+                                         select new { RatingPhaseStatus = grouped.Key, UserRatingInfos = grouped.OrderBy(x => x.UserRating.UserRatingGroup.WhenCreated) };
 
             var userRatingInfoGroups = userRatingInfosGrouped.ToList(); // remember, take is already done above
             bool moreWorkToDo = userRatingInfoGroups.Count() == maxToTake;
@@ -254,7 +254,7 @@ namespace ClassLibrary1.Model
                     TrustTrackingBackgroundTasks.UpdateUserInteractionsAfterNewUserRatingIsEntered(DataContext,
                         userRatingInfo.CurrentlyRecordedUserInteraction, userRatingInfo.ReplacementUserInteraction,
                         userRatingInfo.UserRating, originalUserTrustTrackerStats, userRatingInfo.MostRecentUserRatingInUserRating,
-                        userRatingInfo.MostRecentUserRatingInRating, userRatingInfo.UserRatingGroup.WhenMade,
+                        userRatingInfo.MostRecentUserRatingInRating, userRatingInfo.UserRatingGroup.WhenCreated,
                         userRatingInfo.RatingGroupAttribute, userRatingInfo.RatingCharacteristic, userRatingInfo.MostRecentUserTrustTracker);
                     userRatingInfo.RatingPhaseStatus.TriggerUserRatingsUpdate = false;
                 }
@@ -476,7 +476,7 @@ namespace ClassLibrary1.Model
             if (theUserRating.ForceRecalculate)
             {
                 theUserRating.ForceRecalculate = false;
-                UpdateUserRatingHighStakesKnownFields(theUserRating, theUserRating.UserRatingGroup.RatingGroupPhaseStatus, theUserRating.UserRatingGroup.WhenMade);
+                UpdateUserRatingHighStakesKnownFields(theUserRating, theUserRating.UserRatingGroup.RatingGroupPhaseStatus, theUserRating.UserRatingGroup.WhenCreated);
             }
 
             if (!theUserRating.PointsHaveBecomePending && theUserRating.WhenPointsBecomePending < currentTime)
@@ -495,7 +495,7 @@ namespace ClassLibrary1.Model
             decimal maxLossShortTerm, maxGainShortTerm, profitShortTerm;
             decimal maxLossLongTerm = 0, maxGainLongTerm = 0, profitLongTerm = 0;
 
-            DateTime whenMade = theUserRating.UserRatingGroup.WhenMade;
+            DateTime whenMade = theUserRating.UserRatingGroup.WhenCreated;
 
             decimal longTermPointsWeight = theUserRating.Rating.RatingGroup.RatingGroupAttribute.LongTermPointsWeight;
             Rating theRating = theUserRating.Rating;
@@ -515,7 +515,7 @@ namespace ClassLibrary1.Model
 
             theUserRating.PotentialPointsShortTerm = profitShortTerm;
             theUserRating.PotentialPointsLongTerm = profitLongTerm;
-            if (longTermPointsWeight != 0 || theUserRating.UserRatingGroup.WhenMade + TimeSpan.FromDays(theUserRating.UserRatingGroup.RatingGroup.RatingGroupAttribute.MinimumDaysToTrackLongTerm) > TestableDateTime.Now) // either long term is changing or we're still within the number of days that we should track unweighted long-term. Note that this is a minimum because if longtermpointsweight > 0, we track it forever
+            if (longTermPointsWeight != 0 || theUserRating.UserRatingGroup.WhenCreated + TimeSpan.FromDays(theUserRating.UserRatingGroup.RatingGroup.RatingGroupAttribute.MinimumDaysToTrackLongTerm) > TestableDateTime.Now) // either long term is changing or we're still within the number of days that we should track unweighted long-term. Note that this is a minimum because if longtermpointsweight > 0, we track it forever
                 theUserRating.PotentialPointsLongTermUnweighted = profitLongTermUnweighted;
 
             if (theUserRating.RewardPendingPointsTracker != null)

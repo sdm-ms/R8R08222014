@@ -53,8 +53,8 @@ namespace ClassLibrary1.Model
             R8RDataAccess dataAccess = new R8RDataAccess();
             List<DateTime> ratingTimes = dataAccess.R8RDB
                                 .GetTable<UserRating>()
-                                    .Where(x => x.UserID == userID && x.UserRatingGroup.WhenMade > fromTime && x.UserRatingGroup.WhenMade < toTime)
-                                    .Select(x => x.UserRatingGroup.WhenMade)
+                                    .Where(x => x.UserID == userID && x.UserRatingGroup.WhenCreated > fromTime && x.UserRatingGroup.WhenCreated < toTime)
+                                    .Select(x => x.UserRatingGroup.WhenCreated)
                                 .Concat(
                                     dataAccess.R8RDB.GetTable<UserCheckIn>()
                                     .Where(x => x.UserID == userID && x.CheckInTime > fromTime && x.CheckInTime < toTime)

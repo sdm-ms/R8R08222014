@@ -101,8 +101,8 @@ namespace ClassLibrary1.Model
                 decimal? referenceValue;
                 UserRating theReferenceUserRating = DataContext.GetTable<UserRating>().Where(
                         p => p.RatingID == MCondition.ConditionRatingID
-                            && p.UserRatingGroup.WhenMade < referenceTime)
-                            .OrderByDescending(p => p.UserRatingGroup.WhenMade)
+                            && p.UserRatingGroup.WhenCreated < referenceTime)
+                            .OrderByDescending(p => p.UserRatingGroup.WhenCreated)
                             .FirstOrDefault();
                 if (theReferenceUserRating == null)
                     referenceValue = null;

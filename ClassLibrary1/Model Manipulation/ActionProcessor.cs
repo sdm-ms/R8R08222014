@@ -1868,7 +1868,7 @@ namespace ClassLibrary1.Model
                 DataAccess.R8RDB.GetTable<RatingGroupResolution>().Where
                     (mr => mr.RatingGroup.RatingGroupID == ratingGroup.RatingGroupID)
                     .OrderByDescending(mr => mr.ExecutionTime)
-                    .ThenByDescending(mr => mr.RatingGroupResolutionID)
+                    .ThenByDescending(mr => mr.WhenCreated)
                     .FirstOrDefault();
 
             if (currentRatingGroupResolution == null && cancelPreviousResolutions)

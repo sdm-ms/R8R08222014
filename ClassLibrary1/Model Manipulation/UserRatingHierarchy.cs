@@ -690,7 +690,7 @@ namespace ClassLibrary1.Model
                     //if (loadRatingsFromAzureTable)
                     // newUserRatings = AzureTable<UserRatingsToAdd>.LoadDataTableServiceEntityByPartitionKey(theRatingGroup.RatingGroupID.ToString(), ref context, "UserRatingsToAdd").ToList().OrderByDescending(x => x.Timestamp).Select(x => x.GetData()).FirstOrDefault();
                     // else
-                    newUserRatings = DataContext.GetTable<UserRatingsToAdd>().Where(x => x.TopRatingGroupID == theRatingGroup.RatingGroupID).ToList().OrderByDescending(x => x.UserRatingsToAddID).FirstOrDefault();
+                    newUserRatings = DataContext.GetTable<UserRatingsToAdd>().Where(x => x.TopRatingGroupID == theRatingGroup.RatingGroupID).ToList().OrderByDescending(x => x.WhenCreated).FirstOrDefault();
                 }
                 catch
                 {

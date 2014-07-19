@@ -66,7 +66,7 @@ namespace ClassLibrary1.EFModel
         {
             get
             {
-                if (Resolved && this.Rating.RatingGroup.ResolutionTime != null && this.Rating.RatingGroup.ResolutionTime < this.UserRatingGroup.WhenMade)
+                if (Resolved && this.Rating.RatingGroup.ResolutionTime != null && this.Rating.RatingGroup.ResolutionTime < this.UserRatingGroup.WhenCreated)
                     return null;
                 return this.Rating.LastTrustedValue;
             }
@@ -78,7 +78,7 @@ namespace ClassLibrary1.EFModel
             {
                 if (!Resolved)
                     return null;
-                if (this.Rating.RatingGroup.ResolutionTime < this.UserRatingGroup.WhenMade)
+                if (this.Rating.RatingGroup.ResolutionTime < this.UserRatingGroup.WhenCreated)
                     return null;
                 return this.Rating.LastTrustedValue;
             }

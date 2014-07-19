@@ -387,14 +387,15 @@ namespace ClassLibrary1.Model
 
             UserInteraction[] zeroedUserInteractions = zeroedUserInteractionsQuery.Take(numToDoAtOnce).ToArray();
 
-            // If we are using our home-made in-memory database, there is not on-delete-cascade behavior,
-            // so we have delete any dependent records ourselves.  It's possible that we could add this
-            // behavior to some kind of OnDelete event of the DataContext
-            if (!dataContext.IsRealDatabase())
-            {
-                IEnumerable<UserInteractionStat> userInteractionStats = zeroedUserInteractions.SelectMany(ui => ui.UserInteractionStats);
-                dataContext.GetTable<UserInteractionStat>().DeleteAllOnSubmit(userInteractionStats);
-            }
+            // The following does not apply now that we are using the Effort unit testing tool.
+            //// If we are using our home-made in-memory database, there is not on-delete-cascade behavior,
+            //// so we have delete any dependent records ourselves.  It's possible that we could add this
+            //// behavior to some kind of OnDelete event of the DataContext
+            //if (!dataContext.IsRealDatabase())
+            //{
+            //    IEnumerable<UserInteractionStat> userInteractionStats = zeroedUserInteractions.SelectMany(ui => ui.UserInteractionStats);
+            //    dataContext.GetTable<UserInteractionStat>().DeleteAllOnSubmit(userInteractionStats);
+            //}
 
             dataContext.GetTable<UserInteraction>().DeleteAllOnSubmit(zeroedUserInteractions);
 

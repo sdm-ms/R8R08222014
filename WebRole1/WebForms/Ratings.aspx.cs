@@ -205,7 +205,7 @@ public partial class Ratings : System.Web.UI.Page
         var beginningOfQuery = theDataAccessModule.DataContext.GetTable<UserRating>()
             .Where(p => p.UserID == UserIDOfRatingsBeingViewed)
             .Where(p => (notHighStakesRatings && !p.HighStakesKnown && !p.HighStakesPreviouslySecret) || (highStakesKnownRatings && p.HighStakesKnown) || (highStakesPreviouslySecretRatings && p.HighStakesPreviouslySecret))
-            .OrderByDescending(p => p.UserRatingGroup.WhenMade)
+            .OrderByDescending(p => p.UserRatingGroup.WhenCreated)
             .ThenBy(p => p.Rating.NumInGroup);
 
 
@@ -220,7 +220,7 @@ public partial class Ratings : System.Web.UI.Page
                 Tbl = p.Rating.RatingGroup.TblRow.Tbl,
                 RatingObject = p.Rating,
                 RatingGroup = p.Rating.RatingGroup, /* load it eagerly so that item path can have info */
-                Date = p.UserRatingGroup.WhenMade,
+                Date = p.UserRatingGroup.WhenCreated,
                 Rating = p.EnteredUserRating,
                 Previous = (p.PreviousDisplayedRating != null) ? (decimal?) p.PreviousRatingOrVirtualRating : (decimal?) null,
                 Current = p.Rating.CurrentValue,

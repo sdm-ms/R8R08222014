@@ -482,6 +482,18 @@ namespace ClassLibrary1.Model
 
                 manipulator.ResetDataContexts();
             }
+            else
+            {
+                if (manipulator.DataContext is R8REFDataContext)
+                { // using Effort plugin
+                    if (GetIR8RDataContext.PersistentFakeDatabaseID != new Guid())
+                    { // i.e., we've already used and initialized the database
+                        DbContext UnderlyingDbContext = ((R8REFDataContext)manipulator.DataContext).UnderlyingDbContext;
+                        UnderlyingDbContext.Database.Delete();
+                    }
+                    GetIR8RDataContext.PersistentFakeDatabaseID = Guid.NewGuid();
+                }
+            }
 
             UserProfileCollection.DeleteAllUsers();
 

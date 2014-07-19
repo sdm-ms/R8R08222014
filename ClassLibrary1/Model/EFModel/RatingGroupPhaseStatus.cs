@@ -36,6 +36,8 @@ namespace ClassLibrary1.EFModel
 
         public DateTime ShortTermResolveTime { get; set; }
 
+        public DateTime WhenCreated { get; set; }
+
         public bool HighStakesSecret { get; set; }
 
         public bool HighStakesKnown { get; set; }

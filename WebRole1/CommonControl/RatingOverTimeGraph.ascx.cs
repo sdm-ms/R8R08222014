@@ -206,18 +206,18 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
             RatingGroupResolution theResolution = DataAccess.R8RDB.GetTable<RatingGroupResolution>()
                 .Where(mg => mg.RatingGroupID == topmostRatingGroupID)
                 .OrderByDescending(mg => mg.ExecutionTime)
-                .ThenByDescending(mg => mg.RatingGroupResolutionID)
+                .ThenByDescending(mg => mg.WhenCreated)
                 .FirstOrDefault();
             if (theResolution != null && theResolution.CancelPreviousResolutions == false)
                 lastDateTime = theResolution.EffectiveTime;
         }
 
         var theUserRatingData = DataAccess.R8RDB.GetTable<UserRating>()
-            .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenMade >= firstDateTime)
+            .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenCreated >= firstDateTime)
             .Where(p => SpecificRatingID == null || p.RatingID == SpecificRatingID)
-            .Where(p => lastDateTime == null || p.UserRatingGroup.WhenMade <= lastDateTime)
+            .Where(p => lastDateTime == null || p.UserRatingGroup.WhenCreated <= lastDateTime)
             .Where(p => p.NewUserRating != null)
-            .Select(p => new { RatingID = p.Rating.RatingID, NumInGroup = p.Rating.NumInGroup, SeriesName = p.Rating.Name, OwnedRatingGroupID = p.Rating.OwnedRatingGroupID, Date = p.UserRatingGroup.WhenMade, Value = (decimal) p.NewUserRating })
+            .Select(p => new { RatingID = p.Rating.RatingID, NumInGroup = p.Rating.NumInGroup, SeriesName = p.Rating.Name, OwnedRatingGroupID = p.Rating.OwnedRatingGroupID, Date = p.UserRatingGroup.WhenCreated, Value = (decimal) p.NewUserRating })
             .OrderBy(p => p.NumInGroup)
             .ThenBy(p => p.Date);
 
@@ -266,9 +266,9 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
             Guid theRatingID = aSeries.SeriesInfo.RatingID;
             decimal? theEarlierValue = null;
             var theEarlierUserRatings = DataAccess.R8RDB.GetTable<UserRating>()
-                .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenMade < firstDateTime)
+                .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenCreated < firstDateTime)
                 .Where(p => p.RatingID == theRatingID)
-                .OrderByDescending(p => p.UserRatingGroup.WhenMade);
+                .OrderByDescending(p => p.UserRatingGroup.WhenCreated);
             if (theEarlierUserRatings.Any())
                 theEarlierValue = theEarlierUserRatings.FirstOrDefault().NewUserRating;
 

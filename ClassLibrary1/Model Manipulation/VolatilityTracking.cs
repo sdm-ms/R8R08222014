@@ -137,7 +137,7 @@ namespace ClassLibrary1.Model
             var ratingsWhoseVolatilityMustBeRemoved = 
                 from y in 
                     ((from x in theDataContext.GetTable<UserRating>()
-                    where x.VolatilityTrackingNextTimeFrameToRemove == (byte)theTimeFrame && x.UserRatingGroup.WhenMade < cutoffTime
+                    where x.VolatilityTrackingNextTimeFrameToRemove == (byte)theTimeFrame && x.UserRatingGroup.WhenCreated < cutoffTime
                     select x)
                     .Take(1000))
                 let volatilityTracker = y.Rating.RatingGroup.VolatilityTrackers.FirstOrDefault(z => z.DurationType == (byte) theTimeFrame)
@@ -186,20 +186,20 @@ namespace ClassLibrary1.Model
             var theTrackersWithInfo = theDataContext.GetTable<VolatilityTracker>()
                 .Where(x => x.DurationType == (byte)theTimeFrame 
                     && x.RatingGroup.UserRatingGroups.Any(pg => 
-                        (pg.WhenMade >= x.StartTime && pg.WhenMade < x.EndTime && pg.WhenMade < newStartTime) /* predictions that no longer should count toward volatility) */ 
+                        (pg.WhenCreated >= x.StartTime && pg.WhenCreated < x.EndTime && pg.WhenCreated < newStartTime) /* predictions that no longer should count toward volatility) */ 
                         || 
-                        (pg.WhenMade >= x.EndTime && pg.WhenMade >= newStartTime && pg.WhenMade < newEndTime))) /* predictions that now should count toward volatility */
+                        (pg.WhenCreated >= x.EndTime && pg.WhenCreated >= newStartTime && pg.WhenCreated < newEndTime))) /* predictions that now should count toward volatility */
                 .Take(1000)
                 .Select(t => new TrackerChanges
                     {
                         Tracker = t, 
                         ExpiredVolatility = t.RatingGroup.UserRatingGroups
-                                            .Where(pg => pg.WhenMade >= t.StartTime && pg.WhenMade < t.EndTime && pg.WhenMade < newStartTime)
+                                            .Where(pg => pg.WhenCreated >= t.StartTime && pg.WhenCreated < t.EndTime && pg.WhenCreated < newStartTime)
                                             .SelectMany(pg => pg.UserRatings)
                                             .Where(p => p.NewUserRating != null && p.PreviousDisplayedRating != null)
                                             .Sum(p => Math.Abs(((decimal?)p.NewUserRating - p.PreviousRatingOrVirtualRating) ?? 0)),
                         NewVolatility =     t.RatingGroup.UserRatingGroups
-                                            .Where(pg => pg.WhenMade >= t.EndTime && pg.WhenMade >= newStartTime && pg.WhenMade < newEndTime)
+                                            .Where(pg => pg.WhenCreated >= t.EndTime && pg.WhenCreated >= newStartTime && pg.WhenCreated < newEndTime)
                                             .SelectMany(pg => pg.UserRatings)
                                             .Where(p => p.NewUserRating != null && p.PreviousDisplayedRating != null)
                                             .Sum(p => Math.Abs(((decimal?)p.NewUserRating - p.PreviousRatingOrVirtualRating) ?? 0)),

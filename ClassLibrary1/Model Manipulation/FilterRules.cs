@@ -294,10 +294,10 @@ namespace ClassLibrary1.Model
 
             if (ascending)
                 theFilteredAndSortedQuery = theFilteredQuery
-                    .OrderBy(x => x.Name).ThenBy(x => x.TblRowID); // OK to use ID as a secondary ordering
+                    .OrderBy(x => x.Name).ThenBy(x => x.WhenCreated); 
             else
                 theFilteredAndSortedQuery = theFilteredQuery
-                    .OrderByDescending(x => x.Name).ThenBy(x => x.TblRowID); // OK to use ID as a secondary ordering
+                    .OrderByDescending(x => x.Name).ThenBy(x => x.WhenCreated); 
 
             if (maxNumResults != null)
                 theFilteredAndSortedQuery = theFilteredAndSortedQuery.Take((int)maxNumResults);
@@ -362,11 +362,11 @@ namespace ClassLibrary1.Model
 
             if (ascending)
                 theFilteredQueryWithSortValues = from e in GetFilteredQueryAsTblRows(theDataContext, null)
-                                                 orderby e.TblRowID
+                                                 orderby e.WhenCreated 
                                                  select e;
             else
                 theFilteredQueryWithSortValues = from e in GetFilteredQueryAsTblRows(theDataContext, null)
-                                                 orderby e.TblRowID descending
+                                                 orderby e.WhenCreated descending 
                                                  select e;
 
             if (maxNumResults != null)

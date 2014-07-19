@@ -6,6 +6,7 @@ using ClassLibrary1.Misc;
 using System.Data.Linq;
 using System.Linq.Expressions;
 using ClassLibrary1.EFModel;
+using Effort;
 
 namespace ClassLibrary1.Model
 {
@@ -15,14 +16,23 @@ namespace ClassLibrary1.Model
         //private static R8RDataContext _UnderlyingSQLDataContextForInMemoryContext = 
         //    new R8RDataContext("no real connection"); // R8RSQLDataContext(true,true).GetRealDatabaseIfExists();
 
-        public static bool UseRealDatabase = true; // Do not change this code. This may be overriden in tests when Test_UseRealDatabase.UseReal() returns false.
+        public static bool UseRealDatabase = true; // DO NOT CHANGE THIS LINE OF CODE. This may be overriden in tests when Test_UseRealDatabase.UseReal() returns false. 
+
+        public static Guid PersistentFakeDatabaseID = new Guid();
 
         public static IR8RDataContext New()
         {
             if (UseRealDatabase)
                 return new R8REFDataContext();
             else
-                throw new NotImplementedException();
+            {
+                var myTest = new R8RContext(Effort.DbConnectionFactory.CreateTransient());
+                myTest.SearchWords.Add(new SearchWord() { SearchWordID = Guid.NewGuid(), TheWord = "asdf" });
+                myTest.DatabaseStatus.Add(new DatabaseStatus() { DatabaseStatusID = Guid.NewGuid(), PreventChanges = true });
+                myTest.SaveChanges();
+
+                return new R8REFDataContext(Effort.DbConnectionFactory.CreatePersistent(PersistentFakeDatabaseID.ToString()));
+            }
         }
     }
 
@@ -50,30 +60,6 @@ namespace ClassLibrary1.Model
         }
 
 
-        public static void RepeatedlyAttemptToSubmitChanges(this IR8RDataContext theDataContext, System.Data.Linq.ConflictMode failureMode)
-        {
-            PreSubmittingChangesTasks(theDataContext);
-            int numTries = 0;
-        TRYSTART:
-            try
-            {
-                numTries++;
-                theDataContext.CompleteSubmitChanges(failureMode);
-            }
-            catch (ChangeConflictException)
-            {
-                if (numTries <= 3)
-                {
-                    bool resolvable = theDataContext.ResolveConflictsIfPossible();
-                    if (resolvable)
-                        goto TRYSTART;
-                    else
-                        throw;
-                }
-                else
-                    throw;
-            }
-        }
     }
 
 }

@@ -414,7 +414,7 @@ namespace ClassLibrary1.Model
             DateTime now = TestableDateTime.Now;
             var allRatingGroupsToAdvance = from rg in DataContext.GetTable<RatingGroup>()
                                            where rg.TypeOfRatingGroup != (int)RatingGroupTypes.hierarchyNumbersBelow && rg.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityHierarchyBelow && rg.TypeOfRatingGroup != (int)RatingGroupTypes.probabilityMultipleOutcomesHiddenHierarchy
-                                           let activeResolution = rg.RatingGroupResolutions.OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.RatingGroupResolutionID).FirstOrDefault()
+                                           let activeResolution = rg.RatingGroupResolutions.OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.WhenCreated).FirstOrDefault()
                                            where activeResolution == null || activeResolution.CancelPreviousResolutions
                                            let ratingGroupPhaseStatusLast = rg.RatingGroupPhaseStatuses.OrderByDescending(x => x.ActualCompleteTime).FirstOrDefault()
                                            where ratingGroupPhaseStatusLast != null
@@ -535,9 +535,9 @@ namespace ClassLibrary1.Model
                 return alreadyEntered;
 
             if (theRating.RatingPhaseStatus.Any())
-                return theRating.RatingPhaseStatus.OrderByDescending(x => x.RatingPhaseStatusID).FirstOrDefault();
+                return theRating.RatingPhaseStatus.OrderByDescending(x => x.RatingGroupPhaseStatus.WhenCreated).FirstOrDefault();
 
-            return DataContext.GetTable<RatingPhaseStatus>().Where(x => x.Rating.RatingID == theRating.RatingID).OrderByDescending(x => x.RatingPhaseStatusID).First();
+            return DataContext.GetTable<RatingPhaseStatus>().Where(x => x.Rating.RatingID == theRating.RatingID).OrderByDescending(x => x.RatingGroupPhaseStatus.WhenCreated).First();
         }
 
         public RatingGroupPhaseStatus GetRatingGroupPhaseStatus(RatingGroup topRatingGroup)
@@ -547,9 +547,9 @@ namespace ClassLibrary1.Model
                 return alreadyEntered;
 
             if (topRatingGroup.RatingGroupPhaseStatuses.Any())
-                return topRatingGroup.RatingGroupPhaseStatuses.OrderByDescending(x => x.RatingGroupPhaseStatusID).FirstOrDefault();
+                return topRatingGroup.RatingGroupPhaseStatuses.OrderByDescending(x => x.WhenCreated).FirstOrDefault();
 
-            return DataContext.GetTable<RatingGroupPhaseStatus>().Where(x => x.RatingGroup.RatingGroupID == topRatingGroup.RatingGroupID).OrderByDescending(x => x.RatingGroupPhaseStatusID).First();
+            return DataContext.GetTable<RatingGroupPhaseStatus>().Where(x => x.RatingGroup.RatingGroupID == topRatingGroup.RatingGroupID).OrderByDescending(x => x.WhenCreated).First();
         }
 
         /// <summary>

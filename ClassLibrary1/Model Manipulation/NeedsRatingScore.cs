@@ -28,7 +28,7 @@ namespace ClassLibrary1.Model
                 UserRaterPointsTotals = x.RatingGroups
                                     .Where(y => !excludedRatingGroupTypes.Contains((int)y.TypeOfRatingGroup))
                                     .Where(y => y.TblColumn.Status == (int)StatusOfObject.Active)
-                                    .Select(y => y.UserRatingGroups.OrderByDescending(w => w.WhenMade).First())
+                                    .Select(y => y.UserRatingGroups.OrderByDescending(w => w.WhenCreated).First())
                                     .SelectMany(z => z.UserRatings.FirstOrDefault().User.PointsTotals.Where(t => t.PointsManagerID == x.Tbl.PointsManagerID)) /* This is the points totals for ALL of the top ratings for the row */
             });
             foreach (var rowInfo in rowsInfo)

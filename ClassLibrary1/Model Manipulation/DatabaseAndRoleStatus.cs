@@ -154,7 +154,7 @@ namespace ClassLibrary1.Model
                     theWorkerRole.IsBackgroundProcessing = true;
                 else
                 {
-                    var selectedWebRole = remainingRoles.OrderBy(x => x.RoleID).FirstOrDefault(); 
+                    var selectedWebRole = remainingRoles.OrderBy(x => x.WhenCreated).FirstOrDefault(); 
                     if (selectedWebRole != null)
                         selectedWebRole.IsBackgroundProcessing = true;
                 }
@@ -203,7 +203,8 @@ namespace ClassLibrary1.Model
                     IsBackgroundProcessing = false,
                     IsWorkerRole = CurrentRoleIsWorkerRole(),
                     LastCheckIn = TestableDateTime.Now,
-                    RoleID = RoleEnvironment.CurrentRoleInstance.Id
+                    RoleID = RoleEnvironment.CurrentRoleInstance.Id,
+                    WhenCreated = TestableDateTime.Now
                 };
                 theDataContext.GetTable<RoleStatus>().InsertOnSubmit(newStatus);
                 theDataContext.SubmitChanges();

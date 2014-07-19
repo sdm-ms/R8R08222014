@@ -610,14 +610,14 @@ namespace ClassLibrary1.Model
             if (theField == null)
                 existingList = new List<ChoiceInGroup>();
             else
-                existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField.ChoiceFieldID == theField.ChoiceFieldID && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceText).ThenBy(x => x.ChoiceInGroupID).ToList();  // OK to order by ID to get consistent ordering for purpose of making comparison
+                existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceField.ChoiceFieldID == theField.ChoiceFieldID && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceText).ToList(); 
             DataAccess.R8RDB.TempCache[cacheKey] = existingList;
             return existingList;
         }
 
         public override bool MatchesDatabase()
         {
-            List<ChoiceInGroup> thisListOrdered = TheChoices.OrderBy(x => x.ChoiceText).ThenBy(x => x.ChoiceInGroupID).ToList();
+            List<ChoiceInGroup> thisListOrdered = TheChoices.OrderBy(x => x.ChoiceText).ToList();
             List<ChoiceInGroup> existingList = GetDatabaseValues();
             return (existingList.SequenceEqual(thisListOrdered));
         }

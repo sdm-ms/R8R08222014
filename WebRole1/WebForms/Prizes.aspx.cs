@@ -75,7 +75,7 @@ public partial class Prizes : System.Web.UI.Page
             })
             .OrderByDescending(p => p.Date)
             .ThenBy(p => p.PointsManagerName)
-            .ThenBy(p => p.FirstTable.TblID)
+            .ThenBy(p => p.FirstTable.Name)
             .ThenBy(p => p.DollarsEarned);
         e.Result = theQuery;
     }

@@ -35,6 +35,7 @@ namespace TestProject1
         {
             // Use true when you want all tests to use a SQL Server database
             // Use false when you want all tests to use an in-memory database
+            // NOTE: In memory databases are not currently working.
             bool returnVal = true;
 
             if (returnVal && !RoleEnvironment.IsAvailable)
@@ -118,7 +119,7 @@ namespace TestProject1
         private static long TestMemoryLeaks_Helper(TestHelper theTestHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
         {
             UserEditResponse theResponse = new UserEditResponse();
-            Guid ratingID = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.CreationTime).First().RatingID;
+            Guid ratingID = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).First().RatingID;
             theTestHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, theTestHelper.UserIds[5], ref theResponse);
             CacheManagement.ClearCache();
             theTestHelper.FinishUserRatingAdd(_dataManipulation);

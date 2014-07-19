@@ -12,6 +12,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using ClassLibrary1.Nonmodel_Code;
 using System.Data.Entity.Infrastructure;
+using System.Data.Common;
 
 namespace ClassLibrary1.Model
 {
@@ -24,9 +25,23 @@ namespace ClassLibrary1.Model
             _underlyingR8RContext = (R8RContext)UnderlyingDbContext;
         }
 
+        public R8REFDataContext(string connectionString)
+            : base(new R8RContext(connectionString))
+        {
+            _underlyingR8RContext = (R8RContext)UnderlyingDbContext;
+        }
+
+        bool isReal = true;
+        public R8REFDataContext(DbConnection dbConnection)
+            : base(new R8RContext(dbConnection))
+        {
+            isReal = false; // Use this only with Effort to mock the in-memory database
+            _underlyingR8RContext = (R8RContext)UnderlyingDbContext;
+        }
+
         public bool IsRealDatabase()
         {
-            return true;
+            return isReal;
         }
 
         public IR8RDataContext GetRealDatabaseIfExists()
@@ -166,8 +181,9 @@ namespace ClassLibrary1.Model
                         choiceInField.UpdateFastAccessSingleSelection();
                 }
             }
-            base.BeforeSubmitChanges();
 
+            this.PreSubmittingChangesTasks(); // We must do this to ensure that we really do want to submit changes.
+            base.BeforeSubmitChanges();
         }
 
         public System.Linq.IQueryable<AddressField> UDFDistanceWithin(float? latitude, float? longitude, float? distance)

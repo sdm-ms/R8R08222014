@@ -19,7 +19,7 @@ namespace ClassLibrary1.EFModel
 
         public Guid RatingGroupPhaseStatusID { get; set; }
 
-        public DateTime WhenMade { get; set; }
+        public DateTime WhenCreated { get; set; }
 
         public virtual RatingGroupPhaseStatus RatingGroupPhaseStatus { get; set; }
 

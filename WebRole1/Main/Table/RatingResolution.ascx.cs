@@ -37,7 +37,7 @@ public partial class Main_Table_RatingGroupResolution : System.Web.UI.UserContro
         RatingGroupResolution theResolution = DataAccess.DataContext.GetTable<RatingGroupResolution>()
             .Where(mg => mg.RatingGroupID == RatingGroupID)
             .OrderByDescending(mg => mg.ExecutionTime)
-            .ThenByDescending(mg => mg.RatingGroupResolutionID)
+            .ThenByDescending(mg => mg.WhenCreated)
             .FirstOrDefault();
 
         string collapsedText = "Status: ";
