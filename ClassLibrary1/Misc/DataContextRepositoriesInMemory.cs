@@ -25,14 +25,20 @@ namespace ClassLibrary1.Misc
 
         public static object[] unsetPrimaryKeyValues = new object[] { -1, default(int) /* 0 */, null, default(Guid) }; // this assumes that any primary key value that is -1 or 0 has not yet been set by the database, because when creating an object, its primary key is default(int), i.e. 0 (even though SQL Server will also use this as a primary key value), unless it is set to -1 (which is useful as a way of distinguishing genuine 0 primary keys from objects that have not yet been assigned primary keys).
 
-        internal static Dictionary<Type, PropertyInfo> dictionary = new Dictionary<Type, PropertyInfo>();
+        internal static Dictionary<Type, PropertyInfo> foreignKeyForEntityType = new Dictionary<Type, PropertyInfo>();
 
-        internal static PropertyInfo GetPropertyInfoForPrimaryKeyField(object theItem)
+        /// <summary>
+        /// Returns the type of the primary key for this entity. This assumes that the entity has a non-composite primary key.
+        /// If there is not a single unique primary key field, it will throw an exception.
+        /// </summary>
+        /// <param name="entity">The entity, which must be a Linq-to-SQL entity.</param>
+        /// <returns>The type of the primary key.</returns>
+        internal static PropertyInfo GetPropertyInfoForPrimaryKeyField(object entity)
         {
-            Type theType = theItem.GetType();
+            Type theType = entity.GetType();
             PropertyInfo thePrimaryKeyFieldPropertyInfo = null;
-            if (dictionary.ContainsKey(theType))
-                thePrimaryKeyFieldPropertyInfo = dictionary[theType];
+            if (foreignKeyForEntityType.ContainsKey(theType))
+                thePrimaryKeyFieldPropertyInfo = foreignKeyForEntityType[theType];
             if (thePrimaryKeyFieldPropertyInfo != null)
                 return thePrimaryKeyFieldPropertyInfo;
             PropertyInfo[] thePropertyInfos = theType.GetProperties();
@@ -43,84 +49,149 @@ namespace ClassLibrary1.Misc
                             ca.IsPrimaryKey == true));
             if (thePrimaryKeyFieldPropertyInfo == null)
                 throw new Exception("Internal error: No primary key for " + theType.ToString());
-            dictionary.Add(theType, thePrimaryKeyFieldPropertyInfo);
+            foreignKeyForEntityType.Add(theType, thePrimaryKeyFieldPropertyInfo);
             return thePrimaryKeyFieldPropertyInfo;
         }
 
+        /// <summary>
+        /// Returns true if the primary key field is int.
+        /// </summary>
+        /// <param name="theItem"></param>
+        /// <returns></returns>
         internal static bool PrimaryKeyFieldIsInt(object theItem)
         {
             return GetPropertyInfoForPrimaryKeyField(theItem).PropertyType == typeof(int);
         }
 
+        /// <summary>
+        /// Returns true if the primary key field is GUID.
+        /// </summary>
+        /// <param name="theItem"></param>
+        /// <returns></returns>
         internal static bool PrimaryKeyFieldIsGUID(object theItem)
         {
             return GetPropertyInfoForPrimaryKeyField(theItem).PropertyType == typeof(Guid);
         }
 
-        public static object GetPrimaryKeyFieldValue(object theItem)
+        /// <summary>
+        /// Gets the primary key field value for an entity.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public static object GetPrimaryKeyFieldValue(object entity)
         {
-            PropertyInfo thePrimaryKeyFieldPropertyInfo = GetPropertyInfoForPrimaryKeyField(theItem);
-            return thePrimaryKeyFieldPropertyInfo.GetValue(theItem, null);
+            PropertyInfo thePrimaryKeyFieldPropertyInfo = GetPropertyInfoForPrimaryKeyField(entity);
+            return thePrimaryKeyFieldPropertyInfo.GetValue(entity, null);
         }
 
-        public static void SetPrimaryKeyFieldValue(object theItem, object theValue)
+        /// <summary>
+        /// Sets the primary key field to a particular value. This is called when an item is to be added to the database, and its primary key has not yet been set.
+        /// </summary>
+        /// <param name="entity">The entity whose primary key needs to be set.</param>
+        /// <param name="theValue">The value to which the primary key needs to be set.</param>
+        public static void SetPrimaryKeyFieldValue(object entity, object theValue)
         {
-            PropertyInfo thePrimaryKeyFieldPropertyInfo = GetPropertyInfoForPrimaryKeyField(theItem);
-            thePrimaryKeyFieldPropertyInfo.SetValue(theItem, theValue, null);
+            PropertyInfo thePrimaryKeyFieldPropertyInfo = GetPropertyInfoForPrimaryKeyField(entity);
+            thePrimaryKeyFieldPropertyInfo.SetValue(entity, theValue, null);
         }
     }
 
+    /// <summary>
+    /// This provides information on an association between two objects. For example, an Order might have a single Customer and one or more Products. This could represent the association between the Order and Customer entities or between the Order and Products entities.
+    /// </summary>
     public class RepositoryItemAssociationInfo
     {
+        /// <summary>
+        /// The type of the entity that contains the property (e.g., Order)
+        /// </summary>
         public Type TypeOfItemContainingProperty;
-        public PropertyInfo Property;
-        public PropertyInfo PropertyOfForeignKeyID;
+        /// <summary>
+        /// The name of the navigation property that links this object with the foreign item (e.g., Customer if Order.Customer returns the Customer and Products if Order.Products returns the Products). 
+        /// </summary>
         public string NameOfPropertyConnectingToForeignItem;
+        /// <summary>
+        /// The name of the property containing the foreign key ID (e.g., CustomerID if the Order has a CustomerID field and "" otherwise; always "" for the one side of a one-to-many relationship). So, if TypeOfItemContainingProperty were Product, then this would be OrderID.
+        /// </summary>
         public string NameOfPropertyWithForeignKeyID;
+        /// <summary>
+        /// This is information on the property (e.g., Order.Customer navigation property).
+        /// </summary>
+        public PropertyInfo Property;
+        /// <summary>
+        /// This is information on the property of the foreign key ID (e.g., CustomerID) or null if none (as will be the case on the one side of a one-to-many relationship).
+        /// </summary>
+        public PropertyInfo PropertyOfForeignKeyID;
+        /// <summary>
+        /// The type of the item on the other side of the relationship (e.g., Customer or Product)
+        /// </summary>
         public Type TypeOfForeignItem;
-        public bool PropertyReturnsEntitySet;
-        private MethodInfo _EntitySetRemoveMethod;
-        private Type _SpecificEntitySetType;
-        public Type SpecificEntitySetType
+        /// <summary>
+        /// If this is a one-to-many relationship with the many on the other side of the relationship (e.g., many Products in an order), then this is true
+        /// </summary>
+        public bool IsMany;
+        /// <summary>
+        /// This is used internally to store the method for removing an item from the collection if IsMany is true.
+        /// </summary>
+        private MethodInfo _MethodToRemoveItemFromCollection;
+        /// <summary>
+        /// This is used internally to store the Type of the collection (e.g., EntitySet of Product) if IsMany is true.
+        /// </summary>
+        private Type _CollectionType;
+        /// <summary>
+        /// This returns the Type of the collection if IsMany is true and sets it if it has not yet been determined.
+        /// </summary>
+        public Type CollectionType
         {
+        
             get
             {
-                if (_SpecificEntitySetType == null)
-                    SetEntitySetTypeAndRemoveMethod();
-                return _SpecificEntitySetType;
+                if (_CollectionType == null)
+                    SetCollectionTypeAndRemoveMethod();
+                return _CollectionType;
             }
             set
             {
-                _SpecificEntitySetType = value;
+                _CollectionType = value;
             }
         }
-        public MethodInfo EntitySetRemoveMethod
+        /// <summary>
+        /// This returns information on the method to remove an item from a one-to-many collection.
+        /// </summary>
+        public MethodInfo MethodToRemoveItemFromCollection
         {
             get
             {
-                if (_EntitySetRemoveMethod == null)
-                    SetEntitySetTypeAndRemoveMethod();
-                return _EntitySetRemoveMethod;
+                if (_MethodToRemoveItemFromCollection == null)
+                    SetCollectionTypeAndRemoveMethod();
+                return _MethodToRemoveItemFromCollection;
             }
             set
             {
-                _EntitySetRemoveMethod = value;
+                _MethodToRemoveItemFromCollection = value;
             }
         }
 
-        internal void SetEntitySetTypeAndRemoveMethod()
+        /// <summary>
+        /// This records the type of collection and the method to remove an item from this collection.
+        /// </summary>
+        internal void SetCollectionTypeAndRemoveMethod()
         {
             Type genericEntitySet = typeof(EntitySet<>);
             Type[] typeArgs = { TypeOfForeignItem };
-            SpecificEntitySetType = genericEntitySet.MakeGenericType(typeArgs);
-            EntitySetRemoveMethod = SpecificEntitySetType.GetMethods().Single(x => x.Name == "Remove");
+            CollectionType = genericEntitySet.MakeGenericType(typeArgs);
+            MethodToRemoveItemFromCollection = CollectionType.GetMethods().Single(x => x.Name == "Remove");
         }
 
-        public List<object> GetAllAssociatedObjects(object theRepositoryItem)
+        /// <summary>
+        /// Gets all items on the other side of this association for an entity in the repository (e.g., Customer or Products).
+        /// </summary>
+        /// <param name="entityInTheRepository">An entity of type TypeOfItemContainingProperty</param>
+        /// <returns>A List of objedts, which will have type TypeOfForeignItem</returns>
+        public List<object> GetAllAssociatedObjects(object entityInTheRepository)
         {
-            if (PropertyReturnsEntitySet)
+            if (IsMany)
             {
-                IEnumerable theEntitySet = Property.GetValue(theRepositoryItem, null) as IEnumerable;
+                IEnumerable theEntitySet = Property.GetValue(entityInTheRepository, null) as IEnumerable;
                 List<object> theList = new List<object>();
                 foreach (var item in theEntitySet)
                     theList.Add(item);
@@ -128,7 +199,7 @@ namespace ClassLibrary1.Misc
             }
             else
             {
-                object theValue = Property.GetValue(theRepositoryItem, null);
+                object theValue = Property.GetValue(entityInTheRepository, null);
                 if (theValue == null)
                     return new List<object>() { };
                 else
@@ -136,18 +207,30 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public object GetForeignKeyID(object theRepositoryItem)
+        /// <summary>
+        /// This gets the foreign key ID (or null, if null) for this association for an entity in the repository. 
+        /// </summary>
+        /// <param name="entityInTheRepository">An entity of type TypeOfItemContainingProperty</param>
+        /// <returns>An object (of the type of the Foreign Key ID)</returns>
+        public object GetForeignKeyID(object entityInTheRepository)
         {
-            return PropertyOfForeignKeyID.GetValue(theRepositoryItem, null);
+            return PropertyOfForeignKeyID.GetValue(entityInTheRepository, null);
         }
 
+        /// <summary>
+        /// This severs the association for an entity in this repository, on this side of the relationship. 
+        /// For example, it would set Order.CustomerID to null, or it would remove a Product from the collection 
+        /// of products for this Order.
+        /// </summary>
+        /// <param name="theRepositoryItem"></param>
+        /// <param name="foreignItemToRemove"></param>
         public void RemoveForeignItemFromProperty(object theRepositoryItem, object foreignItemToRemove)
         {
-            if (PropertyReturnsEntitySet)
+            if (IsMany)
             {
                 object theEntitySet = Property.GetValue(theRepositoryItem, null); // EntitySet<typeof(TypeOfForeignItem)>;
                 if (foreignItemToRemove != null)
-                    SpecificEntitySetType.InvokeMember("Remove", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToRemove });
+                    CollectionType.InvokeMember("Remove", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToRemove });
             }
             else if (PropertyOfForeignKeyID != null)
             {
@@ -164,26 +247,32 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public void AddForeignItemToProperty(object theObject, object foreignItemToAdd)
+        /// <summary>
+        /// Adds a foreign item to the property. For example, it sets the Customer for an order, or adds a Product to an order.
+        /// </summary>
+        /// <param name="entityInTheRepository">An entity of type TypeOfItemContainingProperty</param>
+        /// <param name="foreignItemToAdd">An entity of type TypeOfForeignItem</param>
+        public void AddForeignItemToProperty(object entityInTheRepository, object foreignItemToAdd)
         {
-            if (PropertyReturnsEntitySet)
+            if (IsMany)
             {
-                object theEntitySet = Property.GetValue(theObject, null); // EntitySet<typeof(TypeOfForeignItem)>;
-                SpecificEntitySetType.InvokeMember("Add", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToAdd });
+                object theEntitySet = Property.GetValue(entityInTheRepository, null); // EntitySet<typeof(TypeOfForeignItem)>;
+                CollectionType.InvokeMember("Add", BindingFlags.Default | BindingFlags.InvokeMethod, null, theEntitySet, new object[] { foreignItemToAdd });
             }
             else if (PropertyOfForeignKeyID != null)
             {
-                Property.SetValue(theObject, foreignItemToAdd, null);
+                Property.SetValue(entityInTheRepository, foreignItemToAdd, null);
             }
             else
             { // don't want to set the EntityRef to null, want to set EntityRef<T>.Entity to null
-                Property.SetValue(theObject, foreignItemToAdd, null);
+                Property.SetValue(entityInTheRepository, foreignItemToAdd, null);
                 //object theEntityRef = Property.GetValue(theObject, null); // EntityRef<typeof(TypeOfForeignItem)>;
                 //Type theType = theEntityRef.GetType();
                 //PropertyInfo thePropertyInfo = theType.GetProperty("Entity");
                 //thePropertyInfo.SetValue(theEntityRef, foreignItemToAdd, null);
             }
         }
+
         public override string ToString()
         {
             return String.Format("{0}: {1}.{2}={3}.<PrimaryId>", this.GetType().FullName,
@@ -193,8 +282,16 @@ namespace ClassLibrary1.Misc
 
     public static class MappingInfoProcessor
     {
+        /// <summary>
+        /// Stores RepositoryItemAssociationInfo items for each association, for each entity type in the data context.
+        /// </summary>
         public static Dictionary<Type, List<RepositoryItemAssociationInfo>> mappingInfoForDataContexts = new Dictionary<Type, List<RepositoryItemAssociationInfo>>();
 
+        /// <summary>
+        /// Gets the mapping information from the data context, using information already stored if available or else by analyzing the data context.
+        /// </summary>
+        /// <param name="theDataContext">The data context to get mapping information about</param>
+        /// <returns>A list of associations between objects; note that one relationship may return two associations (e.g., from the perspective of both the Customer and the Product)</returns>
         public static List<RepositoryItemAssociationInfo> GetMappingInfoForDataContext(DataContext theDataContext)
         {
             Type theType = theDataContext.GetType();
@@ -209,6 +306,11 @@ namespace ClassLibrary1.Misc
             return theInfo;
         }
 
+        /// <summary>
+        /// Analyzes the data context to return mapping information about it.
+        /// </summary>
+        /// <param name="theDataContext">The data context to get mapping information about</param>
+        /// <returns>A list of associations between objects; note that one relationship may return two associations (e.g., from the perspective of both the Customer and the Product)</returns>
         public static List<RepositoryItemAssociationInfo> ProcessDataContextMappingInfo(DataContext theDataContext)
         {
             var associations = from x in theDataContext.Mapping.GetTables()
@@ -231,24 +333,24 @@ namespace ClassLibrary1.Misc
                                    PropertyOfForeignKeyID = foreignKeyIDProperty,
                                    NameOfPropertyWithForeignKeyID = foreignKeyIDProperty == null ? "" : foreignKeyIDProperty.Name,
                                    TypeOfForeignItem = association.OtherType.Type,
-                                   PropertyReturnsEntitySet = association.IsMany
+                                   IsMany = association.IsMany
                                };
             return associations.ToList();
         }
     }
 
-    public interface IInMemoryRepositorySubmitChangesActions
+    public interface IInMemoryRepositoryWithSubmitChangesSupport
     {
         void CompleteInsertOnSubmitStep1();
         void CompleteInsertOnSubmitStep2();
         void CompleteDeleteOnSubmit();
         bool ItemIsNotInRepositoryOrIsSetToDelete(object item);
         bool ItemIsInRepositoryAndNotSetToDelete(object item);
-        IInMemoryRepositorySubmitChangesActions CloneTo(InMemoryRepositoryList newOwner);
+        IInMemoryRepositoryWithSubmitChangesSupport CloneTo(InMemoryRepositoryList newOwner);
         object GetItemByID(object ID);
     }
 
-    public class InMemoryRepository<T> : IInMemoryRepositorySubmitChangesActions, IRepository<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+    public class InMemoryRepository<T> : IInMemoryRepositoryWithSubmitChangesSupport, IRepository<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
     {
         int maxPrimaryKeyID = 0;
         List<T> ListOfEntities;
@@ -295,7 +397,7 @@ namespace ClassLibrary1.Misc
         }
 
 
-        public IInMemoryRepositorySubmitChangesActions CloneTo(InMemoryRepositoryList newOwner)
+        public IInMemoryRepositoryWithSubmitChangesSupport CloneTo(InMemoryRepositoryList newOwner)
         {
             List<T> newList = new List<T>();
             newList.AddRange(ListOfEntities); // cloning the objects isn't working right now, largely because the entityset connections are messed up .Select(x => CloneObject<T>(x)));
@@ -376,7 +478,7 @@ namespace ClassLibrary1.Misc
             // For example, if AddressField is created and FieldID = 35 but AddressFIeld.Field is not set to the object with 
             // primary key id == 35, then
             // we must set Field to that object.
-            foreach (var property in PropertiesForThisItemType.Where(x => !x.PropertyReturnsEntitySet && x.PropertyOfForeignKeyID != null))
+            foreach (var property in PropertiesForThisItemType.Where(x => !x.IsMany && x.PropertyOfForeignKeyID != null))
             {
                 object foreignKeyID = property.GetForeignKeyID(theItem);
                 Type foreignItemType = property.TypeOfForeignItem;
@@ -486,8 +588,8 @@ namespace ClassLibrary1.Misc
 
     public class InMemoryRepositoryList
     {
-        public Dictionary<Type, IInMemoryRepositorySubmitChangesActions> inMemoryRepositoryDictionary;
-        public List<IInMemoryRepositorySubmitChangesActions> inMemoryRepositoryList;
+        public Dictionary<Type, IInMemoryRepositoryWithSubmitChangesSupport> inMemoryRepositoryDictionary;
+        public List<IInMemoryRepositoryWithSubmitChangesSupport> inMemoryRepositoryList;
         public DataContext UnderlyingDataContext { get; set; }
         public List<RepositoryItemAssociationInfo> MappingInfo { get; set; }
 
@@ -495,8 +597,8 @@ namespace ClassLibrary1.Misc
         {
             UnderlyingDataContext = underlyingDataContext;
             MappingInfo = MappingInfoProcessor.GetMappingInfoForDataContext(underlyingDataContext);
-            inMemoryRepositoryDictionary = new Dictionary<Type, IInMemoryRepositorySubmitChangesActions>();
-            inMemoryRepositoryList = new List<IInMemoryRepositorySubmitChangesActions>();
+            inMemoryRepositoryDictionary = new Dictionary<Type, IInMemoryRepositoryWithSubmitChangesSupport>();
+            inMemoryRepositoryList = new List<IInMemoryRepositoryWithSubmitChangesSupport>();
         }
 
         public InMemoryRepositoryList(DataContext underlyingDataContext, InMemoryRepositoryList listToClone)
@@ -508,11 +610,11 @@ namespace ClassLibrary1.Misc
 
         public void CloneFrom(InMemoryRepositoryList listToClone)
         {
-            inMemoryRepositoryDictionary = new Dictionary<Type, IInMemoryRepositorySubmitChangesActions>();
-            inMemoryRepositoryList = new List<IInMemoryRepositorySubmitChangesActions>();
+            inMemoryRepositoryDictionary = new Dictionary<Type, IInMemoryRepositoryWithSubmitChangesSupport>();
+            inMemoryRepositoryList = new List<IInMemoryRepositoryWithSubmitChangesSupport>();
             foreach (var entry in listToClone.inMemoryRepositoryDictionary)
             {
-                IInMemoryRepositorySubmitChangesActions theClone = entry.Value.CloneTo(this);
+                IInMemoryRepositoryWithSubmitChangesSupport theClone = entry.Value.CloneTo(this);
                 inMemoryRepositoryDictionary.Add(entry.Key, theClone);
                 inMemoryRepositoryList.Add(theClone);
             }
@@ -521,7 +623,7 @@ namespace ClassLibrary1.Misc
         public IRepository<T> GetRepository<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             Type theType = typeof(T);
-            IInMemoryRepositorySubmitChangesActions item;
+            IInMemoryRepositoryWithSubmitChangesSupport item;
             if (inMemoryRepositoryDictionary.ContainsKey(theType))
             {
                 item = inMemoryRepositoryDictionary[theType];
@@ -536,7 +638,7 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public List<IInMemoryRepositorySubmitChangesActions> GetRepositories()
+        public List<IInMemoryRepositoryWithSubmitChangesSupport> GetRepositories()
         {
             return inMemoryRepositoryList;
         }
@@ -558,18 +660,18 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public IInMemoryRepositorySubmitChangesActions GetRepositoryForItem(object item)
+        public IInMemoryRepositoryWithSubmitChangesSupport GetRepositoryForItem(object item)
         {
             Type theType = item.GetType();
             if (!inMemoryRepositoryDictionary.ContainsKey(theType))
                 return null;
-            IInMemoryRepositorySubmitChangesActions repository = inMemoryRepositoryDictionary[theType];
+            IInMemoryRepositoryWithSubmitChangesSupport repository = inMemoryRepositoryDictionary[theType];
             return repository;
         }
 
         public object GetItemByTypeAndID(Type type, object ID)
         {
-            IInMemoryRepositorySubmitChangesActions repository = inMemoryRepositoryDictionary[type];
+            IInMemoryRepositoryWithSubmitChangesSupport repository = inMemoryRepositoryDictionary[type];
             return repository.GetItemByID(ID);
         }
 
