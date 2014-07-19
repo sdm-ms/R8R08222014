@@ -43,9 +43,9 @@ namespace ClassLibrary1.Misc
                 return thePrimaryKeyFieldPropertyInfo;
             PropertyInfo[] thePropertyInfos = theType.GetProperties();
             thePrimaryKeyFieldPropertyInfo = thePropertyInfos
-                .FirstOrDefault(pi =>  
+                .FirstOrDefault(pi =>
                     pi.GetCustomAttributes(false).OfType<System.Data.Linq.Mapping.ColumnAttribute>()
-                        .Any(ca => 
+                        .Any(ca =>
                             ca.IsPrimaryKey == true));
             if (thePrimaryKeyFieldPropertyInfo == null)
                 throw new Exception("Internal error: No primary key for " + theType.ToString());
@@ -106,7 +106,7 @@ namespace ClassLibrary1.Misc
         /// </summary>
         public Type TypeOfItemContainingProperty;
         /// <summary>
-        /// The name of the navigation property that links this object with the foreign item (e.g., Customer if Order.Customer returns the Customer and Products if Order.Products returns the Products). 
+        /// The name of the navigation property that links this object with the foreign item (e.g., Customer if Order.Customer returns the Customer and Products if Order.Products returns the Products).
         /// </summary>
         public string NameOfPropertyConnectingToForeignItem;
         /// <summary>
@@ -142,7 +142,7 @@ namespace ClassLibrary1.Misc
         /// </summary>
         public Type CollectionType
         {
-        
+
             get
             {
                 if (_CollectionType == null)
@@ -208,7 +208,7 @@ namespace ClassLibrary1.Misc
         }
 
         /// <summary>
-        /// This gets the foreign key ID (or null, if null) for this association for an entity in the repository. 
+        /// This gets the foreign key ID (or null, if null) for this association for an entity in the repository.
         /// </summary>
         /// <param name="entityInTheRepository">An entity of type TypeOfItemContainingProperty</param>
         /// <returns>An object (of the type of the Foreign Key ID)</returns>
@@ -218,8 +218,8 @@ namespace ClassLibrary1.Misc
         }
 
         /// <summary>
-        /// This severs the association for an entity in this repository, on this side of the relationship. 
-        /// For example, it would set Order.CustomerID to null, or it would remove a Product from the collection 
+        /// This severs the association for an entity in this repository, on this side of the relationship.
+        /// For example, it would set Order.CustomerID to null, or it would remove a Product from the collection
         /// of products for this Order.
         /// </summary>
         /// <param name="theRepositoryItem"></param>
@@ -276,7 +276,7 @@ namespace ClassLibrary1.Misc
         public override string ToString()
         {
             return String.Format("{0}: {1}.{2}={3}.<PrimaryId>", this.GetType().FullName,
-                TypeOfItemContainingProperty.Name, NameOfPropertyWithForeignKeyID, NameOfPropertyConnectingToForeignItem );
+                TypeOfItemContainingProperty.Name, NameOfPropertyWithForeignKeyID, NameOfPropertyConnectingToForeignItem);
         }
     }
 
@@ -320,7 +320,7 @@ namespace ClassLibrary1.Misc
                                let memberInfo = dataMember.Member
                                where memberInfo is System.Reflection.PropertyInfo
                                let propertyInfo = (PropertyInfo)memberInfo
-                               let propertyInfoAssociationAttribute = (AssociationAttribute) propertyInfo.GetCustomAttributes(typeof(AssociationAttribute), false).FirstOrDefault()
+                               let propertyInfoAssociationAttribute = (AssociationAttribute)propertyInfo.GetCustomAttributes(typeof(AssociationAttribute), false).FirstOrDefault()
                                let association = dataMember.Association
                                where dataMember.Association != null
                                let foreignKeyIDPropertyInfo = dataMembers.SingleOrDefault(y => propertyInfoAssociationAttribute != null && propertyInfoAssociationAttribute.ThisKey == y.Name && propertyInfoAssociationAttribute.IsForeignKey == true)
@@ -350,11 +350,7 @@ namespace ClassLibrary1.Misc
         object GetItemByID(object ID);
     }
 
-<<<<<<< HEAD
-    public class InMemoryRepository<T> : IInMemoryRepositorySubmitChangesActions, IRepository<T> where T : class
-=======
     public class InMemoryRepository<T> : IInMemoryRepositoryWithSubmitChangesSupport, IRepository<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
->>>>>>> origin/master
     {
         int maxPrimaryKeyID = 0;
         HashSet<T> EntitiesInRepository;
@@ -382,7 +378,7 @@ namespace ClassLibrary1.Misc
             {
                 bool primaryKeyIsInt = RepositoryItemPrimaryKeys.PrimaryKeyFieldIsInt(entitiesInRepository.First());
                 if (primaryKeyIsInt)
-                    maxPrimaryKeyID = EntitiesInRepository.Max(x => (int) RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x));
+                    maxPrimaryKeyID = EntitiesInRepository.Max(x => (int)RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(x));
             }
             EntitiesBeingDeleted = new HashSet<T>();
             EntitiesBeingInserted = new HashSet<T>();
@@ -480,7 +476,7 @@ namespace ClassLibrary1.Misc
         internal void SetPropertiesBasedOnForeignKeyIDAndViceVersa(T theItem)
         {
             // We need to check each property to see if the foreign key is set but the property is not
-            // For example, if AddressField is created and FieldID = 35 but AddressFIeld.Field is not set to the object with 
+            // For example, if AddressField is created and FieldID = 35 but AddressFIeld.Field is not set to the object with
             // primary key id == 35, then
             // we must set Field to that object.
             foreach (var property in PropertiesForThisItemType.Where(x => !x.IsMany && x.PropertyOfForeignKeyID != null))
@@ -625,7 +621,7 @@ namespace ClassLibrary1.Misc
             }
         }
 
-        public IRepository<T> GetRepository<T>() where T : class
+        public IRepository<T> GetRepository<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             Type theType = typeof(T);
             IInMemoryRepositoryWithSubmitChangesSupport item;
@@ -636,7 +632,7 @@ namespace ClassLibrary1.Misc
             }
             else
             {
-                InMemoryRepository<T> newRepository = new InMemoryRepository<T>(null,this);
+                InMemoryRepository<T> newRepository = new InMemoryRepository<T>(null, this);
                 inMemoryRepositoryDictionary.Add(theType, newRepository);
                 inMemoryRepositoryList.Add(newRepository);
                 return newRepository;
@@ -729,7 +725,7 @@ namespace ClassLibrary1.Misc
         }
 
         public static void SetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext, InMemoryDataContext inMemoryRepositoryList)
-        { // This is a faster way of doing submit changes. 
+        { // This is a faster way of doing submit changes.
             Type theType = underlyingDataContext.GetType();
 
             if (inMemoryRepositoryDictionary == null)
@@ -777,7 +773,7 @@ namespace ClassLibrary1.Misc
                 inMemoryRepositories = new InMemoryDataContext(UnderlyingDataContext, SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext));
         }
 
-        public IRepository<T> GetTable<T>() where T : class
+        public IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
         {
             return inMemoryRepositories.GetRepository<T>();
         }
@@ -810,3 +806,4 @@ namespace ClassLibrary1.Misc
         }
     }
 }
+
