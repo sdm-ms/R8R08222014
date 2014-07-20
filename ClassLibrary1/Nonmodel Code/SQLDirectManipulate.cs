@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.ComponentModel;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
     public class SQLConstants
     {

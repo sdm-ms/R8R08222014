@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.Caching;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
     public class AzureChartControlBlobHandler : IChartStorageHandler
     {

@@ -11,7 +11,7 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using System.Diagnostics;
 using System.Collections;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
 
 

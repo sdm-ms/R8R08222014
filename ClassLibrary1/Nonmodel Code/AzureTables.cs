@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.WindowsAzure.StorageClient;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 
 public static class CloudStorageAccountLoader
 {

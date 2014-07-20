@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using System.Data.Linq;
 using System.Linq.Expressions;
 using ClassLibrary1.EFModel;

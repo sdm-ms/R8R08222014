@@ -12,7 +12,7 @@ using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 
 
 public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.UserControl
@@ -70,7 +70,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
             announce = AnnounceId;
             Tdannouc.InnerHtml = "Change new Announcements";
 
-            Guid userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
             var ObjInsertableContent = Obj.DataAccess.GetInsertableContents((Guid)AnnounceId);
                 TxtName.Text = ObjInsertableContent.Name;
@@ -126,7 +126,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
     protected void implementannouncement()
     {
 
-        Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
         Guid? ChangeGroupId = null;
         string Name = TxtName.Text;

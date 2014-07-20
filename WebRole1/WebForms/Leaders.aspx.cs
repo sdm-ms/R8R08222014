@@ -30,8 +30,8 @@ public partial class Leaders : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-            UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"); 
+        if (HttpContext.Current.Profile != null && ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
+            UserID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"); 
         DataAccess = new R8RDataAccess();
         theLocation = Routing.IncomingMainContent(Page.RouteData, null);
         bool canView = DataAccess.CheckUserRights(UserID, UserActionType.Predict, false, theLocation.theTbl.PointsManagerID, theLocation.theTbl.TblID);

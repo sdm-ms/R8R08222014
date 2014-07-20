@@ -15,7 +15,7 @@ using System.Text;
 
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 
 public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
 {
@@ -161,7 +161,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
             // theInfo.IPAddress = Request.UserHostAddress;
 
             bool userIsTrusted = false;
-            IUserProfileInfo currentUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
+            IUserProfileInfo currentUser = ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser();
             Guid? userID = currentUser == null ? null : (Guid?)currentUser.GetProperty("UserID");
             if (userID != null && userID != null) // logged in user ==> probably a rater
             {

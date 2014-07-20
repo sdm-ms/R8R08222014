@@ -6,7 +6,7 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Reflection;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
     /// <summary>
     /// 

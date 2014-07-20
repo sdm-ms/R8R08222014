@@ -28,7 +28,7 @@ using StringEnumSupport;
 using System.Diagnostics;
 using System.Globalization;
 using System.Web.Profile;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.EFModel;
 
 namespace ClassLibrary1.Model
@@ -63,7 +63,7 @@ namespace ClassLibrary1.Model
             {
                 DateTime debugTiming = TestableDateTime.Now;
 
-                IUserProfileInfo theUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
+                IUserProfileInfo theUser = ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser();
                 if (theUser == null)
                     return new UserAccessInfo { userName = "", passwordForWebService = "" };
 

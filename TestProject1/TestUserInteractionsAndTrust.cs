@@ -17,7 +17,7 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 #endif
 
 using FluentAssertions;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 using Microsoft.WindowsAzure.ServiceRuntime;

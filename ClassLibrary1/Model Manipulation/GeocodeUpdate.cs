@@ -5,7 +5,7 @@ using System;
 using GoogleGeocoder;
 using MapquestGeocoder;
 using System.Collections.Generic;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 

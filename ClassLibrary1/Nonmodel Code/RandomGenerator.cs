@@ -10,7 +10,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
     public static class RandomGenerator
     {

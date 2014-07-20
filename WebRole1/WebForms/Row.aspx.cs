@@ -38,7 +38,7 @@ public partial class Row : System.Web.UI.Page
         R8RDataAccess DataAccess = new R8RDataAccess();
         Guid? UserId = null;
         if (HttpContext.Current.Profile != null)
-            UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserId == null)
             Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, DataAccess.R8RDB)));
 
@@ -49,7 +49,7 @@ public partial class Row : System.Web.UI.Page
 
         Guid? anyUserID = null;
         if (HttpContext.Current.Profile != null)
-            anyUserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            anyUserID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (anyUserID == new Guid())
             anyUserID = null;
         bool canChangeTblRows = theActionProcessor.CheckUserRights(anyUserID, UserActionType.ChangeTblRows, false, null, Location.theTbl.TblID);
@@ -92,7 +92,7 @@ public partial class Row : System.Web.UI.Page
     {
         FieldSetDataInfo theDataInfo = FieldsBox.GetFieldSetDataInfo();
         List<UserSelectedRatingInfo> theUserSelectedRatingInfos = FieldsBox.GetUserSelectedRatingInfos(); /* where user overrides rating type */
-        theActionProcessor.TblRowCreateWithFields(theDataInfo, (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), theUserSelectedRatingInfos);
+        theActionProcessor.TblRowCreateWithFields(theDataInfo, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), theUserSelectedRatingInfos);
         theActionProcessor.DataContext.SubmitChanges();
         ReturnToRowPage();
     }
@@ -100,7 +100,7 @@ public partial class Row : System.Web.UI.Page
     public void ModifyFields(object sender, EventArgs e)
     {
         FieldSetDataInfo theDataInfo = FieldsBox.GetFieldSetDataInfo();
-        theActionProcessor.FieldSetImplement(theDataInfo, (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), true, true);
+        theActionProcessor.FieldSetImplement(theDataInfo, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), true, true);
         theActionProcessor.DataContext.SubmitChanges();
         ReturnToRowPage();
     }

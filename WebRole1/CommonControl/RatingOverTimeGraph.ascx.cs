@@ -15,7 +15,7 @@ using System.Web.UI.DataVisualization.Charting;
 using System.Globalization;
 using System.Collections.Generic;
 
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 
@@ -107,7 +107,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         if (theRatingGroup == null)
             return;
 
-        bool canViewPage = DataAccess.CheckUserRights((Guid?)(Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
+        bool canViewPage = DataAccess.CheckUserRights((Guid?)(Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
         if (!canViewPage)
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
 

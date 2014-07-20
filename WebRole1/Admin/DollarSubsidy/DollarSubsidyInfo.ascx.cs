@@ -22,7 +22,7 @@ public partial class Admin_DollarSubsidy_DollarSubsidyInfo : System.Web.UI.UserC
     public void setupDollarinfo(Guid? universeid)
     {
       SubtopicId = universeid;
-      Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+      Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
         ActionProcessor Obj = new ActionProcessor();
         var CheckRights = Obj.DataContext.GetTable<UsersRight>().SingleOrDefault(x => x.UserID == UserId && x.PointsManagerID == SubtopicId);

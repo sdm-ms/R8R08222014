@@ -24,7 +24,7 @@ using System.Data.Linq.Mapping;
 using MoreStrings;
 
 using System.Diagnostics;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 

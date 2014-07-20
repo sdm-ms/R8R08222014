@@ -34,9 +34,9 @@ namespace WebApplication1
             CanPredict = false;
             CanAdminister = false;
             CanEditFields = false;
-            if (ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
+            if (ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
             {
-                Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+                Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
                 bool canView = DataAccess.CheckUserRights(UserId, UserActionType.View, false, SubtopicId, theLocation.theTbl.TblID);
                 if (!canView)
                     Routing.Redirect(Response, new RoutingInfo(RouteID.Login));

@@ -73,7 +73,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
 
         Main_Table_RatingGroupResolution RatingGroupResolution = (Main_Table_RatingGroupResolution)LoadControl("~/Main/Table/RatingResolution.ascx");
         RatingGroupResolution.RatingGroupID = RatingGroupID;
-        RatingGroupResolution.UserID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        RatingGroupResolution.UserID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         RatingGroupResolution.CanResolve = CanResolveRatings;
         ResolveRatingsPlaceHolder.Controls.Add(RatingGroupResolution);
     
@@ -86,9 +86,9 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         CanAdminister = false;
         CanEditFields = false;
         CanResolveRatings = false;
-        if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
+        if ((int) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
         {
-            Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, PointsManagerID, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, PointsManagerID, TblID);

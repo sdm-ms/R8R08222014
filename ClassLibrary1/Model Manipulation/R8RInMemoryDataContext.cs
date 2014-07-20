@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using System.Data.Linq;
 using ClassLibrary1.Nonmodel_Code;
@@ -35,7 +35,7 @@ namespace ClassLibrary1.Model_Manipulation
             return false;
         }
 
-        public R8RContext GetRealDatabaseIfExists()
+        public IR8RDataContext GetRealDatabaseIfExists()
         {
             return null;
         }
@@ -81,47 +81,28 @@ namespace ClassLibrary1.Model_Manipulation
             base.BeforeSubmitChanges();
         }
 
-        R8RContext underlyingR8RDataContext;
-
+        // When converting to Entity Framework, we will need to use the R8RContext instead.
+        ClassLibrary1.OldModel.OldDataContext underlyingR8RDataContext;
         public R8RInMemoryDataContext()
-            : base(new R8RContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
+            : base(new ClassLibrary1.OldModel.OldDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
         {
-            underlyingR8RDataContext = (R8RContext)UnderlyingDataContext;
+            underlyingR8RDataContext = (ClassLibrary1.OldModel.OldDataContext)UnderlyingDataContext;
         }
 
-
-        public void SetUserRatingAddOptions()
-        {
-        }
-
-        public void SetPageLoadOptions()
-        {
-        }
-
-        public void LoadStatsWithTrustTrackersAndUserInteractions()
-        {
-        }
-        public void SetUserRatingUpdatingLoadOptions()
-        {
-        }
-
-        public void SetUserRatingAddingLoadOptions()
-        {
-        }
-
-        public IQueryable<TblRow> UDFNearestNeighborsForTbl(float? latitude, float? longitude, int? maxNumResults, int? tblID)
-        {
-            return (
-                from tblrow in GetTable<TblRow>().AsQueryable().Where(x => x.TblID == tblID)
-                let addressField = tblrow.Fields.SelectMany(y => y.AddressFields).FirstOrDefault()
-                let hasAddressField = addressField != null && !(addressField.Latitude == null) && !(addressField.Longitude == null) && !(addressField.Latitude == 0 && addressField.Longitude == 0)
-                let distance = GeoCodeCalc.CalcDistance((double)(latitude ?? 0), (double)(longitude ?? 0), (double)(addressField.Latitude ?? 0), (double)(addressField.Longitude ?? 0))
-                orderby hasAddressField descending, distance
-                select tblrow
-                )
-                .Take(maxNumResults ?? 9999999)
-                .AsQueryable<TblRow>();
-        }
+        // NOTE: Keep this commented out code for now -- if we want to implement support for nearest neighbors on the normalized database, we will need it. We will have to change int? to Guid? for tblID
+        //public IQueryable<TblRow> UDFNearestNeighborsForTbl(float? latitude, float? longitude, int? maxNumResults, int? tblID)
+        //{
+        //    return (
+        //        from tblrow in GetTable<TblRow>().AsQueryable().Where(x => x.TblID == tblID)
+        //        let addressField = tblrow.Fields.SelectMany(y => y.AddressFields).FirstOrDefault()
+        //        let hasAddressField = addressField != null && !(addressField.Latitude == null) && !(addressField.Longitude == null) && !(addressField.Latitude == 0 && addressField.Longitude == 0)
+        //        let distance = GeoCodeCalc.CalcDistance((double)(latitude ?? 0), (double)(longitude ?? 0), (double)(addressField.Latitude ?? 0), (double)(addressField.Longitude ?? 0))
+        //        orderby hasAddressField descending, distance
+        //        select tblrow
+        //        )
+        //        .Take(maxNumResults ?? 9999999)
+        //        .AsQueryable<TblRow>();
+        //}
 
         public IQueryable<AddressField> UDFDistanceWithin(float? latitude, float? longitude, float? distance)
         {

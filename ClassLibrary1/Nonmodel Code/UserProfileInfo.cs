@@ -9,7 +9,7 @@ using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 using System.Reflection;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
     public interface IUserProfileInfo
     {

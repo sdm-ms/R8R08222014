@@ -285,7 +285,7 @@ namespace TestProject1
         //    theAddressField.FieldID = 5;
         //    using (ShimsContext.Create())
         //    {
-        //        ClassLibrary1.Misc.Fakes.ShimInMemoryRepositoryList.AllInstances.GetItemByTypeAndIDTypeInt32 = (InMemoryRepositoryList l, Type t, int i) =>
+        //        ClassLibrary1.Nonmodel_Code.Fakes.ShimInMemoryRepositoryList.AllInstances.GetItemByTypeAndIDTypeInt32 = (InMemoryRepositoryList l, Type t, int i) =>
         //         {
         //             t.Should().Be(typeof(Field));
         //             i.Should().Be(5);

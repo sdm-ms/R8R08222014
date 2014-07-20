@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 
@@ -33,7 +33,7 @@ public partial class ChangePointsManager : System.Web.UI.Page
             Response.ExpiresAbsolute = TestableDateTime.Now.AddDays(-1d);
             Response.Expires = -1500;
             Response.CacheControl = "no-cache";
-            if (!(HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid()) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
+            if (!(HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid()) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
             {
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 return;

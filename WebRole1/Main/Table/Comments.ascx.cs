@@ -8,7 +8,7 @@ using System.Text;
 
 using System.Web.UI.HtmlControls;
 using MoreStrings;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 
@@ -138,7 +138,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
 
     public void AddComment_Click(object sender, EventArgs e)
     {
-        Guid? userID = (Guid?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && (UserCanProposeComments || UserCanAddComments))
         {
@@ -164,7 +164,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         bool isProposed;
         bool isDeleted;
         GetCommentInfo((Button)sender, out commentID, out isProposed, out isDeleted);
-        Guid? userID = (Guid?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && UserCanDeleteComments)
             theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (Guid)userID, true, null);

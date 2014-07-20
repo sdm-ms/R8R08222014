@@ -52,7 +52,7 @@ namespace ClassLibrary1.OldModel
         #endregion
 
         public OldDataContext() :
-            base(global::ClassLibrary1.Properties.Settings.Default.Norm0001ConnectionString, mappingSource)
+            base("FAKE CONNECTION STRING", mappingSource)
         {
         }
 

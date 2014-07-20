@@ -10,7 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 
@@ -28,7 +28,7 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
             Response.ExpiresAbsolute = TestableDateTime.Now.AddDays(-1d);
             Response.Expires = -1500;
             Response.CacheControl = "no-cache";
-            if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0))
+            if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0))
             {
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 return;
@@ -179,7 +179,7 @@ public partial class Admin_DollarSubsidy_SetDollarSubsidy : System.Web.UI.UserCo
         bool DoItNow = true;
 
         Guid? ChangeGroupId = null;
-        Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         // Calling the routines
         Obj.PointsManagerChangeSettings((Guid)SubtopicId, CurrentPeriodDollerSubsidy, EndofDollerSubsidyPeriod, NextPeriodDollerSubsidy, NextPeriodLength, NumPrizes, MinPayment, DoItNow, UserId, ChangeGroupId);
         User_Control_ModalPopUp PopUp = (User_Control_ModalPopUp)Buttons.FindControl("PopUp");

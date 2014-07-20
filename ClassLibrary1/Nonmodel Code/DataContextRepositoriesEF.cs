@@ -12,7 +12,7 @@ using System.Collections;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
 
     public class EFRepository<T> : IRepository<T> where T : class

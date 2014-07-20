@@ -15,7 +15,7 @@ using System.Text;
 using MoreStrings;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 
 public partial class Ratings : System.Web.UI.Page
 {
@@ -43,8 +43,8 @@ public partial class Ratings : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         RoutingInfoRatings theRatingsInfo = Routing.IncomingRatings(Page.RouteData, theDataAccessModule.DataContext);
-        if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-            UserIDOfBrowsingUser = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (HttpContext.Current.Profile != null && ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
+            UserIDOfBrowsingUser = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserIDOfBrowsingUser != null)
         {
             User browsingUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfBrowsingUser);

@@ -40,8 +40,8 @@ using ClassLibrary1.EFModel;
             R8RDB = theDataContext;
 
             Guid? UserID = null;
-            if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-                UserID = (Guid?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            if (HttpContext.Current.Profile != null && ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
+                UserID = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             PointsManager firstPointsManager = null;
             if (location != null)
             {

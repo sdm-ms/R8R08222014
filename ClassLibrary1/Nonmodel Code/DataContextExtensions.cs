@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Data.Linq;
 using System.Diagnostics;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
     public static class DataContextExtensions
     {

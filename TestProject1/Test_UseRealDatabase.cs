@@ -17,7 +17,7 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 #endif
 
 using FluentAssertions;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 using Microsoft.WindowsAzure.ServiceRuntime;
@@ -35,8 +35,7 @@ namespace TestProject1
         {
             // Use true when you want all tests to use a SQL Server database
             // Use false when you want all tests to use an in-memory database
-            // NOTE: In memory databases are not currently working.
-            bool returnVal = true;
+            bool returnVal = false;
 
             if (returnVal && !RoleEnvironment.IsAvailable)
                 RealUserProfileCollection.SetProviderConnectionString(ConnectionString.GetUserProfileDatabaseConnectionString());

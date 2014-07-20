@@ -16,7 +16,7 @@ using System.Web.Profile;
 using System.Text.RegularExpressions;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 
 namespace ClassLibrary1.Model
 {

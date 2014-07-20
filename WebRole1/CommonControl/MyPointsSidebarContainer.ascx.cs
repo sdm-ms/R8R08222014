@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using System.Web.Security;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 
 
 namespace WebRole1.CommonControl
@@ -27,7 +27,7 @@ namespace WebRole1.CommonControl
             theDataAccess = new R8RDataManipulation();
 
             PointsManager thePointsManager = null;
-            IUserProfileInfo theUser = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser();
+            IUserProfileInfo theUser = ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser();
             try
             {
                 theLocation = Routing.IncomingMainContent(Page.RouteData, theDataAccess.DataContext);

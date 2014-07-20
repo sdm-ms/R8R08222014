@@ -52,7 +52,7 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         SuppStyleHeader = suppStyleHeader;
 
         DetermineUserRights();
-        CommentsContent.UserCanProposeComments = ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null;
+        CommentsContent.UserCanProposeComments = ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null;
         CommentsContent.UserCanAddComments = CanPredict;
         CommentsContent.UserCanDeleteComments = CanEditFields;
         SetupDeletionStatus();
@@ -87,9 +87,9 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
         CanPredict = false;
         CanAdminister = false;
         CanEditFields = false;
-        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null)
+        if ((Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null)
         {
-            Guid UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, TblID);
@@ -122,11 +122,11 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
 
     protected void PerformDeleteOrUndelete(bool delete)
     {
-        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") == null)
+        if ((Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") == null)
             throw new Exception("You must be logged in to make changes.");
 
         ActionProcessor theActionProcessor = new ActionProcessor();
-        theActionProcessor.TblRowDeleteOrUndelete(RowId, delete, true, (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
+        theActionProcessor.TblRowDeleteOrUndelete(RowId, delete, true, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         theActionProcessor.DataContext.SubmitChanges();
         TblRow theTblRow = DataAccess.R8RDB.GetTable<TblRow>().Single(e => e.TblRowID == RowId);
         Routing.Redirect(Response, new RoutingInfoMainContent( theTblRow.Tbl, theTblRow, null));

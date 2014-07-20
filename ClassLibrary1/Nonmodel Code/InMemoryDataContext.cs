@@ -345,7 +345,7 @@ namespace ClassLibrary1.Nonmodel_Code
     /// This is an in-memory repository, implementing IRepository
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class InMemoryRepository<T> : IInMemoryRepositoryWithSubmitChangesSupport, IRepository<T> where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+    public class InMemoryRepository<T> : IInMemoryRepositoryWithSubmitChangesSupport, IRepository<T> where T : class
     {
         int lastIntPrimaryKeyID = 0;
         HashSet<T> EntitiesInRepository;
@@ -404,8 +404,21 @@ namespace ClassLibrary1.Nonmodel_Code
                 return null;
         }
 
+        // Note: The following is an alternative possible Clone implementation
+        //private static T DataContractSerialization<T>(T obj)
+        //{
+        //    DataContractSerializer dcSer = new DataContractSerializer(obj.GetType());
+        //    MemoryStream memoryStream = new MemoryStream();
+
+        //    dcSer.WriteObject(memoryStream, obj);
+        //    memoryStream.Position = 0;
+
+        //    T newObject = (T)dcSer.ReadObject(memoryStream);
+        //    return newObject;
+        //}
+
         /// <summary>
-        /// Clones an in-memory repository, by adding items int his repository to the new repository.
+        /// Clones an in-memory repository, by adding items in this repository to the new repository.
         /// </summary>
         /// <param name="newOwner"></param>
         /// <returns></returns>
@@ -596,6 +609,11 @@ namespace ClassLibrary1.Nonmodel_Code
         {
             return EntitiesInRepository.GetEnumerator();
         }
+
+        public IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path)
+        {
+            return this; // we are ignoring Include statements for now, instead including everything in our in memory repository
+        }
     }
 
     /// <summary>
@@ -636,7 +654,7 @@ namespace ClassLibrary1.Nonmodel_Code
             }
         }
 
-        public IRepository<T> GetRepository<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+        public IRepository<T> GetRepository<T>() where T : class
         {
             Type theType = typeof(T);
             IInMemoryRepositoryWithSubmitChangesSupport item;
@@ -794,7 +812,7 @@ namespace ClassLibrary1.Nonmodel_Code
             inMemoryRepositories = new InMemoryRepositoriesManager(UnderlyingDataContext, SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext));
         }
 
-        public IRepository<T> GetTable<T>() where T : class, INotifyPropertyChanging, INotifyPropertyChanged
+        public IRepository<T> GetTable<T>() where T : class
         {
             return inMemoryRepositories.GetRepository<T>();
         }

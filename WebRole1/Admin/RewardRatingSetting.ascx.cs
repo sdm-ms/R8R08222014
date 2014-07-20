@@ -50,8 +50,8 @@ namespace WebRole1.Admin
             int highStakesNoviceNumOneTenth = Convert.ToInt32(HighStakesNoviceNumOneTenth.Text);
             int highStakesNoviceTargetNum = Convert.ToInt32(HighStakesNoviceTargetNum.Text);
             decimal databaseChangeSelectHighStakesNoviceNumPct = Convert.ToDecimal(DatabaseChangeSelectHighStakesNoviceNumPct.Text);
-            theActionProcessor.RewardRatingSettingChange(pointsManagerID, probVal, multVal, (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
-            theActionProcessor.PointsManagerHighStakesSettings(pointsManagerID, highStakesProbability, highStakesSecretMultiplier, highStakesKnownMultiplier, highStakesNoviceOn, highStakesNoviceNumAutomatic, highStakesNoviceNumOneThird, highStakesNoviceNumOneTenth, highStakesNoviceTargetNum, databaseChangeSelectHighStakesNoviceNumPct, true, (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
+            theActionProcessor.RewardRatingSettingChange(pointsManagerID, probVal, multVal, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+            theActionProcessor.PointsManagerHighStakesSettings(pointsManagerID, highStakesProbability, highStakesSecretMultiplier, highStakesKnownMultiplier, highStakesNoviceOn, highStakesNoviceNumAutomatic, highStakesNoviceNumOneThird, highStakesNoviceNumOneTenth, highStakesNoviceTargetNum, databaseChangeSelectHighStakesNoviceNumPct, true, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         }
     }
 }

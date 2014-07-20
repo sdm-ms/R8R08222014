@@ -77,9 +77,9 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         CanPredict = false;
         CanAdminister = false;
         CanEditFields = false;
-        if ((Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid())
+        if ((Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid())
         {
-            Guid? UserId = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid? UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             //if (UserId == 0)
             //    UserId = null;
             // Checking user rights to predict

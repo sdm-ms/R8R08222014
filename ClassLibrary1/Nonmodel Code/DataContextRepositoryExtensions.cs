@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace ClassLibrary1.Misc
+namespace ClassLibrary1.Nonmodel_Code
 {
     public interface IDataContextExtended : IDataContext
     {

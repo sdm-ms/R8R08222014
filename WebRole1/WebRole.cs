@@ -5,7 +5,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using System.Configuration;
 using System.Web.Configuration;
 using ClassLibrary1.EFModel;
@@ -18,7 +18,7 @@ namespace WebRole1
         {
             //System.Data.Entity.Database.SetInitializer<R8RContext>(new System.Data.Entity.CreateDatabaseIfNotExists<R8RContext>());
 
-            new ClassLibrary1.Misc.AzureStartupDiagnostic();
+            new ClassLibrary1.Nonmodel_Code.AzureStartupDiagnostic();
 
             DiagnosticMonitor.Start("DiagnosticsConnectionString");
 

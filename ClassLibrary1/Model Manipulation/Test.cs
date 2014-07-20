@@ -25,7 +25,7 @@ using GoogleGeocoder;
 
 using System.Threading;
 
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using Microsoft.ServiceHosting.Tools.DevelopmentStorage;
 using Microsoft.ServiceHosting.Tools.DevelopmentFabric;
 

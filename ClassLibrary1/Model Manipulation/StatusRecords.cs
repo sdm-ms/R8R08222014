@@ -4,7 +4,7 @@ using System.Linq;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 using System.Collections.Generic;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 namespace ClassLibrary1.Model
 {
     public static class StatusRecords

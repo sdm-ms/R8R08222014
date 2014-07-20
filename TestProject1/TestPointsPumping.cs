@@ -18,7 +18,7 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using FluentAssertions;
 
 namespace TestProject1

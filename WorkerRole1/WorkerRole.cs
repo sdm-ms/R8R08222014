@@ -31,7 +31,7 @@ namespace WorkerRole1
 
         public override bool OnStart()
         {
-            new ClassLibrary1.Misc.AzureStartupDiagnostic();
+            new ClassLibrary1.Nonmodel_Code.AzureStartupDiagnostic();
 
             // Set the maximum number of concurrent connections 
             ServicePointManager.DefaultConnectionLimit = 12;

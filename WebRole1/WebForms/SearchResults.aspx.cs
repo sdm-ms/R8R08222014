@@ -29,8 +29,8 @@ public partial class SearchResults : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null)
-            userID = (Guid)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null)
+            userID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     }
 
 
