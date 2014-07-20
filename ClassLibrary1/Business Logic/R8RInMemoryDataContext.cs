@@ -5,10 +5,9 @@ using System.Text;
 using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using System.Data.Linq;
-using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.EFModel;
 
-namespace ClassLibrary1.Model_Manipulation
+namespace ClassLibrary1.Business_Logic
 {
 
     public class R8RInMemoryDataContext : InMemoryContext, IR8RDataContext

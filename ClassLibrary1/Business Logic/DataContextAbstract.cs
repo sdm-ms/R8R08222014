@@ -7,7 +7,7 @@ using System.Data.Linq;
 using System.Linq.Expressions;
 using ClassLibrary1.EFModel;
 using Effort;
-using ClassLibrary1.Model_Manipulation;
+using ClassLibrary1.Business_Logic;
 
 namespace ClassLibrary1.Model
 {
