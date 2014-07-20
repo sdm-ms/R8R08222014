@@ -7,6 +7,7 @@ using System.Data.Linq;
 using System.Linq.Expressions;
 using ClassLibrary1.EFModel;
 using Effort;
+using ClassLibrary1.Model_Manipulation;
 
 namespace ClassLibrary1.Model
 {
@@ -26,12 +27,21 @@ namespace ClassLibrary1.Model
                 return new R8REFDataContext();
             else
             {
-                var myTest = new R8RContext(Effort.DbConnectionFactory.CreateTransient());
-                myTest.SearchWords.Add(new SearchWord() { SearchWordID = Guid.NewGuid(), TheWord = "asdf" });
-                myTest.DatabaseStatus.Add(new DatabaseStatus() { DatabaseStatusID = Guid.NewGuid(), PreventChanges = true });
-                myTest.SaveChanges();
+                bool useEffort = false; // see effort.codeplex.com -- not currently working
 
-                return new R8REFDataContext(Effort.DbConnectionFactory.CreatePersistent(PersistentFakeDatabaseID.ToString()));
+                if (useEffort)
+                {
+                    var myTest = new R8RContext(Effort.DbConnectionFactory.CreateTransient());
+                    myTest.SearchWords.Add(new SearchWord() { SearchWordID = Guid.NewGuid(), TheWord = "asdf" });
+                    myTest.DatabaseStatus.Add(new DatabaseStatus() { DatabaseStatusID = Guid.NewGuid(), PreventChanges = true });
+                    myTest.SaveChanges();
+
+                    return new R8REFDataContext(Effort.DbConnectionFactory.CreatePersistent(PersistentFakeDatabaseID.ToString()));
+                }
+                else
+                {
+                    return new R8RInMemoryDataContext();
+                }
             }
         }
     }

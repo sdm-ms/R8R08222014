@@ -185,6 +185,7 @@
       <DependentUpon>201407190256104_AddedWhenCreatedFields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model Manipulation\R8RInMemoryDataContext.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
     <Compile Include="Model\EFModel\AdministrationRight.cs" />
     <Compile Include="Model\EFModel\AdministrationRightsGroup.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Model\EFModel\ForumUser.cs" />
     <Compile Include="Model\EFModel\ForumUserGroup.cs" />
     <Compile Include="Model\EFModel\ForumUsersInGroup.cs" />
+    <Compile Include="Model\OldModel.cs" />
     <Compile Include="Nonmodel Code\AzureChartControlBlobHandler.cs" />
     <Compile Include="Nonmodel Code\AzureCloudDrive.cs" />
     <Compile Include="Nonmodel Code\AzureNotifications.cs" />
@@ -309,6 +311,7 @@
     <Compile Include="Nonmodel Code\GoogleGeocode.cs" />
     <Compile Include="Nonmodel Code\GooglePagerField.cs" />
     <Compile Include="Nonmodel Code\GuidManipulation.cs" />
+    <Compile Include="Nonmodel Code\InMemoryDataContext.cs" />
     <Compile Include="Nonmodel Code\LinqExcelProvider.cs" />
     <Compile Include="Nonmodel Code\MapquestGeocode.cs" />
     <Compile Include="Nonmodel Code\MD5HashGenerator.cs" />
@@ -337,7 +340,7 @@
     <Compile Include="Model Manipulation\CacheManagement.cs" />
     <Compile Include="Model Manipulation\CacheSubstitution.cs" />
     <Compile Include="Model Manipulation\ConnectionString.cs" />
-    <Compile Include="Model Manipulation\DataContextEF.cs" />
+    <Compile Include="Model Manipulation\R8REFDataContext.cs" />
     <Compile Include="Model Manipulation\TblColumns.cs" />
     <Compile Include="Model Manipulation\ChoiceGroups.cs" />
     <Compile Include="Model Manipulation\ClassesAndTypes.cs" />

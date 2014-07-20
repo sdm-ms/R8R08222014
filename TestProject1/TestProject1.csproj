@@ -158,6 +158,7 @@
     <Compile Include="Classes\IEnumerableExtensions.cs" />
     <Compile Include="HeterogeneousUserTests.cs" />
     <Compile Include="TestAddAndResolveRatings.cs" />
+    <Compile Include="TestInMemoryDataContexts.cs" />
     <Compile Include="TestPointsPumping.cs" />
     <Compile Include="TestTrustCalculations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
