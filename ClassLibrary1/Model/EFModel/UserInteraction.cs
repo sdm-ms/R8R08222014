@@ -31,9 +31,9 @@ namespace ClassLibrary1.EFModel
 
         public virtual TrustTrackerUnit TrustTrackerUnit { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual User OriginalRatingUser { get; set; }
 
-        public virtual User User1 { get; set; }
+        public virtual User LatestRatingUser { get; set; }
 
         public virtual ICollection<UserInteractionStat> UserInteractionStats { get; set; }
     }

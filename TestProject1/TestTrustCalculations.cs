@@ -171,8 +171,8 @@ namespace TestProject1
 
             UserInteraction userInteraction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(x =>
-                    x.User.UserID == user1 &&
-                    x.User1.UserID == user2);
+                    x.OriginalRatingUser.UserID == user1 &&
+                    x.LatestRatingUser.UserID == user2);
             
             List<UserInteractionStat> userInteractionStats = userInteraction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 

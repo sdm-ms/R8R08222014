@@ -189,7 +189,7 @@ namespace ClassLibrary1.Model
 
             if (theUserInteraction == null)
             { // it could have been created earlier in this background process
-                theUserInteraction = R8RDB.RegisteredToBeInserted.GetCollectionOfType<UserInteraction>().SingleOrDefault(ui => ui.User == originalUserRating.User && ui.User1 == latestUserRating.User && ui.TrustTrackerUnit == latestUserRating.TrustTrackerUnit);
+                theUserInteraction = R8RDB.RegisteredToBeInserted.GetCollectionOfType<UserInteraction>().SingleOrDefault(ui => ui.OriginalRatingUser == originalUserRating.User && ui.LatestRatingUser == latestUserRating.User && ui.TrustTrackerUnit == latestUserRating.TrustTrackerUnit);
             }
 
             if (theUserInteraction == null)
@@ -200,8 +200,8 @@ namespace ClassLibrary1.Model
                 theUserInteraction = new UserInteraction 
                 { 
                     UserInteractionID = Guid.NewGuid(),
-                    User = originalUserRating.User, 
-                    User1 = latestUserRating.User, 
+                    OriginalRatingUser = originalUserRating.User, 
+                    LatestRatingUser = latestUserRating.User, 
                     TrustTrackerUnit = latestUserRating.TrustTrackerUnit, 
                     LatestUserEgalitarianTrust = (float) (TrustTrackerTrustEveryone.LatestUserEgalitarianTrustAlways1 ? 1.0F : mostRecentUserTrustTracker.EgalitarianTrustLevel),
                     LatestUserEgalitarianTrustAtLastWeightUpdate = (float) mostRecentUserTrustTracker.EgalitarianTrustLevel

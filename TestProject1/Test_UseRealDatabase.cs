@@ -119,7 +119,8 @@ namespace TestProject1
         {
             UserEditResponse theResponse = new UserEditResponse();
             Guid ratingID = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).First().RatingID;
-            theTestHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, theTestHelper.UserIds[5], ref theResponse);
+            Guid user5 = theTestHelper.UserIds[5];
+            theTestHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, user5, ref theResponse);
             CacheManagement.ClearCache();
             theTestHelper.FinishUserRatingAdd(_dataManipulation);
             if (waitIdleTasks)

@@ -1198,13 +1198,13 @@ using System.Data.Common;
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.UserInteractions)
-                .WithRequired(e => e.User)
+                .WithRequired(e => e.OriginalRatingUser)
                 .HasForeignKey(e => e.OrigRatingUserID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.UserInteractions1)
-                .WithRequired(e => e.User1)
+                .WithRequired(e => e.LatestRatingUser)
                 .HasForeignKey(e => e.LatestRatingUserID)
                 .WillCascadeOnDelete(false);
 

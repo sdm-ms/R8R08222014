@@ -53,7 +53,7 @@ namespace ClassLibrary1
                               let user = ur.User
                               let pmID = ur.Rating.RatingGroup.TblRow.Tbl.PointsManagerID
                               let pointsTotal = user.PointsTotals.FirstOrDefault(pt => pt.PointsManagerID == pmID)
-                              let currentlyRecordedUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
+                              let currentlyRecordedUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.OriginalRatingUser == user && y.LatestRatingUser == mostRecentUserRatingRecordedInUserRating.User)
                               let originalUserTrustTracker = ur.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                               where ur.NextRecencyUpdateAtUserRatingNum != null
                                         && ur.NextRecencyUpdateAtUserRatingNum <= pointsTotal.NumUserRatings

@@ -203,8 +203,8 @@ namespace ClassLibrary1.Model
                                       let mostRecentUserRatingRecordedInRating = ur.Rating.UserRating // this now is the latest user rating
                                       let user = ur.User
                                       let pointsTotal = user.PointsTotals.FirstOrDefault(pt => pt.PointsManagerID == ur.Rating.RatingGroup.RatingGroupAttribute.PointsManagerID)
-                                      let currentlyRecordedUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
-                                      let replacementUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.User == user && y.User1 == mostRecentUserRatingRecordedInRating.User)
+                                      let currentlyRecordedUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.OriginalRatingUser == user && y.LatestRatingUser == mostRecentUserRatingRecordedInUserRating.User)
+                                      let replacementUserInteraction = ur.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.OriginalRatingUser == user && y.LatestRatingUser == mostRecentUserRatingRecordedInRating.User)
                                       let originalUserTrustTracker = ur.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                                       let mostRecentUserTrustTracker = mostRecentUserRatingRecordedInRating.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                                       select new
@@ -278,8 +278,8 @@ namespace ClassLibrary1.Model
                                         let mostRecentUserRatingRecordedInUserRating = x.UserRating1 // this previously was the latest user rating
                                         let mostRecentUserRatingRecordedInRating = x.Rating.UserRating // this now is the latest user rating
                                         let user = x.User
-                                      let currentlyRecordedUserInteraction = x.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.User == user && y.User1 == mostRecentUserRatingRecordedInUserRating.User)
-                                      let replacementUserInteraction = x.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.User == user && y.User1 == mostRecentUserRatingRecordedInRating.User)
+                                      let currentlyRecordedUserInteraction = x.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && mostRecentUserRatingRecordedInUserRating != null && y.OriginalRatingUser == user && y.LatestRatingUser == mostRecentUserRatingRecordedInUserRating.User)
+                                      let replacementUserInteraction = x.User.UserInteractions.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit && y.OriginalRatingUser == user && y.LatestRatingUser == mostRecentUserRatingRecordedInRating.User)
                                       let originalUserTrustTracker = x.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                                       let mostRecentUserTrustTracker = mostRecentUserRatingRecordedInRating.User.TrustTrackers.FirstOrDefault(y => y.TrustTrackerUnit == trustTrackerUnit)
                                       select new
