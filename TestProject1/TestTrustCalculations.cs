@@ -174,7 +174,7 @@ namespace TestProject1
                     x.User.UserID == user1 &&
                     x.User1.UserID == user2);
             
-            List<UserInteractionStat> userInteractionStats = userInteraction.UserInteractionStats.ToList();
+            List<UserInteractionStat> userInteractionStats = userInteraction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue = user1UserRatingValue;
             decimal ratingValue = user2UserRatingValue;

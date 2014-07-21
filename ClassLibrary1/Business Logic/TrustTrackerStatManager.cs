@@ -116,7 +116,7 @@ namespace ClassLibrary1.Model
             TrustTracker theTrustTracker = theUser.TrustTrackers.FirstOrDefault(x => x.TrustTrackerUnit == (theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit));
             if (theTrustTracker == null)
                 theTrustTracker = TrustTrackingBackgroundTasks.AddTrustTracker(R8RDB, theUser, theRating.RatingGroup.TblColumn.TrustTrackerUnit ?? theRating.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit);
-            TrustTrackerStat[] theTrustTrackerStats = theTrustTracker.TrustTrackerStats.ToArray();
+            TrustTrackerStat[] theTrustTrackerStats = theTrustTracker.TrustTrackerStats.OrderBy(x => x.StatNum).ToArray();
             SetStats(theRating.LastTrustedValue ?? currentRatingOrBasisOfCalc, theRating.CurrentValue, currentRatingOrBasisOfCalc, enteredRating, oneWeekVolatility.DistanceFromStart, oneWeekVolatility.Pushback, oneYearVolatility.Pushback, isFirstUserRating, isUsersFirstWeek, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic, theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup == null ? null : theRating.RatingGroup.RatingGroupAttribute.RatingCharacteristic.SubsidyDensityRangeGroup.UseLogarithmBase);
             SetAdjustmentFactor(theRating.CurrentValue, theTrustTrackerStats);
             additionalInfo = new UserRatingHierarchyAdditionalInfo(AdjustmentFactorConservative, theTrustTracker.OverallTrustLevel, (float) oneWeekVolatility.DistanceFromStart, (float) oneWeekVolatility.Pushback, (float) oneYearVolatility.Pushback, trustTrackerForChoiceFieldsSummary, otherChoiceInFieldIDs);

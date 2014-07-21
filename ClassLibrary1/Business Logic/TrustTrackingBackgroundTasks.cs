@@ -189,7 +189,7 @@ namespace ClassLibrary1.Model
 
             if (theUserInteraction == null)
             { // it could have been created earlier in this background process
-                theUserInteraction = R8RDB.RegisteredToBeInserted.OfType<UserInteraction>().SingleOrDefault(ui => ui.User == originalUserRating.User && ui.User1 == latestUserRating.User && ui.TrustTrackerUnit == latestUserRating.TrustTrackerUnit);
+                theUserInteraction = R8RDB.RegisteredToBeInserted.GetCollectionOfType<UserInteraction>().SingleOrDefault(ui => ui.User == originalUserRating.User && ui.User1 == latestUserRating.User && ui.TrustTrackerUnit == latestUserRating.TrustTrackerUnit);
             }
 
             if (theUserInteraction == null)

@@ -250,7 +250,7 @@ namespace ClassLibrary1.Model
                     //        " Most recent user rating in rating (newer) " + userRatingInfo.MostRecentUserRatingInRating.EnteredUserRating);
 
                     UpdatePointsForUserRating(userRatingInfo.UserRating, userRatingInfo.PointsTotal, currentTime);
-                    TrustTrackerStat[] originalUserTrustTrackerStats = userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats.ToArray();
+                    TrustTrackerStat[] originalUserTrustTrackerStats = userRatingInfo.OriginalUserTrustTracker.TrustTrackerStats.OrderBy(x => x.StatNum).ToArray();
                     TrustTrackingBackgroundTasks.UpdateUserInteractionsAfterNewUserRatingIsEntered(DataContext,
                         userRatingInfo.CurrentlyRecordedUserInteraction, userRatingInfo.ReplacementUserInteraction,
                         userRatingInfo.UserRating, originalUserTrustTrackerStats, userRatingInfo.MostRecentUserRatingInUserRating,

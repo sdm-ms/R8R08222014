@@ -187,7 +187,7 @@ namespace TestProject1
                 .Single(x =>
                     x.User.UserID == user2 &&
                     x.User1.UserID == user3);
-            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.ToList();
+            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue = user1Rating1UserRatingValue;
             decimal ratingValue = user2Rating1UserRatingValue;
@@ -299,7 +299,7 @@ namespace TestProject1
                 .Single(x =>
                     x.User.UserID == user2 &&
                     x.User1.UserID == user3);
-            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.ToList();
+            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             /* Have another user replace user 3 as the latest-rating user */
             decimal user4UserRatingValue = 8.1M; // Should produce a retrospective adjustment factor of 1.1
@@ -323,7 +323,7 @@ namespace TestProject1
             UserInteraction user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
                 x.User.UserID == user2 &&
                 x.User1.UserID == user4);
-            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
             double adjustmentPctCalculatedInUserInteraction = user2User4InteractionStats[0].AvgAdjustmentPctWeighted;
             adjustmentPctCalculatedInUserInteraction.Should().BeApproximately(1.1F, 0.01F, "because rating moved 110 percent of user 2's movement as of user 4 entry");
             adjustmentPctCalculatedInUserInteraction.Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, 0.01F, "because manual calculation should produce same result");
@@ -333,7 +333,7 @@ namespace TestProject1
             user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
                 x.User.UserID == user2 &&
                 x.User1.UserID == user4);
-            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
             user2User4InteractionStats[0].AvgAdjustmentPctWeighted
                 .Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, Precision);
 
@@ -345,7 +345,7 @@ namespace TestProject1
             user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
                 x.User.UserID == user2 &&
                 x.User1.UserID == user4);
-            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
             user2User4InteractionStats[0].AvgAdjustmentPctWeighted
                 .Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, Precision);
         }
@@ -401,7 +401,6 @@ namespace TestProject1
 
             TestableDateTime.SleepOrSkipTime(50000);
             TestHelper.WaitIdleTasks();
-            //theTestHelper.WaitIdleTasks(); // There's no reason to wait twice on idle tasks, is there?
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
 
@@ -438,7 +437,7 @@ namespace TestProject1
                         ));
             }
             decimal user4Rating2UserRatingValue = 10M;
-            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user4Rating2UserRatingValue, user4, ref theResponse); // -200%
+           TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user4Rating2UserRatingValue, user4, ref theResponse); // -200%
             TestHelper.WaitIdleTasks();
             {
                 // Debug
@@ -459,7 +458,7 @@ namespace TestProject1
             UserInteraction user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
                 x.User.UserID == user2 &&
                 x.User1.UserID == user4);
-            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue1 = user1Rating1UserRatingValue;
             decimal ratingValue1 = user2Rating1UserRatingValue;
@@ -600,7 +599,7 @@ namespace TestProject1
             UserInteraction user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
                 x.User.UserID == user2 &&
                 x.User1.UserID == user4);
-            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue1 = user1Rating1UserRatingValue;
             decimal ratingValue1 = user2Rating1UserRatingValue;
@@ -687,7 +686,7 @@ namespace TestProject1
             UserInteraction user2User3Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
                 x.User.UserID == user2 &&
                 x.User1.UserID == user3);
-            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.ToList();
+            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue = user1RatingValue;
             decimal ratingValue = user2RatingValue;
@@ -927,10 +926,10 @@ namespace TestProject1
             TestHelper.WaitIdleTasks();
 
             var theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == user1 && x.User1.UserID == user2);
-            double correctWeightInCalculatingTrustTotal1 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats.ToArray()[0], theUserInteraction1);
+            double correctWeightInCalculatingTrustTotal1 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats.OrderBy(x => x.StatNum).ToArray()[0], theUserInteraction1);
             theUserInteraction1.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal1, 0.01F);
             var theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == user1 && x.User1.UserID == user3);
-            double correctWeightInCalculatingTrustTotal2 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats.ToArray()[0], theUserInteraction2);
+            double correctWeightInCalculatingTrustTotal2 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats.OrderBy(x => x.StatNum).ToArray()[0], theUserInteraction2);
             theUserInteraction2.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal2, 0.01F);
             var theUserInteraction3 = _dataManipulation.DataContext.GetTable<UserInteraction>().SingleOrDefault(x => x.User.UserID == user1 && x.User1.UserID == TestHelper.UserIds[9]);
             theUserInteraction3.Should().BeNull(); // because the idle task should eliminate it
