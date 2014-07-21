@@ -387,22 +387,22 @@ namespace ClassLibrary1.Nonmodel_Code
             Owner = owner;
         }
 
-        /// <summary>
-        /// Uses reflection to clone an object
-        /// </summary>
-        /// <typeparam name="T2"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        internal T2 CloneObject<T2>(T2 obj) where T2 : class
-        {
-            if (obj == null) return null;
-            System.Reflection.MethodInfo inst = obj.GetType().GetMethod("MemberwiseClone",
-                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            if (inst != null)
-                return (T2)inst.Invoke(obj, null);
-            else
-                return null;
-        }
+        ///// <summary>
+        ///// Uses reflection to clone an object
+        ///// </summary>
+        ///// <typeparam name="T2"></typeparam>
+        ///// <param name="obj"></param>
+        ///// <returns></returns>
+        //internal T2 CloneObject<T2>(T2 obj) where T2 : class
+        //{
+        //    if (obj == null) return null;
+        //    System.Reflection.MethodInfo inst = obj.GetType().GetMethod("MemberwiseClone",
+        //        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        //    if (inst != null)
+        //        return (T2)inst.Invoke(obj, null);
+        //    else
+        //        return null;
+        //}
 
         // Note: The following is an alternative possible Clone implementation
         //private static T DataContractSerialization<T>(T obj)
@@ -764,7 +764,7 @@ namespace ClassLibrary1.Nonmodel_Code
         }
 
         public static void SetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext, InMemoryRepositoriesManager inMemoryRepositoryList)
-        { // This is a faster way of doing submit changes. 
+        { 
             Type theType = underlyingDataContext.GetType();
 
             if (inMemoryRepositoryManagerForDataContext == null)
