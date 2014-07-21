@@ -10,7 +10,7 @@ namespace ClassLibrary1.Nonmodel_Code
 {
     public interface IDataContextExtended : IDataContext
     {
-        List<object> RegisteredToBeInserted { get; set; }
+        DictionaryByType RegisteredToBeInserted { get; set; }
         /// <summary>
         /// The idea of the temporary cache is to cache information only for the (short) life of a DataContext. 
         /// I think I used this sparingly, but there were cases where it was much easier than trying to pass the 
@@ -50,7 +50,7 @@ namespace ClassLibrary1.Nonmodel_Code
         internal static void InsertOnSubmitObjectsToBeInserted<T>(this IDataContextExtended theDataContext) where T : class
         {
             var theDBTable = theDataContext.GetTable<T>();
-            foreach (var theObject in theDataContext.RegisteredToBeInserted.OfType<T>())
+            foreach (var theObject in theDataContext.RegisteredToBeInserted.GetCollectionOfType<T>())
                 theDBTable.InsertOnSubmit(theObject);
                 //theDBTable.InsertOnSubmitIfNotAlreadyInserted(theObject);
         }
@@ -64,7 +64,7 @@ namespace ClassLibrary1.Nonmodel_Code
         /// <returns></returns>
         public static IQueryable<TSource> WhereFromNewOrDatabase<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
         {
-            IQueryable<TSource> newObjects = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().Where<TSource>(predicate);
+            IQueryable<TSource> newObjects = theDataContext.RegisteredToBeInserted.GetCollectionOfType<TSource>().AsQueryable().Where<TSource>(predicate);
             if (newObjects.Any())
                 return newObjects;
             var theTable = theDataContext.GetTable<TSource>();
@@ -73,7 +73,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public static IQueryable<TSource> WhereFromNewAndDatabase<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
         {
-            List<TSource> newObjects = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().Where<TSource>(predicate).ToList();
+            List<TSource> newObjects = theDataContext.RegisteredToBeInserted.GetCollectionOfType<TSource>().AsQueryable().Where<TSource>(predicate).ToList();
             var theTable = theDataContext.GetTable<TSource>();
             List<TSource> databaseObjects = theTable.Where<TSource>(predicate).ToList();
             IQueryable<TSource> combined = newObjects.Union(databaseObjects).AsQueryable();
@@ -88,7 +88,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public static TSource NewOrFirst<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
         {
-            TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().FirstOrDefault(predicate);
+            TSource newObject = theDataContext.RegisteredToBeInserted.GetCollectionOfType<TSource>().AsQueryable().FirstOrDefault(predicate);
             if (newObject != null)
                 return newObject;
             var theTable = theDataContext.GetTable<TSource>();
@@ -103,7 +103,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public static TSource NewOrFirstOrDefault<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
         {
-            TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().FirstOrDefault(predicate);
+            TSource newObject = theDataContext.RegisteredToBeInserted.GetCollectionOfType<TSource>().AsQueryable().FirstOrDefault(predicate);
             if (newObject != null)
                 return newObject;
             var theTable = theDataContext.GetTable<TSource>();
@@ -118,7 +118,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public static TSource NewOrSingle<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
         {
-            TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().SingleOrDefault(predicate);
+            TSource newObject = theDataContext.RegisteredToBeInserted.GetCollectionOfType<TSource>().AsQueryable().SingleOrDefault(predicate);
             if (newObject != null)
                 return newObject;
             var theTable = theDataContext.GetTable<TSource>();
@@ -133,7 +133,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public static TSource NewOrSingleOrDefault<TSource>(this IDataContextExtended theDataContext, Expression<Func<TSource, bool>> predicate) where TSource : class
         {
-            TSource newObject = theDataContext.RegisteredToBeInserted.OfType<TSource>().AsQueryable().SingleOrDefault<TSource>(predicate);
+            TSource newObject = theDataContext.RegisteredToBeInserted.GetCollectionOfType<TSource>().AsQueryable().SingleOrDefault<TSource>(predicate);
             if (newObject != null)
                 return newObject;
             var theTable = theDataContext.GetTable<TSource>();

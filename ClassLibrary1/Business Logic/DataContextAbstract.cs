@@ -66,7 +66,7 @@ namespace ClassLibrary1.Model
             DatabaseAndAzureRoleStatus.CheckPreventChanges(theDataContext);
             FastAccessTablesMaintenance.PushRowsRequiringUpdateToAzureQueue(theDataContext);
             StatusRecords.RecordRememberedStatusRecordChanges(theDataContext);
-            theDataContext.RegisteredToBeInserted = new List<object>();
+            theDataContext.RegisteredToBeInserted = new DictionaryByType();
         }
 
 

@@ -49,13 +49,11 @@ namespace ClassLibrary1.Model
             return this;
         }
 
-        internal List<object> _RegisteredToBeInserted;
-        public List<object> RegisteredToBeInserted
+        internal DictionaryByType _RegisteredToBeInserted = new DictionaryByType();
+        public DictionaryByType RegisteredToBeInserted
         {
             get
             {
-                if (_RegisteredToBeInserted == null)
-                    _RegisteredToBeInserted = new List<object>();
                 return _RegisteredToBeInserted;
             }
             set

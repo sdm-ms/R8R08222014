@@ -78,6 +78,9 @@
     <Reference Include="MB.KyneticORM.Direct">
       <HintPath>Dependencies\MB.KyneticORM.Direct.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Experimental.Collections">
+      <HintPath>..\packages\Microsoft.Experimental.Collections.1.0.1-alpha\lib\portable-net45+win8+wp8\Microsoft.Experimental.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ServiceHosting.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>Dependencies\Microsoft.ServiceHosting.Tools.dll</HintPath>
     </Reference>
@@ -305,6 +308,7 @@
     <Compile Include="Nonmodel Code\DataContextRepositoriesEF.cs" />
     <Compile Include="Nonmodel Code\DataContextRepositoryExtensions.cs" />
     <Compile Include="Nonmodel Code\DateTimeManip.cs" />
+    <Compile Include="Nonmodel Code\DictionaryByType.cs" />
     <Compile Include="Nonmodel Code\EntityHelper.cs" />
     <Compile Include="Nonmodel Code\GeoCalc.cs" />
     <Compile Include="Nonmodel Code\GoogleGeocode.cs" />
