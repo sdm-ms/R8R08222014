@@ -493,6 +493,11 @@ namespace ClassLibrary1.Model
                     }
                     GetIR8RDataContext.PersistentFakeDatabaseID = Guid.NewGuid();
                 }
+                else // using in memory data context
+                {
+                    InMemoryDatabaseFactory.DeleteDatabase(GetIR8RDataContext.PersistentFakeDatabaseID.ToString());
+                    GetIR8RDataContext.PersistentFakeDatabaseID = Guid.NewGuid();
+                }
             }
 
             UserProfileCollection.DeleteAllUsers();

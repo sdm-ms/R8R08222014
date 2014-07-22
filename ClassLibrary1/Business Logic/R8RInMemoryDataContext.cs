@@ -80,8 +80,8 @@ namespace ClassLibrary1.Business_Logic
 
         // When converting to Entity Framework, we will need to use the R8RContext instead.
         ClassLibrary1.OldModel.OldDataContext underlyingR8RDataContext;
-        public R8RInMemoryDataContext()
-            : base(new ClassLibrary1.OldModel.OldDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */))
+        public R8RInMemoryDataContext(InMemoryDatabase simulatedPermanentStorage)
+            : base(new ClassLibrary1.OldModel.OldDataContext("no real connection" /* AzureSetup.GetConfigurationSetting("R8RConnectionString") */), simulatedPermanentStorage)
         {
             underlyingR8RDataContext = (ClassLibrary1.OldModel.OldDataContext)UnderlyingDataContext;
         }

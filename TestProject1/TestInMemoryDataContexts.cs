@@ -33,6 +33,7 @@ namespace TestProject1
         internal RepositoryItemAssociationInfo addressFieldToField;
         internal RepositoryItemAssociationInfo userToUserInfo;
         internal List<RepositoryItemAssociationInfo> ratingToRatingGroup;
+        bool originalUseRealDatabase;
 
         /// <summary>
         ///Initialize() is called once during test execution before
@@ -41,8 +42,8 @@ namespace TestProject1
         [TestInitialize()]
         public void Initialize()
         {
-            //originalUseRealDatabase = GetIR8RDataContext.UseRealDatabase;
-            //GetIR8RDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
+            originalUseRealDatabase = ClassLibrary1.Model.GetIR8RDataContext.UseRealDatabase;
+            ClassLibrary1.Model.GetIR8RDataContext.UseRealDatabase = false; // never use real database for these tests, since the purpose is to test the alternative to the real database
             UnderlyingR8RDataContext = new OldDataContext("FAKECONNECTIONSTRING");
             repositoryList = MappingInfoProcessor.ProcessDataContextMappingInfo(UnderlyingR8RDataContext);
             fieldToAddressField = repositoryList.SingleOrDefault(x => x.TypeOfItemContainingProperty == typeof(Field) && x.TypeOfForeignItem == typeof(AddressField));
@@ -59,7 +60,7 @@ namespace TestProject1
         [TestCleanup()]
         public void Cleanup()
         {
-            //GetIR8RDataContext.UseRealDatabase = originalUseRealDatabase;
+            ClassLibrary1.Model.GetIR8RDataContext.UseRealDatabase = originalUseRealDatabase;
         }
 
         [TestMethod]
@@ -533,26 +534,27 @@ namespace TestProject1
 
         [TestMethod]
         [Category("UnitTest")]
-        public void SimulatedPermanentStorageTest()
+        public void SimulatedDatabaseTest()
         {
-            var thePermanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext);
-            thePermanentStorage.Should().NotBeNull();
-            SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext).Should().Equals(thePermanentStorage);
-            SimulatedPermanentStorage.Reset();
-            SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext).Should().NotBe(thePermanentStorage);
+            InMemoryDatabase simulatedDatabase = InMemoryDatabaseFactory.GetDatabase("MySim", UnderlyingR8RDataContext);
+            simulatedDatabase.Should().NotBeNull();
+            InMemoryContext theInMemoryContext = new InMemoryContext(UnderlyingR8RDataContext, simulatedDatabase);
+            theInMemoryContext.SimulatedDatabase.Should().Equals(simulatedDatabase);
+
         }
 
         [TestMethod]
         [Category("UnitTest")]
         public void InMemoryContextTest()
         {
-            InMemoryContext theInMemoryContext = new InMemoryContext(UnderlyingR8RDataContext);
+            InMemoryDatabase simulatedDatabase = InMemoryDatabaseFactory.GetDatabase("MySim", UnderlyingR8RDataContext);
+            InMemoryContext theInMemoryContext = new InMemoryContext(UnderlyingR8RDataContext, simulatedDatabase);
             IRepository<AddressField> theRepository = theInMemoryContext.GetTable<AddressField>();
             AddressField theAddressField = new AddressField();
             theRepository.InsertAllOnSubmit(new AddressField[] { theAddressField }); // test insert all at same time
             theInMemoryContext.SubmitChanges();
-            var thePermanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingR8RDataContext);
-            thePermanentStorage.GetItemByTypeAndID(typeof(AddressField), 1).Should().Equals(theAddressField);
+            InMemoryContext anotherContext = new InMemoryContext(UnderlyingR8RDataContext, simulatedDatabase);
+            anotherContext.GetTable<AddressField>().Where(x => true).First().AddressFieldID.Should().Equals(theAddressField);
         }
 
 

@@ -542,7 +542,7 @@ namespace ClassLibrary1.Nonmodel_Code
         {
             foreach (var item in EntitiesBeingInserted)
             {
-                Owner.ConfirmNotAlreadyInAnotherDataContext(SimulatedPermanentStorage.managerOriginallyContainingEntities, item);
+                //Owner.ConfirmNotAlreadyInAnotherDataContext(SimulatedPermanentStorage.managerOriginallyContainingEntities, item);
                 ConfirmNoAssociationWithUninsertedItemOrItemSetToDelete(item); // note that we only need to check this on entities being inserted, because if there is some other kind of problem, it will be found on deletion
                 if (RepositoryItemPrimaryKeys.unsetPrimaryKeyValues.Contains(RepositoryItemPrimaryKeys.GetPrimaryKeyFieldValue(item)))
                     SetUnsetPrimaryKey(item); // we must set all primary keys for all repositories before setting the foreign key ids
@@ -738,48 +738,40 @@ namespace ClassLibrary1.Nonmodel_Code
     /// <summary>
     /// Multiple data contexts may operate on the same data, either simultaneously or seriatim. This class enables testing of these scenarios. When the data context submits changes, SetSimulatedPermanentStorageForDataContextType is called. On the other
     /// hand, when the data context is constructed, GetSimulatedPermanentStorage is called, so that the data can be loaded.
-    /// Because this is static, there is only one simulated permanent storage store. An improvement would be to allow for the
-    /// creation of multiple databases, for testing of sharding scenarios.
     /// </summary>
-    public static class SimulatedPermanentStorage
+    public class InMemoryDatabase
     {
-        public static Dictionary<Type, InMemoryRepositoriesManager> inMemoryRepositoryManagerForDataContext;
-        public static Dictionary<object, InMemoryRepositoriesManager> managerOriginallyContainingEntities = new Dictionary<object, InMemoryRepositoriesManager>();
+        public InMemoryRepositoriesManager simulationOfPermanentDatabase;
 
-        public static InMemoryRepositoriesManager GetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext)
+        public InMemoryDatabase(DataContext underlyingDataContext)
         {
-            Type theType = underlyingDataContext.GetType();
-
-            if (inMemoryRepositoryManagerForDataContext == null)
-                inMemoryRepositoryManagerForDataContext = new Dictionary<Type, InMemoryRepositoriesManager>();
-
-            if (inMemoryRepositoryManagerForDataContext.ContainsKey(theType))
-                return inMemoryRepositoryManagerForDataContext[theType];
-            else
-            {
-                InMemoryRepositoriesManager newPermanentStorage = new InMemoryRepositoriesManager(underlyingDataContext);
-                inMemoryRepositoryManagerForDataContext.Add(theType, newPermanentStorage);
-                return newPermanentStorage;
-            }
+            simulationOfPermanentDatabase = new InMemoryRepositoriesManager(underlyingDataContext);
         }
 
-        public static void SetSimulatedPermanentStorageForDataContextType(DataContext underlyingDataContext, InMemoryRepositoriesManager inMemoryRepositoryList)
-        { 
-            Type theType = underlyingDataContext.GetType();
-
-            if (inMemoryRepositoryManagerForDataContext == null)
-                inMemoryRepositoryManagerForDataContext = new Dictionary<Type, InMemoryRepositoriesManager>();
-
-            if (inMemoryRepositoryManagerForDataContext.ContainsKey(theType))
-                inMemoryRepositoryManagerForDataContext[theType] = inMemoryRepositoryList;
-            else
-                inMemoryRepositoryManagerForDataContext.Add(theType, inMemoryRepositoryList);
+        public InMemoryRepositoriesManager LoadFromDatabase()
+        {
+            return simulationOfPermanentDatabase;
         }
 
-        public static void Reset()
+        public void SaveToDatabase(InMemoryRepositoriesManager databaseAsModifiedByDataContext)
         {
-            inMemoryRepositoryManagerForDataContext = null;
-            managerOriginallyContainingEntities = new Dictionary<object, InMemoryRepositoriesManager>();
+            simulationOfPermanentDatabase = databaseAsModifiedByDataContext;
+        }
+    }
+
+    public static class InMemoryDatabaseFactory
+    {
+        static Dictionary<string, InMemoryDatabase> databases = new Dictionary<string, InMemoryDatabase>();
+        public static InMemoryDatabase GetDatabase(string simulatedName, DataContext underlyingDataContext)
+        {
+            if (!databases.ContainsKey(simulatedName))
+                databases.Add(simulatedName, new InMemoryDatabase(underlyingDataContext));
+            return databases[simulatedName];
+        }
+        public static void DeleteDatabase(string simulatedName)
+        {
+            if (databases.ContainsKey(simulatedName))
+                databases.Remove(simulatedName);
         }
     }
 
@@ -789,13 +781,14 @@ namespace ClassLibrary1.Nonmodel_Code
     /// </summary>
     public class InMemoryContext : IDataContext
     {
-        public InMemoryRepositoriesManager inMemoryRepositories;
-
+        public InMemoryRepositoriesManager InMemoryRepositories;
         public DataContext UnderlyingDataContext { get; set; }
+        public InMemoryDatabase SimulatedDatabase { get; set; }
 
-        public InMemoryContext(DataContext underlyingDataContext)
+        public InMemoryContext(DataContext underlyingDataContext, InMemoryDatabase simulatedDatabase)
         {
             UnderlyingDataContext = underlyingDataContext;
+            SimulatedDatabase = simulatedDatabase;
             Type theType = underlyingDataContext.GetType();
             LoadFromPermanentStorage();
         }
@@ -809,12 +802,12 @@ namespace ClassLibrary1.Nonmodel_Code
 
         internal void LoadFromPermanentStorage()
         {
-            inMemoryRepositories = new InMemoryRepositoriesManager(UnderlyingDataContext, SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext));
+            InMemoryRepositories = new InMemoryRepositoriesManager(UnderlyingDataContext, SimulatedDatabase.LoadFromDatabase());
         }
 
         public IRepository<T> GetTable<T>() where T : class
         {
-            return inMemoryRepositories.GetRepository<T>();
+            return InMemoryRepositories.GetRepository<T>();
         }
 
         public void SubmitChanges(System.Data.Linq.ConflictMode conflictMode)
@@ -834,9 +827,8 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public void CompleteSubmitChanges(System.Data.Linq.ConflictMode conflictMode)
         {
-            inMemoryRepositories.CleanUpBeforeSubmittingChanges();
-            InMemoryRepositoriesManager permanentStorage = SimulatedPermanentStorage.GetSimulatedPermanentStorageForDataContextType(UnderlyingDataContext);
-            permanentStorage.CloneFrom(inMemoryRepositories);
+            InMemoryRepositories.CleanUpBeforeSubmittingChanges();
+            SimulatedDatabase.SaveToDatabase(InMemoryRepositories);
         }
     }
 }

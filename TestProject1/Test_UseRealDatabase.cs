@@ -33,9 +33,10 @@ namespace TestProject1
     {
         public static bool UseReal()
         {
-            // Use true when you want all tests to use a SQL Server database
+            // Use true when you want all tests that can use a SQL Server database to do so
             // Use false when you want all tests to use an in-memory database
             bool returnVal = true;
+            GetIR8RDataContext.UseRealDatabase = returnVal;
 
             if (returnVal && !RoleEnvironment.IsAvailable)
                 RealUserProfileCollection.SetProviderConnectionString(ConnectionString.GetUserProfileDatabaseConnectionString());

@@ -40,7 +40,7 @@ namespace ClassLibrary1.Model
                 }
                 else
                 {
-                    return new R8RInMemoryDataContext();
+                    return new R8RInMemoryDataContext(InMemoryDatabaseFactory.GetDatabase(PersistentFakeDatabaseID.ToString(), new OldModel.OldDataContext()));
                 }
             }
         }
