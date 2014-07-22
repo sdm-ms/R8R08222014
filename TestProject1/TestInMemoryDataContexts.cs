@@ -33,7 +33,6 @@ namespace TestProject1
         internal RepositoryItemAssociationInfo addressFieldToField;
         internal RepositoryItemAssociationInfo userToUserInfo;
         internal List<RepositoryItemAssociationInfo> ratingToRatingGroup;
-        internal bool originalUseRealDatabase;
 
         /// <summary>
         ///Initialize() is called once during test execution before
@@ -308,8 +307,8 @@ namespace TestProject1
             AddressField theAddressField = new AddressField() { FieldID = 5 };
             theInMemoryRepositoryAddressField.InsertOnSubmit(theAddressField);
             theInMemoryRepositoryField.InsertOnSubmit(theField);
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
+            theInMemoryRepositoryAddressField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
+            theInMemoryRepositoryField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
             theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
             theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theAddressField.Field.Should().Equals(theField);
@@ -325,8 +324,8 @@ namespace TestProject1
             AddressField theAddressField = new AddressField() { Field = theField };
             theInMemoryRepositoryField.InsertOnSubmit(theField);
             theInMemoryRepositoryAddressField.InsertOnSubmit(theAddressField);
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
+            theInMemoryRepositoryAddressField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
+            theInMemoryRepositoryField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
             theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
             theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theField.FieldID.Should().Be(5);
@@ -344,8 +343,8 @@ namespace TestProject1
             theField.FieldID = 5;
             theInMemoryRepositoryAddressField.InsertOnSubmit(theAddressField);
             theInMemoryRepositoryField.InsertOnSubmit(theField);
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
+            theInMemoryRepositoryAddressField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
+            theInMemoryRepositoryField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
             theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
             theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theAddressField.FieldID.Should().Be(5);
@@ -361,8 +360,8 @@ namespace TestProject1
             AddressField theAddressField = new AddressField() { Field = theField }; // automatically sets AddressField.FieldID, but that's not set yet
             theInMemoryRepositoryAddressField.InsertOnSubmit(theAddressField);
             theInMemoryRepositoryField.InsertOnSubmit(theField);
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
+            theInMemoryRepositoryAddressField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
+            theInMemoryRepositoryField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
             theField.FieldID.Should().Be(1);
             theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
             theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
@@ -378,8 +377,8 @@ namespace TestProject1
             AddressField theAddressField = new AddressField() { Field = theField }; // automatically sets AddressField.FieldID, but that's not set yet
             theInMemoryRepositoryAddressField.InsertOnSubmit(theAddressField);
             theInMemoryRepositoryField.InsertOnSubmit(theField);
-            theInMemoryRepositoryAddressField.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryField.CompleteInsertOnSubmitStep1();
+            theInMemoryRepositoryAddressField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
+            theInMemoryRepositoryField.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
             theInMemoryRepositoryAddressField.SetNavigationPropertiesForEntitiesBeingInserted();
             theInMemoryRepositoryField.SetNavigationPropertiesForEntitiesBeingInserted();
             theAddressField.FieldID.Should().Be(theField.FieldID);
@@ -404,8 +403,8 @@ namespace TestProject1
             theInMemoryRepositoryRating.InsertOnSubmit(theRating);
             theInMemoryRepositoryRatingGroup.InsertOnSubmit(theRatingGroup);
 
-            theInMemoryRepositoryRating.CompleteInsertOnSubmitStep1();
-            theInMemoryRepositoryRatingGroup.CompleteInsertOnSubmitStep1();
+            theInMemoryRepositoryRating.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
+            theInMemoryRepositoryRatingGroup.CheckStatusOfEntitiesBeingInsertedAndSetKeys();
             theInMemoryRepositoryRating.SetNavigationPropertiesForEntitiesBeingInserted();
             theInMemoryRepositoryRatingGroup.SetNavigationPropertiesForEntitiesBeingInserted();
 

@@ -22,8 +22,8 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
     public Guid? SubtopicId = null;
     public Guid? TopicId = null;
     public Guid? AnnounceId = null;
-     public bool createAnnounceVisible;
-     public new Guid? changeAnnounceVisible;
+    public bool createAnnounceVisible;
+    public Guid? changeAnnounceVisible;
   
     protected void Page_Load(object sender, EventArgs e)
     {

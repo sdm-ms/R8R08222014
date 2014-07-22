@@ -306,13 +306,13 @@ namespace ClassLibrary1.Model
 
         public IQueryable<TblRow> GetFilteredQuerySortedByAddress(IR8RDataContext theDataContext, int? maxNumResults, float latitude, float longitude, Guid tblID)
         {
-            IQueryable<TblRow> theFilteredQueryWithSortValues = null;
 
             if (maxNumResults == null)
                 maxNumResults = 1000000000;
 
             throw new NotImplementedException(); // must copy stored procedure to Entity Framework context if we need to reimplement this
 
+            //IQueryable<TblRow> theFilteredQueryWithSortValues = null;
             //theFilteredQueryWithSortValues =
             //        from y in theDataContext.UDFNearestNeighborsForTbl(latitude, longitude, maxNumResults, tblID)
             //        join e in GetFilteredQueryAsTblRows(theDataContext, null)

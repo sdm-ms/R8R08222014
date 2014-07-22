@@ -132,7 +132,8 @@ using System.Data.Common;
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Properties<DateTime>()
+                .Configure(c => c.HasColumnType("datetime2")); 
 
             modelBuilder.Entity<AddressField>()
                 .Property(e => e.Latitude)
@@ -1258,34 +1259,6 @@ using System.Data.Common;
             modelBuilder.Entity<ForumMessage>()
                 .Property(e => e.IPAddress)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<RatingGroup>()
-                .Property(f => f.WhenCreated)
-                .HasColumnType("datetime2");
-
-            modelBuilder.Entity<RatingGroupPhaseStatus>()
-                .Property(f => f.WhenCreated)
-                .HasColumnType("datetime2");
-
-            modelBuilder.Entity<RatingGroupResolution>()
-                .Property(f => f.WhenCreated)
-                .HasColumnType("datetime2");
-
-            modelBuilder.Entity<RoleStatus>()
-                .Property(f => f.WhenCreated)
-                .HasColumnType("datetime2");
-
-            modelBuilder.Entity<TblRow>()
-                .Property(f => f.WhenCreated)
-                .HasColumnType("datetime2");
-
-            modelBuilder.Entity<UserRatingGroup>()
-                .Property(f => f.WhenCreated)
-                .HasColumnType("datetime2");
-
-            modelBuilder.Entity<UserRatingsToAdd>()
-                .Property(f => f.WhenCreated)
-                .HasColumnType("datetime2");
         }
 
     }

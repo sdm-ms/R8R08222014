@@ -327,7 +327,7 @@ namespace ClassLibrary1.Model
             else
             {
                 List<Guid?> userRatingHierarchyEntriesRatingIDs = UserRatingHierarchyEntries.Select(x => x.RatingId).ToList();
-                loadedData = theDataContext.GetTable<Rating>().Where(x => userRatingHierarchyEntriesRatingIDs.Contains(x.RatingID)).Select(x => new RatingAndGroup { Rating = x, RatingGroup = x.RatingGroup }).ToList();
+                loadedData = theDataContext.GetTable<Rating>().Where(x => userRatingHierarchyEntriesRatingIDs.Contains(x.RatingID)).OrderBy(x => x.RatingGroup.WhenCreated).Select(x => new RatingAndGroup { Rating = x, RatingGroup = x.RatingGroup }).ToList();
             }
             theRatings = UserRatingHierarchyEntries.Select(x => loadedData.First(y => y.Rating.RatingID == x.RatingId).Rating).ToList();
             theRatingGroups = UserRatingHierarchyEntries.Select(x => loadedData.First(y => y.RatingGroup.RatingGroupID == x.RatingGroupId).RatingGroup).Distinct().ToList();

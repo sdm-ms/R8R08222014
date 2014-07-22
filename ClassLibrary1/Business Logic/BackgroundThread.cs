@@ -54,6 +54,11 @@ namespace ClassLibrary1.Model
                     BackgroundTaskManager.CurrentlyPaused = true;
                 }
                 MoreWorkToDo = CompleteSingleLoop(dataManipulation, numTasks, numLoops, loop);
+                if (BackgroundTaskManager.RequestingExit)
+                {
+                    BackgroundTaskManager.RequestingExit = false; // reset the flag
+                    return;
+                }
             }
             LoopSetCompletedCount++;
             if (!MoreWorkToDo)
@@ -63,6 +68,8 @@ namespace ClassLibrary1.Model
                 else
                     Thread.Sleep(3000);
             }
+            if (BackgroundTaskManager.RequestingExit)
+                BackgroundTaskManager.RequestingExit = false; // reset the flag
             // Trace.TraceInformation("Exiting IdleTasks moreWorkToDo: " + moreWorkToDo.ToString());
         }
 
@@ -75,6 +82,8 @@ namespace ClassLibrary1.Model
             {
                 while (BackgroundTaskManager.CurrentlyPaused)
                 {
+                    if (BackgroundTaskManager.RequestingExit)
+                        return false;
                     Thread.Sleep(1); // very minimal pause until we check again to see if the pause request has been turned off
                 }
                 if (loop == 1 || loop == numLoops) // we try everything on first loop, as well as on last loop, so moreWorkToDo will be accurate
@@ -253,9 +262,17 @@ namespace ClassLibrary1.Model
         internal int numberPauseRequests = 0;
         public bool PauseRequestedWhenWorkIsComplete { get; set; }
         public bool CurrentlyPaused { get; set; }
+        public bool RequestingExit { get; set; }
 
         public BackgroundTaskManager()
         {
+            CurrentlyPaused = false;
+            RequestingExit = false;
+        }
+
+        public bool BackgroundTaskIsRunning()
+        {
+            return backgroundTaskThread != null && backgroundTaskThread.IsAlive; // backgroundTaskThread.ThreadState == System.Threading.ThreadState.Running;
         }
 
         public void RequestPauseAndWaitForPauseToBegin()
@@ -264,7 +281,17 @@ namespace ClassLibrary1.Model
             EnsureBackgroundTaskIsRunning();
             while (backgroundTask != null && !CurrentlyPaused)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(10);
+                EnsureBackgroundTaskIsRunning();
+            }
+        }
+
+        public void ExitBackgroundThread()
+        {
+            RequestingExit = true;
+            while (RequestingExit) // this will be reset when the exiting is underway
+            {
+                Thread.Sleep(10);
                 EnsureBackgroundTaskIsRunning();
             }
         }

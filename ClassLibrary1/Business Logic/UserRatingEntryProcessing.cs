@@ -35,6 +35,7 @@ namespace ClassLibrary1.Model
             
             var results = (from x in theDataContext.GetTable<Rating>()
                           where ratingIDs.Contains(x.RatingID)
+                          orderby x.RatingGroup
                           let ratingGroup = x.RatingGroup
                           let pointsManager = ratingGroup.TblRow.Tbl.PointsManager
                           let tblColumn = ratingGroup.TblColumn

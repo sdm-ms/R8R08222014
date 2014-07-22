@@ -476,7 +476,7 @@ namespace ClassLibrary1.Model
             theCGFD = DataAccess.R8RDB.TempCacheGet(key) as ChoiceGroupFieldDefinition;
             if (theCGFD == null)
             {
-                theCGFD = DataAccess.R8RDB.GetTable<ChoiceGroupFieldDefinition>().SingleOrDefault(cgfd => cgfd.FieldDefinition == TheFieldDefinition);
+                theCGFD = DataAccess.R8RDB.GetTable<ChoiceGroupFieldDefinition>().SingleOrDefault(cgfd => cgfd.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID);
                 DataAccess.R8RDB.TempCacheAdd(key, theCGFD);
             }
             if (theCGFD == null)

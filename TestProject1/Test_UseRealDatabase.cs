@@ -143,6 +143,7 @@ namespace TestProject1
                 UserID = Guid.NewGuid(),
                 Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),
                 SuperUser = false,
+                WhenCreated = TestableDateTime.Now,
                 Status = (Byte)StatusOfObject.Active
             };
             myDataContext.GetTable<User>().InsertOnSubmit(newUser);
@@ -207,7 +208,7 @@ namespace TestProject1
             builder.DeleteEverythingAndAddDatabaseStatus();
             builder.Supporter.DataContext.SubmitChanges();
             builder.Supporter.ResetDataContexts();
-            var entries = builder.Supporter.DataContext.GetTable<DatabaseStatus>().Where(x => true).ToList();
+            var entries = builder.Supporter.DataContext.GetTable<DatabaseStatus>().Where(x => true).OrderBy(x => x.DatabaseStatusID).ToList();
             if (entries.Count() != 1)
                 throw new Exception("Number of entries in database was " + entries.Count());
         }

@@ -165,7 +165,7 @@ namespace TestProject1
                     subversiveUserIgnoresPreviousRatings);
                 theTestHelper.WaitIdleTasks();
                 IEnumerable<Rating> interRatings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                    .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID);
+                    .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID).OrderBy(x => x.RatingGroup.WhenCreated);
                 float interProportion = CalculateProportionWithinTolerance(interRatings, correctRatingValue, tolerance);
                 #region Debug
                 Debug.WriteLine(String.Format("Round {0}: {1}% within tolerance", i, interProportion * 100));
@@ -179,7 +179,7 @@ namespace TestProject1
              * Analyze Results
              */
             IEnumerable<Rating> ratings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID);
+                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID).OrderBy(x => x.RatingGroup.WhenCreated);
             float proportion = CalculateProportionWithinTolerance(ratings, correctRatingValue, tolerance);
             #region Debug
             pool.PrintOutUsersInfo();
@@ -281,7 +281,7 @@ namespace TestProject1
                 theTestHelper.WaitIdleTasks();
                 List<Guid> tblRowIDs = theTestHelper.ActionProcessor.DataContext.GetTable<TblRow>().Where(x => !(x.RatingGroups.SelectMany(y => y.Ratings.SelectMany(z => z.UserRatings))).Any()).Select(x => x.TblRowID).ToList(); // TblRows without any user ratings
                 Func<List<Rating>> reload_ratings = () => theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                        .Where(r => tblRowIDs.Contains(r.RatingGroup.TblRowID)).ToList(); // load ratings from the most recent set of tbl rows -- must do this after each background task
+                        .Where(r => tblRowIDs.Contains(r.RatingGroup.TblRowID)).OrderBy(x => x.RatingGroup.WhenCreated).ToList(); // load ratings from the most recent set of tbl rows -- must do this after each background task
                 List<Rating> ratings = reload_ratings();
                 foreach (int round in Enumerable.Range(0, roundsPerIteration))
                 {

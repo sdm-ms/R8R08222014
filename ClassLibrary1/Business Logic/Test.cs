@@ -117,7 +117,7 @@ namespace ClassLibrary1.Model
             myThread.Name = "FinishUserRating " + TestableDateTime.Now.ToString();
             myThread.Start();
             while (myThread.IsAlive)
-                Thread.Sleep(1);
+                Thread.Sleep(10);
         }
 
         private void FinishUserRatingAdd_Helper()
@@ -283,8 +283,9 @@ namespace ClassLibrary1.Model
                     hasBeenBusyAfterBeingNotBusy = true;
                 if (!moreWorkToDo && hasBeenBusyAfterBeingNotBusy)
                 {
-                    hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = true;
-                    BackgroundTaskManager.RequestPauseAndWaitForPauseToBegin();
+                    hasBeenNotBusyAfterBeingBusyAfterBeingNotBusy = true; // will cause exit from for loop
+                    BackgroundTaskManager.ExitBackgroundThread();
+                    // BackgroundTaskManager.RequestPauseAndWaitForPauseToBegin();
                 }
                 else
                 {
@@ -302,6 +303,8 @@ namespace ClassLibrary1.Model
             }
             //Trace.TraceInformation("WaitIdleTasks complete.");
             ActionProcessor.ResetDataContexts(); // Otherwise, we may have stale data in our data context.
+            while (BackgroundTaskManager.BackgroundTaskIsRunning())
+                Thread.Sleep(1);
         }
 
 
@@ -311,14 +314,14 @@ namespace ClassLibrary1.Model
             if (oneRatingFocus)
                 theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID == ActionProcessor.DataContext.NewOrFirst<Rating>(m => m.RatingCharacteristic.Name == "Event").RatingID);
             else
-                theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
+                theRatings = ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated); // all ratings
 
             var theRatingsGroups = theRatings
                 .Select(x => x.TopmostRatingGroupID).Distinct().ToList(); // all rating groups
             List<Guid> theRatings2 = new List<Guid>();
             foreach (var mg in theRatingsGroups)
             { // Add one rating from each set of rating group hierarchies to the list to close.
-                IQueryable<Rating> theRatingsInGroup = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.TopmostRatingGroupID == mg);
+                IQueryable<Rating> theRatingsInGroup = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.TopmostRatingGroupID == mg).OrderBy(x => x.NumInGroup);
                 int pickRating2 = RandomGenerator.GetRandom(1, theRatingsInGroup.Count());
                 Rating theRating = theRatingsInGroup.Skip(pickRating2 - 1).First();
                 theRatings2.Add(theRating.RatingID);
@@ -350,15 +353,18 @@ namespace ClassLibrary1.Model
                 Trace.TraceInformation("TestHelperResolveRatings asOf: " + asOf);
                 IQueryable<Rating> theRatings = null;
                 if (oneRatingFocus)
-                    theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID == ActionProcessor.DataContext.NewOrFirst<Rating>(m => m.RatingCharacteristic.Name == "Event").RatingID);
+                {
+                    var firstEventRating = ActionProcessor.DataContext.NewOrFirst<Rating>(m => m.RatingCharacteristic.Name == "Event");
+                    theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => x.RatingID == firstEventRating.RatingID).OrderBy(x => x.RatingGroup.WhenCreated);
+                }
                 else
-                    theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
+                    theRatings = ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated); // all ratings
 
                 foreach (var debugRating in theRatings)
                     Trace.TraceInformation("On list: Rating " + debugRating.RatingID + " value: " + debugRating.CurrentValue + " ratinggroup " + debugRating.RatingGroupID);
 
                 // now close the rating groups
-                var theTopRatingGroups = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true).Select(m => m.TopRatingGroup).Distinct().ToList();
+                var theTopRatingGroups = ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Where(x => true).Select(m => m.TopRatingGroup).Distinct().ToList();
                 foreach (var theTopRatingGroup in theTopRatingGroups)
                     ActionProcessor.ResolveRatingGroup(theTopRatingGroup, true, cancelPreviousResolutions, resolveByUnwinding, asOf, SuperUserId, null);
                 ActionProcessor.DataContext.SubmitChanges();
@@ -386,7 +392,7 @@ namespace ClassLibrary1.Model
             User theAdmin = ActionProcessor.DataContext.GetTable<User>().Single(u => u.Username == "admin");
             IQueryable<Rating> theRatings = null;
             int theRatingsCount = 0;
-            theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
+            theRatings = ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated); // all ratings
             theRatingsCount = theRatings.Count();
             int countSoFar = 0;
             for (int j = 1; j <= numRatings; j++)
@@ -433,7 +439,7 @@ namespace ClassLibrary1.Model
                             theRatings = theList.AsQueryable();
                         }
                         else
-                            theRatings = ActionProcessor.DataContext.GetTable<Rating>().Where(x => true); // all ratings
+                            theRatings = ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated); // all ratings
                         theRatingsCount = theRatings.Count();
                         if (theRatingsCount == 0)
                         {
@@ -442,7 +448,7 @@ namespace ClassLibrary1.Model
                         }
                     } while (theRatingsCount == 0);
                     int pickRating = RandomGenerator.GetRandom(1, theRatingsCount);
-                    Rating theRating = theRatings.Skip(pickRating - 1).First();
+                    Rating theRating = theRatings.OrderBy(x => x.RatingGroup.WhenCreated).Skip(pickRating - 1).First();
                     int predictionNum = i;
                     AddUserRatingToRating(theRating.RatingID, (decimal)actualProbability * 100);
                     Trace.TraceInformation("UserRating for rating " + theRating.RatingID + " set to be added Approx.Time " + TestableDateTime.Now);
@@ -1354,7 +1360,7 @@ namespace ClassLibrary1.Model
             {
                 try
                 {
-                    var theRatings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>();
+                    var theRatings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated);
                     int pickRating = RandomGenerator.GetRandom(1, theRatings.Count());
                     Rating theRating = theRatings.Skip(pickRating - 1).First();
                     int predictionNum = i;

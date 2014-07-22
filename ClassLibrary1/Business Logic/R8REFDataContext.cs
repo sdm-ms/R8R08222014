@@ -10,7 +10,6 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.EFModel;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
-using ClassLibrary1.Nonmodel_Code;
 using System.Data.Entity.Infrastructure;
 using System.Data.Common;
 

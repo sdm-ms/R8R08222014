@@ -43,6 +43,8 @@ namespace ClassLibrary1.EFModel
 
         public decimal TrustPointsRatioTotals { get; set; }
 
+        public DateTime WhenCreated { get; set; }
+
         public byte Status { get; set; }
 
         public virtual UserInfo UserInfo { get; set; }

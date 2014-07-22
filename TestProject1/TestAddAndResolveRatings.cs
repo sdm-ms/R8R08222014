@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 
 #if !NUNIT
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -702,8 +703,6 @@ namespace TestProject1
             Guid user2 = theTestHelper.UserIds[2];
             Guid user3 = theTestHelper.UserIds[3];
             Guid user4 = theTestHelper.UserIds[4];
-            Guid user5 = theTestHelper.UserIds[5];
-            Guid user6 = theTestHelper.UserIds[6];
 
             int numResolutions = 0;
             for (int cycle = 1; cycle <= numCycles; cycle++)
@@ -813,10 +812,14 @@ namespace TestProject1
 
         internal void TestHelperReportAllUserRatings(int cycle, bool beforeResolve, bool afterUndo, bool secondPass)
         {
-            var theUserRatings = theTestHelper.ActionProcessor.DataContext.GetTable<UserRating>().OrderBy(x => x.UserRatingGroup.WhenCreated).Where(x => true);
+            var theUserRatings = theTestHelper.ActionProcessor.DataContext.GetTable<UserRating>()
+                .Include(x => x.Rating.RatingGroup)
+                .Include(x => x.UserRatingGroup.RatingGroupPhaseStatus)
+                .Include(x => x.RatingPhaseStatus.RatingGroupPhaseStatus)
+                .OrderBy(x => x.UserRatingGroup.WhenCreated);
             Debug.WriteLine("All user ratings: ");
             int userRatingNumber = 0;
-            foreach (var theUserRating in theUserRatings)
+            foreach (var theUserRating in theUserRatings.ToList())
             {
                 userRatingNumber++;
                 Debug.WriteLine("User rating: " + userRatingNumber + " current time: " + TestableDateTime.Now.ToLongTimeString());
@@ -846,7 +849,7 @@ namespace TestProject1
                 Debug.Write(String.Format(" ROUND={0} START_TIME={1} END_TIME={2} \n", theMPS.RoundNum, theMPS.StartTime.ToLongTimeString(), theMPS.ActualCompleteTime.ToLongTimeString()));
                 Debug.WriteLine("");
             }
-            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().Where(x => true).ToList();
+            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().OrderBy(x => x.User.WhenCreated).ToList();
             foreach (var theUser in theUsers)
             {
                 string reportString = String.Format("POINTTOTALS: user {0},  points {1}", theUser.UserID, theUser.TotalPoints);
@@ -875,7 +878,7 @@ namespace TestProject1
 
         internal void TestHelperCheckPoints(List<UserPointsRecordSnapshot> theList, List<UserRatingPointsRecordSnapshot> theList2, int theCycle)
         {
-            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().Where(x => true).ToList();
+            var theUsers = theTestHelper.ActionProcessor.DataContext.GetTable<PointsTotal>().OrderBy(x => x.User.WhenCreated).ToList();
             foreach (var theUser in theUsers)
             {
                 var recordedUser = theList.SingleOrDefault(x => x.afterCycle == theCycle && x.userID == theUser.UserID);

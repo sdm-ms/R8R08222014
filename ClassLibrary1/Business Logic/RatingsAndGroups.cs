@@ -92,7 +92,7 @@ namespace ClassLibrary1.Model
         public IQueryable<Rating> GetRatingsForGroup(RatingGroup ratingGroup)
         {
             //RatingGroup theGroup = ObjDataAccess.GetRatingGroup(ratingGroupID);
-            return DataContext.GetTable<Rating>().Where(m => m.RatingGroup.RatingGroupID == ratingGroup.RatingGroupID);
+            return DataContext.GetTable<Rating>().Where(m => m.RatingGroup.RatingGroupID == ratingGroup.RatingGroupID).OrderBy(x => x.NumInGroup);
         }
 
         /// <summary>

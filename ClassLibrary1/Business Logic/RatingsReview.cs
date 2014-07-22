@@ -88,6 +88,7 @@ namespace ClassLibrary1.Model
                                    (
                                        from r in DataContext.GetTable<Rating>()
                                        where r.ReviewRecentUserRatingsAfter < currentTime
+                                       orderby r.ReviewRecentUserRatingsAfter
                                        select r
                                    )
                                    .Take(NumRatingsToReviewAtOnce)

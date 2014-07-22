@@ -1802,6 +1802,7 @@ namespace ClassLibrary1.Model
             //Trace.TraceInformation("2Setting current value to " + newUserRating);
             decimal? previousValue = rating.CurrentValue;
             rating.CurrentValue = newUserRatingValue;
+            Debug.WriteLine("Setting CurrentValue to " + rating.CurrentValue); // DEBUG
             if (previousValue == null && rating.CurrentValue != null)
             {
                 tblCol.NumNonNull++;
@@ -2511,6 +2512,7 @@ namespace ClassLibrary1.Model
                 UserID = Guid.NewGuid(),
                 Username = userName,
                 SuperUser = isSuperUser,
+                WhenCreated = TestableDateTime.Now,
                 Status = (Byte)StatusOfObject.Active
             };
 

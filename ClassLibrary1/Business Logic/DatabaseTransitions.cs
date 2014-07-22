@@ -40,48 +40,6 @@ namespace ClassLibrary1.Model
             DataContext.SubmitChanges();
         }
 
-        
-
-        /// <summary>
-        /// The following correction is needed because in a test run, we set all the rating
-        /// phases so that they expired after the test run, resulting in no prizes being 
-        /// given.
-        /// </summary>
-        public void Correction1a()
-        {
-            DataContext.GetTable<PointsAdjustment>().DeleteAllOnSubmit(DataContext.GetTable<PointsAdjustment>().ToList());
-            DataContext.SubmitChanges();
-            var thePointTotals = DataContext.GetTable<PointsTotal>().Where(x => true);
-            foreach (var x in thePointTotals)
-            {
-                x.CurrentPoints = x.TotalPoints = x.PendingPoints + x.NotYetPendingPoints;
-            }
-            var thePointsManagers = DataContext.GetTable<PointsManager>().Where(x => true);
-            foreach (var y in thePointsManagers)
-            {
-                if (thePointTotals.Any(u => u.PointsManager == y))
-                {
-                    y.CurrentUserPoints = thePointTotals.Where(u => u.PointsManager.PointsManagerID == y.PointsManagerID).Sum(u => u.CurrentPoints);
-                    y.TotalUserPoints = y.CurrentUserPoints;
-                    if (y.Name == "Blogs")
-                    {
-                        y.NumPrizes = 5;
-                        y.CurrentPeriodDollarSubsidy = 200;
-                        y.EndOfDollarSubsidyPeriod = TestableDateTime.Now;
-                    }
-                }
-            }
-            DataContext.SubmitChanges();
-        }
-
-        public void Correction1()
-        {
-            var cgs = DataContext.GetTable<ChoiceGroup>().Where(x => x.Name.StartsWith("Sex"));
-            foreach (var cg in cgs)
-                cg.AllowMultipleSelections = false;
-            DataContext.SubmitChanges();
-        }
-
         public void DeleteAllTblRowStatusRecords()
         {
             bool moreWorkToDo = true;

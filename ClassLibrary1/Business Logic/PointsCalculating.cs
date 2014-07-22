@@ -354,7 +354,7 @@ namespace ClassLibrary1.Model
                 m.RatingGroup.TblColumnID == theCD.TblColumnID &&
                 m.RatingGroup.RatingGroupAttributesID == theRatingGroupAttribute.RatingGroupAttributesID && 
                 m.CurrentValue != null &&
-                m.Name == theRating.Name);
+                m.Name == theRating.Name).OrderBy(x => x.NumInGroup);
             if (theQuery.Count() > 4)
             { // get average based on 100 ratings
                 theAlternativeBasis = theQuery.OrderByDescending(m => m.RatingGroup.WhenCreated).Select(x => x.CurrentValue).Where(x => x != null).Take(100).Average(x => (decimal)x);

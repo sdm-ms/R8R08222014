@@ -1383,7 +1383,7 @@ namespace ClassLibrary1.Model
         /// <param name="hierarchyLevel">The level at which this rating group should be added.</param>
         public void AddRatingGroupToRatingHierarchyData(Guid ratingGroupID, ref RatingHierarchyData theData, int hierarchyLevel)
         {
-            var theRatings = R8RDB.GetTable<Rating>().Where(m => m.RatingGroupID == ratingGroupID).Select(m => new
+            var theRatings = R8RDB.GetTable<Rating>().Where(m => m.RatingGroupID == ratingGroupID).OrderBy(x => x.NumInGroup).Select(m => new
             {
                 Name = m.Name,
                 RatingID = m.RatingID,

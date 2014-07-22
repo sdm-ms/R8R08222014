@@ -1922,7 +1922,7 @@ namespace ClassLibrary1.Model
             Rating firstRating = DataContext.GetTable<Rating>().Single(m => m.RatingID == firstRatingID);
             Guid topmostRatingGroupID = firstRating.TopmostRatingGroupID;
             RatingGroup theTopRatingGroup = DataContext.GetTable<RatingGroup>().Single(mg => mg.RatingGroupID == topmostRatingGroupID);
-            List<Rating> theRatings = DataContext.GetTable<Rating>().Where(m => m.TopmostRatingGroupID == theTopRatingGroup.RatingGroupID).ToList();
+            List<Rating> theRatings = DataContext.GetTable<Rating>().Where(m => m.TopmostRatingGroupID == theTopRatingGroup.RatingGroupID).OrderBy(x => x.NumInGroup).ToList();
             List<RatingGroup> theRatingGroups = theRatings.Select(x => x.RatingGroup).Distinct().ToList();
             UserRatingsAdd(theUserRatings, theRatings, theRatingGroups, theUser, ref theResponse);
         }
@@ -2022,7 +2022,7 @@ namespace ClassLibrary1.Model
                 List<Rating> theRatings = new List<Rating>();
                 if (theTypeForFirstRating != RatingGroupTypes.probabilitySingleOutcome && theTypeForFirstRating != RatingGroupTypes.singleDate && theTypeForFirstRating != RatingGroupTypes.singleNumber)
                 {
-                    theRatings = DataContext.GetTable<Rating>().Where(x => x.TopRatingGroup.RatingGroupID == theTopRatingGroup.RatingGroupID).ToList(); // all ratings sharing same top rating group
+                    theRatings = DataContext.GetTable<Rating>().Where(x => x.TopRatingGroup.RatingGroupID == theTopRatingGroup.RatingGroupID).OrderBy(x => x.NumInGroup).ToList(); // all ratings sharing same top rating group
                 }
                 else
                     theRatings.Add(firstRating);
@@ -2130,6 +2130,7 @@ namespace ClassLibrary1.Model
                 theResponse.result = new UserRatingResult();
                 List<RatingCurrentValueAndDecimalPlaces> theRatingIDsAndRatings = DataManipulation.DataContext.GetTable<Rating>()
                     .Where(m => m.TopmostRatingGroupID == topRatingGroupID)
+                    .OrderBy(m => m.NumInGroup)
                     .Select(m => new RatingCurrentValueAndDecimalPlaces
                     {
                         ratingID = m.RatingID,

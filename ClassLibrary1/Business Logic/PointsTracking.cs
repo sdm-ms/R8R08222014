@@ -182,7 +182,7 @@ namespace ClassLibrary1.Model
         }
 
         // The following are used in the next routine. We cannot use anonymous types, because those are immutable, and we want to make changes.
-        class UserWithPointsType { public Guid? User; public decimal TotalPoints = 0; public decimal CurrentPoints = 0; public PointsTotal PT = null; public bool Include = true; };
+        class UserWithPointsType { public Guid? User = null; public decimal TotalPoints = 0; public decimal CurrentPoints = 0; public PointsTotal PT = null; public bool Include = true; };
         class UserWithPointsType2 { public Guid? User; public decimal PointsToCash = 0; public decimal CurrentPoints = 0; public decimal CashValue = 0; public PointsTotal PT = null; };
         class UserWithPointsType3 { public Guid? User; public decimal PointsToCash = 0; public decimal PerPrizeProbability = 0; public decimal ProbRangeBottom = 0; public decimal ProbRangeTop = 0; public decimal Prize = 0; public PointsTotal PT = null; };
 

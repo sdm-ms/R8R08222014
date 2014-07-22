@@ -236,8 +236,7 @@ public partial class Tester : System.Web.UI.Page
     protected void Correction1_Click(object sender, EventArgs e)
     {
         R8RDataManipulation DataTransitions = new R8RDataManipulation();
-        DataTransitions.Correction1();
-
+        throw new NotImplementedException();
     }
 
     protected void ClearCache_Click(object sender, EventArgs e)

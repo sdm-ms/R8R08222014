@@ -44,7 +44,7 @@ namespace ClassLibrary1.Model
         public static DatabaseStatus GetStatus(IR8RDataContext theDataContext)
         {
             /* We've disabled caching, because SubmitChanges doesn't work properly on a cached object. */
-            var theStatus = theDataContext.GetTable<DatabaseStatus>().Where(x => true).FirstOrDefault();
+            var theStatus = theDataContext.GetTable<DatabaseStatus>().Where(x => true).OrderBy(x => x.DatabaseStatusID).FirstOrDefault();
             return theStatus;
         }
 

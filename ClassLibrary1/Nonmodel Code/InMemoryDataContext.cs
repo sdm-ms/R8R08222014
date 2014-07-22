@@ -332,7 +332,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
     public interface IInMemoryRepositoryWithSubmitChangesSupport
     {
-        void CompleteInsertOnSubmitStep1();
+        void CheckStatusOfEntitiesBeingInsertedAndSetKeys();
         void SetNavigationPropertiesForEntitiesBeingInserted();
         void CompleteDeleteOnSubmit();
         bool ItemIsNotInRepositoryOrIsSetToDelete(object item);
@@ -538,7 +538,7 @@ namespace ClassLibrary1.Nonmodel_Code
             }
         }
 
-        public void CompleteInsertOnSubmitStep1()
+        public void CheckStatusOfEntitiesBeingInsertedAndSetKeys()
         {
             foreach (var item in EntitiesBeingInserted)
             {
@@ -686,7 +686,7 @@ namespace ClassLibrary1.Nonmodel_Code
             }
             for (int i = 0; i < count; i++)
             {
-                inMemoryRepositoryList[i].CompleteInsertOnSubmitStep1();
+                inMemoryRepositoryList[i].CheckStatusOfEntitiesBeingInsertedAndSetKeys();
             }
             for (int i = 0; i < count; i++)
             {
