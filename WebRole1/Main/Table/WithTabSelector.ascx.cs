@@ -99,7 +99,7 @@ public partial class Main_Table_WithTabSelector : System.Web.UI.UserControl
     {        
         //Fetching table column group and binding it to drop down list
         var GetTblTab = DataAccess.R8RDB.GetTable<TblTab>()
-                               .Where(x => x.TblID == TblID && x.Status == Convert.ToByte(StatusOfObject.Active))
+                               .Where(x => x.TblID == TblID && x.Status == (byte)(StatusOfObject.Active))
                                .OrderBy(x => x.NumInTbl)
                                .ThenBy(x => x.TblTabID)
                                .Select(x => new { Name = x.Name, TblTabID = x.TblTabID}).ToList();

@@ -610,7 +610,7 @@ namespace ClassLibrary1.Model
             ActionProcessor Obj = new ActionProcessor();
 
             var Filterdata = Obj.DataContext.GetTable<FieldDefinition>()
-                                 .Where(fd => fd.TblID == TheTbl.TblID && fd.Status == Convert.ToByte(StatusOfObject.Active))
+                                 .Where(fd => fd.TblID == TheTbl.TblID && fd.Status == (byte) StatusOfObject.Active)
                                  .OrderBy(fd => fd.FieldNum).ThenBy(fd => fd.FieldDefinitionID); // OK to order by ID to get consistent ordering
 
             XmlSchema Schema = new XmlSchema();

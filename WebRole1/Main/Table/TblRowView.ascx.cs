@@ -148,8 +148,8 @@ public partial class Main_Table_TblRowView : System.Web.UI.UserControl
     }
 
     public void TblRowLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
-    { 
-        var theResult = Obj.DataContext.GetTable<TblTab>().Where(x => x.TblID == TblID && x.Status == Convert.ToByte(StatusOfObject.Active)).Select(x => new { TblTabID = x.TblTabID, TblTabName = x.Name });
+    {
+        var theResult = Obj.DataContext.GetTable<TblTab>().Where(x => x.TblID == TblID && x.Status == (byte)(StatusOfObject.Active)).Select(x => new { TblTabID = x.TblTabID, TblTabName = x.Name });
         MultipleTblTabs = theResult.Count() > 1;
         e.Result = theResult;
     }

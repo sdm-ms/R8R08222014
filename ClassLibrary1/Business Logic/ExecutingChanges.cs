@@ -110,7 +110,7 @@ namespace ClassLibrary1.Model
         public ProposalSetting GetProposalSettingForPointsManager(Guid PointsManagerID)
         {
             ProposalSetting TheSetting = null;
-            var ProposalSettings = DataContext.GetTable<ProposalSetting>().Where(m => m.PointsManagerID == PointsManagerID && m.Status == Convert.ToByte(StatusOfObject.Active));
+            var ProposalSettings = DataContext.GetTable<ProposalSetting>().Where(m => m.PointsManagerID == PointsManagerID && m.Status == (byte) StatusOfObject.Active);
             if (ProposalSettings.Count() == 1)
             {
                 TheSetting = (ProposalSetting)ProposalSettings;
@@ -133,7 +133,7 @@ namespace ClassLibrary1.Model
         public ProposalSetting GetProposalSettingForTbl(Guid TblID)
         {
             ProposalSetting TheSetting = null;
-            var ProposalSettings = DataContext.GetTable<ProposalSetting>().Where(m => m.TblID == TblID && m.Status == Convert.ToByte(StatusOfObject.Active));
+            var ProposalSettings = DataContext.GetTable<ProposalSetting>().Where(m => m.TblID == TblID && m.Status == (byte) StatusOfObject.Active);
             if (ProposalSettings.Count() == 1)
             {
                 TheSetting = (ProposalSetting)ProposalSettings;

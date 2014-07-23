@@ -268,7 +268,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         if (fieldDefinitions == null)
         {
             fieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>()
-                             .Where(fd => fd.TblID == TblID && fd.Status == Convert.ToByte(StatusOfObject.Active)
+                             .Where(fd => fd.TblID == TblID && fd.Status == (byte) (StatusOfObject.Active)
                                             && (!limitToUseAsFilters || fd.UseAsFilter == true))
                              .OrderBy(fd => fd.FieldNum)
                              .ThenBy(fd => fd.FieldDefinitionID)
@@ -307,7 +307,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
                 TblColumns = DataAccess.R8RDB.GetTable<TblColumn>()
                              .Where(cd => cd.TblTab.TblID == TblID
                                  && (cd.TblTabID == TblTabID || cd.TblTabID == null)
-                                 && cd.Status == Convert.ToByte(StatusOfObject.Active)
+                                 && cd.Status == (byte) (StatusOfObject.Active)
                                  && cd.UseAsFilter == true)
                              .OrderBy(cd => cd.CategoryNum)
                              .ThenBy(cd => cd.TblColumnID)
