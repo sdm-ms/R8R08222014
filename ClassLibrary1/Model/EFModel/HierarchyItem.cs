@@ -10,16 +10,13 @@ namespace ClassLibrary1.EFModel
     {
         public HierarchyItem()
         {
-            HierarchyItems1 = new HashSet<HierarchyItem>();
-            HierarchyItems11 = new HashSet<HierarchyItem>();
+            ChildHierarchyItems = new HashSet<HierarchyItem>();
             SearchWordHierarchyItems = new HashSet<SearchWordHierarchyItem>();
         }
 
         public Guid HierarchyItemID { get; set; }
 
-        public Guid? HigherHierarchyItemID { get; set; }
-
-        public Guid? HigherHierarchyItemForRoutingID { get; set; }
+        public Guid? ParentHierarchyItemID { get; set; }
 
         public Guid? TblID { get; set; }
 
@@ -33,13 +30,9 @@ namespace ClassLibrary1.EFModel
 
         public bool IncludeInMenu { get; set; }
 
-        public virtual ICollection<HierarchyItem> HierarchyItems1 { get; set; }
+        public virtual ICollection<HierarchyItem> ChildHierarchyItems { get; set; }
 
-        public virtual HierarchyItem HierarchyItem1 { get; set; }
-
-        public virtual ICollection<HierarchyItem> HierarchyItems11 { get; set; }
-
-        public virtual HierarchyItem HierarchyItem2 { get; set; }
+        public virtual HierarchyItem ParentHierarchyItem { get; set; }
 
         public virtual Tbl Tbl { get; set; }
 

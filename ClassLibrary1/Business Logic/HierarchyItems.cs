@@ -36,14 +36,14 @@ namespace ClassLibrary1.Model
                     string theStringi = theStrings[i]; // must convert to variable before Linq to Entities query
                     if (higherItem == null)
                     {
-                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStringi && (x.HigherHierarchyItemID == null));
+                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStringi && (x.ParentHierarchyItemID == null));
                     }
                     else
                     {
                         //if (higherItem.HierarchyItemID == null)
                         //    throw new Exception("GetHierarchyFromStrings internal error: higherItem.HierarchyItemID was null. "); /* Could occur if we add a new hierarchy item and immediately search for it, but this does not seem likely to explain error received (?) */
                         Guid higherItemHierarchyID = (Guid)higherItem.HierarchyItemID;
-                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStringi && (x.HigherHierarchyItemID == higherItemHierarchyID));
+                        nextItem = theDataAccessModule.DataContext.NewOrFirstOrDefault<HierarchyItem>(x => x.HierarchyItemName == theStringi && (x.ParentHierarchyItemID == higherItemHierarchyID));
                     }
                 }
                 catch
@@ -79,9 +79,9 @@ namespace ClassLibrary1.Model
         {
             /* Note: Because of extensive problems, we're not using automatic association properties on this table. */
             Guid targetHierarchyItemID;
-            if (theItem.HigherHierarchyItemID == null)
+            if (theItem.ParentHierarchyItemID == null)
                 return null;
-            targetHierarchyItemID = (Guid)theItem.HigherHierarchyItemID;
+            targetHierarchyItemID = (Guid)theItem.ParentHierarchyItemID;
             R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
             return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Single(x => x.HierarchyItemID == targetHierarchyItemID);
         }
@@ -92,7 +92,7 @@ namespace ClassLibrary1.Model
             /* Note: Because of extensive problems, we're not using automatic association properties on this table. */
 
             R8RDataManipulation theDataAccessModule = new R8RDataManipulation(); 
-            return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == theItem.HierarchyItemID);
+            return theDataAccessModule.DataContext.GetTable<HierarchyItem>().Where(x => x.ParentHierarchyItemID == theItem.HierarchyItemID);
             
         }
 
@@ -140,9 +140,9 @@ namespace ClassLibrary1.Model
             theList = new List<HierarchyItem>();
             List<HierarchyItem> itemsBelow;
             if (theItem == null)
-                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == null && x.IncludeInMenu).ToList();
+                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.ParentHierarchyItemID == null && x.IncludeInMenu).ToList();
             else
-                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == theItem.HierarchyItemID && x.IncludeInMenu).ToList();
+                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.ParentHierarchyItemID == theItem.HierarchyItemID && x.IncludeInMenu).ToList();
             foreach (var itemBelow in itemsBelow)
             {
                 theList.Add(itemBelow);
