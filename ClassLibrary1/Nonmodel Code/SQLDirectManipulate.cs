@@ -522,15 +522,15 @@ namespace ClassLibrary1.Nonmodel_Code
                 case SqlDbType.BigInt:
                 case SqlDbType.SmallInt:
                     return Value.ToString();
-                    ;
 
                 case SqlDbType.UniqueIdentifier:
+                    return "'" + (Value).ToString() + "'";
+
                 case SqlDbType.NVarChar:
                 case SqlDbType.VarChar:
                 case SqlDbType.NChar:
                 case SqlDbType.Char:
                     return "'" + ((string)Value).ToString() + "'";
-                    ;
 
                 case SqlDbType.DateTime:
                     return "'" + ((DateTime)Value).Date.ToString("yyyy-MM-dd HH:mm:ss") + "'";
