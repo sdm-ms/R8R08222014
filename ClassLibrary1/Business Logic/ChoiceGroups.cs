@@ -13,6 +13,7 @@ using System.Collections.Generic;
 
 using System.Text;
 using ClassLibrary1.EFModel;
+using LinqKit;
 
 
 namespace ClassLibrary1.Model
@@ -356,7 +357,7 @@ namespace ClassLibrary1.Model
             List<ChoiceMenuItem> theChoices = new List<ChoiceMenuItem>();
             if (orderAlphabetically)
             {
-                var temp = Obj.R8RDB.GetTable<ChoiceInGroup>()
+                var temp = Obj.R8RDB.GetTable<ChoiceInGroup>().AsExpandable()
                  .Where(myPredicate);
                 if (temp.Any())
                     theChoices = temp
@@ -366,7 +367,7 @@ namespace ClassLibrary1.Model
             }
             else
             {
-                var temp = Obj.R8RDB.GetTable<ChoiceInGroup>()
+                var temp = Obj.R8RDB.GetTable<ChoiceInGroup>().AsExpandable()
                  .Where(myPredicate);
                 if (temp.Any())
                     theChoices = temp

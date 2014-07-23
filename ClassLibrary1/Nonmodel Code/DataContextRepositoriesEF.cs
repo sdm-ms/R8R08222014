@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Collections;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using LinqKit;
 
 namespace ClassLibrary1.Nonmodel_Code
 {

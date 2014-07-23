@@ -27,6 +27,7 @@ using System.Diagnostics;
 using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
+using LinqKit;
 
 
 namespace ClassLibrary1.Model

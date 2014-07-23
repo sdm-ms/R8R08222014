@@ -12,7 +12,7 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 
-public static class PredicateBuilder
+public static class PredicateBuilderOld
 {
     public static Expression<Func<T, bool>> True<T>() { return f => true; }
     public static Expression<Func<T, bool>> False<T>() { return f => false; }

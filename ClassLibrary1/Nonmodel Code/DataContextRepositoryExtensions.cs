@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq.Expressions;
 using System.ComponentModel;
 using System.Diagnostics;
+using LinqKit;
 
 namespace ClassLibrary1.Nonmodel_Code
 {

@@ -39,7 +39,7 @@ namespace WebRole1.CommonControl
                 return;
             }
 
-            PointsTotal thePointsTotal  = theDataAccess.DataContext.GetTable<PointsTotal>().SingleOrDefault(x => x.User.Username == theUser.Username && x.PointsManager == thePointsManager);
+            PointsTotal thePointsTotal  = theDataAccess.DataContext.GetTable<PointsTotal>().SingleOrDefault(x => x.User.Username == theUser.Username && x.PointsManager.PointsManagerID == thePointsManager.PointsManagerID);
             if (thePointsTotal == null)
                 thePointsTotal = theDataAccess.AddPointsTotal(theDataAccess.DataContext.GetTable<User>().Single(x => x.Username == theUser.Username), thePointsManager);
 

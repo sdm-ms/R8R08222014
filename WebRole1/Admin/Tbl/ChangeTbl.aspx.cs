@@ -37,7 +37,8 @@ public partial class ChangeTbl : System.Web.UI.Page
         Response.Expires = -1500;
         Response.CacheControl = "no-cache";
 
-        if (!(HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid()) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
+        Guid? userId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (!(HttpContext.Current.Profile != null && userId != new Guid()) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == userId).SuperUser)
         {
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
             return;

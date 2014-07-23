@@ -45,7 +45,8 @@ namespace ClassLibrary1.Model
             if (theTblDimension != null)
                 return theTblDimension;
 
-            theTblDimension = DataAccess.R8RDB.GetTable<TblDimension>().Single(t => t.TblDimensionsID == GetTblDimensionsIDForRegularTbl(theTblID));
+            Guid tblDimensionsID = GetTblDimensionsIDForRegularTbl(theTblID);
+            theTblDimension = DataAccess.R8RDB.GetTable<TblDimension>().Single(t => t.TblDimensionsID == tblDimensionsID);
             string[] theDependency = { }; // no cache dependency needed since this is very short lived and not operation-critical.
             CacheManagement.AddItemToCache("TableDim" + theTblID, theDependency, theTblDimension, new TimeSpan(0, 5, 0));
             return theTblDimension;
