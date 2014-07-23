@@ -24,7 +24,7 @@ namespace ClassLibrary1.EFModel
 
         public DateTime WhenMade { get; set; }
 
-        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
+        public byte Status { get; set; }
 
         public virtual PointsManager PointsManager { get; set; }
 

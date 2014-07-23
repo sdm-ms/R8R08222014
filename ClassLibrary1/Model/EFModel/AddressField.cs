@@ -20,7 +20,7 @@ namespace ClassLibrary1.EFModel
 
         public DateTime? LastGeocode { get; set; }
 
-        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
+        public byte Status { get; set; }
 
         public DbGeography Geo { get; set; }
 

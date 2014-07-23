@@ -20,7 +20,7 @@ namespace ClassLibrary1.EFModel
 
         public int? EndingTimeHalfLife { get; set; }
 
-        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
+        public byte Status { get; set; }
 
         public virtual RatingGroupPhaseStatus RatingGroupPhaseStatus { get; set; }
     }

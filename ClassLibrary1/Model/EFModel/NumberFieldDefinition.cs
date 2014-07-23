@@ -18,7 +18,7 @@ namespace ClassLibrary1.EFModel
 
         public byte DecimalPlaces { get; set; }
 
-        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
+        public byte Status { get; set; }
 
         public virtual FieldDefinition FieldDefinition { get; set; }
     }

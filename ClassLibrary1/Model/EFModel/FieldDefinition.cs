@@ -39,7 +39,7 @@ namespace ClassLibrary1.EFModel
 
         public int DisplayInTblRowPageSettings { get; set; }
 
-        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
+        public byte Status { get; set; }
 
         public int NumNonNull { get; set; }
 
