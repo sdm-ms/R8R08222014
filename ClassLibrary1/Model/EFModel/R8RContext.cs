@@ -371,16 +371,19 @@ using System.Data.Common;
             modelBuilder.Entity<PointsManager>()
                 .HasMany(e => e.ChoiceGroups)
                 .WithRequired(e => e.PointsManager)
+                .HasForeignKey(e => e.PointsManagerID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<PointsManager>()
                 .HasMany(e => e.PointsAdjustments)
                 .WithRequired(e => e.PointsManager)
+                .HasForeignKey(e => e.PointsManagerID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<PointsManager>()
                 .HasMany(e => e.PointsTotals)
                 .WithRequired(e => e.PointsManager)
+                .HasForeignKey(e => e.PointsManagerID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<PointsManager>()
