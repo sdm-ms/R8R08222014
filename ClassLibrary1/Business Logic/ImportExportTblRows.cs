@@ -106,7 +106,7 @@ namespace ClassLibrary1.Model
         {
             if (!dictionariesInitialized)
             {
-                var theFieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.Tbl.TblID == TheTbl.TblID);
+                var theFieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>().Where(fd => fd.Tbl.TblID == TheTbl.TblID).ToList();
                 dictionaryIDToName = new Dictionary<Guid, string>();
                 dictionaryNameToID = new Dictionary<string, Guid>();
                 foreach (var fd in theFieldDefinitions)
@@ -715,7 +715,8 @@ namespace ClassLibrary1.Model
             NameElement.MaxOccurs = 1;
             NameElement.SchemaTypeName = new XmlQualifiedName("string", "http://www.w3.org/2001/XMLSchema");
 
-            foreach (var m in Filterdata)
+            var filterdataList = Filterdata.ToList();
+            foreach (var m in filterdataList)
             {
 
                 XmlSchemaElement FElement = new XmlSchemaElement();
@@ -791,7 +792,7 @@ namespace ClassLibrary1.Model
 
                         sr.BaseTypeName = new XmlQualifiedName("string", "http://www.w3.org/2001/XMLSchema");
 
-                        var ChoiceInGroups = Obj.DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == m.FieldDefinitionID && x.Status == (byte)StatusOfObject.Active).ChoiceGroup.ChoiceInGroups.Where(z => z.Status == (byte)StatusOfObject.Active).Select(y => new { Choice = y.ChoiceText });
+                        var ChoiceInGroups = Obj.DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == m.FieldDefinitionID && x.Status == (byte)StatusOfObject.Active).ChoiceGroup.ChoiceInGroups.Where(z => z.Status == (byte)StatusOfObject.Active).Select(y => new { Choice = y.ChoiceText }).ToList();
                         foreach (var Choice in ChoiceInGroups)
                         {
                             XmlSchemaEnumerationFacet se = new XmlSchemaEnumerationFacet();
@@ -822,7 +823,7 @@ namespace ClassLibrary1.Model
                         XmlSchemaSimpleTypeRestriction sr = new XmlSchemaSimpleTypeRestriction();
                         sr.BaseTypeName = new XmlQualifiedName("string", "http://www.w3.org/2001/XMLSchema");
 
-                        var ChoiceInGroups = Obj.DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == m.FieldDefinitionID).ChoiceGroup.ChoiceInGroups.Where(x => true).Select(y => new { Choice = y.ChoiceText });
+                        var ChoiceInGroups = Obj.DataContext.GetTable<ChoiceGroupFieldDefinition>().Single(x => x.FieldDefinitionID == m.FieldDefinitionID).ChoiceGroup.ChoiceInGroups.Where(x => true).Select(y => new { Choice = y.ChoiceText }).ToList();
                         foreach (var Choice in ChoiceInGroups)
                         {
                             XmlSchemaEnumerationFacet se = new XmlSchemaEnumerationFacet();
@@ -859,7 +860,7 @@ namespace ClassLibrary1.Model
 
             XElement entireList = new XElement(typeOfTblRow + "list");
 
-            foreach (var E in theTblRowsElement)
+            foreach (var E in theTblRowsElement.ToList())
             {
                 XElement theTblRowElement = new XElement(typeOfTblRow);
                 XAttribute theActionOnImportAttribute = new XAttribute("ActionOnImport", "nofieldschange");
@@ -881,7 +882,7 @@ namespace ClassLibrary1.Model
                 theTblRowElement.Add(new XElement("TblRowName", E.Name));
 
                 var theFields = DataAccess.R8RDB.GetTable<Field>().Where(f => f.TblRowID == E.TblRowID).OrderBy(f => f.FieldDefinition.FieldNum).ThenBy(f => f.FieldDefinition.FieldDefinitionID); // OK to order by ID to get consistent ordering
-                foreach (var theField in theFields)
+                foreach (var theField in theFields.ToList())
                 {
                     XElement theFieldElement = null;
                     string theAbbreviatedFieldName = GetAbbreviatedFieldName(theField.FieldDefinitionID);
@@ -914,7 +915,7 @@ namespace ClassLibrary1.Model
                                     if (choicesInFields.Any())
                                     {
                                         theFieldElement = new XElement(theAbbreviatedFieldName);
-                                        foreach (var choiceInField in choicesInFields)
+                                        foreach (var choiceInField in choicesInFields.ToList())
                                         {
                                             XElement theChoiceElement = new XElement("Choice", choiceInField.ChoiceInGroup.ChoiceText);
                                             theFieldElement.Add(theChoiceElement);
@@ -927,7 +928,7 @@ namespace ClassLibrary1.Model
                                         throw new Exception("Multiple selection in single choice field.");
                                     if (choicesInFields.Any())
                                     {
-                                        foreach (var choiceInField in choicesInFields)
+                                        foreach (var choiceInField in choicesInFields.ToList())
                                         {
                                             theFieldElement = new XElement(theAbbreviatedFieldName, choiceInField.ChoiceInGroup.ChoiceText);
                                         }
