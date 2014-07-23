@@ -716,7 +716,7 @@ namespace ClassLibrary1.Model
             HierarchyItem theHierarchyItem = new HierarchyItem
             {
                 HierarchyItemID = Guid.NewGuid(),
-                ParentHierarchyItemID = higherHierarchyItem == null ? (Guid?)null : (Guid?)higherHierarchyItem.HierarchyItemID,
+                HigherHierarchyItemID = higherHierarchyItem == null ? (Guid?)null : (Guid?)higherHierarchyItem.HierarchyItemID,
                 Tbl = associatedTbl,
                 IncludeInMenu = includeInMenu,
                 HierarchyItemName = name

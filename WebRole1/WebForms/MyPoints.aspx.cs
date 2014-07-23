@@ -17,7 +17,7 @@ using ClassLibrary1.EFModel;
 
 public partial class MyPoints : System.Web.UI.Page
 {
-    internal Guid UserID;
+    internal Guid userID;
 
 
     protected Guid? ColumnToSort;
@@ -30,7 +30,7 @@ public partial class MyPoints : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         theDataAccessModule = new R8RDataManipulation();
-        if (HttpContext.Current.Profile != null && (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid())
+        if (HttpContext.Current.Profile != null && (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
             UserID = (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     }
 

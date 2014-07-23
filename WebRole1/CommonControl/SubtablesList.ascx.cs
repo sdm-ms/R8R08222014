@@ -64,7 +64,7 @@ using ClassLibrary1.EFModel;
         public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
             var theQuery = R8RDB.GetTable<HierarchyItem>()
-                .Where(x => x.ParentHierarchyItemID == theLocation.lastItemInHierarchy.HierarchyItemID);
+                .Where(x => x.HigherHierarchyItemID == theLocation.lastItemInHierarchy.HierarchyItemID);
 
             e.Result = theQuery;
         }

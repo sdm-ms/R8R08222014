@@ -271,14 +271,14 @@ using System.Data.Common;
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<HierarchyItem>()
-                .HasMany(e => e.LowerHierarchyItemsForRouting)
-                .WithOptional(e => e.HigherHierarchyItemForRouting)
+                .HasMany(e => e.HierarchyItems1)
+                .WithOptional(e => e.HierarchyItem1)
                 .HasForeignKey(e => e.HigherHierarchyItemForRoutingID);
 
             modelBuilder.Entity<HierarchyItem>()
-                .HasMany(e => e.ChildHierarchyItems)
-                .WithOptional(e => e.ParentHierarchyItem)
-                .HasForeignKey(e => e.ParentHierarchyItemID);
+                .HasMany(e => e.HierarchyItems11)
+                .WithOptional(e => e.HierarchyItem2)
+                .HasForeignKey(e => e.HigherHierarchyItemID);
 
             modelBuilder.Entity<HierarchyItem>()
                 .HasMany(e => e.SearchWordHierarchyItems)
