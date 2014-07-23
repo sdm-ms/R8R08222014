@@ -199,6 +199,14 @@
     <Compile Include="Migrations\201407222221274_FurtherChanges.Designer.cs">
       <DependentUpon>201407222221274_FurtherChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407231235109_EliminatedRoutingHierarchyItems.cs" />
+    <Compile Include="Migrations\201407231235109_EliminatedRoutingHierarchyItems.Designer.cs">
+      <DependentUpon>201407231235109_EliminatedRoutingHierarchyItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.cs" />
+    <Compile Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.Designer.cs">
+      <DependentUpon>201407231236303_ParentHierarchyItemsRenamed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Business Logic\R8RInMemoryDataContext.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -485,6 +493,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407222221274_FurtherChanges.resx">
       <DependentUpon>201407222221274_FurtherChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407231235109_EliminatedRoutingHierarchyItems.resx">
+      <DependentUpon>201407231235109_EliminatedRoutingHierarchyItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.resx">
+      <DependentUpon>201407231236303_ParentHierarchyItemsRenamed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
