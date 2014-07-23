@@ -44,7 +44,7 @@ namespace ClassLibrary1.Nonmodel_Code
         public object GetProperty(string propertyName)
         {
             if (propertyName == "UserID")
-                return 0;
+                return new Guid();
             return "N/A";
         }
 

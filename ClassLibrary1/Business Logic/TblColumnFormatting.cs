@@ -28,7 +28,7 @@ namespace ClassLibrary1.Model
             {
                 R8RDataAccess theDataAccessModule = new R8RDataAccess();
                 theFormatting = theDataAccessModule.R8RDB.GetTable<TblColumnFormatting>().SingleOrDefault(cdf => cdf.TblColumnID == TblColumnID);
-                Guid theTblID = theDataAccessModule.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID).TblTab.TblID;
+                Guid theTblID = theDataAccessModule.R8RDB.GetTable<TblColumn>().Include(i => i.TblTab).Single(cd => cd.TblColumnID == TblColumnID).TblTab.TblID;
                 string[] myDependencies = {
                                     "ColumnsForTblID" + theTblID.ToString()
                                                       };

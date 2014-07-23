@@ -157,7 +157,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
        Tbl theTbl = DataAccess.R8RDB.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
        HeaderRowInfoType numColumnHeader = new HeaderRowInfoType
        {
-           TblColumnID = Guid.NewGuid(),
+           TblColumnID = new Guid(), // using null here causes problem on postback; we'll change it back below
            Abbreviation = "#",
            Name = "#",
            WidthStyle = "nmcl " + theTbl.WidthStyleNumCol,
