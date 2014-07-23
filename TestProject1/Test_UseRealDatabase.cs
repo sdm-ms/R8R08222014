@@ -52,6 +52,7 @@ namespace TestProject1
 
         [TestMethod]
         [Category("IntegrationTest")]
+        [DeploymentItem("TestData", "TestData")]
         public void ResetAndCreateStandard()
         {
             if (!Test_UseRealDatabase.UseReal())
@@ -59,6 +60,7 @@ namespace TestProject1
             R8RBuilder theBuilder = new R8RBuilder();
             theBuilder.DeleteAndRebuild();
             theBuilder.CreateStandard();
+            
         }
 
         [TestMethod]

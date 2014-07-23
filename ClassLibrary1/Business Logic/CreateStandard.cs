@@ -346,21 +346,20 @@ namespace ClassLibrary1.Model
             Action.TblTabChangeDefaultSort(TblTabID, TblColumnID, true, superUser, null);
         }
 
-        protected void BeginImport(string filename, Guid TblID)
+        protected void BeginImport(string sourceFileLoc, Guid TblID)
         {
-            //ImportExport myImportExport = new ImportExport(Action.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID));
-            //string sourceFileLoc = Server.MapPath("~/sourcedata/" + filename);
-            //string errorMessage = "";
-            //if (System.IO.File.Exists(sourceFileLoc))
-            //{
-            //    bool IsValid = myImportExport.IsXmlValid(sourceFileLoc, ref errorMessage);
-            //    if (IsValid == false)
-            //        throw new Exception("The XML file could not be validated. The error message is: " + errorMessage);
-            //    if (IsValid == true)
-            //        myImportExport.PerformImport(sourceFileLoc, superUser, false);
-            //}
-            //else
-            //    Trace.TraceError("Source file " + sourceFileLoc + " doesn't exist.");
+            ImportExport myImportExport = new ImportExport(Action.DataContext.GetTable<Tbl>().Single(x => x.TblID == TblID));
+            string errorMessage = "";
+            if (System.IO.File.Exists(sourceFileLoc))
+            {
+                bool IsValid = myImportExport.IsXmlValid(sourceFileLoc, ref errorMessage);
+                if (IsValid == false)
+                    throw new Exception("The XML file could not be validated. The error message is: " + errorMessage);
+                if (IsValid == true)
+                    myImportExport.PerformImport(sourceFileLoc, superUser, false);
+            }
+            else
+                Trace.TraceError("Source file " + sourceFileLoc + " doesn't exist.");
         }
 
         protected HierarchyItem CreateHierarchyItem(HierarchyItem higherItem, Guid? associatedTblID, bool includeInMenu, string name)
@@ -1902,7 +1901,7 @@ namespace ClassLibrary1.Model
             CreateMain(ratingGroup, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
             Guid ratingGroup2 = CreateTblTab("Additional", restaurantsTblID);
             CreateAdditional(ratingGroup2, standardObjectsForPointsManager[thePointsManagerID].theRatingPhaseStandardID);
-            BeginImport("restaurants.xml", restaurantsTblID);
+            BeginImport("TestData/restaurants.xml", restaurantsTblID);
         }
     }
 
