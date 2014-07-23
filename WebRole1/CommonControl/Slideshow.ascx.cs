@@ -40,9 +40,9 @@ namespace WebApplication1.CommonControl
                  let mgs = e.RatingGroups
                         .Where(
                          mg => mg.TblColumn.Status == (int) (StatusOfObject.Active) && 
-                                mg.TblColumn.TblTab == e.Tbl.TblTabs.
+                                mg.TblColumn.TblTab.TblTabID == e.Tbl.TblTabs.
                                  OrderBy(cg => cg.NumInTbl)
-                                 .FirstOrDefault() && mg.RatingGroupAttribute.Name.StartsWith("Rating"))
+                                 .FirstOrDefault().TblTabID && mg.RatingGroupAttribute.Name.StartsWith("Rating"))
                                  .Select(y => new ColumnAndRating { 
                                      Column = y.TblColumn.Name, 
                                      ColumnID = y.TblColumnID,

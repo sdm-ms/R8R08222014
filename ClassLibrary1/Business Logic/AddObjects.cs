@@ -1165,7 +1165,7 @@ namespace ClassLibrary1.Model
             RatingGroupAttribute theGroupAttributes;
             OverrideCharacteristic overrideCharacteristics = null;
             if (!theTblRow.NotYetAddedToDatabase && theColumn.TblTab.Tbl.AllowOverrideOfRatingGroupCharacterstics)
-                overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow == theTblRow && oc.TblColumnID == theColumn.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
+                overrideCharacteristics = DataContext.GetTable<OverrideCharacteristic>().SingleOrDefault(oc => oc.TblRow.TblRowID == theTblRow.TblRowID && oc.TblColumnID == theColumn.TblColumnID && oc.Status == (Byte)StatusOfObject.Active);
             if (overrideCharacteristics == null)
                 theGroupAttributes = theColumn.RatingGroupAttribute;
             else

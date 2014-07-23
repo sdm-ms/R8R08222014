@@ -182,7 +182,7 @@ namespace ClassLibrary1.Model
                     catch
                     {
                     }
-                    theTblRow = theDataContext.GetTable<TblRow>().SingleOrDefault(x => x.Tbl == theTbl && x.TblRowID == tblRowID);
+                    theTblRow = theDataContext.GetTable<TblRow>().SingleOrDefault(x => x.Tbl.TblID == theTbl.TblID && x.TblRowID == tblRowID);
                 }
                 if (theTblRow == null)
                     return;
@@ -204,7 +204,7 @@ namespace ClassLibrary1.Model
                     {
                     }
                     if (TblColumnID != new Guid())
-                        theTblColumn = theDataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl == theTbl && x.TblColumnID == TblColumnID);
+                        theTblColumn = theDataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl.TblID == theTbl.TblID && x.TblColumnID == TblColumnID);
                 }
             }
         }

@@ -496,7 +496,7 @@ namespace ClassLibrary1.Model
                             AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "TblRowID was not in correct format for an existing entity");
                             continue;
                         }
-                        theTblRow = DataAccess.R8RDB.GetTable<TblRow>().SingleOrDefault(x => x.TblRowID == ExistingTblRowID && x.Tbl == TheTbl);
+                        theTblRow = DataAccess.R8RDB.GetTable<TblRow>().SingleOrDefault(x => x.TblRowID == ExistingTblRowID && x.Tbl.TblID == TheTbl.TblID);
                         if (theTblRow == null)
                         {
                             AddEntryToImportLog(theLogList, elementNum, theTblRowElement, "'RowId' of tblRow given by user " + ExistingTblRowID + " does not exist for this Tbl.");

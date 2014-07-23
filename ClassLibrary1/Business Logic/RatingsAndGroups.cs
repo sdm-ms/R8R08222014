@@ -438,7 +438,7 @@ namespace ClassLibrary1.Model
 
         public void AdvanceRatingGroupIfNeeded(RatingGroup topmostRatingGroup, out bool didAdvance, out bool ratingExpired, out RatingGroupPhaseStatus currentRatingGroupPhaseStatus)
         {
-            RatingGroupPhaseStatus lastRatingGroupPhaseStatus = DataContext.RegisteredToBeInserted.GetCollectionOfType<RatingGroupPhaseStatus>().Where(mps => mps.RatingGroup == topmostRatingGroup).OrderByDescending(x => x.RoundNum).FirstOrDefault();
+            RatingGroupPhaseStatus lastRatingGroupPhaseStatus = DataContext.RegisteredToBeInserted.GetCollectionOfType<RatingGroupPhaseStatus>().Where(mps => mps.RatingGroup.RatingGroupID == topmostRatingGroup.RatingGroupID).OrderByDescending(x => x.RoundNum).FirstOrDefault();
             if (lastRatingGroupPhaseStatus == null)
             {
                 lastRatingGroupPhaseStatus = GetRatingGroupPhaseStatus(topmostRatingGroup);
@@ -530,7 +530,7 @@ namespace ClassLibrary1.Model
 
         public RatingPhaseStatus GetRatingPhaseStatus(Rating theRating)
         {
-            var alreadyEntered = DataContext.RegisteredToBeInserted.GetCollectionOfType<RatingPhaseStatus>().Where(x => x.Rating == theRating).OrderByDescending(x => x.RatingGroupPhaseStatus.RoundNum).FirstOrDefault();
+            var alreadyEntered = DataContext.RegisteredToBeInserted.GetCollectionOfType<RatingPhaseStatus>().Where(x => x.Rating.RatingID == theRating.RatingID).OrderByDescending(x => x.RatingGroupPhaseStatus.RoundNum).FirstOrDefault();
             if (alreadyEntered != null)
                 return alreadyEntered;
 
@@ -542,7 +542,7 @@ namespace ClassLibrary1.Model
 
         public RatingGroupPhaseStatus GetRatingGroupPhaseStatus(RatingGroup topRatingGroup)
         {
-            var alreadyEntered = DataContext.RegisteredToBeInserted.GetCollectionOfType<RatingGroupPhaseStatus>().Where(x => x.RatingGroup == topRatingGroup).OrderByDescending(x => x.RoundNum).FirstOrDefault();
+            var alreadyEntered = DataContext.RegisteredToBeInserted.GetCollectionOfType<RatingGroupPhaseStatus>().Where(x => x.RatingGroup.RatingGroupID == topRatingGroup.RatingGroupID).OrderByDescending(x => x.RoundNum).FirstOrDefault();
             if (alreadyEntered != null)
                 return alreadyEntered;
 

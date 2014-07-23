@@ -282,7 +282,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            AddressField theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            AddressField theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return false;
             else
@@ -298,7 +298,7 @@ namespace ClassLibrary1.Model
         {
             AddressField theField = null;
             if (!TheGroup.theTblRow.NotYetAddedToDatabase) // check for whether this is not new
-                theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int) StatusOfObject.Active);
+                theField = DataAccess.R8RDB.GetTable<AddressField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (AddressShortText == "");
             else
@@ -326,7 +326,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            DateTimeField theField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            DateTimeField theField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField != null && theField.DateTime != null)
             {
                 TheDateTime = (DateTime)theField.DateTime;
@@ -338,8 +338,8 @@ namespace ClassLibrary1.Model
         public override bool MatchesDatabase()
         {
             DateTimeField theField = null;
-            if (!TheGroup.theTblRow.NotYetAddedToDatabase) 
-                theField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            if (!TheGroup.theTblRow.NotYetAddedToDatabase)
+                theField = DataAccess.R8RDB.GetTable<DateTimeField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (TheDateTime == null);
             else
@@ -369,7 +369,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            TextField theField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            TextField theField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
             {
                 return false;
@@ -385,8 +385,8 @@ namespace ClassLibrary1.Model
         public override bool MatchesDatabase()
         {
             TextField theField = null;
-            if (!TheGroup.theTblRow.NotYetAddedToDatabase) 
-                theField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            if (!TheGroup.theTblRow.NotYetAddedToDatabase)
+                theField = DataAccess.R8RDB.GetTable<TextField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (TheText == "" && TheLink == "");
             else /* Note that if we already have html in the database and that html is not changed, then we want to leave the database alone. */
@@ -423,7 +423,7 @@ namespace ClassLibrary1.Model
             NumberFieldDefinition theNFD = DataAccess.R8RDB.TempCacheGet(key) as NumberFieldDefinition;
             if (theNFD == null)
             {
-                theNFD = DataAccess.R8RDB.GetTable<NumberFieldDefinition>().SingleOrDefault(nfd => nfd.FieldDefinition == TheFieldDefinition);
+                theNFD = DataAccess.R8RDB.GetTable<NumberFieldDefinition>().SingleOrDefault(nfd => nfd.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID);
                 DataAccess.R8RDB.TempCacheAdd(key, theNFD);
             }
             if (theNFD == null)
@@ -436,7 +436,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            NumberField theField = DataAccess.R8RDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            NumberField theField = DataAccess.R8RDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField == null || theField.Number == null)
                 return false;
             else
@@ -448,7 +448,7 @@ namespace ClassLibrary1.Model
         {
             NumberField theField = null;
             if (!TheGroup.theTblRow.NotYetAddedToDatabase)
-                theField = DataAccess.R8RDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+                theField = DataAccess.R8RDB.GetTable<NumberField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return (false);
             else
@@ -587,7 +587,7 @@ namespace ClassLibrary1.Model
 
         public override bool LoadFromDatabase()
         {
-            ChoiceField theField = DataAccess.R8RDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            ChoiceField theField = DataAccess.R8RDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
             if (theField == null)
                 return false;
             List<ChoiceInGroup> existingList = DataAccess.R8RDB.GetTable<ChoiceInField>().Where(x => x.ChoiceFieldID == theField.ChoiceFieldID && x.Status == (int)StatusOfObject.Active).Select(x => x.ChoiceInGroup).OrderBy(x => x.ChoiceNum).ThenBy(x => x.ChoiceText).ToList();
@@ -604,7 +604,7 @@ namespace ClassLibrary1.Model
             bool inCache = DataAccess.R8RDB.TempCache.TryGetValue(cacheKey, out inDB);
             if (inCache)
                 return (inDB as List<ChoiceInGroup>);
-            ChoiceField theField = DataAccess.R8RDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow == TheGroup.theTblRow && x.Field.FieldDefinition == TheFieldDefinition && x.Status == (int)StatusOfObject.Active);
+            ChoiceField theField = DataAccess.R8RDB.GetTable<ChoiceField>().SingleOrDefault(x => x.Field.TblRow.TblRowID == TheGroup.theTblRow.TblRowID && x.Field.FieldDefinition.FieldDefinitionID == TheFieldDefinition.FieldDefinitionID && x.Status == (int)StatusOfObject.Active);
 
             List<ChoiceInGroup> existingList = null;
             if (theField == null)
@@ -690,7 +690,7 @@ namespace ClassLibrary1.Model
 
         public Field GetFieldForTblRow(TblRow tblRow, FieldDefinition FieldDefinition)
         {
-            return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRow == tblRow && f.FieldDefinition == FieldDefinition && f.Status == (byte)StatusOfObject.Active);
+            return DataContext.GetTable<Field>().SingleOrDefault(f => f.TblRow.TblRowID == tblRow.TblRowID && f.FieldDefinition.FieldDefinitionID == FieldDefinition.FieldDefinitionID && f.Status == (byte)StatusOfObject.Active);
         }
 
         public Field GetFieldForTblRow(Guid? tblRowID, Guid? FieldDefinitionID)

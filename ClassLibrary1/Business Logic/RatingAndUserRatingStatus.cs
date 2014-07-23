@@ -52,7 +52,7 @@ namespace ClassLibrary1.Model
         // of whether the predictions have been processed. 
         public bool RatingGroupIsResolved(RatingGroup theTopRatingGroup)
         {
-            RatingGroupResolution activeResolution = theTopRatingGroup.RatingGroupResolutions.Where(x => x.RatingGroup == theTopRatingGroup).OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.WhenCreated).FirstOrDefault();
+            RatingGroupResolution activeResolution = theTopRatingGroup.RatingGroupResolutions.Where(x => x.RatingGroup.RatingGroupID == theTopRatingGroup.RatingGroupID).OrderByDescending(y => y.ExecutionTime).ThenByDescending(y => y.WhenCreated).FirstOrDefault();
             if (activeResolution == null)
                 return false;
             return !activeResolution.CancelPreviousResolutions;
