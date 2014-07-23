@@ -75,7 +75,7 @@ namespace ClassLibrary1.Nonmodel_Code
     {
         public DbContext UnderlyingDbContext { get; set; }
 
-        private Dictionary<Type, object> objectSetsForType = new Dictionary<Type, object>();
+        private Dictionary<Type, object> efRepositoriesForType = new Dictionary<Type, object>();
 
         public EFDataContext(DbContext underlyingDataContext)
         {
@@ -105,16 +105,18 @@ namespace ClassLibrary1.Nonmodel_Code
         public IRepository<T> GetTable<T>() where T : class
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
-            ObjectSet<T> objectSet = null;
-            if (!objectSetsForType.ContainsKey(typeof(T)))
+            EFRepository<T> repo = null;
+            if (!efRepositoriesForType.ContainsKey(typeof(T)))
             {
+                ObjectSet<T> objectSet = null;
                 ObjectContext objectContext = GetObjectContext();
                 objectSet = objectContext.CreateObjectSet<T>();
-                objectSetsForType[typeof(T)] = (object)objectSet;
+                repo = new EFRepository<T>(objectSet);
+                efRepositoriesForType[typeof(T)] = repo;
             }
             else
-                objectSet = (ObjectSet<T>) objectSetsForType[typeof(T)];
-            return new EFRepository<T>(objectSet);
+                repo = (EFRepository<T>) efRepositoriesForType[typeof(T)];
+            return repo;
         }
 
         internal ObjectContext GetObjectContext()
