@@ -43,11 +43,11 @@ namespace ClassLibrary1.Model
         {
             TheTblColumn = tblColumn;
             Guid tblColumnID = tblColumn.TblColumnID;
-            ratingStringColumn = new SQLTableColumnDescription() { Name = "RS" + tblColumnID.ToString(), ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
-            ratingValueColumn = new SQLTableColumnDescription() { Name = "RV" + tblColumnID.ToString(), ColType = SQLColumnType.typeDecimal, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
-            ratingIDColumn = new SQLTableColumnDescription() { Name = "R" + tblColumnID.ToString(), ColType = SQLColumnType.typeGuid, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
-            ratingGroupIDColumn = new SQLTableColumnDescription() { Name = "RG" + tblColumnID.ToString(), ColType = SQLColumnType.typeGuid, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
-            ratingRecentlyChangedColumn = new SQLTableColumnDescription() { Name = "RC" + tblColumnID.ToString(), ColType = SQLColumnType.typeBit, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            ratingStringColumn = new SQLTableColumnDescription() { Name = "RS" + tblColumnID.ToString("N").ToUpper(), ColType = SQLColumnType.typeStringUnlimited, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            ratingValueColumn = new SQLTableColumnDescription() { Name = "RV" + tblColumnID.ToString("N").ToUpper(), ColType = SQLColumnType.typeDecimal, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = false };
+            ratingIDColumn = new SQLTableColumnDescription() { Name = "R" + tblColumnID.ToString("N").ToUpper(), ColType = SQLColumnType.typeGuid, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            ratingGroupIDColumn = new SQLTableColumnDescription() { Name = "RG" + tblColumnID.ToString("N").ToUpper(), ColType = SQLColumnType.typeGuid, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
+            ratingRecentlyChangedColumn = new SQLTableColumnDescription() { Name = "RC" + tblColumnID.ToString("N").ToUpper(), ColType = SQLColumnType.typeBit, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false };
         }
 
         public List<SQLTableColumnDescription> GetColumns()
@@ -91,7 +91,7 @@ namespace ClassLibrary1.Model
                 default:
                     break;
             }
-            fieldColumn = new SQLTableColumnDescription() { Name = "F" + theFieldDefinition.FieldDefinitionID.ToString(), ColType = colType, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = index, Ascending = true };
+            fieldColumn = new SQLTableColumnDescription() { Name = "F" + theFieldDefinition.FieldDefinitionID.ToString("N").ToUpper(), ColType = colType, Nullable = true, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = index, Ascending = true };
         }
 
         public SQLTableColumnDescription GetColumn()
@@ -118,20 +118,20 @@ namespace ClassLibrary1.Model
             TheFieldDefinition = theFieldDefinition;
             TheChoiceGroup = TheFieldDefinition.ChoiceGroupFieldDefinitions.FirstOrDefault().ChoiceGroup;
 
-            idColumn = new SQLTableColumnDescription() { Name = "MCID" /* distinctive name avoids complication of ambiguous column names when querying */, ColType = SQLColumnType.typeGuid, Nullable = false, PrimaryKey = true, AutoIncrement = true, NonclusteredIndex = false, ClusteredIndex = false };
+            idColumn = new SQLTableColumnDescription() { Name = "MCID" /* distinctive name avoids complication of ambiguous column names when querying */, ColType = SQLColumnType.typeInt, Nullable = false, PrimaryKey = true, AutoIncrement = true, NonclusteredIndex = false, ClusteredIndex = false }; // this column's ID will be created by the database, since we don't care about it and it doesn't come from elsewhere
             tblRowIDColumn = new SQLTableColumnDescription() { Name = "TRID", ColType = SQLColumnType.typeGuid, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = true, Ascending = true };
             choiceColumn = new SQLTableColumnDescription() { Name = "CHO", ColType = SQLColumnType.typeGuid, Nullable = false, PrimaryKey = false, AutoIncrement = false, NonclusteredIndex = false, ClusteredIndex = true, Ascending = true };
         }
 
         public SQLTableDescription GetSQLTableDescription()
         {
-            return new SQLTableDescription() { Name = "VFMC" + TheFieldDefinition.FieldDefinitionID.ToString(), Columns = new List<SQLTableColumnDescription>() { idColumn, tblRowIDColumn, choiceColumn } };
+            return new SQLTableDescription() { Name = "VFMC" + TheFieldDefinition.FieldDefinitionID.ToString("N").ToUpper(), Columns = new List<SQLTableColumnDescription>() { idColumn, tblRowIDColumn, choiceColumn } };
         }
 
         public static SQLUpdateInfoTableSpecification GetSpecification(Guid fieldDefinitionID, Guid tblID)
         {
             var mainTableSpecification = FastAccessTableInfo.GetSpecification(tblID);
-            return new SQLUpdateInfoTableSpecification() { PrimaryKeyFieldName = "MCID", IDIsAutogenerated = true, MainTable = mainTableSpecification, Tablename = "VFMC" + fieldDefinitionID.ToString(), HasSameIDAsMainTable = false };
+            return new SQLUpdateInfoTableSpecification() { PrimaryKeyFieldName = "MCID", IDIsAutogenerated = true, MainTable = mainTableSpecification, Tablename = "VFMC" + fieldDefinitionID.ToString("N").ToUpper(), HasSameIDAsMainTable = false };
         }
     }
 
@@ -194,7 +194,7 @@ namespace ClassLibrary1.Model
 
         public static SQLUpdateInfoTableSpecification GetSpecification(Guid tblID)
         {
-            return new SQLUpdateInfoTableSpecification() { IDIsAutogenerated = false, PrimaryKeyFieldName = "ID", Tablename = "V" + tblID.ToString() };
+            return new SQLUpdateInfoTableSpecification() { IDIsAutogenerated = false, PrimaryKeyFieldName = "ID", Tablename = "V" + tblID.ToString("N").ToUpper() };
         }
 
 
@@ -236,7 +236,7 @@ namespace ClassLibrary1.Model
 
         internal string GetSqlCommandToDropFunctionForTblRowStatusRecords(Guid tblID)
         {
-            return GetSqlCommandToDropFunction("WasActiveTblRowV" + tblID.ToString());
+            return GetSqlCommandToDropFunction("WasActiveTblRowV" + tblID.ToString("N").ToUpper());
         }
 
         internal string GetSqlCommandToAddFunctionForTblRowStatusRecords(Guid tblID)
@@ -291,7 +291,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
         public void AddTable(DenormalizedTableAccess dta)
         {
             var columns = GetColumns();
-            SQLTableDescription theTable = new SQLTableDescription() { Name = "V" + TheTbl.TblID, Columns = columns };
+            SQLTableDescription theTable = new SQLTableDescription() { Name = "V" + TheTbl.TblID.ToString("N").ToUpper(), Columns = columns };
             SQLDirectManipulate.AddTable(dta, theTable);
             SQLDirectManipulate.AddIndicesForSpecifiedColumns(dta, theTable);
 
@@ -415,8 +415,8 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 if (rowHeading == null)
                     throw new Exception("Internal error. Should not copy row until initial fields display set.");
                 bool popupIsEmpty = popup == null || popup.Contains("borderless nopop");
-                string relAttr = popupIsEmpty ? "" : "rel=\"#FPU" + tblRowID.ToString() + "\"";
-                string idAttr = popupIsEmpty ? "" : "id=\"FPU" + tblRowID.ToString() + "\"";
+                string relAttr = popupIsEmpty ? "" : "rel=\"#FPU" + tblRowID.ToString("N").ToUpper() + "\"";
+                string idAttr = popupIsEmpty ? "" : "id=\"FPU" + tblRowID.ToString("N").ToUpper() + "\"";
                 string mainAreaOpening = String.Format("<div class=\"loadrowpopup\" title=\"{0}\" {1}>", name ?? "", relAttr);
                 string closeDiv = "</div>"; 
                 string popupOpening = String.Format("<div style=\"display:none;\" {0}>", idAttr);
@@ -443,34 +443,34 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                         theRatingString = NumberandTableFormatter.FormatAsSpecified(rating.Value, rating.DecimalPlaces, rating.ColumnID);
                     else
                         theRatingString = TableLoading.GetHtmlStringForCell((Guid)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false);
-                    dataRow["RS" + rating.ColumnID.ToString()] = theRatingString;
-                    dataRow["RV" + rating.ColumnID.ToString()] = (object)rating.Value ?? (object)System.DBNull.Value;
-                    dataRow["R" + rating.ColumnID.ToString()] = (object)rating.RatingID ?? (object)System.DBNull.Value;
-                    dataRow["RG" + rating.ColumnID.ToString()] = (object)rating.RatingGroupID ?? (object)System.DBNull.Value;
-                    dataRow["RC" + rating.ColumnID.ToString()] = (object)rating.RecentlyChanged ?? (object)System.DBNull.Value;
+                    dataRow["RS" + rating.ColumnID.ToString("N").ToUpper()] = theRatingString;
+                    dataRow["RV" + rating.ColumnID.ToString("N").ToUpper()] = (object)rating.Value ?? (object)System.DBNull.Value;
+                    dataRow["R" + rating.ColumnID.ToString("N").ToUpper()] = (object)rating.RatingID ?? (object)System.DBNull.Value;
+                    dataRow["RG" + rating.ColumnID.ToString("N").ToUpper()] = (object)rating.RatingGroupID ?? (object)System.DBNull.Value;
+                    dataRow["RC" + rating.ColumnID.ToString("N").ToUpper()] = (object)rating.RecentlyChanged ?? (object)System.DBNull.Value;
                 }
                 foreach (var addressField in AddressFields)
                 {
-                    dataRow["F" + addressField.FieldDefinitionID.ToString()] = (object) addressField.Geo;
+                    dataRow["F" + addressField.FieldDefinitionID.ToString("N").ToUpper()] = (object) addressField.Geo;
                 }
                 foreach (var choiceField in ChoiceFields)
                 {
                     if (!choiceField.MultipleChoices)
                     {
-                        dataRow["F" + choiceField.FieldDefinitionID.ToString()] = choiceField.Choices.FirstOrDefault() == null ? (object)System.DBNull.Value : (object)choiceField.Choices.FirstOrDefault().ChoiceInGroupID;
+                        dataRow["F" + choiceField.FieldDefinitionID.ToString("N").ToUpper()] = choiceField.Choices.FirstOrDefault() == null ? (object)System.DBNull.Value : (object)choiceField.Choices.FirstOrDefault().ChoiceInGroupID;
                     }
                 }
                 foreach (var dateTimeField in DateTimeFields)
                 {
-                    dataRow["F" + dateTimeField.FieldDefinitionID.ToString()] = dateTimeField.DateTime ?? (object)System.DBNull.Value;
+                    dataRow["F" + dateTimeField.FieldDefinitionID.ToString("N").ToUpper()] = dateTimeField.DateTime ?? (object)System.DBNull.Value;
                 }
                 foreach (var numberField in NumberFields)
                 {
-                    dataRow["F" + numberField.FieldDefinitionID.ToString()] = numberField.Number ?? (object)System.DBNull.Value;
+                    dataRow["F" + numberField.FieldDefinitionID.ToString("N").ToUpper()] = numberField.Number ?? (object)System.DBNull.Value;
                 }
                 foreach (var textField in TextFields)
                 {
-                    dataRow["F" + textField.FieldDefinitionID.ToString()] = textField.Text ?? (object)System.DBNull.Value;
+                    dataRow["F" + textField.FieldDefinitionID.ToString("N").ToUpper()] = textField.Text ?? (object)System.DBNull.Value;
                 }
                 dataTable.Rows.Add(dataRow);
             }
@@ -671,7 +671,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             // Create a new DataTable.
             System.Data.DataTable dataTable = new DataTable("ParentTable");
 
-            SQLTableDescription theTable = new SQLTableDescription() { Name = "V" + TheTbl.TblID, Columns = GetColumns() };
+            SQLTableDescription theTable = new SQLTableDescription() { Name = "V" + TheTbl.TblID.ToString("N").ToUpper(), Columns = GetColumns() };
             List<DataColumn> dataColumns = theTable.GetDataColumns();
             foreach (var column in dataColumns)
                 dataTable.Columns.Add(column);
@@ -719,7 +719,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             string denormalizedConnection = dta.GetConnectionString();
             
             SqlBulkCopy bulk = new SqlBulkCopy(denormalizedConnection, SqlBulkCopyOptions.KeepIdentity & SqlBulkCopyOptions.KeepNulls & SqlBulkCopyOptions.UseInternalTransaction);
-            bulk.DestinationTableName = "dbo.V" + TheTbl.TblID.ToString();
+            bulk.DestinationTableName = "dbo.V" + TheTbl.TblID.ToString("N").ToUpper();
             bulk.WriteToServer(theDataTable);
 
             int numRecords = theDataTable.Rows.Count;
@@ -731,7 +731,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                 SqlBulkCopy bulk2 = new SqlBulkCopy(denormalizedConnection);
                 bulk2.ColumnMappings.Add(new SqlBulkCopyColumnMapping("TRID", "TRID"));
                 bulk2.ColumnMappings.Add(new SqlBulkCopyColumnMapping("CHO", "CHO"));
-                bulk2.DestinationTableName = "dbo.VFMC" + fieldMC.TheFieldDefinition.FieldDefinitionID.ToString();
+                bulk2.DestinationTableName = "dbo.VFMC" + fieldMC.TheFieldDefinition.FieldDefinitionID.ToString("N").ToUpper();
                 bulk2.WriteToServer(theDataTable);
             }
 
@@ -766,18 +766,18 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
 
         internal void DeleteExistingChoicesInMCTable(DenormalizedTableAccess dta, Guid fieldDefinitionID, Guid tblRowID)
         {
-            string tableName = "dbo.VFMC" + fieldDefinitionID.ToString();
+            string tableName = "dbo.VFMC" + fieldDefinitionID.ToString("N").ToUpper();
             string deleteString = "DELETE FROM " + tableName + " WHERE TRID = @trid ";
-            SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLCellInfo>() { new SQLCellInfo() { DBtype = SqlDbType.Int, Value = tblRowID, Fieldname = "trid" } });
+            SQLDirectManipulate.ExecuteSQLNonQuery(dta, deleteString, new List<SQLCellInfo>() { new SQLCellInfo() { DBtype = SqlDbType.UniqueIdentifier, Value = tblRowID, Fieldname = "trid" } });
         }
 
         internal void AddChoicesToMCTable(DenormalizedTableAccess dta, Guid fieldDefinitionID, Guid tblRowID, List<Guid> choiceInGroupIDs)
         {
-            string tableName = "dbo.VFMC" + fieldDefinitionID.ToString();
+            string tableName = "dbo.VFMC" + fieldDefinitionID.ToString("N").ToUpper();
             foreach (Guid choiceInGroupID in choiceInGroupIDs)
             {
                 string insertString = "INSERT INTO " + tableName + " (TRID, CHO) VALUES (@trid, @cigid) ";
-                SQLDirectManipulate.ExecuteSQLNonQuery(dta, insertString, new List<SQLCellInfo>() { new SQLCellInfo() { DBtype = SqlDbType.Int, Value = tblRowID, Fieldname = "trid" }, new SQLCellInfo() { DBtype = SqlDbType.Int, Value = choiceInGroupID, Fieldname = "cigid" } } );
+                SQLDirectManipulate.ExecuteSQLNonQuery(dta, insertString, new List<SQLCellInfo>() { new SQLCellInfo() { DBtype = SqlDbType.UniqueIdentifier, Value = tblRowID, Fieldname = "trid" }, new SQLCellInfo() { DBtype = SqlDbType.UniqueIdentifier, Value = choiceInGroupID, Fieldname = "cigid" } });
             }
         }
 
@@ -799,7 +799,7 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
             {
                 SQLInfoForCellsInRow_MainAndSecondaryTables row = new SQLInfoForCellsInRow_MainAndSecondaryTables();
                 row.DefaultTableSpec = GetSpecification(TheTbl.TblID);
-                row.Add("ID", storedRow.ID, SqlDbType.Int);
+                row.Add("ID", storedRow.ID, SqlDbType.UniqueIdentifier);
                 if (!DisableUpdateRowInfo)
                 {
                     row.Add("NME", storedRow.NME, SqlDbType.NVarChar); 
@@ -815,26 +815,26 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     row.Add("RH", storedRow.RowHeading, SqlDbType.NVarChar);
                     foreach (var field in storedRow.AddressFields)
                     {
-                        row.Add("F" + field.FieldDefinitionID.ToString(), (field.Latitude == null || field.Longitude == null || (field.Longitude == 0 && field.Latitude == 0)) ? null : new SQLGeographyInfo { Longitude = (decimal)field.Longitude, Latitude = (decimal)field.Latitude }, SqlDbType.Udt);
+                        row.Add("F" + field.FieldDefinitionID.ToString("N").ToUpper(), (field.Latitude == null || field.Longitude == null || (field.Longitude == 0 && field.Latitude == 0)) ? null : new SQLGeographyInfo { Longitude = (decimal)field.Longitude, Latitude = (decimal)field.Latitude }, SqlDbType.Udt);
                     }
                     foreach (var field in storedRow.ChoiceFields)
                     {
                         if (!field.MultipleChoices)
                         {
-                            row.Add("F" + field.FieldDefinitionID.ToString(), field.Choices.FirstOrDefault().ChoiceInGroupID, SqlDbType.Int); // Just adding the first ChoiceInGroupID here, even if there are multiple rows
+                            row.Add("F" + field.FieldDefinitionID.ToString("N").ToUpper(), field.Choices.FirstOrDefault().ChoiceInGroupID, SqlDbType.UniqueIdentifier); // Just adding the first ChoiceInGroupID here, even if there are multiple rows
                         }
                     }
                     foreach (var field in storedRow.DateTimeFields)
                     {
-                        row.Add("F" + field.FieldDefinitionID.ToString(), field.DateTime, SqlDbType.DateTime);
+                        row.Add("F" + field.FieldDefinitionID.ToString("N").ToUpper(), field.DateTime, SqlDbType.DateTime);
                     }
                     foreach (var field in storedRow.NumberFields)
                     {
-                        row.Add("F" + field.FieldDefinitionID.ToString(), field.Number, SqlDbType.Decimal);
+                        row.Add("F" + field.FieldDefinitionID.ToString("N").ToUpper(), field.Number, SqlDbType.Decimal);
                     }
                     foreach (var field in storedRow.TextFields)
                     {
-                        row.Add("F" + field.FieldDefinitionID.ToString(), field.Text, SqlDbType.NVarChar);
+                        row.Add("F" + field.FieldDefinitionID.ToString("N").ToUpper(), field.Text, SqlDbType.NVarChar);
                     }
                 }
                 if (updateRatings && !DisableUpdateRatings)
@@ -842,13 +842,13 @@ CREATE FUNCTION [dbo].[UDFNearestNeighborsFor{1}]
                     foreach (var rating in storedRow.Ratings)
                     {
                         if (rating.SingleNumber)
-                            row.Add("RS" + rating.ColumnID.ToString(), NumberandTableFormatter.FormatAsSpecified(rating.Value, rating.DecimalPlaces, rating.ColumnID) + (rating.LastTrustedValue == rating.Value ? "" : "*"), SqlDbType.NVarChar);
+                            row.Add("RS" + rating.ColumnID.ToString("N").ToUpper(), NumberandTableFormatter.FormatAsSpecified(rating.Value, rating.DecimalPlaces, rating.ColumnID) + (rating.LastTrustedValue == rating.Value ? "" : "*"), SqlDbType.NVarChar);
                         else
-                            row.Add("RS" + rating.ColumnID.ToString(), TableLoading.GetHtmlStringForCell((Guid)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false), SqlDbType.NVarChar);
-                        row.Add("RV" + rating.ColumnID.ToString(), rating.Value, SqlDbType.Decimal);
-                        row.Add("RC" + rating.ColumnID.ToString(), rating.RecentlyChanged, SqlDbType.Bit);
-                        //rowInfo.Add("R" + rating.ColumnID.ToString(), rating.RatingID); doesn't change -- no need to update
-                        //rowInfo.Add("RG" + rating.ColumnID.ToString(), rating.RatingGroupID); doesn't change -- no need to update
+                            row.Add("RS" + rating.ColumnID.ToString("N").ToUpper(), TableLoading.GetHtmlStringForCell((Guid)rating.RatingGroupID, rating.Value, rating.DecimalPlaces, rating.RowID, rating.ColumnID, rating.RatingID, null, rating.LastTrustedValue == rating.Value, rating.SingleNumber, false), SqlDbType.NVarChar);
+                        row.Add("RV" + rating.ColumnID.ToString("N").ToUpper(), rating.Value, SqlDbType.Decimal);
+                        row.Add("RC" + rating.ColumnID.ToString("N").ToUpper(), rating.RecentlyChanged, SqlDbType.Bit);
+                        //rowInfo.Add("R" + rating.ColumnID.ToString("N").ToUpper(), rating.RatingID); doesn't change -- no need to update
+                        //rowInfo.Add("RG" + rating.ColumnID.ToString("N").ToUpper(), rating.RatingGroupID); doesn't change -- no need to update
                     }
                 }
 

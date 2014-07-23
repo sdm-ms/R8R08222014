@@ -195,6 +195,10 @@
     <Compile Include="Migrations\201407221309337_AllDatesDateTime2.Designer.cs">
       <DependentUpon>201407221309337_AllDatesDateTime2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407222221274_FurtherChanges.cs" />
+    <Compile Include="Migrations\201407222221274_FurtherChanges.Designer.cs">
+      <DependentUpon>201407222221274_FurtherChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Business Logic\R8RInMemoryDataContext.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -478,6 +482,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407221309337_AllDatesDateTime2.resx">
       <DependentUpon>201407221309337_AllDatesDateTime2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407222221274_FurtherChanges.resx">
+      <DependentUpon>201407222221274_FurtherChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

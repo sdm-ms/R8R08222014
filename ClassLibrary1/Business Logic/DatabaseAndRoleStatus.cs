@@ -200,6 +200,7 @@ namespace ClassLibrary1.Model
             {
                 RoleStatus newStatus = new RoleStatus
                 {
+                    RoleStatusID = Guid.NewGuid(),
                     IsBackgroundProcessing = false,
                     IsWorkerRole = CurrentRoleIsWorkerRole(),
                     LastCheckIn = TestableDateTime.Now,

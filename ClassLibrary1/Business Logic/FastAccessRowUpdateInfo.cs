@@ -236,7 +236,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = ChoiceInGroupID, DBtype = SqlDbType.Int }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = ChoiceInGroupID, DBtype = SqlDbType.UniqueIdentifier }
             };
         }
     }
@@ -252,8 +252,8 @@ namespace ClassLibrary1.Model
             string groupingKey = g.ToString();
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "CHO", Value = ChoiceInGroupID, DBtype = SqlDbType.Int, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = false },
-                new SQLCellInfo() { Fieldname = "TRID", Value = TblRowID, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = true /* in case TblRowID is null or 0 */, DBtype = SqlDbType.Int, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete, groupedWithNPreviousItems = 1 }
+                new SQLCellInfo() { Fieldname = "CHO", Value = ChoiceInGroupID, DBtype = SqlDbType.UniqueIdentifier, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = false },
+                new SQLCellInfo() { Fieldname = "TRID", Value = TblRowID, SetValueToPrimaryKeyIDOfMainTableOnceLoaded = true /* in case TblRowID is null or 0 */, DBtype = SqlDbType.UniqueIdentifier, Rownum = null, Delete = Delete, GroupingKey = groupingKey, DataIsAlreadyInDatabase = Delete, groupedWithNPreviousItems = 1 }
             };
         }
 
@@ -327,8 +327,8 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "R" + TblColumnID.ToString(), Value = RatingID, DBtype = SqlDbType.Int },
-                new SQLCellInfo() { Fieldname = "RG" + TblColumnID.ToString(), Value = RatingGroupID, DBtype = SqlDbType.Int }
+                new SQLCellInfo() { Fieldname = "R" + TblColumnID.ToString(), Value = RatingID, DBtype = SqlDbType.UniqueIdentifier },
+                new SQLCellInfo() { Fieldname = "RG" + TblColumnID.ToString(), Value = RatingGroupID, DBtype = SqlDbType.UniqueIdentifier }
             };
         }
     }

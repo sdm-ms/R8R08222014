@@ -158,7 +158,7 @@ namespace ClassLibrary1.Nonmodel_Code
             foreach (var subgroup in Subgroups)
             {
                 if (subgroup.TableSpec.HasSameIDAsMainTable)
-                    Add(new SQLCellInfo() { Rownum = primaryKey, Value = primaryKey, Fieldname = subgroup.TableSpec.PrimaryKeyFieldName, DBtype = SqlDbType.Int, DataIsAlreadyInDatabase = isAlreadyInDatabase }, subgroup.TableSpec);
+                    Add(new SQLCellInfo() { Rownum = primaryKey, Value = primaryKey, Fieldname = subgroup.TableSpec.PrimaryKeyFieldName, DBtype = SqlDbType.UniqueIdentifier, DataIsAlreadyInDatabase = isAlreadyInDatabase }, subgroup.TableSpec);
             }
         }
 
@@ -451,8 +451,8 @@ namespace ClassLibrary1.Nonmodel_Code
             if (Rownum == null) 
                 return Fieldname; 
             if (tablename == null) 
-                return Fieldname + Rownum.ToString(); 
-            return Fieldname + "R" + Rownum.ToString() + "T" + tablename; 
+                return Fieldname + ((Guid)Rownum).ToString("N").ToUpper(); 
+            return Fieldname + "R" + ((Guid)Rownum).ToString("N").ToUpper() + "T" + tablename; 
         }
 
         public override string ToString()
@@ -485,6 +485,7 @@ namespace ClassLibrary1.Nonmodel_Code
                 case SqlDbType.SmallInt:
                 case SqlDbType.Udt:
                 case SqlDbType.DateTime:
+                case SqlDbType.UniqueIdentifier:
                     usingParameter = false;
                     break;
 
@@ -523,6 +524,7 @@ namespace ClassLibrary1.Nonmodel_Code
                     return Value.ToString();
                     ;
 
+                case SqlDbType.UniqueIdentifier:
                 case SqlDbType.NVarChar:
                 case SqlDbType.VarChar:
                 case SqlDbType.NChar:

@@ -138,11 +138,11 @@ namespace ClassLibrary1.Model
             if (theList != null)
                 return theList;
             theList = new List<HierarchyItem>();
-            IQueryable<HierarchyItem> itemsBelow;
+            List<HierarchyItem> itemsBelow;
             if (theItem == null)
-                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == null && x.IncludeInMenu);
+                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == null && x.IncludeInMenu).ToList();
             else
-                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == theItem.HierarchyItemID && x.IncludeInMenu);
+                itemsBelow = theDataContext.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == theItem.HierarchyItemID && x.IncludeInMenu).ToList();
             foreach (var itemBelow in itemsBelow)
             {
                 theList.Add(itemBelow);
