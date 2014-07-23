@@ -45,7 +45,7 @@ namespace ClassLibrary1.Model
             }
             foreach (var col in theTblColumns)
             {
-                string colString = col.TblColumnID.ToString();
+                string colString = col.TblColumnID.ToString("N").ToUpper();
                 allColumns.Add("RS" + colString);
                 //allColumns.Add("RV" + colString);
                 allColumns.Add("R" + colString);
@@ -129,7 +129,7 @@ namespace ClassLibrary1.Model
                 parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (decimal)distanceSortRule.Longitude));
                 paramNumber++;
                 string distanceFromPointString = String.Format("STDistance(geography::STPointFromText('POINT(' + CAST(@P{0} AS VARCHAR(20)) + ' ' + CAST(@P{1} AS VARCHAR(20)) + ')', 4326))", paramNum1, paramNum2);
-                string columnName = "F" + distanceSortRule.FieldDefinitionID.ToString();
+                string columnName = "F" + distanceSortRule.FieldDefinitionID.ToString("N").ToUpper();
                 orderByString = String.Format(" ORDER BY [t{0}].{1}.{2} {3}", sqlTblIndex, columnName, distanceFromPointString, ascOrDescString);
             }
             else
@@ -149,12 +149,12 @@ namespace ClassLibrary1.Model
             IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
-            string cacheString = "ChoiceFullFieldDefinition" + tbl.TblID.ToString();
+            string cacheString = "ChoiceFullFieldDefinition" + tbl.TblID.ToString("N").ToUpper();
             List<ChoiceFullFieldDefinition> fd = CacheManagement.GetItemFromCache(cacheString) as List<ChoiceFullFieldDefinition>;
             if (fd == null)
             {
                 fd = iDataContext.GetTable<ChoiceGroupFieldDefinition>().Where(x => x.FieldDefinition.TblID == tbl.TblID && x.Status == (int)StatusOfObject.Active).Select(x => new ChoiceFullFieldDefinition { fd = x.FieldDefinition, cgfd = x, cg = x.ChoiceGroup }).ToList();
-                CacheManagement.AddItemToCache(cacheString, new string[] { "FieldInfoForPointsManagerID" + tbl.PointsManagerID.ToString() }, fd, new TimeSpan(1, 0, 0));
+                CacheManagement.AddItemToCache(cacheString, new string[] { "FieldInfoForPointsManagerID" + tbl.PointsManagerID.ToString("N").ToUpper() }, fd, new TimeSpan(1, 0, 0));
             }
             return fd;
         }
@@ -164,12 +164,12 @@ namespace ClassLibrary1.Model
             IR8RDataContext dataContext = iDataContext.GetRealDatabaseIfExists();
             if (dataContext == null)
                 return null;
-            string cacheString = "AddressFieldDefinition" + tbl.TblID.ToString();
+            string cacheString = "AddressFieldDefinition" + tbl.TblID.ToString("N").ToUpper();
             List<FieldDefinition> fd = CacheManagement.GetItemFromCache(cacheString) as List<FieldDefinition>;
             if (fd == null)
             {
                 fd = iDataContext.GetTable<FieldDefinition>().Where(x => x.TblID == tbl.TblID && x.FieldType == (int)FieldTypes.AddressField && x.Status == (int)StatusOfObject.Active).ToList();
-                CacheManagement.AddItemToCache(cacheString, new string[] { "FieldInfoForPointsManagerID" + tbl.PointsManagerID.ToString() }, fd, new TimeSpan(1, 0, 0));
+                CacheManagement.AddItemToCache(cacheString, new string[] { "FieldInfoForPointsManagerID" + tbl.PointsManagerID.ToString("N").ToUpper() }, fd, new TimeSpan(1, 0, 0));
             }
             return fd;
         }
@@ -204,14 +204,14 @@ namespace ClassLibrary1.Model
                     DateTimeFilterRule dateTimeFilter = ((DateTimeFilterRule)filter);
                     if (dateTimeFilter.MinValue != null)
                     {
-                        whereClauses.Add("F" + dateTimeFilter.theID.ToString() + " >= @P" + paramNumber.ToString());
+                        whereClauses.Add("F" + dateTimeFilter.theID.ToString("N").ToUpper() + " >= @P" + paramNumber.ToString());
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (DateTime)dateTimeFilter.MinValue));
                         paramNumber++;
                     }
 
                     if (dateTimeFilter.MaxValue != null)
                     {
-                        whereClauses.Add("F" + dateTimeFilter.theID.ToString() + " <= @P" + paramNumber.ToString());
+                        whereClauses.Add("F" + dateTimeFilter.theID.ToString("N").ToUpper() + " <= @P" + paramNumber.ToString("N").ToUpper());
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (DateTime)dateTimeFilter.MaxValue));
                         paramNumber++;
                     }
@@ -221,14 +221,14 @@ namespace ClassLibrary1.Model
                     NumberFilterRule NumberFilter = ((NumberFilterRule)filter);
                     if (NumberFilter.MinValue != null)
                     {
-                        whereClauses.Add("F" + NumberFilter.theID.ToString() + " >= @P" + paramNumber.ToString());
+                        whereClauses.Add("F" + NumberFilter.theID.ToString("N").ToUpper() + " >= @P" + paramNumber.ToString());
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (decimal)NumberFilter.MinValue));
                         paramNumber++;
                     }
 
                     if (NumberFilter.MaxValue != null)
                     {
-                        whereClauses.Add("F" + NumberFilter.theID.ToString() + " <= @P" + paramNumber.ToString());
+                        whereClauses.Add("F" + NumberFilter.theID.ToString("N").ToUpper() + " <= @P" + paramNumber.ToString());
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (decimal)NumberFilter.MaxValue));
                         paramNumber++;
                     }
@@ -245,15 +245,15 @@ namespace ClassLibrary1.Model
                     ChoiceFullFieldDefinition theFD = choiceFDs.Single(x => x.fd.FieldDefinitionID == ChoiceFilter.theID);
                     if (theFD.cg.AllowMultipleSelections)
                     {
-                        string thisTbl = "T" + theFD.fd.TblID.ToString();
-                        string mcTbl = "VFMC" + theFD.fd.FieldDefinitionID.ToString();
+                        string thisTbl = "T" + theFD.fd.TblID.ToString("N").ToUpper();
+                        string mcTbl = "VFMC" + theFD.fd.FieldDefinitionID.ToString("N").ToUpper();
                         joinString += " INNER JOIN " + mcTbl + " ON ID=" + mcTbl + ".TRID " + " AND " + mcTbl + ".CHO=" + "@P" + paramNumber.ToString() + " ";
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), ChoiceFilter.ChoiceInGroupID));
                         paramNumber++;
                     }
                     else
                     {
-                        whereClauses.Add("F" + ChoiceFilter.theID.ToString() + " = @P" + paramNumber.ToString());
+                        whereClauses.Add("F" + ChoiceFilter.theID.ToString("N").ToUpper() + " = @P" + paramNumber.ToString());
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), ChoiceFilter.ChoiceInGroupID));
                         paramNumber++;
                     }
@@ -263,14 +263,14 @@ namespace ClassLibrary1.Model
                     TblColumnFilterRule ColumnFilter = ((TblColumnFilterRule)filter);
                     if (ColumnFilter.MinValue != null)
                     {
-                        whereClauses.Add("RV" + ColumnFilter.theID.ToString() + " >= @P" + paramNumber.ToString());
+                        whereClauses.Add("RV" + ColumnFilter.theID.ToString("N").ToUpper() + " >= @P" + paramNumber.ToString());
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (decimal)ColumnFilter.MinValue));
                         paramNumber++;
                     }
 
                     if (ColumnFilter.MaxValue != null)
                     {
-                        whereClauses.Add("RV" + ColumnFilter.theID.ToString() + " <= @P" + paramNumber.ToString());
+                        whereClauses.Add("RV" + ColumnFilter.theID.ToString("N").ToUpper() + " <= @P" + paramNumber.ToString());
                         parameters.Add(new SqlParameter("P" + paramNumber.ToString(), (decimal)ColumnFilter.MaxValue));
                         paramNumber++;
                     }
@@ -386,7 +386,7 @@ namespace ClassLibrary1.Model
             //FROM [R8R].dbo.V244
             //) seq
             //where seq.rownum BETWEEN 6 and 10
-            string tblName = "V" + tblID.ToString();
+            string tblName = "V" + tblID.ToString("N").ToUpper();
             string selectString = "SELECT ";
 
             int sqlTblIndex = 0;
@@ -496,7 +496,7 @@ namespace ClassLibrary1.Model
                 {
                     if (rowCount == 0)
                         rowCount = (int)row["row_count"];
-                    string colS = col.TblColumnID.ToString();
+                    string colS = col.TblColumnID.ToString("N").ToUpper();
                     InfoForBodyRows info = new InfoForBodyRows
                     {
                         RowHeadingWithPopup = row["RH"] as string,
