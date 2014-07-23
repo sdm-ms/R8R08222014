@@ -27,7 +27,7 @@ namespace ClassLibrary1.EFModel
 
         public short Location { get; set; }
 
-        public byte Status { get; set; }
+        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
 
         public virtual Domain Domain { get; set; }
 

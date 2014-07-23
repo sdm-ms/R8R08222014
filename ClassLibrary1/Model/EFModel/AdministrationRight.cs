@@ -22,7 +22,7 @@ namespace ClassLibrary1.EFModel
 
         public bool AllowUserNotToSeekRewards { get; set; }
 
-        public byte Status { get; set; }
+        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
 
         public virtual AdministrationRightsGroup AdministrationRightsGroup { get; set; }
 

@@ -39,7 +39,7 @@ namespace ClassLibrary1.EFModel
 
         public int? RepeatNTimes { get; set; }
 
-        public byte Status { get; set; }
+        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
 
         public virtual ICollection<RatingGroupPhaseStatus> RatingGroupPhaseStatus { get; set; }
 

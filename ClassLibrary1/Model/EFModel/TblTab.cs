@@ -1,5 +1,6 @@
 namespace ClassLibrary1.EFModel
 {
+    using ClassLibrary1.Model;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -24,7 +25,7 @@ namespace ClassLibrary1.EFModel
 
         public Guid? DefaultSortTblColumnID { get; set; }
 
-        public byte Status { get; set; }
+        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
 
         public virtual ICollection<TblColumn> TblColumns { get; set; }
 

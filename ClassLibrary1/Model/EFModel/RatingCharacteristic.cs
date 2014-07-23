@@ -31,7 +31,7 @@ namespace ClassLibrary1.EFModel
 
         public Guid? Creator { get; set; }
 
-        public byte Status { get; set; }
+        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
 
         public virtual ICollection<Rating> Ratings { get; set; }
 

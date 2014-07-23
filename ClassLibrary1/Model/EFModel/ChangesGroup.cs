@@ -26,7 +26,7 @@ namespace ClassLibrary1.EFModel
 
         public Guid? RewardRatingID { get; set; }
 
-        public byte StatusOfChanges { get; set; }
+        public ClassLibrary1.Model.StatusOfObject StatusOfChanges { get; set; }
 
         public DateTime? ScheduleApprovalOrRejection { get; set; }
 

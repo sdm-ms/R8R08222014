@@ -28,7 +28,7 @@ namespace ClassLibrary1.EFModel
 
         public Guid? ActiveOnDeterminingGroupChoiceInGroupID { get; set; }
 
-        public byte Status { get; set; }
+        public ClassLibrary1.Model.StatusOfObject Status { get; set; }
 
         public virtual ChoiceGroup ChoiceGroup { get; set; }
 
