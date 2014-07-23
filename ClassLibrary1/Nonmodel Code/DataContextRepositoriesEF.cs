@@ -18,9 +18,9 @@ namespace ClassLibrary1.Nonmodel_Code
 
     public class EFRepository<T> : IRepository<T> where T : class
     {
-        ObjectQuery<T> UnderlyingTable;
+        ObjectSet<T> UnderlyingTable;
 
-        public EFRepository(ObjectQuery<T> underlyingTable)
+        public EFRepository(ObjectSet<T> underlyingTable)
         {
             UnderlyingTable = underlyingTable;
         }
@@ -50,14 +50,18 @@ namespace ClassLibrary1.Nonmodel_Code
             entity.EntityKey = context.CreateEntityKey(GetEntitySetName(context, entity.GetType()), entity);
         }
 
+        string _entitySetName = null;
         private string GetEntitySetName(ObjectContext context, Type entityType)
         {
-            return EntityHelper.GetEntitySetName(entityType, context);
+            if (_entitySetName == null)
+                _entitySetName = EntityHelper.GetEntitySetName(entityType, context);
+            return _entitySetName;
         }
+        
 
         public void InsertOnSubmit(T theObject)
         {
-            UnderlyingTable.Context.AddObject(GetEntitySetName(UnderlyingTable.Context, theObject.GetType()), theObject);
+            UnderlyingTable.AddObject(theObject);
         }
 
         public void DeleteOnSubmit(T theObject)
@@ -70,6 +74,8 @@ namespace ClassLibrary1.Nonmodel_Code
     public class EFDataContext : IDataContext
     {
         public DbContext UnderlyingDbContext { get; set; }
+
+        private Dictionary<Type, object> objectSetsForType = new Dictionary<Type, object>();
 
         public EFDataContext(DbContext underlyingDataContext)
         {
@@ -99,8 +105,15 @@ namespace ClassLibrary1.Nonmodel_Code
         public IRepository<T> GetTable<T>() where T : class
         {
             TooLateToSetPageLoadOptions = true; // can't do it after a query
-            ObjectContext objectContext = GetObjectContext();  
-            ObjectSet<T> objectSet = objectContext.CreateObjectSet<T>();
+            ObjectSet<T> objectSet = null;
+            if (!objectSetsForType.ContainsKey(typeof(T)))
+            {
+                ObjectContext objectContext = GetObjectContext();
+                objectSet = objectContext.CreateObjectSet<T>();
+                objectSetsForType[typeof(T)] = (object)objectSet;
+            }
+            else
+                objectSet = (ObjectSet<T>) objectSetsForType[typeof(T)];
             return new EFRepository<T>(objectSet);
         }
 
