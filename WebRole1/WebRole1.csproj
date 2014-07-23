@@ -1715,18 +1715,21 @@
     </Compile>
     <Compile Include="WebForms\Main.aspx.cs">
       <DependentUpon>Main.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\Main.aspx.designer.cs">
       <DependentUpon>Main.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\MyAccount.aspx.cs">
       <DependentUpon>MyAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\MyAccount.aspx.designer.cs">
       <DependentUpon>MyAccount.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\MyPoints.aspx.cs">
       <DependentUpon>MyPoints.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\MyPoints.aspx.designer.cs">
       <DependentUpon>MyPoints.aspx</DependentUpon>
@@ -1740,6 +1743,7 @@
     </Compile>
     <Compile Include="WebForms\NewUser.aspx.cs">
       <DependentUpon>NewUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebForms\NewUser.aspx.designer.cs">
       <DependentUpon>NewUser.aspx</DependentUpon>

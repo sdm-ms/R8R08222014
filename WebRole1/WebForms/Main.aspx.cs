@@ -121,9 +121,9 @@ public partial class ViewTbl : System.Web.UI.Page
             if (HttpContext.Current.Profile != null)
             {
                 IUserProfileInfo currentUser = ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser();
-                anyUserID = currentUser == null ? null : (int?)currentUser.GetProperty("UserID");
+                anyUserID = currentUser == null ? null : (Guid?)currentUser.GetProperty("UserID");
             }
-            if (anyUserID == 0)
+            if (anyUserID == new Guid())
                 anyUserID = null;
             bool canViewPage = DataAccess.CheckUserRights(anyUserID, UserActionType.View, false, null, theLocation.theTbl.TblID);
             if (!canViewPage)
@@ -135,9 +135,9 @@ public partial class ViewTbl : System.Web.UI.Page
             TopOfViewTblContent.Setup(theLocation.theDomain.DomainID, theLocation.thePointsManager.PointsManagerID, theLocation.theTbl.TblID, InsertableLocation.TopOfViewTblContent, DataAccess);
 
             BtnViewChanges.Visible = false;
-            if (HttpContext.Current.Profile != null && (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
+            if (HttpContext.Current.Profile != null && (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid())
             {
-                Guid userID = (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+                Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
                 //Session["UserId"] = UserId.ToString(); // to allow access in webmethod
 
                 // checking for the user right to add a entity
@@ -238,7 +238,7 @@ public partial class ViewTbl : System.Web.UI.Page
     {
         if (theLocation.theTblRow == null)
         {
-            HierarchyItem changesHierarchyItem = theLocation.lastItemInHierarchy.HierarchyItems.FirstOrDefault(x => x.Tbl.Name == "Changes");
+            HierarchyItem changesHierarchyItem = theLocation.lastItemInHierarchy.ChildHierarchyItems.FirstOrDefault(x => x.Tbl.Name == "Changes");
             if (changesHierarchyItem != null)
                 Routing.Redirect(Response, new RoutingInfoMainContent(changesHierarchyItem, null, null));
         }
