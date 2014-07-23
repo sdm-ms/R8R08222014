@@ -197,7 +197,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = Text, DBtype = SqlDbType.NVarChar }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString("N").ToUpper(), Value = Text, DBtype = SqlDbType.NVarChar }
             };
         }
     }
@@ -210,7 +210,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = Number, DBtype = SqlDbType.Decimal }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString("N").ToUpper(), Value = Number, DBtype = SqlDbType.Decimal }
             };
         }
     }
@@ -223,7 +223,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = DateTimeInfo, DBtype = SqlDbType.DateTime }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString("N").ToUpper(), Value = DateTimeInfo, DBtype = SqlDbType.DateTime }
             };
         }
     }
@@ -236,7 +236,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = ChoiceInGroupID, DBtype = SqlDbType.UniqueIdentifier }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString("N").ToUpper(), Value = ChoiceInGroupID, DBtype = SqlDbType.UniqueIdentifier }
             };
         }
     }
@@ -271,7 +271,7 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString(), Value = GeoInfo, DBtype = SqlDbType.Udt }
+                new SQLCellInfo() { Fieldname = "F" + FieldDefinitionID.ToString("N").ToUpper(), Value = GeoInfo, DBtype = SqlDbType.Udt }
             };
         }
     }
@@ -308,9 +308,9 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "RS" + TblColumnID.ToString(), Value = StringRepresentation, DBtype = SqlDbType.NVarChar },
-                new SQLCellInfo() { Fieldname = "RV" + TblColumnID.ToString(), Value = NewValue, DBtype = SqlDbType.Decimal },
-                new SQLCellInfo() { Fieldname = "RC" + TblColumnID.ToString(), Value = RecentlyChanged, DBtype = SqlDbType.Bit },
+                new SQLCellInfo() { Fieldname = "RS" + TblColumnID.ToString("N").ToUpper(), Value = StringRepresentation, DBtype = SqlDbType.NVarChar },
+                new SQLCellInfo() { Fieldname = "RV" + TblColumnID.ToString("N").ToUpper(), Value = NewValue, DBtype = SqlDbType.Decimal },
+                new SQLCellInfo() { Fieldname = "RC" + TblColumnID.ToString("N").ToUpper(), Value = RecentlyChanged, DBtype = SqlDbType.Bit },
                 // The following are not necessary because we will automatically add these in FastAccessRowUpdatePartialClasses (so adding them again will just lead to redundancy and a need to eliminate them later)
                 //new SQLParameterInfo() { fieldname = "CNNE", value = CountNonNullEntries, dbtype = SqlDbType.Int },
                 //new SQLParameterInfo() { fieldname = "CUP", value = CountUserPoints, dbtype = SqlDbType.Decimal }
@@ -327,8 +327,8 @@ namespace ClassLibrary1.Model
         {
             return new List<SQLCellInfo>()
             {
-                new SQLCellInfo() { Fieldname = "R" + TblColumnID.ToString(), Value = RatingID, DBtype = SqlDbType.UniqueIdentifier },
-                new SQLCellInfo() { Fieldname = "RG" + TblColumnID.ToString(), Value = RatingGroupID, DBtype = SqlDbType.UniqueIdentifier }
+                new SQLCellInfo() { Fieldname = "R" + TblColumnID.ToString("N").ToUpper(), Value = RatingID, DBtype = SqlDbType.UniqueIdentifier },
+                new SQLCellInfo() { Fieldname = "RG" + TblColumnID.ToString("N").ToUpper(), Value = RatingGroupID, DBtype = SqlDbType.UniqueIdentifier }
             };
         }
     }
