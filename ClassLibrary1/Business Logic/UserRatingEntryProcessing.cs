@@ -32,24 +32,25 @@ namespace ClassLibrary1.Model
     {
         public static List<Rating> Load(IR8RDataContext theDataContext, List<Guid> ratingIDs, User theUser)
         {
-            
+
+            Guid userID = theUser.UserID;
             var results = (from x in theDataContext.GetTable<Rating>()
                           where ratingIDs.Contains(x.RatingID)
-                          orderby x.RatingGroup
+                          orderby x.RatingGroup.WhenCreated
                           let ratingGroup = x.RatingGroup
                           let pointsManager = ratingGroup.TblRow.Tbl.PointsManager
                           let tblColumn = ratingGroup.TblColumn
                           let pmTrustTrackerUnit = pointsManager.TrustTrackerUnit
                           let tcTrustTrackerUnit = tblColumn.TrustTrackerUnit
                           let trustTrackerUnit = tcTrustTrackerUnit ?? pmTrustTrackerUnit // Note: Cannot access properties on this.
-                           let trustTracker = (tcTrustTrackerUnit == null) ? pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User == theUser) : pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User == theUser)
+                           let trustTracker = (tcTrustTrackerUnit == null) ? pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User.UserID == userID) : pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User.UserID == userID)
                           let ratingCharacteristic = x.RatingCharacteristic
                           let tblRow = ratingGroup.TblRow
                            let tbl = tblRow.Tbl
                           let subsidyDensityRangeGroup = ratingCharacteristic.SubsidyDensityRangeGroup
                           //let choiceGroupFieldDefinitions = tbl.FieldDefinitions.Where(y => y.Status == (int) StatusOfObject.Active).SelectMany(y => y.ChoiceGroupFieldDefinitions).Where(y => y.TrackTrustBasedOnChoices).Select(y => y.ChoiceGroupFieldDefinitionID)
                           let choiceInGroupIDs = tblRow.Fields.SelectMany(y => y.ChoiceFields).Where(y => y.Field.FieldDefinition.ChoiceGroupFieldDefinitions.Any(z => z.TrackTrustBasedOnChoices)).SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceInGroup)
-                           let trustTrackerForChoiceInGroups = ratingGroup.TblRow.Tbl.TrustTrackerForChoiceInGroups.Where(u => u.User == theUser && choiceInGroupIDs.Any(z => z.ChoiceInGroupID == u.ChoiceInGroupID))
+                           let trustTrackerForChoiceInGroups = ratingGroup.TblRow.Tbl.TrustTrackerForChoiceInGroups.Where(u => u.User.UserID == userID && choiceInGroupIDs.Any(z => z.ChoiceInGroupID == u.ChoiceInGroupID))
                           select new
                           {
                               Rating = x,

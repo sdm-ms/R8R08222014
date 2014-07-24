@@ -406,7 +406,7 @@ namespace ClassLibrary1.Nonmodel_Code
                     updateStringComponents.Add(variable.GetValueOrParameterName());
                 }
                 else
-                    idvalue = variable.Value.ToString();
+                    idvalue = variable.GetValueOrParameterName();
             }
             updateStringComponents.AddRange(new string[] { " WHERE ", TableSpec.PrimaryKeyFieldName, " = ", idvalue, "; " });
             StringBuilder sb = new StringBuilder();

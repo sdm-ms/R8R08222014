@@ -1530,7 +1530,7 @@ namespace ClassLibrary1.Model
             {
                 PointsTotalID = Guid.NewGuid(),
                 User = user,
-                PointsManager = pointsManager,
+                PointsManagerID = pointsManager.PointsManagerID, // note that pointsManager may be from different data context, if loaded from cache by routing info
                 CurrentPoints = 0,
                 TotalPoints = 0,
                 PotentialMaxLossOnNotYetPending = 0,

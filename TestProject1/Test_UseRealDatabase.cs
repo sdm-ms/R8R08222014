@@ -52,7 +52,7 @@ namespace TestProject1
 
         [TestMethod]
         [Category("IntegrationTest")]
-        [DeploymentItem("TestData", "TestData")]
+        //[DeploymentItem("TestData", "TestData")]
         public void ResetAndCreateStandard()
         {
             if (!Test_UseRealDatabase.UseReal())

@@ -348,18 +348,18 @@ namespace ClassLibrary1.Model
 
         protected void BeginImport(string sourceFileLoc, Guid TblID)
         {
-            ImportExport myImportExport = new ImportExport(Action.DataContext.GetTable<Tbl>().Single(x => x.TblID == TblID));
-            string errorMessage = "";
-            if (System.IO.File.Exists(sourceFileLoc))
-            {
-                bool IsValid = myImportExport.IsXmlValid(sourceFileLoc, ref errorMessage);
-                if (IsValid == false)
-                    throw new Exception("The XML file could not be validated. The error message is: " + errorMessage);
-                if (IsValid == true)
-                    myImportExport.PerformImport(sourceFileLoc, superUser, false);
-            }
-            else
-                Trace.TraceError("Source file " + sourceFileLoc + " doesn't exist.");
+            //ImportExport myImportExport = new ImportExport(Action.DataContext.GetTable<Tbl>().Single(x => x.TblID == TblID));
+            //string errorMessage = "";
+            //if (System.IO.File.Exists(sourceFileLoc))
+            //{
+            //    bool IsValid = myImportExport.IsXmlValid(sourceFileLoc, ref errorMessage);
+            //    if (IsValid == false)
+            //        throw new Exception("The XML file could not be validated. The error message is: " + errorMessage);
+            //    if (IsValid == true)
+            //        myImportExport.PerformImport(sourceFileLoc, superUser, false);
+            //}
+            //else
+            //    Trace.TraceError("Source file " + sourceFileLoc + " doesn't exist.");
         }
 
         protected HierarchyItem CreateHierarchyItem(HierarchyItem higherItem, Guid? associatedTblID, bool includeInMenu, string name)

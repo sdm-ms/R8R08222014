@@ -284,14 +284,14 @@ namespace ClassLibrary1.Model
                     }
                     return true; // this might be done, but there could be other long processes.
                 }
-                catch
+                catch (Exception ex)
                 {
                     Guid myLongProcessID = myLongProcess.LongProcessID;
                     ResetDataContexts();
                     LongProcess longProcess2 = DataContext.GetTable<LongProcess>().Single(x => x.LongProcessID == myLongProcessID);
                     longProcess2.EarliestRestart = TestableDateTime.Now + new TimeSpan(0, 10, 0);
                     DataContext.SubmitChanges();
-                    throw new Exception("Delaying long process after failure.");
+                    throw new Exception("Delaying long process after failure. " + ex.Message);
                 }
 
 

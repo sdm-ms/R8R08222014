@@ -124,6 +124,7 @@ namespace ClassLibrary1.Model
 
         private static void CompleteSingleTask(R8RDataManipulation dataManipulation, bool[] moreWorkToDoThisTask, int i)
         {
+            Debug.WriteLine("DEBUG Task " + i);
             switch (i)
             {
 
@@ -223,6 +224,7 @@ namespace ClassLibrary1.Model
                     break;
 
             }
+            Debug.WriteLine("DEBUG EndTask " + i);
         }
 
         //public Thread GetBackgroundThread()

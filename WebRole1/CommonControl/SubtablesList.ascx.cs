@@ -45,7 +45,8 @@ using ClassLibrary1.EFModel;
             PointsManager firstPointsManager = null;
             if (location != null)
             {
-                Tbl aTable = R8RDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && location.theHierarchy.Contains(x.HierarchyItems.First()));
+                List<Guid> hierarchyItemsIDs = location.theHierarchy.Select(x => x.HierarchyItemID).ToList();
+                Tbl aTable = R8RDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && hierarchyItemsIDs.Contains(x.HierarchyItems.FirstOrDefault().HierarchyItemID));
                 if (aTable != null)
                     firstPointsManager = aTable.PointsManager;
             }

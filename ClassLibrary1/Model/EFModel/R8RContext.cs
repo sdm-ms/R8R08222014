@@ -13,16 +13,22 @@ using System.Data.Common;
         public R8RContext()
             : base()
         {
+            // we could re-enable this to get rid of lazy loading, but right now we rely on it a lot
+            // this.Configuration.ProxyCreationEnabled = false; 
+
         }
 
         public R8RContext(string connectionString)
             : base(connectionString)
         {
+            // this.Configuration.ProxyCreationEnabled = false; 
+
         }
 
         public R8RContext(DbConnection connection)
             : base(connection, true)
         {
+            // this.Configuration.ProxyCreationEnabled = false; 
         }
 
         public virtual DbSet<AddressField> AddressFields { get; set; }
