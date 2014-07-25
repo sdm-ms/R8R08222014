@@ -21,16 +21,6 @@ using System.Data.Common;
     public class MyContainer
     {
         public Guid MyContainerID { get; set; }
-        public virtual ICollection<MyContainerContents> Contents { get; set; }
-    }
-
-    public class MyContainerContents
-    {
-        public Guid MyContainerContentsID { get; set; }
-        public string ContentsString { get; set; }
-        public Guid? MyContainerID { get; set; }
-        [ForeignKey("MyContainerID")]
-        public virtual MyContainer MyContainer { get; set; }
     }
 
 
@@ -58,7 +48,6 @@ using System.Data.Common;
             // this.Configuration.ProxyCreationEnabled = false; 
         }
 
-        public virtual DbSet<MyContainerContents> MyContents { get; set; }
         public virtual DbSet<MyContainer> MyContainers { get; set; }
         public virtual DbSet<MyBackpack> MyBackpacks { get; set; }
 
