@@ -86,9 +86,9 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         CanAdminister = false;
         CanEditFields = false;
         CanResolveRatings = false;
-        Guid? UserId = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-        if (UserId != new Guid())
+        if ((int) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
         {
+            Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, PointsManagerID, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, PointsManagerID, TblID);

@@ -128,7 +128,7 @@ namespace ClassLibrary1.Model
             rdm.ResetDataContexts();
         }
 
-        public void CreateSimpleTestTable(bool useExtraLongRatingPhaseGroup, bool addMissingRatings = true)
+        public void CreateSimpleTestTable(bool useExtraLongRatingPhaseGroup)
         {
             var simp = new SimpleTestTable();
             if (useExtraLongRatingPhaseGroup)
@@ -136,22 +136,14 @@ namespace ClassLibrary1.Model
             simp.Create();
 
             Tbl = ActionProcessor.DataContext.GetTable<Tbl>().FirstOrDefault(x => x.Name.Contains("Test"));
-            AddTblRowsToTbl(Tbl.TblID, 1, addMissingRatings);
+            AddTblRowsToTbl(Tbl.TblID, 1);
             ActionProcessor.DataContext.SubmitChanges();
 
             TblRow = ActionProcessor.DataContext.GetTable<TblRow>().FirstOrDefault();
-            if (addMissingRatings)
-            {
-                Rating = ActionProcessor.DataContext.GetTable<Rating>().FirstOrDefault();
-                RatingGroup = Rating.RatingGroup;
-                TblColumn = RatingGroup.TblColumn;
-                TblTab = RatingGroup.TblColumn.TblTab;
-            }
-            else
-            {
-                TblColumn = ActionProcessor.DataContext.GetTable<TblColumn>().FirstOrDefault();
-                TblTab = TblColumn.TblTab;
-            }
+            Rating = ActionProcessor.DataContext.GetTable<Rating>().FirstOrDefault();
+            RatingGroup = Rating.RatingGroup;
+            TblColumn = RatingGroup.TblColumn;
+            TblTab = RatingGroup.TblColumn.TblTab;
 
         }
 
@@ -171,15 +163,14 @@ namespace ClassLibrary1.Model
             TblTab = RatingGroup.TblColumn.TblTab;
         }
 
-        public IEnumerable<TblRow> AddTblRowsToTbl(Guid TblID, int numTblRows, bool addMissingRatings = true)
+        public IEnumerable<TblRow> AddTblRowsToTbl(Guid TblID, int numTblRows)
         {
             List<TblRow> tblRows = new List<TblRow>();
             for (int i = 0; i < numTblRows; i++)
             {
                 TblRow newTblRow = ActionProcessor.TblRowCreate(TblID, SuperUserId, null, "Name " + i.ToString());
                 tblRows.Add(newTblRow);
-                if (addMissingRatings)
-                    ActionProcessor.DataManipulation.AddMissingRatingsForTblRow(newTblRow);
+                ActionProcessor.DataManipulation.AddMissingRatingsForTblRow(newTblRow);
             }
             ActionProcessor.DataContext.SubmitChanges();
             

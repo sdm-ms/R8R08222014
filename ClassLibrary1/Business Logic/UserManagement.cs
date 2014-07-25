@@ -61,18 +61,9 @@ namespace ClassLibrary1.Model
 
             public static UserAccessInfo GetUserAccessInfoForCurrentUser()
             {
+                DateTime debugTiming = TestableDateTime.Now;
+
                 IUserProfileInfo theUser = ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser();
-                return GetUserAccessInfoForSpecificUser(theUser);
-            }
-
-            public static UserAccessInfo GetUserAccessInfoForSpecificUser(string username)
-            {
-                IUserProfileInfo theUser = ClassLibrary1.Nonmodel_Code.UserProfileCollection.LoadByUsername(username);
-                return GetUserAccessInfoForSpecificUser(theUser);
-            }
-
-            private static UserAccessInfo GetUserAccessInfoForSpecificUser(IUserProfileInfo theUser)
-            {
                 if (theUser == null)
                     return new UserAccessInfo { userName = "", passwordForWebService = "" };
 
@@ -104,6 +95,8 @@ namespace ClassLibrary1.Model
                 }
 
                 theUser.SavePropertyChanges();
+
+                Trace.TraceInformation("GetUserAccessInfo time elapsed " + (TestableDateTime.Now - debugTiming).ToString());
 
                 return new UserAccessInfo { userName = theUser.Username, passwordForWebService = (string)theUser.GetProperty("PasswordForWebService") };
             }

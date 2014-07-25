@@ -208,26 +208,6 @@
     <Compile Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.Designer.cs">
       <DependentUpon>201407231236303_ParentHierarchyItemsRenamed.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201407242258445_TempMigration.cs" />
-    <Compile Include="Migrations\201407242258445_TempMigration.Designer.cs">
-      <DependentUpon>201407242258445_TempMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407251235340_TblColumnWhenCreated.cs" />
-    <Compile Include="Migrations\201407251235340_TblColumnWhenCreated.Designer.cs">
-      <DependentUpon>201407251235340_TblColumnWhenCreated.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407251637016_Change0725.cs" />
-    <Compile Include="Migrations\201407251637016_Change0725.Designer.cs">
-      <DependentUpon>201407251637016_Change0725.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407251759398_BackpackExampleChange.cs" />
-    <Compile Include="Migrations\201407251759398_BackpackExampleChange.Designer.cs">
-      <DependentUpon>201407251759398_BackpackExampleChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.cs" />
-    <Compile Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.Designer.cs">
-      <DependentUpon>201407251816001_ForeignKeyOnBackpackModel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Business Logic\R8RInMemoryDataContext.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -520,21 +500,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.resx">
       <DependentUpon>201407231236303_ParentHierarchyItemsRenamed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407242258445_TempMigration.resx">
-      <DependentUpon>201407242258445_TempMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407251235340_TblColumnWhenCreated.resx">
-      <DependentUpon>201407251235340_TblColumnWhenCreated.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407251637016_Change0725.resx">
-      <DependentUpon>201407251637016_Change0725.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407251759398_BackpackExampleChange.resx">
-      <DependentUpon>201407251759398_BackpackExampleChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.resx">
-      <DependentUpon>201407251816001_ForeignKeyOnBackpackModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

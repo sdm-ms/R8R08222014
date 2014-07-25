@@ -42,8 +42,6 @@ namespace ClassLibrary1.EFModel
         [StringLength(20)]
         public string WidthStyle { get; set; }
 
-        public DateTime WhenCreated { get; set; }
-
         public int NumNonNull { get; set; }
 
         public double ProportionNonNull { get; set; }

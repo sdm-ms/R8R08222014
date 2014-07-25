@@ -73,11 +73,9 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
     {
         DateTime alwaysHideCommentsDeletedBeforeThisTime = TestableDateTime.Now - new TimeSpan(7,0,0,0);
         bool isEntireTableQuery = theTblRowOrNullForEntireTable == null;
-        Guid? theTblRowOrNullForEntireTableID = (theTblRowOrNullForEntireTable == null) ? null : (Guid?) theTblRowOrNullForEntireTable.TblRowID;
-        Guid? theTblOrNullForRowOnlyID = (theTblOrNullForRowOnly == null) ? null : (Guid?)theTblOrNullForRowOnly.TblID;
         var theQuery = theDataAccessModule.DataContext.GetTable<Comment>()
-            .Where(x =>
-                ((!isEntireTableQuery && (theTblRowOrNullForEntireTableID != null && x.TblRow.TblRowID == theTblRowOrNullForEntireTableID)) || (isEntireTableQuery && (theTblOrNullForRowOnlyID != null && x.TblRow.Tbl.TblID == theTblOrNullForRowOnlyID)))
+            .Where(x => 
+                ((!isEntireTableQuery && x.TblRow.TblRowID == theTblRowOrNullForEntireTable.TblRowID) || (isEntireTableQuery && x.TblRow.Tbl.TblID == theTblOrNullForRowOnly.TblID))
                 && (x.Status == (int)StatusOfObject.Active || (UserCanDeleteComments && ShowDeletedAndProposedComments && x.LastDeletedDate > alwaysHideCommentsDeletedBeforeThisTime)))
             .OrderByDescending(x => x.DateTime).Select(
                 x => new CommentData { 
