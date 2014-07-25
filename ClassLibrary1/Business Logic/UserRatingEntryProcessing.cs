@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MoreStrings;
+using System.Data.Entity;
 
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
@@ -18,7 +19,7 @@ namespace ClassLibrary1.Model
                 throw new Exception("Must revise this for multiple ratings in rating group, since after adding the rating group we'll need to get each individual rating.");
             foreach (RatingAndUserRatingString theRatingAndUserRatingString in theUserRatingsString)
             {
-                Guid aRatingID = new Guid();
+                Guid aRatingID = new Guid(theRatingAndUserRatingString.ratingID);
                 //if (!MoreStringManip.IsInteger(theRatingAndUserRatingString.ratingID, ref aRatingID))
                 //    ratingIDsProperlyFormatted = false;
                 //else
@@ -34,45 +35,62 @@ namespace ClassLibrary1.Model
         {
 
             Guid userID = theUser.UserID;
-            var results = (from x in theDataContext.GetTable<Rating>()
+
+            // We'll use the following simplified query until we can fix the commented out one below.
+            // Ultimately, we need the one below fixed because we want all related data but no other data
+            // to be returned in a single query.
+            var results = from x in theDataContext.GetTable<Rating>()
+                           .Include(y => y.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit)
+                           .Include(y => y.RatingGroup.TblColumn.TrustTrackerUnit)
+                           .Include(y => y.RatingCharacteristic.SubsidyDensityRangeGroup.SubsidyDensityRanges)
                           where ratingIDs.Contains(x.RatingID)
                           orderby x.RatingGroup.WhenCreated
-                          let ratingGroup = x.RatingGroup
-                          let pointsManager = ratingGroup.TblRow.Tbl.PointsManager
-                          let tblColumn = ratingGroup.TblColumn
-                          let pmTrustTrackerUnit = pointsManager.TrustTrackerUnit
-                          let tcTrustTrackerUnit = tblColumn.TrustTrackerUnit
-                          let trustTrackerUnit = tcTrustTrackerUnit ?? pmTrustTrackerUnit // Note: Cannot access properties on this.
-                           let trustTracker = (tcTrustTrackerUnit == null) ? pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User.UserID == userID) : pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User.UserID == userID)
-                          let ratingCharacteristic = x.RatingCharacteristic
-                          let tblRow = ratingGroup.TblRow
-                           let tbl = tblRow.Tbl
-                          let subsidyDensityRangeGroup = ratingCharacteristic.SubsidyDensityRangeGroup
-                          //let choiceGroupFieldDefinitions = tbl.FieldDefinitions.Where(y => y.Status == (int) StatusOfObject.Active).SelectMany(y => y.ChoiceGroupFieldDefinitions).Where(y => y.TrackTrustBasedOnChoices).Select(y => y.ChoiceGroupFieldDefinitionID)
-                          let choiceInGroupIDs = tblRow.Fields.SelectMany(y => y.ChoiceFields).Where(y => y.Field.FieldDefinition.ChoiceGroupFieldDefinitions.Any(z => z.TrackTrustBasedOnChoices)).SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceInGroup)
-                           let trustTrackerForChoiceInGroups = ratingGroup.TblRow.Tbl.TrustTrackerForChoiceInGroups.Where(u => u.User.UserID == userID && choiceInGroupIDs.Any(z => z.ChoiceInGroupID == u.ChoiceInGroupID))
-                          select new
-                          {
-                              Rating = x,
-                              RatingGroup = x.RatingGroup,
-                              TopRatingGroup = x.TopRatingGroup,
-                              RatingGroupResolutions = x.TopRatingGroup.RatingGroupResolutions,
-                              RatingGroupAttribute = x.RatingGroup.RatingGroupAttribute,
-                              TopRatingGroupAttribute = x.TopRatingGroup.RatingGroupAttribute,
-                              RatingCharacteristic = ratingCharacteristic,
-                              SubsidyDensityRangeGroup = subsidyDensityRangeGroup,
-                              TblRow = tblRow,
-                              Tbl = tbl,
-                              PointsManager = pointsManager,
-                              TblColumn = tblColumn,
-                              TrustTrackerUnit = trustTrackerUnit,
-                              TrustTracker = trustTracker,
-                              TrustTrackerStats = trustTracker.TrustTrackerStats,
-                              VolatilityTrackers = x.RatingGroup.VolatilityTrackers,
-                              TrustTrackerForChoiceInFields = trustTrackerForChoiceInGroups
-                          }).ToList();
+                          select x;
+            return results.ToList();
 
-            return results.Select(x => x.Rating).ToList();
+            // The following query isn't working.
+            //var results = (from x in theDataContext.GetTable<Rating>()
+            //               .Include(y => y.RatingGroup.TblRow.Tbl.PointsManager.TrustTrackerUnit)
+            //               .Include(y => y.RatingGroup.TblColumn.TrustTrackerUnit)
+            //               .Include(y => y.RatingCharacteristic.SubsidyDensityRangeGroup.SubsidyDensityRanges)
+            //              where ratingIDs.Contains(x.RatingID)
+            //              orderby x.RatingGroup.WhenCreated
+            //              let ratingGroup = x.RatingGroup
+            //              let pointsManager = ratingGroup.TblRow.Tbl.PointsManager
+            //              let tblColumn = ratingGroup.TblColumn
+            //              let pmTrustTrackerUnit = pointsManager.TrustTrackerUnit
+            //              let tcTrustTrackerUnit = tblColumn.TrustTrackerUnit
+            //              let trustTrackerUnit = tcTrustTrackerUnit ?? pmTrustTrackerUnit // Note: Cannot access properties on this.
+            //               let trustTracker = (tcTrustTrackerUnit == null) ? pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User.UserID == userID) : pmTrustTrackerUnit.TrustTrackers.FirstOrDefault(y => y.User.UserID == userID)
+            //              let ratingCharacteristic = x.RatingCharacteristic
+            //              let tblRow = ratingGroup.TblRow
+            //               let tbl = tblRow.Tbl
+            //              let subsidyDensityRangeGroup = ratingCharacteristic.SubsidyDensityRangeGroup
+            //              //let choiceGroupFieldDefinitions = tbl.FieldDefinitions.Where(y => y.Status == (int) StatusOfObject.Active).SelectMany(y => y.ChoiceGroupFieldDefinitions).Where(y => y.TrackTrustBasedOnChoices).Select(y => y.ChoiceGroupFieldDefinitionID)
+            //              let choiceInGroupIDs = tblRow.Fields.SelectMany(y => y.ChoiceFields).Where(y => y.Field.FieldDefinition.ChoiceGroupFieldDefinitions.Any(z => z.TrackTrustBasedOnChoices)).SelectMany(y => y.ChoiceInFields).Select(z => z.ChoiceInGroup)
+            //               let trustTrackerForChoiceInGroups = ratingGroup.TblRow.Tbl.TrustTrackerForChoiceInGroups.Where(u => u.User.UserID == userID && choiceInGroupIDs.Any(z => z.ChoiceInGroupID == u.ChoiceInGroupID))
+            //              select new
+            //              {
+            //                  Rating = x,
+            //                  RatingGroup = x.RatingGroup,
+            //                  TopRatingGroup = x.TopRatingGroup,
+            //                  RatingGroupResolutions = x.TopRatingGroup.RatingGroupResolutions,
+            //                  RatingGroupAttribute = x.RatingGroup.RatingGroupAttribute,
+            //                  TopRatingGroupAttribute = x.TopRatingGroup.RatingGroupAttribute,
+            //                  RatingCharacteristic = ratingCharacteristic,
+            //                  SubsidyDensityRangeGroup = subsidyDensityRangeGroup,
+            //                  TblRow = tblRow,
+            //                  Tbl = tbl,
+            //                  PointsManager = pointsManager,
+            //                  TblColumn = tblColumn,
+            //                  TrustTrackerUnit = trustTrackerUnit,
+            //                  TrustTracker = trustTracker,
+            //                  TrustTrackerStats = trustTracker.TrustTrackerStats,
+            //                  VolatilityTrackers = x.RatingGroup.VolatilityTrackers,
+            //                  TrustTrackerForChoiceInFields = trustTrackerForChoiceInGroups
+            //              }).ToList();
+
+            //return results.Select(x => x.Rating).ToList();
         }
     }
 

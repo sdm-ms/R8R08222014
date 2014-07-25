@@ -110,6 +110,7 @@ namespace ClassLibrary1.Model
                 Name = name,
                 Explanation = explanation,
                 WidthStyle = widthStyle,
+                WhenCreated = TestableDateTime.Now,
                 NotYetAddedToDatabase = true,
                 Status = (Byte)StatusOfObject.Proposed
             };
@@ -949,14 +950,16 @@ namespace ClassLibrary1.Model
         /// <param name="ratingGroupAttributesID">The attributes of the rating group</param>
         /// <param name="status">The status of the object and table</param>
         /// <returns>The id of the added rating group</returns>
-        public RatingGroup AddRatingGroup(TblRow tblRow, TblColumn TblColumn, RatingGroupAttribute ratingGroupAttributes, bool isTopGroup, ref RatingGroupPhaseStatus theRatingGroupPhaseStatus)
+        public RatingGroup AddRatingGroup(TblRow tblRow, TblColumn tblColumn, RatingGroupAttribute ratingGroupAttributes, bool isTopGroup, ref RatingGroupPhaseStatus theRatingGroupPhaseStatus)
         {
             byte? MType = ratingGroupAttributes.TypeOfRatingGroup;
+            if (tblRow.TblID != tblColumn.TblTab.TblID)
+                throw new Exception("Internal exception. Row and column must be in same table.");
             RatingGroup theGroup = new RatingGroup
             {
                 RatingGroupID = Guid.NewGuid(),
                 TblRow = tblRow,
-                TblColumn = TblColumn,
+                TblColumn = tblColumn,
                 RatingGroupAttribute = ratingGroupAttributes,
                 CurrentValueOfFirstRating = null,
                 ValueRecentlyChanged = false,
@@ -1014,6 +1017,8 @@ namespace ClassLibrary1.Model
             {
                 tblRow = DataContext.GetTable<TblRow>().Single(x => x.TblRowID == tblRowID);
                 tblColumn = DataContext.GetTable<TblColumn>().Single(x => x.TblColumnID == tblColumnID);
+                if (tblRow.TblID != tblColumn.TblTab.TblID)
+                    throw new Exception("Row and column must be in same table.");
             }
             catch
             {
@@ -1032,11 +1037,12 @@ namespace ClassLibrary1.Model
             }
             catch
             { // it may have failed because there was a simultaneous attempt to add the rating group and ratings (which we prevent), so let's see if it now exists in the database
+                ResetDataContexts(); // we don't want to try adding this again because then we'd get another exception
             }
             rating = DataContext.GetTable<Rating>().FirstOrDefault(x => x.RatingGroup.TblRowID == tblRowID && x.RatingGroup.TblColumnID == tblColumnID);
             if (rating == null)
                 throw new Exception("Database error. The rating could not be added to the database.");
-            // update the fast-access tables; no tragedy if this fails (we'll just end up back here) or if this happens more than once (because we simultaneously attempt to add rating in two different places), but once the rating is created it should be unusual for us to end up in this method. If we were to change things so that we regularly used this method (to refer to ratings by table row and column instead of rating id and rating group id), we might want to change this to decrease redundant writes.
+            // update the fast-access tables; no tragedy if this fails (we'll just end up back here, because the fast-access tables will continue to use the row and column IDs instead of the rating ids) or if this happens more than once (because we simultaneously attempt to add rating in two different places), but once the rating is created it should be unusual for us to end up in this method. If we were to change things so that we regularly used this method (to refer to ratings by table row and column instead of rating id and rating group id), we might want to change this to decrease redundant writes.
             new FastAccessRatingIDUpdatingInfo() { RatingID = rating.RatingID, RatingGroupID = rating.RatingGroup.RatingGroupID, TblColumnID = tblColumn.TblColumnID }.AddToTblRow(tblRow);
             DataContext.SubmitChanges();
             ResetDataContexts();
@@ -1802,7 +1808,6 @@ namespace ClassLibrary1.Model
             //Trace.TraceInformation("2Setting current value to " + newUserRating);
             decimal? previousValue = rating.CurrentValue;
             rating.CurrentValue = newUserRatingValue;
-            Debug.WriteLine("Setting CurrentValue to " + rating.CurrentValue); // DEBUG
             if (previousValue == null && rating.CurrentValue != null)
             {
                 tblCol.NumNonNull++;

@@ -124,7 +124,10 @@ namespace ClassLibrary1.Model
 
         private static void CompleteSingleTask(R8RDataManipulation dataManipulation, bool[] moreWorkToDoThisTask, int i)
         {
-            Debug.WriteLine("DEBUG Task " + i);
+            int secondsToWait = 0; // can change this with a breakpoint to pause background tasks for debugging purposes
+            if (secondsToWait != 0)
+                Thread.Sleep(secondsToWait * 1000);
+
             switch (i)
             {
 
@@ -224,7 +227,6 @@ namespace ClassLibrary1.Model
                     break;
 
             }
-            Debug.WriteLine("DEBUG EndTask " + i);
         }
 
         //public Thread GetBackgroundThread()
