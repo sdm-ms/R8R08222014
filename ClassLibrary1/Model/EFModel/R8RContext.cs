@@ -8,20 +8,6 @@ namespace ClassLibrary1.EFModel
     using System.Collections.Generic;
 using System.Data.Common;
 
-    // Note: The following three objects were added to develop the question in http://stackoverflow.com/questions/24945695/entity-framework-using-projection-to-eagerly-load-some-items-with-null-check
-    // We'll delete this shortly.
-    public class MyBackpack
-    {
-        public Guid MyBackpackID { get; set; }
-        [ForeignKey("ContainerInBackpackID")]
-        public virtual MyContainer ContainerInBackpack { get; set; }
-        public Guid? ContainerInBackpackID { get; set; }
-    }
-
-    public class MyContainer
-    {
-        public Guid MyContainerID { get; set; }
-    }
 
 
 
@@ -47,9 +33,6 @@ using System.Data.Common;
         {
             // this.Configuration.ProxyCreationEnabled = false; 
         }
-
-        public virtual DbSet<MyContainer> MyContainers { get; set; }
-        public virtual DbSet<MyBackpack> MyBackpacks { get; set; }
 
         public virtual DbSet<AddressField> AddressFields { get; set; }
         public virtual DbSet<AdministrationRight> AdministrationRights { get; set; }
