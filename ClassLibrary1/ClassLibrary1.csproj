@@ -228,10 +228,6 @@
     <Compile Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.Designer.cs">
       <DependentUpon>201407251816001_ForeignKeyOnBackpackModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201407251859323_DeletedBackpack.cs" />
-    <Compile Include="Migrations\201407251859323_DeletedBackpack.Designer.cs">
-      <DependentUpon>201407251859323_DeletedBackpack.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Business Logic\R8RInMemoryDataContext.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -539,9 +535,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.resx">
       <DependentUpon>201407251816001_ForeignKeyOnBackpackModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407251859323_DeletedBackpack.resx">
-      <DependentUpon>201407251859323_DeletedBackpack.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
