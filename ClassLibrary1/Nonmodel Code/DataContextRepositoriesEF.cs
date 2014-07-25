@@ -12,6 +12,7 @@ using System.Collections;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using LinqKit;
+using System.Diagnostics;
 
 namespace ClassLibrary1.Nonmodel_Code
 {
@@ -104,6 +105,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public IRepository<T> GetTable<T>() where T : class
         {
+            Debug.WriteLine("DEBUG " + typeof(T) + " " + System.Environment.StackTrace);
             TooLateToSetPageLoadOptions = true; // can't do it after a query
             EFRepository<T> repo = null;
             if (!efRepositoriesForType.ContainsKey(typeof(T)))

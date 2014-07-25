@@ -75,7 +75,7 @@ namespace WebApplication1.CommonControl
                             e.Tbl.TblTabs.
                                 OrderBy(cg => cg.NumInTbl)
                                 .FirstOrDefault().DefaultSortTblColumnID)
-                let mgMostActive = e.RatingGroups.OrderByDescending(mg => mg.VolatilityTrackers.Single(x => x.DurationType == (int) VolatilityDuration.oneDay).Pushback).FirstOrDefault()
+                let mgMostActive = e.RatingGroups.OrderByDescending(mg => mg.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int) VolatilityDuration.oneDay).Pushback).FirstOrDefault()
                 let mgBest = mgMostActive ?? mgDefault
                 where mgBest != null
                 select mgBest

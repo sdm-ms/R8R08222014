@@ -149,7 +149,7 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
                 UserRating = p,
                 Rating = p.Rating,
                 User = p.User,
-                PointsTotal = p.User.PointsTotals.SingleOrDefault(x => x.PointsManagerID == p.Rating.RatingGroup.TblRow.Tbl.PointsManagerID),
+                PointsTotal = p.User.PointsTotals.FirstOrDefault(x => x.PointsManagerID == p.Rating.RatingGroup.TblRow.Tbl.PointsManagerID),
                 Date = p.UserRatingGroup.WhenCreated,
                 Previous = (p.PreviousDisplayedRating != null) ? (decimal?) p.PreviousRatingOrVirtualRating : (decimal?) null,
                 Trusted = ((p.Rating.CurrentValue == p.Rating.LastTrustedValue) || (p.Rating.CurrentValue != p.NewUserRating)) || p.Rating.CurrentValue == null, 

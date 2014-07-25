@@ -59,7 +59,8 @@ public partial class Prizes : System.Web.UI.Page
     public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
         R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
-        User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+        Guid userID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == userID);
         if (theUser != null && theUser.SuperUser)
             userIsSuperUser = true;
         var theQuery = theDataAccessModule.DataContext.GetTable<PointsAdjustment>()

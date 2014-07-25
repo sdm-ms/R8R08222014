@@ -26,6 +26,7 @@ using Microsoft.ServiceHosting.Tools.DevelopmentStorage;
 using Microsoft.ServiceHosting.Tools.DevelopmentFabric;
 using System.Threading;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace TestProject1
 {
@@ -58,7 +59,50 @@ namespace TestProject1
             DataAccess.DataContext.GetTable<RatingGroup>().Single(x => x.RatingGroupID == theTestHelper.RatingGroup.RatingGroupID).RatingGroupID.Should().Equals(theTestHelper.RatingGroup.RatingGroupID);
             DataAccess.DataContext.GetTable<Rating>().Single(x => x.TopmostRatingGroupID == theTestHelper.RatingGroup.RatingGroupID).RatingGroup.RatingGroupID.Should().Equals(theTestHelper.RatingGroup.RatingGroupID);
         }
-        
+
+        [TestMethod]
+        [Category("Integrationtest")]
+        public void TestCreateTableAndAddUserRatingsFromFirstUserViaWebService()
+        {
+            theTestHelper.CreateSimpleTestTable(true, false);
+            theTestHelper.CreateUsers(2);
+            UserEditResponse theResponse = new UserEditResponse();
+            Guid user0 = theTestHelper.UserIds[0];
+            Guid user1 = theTestHelper.UserIds[1];
+
+            TblRow tblRow = DataAccess.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).First();
+            Guid tblID = tblRow.TblID;
+            TblColumn tblCol = DataAccess.DataContext.GetTable<TblColumn>().Where(x => x.TblTab.TblID == tblID).OrderBy(x => x.WhenCreated).First();
+
+            User theUser = DataAccess.DataContext.GetTable<User>().FirstOrDefault(x => x.UserID == user0);
+            UserAccessInfo theInfo = R8RDataManipulation.GetUserAccessInfoForSpecificUser(theUser.Username);
+
+            // first do it based on TblRowID/TblColumnID ==> should generate the Rating
+            // we'll do this on a lot of threads at once; after the first one succeeds, the others should throw exceptions but then recover by figuring out that the rating has been added and then add the rating.
+            
+            Task[] tasks = new Task[10];
+            for (int i = 0; i < 10; i++)
+                tasks[i] = Task.Factory.StartNew(() => AddUserRatingViaTblRowAndTblColumnIDs(tblRow, tblCol, theInfo, (double) i));
+            Task.WaitAll(tasks);
+            theTestHelper.WaitIdleTasks();
+
+            // now do it based on rating
+            Rating rating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingGroup.TblRowID == tblRow.TblRowID && x.RatingGroup.TblColumnID == tblCol.TblColumnID);
+            RatingAndUserRatingString theRatingAndUserRating = new RatingAndUserRatingString() { ratingID = rating.RatingID.ToString(), theUserRating = 6.5.ToString() };
+            List<RatingAndUserRatingString> allRatingsAndUserRatingsForRatingGroup = new List<RatingAndUserRatingString>() { theRatingAndUserRating };
+            UserEditResponse response = new WebServices.WebService().ProcessRatings(theInfo, allRatingsAndUserRatingsForRatingGroup);
+            response.result.success.Should().Be(true);
+            theTestHelper.WaitIdleTasks();
+        }
+
+        private void AddUserRatingViaTblRowAndTblColumnIDs(TblRow tblRow, TblColumn tblCol, UserAccessInfo theInfo, double theRating)
+        {
+            RatingAndUserRatingString theRatingAndUserRating = new RatingAndUserRatingString() { ratingID = tblRow.TblRowID.ToString() + "/" + tblCol.TblColumnID.ToString(), theUserRating = theRating.ToString() };
+            List<RatingAndUserRatingString> allRatingsAndUserRatingsForRatingGroup = new List<RatingAndUserRatingString>() { theRatingAndUserRating };
+            UserEditResponse response = new WebServices.WebService().ProcessRatings(theInfo, allRatingsAndUserRatingsForRatingGroup);
+            response.result.success.Should().Be(true);
+        }
+
         public void TestCreateTableAndAddUserRatingFromFirstUser(bool isEvent)
         {
             if (isEvent)
@@ -80,6 +124,7 @@ namespace TestProject1
             Rating theRating = DataAccess.DataContext.GetTable<Rating>().Single(x => x.RatingID == theTestHelper.Rating.RatingID);
             theRating.CurrentValue.Should().Be(isEvent ? 70M : 7M);
         }
+
 
         [TestMethod]
         [Category("Long")]
