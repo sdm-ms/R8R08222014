@@ -141,6 +141,7 @@ namespace ClassLibrary1.Model
                 for (int u = 0; u < numUserRatings - numAdminUserRatingsAlreadyAtEnd; u++)
                 {
                     UserRating ur = urs[u];
+                    Debug.WriteLine("DEBUG -- reconsidering UserRating " + ur.UserRatingID);
                     if (trackIdealRatingValue == null)
                         trackIdealRatingValue = ur.PreviousRatingOrVirtualRating;
                     decimal newAdjustmentFactor = ur.OriginalTrustLevel == 0 ? (decimal) newTrusts[u] : ur.OriginalAdjustmentPct * ((decimal) newTrusts[u] / ur.OriginalTrustLevel);
