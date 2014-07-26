@@ -105,7 +105,7 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public IRepository<T> GetTable<T>() where T : class
         {
-            Debug.WriteLine("DEBUG " + typeof(T) + " " + System.Environment.StackTrace);
+            //Debug.WriteLine("GetTable " + typeof(T) + " " + System.Environment.StackTrace); // useful for seeing source of queries
             TooLateToSetPageLoadOptions = true; // can't do it after a query
             EFRepository<T> repo = null;
             if (!efRepositoriesForType.ContainsKey(typeof(T)))

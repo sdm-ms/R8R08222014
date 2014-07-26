@@ -872,16 +872,16 @@ namespace TestProject1
             // For each separate rating, the first user rating can be higher or lower than the base level of 5.0.
             // The second rating can be slightly higher, slightly lower, considerably higher, or considerably lower than the first.
             int numRuns = 0;
-            foreach (var firstSequenceFirstUserRating in new decimal[] { 6M, 4M })
-                foreach (var secondSequenceFirstUserRating in new decimal[] { 7M, 3M })
-                    foreach (var firstSequenceRelativeSecondRating in new decimal[] { 0.3M, -0.4M, 0.0M, 1.4M, -2.3M })
-                        foreach (var secondSequenceRelativeSecondRating in new decimal[] { 0.3M, -0.4M, 1.4M, -2.3M })
+            foreach (var firstSequenceFirstUserRating in new decimal[] { 6M /* , 4M */ })
+                foreach (var secondSequenceFirstUserRating in new decimal[] { 7M /* , 3M */ })
+                    foreach (var firstSequenceRelativeSecondRating in new decimal[] { 0.3M /* , -0.4M, 0.0M, 1.4M, -2.3M */ })
+                        foreach (var secondSequenceRelativeSecondRating in new decimal[] { 0.3M, -0.4M /* , 1.4M, -2.3M */ })
                         {
 
                             decimal[] firstSequence = new decimal[] { firstSequenceFirstUserRating, firstSequenceFirstUserRating + firstSequenceRelativeSecondRating};
                             decimal[] secondSequence = new decimal[] { secondSequenceFirstUserRating, secondSequenceFirstUserRating + secondSequenceRelativeSecondRating };
                             TestTrustTracker_CalculatesUserInteractionStatAndTrustTrackerStatCorrectly_WhenOneUserIsReratedByTwoDifferentUsers_Helper(firstSequence, secondSequence);
-                            numRuns++; // total runs will be 2 * 2 * 5 * 4 = 80
+                            numRuns++; // total runs will be 2 * 2 * 5 * 4 = 80 if all numbers above are included
                         }
             (0 == 0).Should().BeTrue(); // can put breakpoint here after test
         }
@@ -1852,7 +1852,8 @@ x.UserID == user1);
                     decimal valueForUserToTarget = userTargetsWrongValue ?
                         wrongValues[randomRowNum] :
                         correctValues[randomRowNum];
-                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingIDs[randomRowNum]);
+                    Guid theRatingID = theRatingIDs[randomRowNum];
+                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingID);
                     decimal currentValue = theRating.CurrentValue ?? (parameters.MaxRatingValue - parameters.MinRatingValue) / 2;
                     // AdjustmentFactor is defined as:
                     //  (adjustedRating - basisRating) / 
@@ -2019,7 +2020,8 @@ x.UserID == user1);
                     decimal valueForUserToTarget = RandomGenerator.GetRandom() < proportionOfUsersTargettingWrongValues ?
                         wrongValues[randomRowNum] :
                         correctValues[randomRowNum];
-                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingIDs[randomRowNum]);
+                    Guid theRatingID = theRatingIDs[randomRowNum];
+                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingID);
                     decimal currentValue = theRating.CurrentValue ?? (maxRatingValue - minRatingValue) / 2;
                     // Since AdjustmentFactor is defined as:
                     //  (adjustedRating - basisRating) / 

@@ -191,7 +191,7 @@ namespace TestProject1
                 {
                     Debug.WriteLine(String.Format("<Rating {0}> CurrentValue={1} LastTrustedValue={2}", rating.RatingID,
                         rating.CurrentValue, rating.LastTrustedValue));
-                    foreach (UserRating userRating in rating.UserRatings)
+                    foreach (UserRating userRating in rating.UserRatings.ToList())
                     {
                         TrustTracker trustTracker = userRating.User.TrustTrackers.Single();
                         Debug.Write(String.Format("\t<Rating {0}> <UserRating {1}> PreviousUserRating={2} EnteredUserRating={3} NewUserRating={4}", rating.RatingID, userRating.UserRatingID,

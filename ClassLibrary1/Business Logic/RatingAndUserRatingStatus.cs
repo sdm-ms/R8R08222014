@@ -231,9 +231,7 @@ namespace ClassLibrary1.Model
                                          group ur by ur.RatingPhaseStatus into grouped
                                          select new { RatingPhaseStatus = grouped.Key, UserRatingInfos = grouped.OrderBy(x => x.UserRating.UserRatingGroup.WhenCreated) };
 
-            Debug.WriteLine("DEBUG1");
             var userRatingInfoGroups = userRatingInfosGrouped.ToList(); // remember, take is already done above
-            Debug.WriteLine("DEBUG2");
             bool moreWorkToDo = userRatingInfoGroups.Count() == maxToTake;
 
             foreach (var userRatingInfoGroup in userRatingInfoGroups)

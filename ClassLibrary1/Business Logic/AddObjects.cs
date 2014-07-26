@@ -1817,7 +1817,6 @@ namespace ClassLibrary1.Model
             if (rating.LastTrustedValue != rating.CurrentValue && rating.CurrentValue != null)
                 throw new Exception("Internal error: Trusted value should equal current value, since trust concept is eliminated.");
             rating.LastModifiedResolutionTimeOrCurrentValue = currentTime;
-            // DEBUG  Shouldn't we be updating user ratings even where we have only 1 in a phase so that we adjust the user interaction
             ratingPhaseStatus.NumUserRatingsMadeDuringPhase++;
             pointsTotal.NumUserRatings++;
             if (ratingPhaseStatus.NumUserRatingsMadeDuringPhase > 1) // i.e., there are earlier UserRatings in this phase
@@ -1826,6 +1825,7 @@ namespace ClassLibrary1.Model
             }
             else
             {
+                ratingPhaseStatus.TriggerUserRatingsUpdate = true; // we still need to do this so that we adjust user interaction; alternatively, could find a way to just do that
                 theUserRating.PointsPumpingProportion = 1.0M; // 100% of points that can be earned are real, because there are no prior users who might not have earned their points from whom these points will come
                 pointsTotal.PointsPumpingProportionAvg_Numer += (float)(theUserRating.MaxGain * 1.0M);
                 pointsTotal.PointsPumpingProportionAvg_Denom += (float)theUserRating.MaxGain;

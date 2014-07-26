@@ -249,7 +249,7 @@ namespace ClassLibrary1.Model
                 return false;
             const int numAtOnce = 2000;
             bool noMoreWork = true; // assume for now
-            List<TblRow> theRows = iDataContext.GetTable<TblRow>().Where(x => /* DEBUG x.InitialFieldsDisplaySet == true && */ x.FastAccessUpdateSpecified).Take(numAtOnce).ToList();
+            List<TblRow> theRows = iDataContext.GetTable<TblRow>().Where(x => x.InitialFieldsDisplaySet == true &&  x.FastAccessUpdateSpecified).Take(numAtOnce).ToList();
             int rowsCount = theRows.Count();
             if (rowsCount == 0)
                 return false;

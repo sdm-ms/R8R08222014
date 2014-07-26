@@ -240,6 +240,10 @@
     <Compile Include="Migrations\201407251912260_finishingdeletion.Designer.cs">
       <DependentUpon>201407251912260_finishingdeletion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407251916002_MergeMigration.cs" />
+    <Compile Include="Migrations\201407251916002_MergeMigration.Designer.cs">
+      <DependentUpon>201407251916002_MergeMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Business Logic\R8RInMemoryDataContext.cs" />
     <Compile Include="Model\EFModel\AddressField.cs" />
@@ -556,6 +560,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407251912260_finishingdeletion.resx">
       <DependentUpon>201407251912260_finishingdeletion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251916002_MergeMigration.resx">
+      <DependentUpon>201407251916002_MergeMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -147,7 +147,8 @@ namespace ClassLibrary1.Model
         {
             User theUser = ObjDataAccess.GetUser(userID);
             PointsManager thePointsManager = ObjDataAccess.GetPointsManager(pointsManagerID);
-            PointsTotal thePointsTotal = DataContext.GetTable<PointsTotal>().SingleOrDefault(x => x.User == theUser && x.PointsManager == thePointsManager);
+            Guid UserID = theUser.UserID;
+            PointsTotal thePointsTotal = DataContext.GetTable<PointsTotal>().SingleOrDefault(x => x.User.UserID == UserID && x.PointsManager.PointsManagerID == pointsManagerID);
             UpdateUserPointsAndStatus(theUser, thePointsManager, theReason, totalPointsAdjustment, currentPointsAdjustment, pendingPointsAdjustment, notYetPendingPointsAdjustment, pendingMaxLossAdjustment, longTermUnweightedAdjustment, submitChanges, thePointsTotal);
         }
 

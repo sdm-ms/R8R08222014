@@ -206,7 +206,6 @@ namespace ClassLibrary1.Model
                     if (TblColumnID != new Guid())
                     {
                         theTblColumn = theDataContext.GetTable<TblColumn>().Single(x => x.TblTab.Tbl.TblID == theTbl.TblID && x.TblColumnID == TblColumnID);
-                        var DEBUG0 = theDataContext.GetTable<TblColumn>().Where(x => true).ToList();
                     }
                 }
             }
