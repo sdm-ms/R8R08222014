@@ -1483,7 +1483,7 @@ x.UserID == user1);
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds()); // so that trust will be updated, but not so far that short term resolution will be reflected
             TestHelper.WaitIdleTasks();
             
-            if (allowMonthToPass) // if we allow a month to pass, then it will be too late for the user rating to be reviewed based on other recent user ratings, though the calculated adjustment percentage should still be affected
+            if (allowMonthToPass)
             {
                 TestHelper.WaitIdleTasks();
                 TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(31).GetTotalWholeMilliseconds()); // wait a month
@@ -1535,8 +1535,6 @@ x.UserID == user1);
                 }
 
             }
-
-            // make sure ratings review happens if there has not been too much time since the initial userrating
             for (int i = 0; i <= 1; i++)
             { // we do this twice because ratings review won't happen for 20 minutes
                 TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
@@ -1547,15 +1545,14 @@ x.UserID == user1);
             int ratingIndexToUse = 0;
             Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First();
             UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == user0);
-            Debug.WriteLine("UserRating being assessed: " + firstUserRatingForFirstRating.UserRatingID);
             TrustTracker tt = firstUserRatingForFirstRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
             float appliedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
 
             float tolerance = 0.02F;
             if (allowMonthToPass)
-                appliedAdjustmentFactor.Should().BeApproximately(1.0F, tolerance); // because we only review ratings for 30 days, the user's initial rating shouldn't be changed, so the applied adjustment factor should stil be run
+                appliedAdjustmentFactor.Should().BeApproximately(1.0F, tolerance); // because we only review ratings for 30 days, so this one won't get changed
             else
-                appliedAdjustmentFactor.Should().BeApproximately((float) TrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance); // because the first user's trust was changed within the month where the rating could be reviewed, the adjustment factor should now equal the user's overall trust level
+                appliedAdjustmentFactor.Should().BeApproximately((float) TrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance);
 
             // second rating may get rerated a small distance, so the following doesn't apply.
             //// Check to make sure admin has not rerated the rating in the second tblrow
