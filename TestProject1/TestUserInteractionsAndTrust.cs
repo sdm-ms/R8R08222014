@@ -1494,8 +1494,8 @@ x.UserID == user1);
             //  by the adjustment factor, and have two other users rate the correct value.
             for (int rowNum = 1; rowNum < numTblRows; rowNum++)
             {
-                decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // AdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
-                valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10);
+                decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // So, if the adjustment factor is < 1, then the user will be overshooting
+                valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10); // this is the range of ratings
                 UserEditResponse theResponse = new UserEditResponse();
                 Debug.WriteLine("Added rating to " + ratings[rowNum].RatingID);
                 Guid user1 = TestHelper.UserIds[1];
@@ -1506,12 +1506,14 @@ x.UserID == user1);
                 decimal plusMinusCorrectValueInitial = 0.3M;
                 List<int> users = Enumerable.Range(2, numUsers - 3).ToList();
                 users.Shuffle();
+                int indexOfRatingUser = 1;
                 foreach (int userNum in users)
                 {
-                    decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)userNum / (decimal) (numUsers - 3))); // user ratings will gradually get more precise
-                    decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal)RandomGenerator.GetRandom(-1.0, 1.0);
+                    decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)indexOfRatingUser / (decimal) (users.Count()))); // user ratings will gradually get more precise, as a general matter...
+                    decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal)RandomGenerator.GetRandom(-1.0, 1.0); // ...but with some randomness thrown in
                     TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToDo, TestHelper.UserIds[userNum], ref theResponse);
                     FinishUserRatingAdd();
+                    indexOfRatingUser++;
                 }
 
                 Debug.WriteLine(String.Format("{0} RatingID {1} Rated.", TestableDateTime.Now, ratings[rowNum].RatingID));
