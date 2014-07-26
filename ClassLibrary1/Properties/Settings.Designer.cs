@@ -38,10 +38,10 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=Norm0006;Integrated Security=True")]
-        public string Norm0006ConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PC2012;Initial Catalog=RD0001;Integrated Security=True")]
+        public string RD0001ConnectionString {
             get {
-                return ((string)(this["Norm0006ConnectionString"]));
+                return ((string)(this["RD0001ConnectionString"]));
             }
         }
     }
