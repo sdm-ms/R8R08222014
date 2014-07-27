@@ -25,10 +25,7 @@ namespace TestProject1
     public class TestDictionaryByType
     {
         [TestMethod]
-<<<<<<< HEAD
         [Category("UnitTest")]
-=======
->>>>>>> origin/ef-convert
         public void DictionaryByTypeWorks()
         {
             DictionaryByType dbt = new DictionaryByType();
