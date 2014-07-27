@@ -100,7 +100,7 @@ namespace TestProject1
                 rounds: 5,
                 userRatingsPerRating: 4,
                 tolerance: 0.5m,
-                requiredProportionOfRatingsWithinTolerance: 0.98f,
+                requiredProportionOfRatingsWithinTolerance: 0.93f,
                 breakUponSuccess: true,
                 subversiveUserIgnoresPreviousRatings: false);
         }

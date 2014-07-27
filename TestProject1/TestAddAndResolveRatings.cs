@@ -494,6 +494,7 @@ namespace TestProject1
         [Category("UnitTest")]
         public void TestLoad()
         {
+            theTestHelper.CreateSimpleTestTable(false);
             var dc = GetIR8RDataContext.New();
             Guid firstRating = dc.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).First().RatingID;
             User admin = dc.GetTable<User>().Where(x => x.SuperUser).First();
