@@ -1458,7 +1458,6 @@ x.UserID == user1);
             var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToArray();
             tblRows.Count().Should().Be(numTblRows);
             var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
-            R8RDataManipulation.DEBUGPrintOut = ratings[0].RatingID; 
             ratings.Count().Should().Be(numTblRows);
 
             // Initialize, each tbl row to the initial value.
@@ -1828,7 +1827,7 @@ x.UserID == user1);
                         theRatings[rowNum].RatingGroup.TblRowID.Should().Be(tblRowIDs[rowNum], "must make sure that we have rating groups ordered one per table row for this test");
                     return calculateProportionWithinTolerance(theRatings, parameters.NumTblRows, correctValuesForRatingInEachTblRow, parameters.Tolerance);
                 };
-            #region Debug
+            #region Progress reporting
             {
                 Debug.WriteLine("******************");
 
@@ -1883,7 +1882,7 @@ x.UserID == user1);
                 TestHelper.WaitIdleTasks();
 
                 float proportionWithinTolerance = toleranceCalc();
-                #region Debug
+                #region Progress reporting2
                 {
                     Debug.WriteLine("******************");
 
