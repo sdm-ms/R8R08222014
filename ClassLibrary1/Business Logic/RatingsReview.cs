@@ -70,6 +70,7 @@ namespace ClassLibrary1.Model
                     //Debug.WriteLine("Set rating " + r.RatingID + " for review at " + r.ReviewRecentUserRatingsAfter.ToString());
                 }
                 item.TrustTracker.OverallTrustLevelAtLastReview = item.TrustTracker.OverallTrustLevel;
+                Debug.WriteLine("DEBUG Trust level for " + item.TrustTracker.User.UserID + ": " + item.TrustTracker.OverallTrustLevelAtLastReview);
                 if (item.Ratings.Count() < MaxRatingsToFlagPerUser)
                     item.TrustTracker.DeltaOverallTrustLevel = 0;
                 else
@@ -79,6 +80,8 @@ namespace ClassLibrary1.Model
         }
 
         public static Tuple<float, float> HypotheticalAdjFactorsNotWorthImplementing = new Tuple<float, float>(0.8F, 1.2F);
+
+        public static Guid DEBUGPrintOut = new Guid();
 
         public bool IdleTaskReviewRecentUserRatings()
         {
@@ -113,11 +116,12 @@ namespace ClassLibrary1.Model
                                          TrustTrackerUnit = pointsManager.TrustTrackerUnit,
                                          AdminAccount = adminUserAccount,
                                          AdminPointsTotals = adminPointsTotals,
-                                         NewTrustLevel = grouped.Select(x =>
+                                         NewTrustLevel = grouped.OrderBy(x => x.UserRatingGroup.WhenCreated).Select(x =>
                                              x.User.TrustTrackers.FirstOrDefault(tt => 
                                                  tt.TrustTrackerUnit.PointsManagers.Any() && tt.TrustTrackerUnit.PointsManagers.FirstOrDefault() == pointsManager)
                                                  .OverallTrustLevelAtLastReview
-                                            )
+                                            ),
+                                        Users = grouped.Select(x => x.User)
                                      };
             var urSets = userRatingsGrouped.ToList();
             bool moreWorkToDo = userRatingsInitialQuery.Count() == NumRatingsToReviewAtOnce;
@@ -131,6 +135,7 @@ namespace ClassLibrary1.Model
                 int numUserRatings = urSet.UserRatings.Count();
                 List<UserRating> urs = urSet.UserRatings.ToList();
 
+                List<Guid> users = urSet.Users.Select(x => x.UserID).ToList();
                 List<double> newTrusts = urSet.NewTrustLevel.ToList();
                 int numAdminUserRatingsAlreadyAtEnd = 0;
                 for (int u = numUserRatings - 1; u >= 0; u--)
@@ -138,10 +143,17 @@ namespace ClassLibrary1.Model
                         numAdminUserRatingsAlreadyAtEnd++;
                     else
                         break;
+                bool DEBUGscrutiny = false;
                 for (int u = 0; u < numUserRatings - numAdminUserRatingsAlreadyAtEnd; u++)
                 {
                     UserRating ur = urs[u];
-                    Debug.WriteLine("DEBUG -- reconsidering UserRating " + ur.UserRatingID);
+                    if (ur.RatingID == DEBUGPrintOut && u == 0)
+                    {
+                        Debug.WriteLine("DEBUG -- reconsidering UserRating " + ur.UserRatingID);
+                        DEBUGscrutiny = true;
+                    }
+                    else if (DEBUGscrutiny)
+                        Debug.WriteLine("     UR" + u +  ": " + ur.PreviousDisplayedRating + " --> " + ur.EnteredUserRating + " --> " + ur.NewUserRating);
                     if (trackIdealRatingValue == null)
                         trackIdealRatingValue = ur.PreviousRatingOrVirtualRating;
                     decimal newAdjustmentFactor = ur.OriginalTrustLevel == 0 ? (decimal) newTrusts[u] : ur.OriginalAdjustmentPct * ((decimal) newTrusts[u] / ur.OriginalTrustLevel);
@@ -155,6 +167,8 @@ namespace ClassLibrary1.Model
                 // is this a big enough difference?
                 float hypotheticalAdjustmentFactorForLastUser = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)trackIdealRatingValue, actualFinalRating, urs[numUserRatings - 1].PreviousRatingOrVirtualRating);
                 bool bigEnoughDifference = (hypotheticalAdjustmentFactorForLastUser < HypotheticalAdjFactorsNotWorthImplementing.Item1 || hypotheticalAdjustmentFactorForLastUser > HypotheticalAdjFactorsNotWorthImplementing.Item2);
+                if (DEBUGscrutiny)
+                    Debug.WriteLine("DEBUG -- bigEnoughDifference? " + bigEnoughDifference);
                 //Debug.WriteLine(" reviewing rating " + urSet.Rating.RatingID + " entered " + urs.Last().EnteredUserRating + " final " + actualFinalRating + " ideal " + trackIdealRatingValue + " hypo adj " + hypotheticalAdjustmentFactorForLastUser + " big enough? " + bigEnoughDifference);
                 if (bigEnoughDifference)
                 { // add the new UserRating
@@ -162,6 +176,12 @@ namespace ClassLibrary1.Model
                     UserRatingHierarchyAdditionalInfo additionalInfo = new UserRatingHierarchyAdditionalInfo(1.0F, 1.0F, 0,0,0, new List<TrustTrackerChoiceSummary>(), new List<Guid>()); // not all info is accurate but it doesn't matter since we ignore UserInteractions where earlier user is the admin account
 
                     UserRating newUr = AddUserRating(adminAccount, urSet.Rating, urg, urSet.AdminPointsTotals, urSet.RatingPhaseStatus, new List<RatingGroup>() { urSet.Rating.RatingGroup }, (decimal)trackIdealRatingValue, (decimal)trackIdealRatingValue, actualFinalRating, true, additionalInfo);
+                    if (DEBUGscrutiny && (double) trackIdealRatingValue > 6.9 && (double) trackIdealRatingValue < 7.1)
+                    {
+                        var DEBUG2 = 0;
+                    }
+                    if (DEBUGscrutiny)
+                        Debug.WriteLine("DEBUG -- admin added " + trackIdealRatingValue + " replacing: " + actualFinalRating);
                 }
 
                 urSet.Rating.ReviewRecentUserRatingsAfter = null;

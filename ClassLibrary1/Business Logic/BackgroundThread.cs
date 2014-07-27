@@ -334,7 +334,7 @@ namespace ClassLibrary1.Model
                     threadState = backgroundTaskThread.ThreadState;
                 if (backgroundTaskThread == null || (threadState != System.Threading.ThreadState.Running && threadState != System.Threading.ThreadState.WaitSleepJoin))
                 {
-                    Trace.TraceInformation("About to reset thread, which was in state " + ((backgroundTaskThread == null) ? "null" : threadState.ToString()));
+                    //Trace.TraceInformation("About to reset thread, which was in state " + ((backgroundTaskThread == null) ? "null" : threadState.ToString()));
                     ResetThread(); // this will cause it to keep running indefinitely
                 }
                 //else
@@ -361,7 +361,7 @@ namespace ClassLibrary1.Model
         {
             try
             {
-                if (backgroundTaskThread != null)
+                if (backgroundTaskThread != null && backgroundTaskThread.IsAlive)
                     backgroundTaskThread.Abort();
                 backgroundTask = new R8RBackgroundTask(this);
                 backgroundTaskThread = new Thread(backgroundTask.RunBackgroundTasksSeveralTimes);

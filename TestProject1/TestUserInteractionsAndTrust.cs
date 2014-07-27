@@ -1458,6 +1458,7 @@ x.UserID == user1);
             var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToArray();
             tblRows.Count().Should().Be(numTblRows);
             var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
+            R8RDataManipulation.DEBUGPrintOut = ratings[0].RatingID; 
             ratings.Count().Should().Be(numTblRows);
 
             // Initialize, each tbl row to the initial value.
@@ -1497,7 +1498,6 @@ x.UserID == user1);
                 decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // So, if the adjustment factor is < 1, then the user will be overshooting
                 valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10); // this is the range of ratings
                 UserEditResponse theResponse = new UserEditResponse();
-                Debug.WriteLine("Added rating to " + ratings[rowNum].RatingID);
                 Guid user1 = TestHelper.UserIds[1];
                 TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, user0, ref theResponse);
                 FinishUserRatingAdd();
@@ -1516,7 +1516,7 @@ x.UserID == user1);
                     indexOfRatingUser++;
                 }
 
-                Debug.WriteLine(String.Format("{0} RatingID {1} Rated.", TestableDateTime.Now, ratings[rowNum].RatingID));
+                //Debug.WriteLine(String.Format("{0} RatingID {1} Rated.", TestableDateTime.Now, ratings[rowNum].RatingID));
 
                 //int userNum1 = RandomGenerator.GetRandom(2, 10);
                 //_testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, correctValue + 0.001M, _testHelper.UserIds[userNum1], ref theResponse);

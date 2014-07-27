@@ -124,6 +124,7 @@ namespace ClassLibrary1.Model
                 DeltaOverallTrustLevel = 0,
                 SumUserInteractionWeights = 0
             };
+            Debug.WriteLine("DEBUG Adding trusttracker for " + theUser.UserID);
             R8RDB.GetTable<TrustTracker>().InsertOnSubmit(theTrustTracker);
             R8RDB.RegisterObjectToBeInserted(theTrustTracker);
             AddTrustTrackerStatsForTrustTracker(R8RDB, theTrustTracker);
