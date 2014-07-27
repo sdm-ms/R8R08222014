@@ -1138,6 +1138,10 @@ namespace ClassLibrary1.Model
             return theGroup;
         }
 
+<<<<<<< HEAD:ClassLibrary1/Business Logic/AddObjects.cs
+=======
+
+>>>>>>> origin/ef-convert:ClassLibrary1/Business Logic/AddObjects.cs
         /// <summary>
         /// Add the ratings for a row. Not currently in use.
         /// </summary>

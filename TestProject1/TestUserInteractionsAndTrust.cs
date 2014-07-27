@@ -1761,7 +1761,7 @@ x.UserID == user1);
                 MinRatingValue = 4m,
                 MaxRatingValue = 6m,
                 Tolerance = 0.2M, 
-                RequiredProportionOfRatingsWithinTolerance = 0.99F,
+                RequiredProportionOfRatingsWithinTolerance = 0.95F,
             });
             //Test_OverallTrustTest_Helper(20, 500, 100, 10, 3, 1);
         }

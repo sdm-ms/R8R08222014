@@ -33,7 +33,20 @@ namespace TestProject1
     [TestClass]
     public class TestTemp
     {
+<<<<<<< HEAD
 
 
+=======
+       
+
+        [TestMethod]
+        public void TestLoad()
+        {
+            var dc = GetIR8RDataContext.New();
+            Guid firstRating = dc.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).First().RatingID;
+            User admin = dc.GetTable<User>().Where(x => x.SuperUser).First();
+            RatingsAndRelatedInfoLoader.Load(dc, new List<Guid> { firstRating }, admin);
+        }
+>>>>>>> origin/ef-convert
     }
 }
