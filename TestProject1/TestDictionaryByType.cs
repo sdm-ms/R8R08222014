@@ -25,6 +25,7 @@ namespace TestProject1
     public class TestDictionaryByType
     {
         [TestMethod]
+        [Category("UnitTest")]
         public void DictionaryByTypeWorks()
         {
             DictionaryByType dbt = new DictionaryByType();

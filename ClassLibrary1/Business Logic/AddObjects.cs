@@ -1138,9 +1138,6 @@ namespace ClassLibrary1.Model
             return theGroup;
         }
 
-            bool isSupported = false;
-            if (!isSupported)
-
         /// <summary>
         /// Add the ratings for a row. Not currently in use.
         /// </summary>

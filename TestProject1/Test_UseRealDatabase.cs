@@ -35,7 +35,7 @@ namespace TestProject1
         {
             // Use true when you want all tests that can use a SQL Server database to do so
             // Use false when you want all tests to use an in-memory database
-            bool returnVal = false;
+            bool returnVal = true;
             GetIR8RDataContext.UseRealDatabase = returnVal;
 
             if (returnVal && !RoleEnvironment.IsAvailable)

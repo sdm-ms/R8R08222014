@@ -491,6 +491,17 @@ namespace TestProject1
         }
 
         [TestMethod]
+        [Category("UnitTest")]
+        public void TestLoad()
+        {
+            var dc = GetIR8RDataContext.New();
+            Guid firstRating = dc.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).First().RatingID;
+            User admin = dc.GetTable<User>().Where(x => x.SuperUser).First();
+            RatingsAndRelatedInfoLoader.Load(dc, new List<Guid> { firstRating }, admin);
+            // this just makes sure that the load produces no errors -- it doesn't make sure that the context is properly loaded in
+        }
+
+        [TestMethod]
         [Category("IntegrationTest")]
         public void VolatilityRecordedProperly()
         {
