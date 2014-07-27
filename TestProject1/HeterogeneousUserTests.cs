@@ -185,7 +185,7 @@ namespace TestProject1
             pool.PrintOutUsersInfo();
             IEnumerable<Rating> ratings2 = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
                 .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID);
-            foreach (Rating rating in ratings)
+            foreach (Rating rating in ratings.ToList())
             {
                 if (Math.Abs(rating.CurrentValue.Value - correctRatingValue) > tolerance)
                 {

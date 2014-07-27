@@ -1790,12 +1790,12 @@ x.UserID == user1);
             for (int i = 0; i < parameters.NumUsers; i++)
                 baseAdjustmentFactorToApply[i] = RandomGenerator.GetRandom(parameters.MinDesiredAdjustmentFactor, parameters.MaxDesiredAdjustmentFactor);
 
-            decimal[] correctValues = new decimal[parameters.NumTblRows];
-            decimal[] wrongValues = new decimal[parameters.NumTblRows];
+            decimal[] correctValuesForRatingInEachTblRow = new decimal[parameters.NumTblRows];
+            decimal[] wrongValuesForRatingInEachTblRow = new decimal[parameters.NumTblRows];
             for (int i = 0; i < parameters.NumTblRows; i++)
             {
-                correctValues[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
-                wrongValues[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
+                correctValuesForRatingInEachTblRow[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
+                wrongValuesForRatingInEachTblRow[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
             }
 
             TestHelper.CreateSimpleTestTable(true);
@@ -1811,20 +1811,28 @@ x.UserID == user1);
             int choiceInGroupsCount = choiceInGroups.Count();
             Guid fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice",
                 FieldTypes.ChoiceField, true, choiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
+            Guid[] tblRowIDs = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).Select(x => x.TblRowID).ToArray();
             Guid[] randomChoiceInGroupIds = new Guid[parameters.NumTblRows];
             for (int rowNum = 0; rowNum < parameters.NumTblRows; rowNum++)
             {
                 randomChoiceInGroupIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First(); 
+                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First();
+                tblRow.TblRowID.Should().Be(tblRowIDs[rowNum], "must make sure that we are referring to table rows in consistent order");
                 TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(tblRow, fieldDefinitionId, randomChoiceInGroupIds[rowNum],
                     TestHelper.SuperUserId, null);
             }
+            Func<float> toleranceCalc = () =>
+                {
+                    Rating[] theRatings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.TblRow.WhenCreated).ToArray();
+                    for (int rowNum = 0; rowNum < theRatings.Length; rowNum++)
+                        theRatings[rowNum].RatingGroup.TblRowID.Should().Be(tblRowIDs[rowNum], "must make sure that we have rating groups ordered one per table row for this test");
+                    return calculateProportionWithinTolerance(theRatings, parameters.NumTblRows, correctValuesForRatingInEachTblRow, parameters.Tolerance);
+                };
             #region Debug
             {
                 Debug.WriteLine("******************");
 
-                float proportionWithinTolerance = calculateProportionWithinTolerance(_dataManipulation.DataContext.GetTable<Rating>().ToArray(),
-                parameters.NumTblRows, correctValues, parameters.Tolerance);
+                float proportionWithinTolerance = toleranceCalc();
                 Debug.WriteLine(String.Format("Before Batches, {0}% within tolerance.", proportionWithinTolerance * 100));
 
                 IEnumerable<TrustTracker> tts = _dataManipulation.DataContext.GetTable<TrustTracker>().OrderBy(u => u.UserID);
@@ -1855,10 +1863,11 @@ x.UserID == user1);
                     float desiredAdjustmentFactor = baseAdjustmentFactorToApply[randomUserNum];
                     bool userTargetsWrongValue = randomUserNum < parameters.NumUsersWhoTargetWrongValues;
                     decimal valueForUserToTarget = userTargetsWrongValue ?
-                        wrongValues[randomRowNum] :
-                        correctValues[randomRowNum];
+                        wrongValuesForRatingInEachTblRow[randomRowNum] :
+                        correctValuesForRatingInEachTblRow[randomRowNum];
                     Guid theRatingID = theRatingIDs[randomRowNum];
                     Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingID);
+                    theRating.RatingGroup.TblRowID.Should().Be(tblRowIDs[randomRowNum], "we need to keep the ratings in order for purpose of this test");
                     decimal currentValue = theRating.CurrentValue ?? (parameters.MaxRatingValue - parameters.MinRatingValue) / 2;
                     // AdjustmentFactor is defined as:
                     //  (adjustedRating - basisRating) / 
@@ -1873,8 +1882,7 @@ x.UserID == user1);
                 TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds()); // so that trust will be updated
                 TestHelper.WaitIdleTasks();
 
-                float proportionWithinTolerance = calculateProportionWithinTolerance(_dataManipulation.DataContext.GetTable<Rating>().ToArray(),
-                    parameters.NumTblRows, correctValues, parameters.Tolerance);
+                float proportionWithinTolerance = toleranceCalc();
                 #region Debug
                 {
                     Debug.WriteLine("******************");
@@ -1897,8 +1905,7 @@ x.UserID == user1);
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
             TestHelper.WaitIdleTasks();
 
-            float proportionWithinToleranceOfCorrectRating = calculateProportionWithinTolerance(_dataManipulation.DataContext.GetTable<Rating>().ToArray(),
-                parameters.NumTblRows, correctValues, parameters.Tolerance);
+            float proportionWithinToleranceOfCorrectRating = toleranceCalc();
             proportionWithinToleranceOfCorrectRating.Should().BeGreaterThan(parameters.RequiredProportionOfRatingsWithinTolerance,
                 String.Format("because the parameters indicate that {0}% of the ratings should approach the correct value to within a tolerance of ±{1}.",
                     parameters.RequiredProportionOfRatingsWithinTolerance * 100, parameters.Tolerance));
