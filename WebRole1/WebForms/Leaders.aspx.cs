@@ -11,12 +11,13 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
 public partial class Leaders : System.Web.UI.Page
 {
-    internal int UserID;
+    internal Guid UserID;
 
     RoutingInfoMainContent theLocation;
     R8RDataAccess DataAccess;
@@ -29,8 +30,8 @@ public partial class Leaders : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-            UserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"); 
+        if (HttpContext.Current.Profile != null && ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
+            UserID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"); 
         DataAccess = new R8RDataAccess();
         theLocation = Routing.IncomingMainContent(Page.RouteData, null);
         bool canView = DataAccess.CheckUserRights(UserID, UserActionType.Predict, false, theLocation.theTbl.PointsManagerID, theLocation.theTbl.TblID);
@@ -39,7 +40,7 @@ public partial class Leaders : System.Web.UI.Page
         ItemPath1.theTbl = theLocation.theTbl;
     }
 
-    public string FormatLinkToUsersRatings(string username, int userID)
+    public string FormatLinkToUsersRatings(string username, Guid userID)
     {
         return "<a href=\"/Ratings/" + userID.ToString() + "\">" + username + "</a>";
     }

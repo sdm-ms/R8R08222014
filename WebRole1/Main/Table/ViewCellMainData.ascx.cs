@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.IO;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
@@ -25,9 +26,9 @@ public partial class Main_Table_ViewCellMainData : System.Web.UI.UserControl
 
     Action<int> SelectFn;
     int ColumnNumber;
-    int TblColumnID;
+    Guid TblColumnID;
 
-    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, int tblColumnID, int? ratingGroupID, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid tblColumnID, Guid? ratingGroupID, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
     {
         SelectFn = selectFn;
         ColumnNumber = columnNumber;
@@ -44,14 +45,14 @@ public partial class Main_Table_ViewCellMainData : System.Web.UI.UserControl
             if (multipleOutcomes)
             {
                 theMultipleOutcomeCellData = (Main_Table_ViewCellMultipleOutcome)LoadControl("~/Main/Table/ViewCellMultipleOutcome.ascx");
-                theMultipleOutcomeCellData.Setup(dataAccess, selectFn, columnNumber, TblColumnID, (int)ratingGroupID, theTradingStatus, canPredict, selected, doRebind, suppStyle);
+                theMultipleOutcomeCellData.Setup(dataAccess, selectFn, columnNumber, TblColumnID, (Guid)ratingGroupID, theTradingStatus, canPredict, selected, doRebind, suppStyle);
                 MainDataPlaceHolder.Controls.Add(theMultipleOutcomeCellData);
             }
             else
             {
                 Control theSingleOutcomeControl = LoadControl("~/Main/Table/ViewCellSingleOutcome.ascx");
                 theSingleOutcomeCellData = (Main_Table_ViewCellSingleOutcome)theSingleOutcomeControl;
-                theSingleOutcomeCellData.Setup(dataAccess, (int)ratingGroupID, theTradingStatus, canPredict, selected, suppStyle);
+                theSingleOutcomeCellData.Setup(dataAccess, (Guid)ratingGroupID, theTradingStatus, canPredict, selected, suppStyle);
                 MainDataPlaceHolder.Controls.Add(theSingleOutcomeCellData);
             }
         }

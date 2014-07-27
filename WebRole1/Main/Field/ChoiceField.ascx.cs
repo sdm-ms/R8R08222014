@@ -13,19 +13,20 @@ using System.Xml.Linq;
 
 using System.Collections.Generic;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
 public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
 {
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID {get; set;}
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
     public bool AllowMultipleSelections;
     List<ChoiceMenuItem> theChoices = null;
-    public int ChoiceGroupID { get; set; }
-    public int FieldDefinitionID { get; set; }
+    public Guid ChoiceGroupID { get; set; }
+    public Guid FieldDefinitionID { get; set; }
     private ChoiceFieldFilter _DependsOn;
     ChoiceFieldFilter DependsOn
     {
@@ -116,9 +117,9 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
     }
 
     //This function return the choice number of selected choice
-    public int? GetValue()
+    public Guid? GetValue()
     {
-        int? ChoiceInGroupId = (DdlChoice.SelectedValue == "-1" || DdlChoice.SelectedValue == "") ? null : (int?)(Convert.ToInt32(DdlChoice.SelectedValue));
+        Guid? ChoiceInGroupId = (DdlChoice.SelectedValue == new Guid().ToString() || DdlChoice.SelectedValue == "") ? null : (Guid?)new Guid(DdlChoice.SelectedValue);
         return ChoiceInGroupId;
     }
 
@@ -141,19 +142,19 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
             List<ChoiceMenuItem> dependsOnChoices = DependsOn.GetSelectedChoices();
             if (dependsOnChoices == null || !dependsOnChoices.Any())
             {
-                List<int> availableOptionsInDepended = null;
+                List<Guid> availableOptionsInDepended = null;
                 if (DependsOn.DdlChoice.Items != null)
                 {
                     availableOptionsInDepended = DependsOn.DdlChoice.Items.Cast<ListItem>()
                              .Where(x => x.Value != "-1")
-                             .Select(x => Convert.ToInt32(x.Value))
+                             .Select(x => new Guid(x.Value))
                              .ToList();
                 }
                 dropDownItems = ChoiceMenuAccess.GetChoiceMenuItemsForDependentGroupWithNoDependentSelection(availableOptionsInDepended, ChoiceGroupID);
             }
             else
             {
-                List<int> determiningGroupValues = dependsOnChoices.Select(x => Convert.ToInt32(x.Value)).ToList();
+                List<Guid> determiningGroupValues = dependsOnChoices.Select(x => new Guid(x.Value)).ToList();
                 dropDownItems = ChoiceMenuAccess.GetChoiceMenuItemsForDependentGroupWithDependentSelections(determiningGroupValues, ChoiceGroupID);
             }
         }
@@ -239,7 +240,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
         if (!AllowMultipleSelections || Mode == FieldsBoxMode.filterWithButton || Mode == FieldsBoxMode.filterWithoutButton)
         {
             if (theChoices != null && theChoices.Any())
-                SelectChoiceInMenu(Convert.ToInt32(theChoices.First().Value));
+                SelectChoiceInMenu(Convert.ToInt32(theChoices.FirstOrDefault().Value));
         }
     }
 
@@ -320,7 +321,7 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
         if (DdlChoice.SelectedIndex <= 0)
             return null;
 
-        int ChoiceValue = int.Parse(DdlChoice.SelectedValue);
+        Guid ChoiceValue = new Guid(DdlChoice.SelectedValue);
         return new ChoiceFilterRule(FieldDefinitionOrTblColumnID, ChoiceValue);
     }
 
@@ -330,17 +331,17 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
         MyLoadViewState();
         if (AllowMultipleSelections)
         {
-            List<int> theChoiceInGroupIDs = new List<int>();
+            List<Guid> theChoiceInGroupIDs = new List<Guid>();
             if (theChoices != null && theChoices.Any())
             {
-                theChoiceInGroupIDs = theChoices.Select(x => Convert.ToInt32(x.Value)).ToList();
+                theChoiceInGroupIDs = theChoices.Select(x => new Guid(x.Value)).ToList();
             }
 
             List<ChoiceInGroup> theChoiceInGroups = new List<ChoiceInGroup>();
             foreach (var choiceInGroupID in theChoiceInGroupIDs)
                 theChoiceInGroups.Add(DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(cig => cig.ChoiceInGroupID == choiceInGroupID) );
 
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new ChoiceFieldDataInfo(theFieldDefinition, theChoiceInGroups, theGroup, DataAccess);
         }
         else
@@ -349,8 +350,8 @@ public partial class ChoiceFieldFilter : System.Web.UI.UserControl, IFilterField
                 return null;
             else
             {
-                FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
-                ChoiceInGroup choiceInGroup = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == Convert.ToInt32(DdlChoice.SelectedValue));
+                FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
+                ChoiceInGroup choiceInGroup = DataAccess.R8RDB.GetTable<ChoiceInGroup>().Single(x => x.ChoiceInGroupID == new Guid(DdlChoice.SelectedValue));
                 return new ChoiceFieldDataInfo(theFieldDefinition, choiceInGroup, theGroup, DataAccess);
             }
         }

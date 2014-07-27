@@ -13,13 +13,14 @@ using System.Xml.Linq;
 
 using WebRole1.CommonControl;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class MyPoints : System.Web.UI.Page
 {
-    internal int UserID;
+    internal Guid UserID;
 
 
-    protected int? ColumnToSort;
+    protected Guid? ColumnToSort;
     protected bool SortOrderAscending = true;
     protected bool rebinding = false;
     protected int rowBeingCreated = 0;
@@ -29,8 +30,8 @@ public partial class MyPoints : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         theDataAccessModule = new R8RDataManipulation();
-        if (HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
-            UserID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (HttpContext.Current.Profile != null && (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid())
+            UserID = (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     }
 
 
@@ -38,7 +39,7 @@ public partial class MyPoints : System.Web.UI.Page
     {
         try
         {
-            decimal points = (decimal)DataBinder.Eval(dataItem, itemString);
+            decimal points = Convert.ToDecimal(DataBinder.Eval(dataItem, itemString)); // can't use a regular cast here because of unboxing
             const int decimalPlaces = 2;
             string resultString = MoreStrings.MoreStringManip.FormatToExactDecimalPlaces(points, decimalPlaces);
             return resultString;
@@ -60,7 +61,7 @@ public partial class MyPoints : System.Web.UI.Page
         public decimal Dollars {get; set;}
         public decimal Current {get; set;}
         public decimal Pending { get; set; }
-        public decimal ExpectedWinnings {get; set;}
+        public double ExpectedWinnings {get; set;}
     }
 
     public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
@@ -75,8 +76,8 @@ public partial class MyPoints : System.Web.UI.Page
                                   let expectedWinningsUnadjusted = (p.PointsManager.CurrentPeriodDollarSubsidy * percentageOfPointsManagerPoints)
                                   let numPrizes = (p.PointsManager.NumPrizes == 0) ? -1 : p.PointsManager.NumPrizes /* we use -1 to avoid dividing by zero; note that linq to sql will evaluate both sides of a ||, even if unnecessary */
                                   let expectedWinnings = (numPrizes == -1 
-                                                            || expectedWinningsUnadjusted < p.PointsManager.CurrentPeriodDollarSubsidy / numPrizes) ? expectedWinningsUnadjusted // we'll just calculate it in the same way as long as this produces an estimate of less than the average prize
-                                                            : (p.PointsManager.CurrentPeriodDollarSubsidy / numPrizes) * (decimal) (1 - (Math.Pow((double) 1 -(double) percentageOfPointsManagerPoints, (double)numPrizes))) // 1 - probability of not winning any prizes, disregarding the fact that probability rises for subsequent prizes */
+                                                            || expectedWinningsUnadjusted < p.PointsManager.CurrentPeriodDollarSubsidy / numPrizes) ? (double) expectedWinningsUnadjusted // we'll just calculate it in the same way as long as this produces an estimate of less than the average prize
+                                                            : (double) (p.PointsManager.CurrentPeriodDollarSubsidy / numPrizes) * (1 - (Math.Pow((double) 1 -(double) percentageOfPointsManagerPoints, (double)numPrizes))) // 1 - probability of not winning any prizes, disregarding the fact that probability rises for subsequent prizes */
                                   select new 
                                     {
                                         Key = new {UserID = p.UserID, PointsManagerID = p.PointsManagerID},
@@ -177,7 +178,7 @@ public partial class MyPoints : System.Web.UI.Page
         MainListView.DataBind();
     }
 
-    public void ResortTable(int? theColumn, bool NewSortOrder)
+    public void ResortTable(Guid? theColumn, bool NewSortOrder)
     {
         // Add code for sorting
         ColumnToSort = theColumn;

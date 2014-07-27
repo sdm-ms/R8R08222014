@@ -10,6 +10,7 @@ using System.Text;
 using System.Web.Routing;
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 namespace WebApplication1.CommonControl
 {
@@ -39,9 +40,9 @@ namespace WebApplication1.CommonControl
                  let mgs = e.RatingGroups
                         .Where(
                          mg => mg.TblColumn.Status == (int) (StatusOfObject.Active) && 
-                                mg.TblColumn.TblTab == e.Tbl.TblTabs.
+                                mg.TblColumn.TblTab.TblTabID == e.Tbl.TblTabs.
                                  OrderBy(cg => cg.NumInTbl)
-                                 .First() && mg.RatingGroupAttribute.Name.StartsWith("Rating"))
+                                 .FirstOrDefault().TblTabID && mg.RatingGroupAttribute.Name.StartsWith("Rating"))
                                  .Select(y => new ColumnAndRating { 
                                      Column = y.TblColumn.Name, 
                                      ColumnID = y.TblColumnID,
@@ -69,12 +70,12 @@ namespace WebApplication1.CommonControl
                 return new List<RatingGroup>();
             List<RatingGroup> ratingGroupList = 
                 (from e in theTblRows
-                let mgDefault = e.RatingGroups.SingleOrDefault(
+                 let mgDefault = e.RatingGroups.FirstOrDefault(
                         mg => mg.TblColumnID ==
                             e.Tbl.TblTabs.
                                 OrderBy(cg => cg.NumInTbl)
-                                .First().DefaultSortTblColumnID)
-                let mgMostActive = e.RatingGroups.OrderByDescending(mg => mg.VolatilityTrackers.Single(x => x.DurationType == (int) VolatilityDuration.oneDay).Pushback).FirstOrDefault()
+                                .FirstOrDefault().DefaultSortTblColumnID)
+                let mgMostActive = e.RatingGroups.OrderByDescending(mg => mg.VolatilityTrackers.FirstOrDefault(x => x.DurationType == (int) VolatilityDuration.oneDay).Pushback).FirstOrDefault()
                 let mgBest = mgMostActive ?? mgDefault
                 where mgBest != null
                 select mgBest

@@ -15,13 +15,13 @@ using System.Xml.Linq;
 public partial class Main_Table_ViewCellAdministrativeOptions : System.Web.UI.UserControl
 {
     //Rating reolution user control
-    int RatingID;
+    Guid RatingID;
     protected void Page_Load(object sender, EventArgs e)
     {
 
     }
     //Property RatingId
-    public int RatingId
+    public Guid RatingId
     {
         get
         {
@@ -43,12 +43,12 @@ public partial class Main_Table_ViewCellAdministrativeOptions : System.Web.UI.Us
     //This event redirect the user to resolve rating page
     protected void LinkBtnResolve_Click(object sender, EventArgs e)
     {
-        int RatingGroupId = this.RatingId;
+        Guid RatingGroupId = this.RatingId;
         Response.Redirect("~/Rating/ResolveRatings.aspx?RatingGroupId=" + RatingGroupId);
     }
     protected void LinkBtnViewUserRating_Click(object sender, EventArgs e)
     {
-        int RatingGroupId = this.RatingId;
+        Guid RatingGroupId = this.RatingId;
         Response.Redirect("~/Main/View/ViewRatingUserRatings.aspx?RatingGroupId=" + RatingGroupId);
     }
 }

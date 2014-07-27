@@ -20,12 +20,13 @@ using System.Xml.Serialization;
 
 
 
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.UI.UserControl
 {
-    internal int TblID;
+    internal Guid TblID;
     internal R8RDataAccess DataAccess = new R8RDataAccess();
     FilterRules theFilterRules;
 
@@ -133,7 +134,7 @@ public partial class Admin_Tbl_user_control_changeTblImportExport : System.Web.U
                 return;
             }
 
-            int userID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             User theUser = DataAccess.R8RDB.GetTable<User>().Single(x => x.UserID == userID);
 
             myImportExport.PerformImport(fileLocation, userID, ChkIncValues.Checked && theUser.SuperUser);

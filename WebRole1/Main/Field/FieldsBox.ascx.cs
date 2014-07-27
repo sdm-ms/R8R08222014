@@ -16,14 +16,15 @@ using System.Diagnostics;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class FieldsBox : System.Web.UI.UserControl
 {
     protected R8RDataAccess DataAccess;
     public FieldsBoxMode Mode { get; set; }
     protected bool rebinding = false;
-    protected int TblID { get; set; }
-    protected int? TblTabID { get; set; }
+    protected Guid TblID { get; set; }
+    protected Guid? TblTabID { get; set; }
     protected TblRow TheTblRow { get; set; }
     internal SearchWordsFilter searchWordsControl;
     internal List<AnyFieldFilter> fieldsControls = new List<AnyFieldFilter>();
@@ -47,7 +48,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         HighStakesOnly.Visible = Mode != FieldsBoxMode.addTblRow && Mode != FieldsBoxMode.modifyFields;
     }
 
-    public void SetupStandalonePage(int theTblID, int? theTblTabID)
+    public void SetupStandalonePage(Guid theTblID, Guid? theTblTabID)
     {
         SuppressHeading = true;
         ViewShowDeletedItems = true;
@@ -56,7 +57,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         Setup(theTblID, theTblTabID, FieldsBoxMode.filterWithButton);
     }
 
-    public void Setup(int theTblID, int? theTblTabID, FieldsBoxMode mode)
+    public void Setup(Guid theTblID, Guid? theTblTabID, FieldsBoxMode mode)
     {
         Mode = mode;
         TblID = theTblID;
@@ -115,7 +116,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         Setup(TheTblRow.TblID, null, mode, theAction);
     }
 
-    public void Setup(int theTblID, int? theTblTabID, FieldsBoxMode mode, Action<object, EventArgs> theAction)
+    public void Setup(Guid theTblID, Guid? theTblTabID, FieldsBoxMode mode, Action<object, EventArgs> theAction)
     {
         Setup(theTblID, theTblTabID, mode);
         TheAction = theAction;
@@ -155,7 +156,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             FieldDefinitionInfo theFieldInfo = new FieldDefinitionInfo();
-            theFieldInfo.FieldDefinitionID = (int)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldDefinitionID"];
+            theFieldInfo.FieldDefinitionID = (Guid)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldDefinitionID"];
             theFieldInfo.FieldName = (string)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldName"];
             theFieldInfo.FieldType = (FieldTypes)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldType"];
             theFieldInfo.FieldNum = (int)FieldsBoxListViewFields.DataKeys[dataItem.DisplayIndex].Values["FieldNum"];
@@ -207,7 +208,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
             TblColumnInfo theColumnInfo = new TblColumnInfo();
-            theColumnInfo.TblColumnID = (int)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+            theColumnInfo.TblColumnID = (Guid)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
             theColumnInfo.TblColumnName = (string)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["TblColumnName"];
             theColumnInfo.DefaultSortOrderAsc = (bool)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["DefaultSortOrderAsc"];
             theColumnInfo.Sortable = (bool)FieldsBoxListViewColumns.DataKeys[dataItem.DisplayIndex].Values["Sortable"];
@@ -245,7 +246,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         }
     }
 
-    public void ReBind(bool resetFields, bool resetColumns, int? tblTabID)
+    public void ReBind(bool resetFields, bool resetColumns, Guid? tblTabID)
     {
         rebinding = true;
         LoadFilters();
@@ -267,7 +268,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
         if (fieldDefinitions == null)
         {
             fieldDefinitions = DataAccess.R8RDB.GetTable<FieldDefinition>()
-                             .Where(fd => fd.TblID == TblID && fd.Status == Convert.ToByte(StatusOfObject.Active)
+                             .Where(fd => fd.TblID == TblID && fd.Status == (byte) (StatusOfObject.Active)
                                             && (!limitToUseAsFilters || fd.UseAsFilter == true))
                              .OrderBy(fd => fd.FieldNum)
                              .ThenBy(fd => fd.FieldDefinitionID)
@@ -306,7 +307,7 @@ public partial class FieldsBox : System.Web.UI.UserControl
                 TblColumns = DataAccess.R8RDB.GetTable<TblColumn>()
                              .Where(cd => cd.TblTab.TblID == TblID
                                  && (cd.TblTabID == TblTabID || cd.TblTabID == null)
-                                 && cd.Status == Convert.ToByte(StatusOfObject.Active)
+                                 && cd.Status == (byte) (StatusOfObject.Active)
                                  && cd.UseAsFilter == true)
                              .OrderBy(cd => cd.CategoryNum)
                              .ThenBy(cd => cd.TblColumnID)

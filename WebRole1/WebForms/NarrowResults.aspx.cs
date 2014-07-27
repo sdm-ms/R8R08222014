@@ -8,20 +8,21 @@ using System.Web.UI.WebControls;
 
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class NarrowResults : System.Web.UI.Page
 {
     FilterRules theFilterRules = null;
-    int TblID = 0;
-    int TblTabID = 0;
+    Guid TblID;
+    Guid TblTabID;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
             IncrementCounter();
-            TblID = Convert.ToInt32(Request.QueryString["TableId"]);
-            TblTabID = Convert.ToInt32(Request.QueryString["SubtableId"]);
+            TblID = new Guid(Request.QueryString["TableId"]);
+            TblTabID = new Guid(Request.QueryString["SubtableId"]);
             LoadFilterRules();
             FieldsBox.SetupStandalonePage(TblID, TblTabID);
         }

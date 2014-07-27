@@ -11,29 +11,30 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class MainAnnounceTab : System.Web.UI.UserControl
 {
     ActionProcessor Obj = new ActionProcessor();
  
     Admin_Announcements_AddInsertableContents theInsertableContentsControl;
-     public int? TableId = null;
-     public int? SubtopicId = null;
-     public int? TopicId = null;
-     public int? AnnounceId = null;
-     public bool createAnnounceVisible;
-     public int? changeAnnounceVisible;
+    public Guid? TableId = null;
+    public Guid? SubtopicId = null;
+    public Guid? TopicId = null;
+    public Guid? AnnounceId = null;
+    public bool createAnnounceVisible;
+    public Guid? changeAnnounceVisible;
   
     protected void Page_Load(object sender, EventArgs e)
     {
         if (ViewState["createAnnounceVisible"] != null)
             createAnnounceVisible = (bool) ViewState["createAnnounceVisible"];
         if (ViewState["changeAnnounceVisible"] != null)
-            changeAnnounceVisible = (int?) ViewState["changeAnnounceVisible"];
+            changeAnnounceVisible = (Guid?)ViewState["changeAnnounceVisible"];
         DisplayModalPopupIfNecessary();
     }
 
-    public void Setup(int? TblID, int? pointsManagerID, int? domainID)
+    public void Setup(Guid? TblID, Guid? pointsManagerID, Guid? domainID)
     {
         TableId = TblID;
         SubtopicId = pointsManagerID;
@@ -116,7 +117,7 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
                         }
                         else
                         {
-                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((int)TopicId).Name + "]";
+                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((Guid)TopicId).Name + "]";
                         }
                     }
                     else
@@ -127,7 +128,7 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
                         }
                         else
                         {
-                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((int)TopicId).Name + "][inactive]";
+                            AnnounceCell1.Text = Announce.Name + "[" + Obj.DataAccess.GetDomain((Guid)TopicId).Name + "][inactive]";
                         }
                     }
                     TableCell AnnounceCell2 = new TableCell();
@@ -171,7 +172,7 @@ public partial class MainAnnounceTab : System.Web.UI.UserControl
     {
 
         Button BtnChange = (Button)sender;
-        int AnnounceId = int.Parse(BtnChange.CommandArgument);
+        Guid AnnounceId = new Guid(BtnChange.CommandArgument);
         createAnnounceVisible = false;
         changeAnnounceVisible = AnnounceId;
         ViewState["createAnnounceVisible"] = false;

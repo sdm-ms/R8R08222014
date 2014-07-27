@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace WorkerRole1
@@ -30,7 +31,7 @@ namespace WorkerRole1
 
         public override bool OnStart()
         {
-            new ClassLibrary1.Misc.AzureStartupDiagnostic();
+            new ClassLibrary1.Nonmodel_Code.AzureStartupDiagnostic();
 
             // Set the maximum number of concurrent connections 
             ServicePointManager.DefaultConnectionLimit = 12;

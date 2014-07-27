@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
@@ -18,8 +19,8 @@ using ClassLibrary1.Model;
 public partial class NumberFieldFilter : System.Web.UI.UserControl, IFilterField
 {
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID {get; set;}
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -38,7 +39,7 @@ public partial class NumberFieldFilter : System.Web.UI.UserControl, IFilterField
                             && a.Field.TblRowID == TblRowID && a.Status == (Byte)StatusOfObject.Active);
                 
                 if (theNumberField != null)
-                    TxtTo.Text = (theNumberField.Number == null) ? "" : MoreStrings.MoreStringManip.FormatToExactDecimalPlaces(theNumberField.Number, theNumberField.Field.FieldDefinition.NumberFieldDefinitions.First().DecimalPlaces);
+                    TxtTo.Text = (theNumberField.Number == null) ? "" : MoreStrings.MoreStringManip.FormatToExactDecimalPlaces(theNumberField.Number, theNumberField.Field.FieldDefinition.NumberFieldDefinitions.FirstOrDefault().DecimalPlaces);
 
             } 
         }
@@ -78,7 +79,7 @@ public partial class NumberFieldFilter : System.Web.UI.UserControl, IFilterField
         else
         {
             decimal theNumber = Convert.ToDecimal(TxtTo.Text);
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new NumericFieldDataInfo(theFieldDefinition, theNumber, theGroup, DataAccess);
         }
     }

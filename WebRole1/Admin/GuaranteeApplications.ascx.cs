@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace WebRole1.Admin
@@ -14,7 +15,7 @@ namespace WebRole1.Admin
     {
         public string FileName { get; set; }
         public string Username { get; set; }
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
     }
 
     public partial class GuaranteeApplications : System.Web.UI.UserControl
@@ -36,7 +37,7 @@ namespace WebRole1.Admin
 
         public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
-            var theQuery = theDataAccessModule.R8RDB.GetTable<PointsTotal>().Where(x => x.PointsManager == theLocation.thePointsManager && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserID });
+            var theQuery = theDataAccessModule.R8RDB.GetTable<PointsTotal>().Where(x => x.PointsManager.PointsManagerID == theLocation.thePointsManager.PointsManagerID && x.PendingConditionalGuaranteeApplication != null && x.PendingConditionalGuaranteeApplication != "").OrderBy(x => x.User.WhenCreated).Select(x => new GuaranteeApplicationsItem { FileName = x.PendingConditionalGuaranteeApplication, Username = x.User.Username, UserID = x.User.UserID });
             e.Result = theQuery;
         }
 
@@ -63,7 +64,7 @@ namespace WebRole1.Admin
         public GuaranteeApplicationsItem GetGuaranteeApplicationsItemFromCommandArgument(string commandArgument)
         {
             string[] split = commandArgument.Split('$');
-            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = Convert.ToInt32(split[1]), Username = theDataAccessModule.R8RDB.GetTable<User>().Single(x => x.UserID == Convert.ToInt32(split[1])).Username };
+            GuaranteeApplicationsItem item = new GuaranteeApplicationsItem { FileName = split[0], UserID = new Guid(split[1]), Username = theDataAccessModule.R8RDB.GetTable<User>().Single(x => x.UserID == new Guid(split[1])).Username };
             return item;
         }
 
@@ -115,7 +116,7 @@ namespace WebRole1.Admin
         //    ListViewDataItem dataItem = (ListViewDataItem)e.Item;
         //    DataKey currentDataKey = MainListView.DataKeys[dataItem.DisplayIndex];
         //    string fileName = (string)currentDataKey["FileName"];
-        //    int userID = (int)currentDataKey["UserID"];
+        //    Guid userID = (int)currentDataKey["UserID"];
         //    switch (e.CommandName)
         //    {
         //        case "Download":

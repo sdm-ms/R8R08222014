@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace WebRole1.Admin
@@ -12,9 +13,9 @@ namespace WebRole1.Admin
     public partial class Guarantees : System.Web.UI.UserControl
     {
         public ActionProcessor theActionProcessor;
-        public int pointsManagerID;
+        public Guid pointsManagerID;
 
-        public void Setup(int thePointsManagerID)
+        public void Setup(Guid thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
             theActionProcessor = new ActionProcessor();
@@ -46,7 +47,7 @@ namespace WebRole1.Admin
             bool ConditionalGuaranteesAvailableForExistingUsers = Convert.ToBoolean(conditionalGuaranteesAvailableForExistingUsers.Text);
             int ConditionalGuaranteeTimeBlockInHours = Convert.ToInt32(conditionalGuaranteeTimeBlockInHours.Text);
 
-            theActionProcessor.PointsManagerGuaranteeSettings(pointsManagerID, DollarValuePerPoint, DiscountForGuarantees, MaximumTotalGuarantees, AllowApplicationsWhenNoConditionalGuaranteesAvailable, ConditionalGuaranteesAvailableForNewUsers, ConditionalGuaranteesAvailableForExistingUsers, ConditionalGuaranteeTimeBlockInHours, MaximumGuaranteePaymentPerHour, true, (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
+            theActionProcessor.PointsManagerGuaranteeSettings(pointsManagerID, DollarValuePerPoint, DiscountForGuarantees, MaximumTotalGuarantees, AllowApplicationsWhenNoConditionalGuaranteesAvailable, ConditionalGuaranteesAvailableForNewUsers, ConditionalGuaranteesAvailableForExistingUsers, ConditionalGuaranteeTimeBlockInHours, MaximumGuaranteePaymentPerHour, true, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         }
     }
 }

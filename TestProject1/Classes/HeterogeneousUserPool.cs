@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 using System.Diagnostics;
 
 namespace TestProject1
 {
     class HeterogeneousUserPool
     {
-        public TestHelper TestHelper { get; private set; }
+        public TestHelper theTestHelper { get; private set; }
         /// <summary>
         /// The number of HeterogeneousUsers in this pool
         /// </summary>
@@ -55,19 +56,19 @@ namespace TestProject1
         public HeterogeneousUserPool(TestHelper testHelper, double quality, int userRatingEstimateWeight,
             float subversivePercentage, Action afterEachRatingAction = null, Action afterEachUserRatingAction = null)
         {
-            TestHelper = testHelper;
+            theTestHelper = testHelper;
             PercentageSubversive = subversivePercentage;
             AfterEachRatingAction = afterEachRatingAction;
             AfterEachUserRatingAction = afterEachUserRatingAction;
             
             var heterogeneousUsers = new List<HeterogeneousUser>();
-            int subversiveUserCount = (int)Math.Ceiling(TestHelper.UserIds.Count() * subversivePercentage);
-            int dominantUserCount = TestHelper.UserIds.Count() - subversiveUserCount;
-            foreach (int userId in TestHelper.UserIds)
+            int subversiveUserCount = (int)Math.Ceiling(theTestHelper.UserIds.Count() * subversivePercentage);
+            int dominantUserCount = theTestHelper.UserIds.Count() - subversiveUserCount;
+            foreach (Guid userId in theTestHelper.UserIds)
             {
                 HeterogeneousUserType type = heterogeneousUsers.Count < dominantUserCount ?
                     HeterogeneousUserType.Dominant : HeterogeneousUserType.Subversive;
-                var heterogeneousUser = new HeterogeneousUser(TestHelper, userId, type, quality, 
+                var heterogeneousUser = new HeterogeneousUser(theTestHelper, userId, type, quality, 
                     userRatingEstimateWeight);
                 heterogeneousUsers.Add(heterogeneousUser);
             }
@@ -90,8 +91,8 @@ namespace TestProject1
         public void PerformRatings(decimal correctRatingValue, decimal subversiveUserRatingValue, Tbl tbl,
             int userRatingsPerRating, bool subversiveUserIgnoresPreviousRatings)
         {
-            List<Rating> ratings = TestHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(tbl)).ToList();
+            List<Rating> ratings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == tbl.TblID).OrderBy(x => x.RatingGroup.WhenCreated).ToList();
             PerformRatings(ratings, correctRatingValue, subversiveUserRatingValue, userRatingsPerRating, subversiveUserIgnoresPreviousRatings);
         }
 
@@ -121,11 +122,7 @@ namespace TestProject1
                     else
                         user.Rate(rating, subversiveUserRatingValue, subversiveUserIgnoresPreviousRatings);
                     numberUserRatings++;
-                    GC.Collect(); // DEBUG
-                    //Debug.WriteLine("DEBUG1 average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
-                    TestHelper.ActionProcessor.ResetDataContexts(); // DEBUG -- delete this
-                    GC.Collect(); // DEBUG
-                   // Debug.WriteLine("DEBUG average usage by rate: " + (((double)(GC.GetTotalMemory(false) - memoryInit)) / ((double)(numberUserRatings))));
+                    GC.Collect(); // This is here for testing purposes, so we can test for a memory leak.
                 }
             }
         }

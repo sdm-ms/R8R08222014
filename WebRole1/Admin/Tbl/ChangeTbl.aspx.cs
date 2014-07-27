@@ -17,12 +17,13 @@ using System.Xml.Schema;
 using System.Collections.Generic;
 using GoogleGeocoder;
 
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class ChangeTbl : System.Web.UI.Page
 {
-    static int TableId;
+    Guid TableId;
     
     ActionProcessor Obj = new ActionProcessor();
     protected void Page_Load(object sender, EventArgs e)
@@ -36,7 +37,8 @@ public partial class ChangeTbl : System.Web.UI.Page
         Response.Expires = -1500;
         Response.CacheControl = "no-cache";
 
-        if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
+        Guid? userId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (!(HttpContext.Current.Profile != null && userId != new Guid()) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == userId).SuperUser)
         {
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
             return;
@@ -55,7 +57,7 @@ public partial class ChangeTbl : System.Web.UI.Page
     //    {
     //         TableId = int.Parse(Request.QueryString["TableId"]);
     //        int? ChangeGroupId = null;
-    //    int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+    //    Guid userID = (Guid) ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     //    StatusOfObject Status = (StatusOfObject)Obj.ObjDataAccess.GetTbl(TableId).Status;
     //    if (Status ==  StatusOfObject.Active)
     //    {

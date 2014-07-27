@@ -9,7 +9,8 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Web.Profile;
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 
 
 namespace WebServices
@@ -67,14 +68,14 @@ namespace WebServices
             ActionProcessor actionProcessor = new ActionProcessor();
             R8RDataManipulation dataManipulation = new R8RDataManipulation();
             actionProcessor.ResetDataContexts();
-            List<int> specifiedRatingIDs = new List<int>();
+            List<Guid> specifiedRatingIDs = new List<Guid>();
 
             foreach (var userRatingsStringList in theUserRatings)
             {
                 foreach (var rurs in userRatingsStringList)
                     if (rurs.ratingID.Contains('/'))
                     {
-                        Tuple<int,int> ratingIDAndRatingGroupID = dataManipulation.AddMissingRatingGroupAndRatings(rurs.ratingID);
+                        Tuple<Guid, Guid> ratingIDAndRatingGroupID = dataManipulation.AddMissingRatingGroupAndRatings(rurs.ratingID);
                         rurs.ratingID = ratingIDAndRatingGroupID.Item1.ToString();
                     }
                 RatingAndUserRatingStringConverter.AddRatingIDsToList(userRatingsStringList, specifiedRatingIDs);
@@ -83,7 +84,7 @@ namespace WebServices
 
             User theUser = actionProcessor.DataContext.GetTable<User>().Single(u => u.Username == theUserAccessInfo.userName);
             List<Rating> ratingsEntered = RatingsAndRelatedInfoLoader.Load(actionProcessor.DataContext, specifiedRatingIDs, theUser);
-            bool oneRatingPerRatingGroup = ratingsEntered.First().RatingGroup.TblRow.Tbl.OneRatingPerRatingGroup;
+            bool oneRatingPerRatingGroup = ratingsEntered.FirstOrDefault().RatingGroup.TblRow.Tbl.OneRatingPerRatingGroup;
             //actionProcessor.R8RDB.GetTable<SetUserRatingAddingLoadOption>();
             if (theResponse != null)
             {
@@ -130,7 +131,7 @@ namespace WebServices
         [WebMethod]
         public MyPointsSidebarInfo GetSidebarInfo(string pointsManagerIDString, UserAccessInfo theUserAccessInfo)
         {
-            int pointsManagerID = Convert.ToInt32(pointsManagerIDString);
+            Guid pointsManagerID = new Guid(pointsManagerIDString);
             UserEditResponse theResponse = ConfirmUserAccessInfo(theUserAccessInfo);
             if (theResponse != null)
                 return null;

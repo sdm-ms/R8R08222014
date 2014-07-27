@@ -15,13 +15,14 @@ using System.Web.UI.DataVisualization.Charting;
 using System.Globalization;
 using System.Collections.Generic;
 
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public class RatingOverTimeInfoForRenderControl
 {
-    public int? RatingGroupID;
-    public int? SpecificRatingID;
+    public Guid? RatingGroupID;
+    public Guid? SpecificRatingID;
 }
 
 public partial class RatingOverTimeGraph : System.Web.UI.UserControl
@@ -31,11 +32,11 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
     internal bool SuppressDrilledInSeriesName = false;
 
     internal R8RDataAccess DataAccess = new R8RDataAccess();
-    public int? RatingGroupID { get; set; }
-    public int? SpecificRatingID { get; set; }
+    public Guid? RatingGroupID { get; set; }
+    public Guid? SpecificRatingID { get; set; }
     public bool AxesBasedOnData;
 
-    public void Manual_Setup(int? ratingGroupID, int? specificRatingID)
+    public void Manual_Setup(Guid? ratingGroupID, Guid? specificRatingID)
     {
         AxesBasedOnData = true;
         RatingGroupID = ratingGroupID;
@@ -66,14 +67,14 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
     {
         if (ViewState["SpecificRatingID"] != null)
         {
-            SpecificRatingID = Convert.ToInt32(ViewState["SpecificRatingID"]);
+            SpecificRatingID = new Guid(ViewState["SpecificRatingID"].ToString());
             Rating specificRatingRequested = DataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.RatingID == SpecificRatingID);
             RatingGroupID = specificRatingRequested.RatingGroupID;
             Further_Setup();
         }
         else if (ViewState["RatingGroupID"] != null)
         {
-            RatingGroupID = Convert.ToInt32(ViewState["RatingGroupID"]);
+            RatingGroupID = new Guid(ViewState["RatingGroupID"].ToString());
             SpecificRatingID = null;
             Further_Setup();
         }
@@ -105,8 +106,8 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         RatingGroup theRatingGroup = DataAccess.R8RDB.GetTable<RatingGroup>().SingleOrDefault(mg => mg.RatingGroupID == RatingGroupID);
         if (theRatingGroup == null)
             return;
-        
-        bool canViewPage = DataAccess.CheckUserRights((int?) (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
+
+        bool canViewPage = DataAccess.CheckUserRights((Guid?)(Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), UserActionType.View, false, null, theRatingGroup.TblRow.TblID);
         if (!canViewPage)
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
 
@@ -201,24 +202,25 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         DateTime lastDateTime = TestableDateTime.Now;
         if (numberSeconds == 5000 * 24 * 60 * 60)
         {
-            int topmostRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
+            Guid topmostRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
             RatingGroupResolution theResolution = DataAccess.R8RDB.GetTable<RatingGroupResolution>()
                 .Where(mg => mg.RatingGroupID == topmostRatingGroupID)
                 .OrderByDescending(mg => mg.ExecutionTime)
-                .ThenByDescending(mg => mg.RatingGroupResolutionID)
+                .ThenByDescending(mg => mg.WhenCreated)
                 .FirstOrDefault();
             if (theResolution != null && theResolution.CancelPreviousResolutions == false)
                 lastDateTime = theResolution.EffectiveTime;
         }
 
         var theUserRatingData = DataAccess.R8RDB.GetTable<UserRating>()
-            .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenMade >= firstDateTime)
+            .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenCreated >= firstDateTime)
             .Where(p => SpecificRatingID == null || p.RatingID == SpecificRatingID)
-            .Where(p => lastDateTime == null || p.UserRatingGroup.WhenMade <= lastDateTime)
+            .Where(p => lastDateTime == null || p.UserRatingGroup.WhenCreated <= lastDateTime)
             .Where(p => p.NewUserRating != null)
-            .Select(p => new { RatingID = p.Rating.RatingID, NumInGroup = p.Rating.NumInGroup, SeriesName = p.Rating.Name, OwnedRatingGroupID = p.Rating.OwnedRatingGroupID, Date = p.UserRatingGroup.WhenMade, Value = (decimal) p.NewUserRating })
+            .Select(p => new { RatingID = p.Rating.RatingID, NumInGroup = p.Rating.NumInGroup, SeriesName = p.Rating.Name, OwnedRatingGroupID = p.Rating.OwnedRatingGroupID, Date = p.UserRatingGroup.WhenCreated, Value = (decimal) p.NewUserRating })
             .OrderBy(p => p.NumInGroup)
-            .ThenBy(p => p.Date);
+            .ThenBy(p => p.Date)
+            .ToList();
 
         if (!theUserRatingData.Any())
         { // No predictions in this time -- add most recent one.
@@ -227,7 +229,8 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
                .Where(p => SpecificRatingID == null || p.RatingID == SpecificRatingID)
                .Select(p => new { RatingID = p.RatingID, NumInGroup = p.NumInGroup, SeriesName = p.Name, OwnedRatingGroupID = p.OwnedRatingGroupID, Date = firstDateTime, Value = p.CurrentValue ?? 0 })
                .OrderBy(p => p.NumInGroup)
-               .ThenBy(p => p.Date);
+               .ThenBy(p => p.Date)
+               .ToList();
         }
 
         var theSerieses = from p in theUserRatingData
@@ -260,16 +263,15 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         //    theTimeSpan = TestableDateTime.Now - firstDateTime;
         //}
 
-        foreach (var aSeries in theSerieses)
+        foreach (var aSeries in theSerieses.ToList())
         {
-            int theRatingID = aSeries.SeriesInfo.RatingID;
+            Guid theRatingID = aSeries.SeriesInfo.RatingID;
             decimal? theEarlierValue = null;
-            var theEarlierUserRatings = DataAccess.R8RDB.GetTable<UserRating>()
-                .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenMade < firstDateTime)
-                .Where(p => p.RatingID == theRatingID)
-                .OrderByDescending(p => p.UserRatingGroup.WhenMade);
-            if (theEarlierUserRatings.Any())
-                theEarlierValue = theEarlierUserRatings.First().NewUserRating;
+            UserRating theEarlierUserRating = DataAccess.R8RDB.GetTable<UserRating>()
+                .Where(p => p.Rating.RatingGroupID == RatingGroupID && p.UserRatingGroup.WhenCreated < firstDateTime && p.RatingID == theRatingID)
+                .OrderByDescending(p => p.UserRatingGroup.WhenCreated).FirstOrDefault();
+            if (theEarlierUserRating != null)
+                theEarlierValue = theEarlierUserRating.NewUserRating;
 
             Series series = new Series(aSeries.SeriesInfo.SeriesName);
             var xValues = aSeries.UserRatingData.Select(x => x.Date).ToList();
@@ -305,7 +307,7 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
             {
                 if (!SuppressDrilledInSeriesName)
                 {
-                    DrilledInSeriesName.Text = theSerieses.First().SeriesInfo.SeriesName;
+                    DrilledInSeriesName.Text = theSerieses.FirstOrDefault().SeriesInfo.SeriesName;
                     DrilledInSeriesName.Visible = true;
                 }
             }
@@ -344,13 +346,13 @@ public partial class RatingOverTimeGraph : System.Web.UI.UserControl
         string[] theStrings = e.PostBackValue.Split(',');
         if (theStrings[0] == "MG")
         {
-            RatingGroupID = Convert.ToInt32(theStrings[1]);
+            RatingGroupID = new Guid(theStrings[1]);
             SpecificRatingID = null;
         }
         else
         {
-            SpecificRatingID = Convert.ToInt32(theStrings[1]);
-            RatingGroupID = Convert.ToInt32(theStrings[2]);
+            SpecificRatingID = new Guid(theStrings[1]);
+            RatingGroupID = new Guid(theStrings[2]);
         }
         ViewState["RatingGroupID"] = RatingGroupID;
         ViewState["SpecificRatingID"] = SpecificRatingID;

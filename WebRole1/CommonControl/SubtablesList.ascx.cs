@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
@@ -38,13 +39,14 @@ using ClassLibrary1.Model;
             theLocation = location;
             R8RDB = theDataContext;
 
-            int? UserID = null;
-            if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-                UserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid? UserID = null;
+            if (HttpContext.Current.Profile != null && ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
+                UserID = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             PointsManager firstPointsManager = null;
             if (location != null)
             {
-                Tbl aTable = R8RDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && location.theHierarchy.Contains(x.HierarchyItems.First()));
+                List<Guid> hierarchyItemsIDs = location.theHierarchy.Select(x => x.HierarchyItemID).ToList();
+                Tbl aTable = R8RDB.GetTable<Tbl>().FirstOrDefault(x => x.HierarchyItems.Any() && hierarchyItemsIDs.Contains(x.HierarchyItems.FirstOrDefault().HierarchyItemID));
                 if (aTable != null)
                     firstPointsManager = aTable.PointsManager;
             }
@@ -63,7 +65,7 @@ using ClassLibrary1.Model;
         public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
             var theQuery = R8RDB.GetTable<HierarchyItem>()
-                .Where(x => x.HigherHierarchyItemID == theLocation.lastItemInHierarchy.HierarchyItemID);
+                .Where(x => x.ParentHierarchyItemID == theLocation.lastItemInHierarchy.HierarchyItemID);
 
             e.Result = theQuery;
         }

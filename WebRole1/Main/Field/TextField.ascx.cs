@@ -14,13 +14,14 @@ using System.Xml.Linq;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
 {
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID {get; set;}
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -132,7 +133,7 @@ public partial class TextFieldFilter : System.Web.UI.UserControl, IFilterField
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new TextFieldDataInfo(theFieldDefinition, MainText, LinkText, theGroup, DataAccess);
         }
     }

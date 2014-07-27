@@ -16,12 +16,13 @@ using System.Data.SqlClient;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterField
 {
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID {get; set;}
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
     public decimal? Latitude;
     public decimal? Longitude;
@@ -56,7 +57,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
         if (TxtAddress.Text.Trim() == "")
             return null;
         else
-            return new AddressFilterRule((int)FieldDefinitionOrTblColumnID, TxtAddress.Text.Trim(), Convert.ToDecimal(mileText));
+            return new AddressFilterRule((Guid)FieldDefinitionOrTblColumnID, TxtAddress.Text.Trim(), Convert.ToDecimal(mileText));
     }
 
     public FieldDataInfo GetFieldValue(FieldSetDataInfo theGroup)
@@ -66,7 +67,7 @@ public partial class AddressFieldFilter : System.Web.UI.UserControl, IFilterFiel
             return null;
         else
         {
-            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (int)FieldDefinitionOrTblColumnID);
+            FieldDefinition theFieldDefinition = DataAccess.R8RDB.GetTable<FieldDefinition>().Single(fd => fd.FieldDefinitionID == (Guid)FieldDefinitionOrTblColumnID);
             return new AddressFieldDataInfo(theFieldDefinition, addressText, Latitude, Longitude, theGroup, DataAccess);
         }
     }

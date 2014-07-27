@@ -17,7 +17,8 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 #endif
 
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 using FluentAssertions;
 
 namespace TestProject1
@@ -28,17 +29,16 @@ namespace TestProject1
         const float Precision = 0.0001f;
 
         R8RDataManipulation _dataManipulation;
-        TestHelper TestHelper;
+        TestHelper theTestHelper;
         Random _random;
 
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds());
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
-            TestHelper = new TestHelper();
+            theTestHelper = new TestHelper();
             _dataManipulation = new R8RDataManipulation();
 
             _random = new Random();
@@ -49,28 +49,31 @@ namespace TestProject1
         public void SimplePointsPumpingInitiativeCounteracted()
         {
             Initialize();
-            TestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateSimpleTestTable(true);
             int numFakeUsers = 100;
-            TestHelper.CreateUsers(100 + 1);
+            theTestHelper.CreateUsers(100 + 1);
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
             UserEditResponse theResponse = new UserEditResponse();
             int fakeUserNumber = 1;
+
+            Guid user0 = theTestHelper.UserIds[0];
             for (int i = 1; i <= numFakeUsers * 2; i++)
             {
                 if (i % 2 == 1)
-                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 4.0M, TestHelper.UserIds[0], ref theResponse);
+                    theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, 4.0M, user0, ref theResponse);
                 else
                 {
-                    TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, 5.0M, TestHelper.UserIds[fakeUserNumber], ref theResponse);
+                    theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, 5.0M, theTestHelper.UserIds[fakeUserNumber], ref theResponse);
                     fakeUserNumber++;
                 }
-                TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation); // must do this, otherwise next user rating will get an adjustment factor of 0.
+                theTestHelper.FinishUserRatingAdd(theTestHelper.ActionProcessor.DataManipulation); // must do this, otherwise next user rating will get an adjustment factor of 0.
                 if (i % 10 == 0)
-                    TestHelper.WaitIdleTasks();
+                    theTestHelper.WaitIdleTasks();
             }
-            TestHelper.WaitIdleTasks();
-            decimal? ppp = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == TestHelper.UserIds[0]).First().PointsPumpingProportion;
+            theTestHelper.WaitIdleTasks();
+
+            decimal? ppp = theTestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(x => x.UserID == user0).FirstOrDefault().PointsPumpingProportion;
             ppp.Should().Equals(1.0M);
         }
 
@@ -116,7 +119,7 @@ namespace TestProject1
             // Setup 
             for (int i = 0; i < n; i++)
             {
-                UserRating ur = new UserRating();
+                UserRating ur = new UserRating() { UserRatingID = Guid.NewGuid() };
                 if (i == 0)
                     ur.PreviousRatingOrVirtualRating = previousRatingOrVirtualRating;
                 else
@@ -127,7 +130,7 @@ namespace TestProject1
                 else
                     ur.MaxGain = assumedMaxGain; // we just need an assumption 
                 urList.Add(ur);
-                PointsTotal pt = new PointsTotal();
+                PointsTotal pt = new PointsTotal() { PointsTotalID = Guid.NewGuid() };
                 if (usersHaveSufficientPoints[i])
                     pt.TotalPoints = 1000000; // gives user sufficient points
                 // assuming this is the first user rating

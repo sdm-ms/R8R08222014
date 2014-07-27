@@ -12,12 +12,13 @@ using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
 public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserControl
 {
-    protected int? TblColumnID; 
+    protected Guid? TblColumnID; 
     protected R8RDataAccess DataAccess;
     protected string Abbreviation;
     protected string Name;
@@ -28,10 +29,10 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
     protected bool SubstituteRefreshButton;
     protected bool VerticalText;
     protected bool ChartButton;
-    protected int? TblRowIDForChartButton;
-    protected Action<int?, bool> SortFn;
+    protected Guid? TblRowIDForChartButton;
+    protected Action<Guid?, bool> SortFn;
 
-    public void Setup(R8RDataAccess dataAccess, Action<int?, bool> sortFn, int? tblColumnID, int? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
+    public void Setup(R8RDataAccess dataAccess, Action<Guid?, bool> sortFn, Guid? tblColumnID, Guid? entityIDForChartButton, string abbreviation, string name, string widthStyle, bool sortableColumn, bool currentlySorting, bool doSortOrderAscending, bool substituteRefreshButton, bool verticalText)
     {
         DataAccess = dataAccess;
         SortFn = sortFn;
@@ -47,7 +48,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
         ChartButton = false;
         TblRowIDForChartButton = entityIDForChartButton;
 
-        if (TblColumnID != null && entityIDForChartButton != null && TblColumnID != -1 && entityIDForChartButton != -1)
+        if (TblColumnID != null && entityIDForChartButton != null && TblColumnID != new Guid() && entityIDForChartButton != new Guid())
         {
             //if (substituteRefreshButton)
             //    ; // THIS FEATURE NOT CURRENTLY SUPPORTED ColumnPopUpMouseOverArea.AddAttribute("class", "refreshCell");
@@ -164,7 +165,7 @@ public partial class Main_Table_ViewCellColumnHeading : System.Web.UI.UserContro
                 string href = "";
                 if (ChartButton || SubstituteRefreshButton)
                 {
-                    int? RatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn((int)TblRowIDForChartButton, (int)TblColumnID);
+                    Guid? RatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn((Guid)TblRowIDForChartButton, (Guid)TblColumnID);
                     if (RatingGroupID != null)
                     {
                         TblColumn theCD = DataAccess.R8RDB.GetTable<TblColumn>().SingleOrDefault(cd => cd.TblColumnID == TblColumnID);

@@ -8,8 +8,9 @@ using System.Text;
 
 using System.Web.UI.HtmlControls;
 using MoreStrings;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_Comments : System.Web.UI.UserControl
 {
@@ -64,16 +65,19 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
         public string Title { get; set; }
         public string Comment { get; set; }
         public string AuthorAndDate { get; set; }
-        public int CommentID { get; set; }
+        public Guid CommentID { get; set; }
         public int Status { get; set; }
     }
 
     public void MainLinqDataSource_Selecting(object sender, LinqDataSourceSelectEventArgs e)
     {
         DateTime alwaysHideCommentsDeletedBeforeThisTime = TestableDateTime.Now - new TimeSpan(7,0,0,0);
+        bool isEntireTableQuery = theTblRowOrNullForEntireTable == null;
+        Guid? theTblRowOrNullForEntireTableID = (theTblRowOrNullForEntireTable == null) ? null : (Guid?) theTblRowOrNullForEntireTable.TblRowID;
+        Guid? theTblOrNullForRowOnlyID = (theTblOrNullForRowOnly == null) ? null : (Guid?)theTblOrNullForRowOnly.TblID;
         var theQuery = theDataAccessModule.DataContext.GetTable<Comment>()
-            .Where(x => 
-                ((theTblRowOrNullForEntireTable != null && x.TblRow == theTblRowOrNullForEntireTable) || (theTblOrNullForRowOnly != null && x.TblRow.Tbl == theTblOrNullForRowOnly))
+            .Where(x =>
+                ((!isEntireTableQuery && (theTblRowOrNullForEntireTableID != null && x.TblRow.TblRowID == theTblRowOrNullForEntireTableID)) || (isEntireTableQuery && (theTblOrNullForRowOnlyID != null && x.TblRow.Tbl.TblID == theTblOrNullForRowOnlyID)))
                 && (x.Status == (int)StatusOfObject.Active || (UserCanDeleteComments && ShowDeletedAndProposedComments && x.LastDeletedDate > alwaysHideCommentsDeletedBeforeThisTime)))
             .OrderByDescending(x => x.DateTime).Select(
                 x => new CommentData { 
@@ -81,7 +85,7 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
                     Title = x.CommentTitle,
                     Comment = x.CommentText, 
                     AuthorAndDate = x.User.Username + " " + x.DateTime.ToString(), 
-                    CommentID = x.CommentsID, 
+                    CommentID = x.CommentID, 
                     Status = x.Status 
                 });
         e.Result = theQuery;
@@ -136,21 +140,21 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
 
     public void AddComment_Click(object sender, EventArgs e)
     {
-        int? userID = (int?) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && (UserCanProposeComments || UserCanAddComments))
         {
             string commentTitle = MoreStringManip.StripHtml(NewCommentTitle.Text).Replace("\n", "<br/>");
             string commentText = MoreStringManip.StripHtml(NewCommentText.Text).Replace("\n", "<br/>");
-            theProcess.CommentForTblRowCreate(theTblRowOrNullForEntireTable.TblRowID, commentTitle, commentText, TestableDateTime.Now, (int)userID, !UserCanAddComments, true, null);
+            theProcess.CommentForTblRowCreate(theTblRowOrNullForEntireTable.TblRowID, commentTitle, commentText, TestableDateTime.Now, (Guid)userID, !UserCanAddComments, true, null);
         }
         Routing.Redirect(Response, Routing.Incoming(Page.RouteData, theProcess.DataContext));
     }
 
-    private void GetCommentInfo(Button theButton, out int commentID, out bool isProposed, out bool isDeleted)
+    private void GetCommentInfo(Button theButton, out Guid commentID, out bool isProposed, out bool isDeleted)
     {
         string[] commandData = theButton.CommandArgument.Split(',');
-        commentID = Int32.Parse(commandData[0]);
+        commentID = new Guid(commandData[0]);
         int status = Int32.Parse(commandData[1]);
         isProposed = status == (int)StatusOfObject.Proposed;
         isDeleted = status == (int)StatusOfObject.Unavailable;
@@ -158,14 +162,14 @@ public partial class Main_Table_Comments : System.Web.UI.UserControl
 
     public void DeleteComment_Click(object sender, EventArgs e)
     {
-        int commentID;
+        Guid commentID;
         bool isProposed;
         bool isDeleted;
         GetCommentInfo((Button)sender, out commentID, out isProposed, out isDeleted);
-        int? userID = (int?)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        Guid? userID = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         ActionProcessor theProcess = new ActionProcessor();
         if (userID != null && UserCanDeleteComments)
-            theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (int)userID, true, null);
+            theProcess.CommentForTblRowDeleteOrUndelete(commentID, !isDeleted && !isProposed, (Guid)userID, true, null);
         Routing.Redirect(Response, Routing.Incoming(Page.RouteData, theProcess.DataContext));
     }
 

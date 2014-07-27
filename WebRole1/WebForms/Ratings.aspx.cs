@@ -14,12 +14,13 @@ using System.Xml.Linq;
 using System.Text;
 using MoreStrings;
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 
 public partial class Ratings : System.Web.UI.Page
 {
-    internal int UserIDOfRatingsBeingViewed;
-    internal int? UserIDOfBrowsingUser;
+    internal Guid UserIDOfRatingsBeingViewed;
+    internal Guid? UserIDOfBrowsingUser;
     protected bool browsingUserIsTrusted = false;
     protected bool browsingUserIsAdmin = false;
 
@@ -42,8 +43,8 @@ public partial class Ratings : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         RoutingInfoRatings theRatingsInfo = Routing.IncomingRatings(Page.RouteData, theDataAccessModule.DataContext);
-        if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-            UserIDOfBrowsingUser = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (HttpContext.Current.Profile != null && ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
+            UserIDOfBrowsingUser = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         if (UserIDOfBrowsingUser != null)
         {
             User browsingUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfBrowsingUser);
@@ -58,12 +59,12 @@ public partial class Ratings : System.Web.UI.Page
         {
             if (UserIDOfBrowsingUser == null)
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
-            UserIDOfRatingsBeingViewed = (int) UserIDOfBrowsingUser;
+            UserIDOfRatingsBeingViewed = (Guid)UserIDOfBrowsingUser;
             whoseRatings.Text = "My Ratings";
         }
         else
         {
-            UserIDOfRatingsBeingViewed = (int)theRatingsInfo.userID;
+            UserIDOfRatingsBeingViewed = (Guid)theRatingsInfo.userID;
             User theUser = theDataAccessModule.DataContext.GetTable<User>().SingleOrDefault(u => u.UserID == UserIDOfRatingsBeingViewed);
             if (theUser == null)
                 Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
@@ -204,7 +205,7 @@ public partial class Ratings : System.Web.UI.Page
         var beginningOfQuery = theDataAccessModule.DataContext.GetTable<UserRating>()
             .Where(p => p.UserID == UserIDOfRatingsBeingViewed)
             .Where(p => (notHighStakesRatings && !p.HighStakesKnown && !p.HighStakesPreviouslySecret) || (highStakesKnownRatings && p.HighStakesKnown) || (highStakesPreviouslySecretRatings && p.HighStakesPreviouslySecret))
-            .OrderByDescending(p => p.UserRatingGroup.WhenMade)
+            .OrderByDescending(p => p.UserRatingGroup.WhenCreated)
             .ThenBy(p => p.Rating.NumInGroup);
 
 
@@ -219,7 +220,7 @@ public partial class Ratings : System.Web.UI.Page
                 Tbl = p.Rating.RatingGroup.TblRow.Tbl,
                 RatingObject = p.Rating,
                 RatingGroup = p.Rating.RatingGroup, /* load it eagerly so that item path can have info */
-                Date = p.UserRatingGroup.WhenMade,
+                Date = p.UserRatingGroup.WhenCreated,
                 Rating = p.EnteredUserRating,
                 Previous = (p.PreviousDisplayedRating != null) ? (decimal?) p.PreviousRatingOrVirtualRating : (decimal?) null,
                 Current = p.Rating.CurrentValue,

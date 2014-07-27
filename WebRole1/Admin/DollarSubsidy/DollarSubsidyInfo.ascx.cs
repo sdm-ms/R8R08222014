@@ -11,17 +11,18 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Admin_DollarSubsidy_DollarSubsidyInfo : System.Web.UI.UserControl
 {
-    static int? SubtopicId = null;
+    Guid? SubtopicId = null;
     protected void Page_Load(object sender, EventArgs e)
     {
     }
-    public void setupDollarinfo(int? universeid)
+    public void setupDollarinfo(Guid? universeid)
     {
       SubtopicId = universeid;
-        int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+      Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
         ActionProcessor Obj = new ActionProcessor();
         var CheckRights = Obj.DataContext.GetTable<UsersRight>().SingleOrDefault(x => x.UserID == UserId && x.PointsManagerID == SubtopicId);

@@ -16,8 +16,9 @@ using TestMethod = NUnit.Framework.TestAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 #endif
 
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using FluentAssertions;
 using Debug = System.Diagnostics.Debug;
 using System.Reflection;
@@ -29,18 +30,17 @@ namespace TestProject1
     public class HeterogeneousUserTests
     {
 
-        TestHelper _testHelper;
+        TestHelper theTestHelper;
         R8RDataManipulation _dataManipulation;
 
         [TestInitialize()]
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
-            _testHelper = new TestHelper();
+            theTestHelper = new TestHelper();
             _dataManipulation = new R8RDataManipulation();
         }
 
@@ -144,16 +144,16 @@ namespace TestProject1
             /* 
              * Setup
              */
-            _testHelper.CreateSimpleTestTable(true);
-            _testHelper.CreateUsers(userCount);
-            _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowCount);
-            _testHelper.WaitIdleTasks();
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(userCount);
+            theTestHelper.AddTblRowsToTbl(theTestHelper.Tbl.TblID, tblRowCount);
+            theTestHelper.WaitIdleTasks();
 
             // This is not needed: TrustTrackerStatManager.UseOverallTrustValueOnly = true;
             TrustCalculations.NumPerfectScoresToGiveNewUser = 2; // reduce this to get faster convergence
 
             Action skip1Hour = () => TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
-            HeterogeneousUserPool pool = new HeterogeneousUserPool(_testHelper, quality,
+            HeterogeneousUserPool pool = new HeterogeneousUserPool(theTestHelper, quality,
                 userRatingEstimateWeight, subversivePercentage, afterEachRatingAction: skip1Hour);
             
             /*
@@ -161,11 +161,11 @@ namespace TestProject1
              */
             foreach (int i in Enumerable.Range(0, rounds))
             {
-                pool.PerformRatings(correctRatingValue, subversiveUserRatingvalue, _testHelper.Tbl, userRatingsPerRating,
+                pool.PerformRatings(correctRatingValue, subversiveUserRatingvalue, theTestHelper.Tbl, userRatingsPerRating,
                     subversiveUserIgnoresPreviousRatings);
-                _testHelper.WaitIdleTasks();
-                IEnumerable<Rating> interRatings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                    .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
+                theTestHelper.WaitIdleTasks();
+                IEnumerable<Rating> interRatings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                    .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID).OrderBy(x => x.RatingGroup.WhenCreated);
                 float interProportion = CalculateProportionWithinTolerance(interRatings, correctRatingValue, tolerance);
                 #region Debug
                 Debug.WriteLine(String.Format("Round {0}: {1}% within tolerance", i, interProportion * 100));
@@ -178,20 +178,20 @@ namespace TestProject1
             /*
              * Analyze Results
              */
-            IEnumerable<Rating> ratings = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
+            IEnumerable<Rating> ratings = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID).OrderBy(x => x.RatingGroup.WhenCreated);
             float proportion = CalculateProportionWithinTolerance(ratings, correctRatingValue, tolerance);
             #region Debug
             pool.PrintOutUsersInfo();
-            IEnumerable<Rating> ratings2 = _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                .Where(r => r.RatingGroup.TblRow.Tbl.Equals(_testHelper.Tbl));
-            foreach (Rating rating in ratings)
+            IEnumerable<Rating> ratings2 = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                .Where(r => r.RatingGroup.TblRow.Tbl.TblID == theTestHelper.Tbl.TblID);
+            foreach (Rating rating in ratings.ToList())
             {
                 if (Math.Abs(rating.CurrentValue.Value - correctRatingValue) > tolerance)
                 {
                     Debug.WriteLine(String.Format("<Rating {0}> CurrentValue={1} LastTrustedValue={2}", rating.RatingID,
                         rating.CurrentValue, rating.LastTrustedValue));
-                    foreach (UserRating userRating in rating.UserRatings)
+                    foreach (UserRating userRating in rating.UserRatings.ToList())
                     {
                         TrustTracker trustTracker = userRating.User.TrustTrackers.Single();
                         Debug.Write(String.Format("\t<Rating {0}> <UserRating {1}> PreviousUserRating={2} EnteredUserRating={3} NewUserRating={4}", rating.RatingID, userRating.UserRatingID,
@@ -264,11 +264,11 @@ namespace TestProject1
             /* 
              * Setup
              */
-            _testHelper.CreateSimpleTestTable(true);
-            _testHelper.CreateUsers(userCount);
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(userCount);
 
             Action skip1Hour = () => TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
-            HeterogeneousUserPool pool = new HeterogeneousUserPool(_testHelper, quality,
+            HeterogeneousUserPool pool = new HeterogeneousUserPool(theTestHelper, quality,
                 userRatingEstimateWeight, subversivePercentage, afterEachRatingAction: skip1Hour);
 
             /*
@@ -276,12 +276,12 @@ namespace TestProject1
              */
             foreach (int iteration in Enumerable.Range(0, iterations))
             {
-                int countCurrentTblRows = _testHelper.ActionProcessor.DataContext.GetTable<TblRow>().Select(x => x).Count();
-                List<TblRow> tblRows = _testHelper.AddTblRowsToTbl(_testHelper.Tbl.TblID, tblRowsPerIteration).ToList();
-                _testHelper.WaitIdleTasks();
-                List<int> tblRowIDs = _testHelper.ActionProcessor.DataContext.GetTable<TblRow>().Where(x => !(x.RatingGroups.SelectMany(y => y.Ratings.SelectMany(z => z.UserRatings))).Any()).Select(x => x.TblRowID).ToList(); // TblRows without any user ratings
-                Func<List<Rating>> reload_ratings = () => _testHelper.ActionProcessor.DataContext.GetTable<Rating>()
-                        .Where(r => tblRowIDs.Contains(r.RatingGroup.TblRowID)).ToList(); // load ratings from the most recent set of tbl rows -- must do this after each background task
+                int countCurrentTblRows = theTestHelper.ActionProcessor.DataContext.GetTable<TblRow>().Select(x => x).Count();
+                List<TblRow> tblRows = theTestHelper.AddTblRowsToTbl(theTestHelper.Tbl.TblID, tblRowsPerIteration).ToList();
+                theTestHelper.WaitIdleTasks();
+                List<Guid> tblRowIDs = theTestHelper.ActionProcessor.DataContext.GetTable<TblRow>().Where(x => !(x.RatingGroups.SelectMany(y => y.Ratings.SelectMany(z => z.UserRatings))).Any()).Select(x => x.TblRowID).ToList(); // TblRows without any user ratings
+                Func<List<Rating>> reload_ratings = () => theTestHelper.ActionProcessor.DataContext.GetTable<Rating>()
+                        .Where(r => tblRowIDs.Contains(r.RatingGroup.TblRowID)).OrderBy(x => x.RatingGroup.WhenCreated).ToList(); // load ratings from the most recent set of tbl rows -- must do this after each background task
                 List<Rating> ratings = reload_ratings();
                 foreach (int round in Enumerable.Range(0, roundsPerIteration))
                 {
@@ -289,7 +289,7 @@ namespace TestProject1
                     ratings = reload_ratings();
                     pool.PerformRatings(ratings, correctRatingValue, subversiveUserRatingvalue, userRatingsPerRating,
                         subversiveUserIgnoresPreviousRatings);
-                    _testHelper.WaitIdleTasks();
+                    theTestHelper.WaitIdleTasks();
                     ratings = reload_ratings();
 
                     /*

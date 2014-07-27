@@ -14,14 +14,15 @@ using System.Collections.Generic;
 
 
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 ////using PredRatings;
 
 public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 {
-    protected int TblTabID { get; set; }
-    protected Action<int?, bool>ResortCateDesFn;
-    protected int? LimitToThisTblColumnID;
-    protected int? TblColumnToSortID;
+    protected Guid TblTabID { get; set; }
+    protected Action<Guid?, bool>ResortCateDesFn;
+    protected Guid? LimitToThisTblColumnID;
+    protected Guid? TblColumnToSortID;
     protected bool SortByEntityName = false;
     protected bool  DoSortOrderAscending;
     protected R8RDataAccess DataAccess { get; set; }
@@ -32,7 +33,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
     {
         if (theHeaderRowInfo != null)
         {
-            int? TblColumnToSort;
+            Guid? TblColumnToSort;
             bool SortOrderAscending = true; // may change below
             TblTab theTblTab = theHeaderRowInfo.dataAccess.R8RDB.GetTable<TblTab>().Single(cg => cg.TblTabID == theHeaderRowInfo.TblTabID);
             TblColumnToSort = theHeaderRowInfo.TblColumnToSortID;
@@ -57,18 +58,18 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
                     //Tbl theTbl;
                     //PointsManager thePointsManager;
                     //TableLoading.GetTblAndPointsManagerForTblTab(DataAccess, theTblTab.TblTabID, out theTblTab2, out theTbl, out thePointsManager);
-                    //bool userIsTrusted = DataAccess.UserCounts(thePointsManager.PointsManagerID, (int)userID);
+                    //bool userIsTrusted = DataAccess.UserCounts(thePointsManager.PointsManagerID, (Guid)userID);
                     theTableSortRule = new TableSortRuleNeedsRating(); // Doesn't matter for purpose of header row whether the user is untrusted
                 }
             }
             else
-                theTableSortRule = new TableSortRuleTblColumn((int)TblColumnToSort, SortOrderAscending);
+                theTableSortRule = new TableSortRuleTblColumn((Guid)TblColumnToSort, SortOrderAscending);
             Setup(theHeaderRowInfo.dataAccess, theHeaderRowInfo.TblTabID, null, null, theTableSortRule);
             DataBind();
         }
     }
 
-    public void Setup(R8RDataAccess dataAccess, int tblTabID, int? limitToThisTblColumnID, Action<int?, bool>resortCateDesFn, TableSortRule theTableSortRule)
+    public void Setup(R8RDataAccess dataAccess, Guid tblTabID, Guid? limitToThisTblColumnID, Action<Guid?, bool> resortCateDesFn, TableSortRule theTableSortRule)
     {
        
         DataAccess = dataAccess;
@@ -96,7 +97,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         HeaderLinqDataSource.Selecting += new EventHandler<LinqDataSourceSelectEventArgs>(HeaderLinqDataSource_Selecting);
     }
 
-    protected void ResortMainTable(int? TblColumnID, bool sortAscending)
+    protected void ResortMainTable(Guid? TblColumnID, bool sortAscending)
     {
         ResortCateDesFn(TblColumnID, sortAscending);
     }
@@ -106,7 +107,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
   //  if (String.Equals(e.CommandName, "CustomSort"))
   //  {
   //    ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-  //    TblColumnID = (int)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+    //    TblColumnID = (Guid)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
   //    CurrentlySorting = (bool)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["CurrentlySorting"];
   //    DoSortOrderAscending = (bool)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["DoSortOrderAscending"];
   //    if (CurrentlySorting)
@@ -119,7 +120,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 
     class HeaderRowInfoType
     {
-        public int? TblColumnID { get; set; }
+        public Guid? TblColumnID { get; set; }
         public string Abbreviation { get; set; }
         public string Name { get; set; }
         public string WidthStyle { get; set; }
@@ -156,7 +157,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
        Tbl theTbl = DataAccess.R8RDB.GetTable<TblTab>().Single(x => x.TblTabID == TblTabID).Tbl;
        HeaderRowInfoType numColumnHeader = new HeaderRowInfoType
        {
-           TblColumnID = -1,
+           TblColumnID = new Guid(), // using null here causes problem on postback; we'll change it back below
            Abbreviation = "#",
            Name = "#",
            WidthStyle = "nmcl " + theTbl.WidthStyleNumCol,
@@ -168,7 +169,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
        string theNameForTblRow = theTbl.TypeOfTblRow;
        HeaderRowInfoType nameColumnHeader = new HeaderRowInfoType
                 {
-                    TblColumnID = -1, // using null here causes problem on postback; we'll change it back below
+                    TblColumnID = new Guid(), // using null here causes problem on postback; we'll change it back below
                     Abbreviation = "",
                     Name = theNameForTblRow,
                     WidthStyle = theTbl.WidthStyleEntityCol,
@@ -191,8 +192,8 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
-            if (TblColumnID == -1) // see note above
+            Guid? TblColumnID = (Guid)(HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"]);
+            if (TblColumnID == new Guid())
                 TblColumnID = null; 
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];
             string theName = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Name"];
@@ -227,7 +228,7 @@ public partial class Main_Table_HeaderRow : System.Web.UI.UserControl
 
     }
 
-    public void ReBind(int tblTabID, TableSortRule aTableSortRule)
+    public void ReBind(Guid tblTabID, TableSortRule aTableSortRule)
     {
         rebinding = true;
         TblTabID = tblTabID;

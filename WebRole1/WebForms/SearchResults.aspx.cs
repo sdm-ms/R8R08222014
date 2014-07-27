@@ -13,11 +13,12 @@ using System.Xml.Linq;
 
 using System.Collections.Generic;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class SearchResults : System.Web.UI.Page
 {
     static int maxResults = 150; // We are limiting results here for now, because we have to put everything in memory that we return.
-    internal int UserID;
+    internal Guid userID;
 
 
     protected int? ColumnToSort;
@@ -28,8 +29,8 @@ public partial class SearchResults : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
-            UserID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null)
+            userID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
     }
 
 
@@ -65,9 +66,9 @@ public partial class SearchResults : System.Web.UI.Page
         {
             rowBeingCreated++;
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            //int theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Values["TblRowID"];
-            //int theTblID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Values["TblID"];
-            //int theRatingID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Values["RatingID"];
+            //Guid theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Values["TblRowID"];
+            //Guid theTblID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Values["TblID"];
+            //Guid theRatingID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Values["RatingID"];
             //ListViewDataItem CurrentItem = (ListViewDataItem)e.Item;
             //PlaceHolder thePlaceHolder = (PlaceHolder)e.Item.FindControl("PathToItem");
             //CommonControl_ItemPath theItemPath = (CommonControl_ItemPath)LoadControl("~/CommonControl/ItemPath.ascx");

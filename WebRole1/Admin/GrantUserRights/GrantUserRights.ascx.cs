@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace WebApplication1.Admin.GrantUserRights
@@ -12,9 +13,9 @@ namespace WebApplication1.Admin.GrantUserRights
     public partial class GrantUserRights : System.Web.UI.UserControl
     {
         public ActionProcessor theActionProcessor;
-        public int pointsManagerID;
+        public Guid pointsManagerID;
 
-        public void Setup(int thePointsManagerID)
+        public void Setup(Guid thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
             theActionProcessor = new ActionProcessor();
@@ -59,7 +60,7 @@ namespace WebApplication1.Admin.GrantUserRights
         protected void SetAuthorized(bool authorize)
         {
 
-            int CurrentUserID = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid CurrentUserID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             List<User> theList = GetUsers();
             foreach (User theUser in theList)
             {

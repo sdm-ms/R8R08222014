@@ -9,6 +9,7 @@ using System.Web.Caching;
 
 using Subgurim.Controls.GoogleMaps;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 public partial class CommonControl_Menu : System.Web.UI.UserControl
@@ -106,11 +107,11 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
 
     protected string AddHierarchyItems(HierarchyItem higherItem)
     {
-        IEnumerable<HierarchyItem> theHierarchyItems;
+        List<HierarchyItem> theHierarchyItems;
         if (higherItem == null)
-            theHierarchyItems = myDataAccess.R8RDB.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == null && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName);
+            theHierarchyItems = myDataAccess.R8RDB.GetTable<HierarchyItem>().Where(x => x.ParentHierarchyItemID == null && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName).ToList();
         else
-            theHierarchyItems = myDataAccess.R8RDB.GetTable<HierarchyItem>().Where(x => x.HigherHierarchyItemID == higherItem.HierarchyItemID && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName);
+            theHierarchyItems = myDataAccess.R8RDB.GetTable<HierarchyItem>().Where(x => x.ParentHierarchyItemID == higherItem.HierarchyItemID && x.IncludeInMenu).OrderBy(x => x.HierarchyItemName).ToList();
         string listItems = "";
         foreach (var item in theHierarchyItems)
         {

@@ -12,18 +12,19 @@ using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 ////using PredRatings;
 
 public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserControl
 {
-    protected int TblTabID { get; set; }
-    protected int? LimitToThisTblColumnID { get; set; }
-    protected int TblRowID { get; set; }
+    protected Guid TblTabID { get; set; }
+    protected Guid? LimitToThisTblColumnID { get; set; }
+    protected Guid TblRowID { get; set; }
     protected R8RDataAccess DataAccess { get; set; }
     protected bool rebinding = false;
 
-    public void Setup(R8RDataAccess dataAccess, int entityID, int theTblTabID, int? limitToThisTblColumnID)
+    public void Setup(R8RDataAccess dataAccess, Guid entityID, Guid theTblTabID, Guid? limitToThisTblColumnID)
     {
 
         DataAccess = dataAccess;
@@ -36,7 +37,7 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
 
     class HeaderRowOnTblRowPageInfoType
     {
-        public int? TblColumnID { get; set; }
+        public Guid? TblColumnID { get; set; }
         public string Abbreviation { get; set; }
         public string Name { get; set; }
         public string WidthStyle { get; set; }
@@ -68,8 +69,8 @@ public partial class Main_Table_HeaderRowOnTblRowPage : System.Web.UI.UserContro
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int? TblColumnID = (int?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
-            if (TblColumnID == -1) // see note above
+            Guid? TblColumnID = (Guid?)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["TblColumnID"];
+            if (TblColumnID == new Guid())
                 TblColumnID = null;
             string theAbbreviation = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Abbreviation"];
             string theName = (string)HeaderListView.DataKeys[dataItem.DisplayIndex].Values["Name"];

@@ -11,13 +11,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 
 public partial class Default2 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0))
+        if (!(HttpContext.Current.Profile != null && (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != null))
             Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
     }
 }

@@ -17,8 +17,9 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 #endif
 
 using FluentAssertions;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.ServiceHosting.Tools.DevelopmentStorage;
 using Microsoft.ServiceHosting.Tools.DevelopmentFabric;
@@ -32,9 +33,10 @@ namespace TestProject1
     {
         public static bool UseReal()
         {
-            // Use true when you want all tests to use a SQL Server database
+            // Use true when you want all tests that can use a SQL Server database to do so
             // Use false when you want all tests to use an in-memory database
             bool returnVal = false;
+            GetIR8RDataContext.UseRealDatabase = returnVal;
 
             if (returnVal && !RoleEnvironment.IsAvailable)
                 RealUserProfileCollection.SetProviderConnectionString(ConnectionString.GetUserProfileDatabaseConnectionString());
@@ -50,6 +52,7 @@ namespace TestProject1
 
         [TestMethod]
         [Category("IntegrationTest")]
+        //[DeploymentItem("TestData", "TestData")]
         public void ResetAndCreateStandard()
         {
             if (!Test_UseRealDatabase.UseReal())
@@ -57,6 +60,7 @@ namespace TestProject1
             R8RBuilder theBuilder = new R8RBuilder();
             theBuilder.DeleteAndRebuild();
             theBuilder.CreateStandard();
+            
         }
 
         [TestMethod]
@@ -68,20 +72,19 @@ namespace TestProject1
 
             // before switching to NUnit, this test was failing, with dramatic increases in memory, even though we were not getting the same result when running the same test through a console application. It's not clear why using MSTest should make a difference, particularly since we are using the same vstest execution engine with NUnit, but it appears to make a difference.
 
-            TestHelper _testHelper;
+            TestHelper theTestHelper;
             R8RDataManipulation _dataManipulation;
 
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
             CacheManagement.DisableCaching = true; 
 
-            _testHelper = new TestHelper(true);
+            theTestHelper = new TestHelper(true);
             _dataManipulation = new R8RDataManipulation();
-            _testHelper.CreateSimpleTestTable(true);
-            _testHelper.CreateUsers(20); 
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(20); 
 
             // When we had a memory leak:
             // Creation of extra users is SUFFICIENT to create memory leaks. 
@@ -95,7 +98,7 @@ namespace TestProject1
             int initialRepetitions = 20;
 
             for (int r = 0; r < initialRepetitions; r++)
-                TestMemoryLeaks_Helper(_testHelper, _dataManipulation, r == initialRepetitions - 1 || r % 5 == 0);
+                TestMemoryLeaks_Helper(theTestHelper, _dataManipulation, r == initialRepetitions - 1 || r % 5 == 0);
             int repetitions = 100;
             double avgMemory = 0;
             GC.Collect();
@@ -104,7 +107,7 @@ namespace TestProject1
             double timesMemoryWentDown = 0.0;
             for (int r = 0; r < repetitions; r++)
             {
-                long newMemory = TestMemoryLeaks_Helper(_testHelper, _dataManipulation, r == repetitions - 1 || r % 5 == 0);
+                long newMemory = TestMemoryLeaks_Helper(theTestHelper, _dataManipulation, r == repetitions - 1 || r % 5 == 0);
                 if (newMemory > lastMemory)
                     timesMemoryWentUp += 1.0;
                 else
@@ -115,16 +118,18 @@ namespace TestProject1
             avgMemory.Should().BeLessThan(10000.0); // it's hard to settle on a value here, since memory goes up and down even when using GC.Collect. With many repetitions, we can use a lower number.
         }
 
-        private static long TestMemoryLeaks_Helper(TestHelper _testHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
+        private static long TestMemoryLeaks_Helper(TestHelper theTestHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
         {
             UserEditResponse theResponse = new UserEditResponse();
-            _testHelper.ActionProcessor.UserRatingAdd(1, 5.0M, 5, ref theResponse);
+            Guid ratingID = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).First().RatingID;
+            Guid user5 = theTestHelper.UserIds[5];
+            theTestHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, user5, ref theResponse);
             CacheManagement.ClearCache();
-            _testHelper.FinishUserRatingAdd(_dataManipulation);
+            theTestHelper.FinishUserRatingAdd(_dataManipulation);
             if (waitIdleTasks)
-                _testHelper.WaitIdleTasks();
-            _testHelper.ActionProcessor.DataContext.SubmitChanges();
-            _testHelper.ActionProcessor.ResetDataContexts();
+                theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.SubmitChanges();
+            theTestHelper.ActionProcessor.ResetDataContexts();
 
             GC.Collect();
             WeakReferenceTracker.CheckUncollected();
@@ -134,16 +139,18 @@ namespace TestProject1
 
         private static void AddUser()
         {
-            R8RDataContext myDataContext = new R8RDataContext(ConnectionString.GetR8RNormalizedDatabaseConnectionString());
+            // this was added to help diagnose a memory leak and is now used only for that purpose, in case it reappears
+            IR8RDataContext myDataContext = new R8REFDataContext();
 
             User newUser =  new User {
+                UserID = Guid.NewGuid(),
                 Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),
                 SuperUser = false,
+                WhenCreated = TestableDateTime.Now,
                 Status = (Byte)StatusOfObject.Active
             };
             myDataContext.GetTable<User>().InsertOnSubmit(newUser);
             myDataContext.SubmitChanges();
-            // DEBUG myDataContext.ClearContextCache();
         }
 
 
@@ -193,6 +200,20 @@ namespace TestProject1
                     Console.WriteLine(ex.Message);
                 }
             }
+        }
+
+        [TestMethod]
+        [Category("UnitTest")]
+        public void TestCanResetDatabaseAndAddItem()
+        {
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            var builder = new R8RBuilder();
+            builder.DeleteEverythingAndAddDatabaseStatus();
+            builder.Supporter.DataContext.SubmitChanges();
+            builder.Supporter.ResetDataContexts();
+            var entries = builder.Supporter.DataContext.GetTable<DatabaseStatus>().Where(x => true).OrderBy(x => x.DatabaseStatusID).ToList();
+            if (entries.Count() != 1)
+                throw new Exception("Number of entries in database was " + entries.Count());
         }
     }
 }

@@ -8,12 +8,13 @@ using System.Text;
 
 using System.Web.UI.HtmlControls;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
 {
-    public int? TopRatingGroupID { get; set; }
-    public int? TblRowID { get; set; }
-    public int? PointsManagerID { get; set; }
+    public Guid? TopRatingGroupID { get; set; }
+    public Guid? TblRowID { get; set; }
+    public Guid? PointsManagerID { get; set; }
     protected int? ColumnToSort;
     protected bool SortOrderAscending = true;
     protected bool rebinding = false;
@@ -141,16 +142,15 @@ public partial class Main_Table_RecentRatings : System.Web.UI.UserControl
             beginningOfQuery = theDataAccessModule.DataContext.GetTable<UserRating>().Where(p => p.Rating.TopmostRatingGroupID == TopRatingGroupID);
 
         IQueryable<RecentRatingInfo> theQuery = beginningOfQuery
-            .OrderByDescending(p => p.UserRatingGroup.WhenMade)
-            .ThenByDescending(p => p.UserRatingGroupID)
+            .OrderByDescending(p => p.UserRatingGroup.WhenCreated)
             .ThenBy(p => p.Rating.NumInGroup)
             .Select(p => new RecentRatingInfo
             {
                 UserRating = p,
                 Rating = p.Rating,
                 User = p.User,
-                PointsTotal = p.User.PointsTotals.SingleOrDefault(x => x.PointsManagerID == p.Rating.RatingGroup.TblRow.Tbl.PointsManagerID),
-                Date = p.UserRatingGroup.WhenMade,
+                PointsTotal = p.User.PointsTotals.FirstOrDefault(x => x.PointsManagerID == p.Rating.RatingGroup.TblRow.Tbl.PointsManagerID),
+                Date = p.UserRatingGroup.WhenCreated,
                 Previous = (p.PreviousDisplayedRating != null) ? (decimal?) p.PreviousRatingOrVirtualRating : (decimal?) null,
                 Trusted = ((p.Rating.CurrentValue == p.Rating.LastTrustedValue) || (p.Rating.CurrentValue != p.NewUserRating)) || p.Rating.CurrentValue == null, 
                 NewRating = p.NewUserRating,

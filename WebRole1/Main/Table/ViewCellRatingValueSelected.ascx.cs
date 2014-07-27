@@ -11,18 +11,19 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 public partial class Main_Table_ViewCellRatingValueSelected : System.Web.UI.UserControl
 {
-    int RatingID;
+    Guid RatingID;
     decimal? Value;
     int DecimalPlaces;
     decimal? MinVal;
     decimal? MaxVal;
     string Description;
 
-    public void Setup(R8RDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, string description, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Guid ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, string description, string suppStyle)
     {
         RatingID = ratingID;
         Value = value;
@@ -34,7 +35,7 @@ public partial class Main_Table_ViewCellRatingValueSelected : System.Web.UI.User
         TheValue.Attributes["Class"] = "numberInCellNoJS numberInCellEditableNoJS " + suppStyle;
     }
 
-    public void GetRatingAndProposedValue(ref int ratingID, ref decimal? value)
+    public void GetRatingAndProposedValue(ref Guid ratingID, ref decimal? value)
     {
         ratingID = RatingID;
         value = GetValue();

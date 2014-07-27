@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
@@ -21,7 +22,7 @@ public partial class Main_Table_ViewCellMainSelected : System.Web.UI.UserControl
 {
     Action DeselectFn;
 
-    public void Setup(R8RDataAccess dataAccess, Action deselectFn, Action<int> selectFn, int columnNumber, int TblColumnID, int ratingGroupID, bool isInSortedColumn, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool canAdminister, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action deselectFn, Action<int> selectFn, int columnNumber, Guid TblColumnID, Guid ratingGroupID, bool isInSortedColumn, bool multipleOutcomes, TradingStatus theTradingStatus, bool canPredict, bool canAdminister, bool doRebind, string suppStyle)
     {
         string theCSSClass = "mainCellMarker";
         if (theTradingStatus == TradingStatus.Ended)
@@ -52,7 +53,7 @@ public partial class Main_Table_ViewCellMainSelected : System.Web.UI.UserControl
         List<RatingIdAndUserRatingValue> theList = CellData.GetRatingsAndUserRatings();
         ActionProcessor theActionProcessor = new ActionProcessor();
         UserEditResponse theResponse = new UserEditResponse();
-        User theUser = theActionProcessor.DataContext.GetTable<User>().Single(u => u.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+        User theUser = theActionProcessor.DataContext.GetTable<User>().Single(u => u.UserID == (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
         theActionProcessor.UserRatingsAdd(theList, theUser, ref theResponse);
         DeselectFn();
     }

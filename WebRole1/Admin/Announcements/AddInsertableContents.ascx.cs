@@ -11,17 +11,18 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 
 
 public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.UserControl
 {
     ActionProcessor Obj = new ActionProcessor();
     public static int NumTable = 0;
-    public int? TopicId = null;
-    public int? SubtopicId = null;
-    public int? TableId = null;
-    public int? announce = null;
+    public Guid? TopicId = null;
+    public Guid? SubtopicId = null;
+    public Guid? TableId = null;
+    public Guid? announce = null;
 
    
    
@@ -37,7 +38,7 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
     {
         
     }
-    public void SetupInsertableContent(int? domainID, int? pointsManagerID, int? TblID, int? AnnounceId)
+    public void SetupInsertableContent(Guid? domainID, Guid? pointsManagerID, Guid? TblID, Guid? AnnounceId)
     {
         TopicId = domainID;
         SubtopicId = pointsManagerID;
@@ -69,9 +70,9 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
             announce = AnnounceId;
             Tdannouc.InnerHtml = "Change new Announcements";
 
-            int UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            Guid userID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
 
-               var ObjInsertableContent = Obj.DataAccess.GetInsertableContents((int)AnnounceId);
+            var ObjInsertableContent = Obj.DataAccess.GetInsertableContents((Guid)AnnounceId);
                 TxtName.Text = ObjInsertableContent.Name;
                 TxtContent.Text = ObjInsertableContent.Content;
                 ChkIncludeHtml.Checked = !ObjInsertableContent.IsTextOnly;
@@ -123,11 +124,11 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
         }
     }
     protected void implementannouncement()
-    {     
-        
-        int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-    
-        int? ChangeGroupId = null;
+    {
+
+        Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+
+        Guid? ChangeGroupId = null;
         string Name = TxtName.Text;
         string Content = TxtContent.Text;
         bool IsTextOnly = !ChkIncludeHtml.Checked;
@@ -138,9 +139,9 @@ public partial class Admin_Announcements_AddInsertableContents : System.Web.UI.U
        
         if (announce != null)
         {
-           
-          
-            int InsertableContentID = (int)announce;
+
+
+            Guid InsertableContentID = (Guid)announce;
             Obj.InsertableContentChange(InsertableContentID, Name, Content, IsTextOnly, IsOverridable, Location, IsActivate, UserId, ChangeGroupId);
             User_Control_ModalPopUp PopUp = (User_Control_ModalPopUp)Buttons.FindControl("PopUp");
             PopUp.MsgString = StringConstants.StringAnounceChange;

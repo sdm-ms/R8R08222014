@@ -14,17 +14,18 @@ using System.Xml.Linq;
 using System.Diagnostics;
 using Subgurim.Controles;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
 public partial class Main_Table_TableCellView : System.Web.UI.UserControl
 {
 
-    protected int RatingGroupID;
-    protected int TblRowID;
-    protected int TblColumnID;
-    protected int TblID;
-    protected int PointsManagerID;
+    protected Guid RatingGroupID;
+    protected Guid TblRowID;
+    protected Guid TblColumnID;
+    protected Guid TblID;
+    protected Guid PointsManagerID;
     protected bool CanPredict;
     protected bool CanAdminister;
     protected bool CanEditFields;
@@ -34,14 +35,14 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
     protected R8RDataAccess DataAccess;
     ActionProcessor Obj = new ActionProcessor();
 
-    public void Setup(int tblRowID, int tblColumnID)
+    public void Setup(Guid tblRowID, Guid tblColumnID)
     {
         DataAccess = new R8RDataAccess();
         TblRowID = tblRowID;
         TblColumnID = tblColumnID;
         TblColumn theTblColumn = DataAccess.R8RDB.GetTable<TblColumn>().Single(cd => cd.TblColumnID == TblColumnID);
-        RatingGroupID = (int) DataAccess.GetRatingGroupForTblRowAndColumn(tblRowID, TblColumnID);
-        int topRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
+        RatingGroupID = (Guid)DataAccess.GetRatingGroupForTblRowAndColumn(tblRowID, TblColumnID);
+        Guid topRatingGroupID = DataAccess.R8RDB.GetTable<Rating>().First(m => m.RatingGroupID == RatingGroupID).TopmostRatingGroupID;
         Tbl theTbl = DataAccess.R8RDB.GetTable<TblRow>().Single(x => x.TblRowID == TblRowID).Tbl;
         TblID = theTbl.TblID;
         PointsManagerID = theTbl.PointsManagerID;
@@ -72,7 +73,7 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
 
         Main_Table_RatingGroupResolution RatingGroupResolution = (Main_Table_RatingGroupResolution)LoadControl("~/Main/Table/RatingResolution.ascx");
         RatingGroupResolution.RatingGroupID = RatingGroupID;
-        RatingGroupResolution.UserID = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        RatingGroupResolution.UserID = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
         RatingGroupResolution.CanResolve = CanResolveRatings;
         ResolveRatingsPlaceHolder.Controls.Add(RatingGroupResolution);
     
@@ -85,9 +86,9 @@ public partial class Main_Table_TableCellView : System.Web.UI.UserControl
         CanAdminister = false;
         CanEditFields = false;
         CanResolveRatings = false;
-        if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
+        Guid? UserId = (Guid?)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+        if (UserId != new Guid())
         {
-            int UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
             // Checking user rights to predict
             CanPredict = DataAccess.CheckUserRights(UserId, UserActionType.Predict, false, PointsManagerID, TblID);
             CanAdminister = DataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, PointsManagerID, TblID);

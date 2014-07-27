@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace WebRole1.Admin
@@ -12,9 +13,9 @@ namespace WebRole1.Admin
     public partial class RewardRatingSettingScreen : System.Web.UI.UserControl
     {
         public ActionProcessor theActionProcessor;
-        public int pointsManagerID;
+        public Guid pointsManagerID;
 
-        public void Setup(int thePointsManagerID)
+        public void Setup(Guid thePointsManagerID)
         {
             pointsManagerID = thePointsManagerID;
             theActionProcessor = new ActionProcessor();
@@ -49,8 +50,8 @@ namespace WebRole1.Admin
             int highStakesNoviceNumOneTenth = Convert.ToInt32(HighStakesNoviceNumOneTenth.Text);
             int highStakesNoviceTargetNum = Convert.ToInt32(HighStakesNoviceTargetNum.Text);
             decimal databaseChangeSelectHighStakesNoviceNumPct = Convert.ToDecimal(DatabaseChangeSelectHighStakesNoviceNumPct.Text);
-            theActionProcessor.RewardRatingSettingChange(pointsManagerID, probVal, multVal, (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
-            theActionProcessor.PointsManagerHighStakesSettings(pointsManagerID, highStakesProbability, highStakesSecretMultiplier, highStakesKnownMultiplier, highStakesNoviceOn, highStakesNoviceNumAutomatic, highStakesNoviceNumOneThird, highStakesNoviceNumOneTenth, highStakesNoviceTargetNum, databaseChangeSelectHighStakesNoviceNumPct, true, (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
+            theActionProcessor.RewardRatingSettingChange(pointsManagerID, probVal, multVal, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+            theActionProcessor.PointsManagerHighStakesSettings(pointsManagerID, highStakesProbability, highStakesSecretMultiplier, highStakesKnownMultiplier, highStakesNoviceOn, highStakesNoviceNumAutomatic, highStakesNoviceNumOneThird, highStakesNoviceNumOneTenth, highStakesNoviceTargetNum, databaseChangeSelectHighStakesNoviceNumPct, true, (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"), null);
         }
     }
 }

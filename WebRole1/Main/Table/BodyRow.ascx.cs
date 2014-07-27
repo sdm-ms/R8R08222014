@@ -16,18 +16,19 @@ using MoreStrings;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_BodyRow : System.Web.UI.UserControl
 {
     public LoadBodyRowInfo theBodyRowInfo { get; set; }// use this when creating the BodyRow from a web service
     bool isInSortedColumn;
     protected bool rebinding = false;
-    protected int? LimitToThisTblColumn; // if not null, we'll show only the one cell
-    protected int? TblColumnToSort;
+    protected Guid? LimitToThisTblColumn; // if not null, we'll show only the one cell
+    protected Guid? TblColumnToSort;
     protected R8RDataAccess DataAccess; // don't make this a property -- we don't want to persist viewstate on this or we'll get stale values
-    protected int TblID { get; set; }
-    protected int TblTabID { get; set; }
-    protected int TblRowID { get; set; }
+    protected Guid TblID { get; set; }
+    protected Guid TblTabID { get; set; }
+    protected Guid TblRowID { get; set; }
     protected int RowNumber { get; set; }
     protected bool CanPredict { get; set; }
     protected bool CanAdminister { get; set; }
@@ -48,7 +49,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         }
     }
 
-    public void Setup(R8RDataAccess theDataAccess, int tblID, int tblTabID, int? limitToThisTblColumn, int? tblColumnToSort, int entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<int?, int?> theParentSelectionChangedHandler, string suppStyle)
+    public void Setup(R8RDataAccess theDataAccess, Guid tblID, Guid tblTabID, Guid? limitToThisTblColumn, Guid? tblColumnToSort, Guid entityID, int rowNumber, bool canPredict, bool canAdminister, bool doRebind, Action<int?, int?> theParentSelectionChangedHandler, string suppStyle)
     {
         if (doRebind)
             ActivateRebinding();
@@ -58,8 +59,6 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         LimitToThisTblColumn = limitToThisTblColumn;
         TblColumnToSort = tblColumnToSort;
         TblRowID = entityID;
-        if (TblRowID == -1)
-            throw new Exception("Internal error: row id must be specified.");
         RowNumber = rowNumber;
         CanPredict = canPredict;
         CanAdminister = canAdminister;
@@ -84,9 +83,9 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
         if (e.Item.ItemType == ListViewItemType.DataItem)
         {
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int theTblColumnID = (int)BodyRowListView.DataKeys[dataItem.DisplayIndex].Value;
+            Guid theTblColumnID = (Guid)BodyRowListView.DataKeys[dataItem.DisplayIndex].Value;
 
-            int? theRatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn(TblRowID, theTblColumnID);
+            Guid? theRatingGroupID = DataAccess.GetRatingGroupForTblRowAndColumn(TblRowID, theTblColumnID);
 
             if (theRatingGroupID != null)
             {
@@ -127,7 +126,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
                         // Create control from scratch.
                         Control theControl = LoadControl("~/Main/Table/ViewCellMainUnselected.ascx");
                         Main_Table_ViewCellMainUnselected theMainCell = (Main_Table_ViewCellMainUnselected) theControl;
-                        theMainCell.Setup(DataAccess, SelectItemAndReBind, columnNumber, theTblColumnID, (int)theRatingGroupID, isInSortedColumn, multipleOutcomes, TradingStatus.Active, CanPredict, rebinding, SuppStyle);
+                        theMainCell.Setup(DataAccess, SelectItemAndReBind, columnNumber, theTblColumnID, (Guid)theRatingGroupID, isInSortedColumn, multipleOutcomes, TradingStatus.Active, CanPredict, rebinding, SuppStyle);
                         if (!disableCaching)
                             theMainCell.DataBind();
                         thePlaceHolder.Controls.Add(theMainCell);
@@ -149,7 +148,7 @@ public partial class Main_Table_BodyRow : System.Web.UI.UserControl
                     // set up selected cell from selecteditemtemplate
                     thePlaceHolder = (PlaceHolder)e.Item.FindControl("CellMainSelectedPlaceholder");
                     Main_Table_ViewCellMainSelected theMainCell = (Main_Table_ViewCellMainSelected)LoadControl("~/Main/Table/ViewCellMainSelected.ascx");
-                    theMainCell.Setup(DataAccess, DeselectAndReBind, SelectItemAndReBind, columnNumber, theTblColumnID, (int)theRatingGroupID, isInSortedColumn, multipleOutcomes, TradingStatus.Active, CanPredict, CanAdminister, rebinding, SuppStyle);
+                    theMainCell.Setup(DataAccess, DeselectAndReBind, SelectItemAndReBind, columnNumber, theTblColumnID, (Guid)theRatingGroupID, isInSortedColumn, multipleOutcomes, TradingStatus.Active, CanPredict, CanAdminister, rebinding, SuppStyle);
                     thePlaceHolder.Controls.Add(theMainCell);
                 }
             }

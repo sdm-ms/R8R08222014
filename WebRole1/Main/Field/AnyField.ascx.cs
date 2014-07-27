@@ -12,14 +12,15 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 
 public partial class AnyFieldFilter : System.Web.UI.UserControl, IFilterField
 {
     public FieldsBoxMode Mode { get; set; }
-    public int? TblRowID { get; set; }
-    public int FieldDefinitionOrTblColumnID {get; set;}
+    public Guid? TblRowID { get; set; }
+    public Guid FieldDefinitionOrTblColumnID { get; set; }
     public R8RDataAccess DataAccess { get; set; }
     public FieldDefinitionInfo FieldInfo { get; set; }
     public TblColumnInfo TblColInfo { get; set; }
@@ -107,7 +108,7 @@ public partial class AnyFieldFilter : System.Web.UI.UserControl, IFilterField
         theChoiceField.ChoiceGroupID = theFieldDefinition.ChoiceGroupID;
         if (theFieldDefinition.DependentOnChoiceGroupFieldDefinitionID != null)
         {
-            int dependentOnFieldDefinitionID = Obj.R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.ChoiceGroupFieldDefinitionID == theFieldDefinition.DependentOnChoiceGroupFieldDefinitionID).FieldDefinitionID;
+            Guid dependentOnFieldDefinitionID = Obj.R8RDB.GetTable<ChoiceGroupFieldDefinition>().Single(cgfd => cgfd.ChoiceGroupFieldDefinitionID == theFieldDefinition.DependentOnChoiceGroupFieldDefinitionID).FieldDefinitionID;
             var theDependerAlreadyAdded = fieldsAlreadyAdded.SingleOrDefault(f => f.FieldInfo.FieldDefinitionID == dependentOnFieldDefinitionID);
             if (theDependerAlreadyAdded != null)
             {

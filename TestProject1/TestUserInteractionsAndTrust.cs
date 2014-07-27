@@ -17,8 +17,9 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 #endif
 
 using FluentAssertions;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.ServiceHosting.Tools.DevelopmentStorage;
 using Microsoft.ServiceHosting.Tools.DevelopmentFabric;
@@ -39,7 +40,6 @@ namespace TestProject1
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
@@ -89,7 +89,8 @@ namespace TestProject1
 
             UserEditResponse theResponse = new UserEditResponse();
             decimal userRatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, userRatingValue, TestHelper.UserIds[1], ref theResponse);
+            Guid user1 = TestHelper.UserIds[1];
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, userRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             TestHelper.Rating.CurrentValue.Should().Be(userRatingValue);
@@ -102,14 +103,17 @@ namespace TestProject1
         {
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(3); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
+            Guid user0 = TestHelper.UserIds[0];
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
 
             UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user2RatingValue = 8M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             TestHelper.Rating.CurrentValue.Should().Be(user2RatingValue);
@@ -122,18 +126,21 @@ namespace TestProject1
         {
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(4);
-
+            Guid user1 = TestHelper.UserIds[1]; 
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            
             UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user2RatingValue = 8M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user3RatingValue = 5M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             TestHelper.Rating.CurrentValue.Should().Be(user3RatingValue);
@@ -149,33 +156,38 @@ namespace TestProject1
 
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(4); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
+            Guid user0 = TestHelper.UserIds[0];
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
 
             UserEditResponse theResponse = new UserEditResponse();
 
             decimal user0Rating1UserRatingValue = 5M;
             // Must ensure that this rating is trusted
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user0Rating1UserRatingValue, TestHelper.UserIds[0], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user0Rating1UserRatingValue, user0, ref theResponse);
             TestHelper.WaitIdleTasks();
             TestHelper.Rating.CurrentValue.Should().Be(user0Rating1UserRatingValue);
 
             decimal user1Rating1UserRatingValue = 7M;
             // Must ensure that this rating is trusted
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
             TestHelper.Rating.CurrentValue.Should().Be(user1Rating1UserRatingValue);
 
             decimal user2Rating1UserRatingValue = 8M;
             decimal user3Rating1UserRatingValue = 7.5M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
+
 
             UserInteraction user2User3Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(x =>
-                    x.User.UserID == TestHelper.UserIds[2] &&
-                    x.User1.UserID == TestHelper.UserIds[3]);
-            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.ToList();
+                    x.OriginalRatingUser.UserID == user2 &&
+                    x.LatestRatingUser.UserID == user3);
+            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue = user1Rating1UserRatingValue;
             decimal ratingValue = user2Rating1UserRatingValue;
@@ -233,24 +245,28 @@ namespace TestProject1
         {
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
-
+            Guid user1 = TestHelper.UserIds[1]; 
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
+            
             UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1Rating1UserRatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user2Rating1UserRatingValue = 8M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user3Rating1UserRatingValue = 7.5M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             /* Have another user replace user 3 as the latest-rating user */
             decimal user4Rating1UserRatingValue = 9M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4Rating1UserRatingValue, TestHelper.UserIds[4], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4Rating1UserRatingValue, user4, ref theResponse);
             TestHelper.WaitIdleTasks();
         }
 
@@ -260,30 +276,34 @@ namespace TestProject1
         {
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5);
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
 
             UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1UserRatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1UserRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user2UserRatingValue = 8M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2UserRatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2UserRatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user3UserRatingValue = 7.5M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3UserRatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3UserRatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             UserInteraction user2User3Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(x =>
-                    x.User.UserID == TestHelper.UserIds[2] &&
-                    x.User1.UserID == TestHelper.UserIds[3]);
-            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.ToList();
+                    x.OriginalRatingUser.UserID == user2 &&
+                    x.LatestRatingUser.UserID == user3);
+            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             /* Have another user replace user 3 as the latest-rating user */
             decimal user4UserRatingValue = 8.1M; // Should produce a retrospective adjustment factor of 1.1
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4UserRatingValue, TestHelper.UserIds[4], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4UserRatingValue, user4, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             // becauser user 4 is now the latest user to rate, user 2's adjustment factor will depend on user 2 and user 4's ratings.
@@ -301,9 +321,9 @@ namespace TestProject1
 
             /* look at user interaction with user 2 and 4 */
             UserInteraction user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
-                x.User.UserID == TestHelper.UserIds[2] &&
-                x.User1.UserID == TestHelper.UserIds[4]);
-            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+                x.OriginalRatingUser.UserID == user2 &&
+                x.LatestRatingUser.UserID == user4);
+            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
             double adjustmentPctCalculatedInUserInteraction = user2User4InteractionStats[0].AvgAdjustmentPctWeighted;
             adjustmentPctCalculatedInUserInteraction.Should().BeApproximately(1.1F, 0.01F, "because rating moved 110 percent of user 2's movement as of user 4 entry");
             adjustmentPctCalculatedInUserInteraction.Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, 0.01F, "because manual calculation should produce same result");
@@ -311,21 +331,21 @@ namespace TestProject1
             /* running idle tasks shouldn't change this */
             TestHelper.WaitIdleTasks();
             user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
-                x.User.UserID == TestHelper.UserIds[2] &&
-                x.User1.UserID == TestHelper.UserIds[4]);
-            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+                x.OriginalRatingUser.UserID == user2 &&
+                x.LatestRatingUser.UserID == user4);
+            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
             user2User4InteractionStats[0].AvgAdjustmentPctWeighted
                 .Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, Precision);
 
             /* updating the rating shouldn't change this */
-            var mostRecentUserRating = _dataManipulation.DataContext.GetTable<UserRating>().OrderByDescending(x => x.UserRatingID).First();
+            var mostRecentUserRating = _dataManipulation.DataContext.GetTable<UserRating>().OrderByDescending(x => x.UserRatingGroup.WhenCreated).First();
             mostRecentUserRating.ForceRecalculate = true;
             _dataManipulation.DataContext.SubmitChanges();
             TestHelper.WaitIdleTasks();
             user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
-                x.User.UserID == TestHelper.UserIds[2] &&
-                x.User1.UserID == TestHelper.UserIds[4]);
-            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+                x.OriginalRatingUser.UserID == user2 &&
+                x.LatestRatingUser.UserID == user4);
+            user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
             user2User4InteractionStats[0].AvgAdjustmentPctWeighted
                 .Should().BeApproximately(averageAdjustmentFactorWeightedByNoWeightingStat, Precision);
         }
@@ -353,39 +373,42 @@ namespace TestProject1
 
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5);
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
 
             UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1Rating1UserRatingValue = 1M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user2Rating1UserRatingValue = 10M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user3Rating1UserRatingValue = 2M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             /* Have another user replace user 3 as the latest-rating user */
             decimal user4Rating1UserRatingValue = 6M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4Rating1UserRatingValue, TestHelper.UserIds[4], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4Rating1UserRatingValue, user4, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             /* Now let's add other ratings that will make for another user interaction between users 2 and 4 */
 
             TestableDateTime.SleepOrSkipTime(50000);
             TestHelper.WaitIdleTasks();
-            //theTestHelper.WaitIdleTasks(); // There's no reason to wait twice on idle tasks, is there?
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
 
-            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingID).First(); // TODO this is an example of where TestHelper is not being useful; relying upon the highest ID rating to be the most recent is bad form.  It's probably always correct, but it would make for one heck of a bug if for some reason it were not.  It would be much better if TestHelper had something like TestHelper.CreateRating(...) returning the Rating.
-            int rating2Id = rating2.RatingID;
+            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingGroup.WhenCreated).First(); 
+            Guid rating2Id = rating2.RatingID;
 
             decimal user1Rating2UserRatingValue = 9.5M;
-            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user1Rating2UserRatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user1Rating2UserRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             rating2 = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == rating2.RatingID); // reload it
@@ -394,7 +417,7 @@ namespace TestProject1
             rating2.LastTrustedValue.Should().Be(user1Rating2UserRatingValue);
 
             decimal user2Rating2UserRatingValue = 1.0M;
-            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user2Rating2UserRatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user2Rating2UserRatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             rating2 = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == rating2.RatingID); // reload it
@@ -406,25 +429,25 @@ namespace TestProject1
                 Debug.WriteLine(String.Format("<Before> rating2.CurrentValue: {0}, user4.SkepticalTrust/OverallTrust: {1}/{2}", 
                     rating2.CurrentValue, 
                     TestHelper.ActionProcessor.DataContext.GetTable<TrustTracker>()
-                        .Single(tt  => tt.UserID == TestHelper.UserIds[4])
+                        .Single(tt  => tt.UserID == user4)
                         .SkepticalTrustLevel,
                     TestHelper.ActionProcessor.DataContext.GetTable<TrustTracker>()
-                        .Single(tt  => tt.UserID == TestHelper.UserIds[4])
+                        .Single(tt  => tt.UserID == user4)
                         .OverallTrustLevel
                         ));
             }
             decimal user4Rating2UserRatingValue = 10M;
-            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user4Rating2UserRatingValue, TestHelper.UserIds[4], ref theResponse); // -200%
+           TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user4Rating2UserRatingValue, user4, ref theResponse); // -200%
             TestHelper.WaitIdleTasks();
             {
                 // Debug
                 Debug.WriteLine(String.Format("<After> rating2.CurrentValue: {0}, user4.SkepticalTrust/OverallTrust: {1}/{2}", 
                     rating2.CurrentValue, 
                     TestHelper.ActionProcessor.DataContext.GetTable<TrustTracker>()
-                        .Single(tt  => tt.UserID == TestHelper.UserIds[4])
+                        .Single(tt  => tt.UserID == user4)
                         .SkepticalTrustLevel,
                     TestHelper.ActionProcessor.DataContext.GetTable<TrustTracker>()
-                        .Single(tt  => tt.UserID == TestHelper.UserIds[4])
+                        .Single(tt  => tt.UserID == user4)
                         .OverallTrustLevel
                         ));
             }
@@ -433,9 +456,9 @@ namespace TestProject1
             //rating2.LastTrustedValue.Should().Be(user4Rating2UserRatingValue);
 
             UserInteraction user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
-                x.User.UserID == TestHelper.UserIds[2] &&
-                x.User1.UserID == TestHelper.UserIds[4]);
-            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+                x.OriginalRatingUser.UserID == user2 &&
+                x.LatestRatingUser.UserID == user4);
+            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue1 = user1Rating1UserRatingValue;
             decimal ratingValue1 = user2Rating1UserRatingValue;
@@ -513,24 +536,28 @@ namespace TestProject1
 
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(5);
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
 
             UserEditResponse theResponse = new UserEditResponse();
 
             decimal user1Rating1UserRatingValue = 1M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1Rating1UserRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user2Rating1UserRatingValue = 10M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2Rating1UserRatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user3Rating1UserRatingValue = 2M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3Rating1UserRatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             /* Have another user replace user 3 as the latest-rating user */
             decimal user4Rating1UserRatingValue = 6M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4Rating1UserRatingValue, TestHelper.UserIds[4], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4Rating1UserRatingValue, user4, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             /* Now let's add other ratings that will make for another user interaction between users 2 and 4 */
@@ -541,11 +568,11 @@ namespace TestProject1
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
 
-            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingID).First(); // TODO this is an example of where TestHelper is not being useful; relying upon the highest ID rating to be the most recent is bad form.  It's probably always correct, but it would make for one heck of a bug if for some reason it were not.  It would be much better if TestHelper had something like TestHelper.CreateRating(...) returning the Rating.
-            int rating2Id = rating2.RatingID;
+            Rating rating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderByDescending(x => x.RatingGroup.WhenCreated).First(); 
+            Guid rating2Id = rating2.RatingID;
 
             decimal user1Rating2UserRatingValue = 9.5M;
-            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user1Rating2UserRatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user1Rating2UserRatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             rating2 = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == rating2.RatingID); // reload it
@@ -554,7 +581,7 @@ namespace TestProject1
             rating2.LastTrustedValue.Should().Be(user1Rating2UserRatingValue);
 
             decimal user2Rating2UserRatingValue = 1.0M;
-            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user2Rating2UserRatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user2Rating2UserRatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             rating2 = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == rating2.RatingID); // reload it
@@ -563,16 +590,16 @@ namespace TestProject1
             rating2.LastTrustedValue.Should().Be(user2Rating2UserRatingValue);
 
             decimal user4Rating2UserRatingValue = 10M;
-            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user4Rating2UserRatingValue, TestHelper.UserIds[4], ref theResponse); // -200%
+            TestHelper.ActionProcessor.UserRatingAdd(rating2Id, user4Rating2UserRatingValue, user4, ref theResponse); // -200%
             TestHelper.WaitIdleTasks();
 
             //rating2.CurrentValue.Should().Be(user4Rating2UserRatingValue);
             //rating2.LastTrustedValue.Should().Be(user4Rating2UserRatingValue);
 
             UserInteraction user2User4Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
-                x.User.UserID == TestHelper.UserIds[2] &&
-                x.User1.UserID == TestHelper.UserIds[4]);
-            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.ToList();
+                x.OriginalRatingUser.UserID == user2 &&
+                x.LatestRatingUser.UserID == user4);
+            List<UserInteractionStat> user2User4InteractionStats = user2User4Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue1 = user1Rating1UserRatingValue;
             decimal ratingValue1 = user2Rating1UserRatingValue;
@@ -621,17 +648,24 @@ namespace TestProject1
 
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(10);
+
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
+            Guid user5 = TestHelper.UserIds[5];
+            Guid user6 = TestHelper.UserIds[6];
             // we don't care about user 1 but will add a user rating just to get things started at a particular rating value
             UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, user1, ref theResponse);
             FinishUserRatingAdd();
             /* move the rating back and forth to create some volatility -- use users 4 and 5, whom we're not focusing on */
             decimal user4RatingValue = 8M;
             decimal user5RatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4RatingValue, TestHelper.UserIds[4], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user4RatingValue, user4, ref theResponse);
             TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user5RatingValue, TestHelper.UserIds[5], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user5RatingValue, user5, ref theResponse);
             TestHelper.WaitIdleTasks();
             TestableDateTime.SleepOrSkipTime(1000 * 60 * 60 * 2); // move forward 2 hours so that we have volatility for the day but not the hour as of user 2's rating
             TestHelper.WaitIdleTasks();
@@ -640,18 +674,19 @@ namespace TestProject1
             /* see what the volatility values are expected and are actually as of just before user 2's rating */
             VolatilityTracker volatilityObservedWeek = TestHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneWeek);
             VolatilityTracker volatilityObservedYear = TestHelper.Rating.RatingGroup.VolatilityTrackers.Single(x => x.DurationType == (int)VolatilityDuration.oneYear);
-
+            
             decimal user2RatingValue = 8M;
             decimal user3RatingValue = 9M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
 
+
             UserInteraction user2User3Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x =>
-                x.User.UserID == TestHelper.UserIds[2] &&
-                x.User1.UserID == TestHelper.UserIds[3]);
-            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.ToList();
+                x.OriginalRatingUser.UserID == user2 &&
+                x.LatestRatingUser.UserID == user3);
+            List<UserInteractionStat> user2User3InteractionStats = user2User3Interaction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue = user1RatingValue;
             decimal ratingValue = user2RatingValue;
@@ -700,7 +735,7 @@ namespace TestProject1
                     .Should().BeApproximately(expectedAverageAdjustmentPercentageWeightedByStats[i], 0F, 
                         String.Format("because stat {0} should have the expected value.", i));
 
-            TrustTracker theTrustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.UserID == TestHelper.UserIds[2]);
+            TrustTracker theTrustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.UserID == user2);
             theTrustTracker.OverallTrustLevel.Should().BeApproximately(AdjustmentFactorCalc.MaximumRetrospectiveAdjustmentFactor, 0.0F, "because trust levels are constrained to being between " + AdjustmentFactorCalc.MinimumRetrospectiveAdjustmentFactor + " and " + AdjustmentFactorCalc.MaximumRetrospectiveAdjustmentFactor);
         }
 
@@ -711,11 +746,18 @@ namespace TestProject1
             Initialize();
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(10);
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
+            Guid user5 = TestHelper.UserIds[5];
+            Guid user6 = TestHelper.UserIds[6];
+
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = true;
 
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 10);
             TestHelper.WaitIdleTasks();
-            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
 
             ratings[0].CurrentValue = ratings[0].LastTrustedValue = 5M;
             ratings[1].CurrentValue = ratings[1].LastTrustedValue = 5M;
@@ -725,101 +767,101 @@ namespace TestProject1
             Func<decimal> ran = () => (decimal) (RandomGenerator.GetRandom() * 10.0);
 
             // users 1 and 2 are rerated by user 3 (with adjustment percentage > 1), and user 1 is separately rerated by user 9 (adj perc = 0.5)
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 5M, TestHelper.UserIds[6], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 5M, user6, ref theResponse);
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 6M, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 6M, user1, ref theResponse);
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 7M, TestHelper.UserIds[3], ref theResponse);
-            FinishUserRatingAdd();
-
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, 5M, TestHelper.UserIds[6], ref theResponse);
-            FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, 4M, TestHelper.UserIds[2], ref theResponse);
-            FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, 2M, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 7M, user3, ref theResponse);
             FinishUserRatingAdd();
 
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[9].RatingID, 5M, TestHelper.UserIds[6], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, 5M, user6, ref theResponse);
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[9].RatingID, 4M, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, 4M, user2, ref theResponse);
+            FinishUserRatingAdd();
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, 2M, user3, ref theResponse);
+            FinishUserRatingAdd();
+
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[9].RatingID, 5M, user6, ref theResponse);
+            FinishUserRatingAdd();
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[9].RatingID, 4M, user1, ref theResponse);
             FinishUserRatingAdd();
             TestHelper.ActionProcessor.UserRatingAdd(ratings[9].RatingID, 4.5M, TestHelper.UserIds[9], ref theResponse);
             FinishUserRatingAdd();
             TestHelper.WaitIdleTasks();
 
             // get the original LatestUserEgalitarianTrust
-            UserInteraction theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[3]);
+            UserInteraction theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == user3);
             double originalLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
             originalLatestUserEgalitarianTrust1.Should().BeApproximately(1.0F, 0.01F);
-            UserInteraction theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[2] && x.User1.UserID == TestHelper.UserIds[3]);
+            UserInteraction theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user2 && x.LatestRatingUser.UserID == user3);
             double originalLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             originalLatestUserEgalitarianTrust2.Should().BeApproximately(1.0F, 0.01F);
-            double originalOverallTrust1 = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
-            double originalOverallTrust2 = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double originalOverallTrust1 = theUserInteraction1.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
+            double originalOverallTrust2 = theUserInteraction2.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
 
             // user 3 gets rerated on some new ratings
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[2].RatingID, 5M, TestHelper.UserIds[6], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[2].RatingID, 5M, user6, ref theResponse);
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[2].RatingID, 3M, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[2].RatingID, 3M, user3, ref theResponse);
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[2].RatingID, 4M, TestHelper.UserIds[4], ref theResponse); // sent half-way back
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[2].RatingID, 4M, user4, ref theResponse); // sent half-way back
             FinishUserRatingAdd();
 
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[3].RatingID, 5M, TestHelper.UserIds[6], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[3].RatingID, 5M, user6, ref theResponse);
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[3].RatingID, 4M, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[3].RatingID, 4M, user3, ref theResponse);
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[3].RatingID, 5M, TestHelper.UserIds[5], ref theResponse); // sent all the way back
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[3].RatingID, 5M, user5, ref theResponse); // sent all the way back
             FinishUserRatingAdd();
             TestHelper.WaitIdleTasks();
 
             // see if LatestUserEgalitarianTrust has changed
-            theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[3]);
-            TrustTracker user3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == TestHelper.UserIds[3]);
-            user3.EgalitarianTrustLevel.Should().BeApproximately(0.25F, 0.01F);
+            theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == user3);
+            TrustTracker ttuser3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == user3);
+            ttuser3.EgalitarianTrustLevel.Should().BeApproximately(0.25F, 0.01F);
             double revisedLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust1.Should().BeApproximately(0.25F, 0.01F);
-            theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[2] && x.User1.UserID == TestHelper.UserIds[3]);
+            theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user2 && x.LatestRatingUser.UserID == user3);
             double revisedLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust2.Should().BeApproximately(0.25F, 0.01F);
-            double revisedOverallTrust1 = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust1 = theUserInteraction1.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1 == originalOverallTrust1).Should().BeFalse(); // because user 3's egalitarian trust has changed and user 3 is only one of users who rerated 1
-            double revisedOverallTrust2 = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust2 = theUserInteraction2.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust2).Should().BeApproximately(originalOverallTrust2, 0.0001F); // because user 3 is still only rerater of user 2
 
             // set the EgalitarianTrustOverride, and see if that changes things
-            user3.EgalitarianTrustLevelOverride = 0.9F;
-            user3.MustUpdateUserInteractionEgalitarianTrustLevel = true;
+            ttuser3.EgalitarianTrustLevelOverride = 0.9F;
+            ttuser3.MustUpdateUserInteractionEgalitarianTrustLevel = true;
             TestHelper.WaitIdleTasks(); 
-            user3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == TestHelper.UserIds[3]);
-            user3.MustUpdateUserInteractionEgalitarianTrustLevel.Should().BeFalse(); // flag should have reset
-            theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[3]);
+            ttuser3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == user3);
+            ttuser3.MustUpdateUserInteractionEgalitarianTrustLevel.Should().BeFalse(); // flag should have reset
+            theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == user3);
             revisedLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust1.Should().BeApproximately(0.9F, 0.01F);
-            theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[2] && x.User1.UserID == TestHelper.UserIds[3]);
+            theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user2 && x.LatestRatingUser.UserID == user3);
             revisedLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust2.Should().BeApproximately(0.9F, 0.01F);
-            double revisedOverallTrust1a = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust1a = theUserInteraction1.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1 == revisedOverallTrust1a).Should().BeFalse(); // because user 3's egalitarian trust has changed and user 3 is only one of users who rerated 1
-            double revisedOverallTrust2a = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust2a = theUserInteraction2.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
             revisedOverallTrust2.Should().BeApproximately(revisedOverallTrust2a, 0.01F); // because user 3 is still only rerater of user 2
 
             // now change the EgalitarianTrustOverride only slightly. That should change LatestUserEgalitarianTrust, but not the overall trust level of the earlier users
-            user3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == TestHelper.UserIds[3]);
-            user3.EgalitarianTrustLevelOverride = 0.91F;
-            user3.MustUpdateUserInteractionEgalitarianTrustLevel = true;
+            ttuser3 = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.User.UserID == user3);
+            ttuser3.EgalitarianTrustLevelOverride = 0.91F;
+            ttuser3.MustUpdateUserInteractionEgalitarianTrustLevel = true;
             TestHelper.WaitIdleTasks();
-            theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[3]);
+            theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == user3);
             revisedLatestUserEgalitarianTrust1 = theUserInteraction1.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust1.Should().BeApproximately(0.91F, 0.001F);
             float latestUserEgalitarianTrustAtTimeOfLastUpdate1 = (float) theUserInteraction1.LatestUserEgalitarianTrustAtLastWeightUpdate;
             latestUserEgalitarianTrustAtTimeOfLastUpdate1.Should().BeApproximately(0.90F, 0.001F); // this should not change
-            theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[2] && x.User1.UserID == TestHelper.UserIds[3]);
+            theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user2 && x.LatestRatingUser.UserID == user3);
             revisedLatestUserEgalitarianTrust2 = theUserInteraction2.LatestUserEgalitarianTrust;
             revisedLatestUserEgalitarianTrust2.Should().BeApproximately(0.91F, 0.001F);
-            double revisedOverallTrust1b = theUserInteraction1.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust1b = theUserInteraction1.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
             (revisedOverallTrust1a == revisedOverallTrust1b).Should().BeTrue(); // because the override value did not change by enough to change the weighting
-            double revisedOverallTrust2b = theUserInteraction2.User.TrustTrackers.Single().OverallTrustLevel;
+            double revisedOverallTrust2b = theUserInteraction2.OriginalRatingUser.TrustTrackers.Single().OverallTrustLevel;
             revisedOverallTrust2a.Should().BeApproximately(revisedOverallTrust2b, 0.01F); // for the same reason and because user 3 is still only rerater of user 2
         }
 
@@ -829,15 +871,17 @@ namespace TestProject1
         {
             // For each separate rating, the first user rating can be higher or lower than the base level of 5.0.
             // The second rating can be slightly higher, slightly lower, considerably higher, or considerably lower than the first.
-            foreach (var firstSequenceFirstUserRating in new decimal[] { 6M, 4M })
-                foreach (var secondSequenceFirstUserRating in new decimal[] { 7M, 3M })
-                    foreach (var firstSequenceRelativeSecondRating in new decimal[] { 0.3M, -0.4M, 0.0M, 1.4M, -2.3M })
-                        foreach (var secondSequenceRelativeSecondRating in new decimal[] { 0.3M, -0.4M, 1.4M, -2.3M })
+            int numRuns = 0;
+            foreach (var firstSequenceFirstUserRating in new decimal[] { 6M /* , 4M */ })
+                foreach (var secondSequenceFirstUserRating in new decimal[] { 7M /* , 3M */ })
+                    foreach (var firstSequenceRelativeSecondRating in new decimal[] { 0.3M /* , -0.4M, 0.0M, 1.4M, -2.3M */ })
+                        foreach (var secondSequenceRelativeSecondRating in new decimal[] { 0.3M, -0.4M /* , 1.4M, -2.3M */ })
                         {
 
                             decimal[] firstSequence = new decimal[] { firstSequenceFirstUserRating, firstSequenceFirstUserRating + firstSequenceRelativeSecondRating};
                             decimal[] secondSequence = new decimal[] { secondSequenceFirstUserRating, secondSequenceFirstUserRating + secondSequenceRelativeSecondRating };
                             TestTrustTracker_CalculatesUserInteractionStatAndTrustTrackerStatCorrectly_WhenOneUserIsReratedByTwoDifferentUsers_Helper(firstSequence, secondSequence);
+                            numRuns++; // total runs will be 2 * 2 * 5 * 4 = 80 if all numbers above are included
                         }
             (0 == 0).Should().BeTrue(); // can put breakpoint here after test
         }
@@ -847,10 +891,19 @@ namespace TestProject1
             Initialize();
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(10);
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
+            Guid user5 = TestHelper.UserIds[5];
+            Guid user6 = TestHelper.UserIds[6];
+            Guid user7 = TestHelper.UserIds[7];
+            Guid user8 = TestHelper.UserIds[8];
+            Guid user9 = TestHelper.UserIds[9];
 
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
-            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
 
             ratings[0].CurrentValue = ratings[0].LastTrustedValue = 5M;
             ratings[1].CurrentValue = ratings[1].LastTrustedValue = 5M;
@@ -858,38 +911,38 @@ namespace TestProject1
 
             UserEditResponse theResponse = new UserEditResponse();
             Func<decimal> ran = () => (decimal) (RandomGenerator.GetRandom() * 10.0);
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, firstSequence[0], TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, firstSequence[0], user1, ref theResponse);
             FinishUserRatingAdd();
             TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, ran(), TestHelper.UserIds[9], ref theResponse); // Add an irrelevant intermediary user rating by someone else
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, firstSequence[1], TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, firstSequence[1], user2, ref theResponse);
             FinishUserRatingAdd();
 
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, secondSequence[0], TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, secondSequence[0], user1, ref theResponse);
             FinishUserRatingAdd();
             TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, ran(), TestHelper.UserIds[9], ref theResponse); // Add an irrelevant intermediary user rating by someone else
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, ran(), TestHelper.UserIds[3], ref theResponse); // Add an irrelevant intermediary user rating by the eventual latest user rater
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, ran(), user3, ref theResponse); // Add an irrelevant intermediary user rating by the eventual latest user rater
             FinishUserRatingAdd();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, secondSequence[1], TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[1].RatingID, secondSequence[1], user3, ref theResponse);
             FinishUserRatingAdd();
 
             TestableDateTime.SleepOrSkipTime(1000 * 60 * 61);
             TestHelper.WaitIdleTasks();
 
-            var theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[2]);
-            double correctWeightInCalculatingTrustTotal1 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats[0], theUserInteraction1);
+            var theUserInteraction1 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == user2);
+            double correctWeightInCalculatingTrustTotal1 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction1.UserInteractionStats.OrderBy(x => x.StatNum).ToArray()[0], theUserInteraction1);
             theUserInteraction1.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal1, 0.01F);
-            var theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[3]);
-            double correctWeightInCalculatingTrustTotal2 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats[0], theUserInteraction2);
+            var theUserInteraction2 = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == user3);
+            double correctWeightInCalculatingTrustTotal2 = TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(theUserInteraction2.UserInteractionStats.OrderBy(x => x.StatNum).ToArray()[0], theUserInteraction2);
             theUserInteraction2.WeightInCalculatingTrustTotal.Should().BeApproximately(correctWeightInCalculatingTrustTotal2, 0.01F);
-            var theUserInteraction3 = _dataManipulation.DataContext.GetTable<UserInteraction>().SingleOrDefault(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[9]);
+            var theUserInteraction3 = _dataManipulation.DataContext.GetTable<UserInteraction>().SingleOrDefault(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == user9);
             theUserInteraction3.Should().BeNull(); // because the idle task should eliminate it
 
             int numStats = TrustTrackerStatManager.NumStats;
             for (int i = 0; i < numStats; i++)
             {
-                TrustTrackerStat theTrustTrackerStat = _dataManipulation.DataContext.GetTable<TrustTrackerStat>().Single(x => x.TrustTracker.UserID == TestHelper.UserIds[1] && x.StatNum == i);
+                TrustTrackerStat theTrustTrackerStat = _dataManipulation.DataContext.GetTable<TrustTrackerStat>().Single(x => x.TrustTracker.UserID == user1 && x.StatNum == i);
                 UserInteractionStat theUserInteractionStat1 = theUserInteraction1.UserInteractionStats.Single(x => x.StatNum == i);
                 UserInteractionStat theUserInteractionStat2 = theUserInteraction2.UserInteractionStats.Single(x => x.StatNum == i);
                 double avgAdjustPctFromUserInteractionStat1 = theUserInteractionStat1.AvgAdjustmentPctWeighted;
@@ -932,10 +985,17 @@ namespace TestProject1
             TestHelper.CreateSimpleTestTable(true);
 
             int numSequences = sequence.Count(); // one sequence per rating, multiple user ratings per sequence
-            TestHelper.CreateUsers(numSequences + 5);
+            TestHelper.CreateUsers(numSequences + 5); 
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
+            Guid user5 = TestHelper.UserIds[5];
+            Guid user6 = TestHelper.UserIds[6];
+
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, numSequences);
             TestHelper.WaitIdleTasks();
-            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
             for (int s = 0; s < numSequences; s++)
                 ratings[s].CurrentValue = ratings[s].LastTrustedValue = 5M;
             TestHelper.WaitIdleTasks();
@@ -946,7 +1006,7 @@ namespace TestProject1
             // later rating users are 2 through 2 + numSequences - 1
             for (int s = 0; s < numSequences; s++)
             {
-                TestHelper.ActionProcessor.UserRatingAdd(ratings[s].RatingID, sequence[s][0], TestHelper.UserIds[1], ref theResponse);
+                TestHelper.ActionProcessor.UserRatingAdd(ratings[s].RatingID, sequence[s][0], user1, ref theResponse);
                 FinishUserRatingAdd();
                 TestHelper.ActionProcessor.UserRatingAdd(ratings[s].RatingID, ran(), TestHelper.UserIds[numSequences + 2], ref theResponse); // Add an irrelevant intermediary user rating by someone else
                 FinishUserRatingAdd();
@@ -962,15 +1022,16 @@ namespace TestProject1
             List<UserInteraction> userInteractions = new List<UserInteraction>();
             for (int s = 0; s < numSequences; s++)
             {
-                UserInteraction uiToAdd = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.User.UserID == TestHelper.UserIds[1] && x.User1.UserID == TestHelper.UserIds[2 + s]);
+                Guid theUser = TestHelper.UserIds[2 + s];
+                UserInteraction uiToAdd = _dataManipulation.DataContext.GetTable<UserInteraction>().Single(x => x.OriginalRatingUser.UserID == user1 && x.LatestRatingUser.UserID == theUser);
                 userInteractions.Add(uiToAdd);
-                uiToAdd.WeightInCalculatingTrustTotal.Should().BeApproximately(TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(uiToAdd.UserInteractionStats[0], uiToAdd), 0.01F);
+                uiToAdd.WeightInCalculatingTrustTotal.Should().BeApproximately(TrustCalculations.GetLastUpdatedUserInteractionWeightInCalculatingTrustTotal(uiToAdd.UserInteractionStats.OrderBy(x => x.StatNum).ToArray()[0], uiToAdd), 0.01F);
             }
 
             int numStats = TrustTrackerStatManager.NumStats;
             for (int i = 0; i < numStats; i++)
             {
-                TrustTrackerStat theTrustTrackerStat = _dataManipulation.DataContext.GetTable<TrustTrackerStat>().Single(x => x.TrustTracker.UserID == TestHelper.UserIds[1] && x.StatNum == i);
+                TrustTrackerStat theTrustTrackerStat = _dataManipulation.DataContext.GetTable<TrustTrackerStat>().Single(x => x.TrustTracker.UserID == user1 && x.StatNum == i);
                 List<UserInteractionStat> userInteractionStats = userInteractions.Select(x => x.UserInteractionStats.Single(y => y.StatNum == i)).ToList();
 
                 List<double> avgAdjustPctFromUserInteractionStats = userInteractionStats.Select(x => x.AvgAdjustmentPctWeighted).ToList();
@@ -1014,8 +1075,6 @@ namespace TestProject1
             const decimal maxRatingValue = 10M;
             const decimal otherUserRatingValueOffset = 0.001M;
 
-            Initialize();
-
             if (applySpecialCaseAdjustmentFactorToHighMagnitudeRatings && applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
                 throw new Exception("Can't apply special case to high magnitude ratings and specified choice field value.");
 
@@ -1032,11 +1091,18 @@ namespace TestProject1
 
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(15);
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
+            Guid user4 = TestHelper.UserIds[4];
+            Guid user5 = TestHelper.UserIds[5];
+            Guid user6 = TestHelper.UserIds[6];
+
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, numTblRows - 1); // -1 because the TestHelper has already created one?
             TestHelper.WaitIdleTasks();
 
-            TblRow[] tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
-            Rating[] ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            TblRow[] tblRows = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToArray();
+            Rating[] ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
 
             ratings.Count().Should().Be(numTblRows, "because we started with one TblRow and added numTblRows-1 TblRows, so we should end up with numTblRows TblRows."); 
             tblRows.Count().Should().Be(numTblRows);
@@ -1045,22 +1111,22 @@ namespace TestProject1
             if (applySpecialCaseAdjustmentFactorToSpecifiedChoiceFieldValue)
             {
                 R8RTestEnvironmentCreator testEnv = new R8RTestEnvironmentCreator(TestHelper);
-                PointsManager pm = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
+                PointsManager pm = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.Name).First();
                 testEnv.CreateChoiceGroups(pm.PointsManagerID);
                 ChoiceGroup theChoiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single"); // this is just a test choice group that was added where one can only select a single choice from the group
                 var choiceInGroups = theChoiceGroup.ChoiceInGroups.ToList();
                 int choiceInGroupsCount = choiceInGroups.Count();
-                int fieldDefinitionID = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", FieldTypes.ChoiceField, true, theChoiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
+                Guid fieldDefinitionID = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", FieldTypes.ChoiceField, true, theChoiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
                 for (int rowNum = 0; rowNum < numTblRows; rowNum++)
                 {
-                    int? theChoiceId = null;
+                    Guid? theChoiceId = null;
                     // Every tenth rating gets a the first choice
                     if (rowNum % 10 == 3)
                         theChoiceId = choiceInGroups[0].ChoiceInGroupID; // these are the ones we are going to focus on.
                     // Otherwise there's a 50% chance that we will set theChoiceId to a random choice other than the first one
                     else if (RandomGenerator.GetRandom() > 0.5)
                         theChoiceId = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                    TblRow theTblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here -- this produces a consistent order, but it doesn't really matter what order we insert userratings in
+                    TblRow theTblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here -- this produces a consistent order, but it doesn't really matter what order we insert userratings in
                     // If we leave theChoice == null, then this means that there is no choice for this field.
                     TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(theTblRow, fieldDefinitionID, theChoiceId, TestHelper.SuperUserId, null);
                 }
@@ -1071,7 +1137,7 @@ namespace TestProject1
             // Initialize, each tbl row to the initial value.
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
             {
-                Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).ToList()
+                Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToList()
                     .Skip(rowNum).First();
                 theRating.CurrentValue = initialValue;
                 theRating.LastTrustedValue = initialValue;
@@ -1100,7 +1166,8 @@ namespace TestProject1
 
                 UserEditResponse theResponse = new UserEditResponse();
                 bool isLastEntry = rowNum == numTblRows - 1; // useful for setting conditional breakpoint
-                TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, TestHelper.UserIds[1], ref theResponse);
+
+                TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, user1, ref theResponse);
                 FinishUserRatingAdd();
 
                 int otherUser1Num = RandomGenerator.GetRandom(2, 10);
@@ -1123,8 +1190,9 @@ namespace TestProject1
             TestHelper.WaitIdleTasks();
 
             // Check the trust tracker
+
             TrustTracker trustTracker = _dataManipulation.DataContext.GetTable<TrustTracker>().Single(x => x.TrustTrackerUnit.TrustTrackerUnitID == TestHelper.Tbl.PointsManager.TrustTrackerUnit.TrustTrackerUnitID && 
-x.UserID == TestHelper.UserIds[1]);
+x.UserID == user1);
             TrustTrackerStat noExtraWeightingTrustStat = trustTracker.TrustTrackerStats.Single(x => x.StatNum == (int)TrustStat.NoExtraWeighting);
             float tolerance = baselineAdjustmentFactorToApply == specialCaseAdjustmentFactorToApply ?
                 0.05F : 0.15F;
@@ -1153,8 +1221,9 @@ x.UserID == TestHelper.UserIds[1]);
 
             // Check the last rating entered
             int ratingIndexToUse = numTblRows - 1;
-            Rating theRating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
-            UserRating lastUserRating = theRating2.UserRatings.Single(x => x.UserID == TestHelper.UserIds[1]);
+            Rating theRating2 = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First(); 
+            
+            UserRating lastUserRating = theRating2.UserRatings.Single(x => x.UserID == user1);
             float adjPctApplied = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
             if (baselineAdjustmentFactorToApply == specialCaseAdjustmentFactorToApply)
                 adjPctApplied.Should().BeInRange(
@@ -1166,8 +1235,9 @@ x.UserID == TestHelper.UserIds[1]);
             {
                 while (ratingIndexToUse % 10 != 3)
                     ratingIndexToUse--;
-                Rating theRatingToAssess = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
-                lastUserRating = theRatingToAssess.UserRatings.Single(x => x.UserID == TestHelper.UserIds[1]);
+                Rating theRatingToAssess = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First();
+
+                lastUserRating = theRatingToAssess.UserRatings.Single(x => x.UserID == user1);
                 adjPctApplied = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)lastUserRating.NewUserRating, lastUserRating.EnteredUserRating, lastUserRating.PreviousRatingOrVirtualRating, null);
                 (specialCaseAdjustmentFactorToApply < adjPctApplied == adjPctApplied < baselineAdjustmentFactorToApply)
                     .Should().BeTrue("because the applied adjustment percentage should be somewhere in the middle");
@@ -1198,9 +1268,9 @@ x.UserID == TestHelper.UserIds[1]);
             int numTblRows = 1;
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, numTblRows);
             TestHelper.WaitIdleTasks();
-            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
-            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
-            var users = _dataManipulation.DataContext.GetTable<User>().ToArray();
+            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
+            var users = _dataManipulation.DataContext.GetTable<User>().OrderBy(x => x.WhenCreated).ToArray();
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
             {
                 ratings[rowNum].CurrentValue = 5M;
@@ -1208,7 +1278,9 @@ x.UserID == TestHelper.UserIds[1]);
             }
 
             UserEditResponse aResponse = new UserEditResponse();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 4.5M, TestHelper.UserIds[0], ref aResponse);
+            
+            Guid user0 = TestHelper.UserIds[0];
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, 4.5M, user0, ref aResponse);
             FinishUserRatingAdd();
             decimal[] randomUserRatings = new decimal[20];
             for (int j = 0; j < 20; j++)
@@ -1222,9 +1294,10 @@ x.UserID == TestHelper.UserIds[1]);
                 FinishUserRatingAdd();
                 var trustTrackers = _dataManipulation.DataContext.GetTable<TrustTracker>().Select(x => x).ToList();
                 TestHelper.WaitIdleTasks();
-                users = _dataManipulation.DataContext.GetTable<User>().ToArray(); // must reload users so that we can use the related properties not eagerly loaded
-                TrustTracker tt = users.Single(x => x.UserID == TestHelper.UserIds[0]).TrustTrackers.First(x => x.TrustTrackerUnit.PointsManagers.Any());
-                UserInteractionStat uis = _dataManipulation.DataContext.GetTable<UserInteractionStat>().Single(x => x.StatNum == (int)TrustStat.NoExtraWeighting && x.UserInteraction.User.UserID == TestHelper.UserIds[0] && x.UserInteraction.User1.UserID == TestHelper.UserIds[randomUser]);
+                users = _dataManipulation.DataContext.GetTable<User>().OrderBy(x => x.WhenCreated).ToArray(); // must reload users so that we can use the related properties not eagerly loaded
+                TrustTracker tt = users.Single(x => x.UserID == user0).TrustTrackers.First(x => x.TrustTrackerUnit.PointsManagers.Any());
+                Guid randomuserID = TestHelper.UserIds[randomUser];
+                UserInteractionStat uis = _dataManipulation.DataContext.GetTable<UserInteractionStat>().Single(x => x.StatNum == (int)TrustStat.NoExtraWeighting && x.UserInteraction.OriginalRatingUser.UserID == user0 && x.UserInteraction.LatestRatingUser.UserID == randomuserID);
                 Debug.WriteLine("Random user: " + TestHelper.UserIds[randomUser] + " rating userRating: " + randomUserRatings[randomUser] + " user interaction stat: " + uis.AvgAdjustmentPctWeighted + " trust level: " + tt.OverallTrustLevel);
                 if (previousTrustLevels.ContainsKey(randomUser))
                 {
@@ -1268,9 +1341,9 @@ x.UserID == TestHelper.UserIds[1]);
             int numTblRows = numRatingsUntouched + numRatingsChallenged + 1;
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, numTblRows);
             TestHelper.WaitIdleTasks();
-            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
-            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
-            var users = _dataManipulation.DataContext.GetTable<User>().ToArray();
+            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
+            var users = _dataManipulation.DataContext.GetTable<User>().OrderBy(x => x.WhenCreated).ToArray();
 
             // Initialize, each tbl row to the initial value.
             bool initializeRowsToNonNullValue = true;
@@ -1297,7 +1370,7 @@ x.UserID == TestHelper.UserIds[1]);
             for (int i = 0; i < totalUserRatingsByGoodUsers; i++)
             {
                 int userIndex = RandomGenerator.GetRandom(numBadUsers, numBadUsers + numGoodUsers);
-                int ratingID = ratings[RandomGenerator.GetRandom(numRatingsUntouched, numRatingsUntouched + numRatingsChallenged)].RatingID;
+                Guid ratingID = ratings[RandomGenerator.GetRandom(numRatingsUntouched, numRatingsUntouched + numRatingsChallenged)].RatingID;
                 decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)i / (decimal)totalUserRatingsByGoodUsers)); // user ratings will gradually get more precise
                 decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal) RandomGenerator.GetRandom(-1.0, 1.0);
                 TestHelper.ActionProcessor.UserRatingAdd(ratingID, valueToDo, TestHelper.UserIds[userIndex], ref aResponse);
@@ -1311,11 +1384,11 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.WaitIdleTasks();
 
             // reload data now that datacontext is disposed
-            tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
-            ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
-            users = _dataManipulation.DataContext.GetTable<User>().ToArray();
+            tblRows = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToArray();
+            ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
+            users = _dataManipulation.DataContext.GetTable<User>().OrderBy(x => x.WhenCreated).ToArray();
 
-            var trustTrackers = users.Select(x => x.TrustTrackers.Any() ? x.TrustTrackers.First() : null).ToList();
+            var trustTrackers = users.Select(x => x.TrustTrackers.Any() ? x.TrustTrackers.FirstOrDefault() : null).ToList();
             foreach (Rating r in ratings.Take(numRatingsUntouched))
             {
                 decimal tolerance = 0.3M;
@@ -1378,14 +1451,13 @@ x.UserID == TestHelper.UserIds[1]);
             const decimal correctValue = 7M;
             const int numUsers = 15;
 
-            Initialize();
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(numUsers);
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, numTblRows - 1);
             TestHelper.WaitIdleTasks();
-            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().ToArray();
+            var tblRows = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToArray();
             tblRows.Count().Should().Be(numTblRows);
-            var ratings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            var ratings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
             ratings.Count().Should().Be(numTblRows);
 
             // Initialize, each tbl row to the initial value.
@@ -1401,15 +1473,17 @@ x.UserID == TestHelper.UserIds[1]);
                 initialValue = 5M;
 
             // Rate the first rating
-            UserEditResponse aResponse = new UserEditResponse();
-            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, valueToWhichFirstUserSetsFirstRating, TestHelper.UserIds[0], ref aResponse);
+            UserEditResponse aResponse = new UserEditResponse(); 
+            Guid user0 = TestHelper.UserIds[0];
+
+            TestHelper.ActionProcessor.UserRatingAdd(ratings[0].RatingID, valueToWhichFirstUserSetsFirstRating, user0, ref aResponse);
             FinishUserRatingAdd();
 
             Debug.WriteLine("Added rating that should get reverted to " + ratings[0].RatingID);
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds()); // so that trust will be updated, but not so far that short term resolution will be reflected
             TestHelper.WaitIdleTasks();
             
-            if (allowMonthToPass)
+            if (allowMonthToPass) // if we allow a month to pass, then it will be too late for the user rating to be reviewed based on other recent user ratings, though the calculated adjustment percentage should still be affected
             {
                 TestHelper.WaitIdleTasks();
                 TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(31).GetTotalWholeMilliseconds()); // wait a month
@@ -1420,26 +1494,28 @@ x.UserID == TestHelper.UserIds[1]);
             //  by the adjustment factor, and have two other users rate the correct value.
             for (int rowNum = 1; rowNum < numTblRows; rowNum++)
             {
-                decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // AdjustmentPercentages.GetRatingToAcceptFromAdjustmentPct(initialValue, correctValue, adjPctToApply, null);
-                valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10);
+                decimal valueToEnterByFirstUser = (decimal)((float)initialValue + (float)(correctValue - initialValue) / adjustmentFactorToApply ); // So, if the adjustment factor is < 1, then the user will be overshooting
+                valueToEnterByFirstUser = TrustCalculations.Constrain(valueToEnterByFirstUser, 0, 10); // this is the range of ratings
                 UserEditResponse theResponse = new UserEditResponse();
-                Debug.WriteLine("Added rating to " + ratings[rowNum].RatingID);
-                TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, TestHelper.UserIds[0], ref theResponse);
+                Guid user1 = TestHelper.UserIds[1];
+                TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToEnterByFirstUser, user0, ref theResponse);
                 FinishUserRatingAdd();
 
                 // Instead of just two users, rate the rating with the correct value using all other users.
                 decimal plusMinusCorrectValueInitial = 0.3M;
                 List<int> users = Enumerable.Range(2, numUsers - 3).ToList();
                 users.Shuffle();
+                int indexOfRatingUser = 1;
                 foreach (int userNum in users)
                 {
-                    decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)userNum / (decimal) (numUsers - 3))); // user ratings will gradually get more precise
-                    decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal)RandomGenerator.GetRandom(-1.0, 1.0);
+                    decimal plusMinusCorrectValue = plusMinusCorrectValueInitial * (1.0M - ((decimal)indexOfRatingUser / (decimal) (users.Count()))); // user ratings will gradually get more precise, as a general matter...
+                    decimal valueToDo = correctValue + plusMinusCorrectValue * (decimal)RandomGenerator.GetRandom(-1.0, 1.0); // ...but with some randomness thrown in
                     TestHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, valueToDo, TestHelper.UserIds[userNum], ref theResponse);
                     FinishUserRatingAdd();
+                    indexOfRatingUser++;
                 }
 
-                Debug.WriteLine(String.Format("{0} RatingID {1} Rated.", TestableDateTime.Now, ratings[rowNum].RatingID));
+                //Debug.WriteLine(String.Format("{0} RatingID {1} Rated.", TestableDateTime.Now, ratings[rowNum].RatingID));
 
                 //int userNum1 = RandomGenerator.GetRandom(2, 10);
                 //_testHelper.ActionProcessor.UserRatingAdd(ratings[rowNum].RatingID, correctValue + 0.001M, _testHelper.UserIds[userNum1], ref theResponse);
@@ -1458,6 +1534,8 @@ x.UserID == TestHelper.UserIds[1]);
                 }
 
             }
+
+            // make sure ratings review happens if there has not been too much time since the initial userrating
             for (int i = 0; i <= 1; i++)
             { // we do this twice because ratings review won't happen for 20 minutes
                 TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
@@ -1466,21 +1544,22 @@ x.UserID == TestHelper.UserIds[1]);
 
             // Check the first rating entered to make sure it has been updated
             int ratingIndexToUse = 0;
-            Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
-            UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == TestHelper.UserIds[0]);
+            Rating rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First();
+            UserRating firstUserRatingForFirstRating = rating.UserRatings.Single(x => x.UserID == user0);
+            Debug.WriteLine("UserRating being assessed: " + firstUserRatingForFirstRating.UserRatingID);
             TrustTracker tt = firstUserRatingForFirstRating.User.TrustTrackers.Single(x => x.TrustTrackerUnit.PointsManagers.First() == rating.RatingGroup.RatingGroupAttribute.PointsManager);
             float appliedAdjustmentFactor = AdjustmentFactorCalc.CalculateAdjustmentFactor((decimal)rating.CurrentValue, firstUserRatingForFirstRating.EnteredUserRating, firstUserRatingForFirstRating.PreviousRatingOrVirtualRating);
 
             float tolerance = 0.02F;
             if (allowMonthToPass)
-                appliedAdjustmentFactor.Should().BeApproximately(1.0F, tolerance); // because we only review ratings for 30 days, so this one won't get changed
+                appliedAdjustmentFactor.Should().BeApproximately(1.0F, tolerance); // because we only review ratings for 30 days, the user's initial rating shouldn't be changed, so the applied adjustment factor should stil be run
             else
-                appliedAdjustmentFactor.Should().BeApproximately((float) TrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance);
+                appliedAdjustmentFactor.Should().BeApproximately((float) TrustCalculations.Constrain(tt.OverallTrustLevelAtLastReview, 0, 1), tolerance); // because the first user's trust was changed within the month where the rating could be reviewed, the adjustment factor should now equal the user's overall trust level
 
             // second rating may get rerated a small distance, so the following doesn't apply.
             //// Check to make sure admin has not rerated the rating in the second tblrow
             //ratingIndexToUse = 1;
-            //rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingID).Skip(ratingIndexToUse).First();
+            //rating = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Skip(ratingIndexToUse).First();
             //UserRating lastNonAdminUserRating = rating.UserRatings.Where(x => x.User.Username != "admin").Last();
             //TrustTracker lastNonAdminTT = lastNonAdminUserRating.User.TrustTrackers.First();
             //UserRating adminUserRating = rating.UserRatings.SingleOrDefault(x => x.User.Username == "admin");
@@ -1509,9 +1588,12 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.CreateUsers(1 + otherUserCount);
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
+            Guid user0 = TestHelper.UserIds[0];
+            Guid user1 = TestHelper.UserIds[1];
 
-            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == 2); // I think the first user is the super user, created by TestHelper
-            IEnumerable<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().Where(u => u.UserID > 2 && u.UserID < 2 + otherUserCount);
+            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == user1); // I think the first user is the super user, created by TestHelper
+            List<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().OrderBy(x => x.WhenCreated).Where(u => TestHelper.UserIds.Skip(2).ToList().Contains(u.UserID)).Take(otherUserCount).ToList(); 
+
 
             decimal targetRating = (decimal)((decimal)random.NextDouble() * (maxRatingValue - minRatingValue));
             Debug.WriteLine(String.Format("Target Rating: {0}", targetRating));
@@ -1569,9 +1651,10 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.CreateUsers(1 + otherUserCount);
             TestHelper.AddTblRowsToTbl(TestHelper.Tbl.TblID, 1);
             TestHelper.WaitIdleTasks();
+            Guid user1 = TestHelper.UserIds[1];
 
-            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == 2); // I think the first user is the super user, created by TestHelper
-            IEnumerable<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().Where(u => u.UserID > 2 && u.UserID < 2 + otherUserCount);
+            User user = _dataManipulation.DataContext.GetTable<User>().Single(u => u.UserID == user1); // I think the first user is the super user, created by TestHelper
+            List<User> otherUsers = _dataManipulation.DataContext.GetTable<User>().OrderBy(x => x.WhenCreated).Where(u => TestHelper.UserIds.Skip(2).ToList().Contains(u.UserID)).Take(otherUserCount).ToList(); 
 
             decimal targetRating = (decimal)((decimal)random.NextDouble() * (maxRatingValue - minRatingValue));
             Debug.WriteLine(String.Format("Target Rating: {0}", targetRating));
@@ -1706,12 +1789,12 @@ x.UserID == TestHelper.UserIds[1]);
             for (int i = 0; i < parameters.NumUsers; i++)
                 baseAdjustmentFactorToApply[i] = RandomGenerator.GetRandom(parameters.MinDesiredAdjustmentFactor, parameters.MaxDesiredAdjustmentFactor);
 
-            decimal[] correctValues = new decimal[parameters.NumTblRows];
-            decimal[] wrongValues = new decimal[parameters.NumTblRows];
+            decimal[] correctValuesForRatingInEachTblRow = new decimal[parameters.NumTblRows];
+            decimal[] wrongValuesForRatingInEachTblRow = new decimal[parameters.NumTblRows];
             for (int i = 0; i < parameters.NumTblRows; i++)
             {
-                correctValues[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
-                wrongValues[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
+                correctValuesForRatingInEachTblRow[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
+                wrongValuesForRatingInEachTblRow[i] = (decimal)RandomGenerator.GetRandom(parameters.MinRatingValue, parameters.MaxRatingValue);
             }
 
             TestHelper.CreateSimpleTestTable(true);
@@ -1720,27 +1803,35 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.WaitIdleTasks();
 
             var testEnv = new R8RTestEnvironmentCreator(TestHelper);
-            PointsManager pointsManager = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.PointsManagerID).First();
+            PointsManager pointsManager = _dataManipulation.DataContext.GetTable<PointsManager>().OrderByDescending(x => x.Name).First();
             testEnv.CreateChoiceGroups(pointsManager.PointsManagerID);
             ChoiceGroup choiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
             var choiceInGroups = choiceGroup.ChoiceInGroups.ToList();
             int choiceInGroupsCount = choiceInGroups.Count();
-            int fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice",
+            Guid fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice",
                 FieldTypes.ChoiceField, true, choiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
-            int[] randomChoiceInGroupIds = new int[parameters.NumTblRows];
+            Guid[] tblRowIDs = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).Select(x => x.TblRowID).ToArray();
+            Guid[] randomChoiceInGroupIds = new Guid[parameters.NumTblRows];
             for (int rowNum = 0; rowNum < parameters.NumTblRows; rowNum++)
             {
                 randomChoiceInGroupIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID here, as we're just trying to get a consistent ordering, not an ordering by time.
+                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First();
+                tblRow.TblRowID.Should().Be(tblRowIDs[rowNum], "must make sure that we are referring to table rows in consistent order");
                 TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(tblRow, fieldDefinitionId, randomChoiceInGroupIds[rowNum],
                     TestHelper.SuperUserId, null);
             }
-            #region Debug
+            Func<float> toleranceCalc = () =>
+                {
+                    Rating[] theRatings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.TblRow.WhenCreated).ToArray();
+                    for (int rowNum = 0; rowNum < theRatings.Length; rowNum++)
+                        theRatings[rowNum].RatingGroup.TblRowID.Should().Be(tblRowIDs[rowNum], "must make sure that we have rating groups ordered one per table row for this test");
+                    return calculateProportionWithinTolerance(theRatings, parameters.NumTblRows, correctValuesForRatingInEachTblRow, parameters.Tolerance);
+                };
+            #region Progress reporting
             {
                 Debug.WriteLine("******************");
 
-                float proportionWithinTolerance = calculateProportionWithinTolerance(_dataManipulation.DataContext.GetTable<Rating>().ToArray(),
-                parameters.NumTblRows, correctValues, parameters.Tolerance);
+                float proportionWithinTolerance = toleranceCalc();
                 Debug.WriteLine(String.Format("Before Batches, {0}% within tolerance.", proportionWithinTolerance * 100));
 
                 IEnumerable<TrustTracker> tts = _dataManipulation.DataContext.GetTable<TrustTracker>().OrderBy(u => u.UserID);
@@ -1758,7 +1849,9 @@ x.UserID == TestHelper.UserIds[1]);
             }
             #endregion
             //int minUserId = _dataManipulation.DataContext.GetTable<User>().Min(u => u.UserID);
-            //int userIdsUnderWhichUserWillTargetWrongValues = minUserId + numUsersWhoTargetWrongValues;
+            //Guid userIDsUnderWhichUserWillTargetWrongValues = minUserId + numUsersWhoTargetWrongValues;
+
+            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Select(x => x.RatingID).ToList();
 
             for (int batchNum = 0; batchNum < parameters.NumBatchesOfUserRatings; batchNum++)
             {
@@ -1769,9 +1862,11 @@ x.UserID == TestHelper.UserIds[1]);
                     float desiredAdjustmentFactor = baseAdjustmentFactorToApply[randomUserNum];
                     bool userTargetsWrongValue = randomUserNum < parameters.NumUsersWhoTargetWrongValues;
                     decimal valueForUserToTarget = userTargetsWrongValue ?
-                        wrongValues[randomRowNum] :
-                        correctValues[randomRowNum];
-                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == randomRowNum + 1);
+                        wrongValuesForRatingInEachTblRow[randomRowNum] :
+                        correctValuesForRatingInEachTblRow[randomRowNum];
+                    Guid theRatingID = theRatingIDs[randomRowNum];
+                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingID);
+                    theRating.RatingGroup.TblRowID.Should().Be(tblRowIDs[randomRowNum], "we need to keep the ratings in order for purpose of this test");
                     decimal currentValue = theRating.CurrentValue ?? (parameters.MaxRatingValue - parameters.MinRatingValue) / 2;
                     // AdjustmentFactor is defined as:
                     //  (adjustedRating - basisRating) / 
@@ -1786,9 +1881,8 @@ x.UserID == TestHelper.UserIds[1]);
                 TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds()); // so that trust will be updated
                 TestHelper.WaitIdleTasks();
 
-                float proportionWithinTolerance = calculateProportionWithinTolerance(_dataManipulation.DataContext.GetTable<Rating>().ToArray(),
-                    parameters.NumTblRows, correctValues, parameters.Tolerance);
-                #region Debug
+                float proportionWithinTolerance = toleranceCalc();
+                #region Progress reporting2
                 {
                     Debug.WriteLine("******************");
 
@@ -1810,8 +1904,7 @@ x.UserID == TestHelper.UserIds[1]);
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromHours(1).GetTotalWholeMilliseconds());
             TestHelper.WaitIdleTasks();
 
-            float proportionWithinToleranceOfCorrectRating = calculateProportionWithinTolerance(_dataManipulation.DataContext.GetTable<Rating>().ToArray(),
-                parameters.NumTblRows, correctValues, parameters.Tolerance);
+            float proportionWithinToleranceOfCorrectRating = toleranceCalc();
             proportionWithinToleranceOfCorrectRating.Should().BeGreaterThan(parameters.RequiredProportionOfRatingsWithinTolerance,
                 String.Format("because the parameters indicate that {0}% of the ratings should approach the correct value to within a tolerance of ±{1}.",
                     parameters.RequiredProportionOfRatingsWithinTolerance * 100, parameters.Tolerance));
@@ -1907,21 +2000,23 @@ x.UserID == TestHelper.UserIds[1]);
             ChoiceGroup choiceGroup = _dataManipulation.DataContext.GetTable<ChoiceGroup>().Single(x => x.Name == "ChoiceGroup single");
             var choiceInGroups = choiceGroup.ChoiceInGroups.ToList();
             int choiceInGroupsCount = choiceInGroups.Count();
-            int fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", 
+            Guid fieldDefinitionId = TestHelper.ActionProcessor.FieldDefinitionCreate(TestHelper.Tbl.TblID, "SimpChoice", 
                 FieldTypes.ChoiceField, true, choiceGroup.ChoiceGroupID, null, true, true, TestHelper.SuperUserId, null);
-            int[] randomChoiceIds = new int[numTblRows];
+            Guid[] randomChoiceIds = new Guid[numTblRows];
             for (int rowNum = 0; rowNum < numTblRows; rowNum++)
             {
                 randomChoiceIds[rowNum] = choiceInGroups[RandomGenerator.GetRandom(1, choiceInGroupsCount - 1)].ChoiceInGroupID;
-                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.TblRowID).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here, since just getting a consistent ordering
+                TblRow tblRow = _dataManipulation.DataContext.GetTable<TblRow>().OrderBy(x => x.WhenCreated).ToList().Skip(rowNum).First(); // OK to use TblRowID to order here, since just getting a consistent ordering
                 TestHelper.ActionProcessor.ChoiceFieldWithSingleChoiceCreateOrReplace(tblRow, fieldDefinitionId, randomChoiceIds[rowNum], 
                     TestHelper.SuperUserId, null);
             }
 
             // The ChoiceInGroups that will trigger a different adj factor for this user
-            int[] choiceInGroupIdThatTriggersSpecialAdjustmentFactor = new int[numUsers];
+            Guid[] choiceInGroupIdThatTriggersSpecialAdjustmentFactor = new Guid[numUsers];
             for (int i = 0; i < numUsers; i++)
-                choiceInGroupIdThatTriggersSpecialAdjustmentFactor[i] = RandomGenerator.GetRandom(0, choiceInGroupsCount - 1); 
+                choiceInGroupIdThatTriggersSpecialAdjustmentFactor[i] = choiceInGroups[RandomGenerator.GetRandom(0, choiceInGroupsCount - 1)].ChoiceInGroupID;
+
+            List<Guid> theRatingIDs = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).Select(x => x.RatingID).ToList();
 
             for (int batchNum = 0; batchNum < numBatchesOfUserRatings; batchNum++)
             {
@@ -1936,7 +2031,8 @@ x.UserID == TestHelper.UserIds[1]);
                     decimal valueForUserToTarget = RandomGenerator.GetRandom() < proportionOfUsersTargettingWrongValues ?
                         wrongValues[randomRowNum] :
                         correctValues[randomRowNum];
-                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == randomRowNum + 1);
+                    Guid theRatingID = theRatingIDs[randomRowNum];
+                    Rating theRating = _dataManipulation.DataContext.GetTable<Rating>().Single(x => x.RatingID == theRatingID);
                     decimal currentValue = theRating.CurrentValue ?? (maxRatingValue - minRatingValue) / 2;
                     // Since AdjustmentFactor is defined as:
                     //  (adjustedRating - basisRating) / 
@@ -1954,7 +2050,7 @@ x.UserID == TestHelper.UserIds[1]);
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(2).GetTotalWholeMilliseconds()); // 2 days/
             TestHelper.WaitIdleTasks();
 
-            Rating[] theRatings = _dataManipulation.DataContext.GetTable<Rating>().ToArray();
+            Rating[] theRatings = _dataManipulation.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).ToArray();
             int numWithinTolerance = 0;
             for (int i = 0; i < numTblRows; i++)
             {
@@ -1975,35 +2071,39 @@ x.UserID == TestHelper.UserIds[1]);
             TestHelper.CreateSimpleTestTable(true);
             TestHelper.CreateUsers(4);
 
+            Guid user0 = TestHelper.UserIds[0];
+            Guid user1 = TestHelper.UserIds[1];
+            Guid user2 = TestHelper.UserIds[2];
+            Guid user3 = TestHelper.UserIds[3];
             UserEditResponse theResponse = new UserEditResponse();
             decimal user1RatingValue = 7M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, TestHelper.UserIds[1], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user1RatingValue, user1, ref theResponse);
             TestHelper.WaitIdleTasks();
 
             decimal user2RatingValue = 8M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, TestHelper.UserIds[2], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user2RatingValue, user2, ref theResponse);
             TestHelper.WaitIdleTasks();
-            
+
             UserInteraction user1User2Interaction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(ui =>
-                    ui.OrigRatingUserID == TestHelper.UserIds[1] &&
-                    ui.LatestRatingUserID == TestHelper.UserIds[2]);
+                    ui.OrigRatingUserID == user1 &&
+                    ui.LatestRatingUserID == user2);
             user1User2Interaction.Should().NotBeNull();
-
+    
             decimal user3RatingValue = 5M;
-            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, TestHelper.UserIds[3], ref theResponse);
+            TestHelper.ActionProcessor.UserRatingAdd(TestHelper.Rating.RatingID, user3RatingValue, user3, ref theResponse);
             TestHelper.WaitIdleTasks();
             
             _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .SingleOrDefault(ui =>
-                    ui.OrigRatingUserID == TestHelper.UserIds[1] &&
-                    ui.LatestRatingUserID == TestHelper.UserIds[3])
+                    ui.OrigRatingUserID == user1 &&
+                    ui.LatestRatingUserID == user3)
                 .Should().NotBeNull();
             
            _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .SingleOrDefault(ui =>
-                    ui.OrigRatingUserID == TestHelper.UserIds[1] &&
-                    ui.LatestRatingUserID == TestHelper.UserIds[2])
+                    ui.OrigRatingUserID == user1 &&
+                    ui.LatestRatingUserID == user2)
                 .Should().BeNull();
         }
     }

@@ -15,15 +15,16 @@ using System.Collections.Generic;
 
 using System.Diagnostics;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserControl
 {
     R8RDataAccess DataAccess;
     Action<int> SelectFn;
     int ColumnNumber;
-    int TblColumnID;
+    Guid TblColumnID;
     public bool rebinding = false;
-    public int RatingGroupID;
+    public Guid RatingGroupID;
     public bool CanPredict;
     public bool Selected;
     protected TradingStatus TheTradingStatus;
@@ -35,7 +36,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
         rebinding = true;
     }
 
-    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, int tblColumnID, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Action<int> selectFn, int columnNumber, Guid tblColumnID, Guid ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, bool doRebind, string suppStyle)
     {
         SuppStyle = suppStyle;
         if (doRebind)
@@ -57,7 +58,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
         List<RatingIdAndUserRatingValue> theList = new List<RatingIdAndUserRatingValue>();
         foreach (var mv in TheSelectedRatingValues)
         {
-            int thisRatingID = 0;
+            Guid thisRatingID = new Guid();
             decimal? thisUserRating = 0;
             mv.GetRatingAndProposedValue(ref thisRatingID, ref thisUserRating);
             if (thisUserRating != null)
@@ -86,7 +87,7 @@ public partial class Main_Table_ViewCellMultipleOutcome : System.Web.UI.UserCont
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
 
             string ratingName = (string)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingName"];
-            int ratingID = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingID"];
+            Guid ratingID = (Guid)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["ratingID"];
             decimal? value = (decimal?)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["value"];
             int hierarchyLevel = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["hierarchyLevel"];
             int decimalPlaces = (int)MultipleListView.DataKeys[dataItem.DisplayIndex].Values["decimalPlaces"];

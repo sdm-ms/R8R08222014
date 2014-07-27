@@ -17,7 +17,8 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 #endif
 
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 using FluentAssertions;
 
 namespace TestProject1
@@ -30,7 +31,7 @@ namespace TestProject1
         const float Precision = 0.0001f;
 
         R8RDataManipulation _dataManipulation;
-        TestHelper _testHelper;
+        TestHelper theTestHelper;
         Random _random;
 
         decimal nextRandomRating()
@@ -44,11 +45,10 @@ namespace TestProject1
         public void Initialize()
         {
             GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
-            UseFasterSubmitChanges.Set(false);
             TestableDateTime.UseFakeTimes();
             TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds());
             TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
-            _testHelper = new TestHelper();
+            theTestHelper = new TestHelper();
             _dataManipulation = new R8RDataManipulation();
 
             _random = new Random();
@@ -125,8 +125,8 @@ namespace TestProject1
         #region WeightedAverageAdjustmentFactor
         public void blah()
         {
-            _testHelper.CreateSimpleTestTable(true);
-            _testHelper.CreateUsers(2); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(2); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
         }
         //public void WeightedAverageAdjustmentFactorCalculatesCorrectlyForRandomRatingByTwoUsers()
         //{
@@ -150,26 +150,31 @@ namespace TestProject1
         public void WeightedAverageAdjustmentFactorCalculatesCorrectlyForRandomRatingByTwoUsers()
         {
 
-            _testHelper.CreateSimpleTestTable(true);
-            _testHelper.CreateUsers(3); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(3); // Must create one more user than needed...Not sure why.  Maybe to make room for the SuperUser?  But why doesn't the SuperUser creation make its own room?
 
             UserEditResponse theResponse = new UserEditResponse();
             decimal user1UserRatingValue = nextRandomRating();
             // Must ensure that this rating is trusted
-            _testHelper.ActionProcessor.UserRatingAdd(_testHelper.Rating.RatingID, user1UserRatingValue, _testHelper.UserIds[1], ref theResponse);
-            _testHelper.WaitIdleTasks();
-            _testHelper.Rating.CurrentValue.Should().Be(user1UserRatingValue);
+            Guid user1 = theTestHelper.UserIds[1];
+            theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user1UserRatingValue, user1, ref theResponse);
+            theTestHelper.WaitIdleTasks();
+            theTestHelper.Rating.CurrentValue.Should().Be(user1UserRatingValue);
 
             decimal user2UserRatingValue = nextRandomRating();
-            _testHelper.ActionProcessor.UserRatingAdd(_testHelper.Rating.RatingID, user2UserRatingValue, _testHelper.UserIds[2], ref theResponse);
-            _testHelper.WaitIdleTasks();
+            Guid user2 = theTestHelper.UserIds[2];
+            theTestHelper.ActionProcessor.UserRatingAdd(theTestHelper.Rating.RatingID, user2UserRatingValue, user2, ref theResponse);
+            theTestHelper.WaitIdleTasks();
+
+            var userInteractionsAll = _dataManipulation.DataContext.GetTable<UserInteraction>().Where(x => true).ToList();
+            var userRatingsAll = _dataManipulation.DataContext.GetTable<UserRating>().Where(x => true).ToList();
 
             UserInteraction userInteraction = _dataManipulation.DataContext.GetTable<UserInteraction>()
                 .Single(x =>
-                    x.User.UserID == _testHelper.UserIds[1] &&
-                    x.User1.UserID == _testHelper.UserIds[2]);
+                    x.OriginalRatingUser.UserID == user1 &&
+                    x.LatestRatingUser.UserID == user2);
             
-            List<UserInteractionStat> userInteractionStats = userInteraction.UserInteractionStats.ToList();
+            List<UserInteractionStat> userInteractionStats = userInteraction.UserInteractionStats.OrderBy(x => x.StatNum).ToList();
 
             decimal basisRatingValue = user1UserRatingValue;
             decimal ratingValue = user2UserRatingValue;

@@ -11,7 +11,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 
 public partial class NewUser : System.Web.UI.Page
 {
@@ -27,7 +28,7 @@ public partial class NewUser : System.Web.UI.Page
             TextBox UserNameTextBox = (TextBox)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("UserName");
             TextBox EmailTextBox = (TextBox)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("Email");
             IUserProfileInfo theUserProfileInfo = UserProfileCollection.LoadByUsername(UserNameTextBox.Text);
-            int userID = theActionProcessor.UserAdd(theUserProfileInfo.Username, false, "", "", true);
+            Guid userID = theActionProcessor.UserAdd(theUserProfileInfo.Username, false, "", "", true);
     }
 
     protected void CreateUserWizard1_CreatingUser(object sender, LoginCancelEventArgs e)

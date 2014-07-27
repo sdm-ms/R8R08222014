@@ -53,20 +53,34 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Effort">
+      <HintPath>..\packages\Effort.EF6.1.1.0\lib\net45\Effort.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="GMapGeocoder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Dependencies\GMapGeocoder.dll</HintPath>
     </Reference>
     <Reference Include="GMaps, Version=3.2.0.1, Culture=neutral, PublicKeyToken=f43a93ab972291b8, processorArchitecture=MSIL">
       <HintPath>Dependencies\GMaps.dll</HintPath>
     </Reference>
-    <Reference Include="LinqKit">
-      <HintPath>Dependencies\LinqKit.dll</HintPath>
+    <Reference Include="LinqKit, Version=1.1.1.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\LinqKit.1.1.1\lib\net45\LinqKit.dll</HintPath>
     </Reference>
     <Reference Include="mapquest20, Version=5.3.0.0, Culture=neutral, PublicKeyToken=c869873a4fab3ddd, processorArchitecture=MSIL">
       <HintPath>Dependencies\mapquest20.dll</HintPath>
     </Reference>
     <Reference Include="MB.KyneticORM.Direct">
       <HintPath>Dependencies\MB.KyneticORM.Direct.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Experimental.Collections">
+      <HintPath>..\packages\Microsoft.Experimental.Collections.1.0.1-alpha\lib\portable-net45+win8+wp8\Microsoft.Experimental.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ServiceHosting.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>Dependencies\Microsoft.ServiceHosting.Tools.dll</HintPath>
@@ -109,10 +123,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NMemory">
+      <HintPath>..\packages\NMemory.1.0.0\lib\net45\NMemory.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.Services" />
@@ -155,125 +172,297 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Misc\AzureChartControlBlobHandler.cs" />
-    <Compile Include="Misc\AzureCloudDrive.cs" />
-    <Compile Include="Misc\AzureNotifications.cs" />
-    <Compile Include="Misc\AzureQueue.cs" />
-    <Compile Include="Misc\AzureSetup.cs" />
-    <Compile Include="Misc\AzureStartupDiagnostic.cs" />
-    <Compile Include="Misc\AzureTables.cs" />
-    <Compile Include="Misc\ButtonDropDownList.cs" />
-    <Compile Include="Misc\ButtonTextBox.cs" />
-    <Compile Include="Misc\CheckJavaScriptHelper.cs" />
-    <Compile Include="Misc\DataContextExtensions.cs" />
-    <Compile Include="Misc\DataContextRepositories.cs" />
-    <Compile Include="Misc\DataContextRepositoriesInMemory.cs" />
-    <Compile Include="Misc\DataContextRepositoriesSQL.cs" />
-    <Compile Include="Misc\DataContextRepositoryExtensions.cs" />
-    <Compile Include="Misc\DateTimeManip.cs" />
-    <Compile Include="Misc\GeoCalc.cs" />
-    <Compile Include="Misc\GoogleGeocode.cs" />
-    <Compile Include="Misc\GooglePagerField.cs" />
-    <Compile Include="Misc\LinqExcelProvider.cs" />
-    <Compile Include="Misc\MapquestGeocode.cs" />
-    <Compile Include="Misc\MD5HashGenerator.cs" />
-    <Compile Include="Misc\Median.cs" />
-    <Compile Include="Misc\MoreStrings.cs" />
-    <Compile Include="Misc\PredicateBuilder.cs" />
-    <Compile Include="Misc\PrettyURLEncode.cs" />
-    <Compile Include="Misc\ProfileSimple.cs" />
-    <Compile Include="Misc\RandomGenerator.cs" />
-    <Compile Include="Misc\Serialization.cs" />
-    <Compile Include="Misc\SQLDirectManipulate.cs" />
-    <Compile Include="Misc\StringEnum.cs" />
-    <Compile Include="Misc\TestableDateTime.cs" />
-    <Compile Include="Misc\UserProfileInfo.cs" />
-    <Compile Include="Misc\WeakReferenceTracker.cs" />
-    <Compile Include="Misc\IEnumerableExtensions.cs" />
-    <Compile Include="ModelFromDatabase\R8R.cs">
-      <DependentUpon>R8R.dbml</DependentUpon>
+    <Compile Include="Migrations\201407162313044_InitialCreate.cs" />
+    <Compile Include="Migrations\201407162313044_InitialCreate.Designer.cs">
+      <DependentUpon>201407162313044_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="ModelFromDatabase\R8R.designer.cs">
-      <DependentUpon>R8R.dbml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Migrations\201407171527031_ChangedUnicode.cs" />
+    <Compile Include="Migrations\201407171527031_ChangedUnicode.Designer.cs">
+      <DependentUpon>201407171527031_ChangedUnicode.cs</DependentUpon>
     </Compile>
-    <Compile Include="ModelFromDatabase\Partials\Rating.cs" />
-    <Compile Include="ModelFromDatabase\Partials\TrustTrackerUnit.cs" />
-    <Compile Include="Misc\TimeSpanExtensions.cs" />
-    <Compile Include="ModelFromDatabase\Partials\UserRating.cs" />
-    <Compile Include="Model\ActionProcessor.cs" />
-    <Compile Include="Model\AddObjects.cs" />
-    <Compile Include="Model\AdjustmentFactorCalc.cs" />
-    <Compile Include="Model\BackgroundThread.cs" />
-    <Compile Include="Model\BlobFiles.cs" />
-    <Compile Include="Model\CacheManagement.cs" />
-    <Compile Include="Model\CacheSubstitution.cs" />
-    <Compile Include="Model\ConnectionString.cs" />
-    <Compile Include="Model\TblColumns.cs" />
-    <Compile Include="Model\ChoiceGroups.cs" />
-    <Compile Include="Model\ClassesAndTypes.cs" />
-    <Compile Include="Model\ConditionalRatings.cs" />
-    <Compile Include="Model\CreateStandard.cs" />
-    <Compile Include="Model\DataAccess.cs" />
-    <Compile Include="Model\DatabaseAndRoleStatus.cs" />
-    <Compile Include="Model\DatabaseTransitions.cs" />
-    <Compile Include="Model\DataContextAbstract.cs" />
-    <Compile Include="Model\DataContextInMemory.cs" />
-    <Compile Include="Model\DataContextManagement.cs" />
-    <Compile Include="Model\DataContextSQL.cs" />
-    <Compile Include="Model\DeleteObjects.cs" />
-    <Compile Include="Model\Email.cs" />
-    <Compile Include="Model\ExecutingChanges.cs" />
-    <Compile Include="Model\FastAccessRowUpdateInfo.cs" />
-    <Compile Include="ModelFromDatabase\Partials\FastAccessRowUpdatePartialClasses.cs" />
-    <Compile Include="Model\FastAccessTablesDefinition.cs" />
-    <Compile Include="Model\FastAccessTablesMaintenance.cs" />
-    <Compile Include="Model\FastAccessTablesQuery.cs" />
-    <Compile Include="Model\Fields.cs" />
-    <Compile Include="Model\FieldsDisplayCreator.cs" />
-    <Compile Include="Model\FilterRules.cs" />
-    <Compile Include="Model\GeocodeUpdate.cs" />
-    <Compile Include="Model\HierarchyItems.cs" />
-    <Compile Include="Model\HighStakes.cs" />
-    <Compile Include="Model\ImportExportTblRows.cs" />
-    <Compile Include="Model\InitialBuild.cs" />
-    <Compile Include="Model\InsertableContentManage.cs" />
-    <Compile Include="Model\ItemPath.cs" />
-    <Compile Include="Model\LongProcess.cs" />
-    <Compile Include="Model\MyPointsSidebar.cs" />
-    <Compile Include="Model\NeedsRatingScore.cs" />
-    <Compile Include="Model\ObjectManagement.cs" />
-    <Compile Include="Model\PaymentGuarantees.cs" />
-    <Compile Include="Model\PickTblRows.cs" />
-    <Compile Include="Model\PointsCalculating.cs" />
-    <Compile Include="Model\PointsTracking.cs" />
-    <Compile Include="Model\RaterTime.cs" />
-    <Compile Include="Model\RatingAndUserRatingStatus.cs" />
-    <Compile Include="Model\RatingsAndGroups.cs" />
-    <Compile Include="Model\RatingsReview.cs" />
-    <Compile Include="Model\RecencyUpdates.cs" />
-    <Compile Include="Model\Rewards.cs" />
-    <Compile Include="Model\Routing.cs" />
-    <Compile Include="Model\SearchWords.cs" />
-    <Compile Include="Model\StatusRecords.cs" />
-    <Compile Include="Model\StringConstants.cs" />
-    <Compile Include="Model\DataManipulation.cs" />
-    <Compile Include="Model\TableInfo.cs" />
-    <Compile Include="Model\TableLoading.cs" />
-    <Compile Include="Model\TableSortMenu.cs" />
-    <Compile Include="Model\TblColumnFormatting.cs" />
-    <Compile Include="Model\TblDimension.cs" />
-    <Compile Include="Model\TblRowsAndFields.cs" />
-    <Compile Include="Model\Test.cs" />
-    <Compile Include="Model\TrustCalculations.cs" />
-    <Compile Include="Model\TrustTrackerStatManager.cs" />
-    <Compile Include="Model\TrustTrackingBackgroundTasks.cs" />
-    <Compile Include="Model\UserManagement.cs" />
-    <Compile Include="Model\UserRatingEntryProcessing.cs" />
-    <Compile Include="Model\UserRatingHierarchy.cs" />
-    <Compile Include="Model\UserSelectedRatingOverrides.cs" />
-    <Compile Include="Model\VolatilityTracking.cs" />
+    <Compile Include="Migrations\201407171655201_July17at1pm.cs" />
+    <Compile Include="Migrations\201407171655201_July17at1pm.Designer.cs">
+      <DependentUpon>201407171655201_July17at1pm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407190256104_AddedWhenCreatedFields.cs" />
+    <Compile Include="Migrations\201407190256104_AddedWhenCreatedFields.Designer.cs">
+      <DependentUpon>201407190256104_AddedWhenCreatedFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407221040266_UserWhenCreated.cs" />
+    <Compile Include="Migrations\201407221040266_UserWhenCreated.Designer.cs">
+      <DependentUpon>201407221040266_UserWhenCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407221309337_AllDatesDateTime2.cs" />
+    <Compile Include="Migrations\201407221309337_AllDatesDateTime2.Designer.cs">
+      <DependentUpon>201407221309337_AllDatesDateTime2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407222221274_FurtherChanges.cs" />
+    <Compile Include="Migrations\201407222221274_FurtherChanges.Designer.cs">
+      <DependentUpon>201407222221274_FurtherChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407231235109_EliminatedRoutingHierarchyItems.cs" />
+    <Compile Include="Migrations\201407231235109_EliminatedRoutingHierarchyItems.Designer.cs">
+      <DependentUpon>201407231235109_EliminatedRoutingHierarchyItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.cs" />
+    <Compile Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.Designer.cs">
+      <DependentUpon>201407231236303_ParentHierarchyItemsRenamed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407242258445_TempMigration.cs" />
+    <Compile Include="Migrations\201407242258445_TempMigration.Designer.cs">
+      <DependentUpon>201407242258445_TempMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251235340_TblColumnWhenCreated.cs" />
+    <Compile Include="Migrations\201407251235340_TblColumnWhenCreated.Designer.cs">
+      <DependentUpon>201407251235340_TblColumnWhenCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251637016_Change0725.cs" />
+    <Compile Include="Migrations\201407251637016_Change0725.Designer.cs">
+      <DependentUpon>201407251637016_Change0725.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251759398_BackpackExampleChange.cs" />
+    <Compile Include="Migrations\201407251759398_BackpackExampleChange.Designer.cs">
+      <DependentUpon>201407251759398_BackpackExampleChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.cs" />
+    <Compile Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.Designer.cs">
+      <DependentUpon>201407251816001_ForeignKeyOnBackpackModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251909562_tryingtomigrate.cs" />
+    <Compile Include="Migrations\201407251909562_tryingtomigrate.Designer.cs">
+      <DependentUpon>201407251909562_tryingtomigrate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251911176_partialmigrate.cs" />
+    <Compile Include="Migrations\201407251911176_partialmigrate.Designer.cs">
+      <DependentUpon>201407251911176_partialmigrate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251912260_finishingdeletion.cs" />
+    <Compile Include="Migrations\201407251912260_finishingdeletion.Designer.cs">
+      <DependentUpon>201407251912260_finishingdeletion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407251916002_MergeMigration.cs" />
+    <Compile Include="Migrations\201407251916002_MergeMigration.Designer.cs">
+      <DependentUpon>201407251916002_MergeMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Business Logic\R8RInMemoryDataContext.cs" />
+    <Compile Include="Model\EFModel\AddressField.cs" />
+    <Compile Include="Model\EFModel\AdministrationRight.cs" />
+    <Compile Include="Model\EFModel\AdministrationRightsGroup.cs" />
+    <Compile Include="Model\EFModel\ChangesGroup.cs" />
+    <Compile Include="Model\EFModel\ChangesStatusOfObject.cs" />
+    <Compile Include="Model\EFModel\ChoiceField.cs" />
+    <Compile Include="Model\EFModel\ChoiceGroup.cs" />
+    <Compile Include="Model\EFModel\ChoiceGroupFieldDefinition.cs" />
+    <Compile Include="Model\EFModel\ChoiceInField.cs" />
+    <Compile Include="Model\EFModel\ChoiceInGroup.cs" />
+    <Compile Include="Model\EFModel\Comment.cs" />
+    <Compile Include="Model\EFModel\DatabaseStatus.cs" />
+    <Compile Include="Model\EFModel\DateTimeField.cs" />
+    <Compile Include="Model\EFModel\DateTimeFieldDefinition.cs" />
+    <Compile Include="Model\EFModel\Domain.cs" />
+    <Compile Include="Model\EFModel\Field.cs" />
+    <Compile Include="Model\EFModel\FieldDefinition.cs" />
+    <Compile Include="Model\EFModel\HierarchyItem.cs" />
+    <Compile Include="Model\EFModel\InsertableContent.cs" />
+    <Compile Include="Model\EFModel\InvitedUser.cs" />
+    <Compile Include="Model\EFModel\LongProcess.cs" />
+    <Compile Include="Model\EFModel\NumberField.cs" />
+    <Compile Include="Model\EFModel\NumberFieldDefinition.cs" />
+    <Compile Include="Model\EFModel\OverrideCharacteristic.cs" />
+    <Compile Include="Model\EFModel\PointsAdjustment.cs" />
+    <Compile Include="Model\EFModel\PointsManager.cs" />
+    <Compile Include="Model\EFModel\PointsTotal.cs" />
+    <Compile Include="Model\EFModel\ProposalEvaluationRatingSetting.cs" />
+    <Compile Include="Model\EFModel\ProposalSetting.cs" />
+    <Compile Include="Model\EFModel\R8RContext.cs" />
+    <Compile Include="Model\EFModel\Rating.cs" />
+    <Compile Include="Model\EFModel\RatingCharacteristic.cs" />
+    <Compile Include="Model\EFModel\RatingCondition.cs" />
+    <Compile Include="Model\EFModel\RatingGroup.cs" />
+    <Compile Include="Model\EFModel\RatingGroupAttribute.cs" />
+    <Compile Include="Model\EFModel\RatingGroupPhaseStatus.cs" />
+    <Compile Include="Model\EFModel\RatingGroupResolution.cs" />
+    <Compile Include="Model\EFModel\RatingGroupStatusRecord.cs" />
+    <Compile Include="Model\EFModel\RatingPhase.cs" />
+    <Compile Include="Model\EFModel\RatingPhaseGroup.cs" />
+    <Compile Include="Model\EFModel\RatingPhaseStatus.cs" />
+    <Compile Include="Model\EFModel\RatingPlan.cs" />
+    <Compile Include="Model\EFModel\RewardPendingPointsTracker.cs" />
+    <Compile Include="Model\EFModel\RewardRatingSetting.cs" />
+    <Compile Include="Model\EFModel\RoleStatus.cs" />
+    <Compile Include="Model\EFModel\SearchWord.cs" />
+    <Compile Include="Model\EFModel\SearchWordChoice.cs" />
+    <Compile Include="Model\EFModel\SearchWordHierarchyItem.cs" />
+    <Compile Include="Model\EFModel\SearchWordTblRowName.cs" />
+    <Compile Include="Model\EFModel\SearchWordTextField.cs" />
+    <Compile Include="Model\EFModel\SubsidyAdjustment.cs" />
+    <Compile Include="Model\EFModel\SubsidyDensityRangeGroup.cs" />
+    <Compile Include="Model\EFModel\SubsidyDensityRange.cs" />
+    <Compile Include="Model\EFModel\Tbl.cs" />
+    <Compile Include="Model\EFModel\TblColumn.cs" />
+    <Compile Include="Model\EFModel\TblColumnFormatting.cs" />
+    <Compile Include="Model\EFModel\TblDimension.cs" />
+    <Compile Include="Model\EFModel\TblRow.cs" />
+    <Compile Include="Model\EFModel\TblRowFieldDisplay.cs" />
+    <Compile Include="Model\EFModel\TblRowStatusRecord.cs" />
+    <Compile Include="Model\EFModel\TblTab.cs" />
+    <Compile Include="Model\EFModel\TextField.cs" />
+    <Compile Include="Model\EFModel\TextFieldDefinition.cs" />
+    <Compile Include="Model\EFModel\TrustTracker.cs" />
+    <Compile Include="Model\EFModel\TrustTrackerForChoiceInGroup.cs" />
+    <Compile Include="Model\EFModel\TrustTrackerForChoiceInGroupsUserRatingLink.cs" />
+    <Compile Include="Model\EFModel\TrustTrackerStat.cs" />
+    <Compile Include="Model\EFModel\TrustTrackerUnit.cs" />
+    <Compile Include="Model\EFModel\UniquenessLock.cs" />
+    <Compile Include="Model\EFModel\UniquenessLockReference.cs" />
+    <Compile Include="Model\EFModel\User.cs" />
+    <Compile Include="Model\EFModel\UserAction.cs" />
+    <Compile Include="Model\EFModel\UserCheckIn.cs" />
+    <Compile Include="Model\EFModel\UserInfo.cs" />
+    <Compile Include="Model\EFModel\UserInteraction.cs" />
+    <Compile Include="Model\EFModel\UserInteractionStat.cs" />
+    <Compile Include="Model\EFModel\UserRating.cs" />
+    <Compile Include="Model\EFModel\UserRatingGroup.cs" />
+    <Compile Include="Model\EFModel\UserRatingsToAdd.cs" />
+    <Compile Include="Model\EFModel\UsersAdministrationRightsGroup.cs" />
+    <Compile Include="Model\EFModel\UsersRight.cs" />
+    <Compile Include="Model\EFModel\VolatilityTblRowTracker.cs" />
+    <Compile Include="Model\EFModel\VolatilityTracker.cs" />
+    <Compile Include="Model\EFModel\Forum.cs" />
+    <Compile Include="Model\EFModel\ForumAdministrator.cs" />
+    <Compile Include="Model\EFModel\ForumComplaint.cs" />
+    <Compile Include="Model\EFModel\ForumGroup.cs" />
+    <Compile Include="Model\EFModel\ForumGroupPermission.cs" />
+    <Compile Include="Model\EFModel\ForumMessage.cs" />
+    <Compile Include="Model\EFModel\ForumMessageRating.cs" />
+    <Compile Include="Model\EFModel\ForumModerator.cs" />
+    <Compile Include="Model\EFModel\ForumNewTopicSubscription.cs" />
+    <Compile Include="Model\EFModel\ForumPersonalMessage.cs" />
+    <Compile Include="Model\EFModel\ForumPoll.cs" />
+    <Compile Include="Model\EFModel\ForumPollAnswer.cs" />
+    <Compile Include="Model\EFModel\ForumPollOption.cs" />
+    <Compile Include="Model\EFModel\ForumSubforum.cs" />
+    <Compile Include="Model\EFModel\ForumSubscription.cs" />
+    <Compile Include="Model\EFModel\ForumTopic.cs" />
+    <Compile Include="Model\EFModel\ForumUploadedFile.cs" />
+    <Compile Include="Model\EFModel\ForumUploadedPersonalFile.cs" />
+    <Compile Include="Model\EFModel\ForumUser.cs" />
+    <Compile Include="Model\EFModel\ForumUserGroup.cs" />
+    <Compile Include="Model\EFModel\ForumUsersInGroup.cs" />
+    <Compile Include="Model\OldModel.cs" />
+    <Compile Include="Nonmodel Code\AzureChartControlBlobHandler.cs" />
+    <Compile Include="Nonmodel Code\AzureCloudDrive.cs" />
+    <Compile Include="Nonmodel Code\AzureNotifications.cs" />
+    <Compile Include="Nonmodel Code\AzureQueue.cs" />
+    <Compile Include="Nonmodel Code\AzureSetup.cs" />
+    <Compile Include="Nonmodel Code\AzureStartupDiagnostic.cs" />
+    <Compile Include="Nonmodel Code\AzureTables.cs" />
+    <Compile Include="Nonmodel Code\ButtonDropDownList.cs" />
+    <Compile Include="Nonmodel Code\ButtonTextBox.cs" />
+    <Compile Include="Nonmodel Code\CheckJavaScriptHelper.cs" />
+    <Compile Include="Nonmodel Code\DataContextRepositories.cs" />
+    <Compile Include="Nonmodel Code\DataContextRepositoriesEF.cs" />
+    <Compile Include="Nonmodel Code\DataContextRepositoryExtensions.cs" />
+    <Compile Include="Nonmodel Code\DateTimeManip.cs" />
+    <Compile Include="Nonmodel Code\DictionaryByType.cs" />
+    <Compile Include="Nonmodel Code\EntityHelper.cs" />
+    <Compile Include="Nonmodel Code\GeoCalc.cs" />
+    <Compile Include="Nonmodel Code\GoogleGeocode.cs" />
+    <Compile Include="Nonmodel Code\GooglePagerField.cs" />
+    <Compile Include="Nonmodel Code\GuidManipulation.cs" />
+    <Compile Include="Nonmodel Code\InMemoryDataContext.cs" />
+    <Compile Include="Nonmodel Code\LinqExcelProvider.cs" />
+    <Compile Include="Nonmodel Code\MapquestGeocode.cs" />
+    <Compile Include="Nonmodel Code\MD5HashGenerator.cs" />
+    <Compile Include="Nonmodel Code\Median.cs" />
+    <Compile Include="Nonmodel Code\MoreStrings.cs" />
+    <Compile Include="Nonmodel Code\PredicateBuilder.cs" />
+    <Compile Include="Nonmodel Code\PrettyURLEncode.cs" />
+    <Compile Include="Nonmodel Code\ProfileSimple.cs" />
+    <Compile Include="Nonmodel Code\RandomGenerator.cs" />
+    <Compile Include="Nonmodel Code\Serialization.cs" />
+    <Compile Include="Nonmodel Code\SQLDirectManipulate.cs" />
+    <Compile Include="Nonmodel Code\StringEnum.cs" />
+    <Compile Include="Nonmodel Code\TestableDateTime.cs" />
+    <Compile Include="Nonmodel Code\UserProfileInfo.cs" />
+    <Compile Include="Nonmodel Code\WeakReferenceTracker.cs" />
+    <Compile Include="Nonmodel Code\IEnumerableExtensions.cs" />
+    <Compile Include="Model\Partials\Rating.cs" />
+    <Compile Include="Model\Partials\TrustTrackerUnit.cs" />
+    <Compile Include="Nonmodel Code\TimeSpanExtensions.cs" />
+    <Compile Include="Model\Partials\UserRating.cs" />
+    <Compile Include="Business Logic\ActionProcessor.cs" />
+    <Compile Include="Business Logic\AddObjects.cs" />
+    <Compile Include="Business Logic\AdjustmentFactorCalc.cs" />
+    <Compile Include="Business Logic\BackgroundThread.cs" />
+    <Compile Include="Business Logic\BlobFiles.cs" />
+    <Compile Include="Business Logic\CacheManagement.cs" />
+    <Compile Include="Business Logic\CacheSubstitution.cs" />
+    <Compile Include="Business Logic\ConnectionString.cs" />
+    <Compile Include="Business Logic\R8REFDataContext.cs" />
+    <Compile Include="Business Logic\TblColumns.cs" />
+    <Compile Include="Business Logic\ChoiceGroups.cs" />
+    <Compile Include="Business Logic\ClassesAndTypes.cs" />
+    <Compile Include="Business Logic\ConditionalRatings.cs" />
+    <Compile Include="Business Logic\CreateStandard.cs" />
+    <Compile Include="Business Logic\DataAccess.cs" />
+    <Compile Include="Business Logic\DatabaseAndRoleStatus.cs" />
+    <Compile Include="Business Logic\DatabaseTransitions.cs" />
+    <Compile Include="Business Logic\DataContextAbstract.cs" />
+    <Compile Include="Business Logic\DataContextManagement.cs" />
+    <Compile Include="Business Logic\DeleteObjects.cs" />
+    <Compile Include="Business Logic\Email.cs" />
+    <Compile Include="Business Logic\ExecutingChanges.cs" />
+    <Compile Include="Business Logic\FastAccessRowUpdateInfo.cs" />
+    <Compile Include="Model\Partials\FastAccessRowUpdatePartialClasses.cs" />
+    <Compile Include="Business Logic\FastAccessTablesDefinition.cs" />
+    <Compile Include="Business Logic\FastAccessTablesMaintenance.cs" />
+    <Compile Include="Business Logic\FastAccessTablesQuery.cs" />
+    <Compile Include="Business Logic\Fields.cs" />
+    <Compile Include="Business Logic\FieldsDisplayCreator.cs" />
+    <Compile Include="Business Logic\FilterRules.cs" />
+    <Compile Include="Business Logic\GeocodeUpdate.cs" />
+    <Compile Include="Business Logic\HierarchyItems.cs" />
+    <Compile Include="Business Logic\HighStakes.cs" />
+    <Compile Include="Business Logic\ImportExportTblRows.cs" />
+    <Compile Include="Business Logic\InitialBuild.cs" />
+    <Compile Include="Business Logic\InsertableContentManage.cs" />
+    <Compile Include="Business Logic\ItemPath.cs" />
+    <Compile Include="Business Logic\LongProcess.cs" />
+    <Compile Include="Business Logic\MyPointsSidebar.cs" />
+    <Compile Include="Business Logic\NeedsRatingScore.cs" />
+    <Compile Include="Business Logic\ObjectManagement.cs" />
+    <Compile Include="Business Logic\PaymentGuarantees.cs" />
+    <Compile Include="Business Logic\PickTblRows.cs" />
+    <Compile Include="Business Logic\PointsCalculating.cs" />
+    <Compile Include="Business Logic\PointsTracking.cs" />
+    <Compile Include="Business Logic\RaterTime.cs" />
+    <Compile Include="Business Logic\RatingAndUserRatingStatus.cs" />
+    <Compile Include="Business Logic\RatingsAndGroups.cs" />
+    <Compile Include="Business Logic\RatingsReview.cs" />
+    <Compile Include="Business Logic\RecencyUpdates.cs" />
+    <Compile Include="Business Logic\Rewards.cs" />
+    <Compile Include="Business Logic\Routing.cs" />
+    <Compile Include="Business Logic\SearchWords.cs" />
+    <Compile Include="Business Logic\StatusRecords.cs" />
+    <Compile Include="Business Logic\StringConstants.cs" />
+    <Compile Include="Business Logic\DataManipulation.cs" />
+    <Compile Include="Business Logic\TableInfo.cs" />
+    <Compile Include="Business Logic\TableLoading.cs" />
+    <Compile Include="Business Logic\TableSortMenu.cs" />
+    <Compile Include="Business Logic\TblColumnFormatting.cs" />
+    <Compile Include="Business Logic\TblDimension.cs" />
+    <Compile Include="Business Logic\TblRowsAndFields.cs" />
+    <Compile Include="Business Logic\Test.cs" />
+    <Compile Include="Business Logic\TrustCalculations.cs" />
+    <Compile Include="Business Logic\TrustTrackerStatManager.cs" />
+    <Compile Include="Business Logic\TrustTrackingBackgroundTasks.cs" />
+    <Compile Include="Business Logic\UserManagement.cs" />
+    <Compile Include="Business Logic\UserRatingEntryProcessing.cs" />
+    <Compile Include="Business Logic\UserRatingHierarchy.cs" />
+    <Compile Include="Business Logic\UserSelectedRatingOverrides.cs" />
+    <Compile Include="Business Logic\VolatilityTracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -285,23 +474,10 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ModelFromDatabase\R8R.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>R8R.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ModelFromDatabase\Rateroo.dbml.views">
-      <DependentUpon>R8R.dbml</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ModelFromDatabase\R8R.dbml.layout">
-      <DependentUpon>R8R.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -334,8 +510,59 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ModelFromDatabase\Rateroo.dbml.views_def.layout">
-      <DependentUpon>R8R.dbml</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407162313044_InitialCreate.resx">
+      <DependentUpon>201407162313044_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407171527031_ChangedUnicode.resx">
+      <DependentUpon>201407171527031_ChangedUnicode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407171655201_July17at1pm.resx">
+      <DependentUpon>201407171655201_July17at1pm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407190256104_AddedWhenCreatedFields.resx">
+      <DependentUpon>201407190256104_AddedWhenCreatedFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407221040266_UserWhenCreated.resx">
+      <DependentUpon>201407221040266_UserWhenCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407221309337_AllDatesDateTime2.resx">
+      <DependentUpon>201407221309337_AllDatesDateTime2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407222221274_FurtherChanges.resx">
+      <DependentUpon>201407222221274_FurtherChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407231235109_EliminatedRoutingHierarchyItems.resx">
+      <DependentUpon>201407231235109_EliminatedRoutingHierarchyItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407231236303_ParentHierarchyItemsRenamed.resx">
+      <DependentUpon>201407231236303_ParentHierarchyItemsRenamed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407242258445_TempMigration.resx">
+      <DependentUpon>201407242258445_TempMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251235340_TblColumnWhenCreated.resx">
+      <DependentUpon>201407251235340_TblColumnWhenCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251637016_Change0725.resx">
+      <DependentUpon>201407251637016_Change0725.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251759398_BackpackExampleChange.resx">
+      <DependentUpon>201407251759398_BackpackExampleChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251816001_ForeignKeyOnBackpackModel.resx">
+      <DependentUpon>201407251816001_ForeignKeyOnBackpackModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251909562_tryingtomigrate.resx">
+      <DependentUpon>201407251909562_tryingtomigrate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251911176_partialmigrate.resx">
+      <DependentUpon>201407251911176_partialmigrate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251912260_finishingdeletion.resx">
+      <DependentUpon>201407251912260_finishingdeletion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407251916002_MergeMigration.resx">
+      <DependentUpon>201407251916002_MergeMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

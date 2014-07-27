@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 using System.Diagnostics;
 using System.Threading;
 
@@ -14,8 +15,8 @@ namespace TestProject1
     /// </summary>
     class HeterogeneousUser
     {
-        TestHelper TestHelper { get; set; }
-        public int UserId { get; private set; }
+        TestHelper theTestHelper { get; set; }
+        public Guid UserId { get; private set; }
         public HeterogeneousUserType Type { get; private set; }
 
         /// <summary>
@@ -49,13 +50,13 @@ namespace TestProject1
         public int UserRatingEstimateWeight { get; private set; }
 
         public HeterogeneousUser(
-            TestHelper testHelper, 
-            int userId,
+            TestHelper testHelper,
+            Guid userId,
             HeterogeneousUserType type,
             double quality,
             int userRatingEstimateWeight)
         {
-            TestHelper = testHelper;
+            theTestHelper = testHelper;
             UserId = userId;
             Type = type;
             Quality = quality;
@@ -91,7 +92,7 @@ namespace TestProject1
 
             decimal userRatingEstimate = GetUserRatingEstimate(userRatingValueTarget);
 
-            List<UserRating> previousUserRatings = TestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(ur => ur.UserID != this.UserId && ur.Rating.RatingID == rating.RatingID).ToList();
+            List<UserRating> previousUserRatings = theTestHelper.ActionProcessor.DataContext.GetTable<UserRating>().Where(ur => ur.UserID != this.UserId && ur.Rating.RatingID == rating.RatingID).ToList();
             int previousUserRatingCount = previousUserRatings.Count;
             if (UserRatingEstimateWeight == Int32.MaxValue ||
                 previousUserRatingCount < 1 ||
@@ -112,9 +113,9 @@ namespace TestProject1
             }
             
             UserEditResponse theResponse = new UserEditResponse();
-            TestHelper.ActionProcessor.UserRatingAdd(rating.RatingID, userRatingValue, UserId, ref theResponse);
-            TestHelper.FinishUserRatingAdd(TestHelper.ActionProcessor.DataManipulation);
-            TestHelper.ActionProcessor.ResetDataContexts();
+            theTestHelper.ActionProcessor.UserRatingAdd(rating.RatingID, userRatingValue, UserId, ref theResponse);
+            theTestHelper.FinishUserRatingAdd(theTestHelper.ActionProcessor.DataManipulation);
+            theTestHelper.ActionProcessor.ResetDataContexts();
         }
     }
 }

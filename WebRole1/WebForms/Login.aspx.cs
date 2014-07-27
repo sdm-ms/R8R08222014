@@ -12,6 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Login : System.Web.UI.Page
 {

@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 
 using MoreStrings;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
     public partial class RatingTypeSelector : System.Web.UI.UserControl, IFilterField
@@ -15,8 +16,8 @@ using ClassLibrary1.Model;
         // The following are required to implement IFilterField
         public R8RDataAccess DataAccess { get; set; }
         public FieldsBoxMode Mode { get; set; }
-        public int? TblRowID { get; set; }
-        public int FieldDefinitionOrTblColumnID { get; set; }
+        public Guid? TblRowID { get; set; }
+        public Guid FieldDefinitionOrTblColumnID { get; set; }
         public FilterRule GetFilterRule()
         {
             return null;

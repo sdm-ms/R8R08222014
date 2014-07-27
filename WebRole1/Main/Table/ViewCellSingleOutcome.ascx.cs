@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Collections.Generic;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_ViewCellSingleOutcome : System.Web.UI.UserControl
 {
 
-    public void Setup(R8RDataAccess dataAccess, int ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Guid ratingGroupID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
     {
         Rating theRating = dataAccess.R8RDB.GetTable<Rating>().SingleOrDefault(m => m.RatingGroupID == ratingGroupID);
         if (theRating == null)
@@ -18,7 +19,7 @@ public partial class Main_Table_ViewCellSingleOutcome : System.Web.UI.UserContro
     public List<RatingIdAndUserRatingValue> GetRatingsAndUserRatings()
     {
         List<RatingIdAndUserRatingValue> theList = new List<RatingIdAndUserRatingValue>();
-        int thisRatingID = 0;
+        Guid thisRatingID = new Guid();
         decimal? thisUserRating = 0;
         RatingValueCell.GetRatingAndProposedValue(ref thisRatingID, ref thisUserRating);
         if (thisUserRating != null)

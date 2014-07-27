@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Security;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 namespace WebApplication1
 {

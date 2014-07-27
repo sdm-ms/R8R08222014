@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 public partial class Main_Table_ViewCellRatingValue : System.Web.UI.UserControl
@@ -19,7 +20,7 @@ public partial class Main_Table_ViewCellRatingValue : System.Web.UI.UserControl
     // Main_Table_ViewCellRatingValueDateSelected theSelectedRatingValueDate;
     // Main_Table_ViewCellRatingValueDateUnselected theSelectedRatingValueDatUselected;
 
-    public void Setup(R8RDataAccess dataAccess, int ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, bool isDate, string description, int TblColumnID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
+    public void Setup(R8RDataAccess dataAccess, Guid ratingID, decimal? value, int decimalPlaces, decimal? minVal, decimal? maxVal, bool isDate, string description, Guid TblColumnID, TradingStatus theTradingStatus, bool canPredict, bool selected, string suppStyle)
     {
         if (selected)
         {
@@ -56,7 +57,7 @@ public partial class Main_Table_ViewCellRatingValue : System.Web.UI.UserControl
 
     }
 
-    public void GetRatingAndProposedValue(ref int ratingID, ref decimal? value)
+    public void GetRatingAndProposedValue(ref Guid ratingID, ref decimal? value)
     {
         if (theSelectedRatingValue != null)
             theSelectedRatingValue.GetRatingAndProposedValue(ref ratingID, ref value);

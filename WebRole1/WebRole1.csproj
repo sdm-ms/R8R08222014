@@ -24,6 +24,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,6 +54,17 @@
     </Reference>
     <Reference Include="aspnetforum">
       <HintPath>Dependencies\aspnetforum.dll</HintPath>
+    </Reference>
+    <Reference Include="Effort">
+      <HintPath>..\packages\Effort.EF6.1.1.0\lib\net45\Effort.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="GMaps, Version=3.2.0.1, Culture=neutral, PublicKeyToken=f43a93ab972291b8, processorArchitecture=MSIL">
       <HintPath>..\ClassLibrary1\Dependencies\GMaps.dll</HintPath>
@@ -87,9 +100,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
     </Reference>
+    <Reference Include="NMemory">
+      <HintPath>..\packages\NMemory.1.0.0\lib\net45\NMemory.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Abstractions" />
@@ -1843,6 +1861,7 @@
     <Content Include="MasterPages\StandardPage.master" />
     <Content Include="MasterPages\TwoCol.master" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ar-SA\activate.aspx.ar-SA.resx" />
@@ -4029,7 +4048,9 @@
     <Content Include="Forums\App_LocalResources\zh-CN\messages.aspx.zh-cn.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Forums\App_LocalResources\zh-CN\mysubscriptions.aspx.zh-cn.resx" />
+    <Content Include="Forums\App_LocalResources\zh-CN\mysubscriptions.aspx.zh-cn.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Forums\App_LocalResources\zh-CN\privateinbox.aspx.zh-cn.resx" />
@@ -4161,4 +4182,5 @@
     </ItemGroup>
     <CompressorTask CssFiles="@(CssFiles)" DeleteCssFiles="false" CssOutputFile="$(CssOutputFile)" CssCompressionType="YuiStockCompression" JavaScriptFiles="@(JavaScriptFiles)" ObfuscateJavaScript="True" PreserveAllSemicolons="False" DisableOptimizations="Nope" EncodingType="Default" DeleteJavaScriptFiles="false" LineBreakPosition="-1" JavaScriptOutputFile="$(JavaScriptOutputFile)" LoggingType="ALittleBit" ThreadCulture="en-au" IsEvalIgnored="false" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

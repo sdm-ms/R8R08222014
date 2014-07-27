@@ -5,7 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClassLibrary1.Model;
-using ClassLibrary1.Misc;
+using ClassLibrary1.EFModel;
+using ClassLibrary1.Nonmodel_Code;
 
 
 
@@ -22,8 +23,8 @@ namespace WebRole1.WebForms
             DataAccess = new R8RDataManipulation();
             theLocation = Routing.IncomingMainContent(Page.RouteData, DataAccess.DataContext);
             ItemPath1.theHierarchyItem = theLocation.lastItemInHierarchy;
-            if (HttpContext.Current.Profile != null && ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
-                TheUser = DataAccess.DataContext.GetTable<User>().SingleOrDefault(x => x.UserID == (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
+            if (HttpContext.Current.Profile != null && ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
+                TheUser = DataAccess.DataContext.GetTable<User>().SingleOrDefault(x => x.UserID == (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID"));
             if (TheUser == null)
                 Routing.Redirect(Response, new RoutingInfo(RouteID.HomePage));
 

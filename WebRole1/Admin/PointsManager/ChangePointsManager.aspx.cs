@@ -10,15 +10,16 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
-using ClassLibrary1.Misc;
+using ClassLibrary1.Nonmodel_Code;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 ////using PredRatings;
 
 public partial class ChangePointsManager : System.Web.UI.Page
 {
     ActionProcessor Obj = new ActionProcessor();
-    public int? SubtopicId;
+    public Guid? SubtopicId;
 
     // Change PointsManager Page
     protected void Page_Load(object sender, EventArgs e)
@@ -26,13 +27,14 @@ public partial class ChangePointsManager : System.Web.UI.Page
 
         RoutingInfoMainContent Location = Routing.IncomingMainContent(Page.RouteData, Obj.DataContext);
         PointsManager thePointsManager = Location.lastItemInHierarchy.Tbl.PointsManager;
-        int PointsManagerid = thePointsManager.PointsManagerID;
+        Guid PointsManagerid = thePointsManager.PointsManagerID;
 
             Response.Buffer = true;
             Response.ExpiresAbsolute = TestableDateTime.Now.AddDays(-1d);
             Response.Expires = -1500;
             Response.CacheControl = "no-cache";
-            if (!(HttpContext.Current.Profile != null && (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID")).SuperUser)
+            Guid? userId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            if (!(HttpContext.Current.Profile != null && userId != new Guid()) || !Obj.DataContext.GetTable<User>().Single(u => u.UserID == userId).SuperUser)
             {
                 Routing.Redirect(Response, new RoutingInfo(RouteID.Login));
                 return;

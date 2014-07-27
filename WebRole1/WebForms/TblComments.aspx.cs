@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 
 namespace WebApplication1
@@ -28,14 +29,14 @@ namespace WebApplication1
 
         protected void DetermineUserRights()
         {
-            int SubtopicId = theLocation.theTbl.PointsManagerID;
+            Guid SubtopicId = theLocation.theTbl.PointsManagerID;
 
             CanPredict = false;
             CanAdminister = false;
             CanEditFields = false;
-            if (ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser() != null)
+            if (ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser() != null)
             {
-                int UserId = (int)ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+                Guid UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
                 bool canView = DataAccess.CheckUserRights(UserId, UserActionType.View, false, SubtopicId, theLocation.theTbl.TblID);
                 if (!canView)
                     Routing.Redirect(Response, new RoutingInfo(RouteID.Login));

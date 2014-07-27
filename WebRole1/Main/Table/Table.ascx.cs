@@ -21,13 +21,14 @@ using System.IO;
 using System.Text;
 
 using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
 
 public partial class Main_Table_Table : System.Web.UI.UserControl
 {
     protected Func<int?, TableSortRule, bool, IQueryable<TblRow>> GetFilteredAndSortedQueryFn;
     Func<bool, bool, FilterRules> GetFilterRulesFn;
-    protected int TblID;
-    protected int TblTabID;
+    protected Guid TblID;
+    protected Guid TblTabID;
     protected TableSortRule theTableSortRule;
     protected bool rebinding = false;
     protected int rowBeingCreated = 0;
@@ -42,7 +43,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     string SuppStyle, SuppStyleHeader;
   
 
-    public void Setup(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, int tblID, int tblTabID, string suppStyle, string suppStyleHeader)
+    public void Setup(Func<int?, TableSortRule, bool, IQueryable<TblRow>> getFilteredAndSortedQueryFn, Func<bool, bool, FilterRules> getFilterRulesFn, Guid tblID, Guid tblTabID, string suppStyle, string suppStyleHeader)
     {
         DataAccess = new R8RDataAccess();
         GetFilteredAndSortedQueryFn = getFilteredAndSortedQueryFn;
@@ -71,16 +72,16 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
 
     protected void DetermineUserRights(R8RDataAccess dataAccess)
     {
-        int SubtopicId = dataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
+        Guid SubtopicId = dataAccess.R8RDB.GetTable<Tbl>().Single(x => x.TblID == TblID).PointsManagerID;
 
         CanPredict = false;
         CanAdminister = false;
         CanEditFields = false;
-        if ((int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != 0)
+        if ((Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID") != new Guid())
         {
-            int? UserId = (int) ClassLibrary1.Misc.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
-            if (UserId == 0)
-                UserId = null;
+            Guid? UserId = (Guid)ClassLibrary1.Nonmodel_Code.UserProfileCollection.GetCurrentUser().GetProperty("UserID");
+            //if (UserId == 0)
+            //    UserId = null;
             // Checking user rights to predict
             CanPredict = dataAccess.CheckUserRights(UserId, UserActionType.Predict, false, SubtopicId, TblID);
             CanAdminister = dataAccess.CheckUserRights(UserId, UserActionType.ResolveRatings, false, SubtopicId, TblID);
@@ -99,7 +100,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             if ( ViewState["SelectedRow"] != null)
             { // The previous selected row needs to be deselected and rebound.
                 ListViewDataItem dataItem = MainListView.Items[(int) ViewState["SelectedRow"] - 1];
-                int theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
+                Guid theTblRowID = (Guid)MainListView.DataKeys[dataItem.DisplayIndex].Value;
                 PlaceHolder MainTableBodyRowPlaceHolder = (PlaceHolder)dataItem.FindControl("MainTableBodyRowPlaceHolder");
                 Main_Table_BodyRow MainTableBodyRow = (Main_Table_BodyRow)((System.Web.UI.Control)(MainTableBodyRowPlaceHolder)).Controls[0];
                 MainTableBodyRow.DeselectAndReBind();
@@ -140,7 +141,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         {
             rowBeingCreated++;
             ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            int theTblRowID = (int)MainListView.DataKeys[dataItem.DisplayIndex].Value;
+            Guid theTblRowID = (Guid)MainListView.DataKeys[dataItem.DisplayIndex].Value;
             ListViewDataItem CurrentItem = (ListViewDataItem)e.Item;
             Main_Table_ViewCellRowHeading MainTableViewCellRowHeading = (Main_Table_ViewCellRowHeading)e.Item.FindControl("MainTableViewCellRowHeading");
             MainTableViewCellRowHeading.Setup(DataAccess, TheTblDimensions, TblID, theTblRowID, CommentsEnabled, CanEditFields, rebinding);
@@ -163,7 +164,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
             {
                 // Create control from scratch.
                 Main_Table_BodyRow MainTableBodyRow = (Main_Table_BodyRow)LoadControl("~/Main/Table/BodyRow.ascx");
-                MainTableBodyRow.Setup(DataAccess, TblID, TblTabID, null, (theTableSortRule is TableSortRuleTblColumn ? (int?) ((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTblRowID, rowBeingCreated, CanPredict, CanAdminister, rebinding, SelectionChanged, SuppStyle);
+                MainTableBodyRow.Setup(DataAccess, TblID, TblTabID, null, (theTableSortRule is TableSortRuleTblColumn ? (Guid?)((TableSortRuleTblColumn)theTableSortRule).TblColumnToSortID : null), theTblRowID, rowBeingCreated, CanPredict, CanAdminister, rebinding, SelectionChanged, SuppStyle);
                 if (!disableCaching)
                     MainTableBodyRow.DataBind();
                 theControlToUseAsBodyRow = MainTableBodyRow;
@@ -202,7 +203,7 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
         }
     }
 
-    public void ReBind(int tblTabID, bool resetToTop, bool resetSortToDefault, bool reloadFields)
+    public void ReBind(Guid tblTabID, bool resetToTop, bool resetSortToDefault, bool reloadFields)
     {
         rebinding = true;
         if (resetToTop)
@@ -218,24 +219,24 @@ public partial class Main_Table_Table : System.Web.UI.UserControl
     {
         if (!Page.IsPostBack || resetSortToDefaultSettings)
         {
-            int? TblColumnToSort = null;
+            Guid? TblColumnToSort = null;
             bool SortOrderAscending = false;
             DataAccess.GetDefaultSortForTblTab(TblTabID, ref TblColumnToSort, ref SortOrderAscending);
             if (TblColumnToSort == null)
                 theTableSortRule = new TableSortRuleRowName(SortOrderAscending);
             else
-                theTableSortRule = new TableSortRuleTblColumn((int) TblColumnToSort, SortOrderAscending);
+                theTableSortRule = new TableSortRuleTblColumn((Guid)TblColumnToSort, SortOrderAscending);
             ViewState["TableSortRule"] = theTableSortRule;
         }
     }
 
 
-    public void ResortTable(int? TblColumnID, bool NewSortOrder)
+    public void ResortTable(Guid? TblColumnID, bool NewSortOrder)
     {
         if (TblColumnID == null)
             theTableSortRule = new TableSortRuleRowName(NewSortOrder);
         else
-            theTableSortRule = new TableSortRuleTblColumn((int)TblColumnID, NewSortOrder);
+            theTableSortRule = new TableSortRuleTblColumn((Guid)TblColumnID, NewSortOrder);
         ViewState["TableSortRule"] = theTableSortRule;
         ReBind(TblTabID, resetToTop, false, false);
     }
