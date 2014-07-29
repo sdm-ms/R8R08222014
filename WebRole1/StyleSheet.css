@@ -5,41 +5,6 @@ body
 	font-family: "Trebuchet MS", "Arial", "Helvetica", "Sans-Serif";
 }
 
-.nav_left_td
-{
-	background:url(/images/left_menu.jpg);
-	background-repeat:repeat-x;	
-}
-
-.nav_right_td
-{
-	background:url(/images/right_menu.jpg);
-	background-repeat:repeat-x;	
-}
-
-
-.nav_inner
-{
-	background:url(/images/inner_menu.jpg);
-	background-repeat:repeat-x;	
-}
-
-
-.welcomeTxt {
-	font-size: 13px;
-	color: black;
-	text-decoration: none;
-}
-
-.welcomeTxt a, .welcomeTxt a:link, .welcomeTxt a:visited {
-	font-size: 13px;
-	color: black;
-	text-decoration: none;
-}
-.welcomeTxt a:hover 
-{ 
-	text-decoration: underline;
-}
 
 .pageTopBackBox
 {
@@ -127,25 +92,9 @@ body
 	top: 160px;
 }
 
-
-.menuStripLinks a, .menuStripLinks a:link, .menuStripLinks a:visited
-{
-	border: none 0px;
-	text-align:center;
-	text-decoration:none;
-}
-
 a img 
 {
 	border: none;
-}
-
-
-
-.tb13 {
-	background-color:#e9f6fe;
-	border:1px solid #64c5fa;
-	 
 }
 
 .corporateInfo
@@ -221,7 +170,6 @@ a img
 	width: 200px;
 }
 
-
 .createUserError
 {
 	font-family: "Trebuchet MS", "Arial", "Helvetica", "Sans-Serif";
@@ -233,7 +181,6 @@ a img
 {
 	display: none;
 }
-
 
 .topicsInitialDisplay li a, .topicsInitialDisplay li span
 {	
@@ -433,37 +380,9 @@ a img
 	position:relative; 
 }
 
-
-div.hideRightBorder 
-{
-    border-right-style : none;
-}
-
-tr.showBottomBorder
-{
-	border-bottom: solid 1px #D8D8D8;
-}
 /************************
  Scrollbar related styles
 *************************/
-.scrollBarContainer
-{
-	position: absolute;	
-	right : 7px;
-	width: 12px;
-	max-width: 12px;
-	height: 500px;
-	margin: 0px 0px 0px 0px;
-	padding: 0px 3px 0px 4px;
-	display : none;
-	border: solid 1px gray;	
-}
-
-#slider-vertical
-{
-    font-size: 12px;
-    height: 474px;    
-}
 
 a.arrow-up, a.arrow-down, a.arrow-up-hover, a.arrow-up-active, a.arrow-down-hover, a.arrow-down-active
 {
@@ -615,10 +534,6 @@ td.noRowsFound
     background: url(/images/dt-arrow-dn.png) no-repeat center 50%;
 }
 
-.MainColumnDiv
-{
-}
-
 .mainTable div.chartcurve a
 {
     background: url(/images/chart_curve.png) no-repeat right 50%;
@@ -673,15 +588,9 @@ td.noRowsFound
 	background-color: #D9FDD9 !important; /* #81F781 */
 }
 
-
-
 .mainTableHeadingLarge th
 {
 	font-size: 18px !important;
-}
-.mainTableHeadingMedium th
-{
-	font-size: 16px !important;
 }
 
 .mainTableHeadingSmall th
@@ -692,14 +601,6 @@ td.noRowsFound
 .mainTableHeadingXSmall th
 {
 	font-size: 12px !important;
-}
-.mainTableHeadingXXSmall th
-{
-	font-size: 10px !important;
-}
-
-.mainCellMarker
-{
 }
 
 .selectedcell
@@ -862,11 +763,6 @@ input[type=text]::-ms-clear {
 	padding:15px 15px 15px 15px;
 }
 
-.borderlesssmall 
-{
-	width:20%;
-}
-
 .latlong
 {
 	display:none;
@@ -899,13 +795,6 @@ html > body .imageInField /* understood only by later browsers */
 	float: right;
 }
 
-.btnsright
-{
-	position: absolute;
-	bottom:5px; 
-	right:5px;
-}
-
 .TableHeader
 {
  background-color:black;
@@ -918,89 +807,6 @@ html > body .imageInField /* understood only by later browsers */
 	
 }
 
-.lnkDomain {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color:Maroon;
-	text-decoration: none;
-	
-}
-.lnkPointsManager {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color:Blue;
-	text-decoration: none;
-	
-}
-.lnkTbl
- {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color:ThreeDDarkShadow;
-	text-decoration: none;
-	
-}
-a.lnkDomain:hover
-{
-	color: #025478;
-	text-decoration:underline;
-}
-a.lnkPointsManager:hover
-{
-	color: #434343;
-	text-decoration:underline;
-}
-a.lnkTbl:hover
-{
-	color: #522342;
-	text-decoration:underline;
-}
-.footertext
- {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #000000;
-	text-decoration: none;
-}
-.text
-{
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #000000;
-	text-decoration: none;
-}
-.bgta {
-	background-image: url(/images/pc.jpg);
-	background-repeat: no-repeat;
-	background-position: right top;
-	height: 101px;
-}
-.redtext {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 16px;
-	font-weight: bold;
-	color: #f13a3a;
-	text-decoration: none;
-}
-.inpt {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #000000;
-	background-color: #FFFFFF;
-	height: 18px;
-	width: 250px;
-	border: 1px solid #000000;
-	font-weight: normal;
-
-}
-.blacktext {
-
-	font-family: Courier New;
-	font-size: 12px;
-	
-	color: #333333;
-	text-decoration: none;
-}
 .inp
 {
 	background-color: #ffffff;
@@ -1012,6 +818,7 @@ a.lnkTbl:hover
 	
 	
 }
+
 .button
 {
 	background-color: #E0E0E0; 
@@ -1020,28 +827,6 @@ a.lnkTbl:hover
 	font-family: arial, verdana, ms sans serif; 
 	
 	font-size: 8pt; 
-}
-.shortinp
-{
-	background-color: #ffffff;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	border: 1px solid #6E6E6E;
-	color:black;
-	vertical-align: middle;
-	width:80px;
-	
-}
-.shortDdl
-{
-	background-color: #ffffff;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	border: 1px solid #6E6E6E;
-	color:black;
-	vertical-align: middle;
-	
-	
 }
 
 .border
@@ -1053,142 +838,7 @@ a.lnkTbl:hover
 	color:black;
 	text-decoration: none;
 }
-.text1 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: normal;
-	color: #868686;
-	text-decoration: none;
-}
-a.text1:hover {
-	color: #bd2328;
-}
 
-
-.alink
-{
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	color: #434343;
-	text-decoration:none;
-}
-
-.hyper
-{
-	text-decoration: none;
-	font-weight: bold;
-	font-style: normal;
-	text-transform: none;
-	color: #990033;
-}
-.PaneHeader
-{
-	border: 1px solid #2F4F4F;
-    color: white;
-    background-color: #2E4d7B;
-	font-family: Arial, Sans-Serif;
-	font-size: 12px;
-	font-weight: bold;
-    padding: 5px;
-    margin-top: 5px;
-    cursor: pointer;
-}
-.accordionLink
-{
- background-color: #D3DEEF;
-       color: white;
-}
-.PaneContent
-{
-	 background-color: #D3DEEF;
-    border: 1px dashed #2F4F4F;
-    border-top: none;
-    padding: 5px;
-    padding-top: 10px;
-}
-.SelectedPaneHeader
-{
-	border-style: solid;
-	border-width: thin;
-	font-family: 'Times New Roman' , Times, serif;
-	font-size: medium;
-	font-weight: bold;
-	font-style: italic;
-	color: #800000;
-	background-color: #999966;
-}
-.AdvancePaneHeader
-{
-	border-style: solid;
-	border-width: thin;
-	font-size: small;
-	font-weight: bold;
-	background-color: #33CCCC;
-}
-.AdvanceSelectedPaneHeader
-{
-	border-style: solid;
-	border-width: thin;
-	font-family: 'Times New Roman' , Times, serif;
-	font-size: small;
-	font-weight: bold;
-	font-style: italic;
-	color: #800000;
-	background-color: #CCCC00;
-}
-
-/* Reorder list */
-.dragHandle 
-{
-	width:10px;
-	height:15px;
-	background-color:Blue;
-	background-image:url(/images/bg-menu-main.png);
-	cursor:move;
-	border:outset thin white;
-}
-.callbackStyle
-{
-	
-	border: thin inset white;
-	
-}
-.callbackStyle table
-{
-	
-	background-color:#5377A9;	
-	color:black;
-}
-.reorderListDemo li
-{
-	list-style: None;
-	margin: 0px;
-	background-color: #D3DEEF;
-	color: #000000;
-}
-.reorderListDemo li a {color:#000000 !important; font-weight:bold;}
-.reorderCue 
-{
-	border:dashed thin black;
-	width:100%;
-	height:25px;
-}
-.itemArea 
-{
-	margin-left:15px;
-	font-family:Arial, Verdana, sans-serif;
-	font-size:1em;
-	text-align:left;
-}
-.demoarea 
-{
-	padding:20px;
-	background:#FFF url(/images/demotop.png) no-repeat left top;
-}
-.demoarea p 
-{
-	padding:5px;
-}
 .Btn1 
 {
 	border: 1px solid Gray;
@@ -1199,6 +849,7 @@ a.text1:hover {
 		color:White;		
 	
 }
+
 .BtnBig 
 {
 	font-family: "Trebuchet MS", Arial, Tahoma, Verdana;
@@ -1206,6 +857,7 @@ a.text1:hover {
 	font-weight:bold;
 	color: black;
 }
+
 .addTblRowArea 
 {
 	font-family: "Trebuchet MS", Arial, Tahoma, Verdana;
@@ -1215,6 +867,7 @@ a.text1:hover {
 	position:relative;
 	top:15px;
 }
+
 .asteriskRowMain
 {
 	font-family: "Trebuchet MS", Arial, Tahoma, Verdana;
@@ -1222,16 +875,6 @@ a.text1:hover {
 	font-weight:normal;
 	color: black;
 }
-.changeTblRowArea 
-{
-	font-family: "Trebuchet MS", Arial, Tahoma, Verdana;
-	font-size: 16px;
-	font-weight:normal;
-	color: black;
-	position:relative;
-	top:10px;
-}
-
 
 .btnsAboveMainTable
 {
@@ -1253,13 +896,13 @@ a.text1:hover {
 	top: -4px;
 }
 
-
 .pageRefreshBtn2
 {
 	float: right;
 	position: relative;
 	top:6px;
 }
+
 .bggradient
 {
  
@@ -1278,6 +921,7 @@ a.text1:hover {
 	background-color:white;
 	overflow:hidden;
 }
+
 .collapsePanelHeader
 {
 	width:100%;
@@ -1300,12 +944,14 @@ a.text1:hover {
 	font-weight:normal;
 	color: black;
 } 
+
 .popupHover {
 	background-image:url(/images/header-opened.png);
 	background-repeat:repeat-x;
 	background-position:left top;
 	background-color:Transparent;
 }
+
 .popupMenu
  {
 	position:absolute;
@@ -1317,161 +963,19 @@ a.text1:hover {
 	width:260px;
 	
 }
-.MyCalendar 
- {
-    border:0px solid #646464;
-    background-color:Navy;
-    color:black;
 
-   
- }
- .MyCalendar { z-index:20000;}
- .ajax__calendar_container {z-index:20000;}
-.MyCalendar .ajax__calendar_container {
-    border:1px solid #646464;
-    background-color: #fff;
-    color: red;
-}
-.MyCalendar .ajax__calendar_other .ajax__calendar_day,
-.MyCalendar .ajax__calendar_other .ajax__calendar_year {
-    color: black;
-}
-.MyCalendar .ajax__calendar_hover .ajax__calendar_day,
-.MyCalendar .ajax__calendar_hover .ajax__calendar_month,
-.MyCalendar .ajax__calendar_hover .ajax__calendar_year {
-    color: black;
-}
-.MyCalendar .ajax__calendar_active .ajax__calendar_day,
-.MyCalendar .ajax__calendar_active .ajax__calendar_month,
-.MyCalendar .ajax__calendar_active .ajax__calendar_year {
-    color: black;
-    font-weight:bold;
-}
-
-.watermarked 
-{
-	height:20px;
-	width:150px;
-	padding:2px 0 0 2px;
-	border:1px solid #BEBEBE;
-	background-color:#F0F8FF;
-	color:gray;
-}	
 .modalBackground 
 {
 	background-color:Gray;
 	-ms-filter:alpha(opacity=70);
 	-ms-opacity:0.7;
 }
+
 .modalPopup
 {
 	background:#f9f1d4; border:#985234 2px solid;
 }
-.CustomTabStyle .ajax__tab_header {
-    font-family:verdana,tahoma,helvetica;
-    font-size:11px;
-     background-color:Maroon;
-}
 
-.trebu12txt {
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 12px;
-	color: #FFFFFF;
-	text-decoration: none;
-}
-.btnsbgrepeat {
-	background-image: url(/images/btnbgrepeat.jpg);
-	background-repeat: repeat-x;
-	background-position: left top;
-}
-
-.tdborder {
-	border: 1px solid #b27e67;
-}
-.tdborder1 {
-	
-	border-bottom:1px solid #b27e67;
-	border-left:1px solid #b27e67;
-	border-top:1px solid #b27e67;
-}
-.tdborder2 {
-	
-	border-bottom:1px solid #b27e67;
-	border-right:1px solid #b27e67;
-	border-top:1px solid #b27e67;
-}
-.arial11txt {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #888888;
-	text-decoration: none;
-}
-
-.trebu20txt {
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 20px;
-	color: #d69500;
-	text-decoration: none;
-}
-.trebu27txt {
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 27px;
-	color: #144c98;
-	text-decoration: none;
-}
-.trebu22txt {
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 22px;
-	color: #000000;
-	text-decoration: none;
-}
-
-
-
-.gradientbg01 {
-	background-image: url(/images/gradiendbg01.jpg);
-	background-repeat: no-repeat;
-	background-position: left top;
-}
-.gradientbg02 {
-	background-image: url(/images/gradiendbg02.jpg);
-	background-repeat: no-repeat;
-	background-position: left top;
-}
-.trebu20txt {
-
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 20px;
-	color: #000000;
-	text-decoration: none;
-}
-.trebu27redtxt {
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 27px;
-	color: #985234;
-	text-decoration: none;
-	padding-left: 20px;
-}
-.trebu27blacktxt {
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 27px;
-	color: #000000;
-	text-decoration: none;
-	padding-left: 15px;
-}
-
-.arial70bottomtxt {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 70px;
-	color: #E8E8E8;
-	text-decoration: none;
-}
-.trebu27_orangetxt {
-	font-family: "Trebuchet MS", Tahoma;
-	font-size: 27px;
-	color: #d69500;
-	text-decoration: none;
-}
 .arial11blue {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 11px;
@@ -1541,23 +1045,6 @@ a.text1:hover {
 	color:black;
 }
 
-.tdborder 
-{
-	font-family: "Trebuchet MS";
-	font-size: 11px;
-	font-weight: normal;
-	color: #985234;
-	text-decoration: none;
-	border: 1px solid #985234;
-}
-
-.normalTxt {
-	font-family: "Trebuchet MS";
-	font-size: 11px;
-	font-weight: normal;
-	color: #0f169a;
-	text-decoration: none;
-}
 .hyperTxt {
 	font-family: "Trebuchet MS";
 	font-size: 11px;
@@ -1574,25 +1061,6 @@ a.text1:hover {
 	text-decoration: underline;
 }
 
-.tabTxt {
-	font-family: "Trebuchet MS";
-	font-size: 13px;
-	font-weight: normal;
-	color: #FFFFFF;
-	text-decoration: none;
-}
-.tabTxt a {
-	font-family: "Trebuchet MS";
-	font-size: 13px;
-	font-weight: normal;
-	color: #FFFFFF;
-	text-decoration: none;
-}
-.tabTxt a:hover {
-	color: #000000;
-	text-decoration: none;
-}
-	
 .trebu21redtxt {
 	font-family: "Trebuchet MS", Tahoma;
 	font-size: 21px;
@@ -1611,39 +1079,10 @@ a.text1:hover {
 }
 
 .brdrbottom{border-bottom:#000000 1px dotted;}
-.tdbg{background:#f8f0d1; border:#985234 1px solid; color:#985234; font-size:12px;}
-.tdbg a{color:#985234; font-size:12px; text-decoration:none;}
-.tdbg a:hover{text-decoration:underline;}
+
 h3{font-family:Arial; font-size:13px; font-weight:bold; color:#FFFFFF; margin:0; padding:0;}
-.tableHead{font-family:Arial; font-size:13px; font-weight:bold; color:#FFFFFF; margin:0; padding:0;}
 
-.arial11brown {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color:  #3c82a0;
-	text-decoration: none;
-	line-height: 16px;
-	font-weight: normal;
-}
-.arial11brown:hover {
-	color:#985234;
-	text-decoration: none;
-}
-
-.paddingtd{
-	padding:0 15px;
-}
-
-
-.style1
-{
-    height: 625px;
-}
-
-.greyborder{background:#f9f1d4; border:#985234 2px solid !important;}
-.blackcolor{color:#000000 !important;}
 .browncolor{color:#985234 !important;}
-.lightbluecolor{color:#3c82a0 !important;}
 
 /* global */
 #cluetip-close img {
@@ -1917,44 +1356,6 @@ h3{font-family:Arial; font-size:13px; font-weight:bold; color:#FFFFFF; margin:0;
 .ajax__validatorcallout_popup_table
 {
 	z-index:999;
-}
-
-/* autocomplete */
-
-.ac_results {
-	padding: 0px;
-	border: 1px solid black;
-	background-color: white;
-	overflow: hidden;
-	z-index: 99999;
-}
-
-.ac_results ul {
-	width: 100%;
-	list-style-position: outside;
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
-.ac_results li {
-	margin: 0px;
-	padding: 2px 5px;
-	cursor: default;
-	display: block;
-	/* 
-	if width will be 100% horizontal scrollbar will apear 
-	when scroll mode will be used
-	*/
-	/*width: 100%;*/
-	font: menu;
-	font-size: 12px;
-	/* 
-	it is very important, if line-height not setted or setted 
-	in relative units scroll will be broken in firefox
-	*/
-	line-height: 16px;
-	overflow: hidden;
 }
 
 .ac_loading {
@@ -2447,11 +1848,6 @@ div.tabPanes div
 	/* background-color:#ddd; */
 }
 
-/* container outside scrollable providing extra room for arrows */
-.scrollableTabs 
-{ 
-}
-
 div.scrollable {      /* required settings */     
 	position:relative;
 	overflow:hidden;
@@ -2498,35 +1894,6 @@ a.browse {
 	cursor:pointer;
 	font-size:1px;
 }
-
-/* right */
-a.right 				{ background-position: 0 -30px; clear:right; margin-right: 0px;}
-a.right:hover 		{ background-position:-30px -30px; }
-a.right:active 	{ background-position:-60px -30px; } 
-
-
-/* left */
-a.left				{ margin-left: 0px; } 
-a.left:hover  		{ background-position:-30px 0; }
-a.left:active  	{ background-position:-60px 0; }
-
-/* up and down */
-a.up, a.down		{ 
-	background:url(/images/vert_large.png) no-repeat; 
-	float: none;
-	margin: 10px 50px;
-}
-
-/* up */
-a.up:hover  		{ background-position:-30px 0; }
-a.up:active  		{ background-position:-60px 0; }
-
-/* down */
-a.down 				{ background-position: 0 -30px; }
-a.down:hover  		{ background-position:-30px -30px; }
-a.down:active  	{ background-position:-60px -30px; } 
-
-
 /* disabled navigational button */
 a.disabled {
 	visibility:hidden !important;		
