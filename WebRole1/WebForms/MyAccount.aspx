@@ -101,8 +101,8 @@
             </tr>
         </table>
         <br />
-        <asp:Button ID="CancelChanges" runat="server" Text="Cancel" CssClass="BtnBig" OnClick="CancelChanges_Click" />
+        <asp:Button ID="CancelChanges" runat="server" Text="Cancel" CssClass="ui-button ui-widget" OnClick="CancelChanges_Click" />
         &nbsp; &nbsp;
-        <asp:Button ID="SubmitChanges" runat="server" Text="Submit Changes" CssClass="BtnBig" OnClick="SubmitChanges_Click" />
+        <asp:Button ID="SubmitChanges" runat="server" Text="Submit Changes" CssClass="ui-button ui-widget" OnClick="SubmitChanges_Click" />
         <br />
 </asp:Content>
