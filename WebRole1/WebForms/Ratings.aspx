@@ -10,12 +10,20 @@
     
 </asp:Content>
 <asp:Content ID="MyContentMain" ContentPlaceHolderID="ContentMain" runat="server">
-    <%--<script type="text/javascript" src="<%=ResolveUrl("~/js/FontSize.js") %>"></script>
+    <script type="text/javascript" src="<%=ResolveUrl("~/js/FontSize.js") %>"></script>
     <script type="text/javascript">
+        var size = 14;
         $(document).ready(function () {
-            setFontSize('5px');
+            $("#plus").click(function() {
+                size++;
+                setFontSize(size + "px");
+            });
+            $("#minus").click(function () {
+                size--;
+                setFontSize(size + "px");
+            });
         });
-    </script>--%>
+    </script>
     <table >
         <tr style="height:11px;">
             <td></td>
@@ -24,6 +32,7 @@
     <asp:LinqDataSource ID="MainLinqDataSource" runat="server" ContextTypeName="UserRatingDataAccess"
         OnSelecting="MainLinqDataSource_Selecting" AutoPage="false">
     </asp:LinqDataSource>
+    <button id="plus" type="button">+</button><button id="minus" type="button">-</button>
     <table id="maint" width="100%" class="mainTable mainTableFont mainTableWithBorders mainTableSmall mainTableHeadingLarge" cellspacing="0"
         border="0">
         <tr>

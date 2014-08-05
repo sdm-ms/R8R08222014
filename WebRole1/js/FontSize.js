@@ -1,6 +1,6 @@
 ﻿(
 function ($) {
-    $.style = {
+    $.cssstyle = {
         insertRule: function (selector, rules, contxt) {
             var context = contxt || document, stylesheet;
 
@@ -32,5 +32,5 @@ function ($) {
 )(jQuery);
 
 function setFontSize(size) {
-    $.style.insertRule(['.mainTableFont'], 'font-size: ' + size + ';');
+    $.cssstyle.insertRule(['.mainTableFont'], 'font-size: ' + size + ';');
 }
