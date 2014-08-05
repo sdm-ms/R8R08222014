@@ -799,6 +799,7 @@
     <Content Include="images\username_panel.jpg" />
     <Content Include="images\yellow_star.jpg" />
     <Content Include="js\cycleinvoke.js" />
+    <Content Include="js\FontSize.js" />
     <Content Include="js\img-manage.js" />
     <Content Include="js\init.js" />
     <Content Include="js\initmaster.js" />

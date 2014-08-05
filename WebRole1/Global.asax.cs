@@ -53,9 +53,9 @@ namespace WebRole1
 
                 DebugPath = "~/js/jquery-1.4.1.js",
 
-                CdnPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.1.min.js",
+                CdnPath = "http://code.jquery.com/jquery-latest.min.js",
 
-                CdnDebugPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.1.js"
+                CdnDebugPath = "http://code.jquery.com/jquery-latest.js"
 
             });
         }

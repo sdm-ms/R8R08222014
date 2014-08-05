@@ -7,8 +7,15 @@
 
 <asp:Content ID="MyContentHead" ContentPlaceHolderID="ContentHeadText" runat="Server">
     <asp:Label id="whoseRatings" runat="server"></asp:Label>
+    
 </asp:Content>
 <asp:Content ID="MyContentMain" ContentPlaceHolderID="ContentMain" runat="server">
+    <%--<script type="text/javascript" src="<%=ResolveUrl("~/js/FontSize.js") %>"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setFontSize('5px');
+        });
+    </script>--%>
     <table >
         <tr style="height:11px;">
             <td></td>
