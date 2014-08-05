@@ -17,7 +17,7 @@
     <asp:LinqDataSource ID="MainLinqDataSource" runat="server" ContextTypeName="UserRatingDataAccess"
         OnSelecting="MainLinqDataSource_Selecting" AutoPage="false">
     </asp:LinqDataSource>
-    <table id="maint" width="100%" class="mainTable mainTableWithBorders mainTableSmall mainTableHeadingLarge" cellspacing="0"
+    <table id="maint" width="100%" class="mainTable mainTableFont mainTableWithBorders mainTableSmall mainTableHeadingLarge" cellspacing="0"
         border="0">
         <tr>
             <th class="nmcl">

@@ -2,7 +2,7 @@
 
 <%@ Register TagPrefix="SNFWC" Namespace="SqlNetFrameworkWebControls" Assembly="ClassLibrary1" %>
 <%@ Register TagPrefix="Uc" TagName="LiteralElement" Src="~/CommonControl/LiteralElement.ascx" %>
-    <table id="CommentsTable" width="100%" class="mainTable mainTableSmall mainTableWithBorders mainTableHeadingLarge"
+    <table id="CommentsTable" width="100%" class="mainTable mainTableFont mainTableSmall mainTableWithBorders mainTableHeadingLarge"
             cellspacing="0" border="0">
             <tr>
                 <th class="nmcl">

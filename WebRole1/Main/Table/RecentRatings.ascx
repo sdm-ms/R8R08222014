@@ -6,7 +6,7 @@
     <asp:LinqDataSource ID="MainLinqDataSource" runat="server" ContextTypeName="UserRatingDataAccess"
         OnSelecting="MainLinqDataSource_Selecting">
     </asp:LinqDataSource>
-    <table id="recentRatingsTable" width="100%" class="mainTable mainTableSmall mainTableWithBorders mainTableHeadingLarge"
+    <table id="recentRatingsTable" width="100%" class="mainTable mainTableFont mainTableSmall mainTableWithBorders mainTableHeadingLarge"
         cellspacing="0" border="0">
         <tr>
             <th class="nmcl">
