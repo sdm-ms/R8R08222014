@@ -16,6 +16,6 @@
         <span id="ScoredRatings"><asp:Literal ID="ScoredRatingsContent" runat="server"></asp:Literal></span><br />
         <span id="PointsPerRating"><asp:Literal ID="PointsPerRatingContent" runat="server"></asp:Literal></span><br />
         <br />
-        <button id="UpdateMyPoints" type="button">Update</button>
+        <button id="UpdateMyPoints" class="ui-button ui-widget" type="button">Update</button>
     </div>
 </div>
