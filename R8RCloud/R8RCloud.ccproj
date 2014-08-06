@@ -14,6 +14,7 @@
     <Name>R8RCloud</Name>
     <UseIISExpressByDefault>False</UseIISExpressByDefault>
     <UseEmulatorExpressByDefault>False</UseEmulatorExpressByDefault>
+    <UseWebProjectPorts>False</UseWebProjectPorts>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,7 @@
   <ItemGroup>
     <ServiceConfiguration Include="ServiceConfiguration.CloudProduction.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.Local-Abramowicz.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.ShardDev.cscfg" />
     <ServiceDefinition Include="ServiceDefinition.csdef" />
     <ServiceConfiguration Include="ServiceConfiguration.CloudTesting.cscfg" />
   </ItemGroup>
