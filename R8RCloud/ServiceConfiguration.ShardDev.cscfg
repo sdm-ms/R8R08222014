@@ -6,9 +6,9 @@
       <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
-      <Setting name="ApplicationServices" value="Data Source=.\sqlexpress;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
-      <Setting name="R8RConnectionString" value="Data Source=.\sqlexpress;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
-      <Setting name="Denorm0001ConnectionString" value="Data Source=.\sqlexpress;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="ApplicationServices" value="Data Source=.;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="R8RConnectionString" value="Data Source=.;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="Denorm0001ConnectionString" value="Data Source=.;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=30000" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ClientDiagnosticLevel" value="1" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
     </ConfigurationSettings>
@@ -19,9 +19,9 @@
       <Setting name="DiagnosticsConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="BlobConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1" />
-      <Setting name="ApplicationServices" value="Data Source=.\sqlexpress;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
-      <Setting name="R8RConnectionString" value="Data Source=.\sqlexpress;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
-      <Setting name="Denorm0001ConnectionString" value="Data Source=.\sqlexpress;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="ApplicationServices" value="Data Source=.;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="R8RConnectionString" value="Data Source=.;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=30000" />
+      <Setting name="Denorm0001ConnectionString" value="Data Source=.;Initial Catalog=Denorm0001;Integrated Security=True;Connect Timeout=30000" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ClientDiagnosticLevel" value="1" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
     </ConfigurationSettings>
