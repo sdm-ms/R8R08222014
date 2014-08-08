@@ -419,11 +419,12 @@ namespace ClassLibrary1.Model
             string rowCountInstruction = String.Format(", ( SELECT COUNT(ID) {0} {1} {2} {3} ) AS row_count ", fromInstruction, joinInstructionForOrdering, joinInstructionForFiltering, whereInstruction);
             string skipTakeInstruction = " seq where seq.rownum BETWEEN " + (skip + 1).ToString() + " and " + (skip + take).ToString();
             string entireQuery = String.Format("SELECT * {0} FROM ( {1} ) {2}", rowCountInstruction, coreQuery, skipTakeInstruction);
-            SqlConnection c = new SqlConnection(dta.GetConnectionString());
+            string cs = dta.GetConnectionString();
+            SqlConnection c = new SqlConnection(cs);
             c.Open();
             using (SqlTransaction t = c.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
-                SqlDataAdapter adapter = new SqlDataAdapter(entireQuery, dta.GetConnectionString());
+                SqlDataAdapter adapter = new SqlDataAdapter(entireQuery, cs);
                 foreach (var whereParam in parameters)
                     adapter.SelectCommand.Parameters.Add(whereParam);
                 DataSet data = new DataSet();

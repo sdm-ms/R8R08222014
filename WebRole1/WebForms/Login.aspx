@@ -17,7 +17,7 @@
                         UserNameRequiredErrorMessage="Username is required." FailureText="Login unsuccessful. Try again." LabelStyle-VerticalAlign="Top">
                         <CheckBoxStyle Font-Size="12px" Font-Names="Trebuchet MS,Arial,Helvetica,Sans-Serif" />
                         <TextBoxStyle Font-Names="Trebuchet MS,Arial,Helvetica,Sans-Serif" Font-Size="16px" />
-                        <LoginButtonStyle CssClass="BtnBig" />
+                        <LoginButtonStyle CssClass="ui-button ui-widget" />
                         <LabelStyle Font-Names="Trebuchet MS,Arial,Helvetica,Sans-Serif" Font-Size="16px" Font-Bold="true" />
                         <FailureTextStyle Font-Names="Trebuchet MS,Arial,Helvetica,Sans-Serif" Font-Size="16px"
                             HorizontalAlign="Left" />

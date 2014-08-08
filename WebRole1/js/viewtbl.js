@@ -161,7 +161,7 @@ function viewtbl() {
         if (mainTable != null) {
             //        $("tr.prow", mainTable).remove();
             //        $("#maint > col").remove();
-            mainTable.replaceWith('<table id="maint" class="mainTable mainTablePositioning"><tbody></tbody></table>');
+            mainTable.replaceWith('<table id="maint" class="mainTable mainTableFont mainTablePositioning"><tbody></tbody></table>');
             mainTable = $("#maint");
         }
         if (getHeaderRow)

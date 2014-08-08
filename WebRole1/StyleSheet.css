@@ -450,11 +450,12 @@ td.noRowsFound
 {
     vertical-align : top;
 }
-
+.mainTableFont {
+    
+}
  .mainTable th 
 {
 	color: black;
-	font-size: 16px;
 	font-weight: bold;
 	background: #F3E5C3 repeat-x 0px 0px;
 	padding:  0px;
@@ -673,7 +674,6 @@ input[type=text]::-ms-clear {
 .rtg
 {
 	font-family: "Trebuchet MS", "Arial", "Helvetica", "Sans-Serif";
-	font-size: 16px;
 	line-height:16px !important;
 	font-weight: normal;
 	background:none;

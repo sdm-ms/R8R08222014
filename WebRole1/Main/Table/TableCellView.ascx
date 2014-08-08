@@ -15,7 +15,7 @@
     </tr>
     <tr>
         <td>
-            <table width="100%" class="mainTable mainTableWithBorders">
+            <table width="100%" class="mainTable mainTableFont mainTableWithBorders">
                 <tr>
                     <asp:PlaceHolder ID="HeaderRowPlaceHolder" runat="server"></asp:PlaceHolder>
                 </tr>

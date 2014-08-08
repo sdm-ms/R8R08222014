@@ -23,9 +23,14 @@ namespace ClassLibrary1.Nonmodel_Code
         public static string GetConfigurationSetting(string configName)
         {
             SetConfigurationSettingPublisher();
-            return RoleEnvironment.IsAvailable ? RoleEnvironment.GetConfigurationSettingValue(configName)
-                : null;
-                     // : ConfigurationManager.AppSettings[configName];
+            try
+            {
+                return RoleEnvironment.GetConfigurationSettingValue(configName);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         internal static string GetConfigurationSettingFromPublisher(string configName)

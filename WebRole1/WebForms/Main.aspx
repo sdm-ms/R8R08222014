@@ -80,12 +80,12 @@
         <tr>
             <td>
                 <div id="AdministrativeOptions" runat="server">
-                    <asp:Button ID="BtnAddTblRow" runat="server" CssClass="BtnBig possibleBottom" OnClick="AddOrChangeTblRow_Click" UseSubmitBehavior="true" ></asp:Button>
+                    <asp:Button ID="BtnAddTblRow" runat="server" CssClass="ui-button ui-widget" OnClick="AddOrChangeTblRow_Click" UseSubmitBehavior="true" ></asp:Button>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="BtnViewChanges" runat="server" Text="Rate Selected Changes" CssClass="BtnBig possibleBottom" OnClick="ViewChanges_Click"
+                    <asp:Button ID="BtnViewChanges" runat="server" Text="Rate Selected Changes" CssClass="ui-button ui-widget" OnClick="ViewChanges_Click"
                         UseSubmitBehavior="true"></asp:Button>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="BtnAdministration" runat="server" Text="Change Page" CssClass="BtnBig possibleBottom"
+                    <asp:Button ID="BtnAdministration" runat="server" Text="Change Page" CssClass="ui-button ui-widget"
                         Visible="false" UseSubmitBehavior="true"></asp:Button>
                 </div>
                 <Uc:ModalPopUp runat="server" ID="PopUp" />

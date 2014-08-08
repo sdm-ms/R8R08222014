@@ -9,7 +9,7 @@
 <asp:LinqDataSource ID="MainLinqDataSource" runat="server" ContextTypeName="R8RDB"
     OnSelecting="MainLinqDataSource_Selecting">
 </asp:LinqDataSource>
-<table id="maint" width="100%" class="mainTable mainTableWithBorders" cellspacing="0"
+<table id="maint" width="100%" class="mainTable mainTableFont mainTableWithBorders" cellspacing="0"
     border="0">
     <tr>
         <th class="nmcl">

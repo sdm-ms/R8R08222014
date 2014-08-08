@@ -17,7 +17,8 @@ namespace ClassLibrary1.Model
         public static CloudBlobClient GetBlobClient()
         {
             AzureSetup.SetConfigurationSettingPublisher();
-            CloudStorageAccount account = CloudStorageAccount.FromConfigurationSetting("BlobConnectionString");
+            string setting = RoleEnvironment.GetConfigurationSettingValue("BlobConnectionString");
+            CloudStorageAccount account = CloudStorageAccount.Parse(setting);
             CloudBlobClient blobClient = account.CreateCloudBlobClient();
             return blobClient;
         }
@@ -107,6 +108,7 @@ namespace ClassLibrary1.Model
 
         public string GetPathToLocalFile()
         {
+            bool ok = RoleEnvironment.IsAvailable;
             LocalResource localCache = RoleEnvironment.GetLocalResource("raterooLocal");
             string containerPath = Path.Combine(localCache.RootPath, ContainerName);
             Directory.CreateDirectory(containerPath); // create if necessary

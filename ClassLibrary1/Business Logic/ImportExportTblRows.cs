@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -553,7 +554,7 @@ namespace ClassLibrary1.Model
                 string theFullTimeString = TestableDateTime.Now.ToString("yyMMdd HHmmss");
                 string idName = "Table " + TheTbl.TblID.ToString() + " " + theFullTimeString;
                 mainFile = new R8RFile("import", idName);
-                logFile = new R8RFile("importlog", idName); 
+                logFile = new R8RFile("importlog", idName);
             }
         }
 
@@ -610,7 +611,7 @@ namespace ClassLibrary1.Model
             ActionProcessor Obj = new ActionProcessor();
 
             var Filterdata = Obj.DataContext.GetTable<FieldDefinition>()
-                                 .Where(fd => fd.TblID == TheTbl.TblID && fd.Status == (byte) StatusOfObject.Active)
+                                 .Where(fd => fd.TblID == TheTbl.TblID && fd.Status == (byte)StatusOfObject.Active)
                                  .OrderBy(fd => fd.FieldNum).ThenBy(fd => fd.FieldDefinitionID); // OK to order by ID to get consistent ordering
 
             XmlSchema Schema = new XmlSchema();
@@ -762,13 +763,13 @@ namespace ClassLibrary1.Model
                     if (values.Minimum != null)
                     {
                         XmlSchemaMinInclusiveFacet Min = new XmlSchemaMinInclusiveFacet();
-                        Min.Value = values.Minimum.ToString();
+                        Min.Value = values.Minimum.HasValue ? values.Minimum.Value.ToString(CultureInfo.InvariantCulture) : "";
                         sr.Facets.Add(Min);
                     }
                     if (values.Maximum != null)
                     {
                         XmlSchemaMaxInclusiveFacet max = new XmlSchemaMaxInclusiveFacet();
-                        max.Value = values.Maximum.ToString();
+                        max.Value = values.Maximum.HasValue ? values.Maximum.Value.ToString(CultureInfo.InvariantCulture) : "";
 
                         sr.Facets.Add(max);
                     }
@@ -874,7 +875,7 @@ namespace ClassLibrary1.Model
 
                 if (includeValues)
                 {
-                    var theTblVals = E.RatingGroups.SelectMany(x => x.Ratings).Where(x => x.RatingGroup.TblColumn.Status == (int)StatusOfObject.Active && x.CurrentValue != null).Select(x => new TblVal { TblCol = x.RatingGroup.TblColumn.Name, NumInGroup = x.NumInGroup, CurrentValue = (decimal) x.CurrentValue }).ToList();
+                    var theTblVals = E.RatingGroups.SelectMany(x => x.Ratings).Where(x => x.RatingGroup.TblColumn.Status == (int)StatusOfObject.Active && x.CurrentValue != null).Select(x => new TblVal { TblCol = x.RatingGroup.TblColumn.Name, NumInGroup = x.NumInGroup, CurrentValue = (decimal)x.CurrentValue }).ToList();
                     string theTblValsString = JsonSerializer.Serialize<List<TblVal>>(theTblVals);
                     theTblRowElement.Add(new XElement("SerializedValues", theTblValsString));
                 }

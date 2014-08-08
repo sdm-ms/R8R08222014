@@ -11,6 +11,7 @@
 <head id="Head1Main" runat="server">
     <title></title>
     <link href="~/StyleSheet.css?v=100" type="text/css" rel="stylesheet" />
+    <link href="~/js/ui/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link id="Link1" runat="server" rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
     <link id="Link2" runat="server" rel="icon" href="~/favicon.ico" type="image/ico" />
     <asp:ContentPlaceHolder ID="head1" runat="server">
