@@ -20,7 +20,7 @@
 	</script>
     <asp:ScriptManagerProxy ID="MyScriptManagerProxy" runat="server">
         <Scripts>
-            <asp:ScriptReference Path="~/js/viewtbl.js?v=511" />
+            <asp:ScriptReference Path="~/js/viewtbl.js?v=512" />
         </Scripts>
         <Services>
             <asp:ServiceReference Path="~/WebService.asmx" InlineScript="true" />
