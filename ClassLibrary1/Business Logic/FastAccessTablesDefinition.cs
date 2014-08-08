@@ -26,7 +26,8 @@ namespace ClassLibrary1.Model
 
         public string GetConnectionString()
         {
-            return AzureSetup.GetConfigurationSetting(String.Format("Denorm{0}ConnectionString", DenormalizedTableGroupNumber.ToString("D4")));
+            string name = String.Format("Denorm{0}ConnectionString", DenormalizedTableGroupNumber.ToString("D4"));
+            return AzureSetup.GetConfigurationSetting(name);
         }
     }
 
