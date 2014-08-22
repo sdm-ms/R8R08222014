@@ -1,0 +1,12 @@
+D:\Dayuser\Vishu\R8R.UI\R8R.Business\bin\Debug\R8R.Business.dll
+D:\Dayuser\Vishu\R8R.UI\R8R.Business\bin\Debug\R8R.Business.pdb
+D:\Dayuser\Vishu\R8R.UI\R8R.Business\obj\Debug\R8R.Business.dll
+D:\Dayuser\Vishu\R8R.UI\R8R.Business\obj\Debug\R8R.Business.pdb
+D:\Day User\Vishu\TapaSystemData\Vishu\R8R.UI\R8R.Business\bin\Debug\R8R.Business.dll
+D:\Day User\Vishu\TapaSystemData\Vishu\R8R.UI\R8R.Business\bin\Debug\R8R.Business.pdb
+D:\Day User\Vishu\TapaSystemData\Vishu\R8R.UI\R8R.Business\obj\Debug\R8R.Business.dll
+D:\Day User\Vishu\TapaSystemData\Vishu\R8R.UI\R8R.Business\obj\Debug\R8R.Business.pdb
+D:\Dayuser\VishuLatest\Retero\R8R.Business\bin\Debug\R8R.Business.dll
+D:\Dayuser\VishuLatest\Retero\R8R.Business\bin\Debug\R8R.Business.pdb
+D:\Dayuser\VishuLatest\Retero\R8R.Business\obj\Debug\R8R.Business.dll
+D:\Dayuser\VishuLatest\Retero\R8R.Business\obj\Debug\R8R.Business.pdb

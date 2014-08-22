@@ -1,0 +1,134 @@
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\R8R.UI.dll.config
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\R8R.UI.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\R8R.UI.pdb
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Antlr3.Runtime.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\EntityFramework.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\EntityFramework.SqlServer.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Facebook.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Mvc.Facebook.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Google.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Web.Infrastructure.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Newtonsoft.Json.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Owin.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Owin.Security.Providers.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Net.Http.Formatting.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Helpers.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Http.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Http.WebHost.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Mvc.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Optimization.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Razor.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.WebPages.Deployment.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.WebPages.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.WebPages.Razor.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\WebGrease.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Facebook.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Mvc.Facebook.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Newtonsoft.Json.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Net.Http.Formatting.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Helpers.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Http.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Http.WebHost.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Mvc.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Razor.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.WebPages.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.WebPages.Deployment.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.WebPages.Razor.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\System.Web.Optimization.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Antlr3.Runtime.pdb
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\EntityFramework.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\EntityFramework.SqlServer.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Google.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\obj\Release\R8R.UI.csprojResolveAssemblyReference.cache
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\obj\Release\R8R.UI.dll
+D:\Dayuser\VishuLatest\R8R.UI\R8R.UI\obj\Release\R8R.UI.pdb
+D:\Day User\Vishu\Retero\R8R.UI\bin\R8R.UI.dll.config
+D:\Day User\Vishu\Retero\R8R.UI\bin\R8R.UI.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\R8R.UI.pdb
+D:\Day User\Vishu\Retero\R8R.UI\bin\Antlr3.Runtime.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\EntityFramework.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\EntityFramework.SqlServer.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Facebook.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Mvc.Facebook.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Google.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Web.Infrastructure.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Newtonsoft.Json.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Owin.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\Owin.Security.Providers.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\R8R.Common.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Net.Http.Formatting.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Helpers.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Http.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Http.WebHost.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Mvc.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Optimization.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Razor.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.WebPages.Deployment.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.WebPages.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.WebPages.Razor.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\WebGrease.dll
+D:\Day User\Vishu\Retero\R8R.UI\bin\R8R.Common.pdb
+D:\Day User\Vishu\Retero\R8R.UI\bin\Facebook.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Mvc.Facebook.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Newtonsoft.Json.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Net.Http.Formatting.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Helpers.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Http.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Http.WebHost.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Mvc.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Razor.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.WebPages.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.WebPages.Deployment.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.WebPages.Razor.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\System.Web.Optimization.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Antlr3.Runtime.pdb
+D:\Day User\Vishu\Retero\R8R.UI\bin\EntityFramework.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\EntityFramework.SqlServer.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Google.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Day User\Vishu\Retero\R8R.UI\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Day User\Vishu\Retero\R8R.UI\obj\Release\R8R.UI.csprojResolveAssemblyReference.cache
+D:\Day User\Vishu\Retero\R8R.UI\obj\Release\R8R.UI.dll
+D:\Day User\Vishu\Retero\R8R.UI\obj\Release\R8R.UI.pdb

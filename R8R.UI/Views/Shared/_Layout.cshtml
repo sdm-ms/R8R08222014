@@ -1,0 +1,207 @@
+﻿
+
+<html>
+<head id="Head1Main">
+    <title>
+
+    </title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="@Url.Content("~/Content/StyleSheet.css")" type="text/css" rel="stylesheet" />
+    <link id="Link1" rel="shortcut icon" href="@Url.Content("~/Content/favicon.ico")" type="image/x-icon" />
+    <link id="Link2" rel="icon" href="@Url.Content("~/Content/favicon.ico")" type="image/ico" />
+    <script src="@Url.Content("~/Content/js/jquery-1.3.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/js/cycleinvoke.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/js/jquery.cycle.all.min.js")" type="text/javascript"></script>
+
+
+
+    @*<asp:ContentPlaceHolder ID="head1" runat="server">
+        </asp:ContentPlaceHolder>*@
+    @*<meta http-equiv="X-UA-Compatible" content="IE=8" />*@
+</head>
+<body class="bggradient">
+    <div id="allPageContent" style="width: 950px; margin: auto; position: relative;">
+        <div id="roundedCornerAtTop">
+            <div id="topOfRoundedCorner" class="">@*pageTopRoundedCorner*@
+                <table id="backbox" class="borderless pageTopBackBox">
+                    <tr id="backbox-top">
+                        <td style="width: 15px; height: 15px; background-image: url(../../Content/images/backbox-top-left.gif)"></td>
+                        <td style="background-image: url(../../Content/images/backbox-top-center.png); background-repeat: repeat-x;"></td>
+                        <td style="width: 15px; background-image: url(../../Content/images/backbox-top-right.gif)"></td>
+                    </tr>
+                    <tr id="backbox-center">
+                        <td style="width: 15px; height: 80px; background-image: url(../../Content/images/backbox-center.png)"></td>
+                        <td style="width: 912px; height: 80px; background-image: url(../../Content/images/backbox-center.png); background-repeat: repeat;"></td>
+                        <td style="width: 15px; height: 80px; background-image: url(../../Content/images/backbox-center.png);"></td>
+                    </tr>
+                    <tr id="backbox-bottom">
+                        <td style="width: 15px; height: 15px; background-image:url(../../Content/images/backbox-bottom-left.gif)"></td>
+                        <td style="background-image:url(../../Content/images/backbox-bottom-center.png); background-repeat: repeat-x;"></td>
+                        <td style="width: 15px; background-image:url(../../Content/images/backbox-bottom-right.gif);"></td>
+                    </tr>
+                </table>
+                <div class="alphaVersion">
+                    @*<asp:image id="alpha" class="reppng" imageurl="@Url.Content("~/Content/images/alpha.png")" />*@
+                    <img id="alpha" class="reppng" src="@Url.Content("~/Content/images/alpha.png")" />
+                </div>
+                <div class="pageTopLogo">
+                    <a id="ImageButtonAnchor">
+                        <img id="ImageButton1" src="@Url.Content("~/Content/images/top_logo.gif")" />
+                    </a>
+                </div>
+                <div class="pageTopSearchBox">
+                    @*<asp:Panel ID="PanelAroundSearchBox" runat="server" DefaultButton="DoSearch">
+                            <asp:TextBox ID="SearchBox" runat="server" ClientIDMode="Static" CssClass="pageTopSearchTextBox"></asp:TextBox>
+                            <asp:ImageButton ID="DoSearch" runat="server" CssClass="pageTopSearchButton reppng"
+                                             ImageUrl="~/images/go-normal.png" OnClick="DoSearch_Click" AlternateText="Search" />
+                        </asp:Panel>*@
+                    <div id="PanelAroundSearchBox">
+                        <input type="text" id="SearchBox" class="pageTopSearchTextBox">
+                        <img id="DoSearch" class="pageTopSearchButton reppng" src="@Url.Content("~/Content/images/go-normal.png")">
+                    </div>
+                </div>
+                <div class="pageTopWelcomeArea">
+                    @*Response.WriteSubstitution(new HttpResponseSubstitutionCallback(ClassLibrary1.Model.CacheSubstitution.LoginInfoStatus));
+                        <Uc:LoginInfoStatus runat="server" ID="UcLogin" />*@
+
+                  @if (Session["name"] != null)
+                    {
+                   <text>Welcome</text> @Session["name"]
+                       <div id="loginSep2" style="display:inline;">
+                        &nbsp; | &nbsp;
+                    </div>
+                      @Html.ActionLink("Logout", "LogOff", "Account");
+                    }
+                    else
+                  {
+                      @Html.ActionLink("Login", "Login", "Account");
+                      <div id="loginSep2" style="display:inline;">
+                        &nbsp; | &nbsp;
+                    </div>
+                      @Html.ActionLink("Create Free Account", "Register", "Account");
+                  }
+                    @*@Html.ActionLink("Login", "Login", "Account")
+                    <div id="loginSep2" style="display:inline;">
+                        &nbsp; | &nbsp;
+                    </div>
+                    @Html.ActionLink("Create Free Account", "Register", "Account")*@
+
+                </div>
+                <div class="pageTopMenuLinks">
+                    <table>
+                        <tr>
+                            <td>
+                                <a href="/Home/Index" id="menuButton">
+                                    <img id="ImgHome" src="@Url.Content("~/Content/images/Home.png")" class="reppng" alt="Home" title="Home" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/Ratings" id="menuButton5">
+                                    <img id="ImgRatings" src="@Url.Content("~/Content/images/MyRatings.png")" class="reppng" alt="My Ratings" title="My Ratings" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/MyPoints" id="menuButton4">
+                                    <img id="ImgPointsWinnings" src="@Url.Content("~/Content/images/PointsWinnings.png")" class="reppng" alt="My Points &amp; Winnings" title="My Points & Winnings" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/Prizes" id="menuButton8">
+                                    <img id="ImgPrizeBoard" src="@Url.Content("~/Content/images/PrizeBoard.png")" class="reppng" alt="Prize Board" title="Prize Board" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/Forums" id="menuButton7">
+                                    <img id="ImgForums" src="@Url.Content("~/Content/images/Forums.png")" class="reppng" alt="Forums" title="Forums" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/MyAccount" id="menuButton6">
+                                    <img id="ImgMyAccount" src="@Url.Content("~/Content/images/MyAccount.png")" class="reppng" alt="My Account" title="My Account" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/Help" id="menuButton2">
+                                    <img id="ImgHelp" src="@Url.Content("~/Content/images/Help.png")" class="reppng" alt="Help" title="Help" />
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="allContentBelowHeaderDiv" class="allContentBelowPageTop">
+
+            <div id="mainPartOfPage" style="position: relative; width: 941px; height: auto;
+        background-color: White; border-width: 1px; border-style: solid; border-color: Gray; ">
+
+                <div id="leftPageColumn" class="possibleBottom" style="float: left; overflow: hidden;
+            display: inline; position: relative; width: 268px; margin: 10px 5px 10px 10px;
+            padding: 0px 0px 0px 0px;">
+                    @Html.Partial("_LeftPageContentPartial")
+                </div>
+
+                <div id="rightPageColumn" class="possibleBottom" style="float: left; position: relative;
+            width: 640px; margin: 10px 10px 10px 5px; padding: 0px 0px 0px 0px;">
+
+                    <div id="AllContentBelowHeader">
+                        <div id="mydiv" style="position: absolute; width: 100%; overflow:hidden;">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td colspan="3" style="height: 8px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 14px;" valign="top">
+                                        <img id="Img1" src="@Url.Content("~/Content/images/left-corner.jpg")" alt="left-corner" width="14"
+                                             height="62" />
+                                    </td>
+                                    <td valign="top" class="topbg" style="width: 100%;"></td>
+                                    <td style="width: 14;" valign="top">
+                                        <img id="Img2" src="@Url.Content("~/Content/images/right-corner.jpg")" alt="right-corner"
+                                             width="14" height="62" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <table>
+                            <tr>
+                                <td style="height: 27px;">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                        @RenderBody()
+                    </div>
+                    <div id="AllContentBelowHeader">
+                    </div>
+
+                </div>
+
+                <div id="belowBothColumns" style="clear: both;">
+                    <table>
+                        <tr>
+                            <td id="Td1" style="height: 5px;">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                @*end belowBothColumns*@
+            </div>
+            @*end mainPartOfPage*@
+            <div id="belowMainPartOfPage" class="corporateInfo" style="position: relative;">
+                R8R™ is a product of Collective Judgment LLC, a Virginia company. All ratings are opinions, not facts. Please see our <a id="terms" runat="server" href="~/TermsOfService">Terms of Service</a> and <a id="A1" href="~/Privacy">Privacy Policy</a>.
+            </div>
+            @*end belowMainPartOfPage*@
+            <div id="spaceAtVeryBottomOfPage" style="position: relative; height: 25px;">
+            </div>
+            @*end spaceAtVeryBottomOfPage*@
+</div>
+
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

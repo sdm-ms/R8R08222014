@@ -1,0 +1,325 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_Layout2</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="@Url.Content("~/Content/StyleSheet.css")" type="text/css" rel="stylesheet" />
+    <link id="Link1" rel="shortcut icon" href="@Url.Content("~/Content/favicon.ico")" type="image/x-icon" />
+    <link id="Link2" rel="icon" href="@Url.Content("~/Content/favicon.ico")" type="image/ico" />
+</head>
+<body>
+    <div>
+
+        <div id="allPageContent" style="width: 950px; margin: auto; position: relative;">
+            <div id="roundedCornerAtTop">
+
+                <div id="topOfRoundedCorner" class="">
+                    <table id="backbox" class="borderless pageTopBackBox">
+                        <tr id="backbox-top">
+                            <td style="width: 15px; height: 15px; background-image: url(/images/backbox-top-left.gif);"></td>
+                            <td style="background-image: url(/images/backbox-top-center.png); background-repeat: repeat-x;"></td>
+                            <td style="width: 15px; background-image: url(/images/backbox-top-right.gif);"></td>
+                        </tr>
+                        <tr id="backbox-center">
+                            <td style="width: 15px; height: 80px; background-image: url(/images/backbox-center.png);"></td>
+                            <td style="width: 912px; height: 80px; background-image: url(/images/backbox-center.png); background-repeat: repeat;"></td>
+                            <td style="width: 15px; height: 80px; background-image: url(/images/backbox-center.png);"></td>
+                        </tr>
+                        <tr id="backbox-bottom">
+                            <td style="width: 15px; height: 15px; background-image: url(/images/backbox-bottom-left.gif);"></td>
+                            <td style="background-image: url(/images/backbox-bottom-center.png); background-repeat: repeat-x;"></td>
+                            <td style="width: 15px; background-image: url(/images/backbox-bottom-right.gif);"></td>
+                        </tr>
+                    </table>
+                    <div class="alphaVersion">
+                        <img id="ctl00_ctl00_ctl00_MyPageTop_alpha" class="reppng" src="../images/alpha.png" />
+                    </div>
+                    <div class="pageTopLogo">
+                        <a href="/" id="ctl00_ctl00_ctl00_MyPageTop_ImageButtonAnchor">
+                            <img id="ctl00_ctl00_ctl00_MyPageTop_ImageButton1" src="../images/top_logo.gif" />
+                        </a>
+                    </div>
+                    <div class="pageTopSearchBox">
+                        <div id="ctl00_ctl00_ctl00_MyPageTop_PanelAroundSearchBox" onkeypress="javascript:return WebForm_FireDefaultButton(event, &#39;ctl00_ctl00_ctl00_MyPageTop_DoSearch&#39;)">
+
+                            <input name="ctl00$ctl00$ctl00$MyPageTop$SearchBox" type="text" id="SearchBox" class="pageTopSearchTextBox" />
+                            <input type="image" name="ctl00$ctl00$ctl00$MyPageTop$DoSearch" id="ctl00_ctl00_ctl00_MyPageTop_DoSearch" class="pageTopSearchButton reppng" src="../images/go-normal.png" alt="Search" />
+
+                        </div>
+                    </div>
+                    <div class="pageTopWelcomeArea">
+
+
+                        <a id="ctl00_LoginLink" href="/Login/!P2f">Login</a>
+
+                        <div id="ctl00_loginSep2" style="display: inline;">
+                            &nbsp; | &nbsp;
+                        </div>
+                        <a id="ctl00_CreateNewUserLink" href="../NewUser">Create Free Account</a>
+                        <div id="userAccessInfo" style="display: none;">
+                            <div id="userName"></div>
+                            <div id="passwordForWebService"></div>
+                        </div>
+
+
+                    </div>
+                    <div class="pageTopMenuLinks">
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="/" id="menuButton">
+                                        <img id="ImgHome" src="/images/Home.png" class="reppng" alt="Home" title="Home" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/Ratings" id="ctl00_ctl00_ctl00_MyPageTop_menuButton5">
+                                        <img id="ImgRatings" src="/images/MyRatings.png" class="reppng" alt="My Ratings" title="My Ratings" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/MyPoints" id="menuButton4">
+                                        <img id="ImgPointsWinnings" src="/images/PointsWinnings.png" class="reppng" alt="My Points &amp; Winnings" title="My Points & Winnings" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/Prizes" id="menuButton8">
+                                        <img id="ImgPrizeBoard" src="/images/PrizeBoard.png" class="reppng" alt="Prize Board" title="Prize Board" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/Forums" id="menuButton7">
+                                        <img id="ImgForums" src="/images/Forums.png" class="reppng" alt="Forums" title="Forums" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/MyAccount" id="menuButton6">
+                                        <img id="ImgMyAccount" src="/images/MyAccount.png" class="reppng" alt="My Account" title="My Account" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/Help" id="menuButton2">
+                                        <img id="ImgHelp" src="/images/Help.png" class="reppng" alt="Help" title="Help" />
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="allContentBelowHeaderDiv" class="allContentBelowPageTop">
+
+                <div id="mainPartOfPage" style="position: relative; width: 941px; height: auto; background-color: White; border-width: 1px; border-style: solid; border-color: Gray;">
+                    <div id="leftPageColumn" class="possibleBottom" style="float: left; overflow: hidden; display: inline; position: relative; width: 268px; margin: 10px 5px 10px 10px; padding: 0px 0px 0px 0px;">
+                        <div id="withinLeftPageColumn" style="padding: 0px 0px 0px 0px;">
+
+
+                            <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_BoxLeftColumnPlaceHolder_TopicsList_TheBackgroundEffect_mydiv" style="position: absolute; width: 100%; overflow: hidden;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td colspan="3" style="height: 8px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 14px;" valign="top">
+                                            <img src="../images/left-corner.jpg" id="ctl00_ctl00_ctl00_AllContentBelowHeader_BoxLeftColumnPlaceHolder_TopicsList_TheBackgroundEffect_Img1" alt="left-corner" width="14" height="62" />
+                                        </td>
+                                        <td valign="top" class="topbg" style="width: 100%;"></td>
+                                        <td style="width: 14;" valign="top">
+                                            <img src="../images/right-corner.jpg" id="ctl00_ctl00_ctl00_AllContentBelowHeader_BoxLeftColumnPlaceHolder_TopicsList_TheBackgroundEffect_Img2" alt="right-corner" width="14" height="62" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <table>
+                                <tr>
+                                    <td style="height: 27px;">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="headTxt headTxtEffect">
+                                Topics
+                            </div>
+                            <div class="afterHeadTxtEffect">
+                                <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_BoxLeftColumnPlaceHolder_TopicsList_TopicsCell" class="topicsInitialDisplay">
+                                    <div id="mytopicstree" class="topicstree">
+                                        <ul>
+                                            <li id="LIHIER95d1ae7d-c6ad-4cf2-a5ff-b9639a9c2f5c">
+                                                <a href="/Consumer" class="tablemultiple">Consumer</a><ul>
+                                                    <li id="LIHIER8880373e-a5a9-4050-8501-4debc1d0bcaa"><a href="/Consumer/Restaurants" class="tablesingle">Restaurants</a></li>
+                                                </ul>
+                                            </li>
+                                            <li id="LIHIER1cb65724-959a-4286-a472-f5bd6634840f"><a href="/Entertainment" class="tablesingle">Entertainment</a></li>
+                                            <li id="LIHIER78a23403-1105-4390-8a91-e3d22f0883d8"><a href="/Government" class="tablesingle">Government</a></li>
+                                            <li id="LIHIER2e07a484-24e6-45f1-83a5-0c2d5132229b"><a href="/Internet" class="tablesingle">Internet</a></li>
+                                            <li id="LIHIER03e97a04-bad8-4872-9f24-62d35fd59b1f"><a href="/News" class="tablesingle">News</a></li>
+                                            <li id="LIHIER847f210b-923c-4948-81f1-f839f51feb6c"><a href="/Sports" class="tablesingle">Sports</a></li>
+                                        </ul>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_BoxLeftColumnPlaceHolder_Advertisement_AnnouncementDiv">
+                            </div>
+
+                        </div>
+                        <div id="belowTopics">
+                            <table>
+                                <tr>
+                                    <td id="whiteSpaceAdjustment">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="rightPageColumn" class="possibleBottom" style="float: left; position: relative; width: 642px; margin: 10px 10px 10px 5px; padding: 0px 0px 0px 0px;">
+
+
+
+
+
+                        <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_UpdatePanel4">
+
+
+                            <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_TheBackgroundEffect_mydiv" style="position: absolute; width: 100%; overflow: hidden;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td colspan="3" style="height: 8px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 14px;" valign="top">
+                                            <img src="../images/left-corner.jpg" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_TheBackgroundEffect_Img1" alt="left-corner" width="14" height="62" />
+                                        </td>
+                                        <td valign="top" class="topbg" style="width: 100%;"></td>
+                                        <td style="width: 14;" valign="top">
+                                            <img src="../images/right-corner.jpg" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_TheBackgroundEffect_Img2" alt="right-corner" width="14" height="62" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <table>
+                                <tr>
+                                    <td style="height: 27px;">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="headTxt headTxtEffect">
+                                Log In
+
+                            </div>
+                            <div class="afterHeadTxtEffect">
+
+                                <table class="borderless" style="width: 200px;">
+                                    <tr>
+                                        <td style="height: 13px;">
+                                            <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_panelLogin" onkeypress="javascript:return WebForm_FireDefaultButton(event, &#39;ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_LoginButton&#39;)">
+
+                                                <table cellspacing="0" cellpadding="1" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1" style="background-color: White; border-color: Black; border-width: 0px; border-style: None; border-collapse: collapse;">
+                                                    <tr>
+                                                        <td>
+                                                            <table cellpadding="0" style="color: Black; font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 16pt;">
+                                                                <tr>
+                                                                    <td align="right" valign="top" style="font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 16px; font-weight: bold;">
+                                                                        <label for="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_UserName">Username:</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input name="ctl00$ctl00$ctl00$AllContentBelowHeader$MainPageContentPlaceHolder$ContentMain$Login1$UserName" type="text" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_UserName" style="font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 16px;" /><span id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_UserNameRequired" title="Username is required." style="visibility: hidden;">*</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right" valign="top" style="font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 16px; font-weight: bold;">
+                                                                        <label for="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_Password">Password:</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input name="ctl00$ctl00$ctl00$AllContentBelowHeader$MainPageContentPlaceHolder$ContentMain$Login1$Password" type="password" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_Password" style="font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 16px;" /><span id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_PasswordRequired" title="Password is required." style="visibility: hidden;">*</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" style="font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 12px;">
+                                                                        <input id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_RememberMe" type="checkbox" name="ctl00$ctl00$ctl00$AllContentBelowHeader$MainPageContentPlaceHolder$ContentMain$Login1$RememberMe" /><label for="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_RememberMe">Remember me on this computer</label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right" colspan="2">
+                                                                        <input type="submit" name="ctl00$ctl00$ctl00$AllContentBelowHeader$MainPageContentPlaceHolder$ContentMain$Login1$LoginButton" value="Log In" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$ctl00$AllContentBelowHeader$MainPageContentPlaceHolder$ContentMain$Login1$LoginButton&quot;, &quot;&quot;, true, &quot;ctl00$ctl00$ctl00$AllContentBelowHeader$MainPageContentPlaceHolder$ContentMain$Login1&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_LoginButton" class="BtnBig" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <a id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_CreateUserLink" href="../NewUser" style="font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 14px;">Create a new user...</a><br />
+                                                                        <a id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_Login1_PasswordRecoveryLink" href="../ForgotPwd" style="font-family: Trebuchet MS,Arial,Helvetica,Sans-Serif; font-size: 14px;">Recover lost password...</a>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 20px;"></tr>
+                                    <tr>
+                                        <td style="font-size: 12px;">
+                                            <i>By using R8R, you agree to be bound by the <a href="../TermsOfService" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_TermsAndCond">Terms of Service</a>. </i>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                        </div>
+                        <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_UpdatePanel5">
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div id="belowBothColumns" style="clear: both;">
+                        <table>
+                            <tr>
+                                <td id="Td1" style="height: 5px;">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div id="belowMainPartOfPage" class="corporateInfo" style="position: relative;">
+                    R8R™ is a product of Collective Judgment LLC, a Virginia company. All ratings are opinions, not facts. Please see our <a href="../TermsOfService" id="ctl00_ctl00_ctl00_AllContentBelowHeader_terms">Terms of Service</a> and <a href="../Privacy" id="ctl00_ctl00_ctl00_AllContentBelowHeader_A1">Privacy Policy</a>.
+                    <div id="ctl00_ctl00_ctl00_AllContentBelowHeader_CorporateInfo_AnnouncementDiv">
+                    </div>
+                </div>
+
+                <div id="spaceAtVeryBottomOfPage" style="position: relative; height: 25px;">
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
