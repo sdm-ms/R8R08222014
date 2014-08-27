@@ -1,5 +1,0 @@
-D:\Day User\Vishu\Retero\R8R.Common\bin\Release\R8R.Common.dll
-D:\Day User\Vishu\Retero\R8R.Common\bin\Release\R8R.Common.pdb
-D:\Day User\Vishu\Retero\R8R.Common\obj\Release\R8R.Common.csprojResolveAssemblyReference.cache
-D:\Day User\Vishu\Retero\R8R.Common\obj\Release\R8R.Common.dll
-D:\Day User\Vishu\Retero\R8R.Common\obj\Release\R8R.Common.pdb
