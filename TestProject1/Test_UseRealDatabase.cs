@@ -1,0 +1,219 @@
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+
+#if !NUNIT
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Category = Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute;
+#else
+using NUnit.Framework;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using TestContext = System.Object;
+using TestProperty = NUnit.Framework.PropertyAttribute;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+#endif
+
+using FluentAssertions;
+using ClassLibrary1.Nonmodel_Code;
+using ClassLibrary1.Model;
+using ClassLibrary1.EFModel;
+using Microsoft.WindowsAzure.ServiceRuntime;
+using Microsoft.ServiceHosting.Tools.DevelopmentStorage;
+using Microsoft.ServiceHosting.Tools.DevelopmentFabric;
+using System.Threading;
+using System.Diagnostics;
+using System.Reflection; 
+
+namespace TestProject1
+{
+    public static class Test_UseRealDatabase
+    {
+        public static bool UseReal()
+        {
+            // Use true when you want all tests that can use a SQL Server database to do so
+            // Use false when you want all tests to use an in-memory database
+            bool returnVal = true;
+            GetIR8RDataContext.UseRealDatabase = returnVal;
+
+            if (returnVal && !RoleEnvironment.IsAvailable)
+                RealUserProfileCollection.SetProviderConnectionString(ConnectionString.GetUserProfileDatabaseConnectionString());
+
+            return returnVal;
+        }
+
+    }
+
+    [TestClass]
+    public class TestRealDatabase
+    {
+
+        [TestMethod]
+        [Category("IntegrationTest")]
+        //[DeploymentItem("TestData", "TestData")]
+        public void ResetAndCreateStandard()
+        {
+            if (!Test_UseRealDatabase.UseReal())
+                return;
+            R8RBuilder theBuilder = new R8RBuilder();
+            theBuilder.DeleteAndRebuild();
+            theBuilder.CreateStandard();
+            
+        }
+
+        [TestMethod]
+        [Category("Long")]
+        public void TestMemoryLeaks()
+        {
+            if (!Test_UseRealDatabase.UseReal())
+                return; // if we're not using the real database, then memory will certainly rise since we'll be storing more objects
+
+            // before switching to NUnit, this test was failing, with dramatic increases in memory, even though we were not getting the same result when running the same test through a console application. It's not clear why using MSTest should make a difference, particularly since we are using the same vstest execution engine with NUnit, but it appears to make a difference.
+
+            TestHelper theTestHelper;
+            R8RDataManipulation _dataManipulation;
+
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            TestableDateTime.UseFakeTimes();
+            TestableDateTime.SleepOrSkipTime(TimeSpan.FromDays(1).GetTotalWholeMilliseconds()); // go to next day
+            TrustTrackerTrustEveryone.AllAdjustmentFactorsAre1ForTestingPurposes = false;
+            CacheManagement.DisableCaching = true; 
+
+            theTestHelper = new TestHelper(true);
+            _dataManipulation = new R8RDataManipulation();
+            theTestHelper.CreateSimpleTestTable(true);
+            theTestHelper.CreateUsers(20); 
+
+            // When we had a memory leak:
+            // Creation of extra users is SUFFICIENT to create memory leaks. 
+            // What if we reset data contexts before creating the users (creating more than last time)? No difference
+            // What if we create a random user using a separate data context? That IS enough to trigger a memory leak. So, it's nothing in our data context or custom logic,
+            // except possibly in SubmitChanges. 
+            // If we manually add a user to the database, that does NOT trigger the memory leak. 
+            AddUser(); // again, this was enough to trigger memory leak.
+
+            // WeakReferenceTracker.Track = true; // If there is a memory leak, we can use WeakReferenceTracker to hold references to objects to see if they are disposed. It appears that a few objects are held (perhaps because of connection), but number does not go up.
+            int initialRepetitions = 20;
+
+            for (int r = 0; r < initialRepetitions; r++)
+                TestMemoryLeaks_Helper(theTestHelper, _dataManipulation, r == initialRepetitions - 1 || r % 5 == 0);
+            int repetitions = 100;
+            double avgMemory = 0;
+            GC.Collect();
+            long initMemory = GC.GetTotalMemory(false), lastMemory = initMemory;
+            double timesMemoryWentUp = 0.0;
+            double timesMemoryWentDown = 0.0;
+            for (int r = 0; r < repetitions; r++)
+            {
+                long newMemory = TestMemoryLeaks_Helper(theTestHelper, _dataManipulation, r == repetitions - 1 || r % 5 == 0);
+                if (newMemory > lastMemory)
+                    timesMemoryWentUp += 1.0;
+                else
+                    timesMemoryWentDown += 1.0;
+                double memoryIncreasesProportion = (timesMemoryWentUp/(timesMemoryWentUp + timesMemoryWentDown)); // this is usually about 0.7, nothing to worry about
+                avgMemory = (newMemory - initMemory) / (double)(r + 1);
+            }
+            avgMemory.Should().BeLessThan(10000.0); // it's hard to settle on a value here, since memory goes up and down even when using GC.Collect. With many repetitions, we can use a lower number.
+        }
+
+        private static long TestMemoryLeaks_Helper(TestHelper theTestHelper, R8RDataManipulation _dataManipulation, bool waitIdleTasks = false)
+        {
+            UserEditResponse theResponse = new UserEditResponse();
+            Guid ratingID = theTestHelper.ActionProcessor.DataContext.GetTable<Rating>().OrderBy(x => x.RatingGroup.WhenCreated).First().RatingID;
+            Guid user5 = theTestHelper.UserIds[5];
+            theTestHelper.ActionProcessor.UserRatingAdd(ratingID, 5.0M, user5, ref theResponse);
+            CacheManagement.ClearCache();
+            theTestHelper.FinishUserRatingAdd(_dataManipulation);
+            if (waitIdleTasks)
+                theTestHelper.WaitIdleTasks();
+            theTestHelper.ActionProcessor.DataContext.SubmitChanges();
+            theTestHelper.ActionProcessor.ResetDataContexts();
+
+            GC.Collect();
+            WeakReferenceTracker.CheckUncollected();
+            long newMemory = GC.GetTotalMemory(false);
+            return newMemory;
+        }
+
+        private static void AddUser()
+        {
+            // this was added to help diagnose a memory leak and is now used only for that purpose, in case it reappears
+            IR8RDataContext myDataContext = new R8REFDataContext();
+
+            User newUser =  new User {
+                UserID = Guid.NewGuid(),
+                Username = "ause" + new Random((int) DateTime.Now.Ticks).Next(0, 1000000).ToString(),
+                SuperUser = false,
+                WhenCreated = TestableDateTime.Now,
+                Status = (Byte)StatusOfObject.Active
+            };
+            myDataContext.GetTable<User>().InsertOnSubmit(newUser);
+            myDataContext.SubmitChanges();
+        }
+
+
+        [TestMethod]
+        [Category("UnitTest")]
+        public void TestConnectionString()
+        {
+            if (!Test_UseRealDatabase.UseReal())
+                return;
+
+            string connectionString = ConnectionString.GetR8RNormalizedDatabaseConnectionString();
+
+            // Provide the query string with a parameter placeholder. 
+            string queryString =
+                "SELECT TblTabWord from dbo.Tbls "
+                    + "WHERE Status = @myParam;";
+
+            // Specify the parameter value. 
+            int paramValue = 1;
+
+            // Create and open the connection in a using block. This 
+            // ensures that all resources will be closed and disposed 
+            // when the code exits. 
+            using (System.Data.SqlClient.SqlConnection connection =
+                new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                // Create the Command and Parameter objects.
+                System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@myParam", paramValue);
+
+                // Open the connection in a try/catch block.  
+                // Create and execute the DataReader, writing the result 
+                // set to the console window. 
+                try
+                {
+                    connection.Open();
+                    System.Data.SqlClient.SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Console.WriteLine("\t{0}",
+                            reader[0]);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Category("UnitTest")]
+        public void TestCanResetDatabaseAndAddItem()
+        {
+            GetIR8RDataContext.UseRealDatabase = Test_UseRealDatabase.UseReal();
+            var builder = new R8RBuilder();
+            builder.DeleteEverythingAndAddDatabaseStatus();
+            builder.Supporter.DataContext.SubmitChanges();
+            builder.Supporter.ResetDataContexts();
+            var entries = builder.Supporter.DataContext.GetTable<DatabaseStatus>().Where(x => true).OrderBy(x => x.DatabaseStatusID).ToList();
+            if (entries.Count() != 1)
+                throw new Exception("Number of entries in database was " + entries.Count());
+        }
+    }
+}

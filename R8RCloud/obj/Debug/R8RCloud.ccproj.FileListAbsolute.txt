@@ -1,0 +1,2 @@
+D:\Day User\Projects\R8R-master\R8RCloud\bin\Debug\ServiceConfiguration.cscfg
+D:\Day User\Projects\R8R-master\R8RCloud\bin\Debug\ServiceDefinition.csdef

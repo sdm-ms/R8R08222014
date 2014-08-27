@@ -1,0 +1,70 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" Inherits="Web" Codebehind="MasterPages/PageFrameAndTop.master.cs" %>
+
+<%@ Register TagPrefix="Uc" TagName="RoundedCornerPageTop" Src="~/CommonControl/RoundedCornerPageTop.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="CheckJS" Src="~/CommonControl/CheckJS.ascx" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%--<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA"/>
+--%><%--FOR RATEROO.COM<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAs-ZODfxj8f9LNfbR_FZHTRTfRkUUk3oX8DgAj5sWGEMsn5h-rhRi9M18xlAezldqPnUIGtD9BZ6w3g"/>
+--%>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1Main" runat="server">
+    <title></title>
+    <link href="~/StyleSheet.css?v=100" type="text/css" rel="stylesheet" />
+    <link href="~/js/ui/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link id="Link1" runat="server" rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
+    <link id="Link2" runat="server" rel="icon" href="~/favicon.ico" type="image/ico" />
+    <asp:ContentPlaceHolder ID="head1" runat="server">
+    </asp:ContentPlaceHolder>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+</head>
+<body class="bggradient">
+    <form id="form1" runat="server" method="post" defaultbutton="" enctype="multipart/form-data">
+    <asp:ScriptManager ID="ScriptManager2" EnableCdn="true" EnablePageMethods="true"
+        EnablePartialRendering="true" runat="server">
+        <%--topicsmenu and its dependencies are not working properly when placed in the composite script below, so we load them individually here. Note that jquery version is defined in global.asax file --%>
+                <Scripts>
+                    <asp:ScriptReference Name="jQuery" />
+                    <asp:ScriptReference Path="~/js/jquery.listen.js" />
+                    <asp:ScriptReference Path="~/js/jquery.tree.js" />
+                    <asp:ScriptReference Path="~/js/topicsmenu.js" />
+
+                </Scripts>
+    </asp:ScriptManager>
+    <asp:ScriptManagerProxy ID="ScriptManagerProxy1" runat="server">
+        <CompositeScript>
+            <Scripts>
+                <asp:ScriptReference Path="~/js/img-manage.js" />
+                <asp:ScriptReference Path="~/js/jquery.autocomplete.js" />
+                <asp:ScriptReference Path="~/js/jquery.dimensions-1.2.js" />
+                <asp:ScriptReference Path="~/js/jquery.hoverIntent.js" />
+                <asp:ScriptReference Path="~/js/jquery.cluetip.js" />
+                <asp:ScriptReference Path="~/js/jquery.form.js" />
+                <asp:ScriptReference Path="~/js/jquery.tools.min.js" />
+                <asp:ScriptReference Path="~/js/jquery.json-2.2.min.js" />
+                <asp:ScriptReference Path="~/js/jquery.timers-1.2.js" />
+                <asp:ScriptReference Path="~/js/jquery.contextMenu.js" />
+                <asp:ScriptReference Path="~/js/ui/ui.core.js" />
+                <asp:ScriptReference Path="~/js/ui/ui.slider.js" />
+                <asp:ScriptReference Path="~/js/jquery.bgiframe.min.js" />
+                <asp:ScriptReference Path="~/js/r8r-autocomplete.js" />
+                <asp:ScriptReference Path="~/js/jquery.scrollTo-min.js" />
+            </Scripts>
+        </CompositeScript>
+    </asp:ScriptManagerProxy>
+    <Uc:CheckJS ID="MyCheckJS" runat="server"></Uc:CheckJS>
+    <asp:Panel runat="server" ID="SurroundingAll" DefaultButton="">
+        <asp:Button ID="HiddenButton" runat="server" Enabled="true" Visible="true" Style="display: none;" />
+        <div id="allPageContent" style="width: 950px; margin: auto; position: relative;">
+            <div id="roundedCornerAtTop">
+                <Uc:RoundedCornerPageTop ID="MyPageTop" runat="server" />
+            </div>
+            <div id="allContentBelowHeaderDiv" class="allContentBelowPageTop">
+                <asp:ContentPlaceHolder ID="AllContentBelowHeader" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+    </asp:Panel>
+    </form>
+</body>
+</html>

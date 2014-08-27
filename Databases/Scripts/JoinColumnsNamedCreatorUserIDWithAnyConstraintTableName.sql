@@ -1,0 +1,7 @@
+-- Any Table.Column matched with a NULL lacks any constraint on it, and therefore requires a FK constraint
+SELECT C.TABLE_NAME, C.COLUMN_NAME, CU.TABLE_NAME
+FROM [RaterooDebug].[INFORMATION_SCHEMA].[COLUMNS] AS C LEFT JOIN 
+	[RaterooDebug].[INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] AS CU
+ON C.COLUMN_NAME = CU.COLUMN_NAME AND c.TABLE_NAME = CU.TABLE_NAME
+WHERE C.COLUMN_NAME = 'CreatorUserID'
+ORDER BY C.COLUMN_NAME

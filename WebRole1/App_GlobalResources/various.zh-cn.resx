@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActivationEmailBody" xml:space="preserve">
+    <value>请核实点击下面的链接您的论坛注册。</value>
+  </data>
+  <data name="ActivationEmailSubject" xml:space="preserve">
+    <value>激活你的会员资格。</value>
+  </data>
+  <data name="ErrorBigAvatar" xml:space="preserve">
+    <value>文件大小的头像是太大</value>
+  </data>
+  <data name="ErrorBigPictureDimensions" xml:space="preserve">
+    <value>图片尺寸过大</value>
+  </data>
+  <data name="ErrorIntegratedUserName" xml:space="preserve">
+    <value>用户不能改变他们的集成身份验证用户名时为ON</value>
+  </data>
+  <data name="ErrorNotPictureFile" xml:space="preserve">
+    <value>不是图片文件</value>
+  </data>
+  <data name="ErrorPasswordsDoNotMatch" xml:space="preserve">
+    <value>新密码不匹配。</value>
+  </data>
+  <data name="ErrorUserExists" xml:space="preserve">
+    <value>用户&lt;b&gt;（0）&lt;/b&gt;已经存在。</value>
+  </data>
+  <data name="ErrorWrongOldPassword" xml:space="preserve">
+    <value>旧密码是错误的。</value>
+  </data>
+  <data name="Guest" xml:space="preserve">
+    <value>客人</value>
+  </data>
+  <data name="LostPasswordEmailBody" xml:space="preserve">
+    <value>您或他人的（0）论坛密码恢复问。帐号：（1）输入新密码：（2）（3）</value>
+  </data>
+  <data name="NewPersonalEmailBody" xml:space="preserve">
+    <value>您有新的个人信息（拧）。要查看更新的访问</value>
+  </data>
+  <data name="NewPersonalSubject" xml:space="preserve">
+    <value>论坛通知。新的个人信息。</value>
+  </data>
+  <data name="NewThreadEmailBody" xml:space="preserve">
+    <value>你订阅了一个论坛，一个新的主题创建。要查看更新的访问</value>
+  </data>
+  <data name="NewThreadEmailSubject" xml:space="preserve">
+    <value>论坛通知。新主题的论坛。</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>密码更改</value>
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value>岗位</value>
+  </data>
+  <data name="ProfileSaved" xml:space="preserve">
+    <value>档案保存</value>
+  </data>
+  <data name="ThreadUpdatedEmailBody" xml:space="preserve">
+    <value>您申请加入讨论线程，它已被更新。要查看更新的访问</value>
+  </data>
+  <data name="ThreadUpdatedEmailSubject" xml:space="preserve">
+    <value>论坛通知。线程更新。</value>
+  </data>
+  <data name="WelcomeEmailBody" xml:space="preserve">
+    <value>欢迎您到论坛</value>
+  </data>
+  <data name="WelcomeEmailSubject" xml:space="preserve">
+    <value>欢迎来到我们的论坛。您的帐户已经被激活，请随时访问论坛：</value>
+  </data>
+  <data name="Wrote" xml:space="preserve">
+    <value>说</value>
+  </data>
+</root>

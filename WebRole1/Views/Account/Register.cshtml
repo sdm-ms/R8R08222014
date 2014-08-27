@@ -1,0 +1,104 @@
+﻿@model WebRole1.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<div class="headTxt headTxtEffect">
+    Create New Account
+</div>
+
+<div class="afterHeadTxtEffect">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    { 
+        if (ViewBag.CreatedUser != "")
+        {
+            <div class="form-group" style="color:green;font-weight:bold;">
+            @ViewBag.CreatedUser
+                </div>
+        }
+        if (ViewBag.ErrorMsg != "")
+        {
+             <div class="form-group" style="color:Red;font-weight:bold;">
+            @ViewBag.ErrorMsg
+                </div>
+        }
+        
+        <table cellspacing="0" cellpadding="0" style="color:Black;background-color:White;border-color:White;border-width:0px;border-style:None;font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:16px;width:100%;border-collapse:collapse;">
+            <tr style="height:100%;">
+                <td>
+                    <table cellspacing="0" cellpadding="0" style="height:100%;width:100%;border-collapse:collapse;">
+                        <tr>
+                            <td style="height:100%;width:100%;">
+                                    <table class="mainPresentationText">
+                                        <tr style="height: 50px;">
+                                            <td>
+                                                <label class="mainPresentationText">
+                                                    Username:
+                                                </label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.UserName, new { @class = "createUserInput" })
+                                                @Html.ValidationMessageFor(m => m.UserName)
+                                             </td>
+                                        </tr>
+                                        <tr style="height: 50px;">
+                                            <td>
+                                                <label class="mainPresentationText">
+                                                    Password:
+                                                </label>
+                                            </td>
+                                            <td>
+                                                @Html.PasswordFor(m => m.Password, new { @class = "createUserInput" })
+                                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "createUserError" })
+                                               </td>
+                                        </tr>
+                                        <tr style="height: 50px;">
+                                            <td>
+                                                <label class="mainPresentationText">
+                                                    Confirm Password:
+                                                </label>
+                                            </td>
+                                            <td>
+                                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "createUserInput" })
+                                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "createUserError" })
+                                              </td>
+                                        </tr>
+                                        <tr style="height: 50px;">
+                                            <td>
+                                                <label class="mainPresentationText">
+                                                    E-mail:
+                                                </label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.Email, new { @class = "createUserInput" })
+                                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "createUserError" })
+                                               </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="submit" class="BtnBig" value="Create Account" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <table cellspacing="5" cellpadding="5" style="height:100%;width:100%;">
+                        <tr align="right">
+                            <td align="right"><a id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_CreateUserWizard1___CustomNav0_StepNextButtonLinkButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$ctl00$AllContentBelowHeader$MainPageContentPlaceHolder$ContentMain$CreateUserWizard1$__CustomNav0$StepNextButtonLinkButton&quot;, &quot;&quot;, true, &quot;CreateUserWizard1&quot;, &quot;&quot;, false, true))"></a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,43 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/MasterPages/TwoCol.master" AutoEventWireup="false" Inherits="StandardPage" Codebehind="MasterPages/StandardPage.master.cs" %>
+<%@ Register TagPrefix="Uc" TagName="HeadTextBackgroundEffect" Src="~/CommonControl/HeadTextBackgroundEffect.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="Topics" Src="~/CommonControl/Topics.ascx" %>
+<%@ Register TagPrefix="Uc" TagName="InsertableContent" Src="~/CommonControl/InsertableContent.ascx" %>
+<asp:Content ID="previouscontent1" ContentPlaceHolderID="head2" Runat="Server">
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="previouscontent4" ContentPlaceHolderID="SupplementalScripts1" runat="server">
+    <asp:ScriptManagerProxy ID="MyScriptManagerProxy" runat="server">
+        <Scripts>
+            <%--<asp:ScriptReference Path="~/js/resize.js?v=100" />--%>
+        </Scripts>
+    </asp:ScriptManagerProxy>
+    <asp:ContentPlaceHolder ID="SupplementalScripts" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="previouscontent2" ContentPlaceHolderID="BoxLeftColumnPlaceHolder"
+    runat="Server">
+    <asp:ContentPlaceHolder ID="BoxTopLeftContentPlaceHolder" runat="server"></asp:ContentPlaceHolder>
+    <Uc:topics id="TopicsList" runat="server">
+    </Uc:topics>
+    <Uc:insertablecontent runat="server" id="Advertisement" />
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MainPageContentPlaceHolder" Runat="Server">
+    <Uc:HeadTextBackgroundEffect ID="TheBackgroundEffect" runat="server" />
+    <div class="headTxt headTxtEffect" >
+        <asp:ContentPlaceHolder ID="ContentHeadText" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div class="afterHeadTxtEffect">
+        <asp:ContentPlaceHolder ID="ContentMain" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+</asp:Content>
+<asp:Content ID="previouscontent3" ContentPlaceHolderID="ContentUpdatingEachPostBack1"
+    runat="Server">
+    <asp:ContentPlaceHolder ID="ContentUpdatingEachPostBack" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="previouscontent5" ContentPlaceHolderID="ContentOutsideOfUpdatePanel" runat="server">
+            <asp:ContentPlaceHolder ID="ContentOutsideOfUpdatePanel1" runat="server">
+            </asp:ContentPlaceHolder>
+</asp:Content>
+
