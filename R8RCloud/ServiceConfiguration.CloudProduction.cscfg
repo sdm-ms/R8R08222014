@@ -1,29 +1,42 @@
-﻿<?xml version="1.0"?>
-<ServiceConfiguration serviceName="R8R" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" schemaVersion="2014-01.2.3">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="R8R" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" schemaVersion="2014-01.2.3" osFamily="4" osVersion="*">
   <Role name="WebRole1">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="DiagnosticsConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="ApplicationServices" value="mustupdate" />
       <Setting name="R8RConnectionString" value="mustupdate" />
       <Setting name="Denorm0001ConnectionString" value="mustupdate" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ClientDiagnosticLevel" value="1" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="r8rrdc" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEDyRqA3FguiJSVSHXtFRJVUwDQYJKoZIhvcNAQEBBQAEggEAbXYtq8dVuLTrsdlEp5lonJu3i3QamgRTgVcLb9zMxrDkD+JbgF1SRxA5gZX0MouLAVMXxagRd95gSVML0526hCIuw9lHdZL6weaFSRsBph1lKj0/qU0YRTOWWI7XZwpbWL5ouB29qE0YLxY4K7c2ssVEnpAFZhHA0l2ckem4JwDQDN6k/ZXo7BUfIr+RV3mP6AG06OR71F9DEIuqeSHcc7FAuX7Pwt53rOu/HyX4zmtNrbuBbUg4zcbmwModJB6PJlF0/xzThwyfNm+OINPyAB5lih2TuV/Blhb6uSmAn6ya9jtvZDRtbAvAW4R+2t/nV4qADQBeCy//rjyysyhPFTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECIXfU0X8M3ffgBAU7nkvsCrgCxfxznXy1HC4" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2015-08-28T23:59:59.0000000-04:00" />
     </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="7B219715CF6D4D45E2B465DD6C3EFD2B07928EAD" thumbprintAlgorithm="sha1" />
+    </Certificates>
   </Role>
   <Role name="WorkerRole1">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="DiagnosticsConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
       <Setting name="ApplicationServices" value="mustupdate" />
       <Setting name="R8RConnectionString" value="mustupdate" />
       <Setting name="Denorm0001ConnectionString" value="mustupdate" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ClientDiagnosticLevel" value="1" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="r8rrdc" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEDyRqA3FguiJSVSHXtFRJVUwDQYJKoZIhvcNAQEBBQAEggEAbXYtq8dVuLTrsdlEp5lonJu3i3QamgRTgVcLb9zMxrDkD+JbgF1SRxA5gZX0MouLAVMXxagRd95gSVML0526hCIuw9lHdZL6weaFSRsBph1lKj0/qU0YRTOWWI7XZwpbWL5ouB29qE0YLxY4K7c2ssVEnpAFZhHA0l2ckem4JwDQDN6k/ZXo7BUfIr+RV3mP6AG06OR71F9DEIuqeSHcc7FAuX7Pwt53rOu/HyX4zmtNrbuBbUg4zcbmwModJB6PJlF0/xzThwyfNm+OINPyAB5lih2TuV/Blhb6uSmAn6ya9jtvZDRtbAvAW4R+2t/nV4qADQBeCy//rjyysyhPFTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECIXfU0X8M3ffgBAU7nkvsCrgCxfxznXy1HC4" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2015-08-28T23:59:59.0000000-04:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
     </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="7B219715CF6D4D45E2B465DD6C3EFD2B07928EAD" thumbprintAlgorithm="sha1" />
+    </Certificates>
   </Role>
 </ServiceConfiguration>
