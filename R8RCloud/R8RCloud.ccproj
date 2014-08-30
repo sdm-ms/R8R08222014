@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <PublishProfile Include="Profiles\R8Rtesting.azurePubxml" />
+    <PublishProfile Include="Profiles\R8Rproduction.azurePubxml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="WorkerRole1Content\diagnostics.wadcfg">
