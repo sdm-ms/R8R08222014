@@ -36,7 +36,7 @@ namespace WorkerRole1
             // Set the maximum number of concurrent connections 
             ServicePointManager.DefaultConnectionLimit = 12;
 
-            DiagnosticMonitor.Start("DiagnosticsConnectionString");
+            DiagnosticMonitor.Start("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString");
 
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.

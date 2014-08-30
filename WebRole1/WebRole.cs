@@ -20,7 +20,7 @@ namespace WebRole1
 
             new ClassLibrary1.Nonmodel_Code.AzureStartupDiagnostic();
 
-            DiagnosticMonitor.Start("DiagnosticsConnectionString");
+            DiagnosticMonitor.Start("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString");
 
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
