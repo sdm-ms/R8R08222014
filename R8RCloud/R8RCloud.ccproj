@@ -63,7 +63,7 @@
     <Folder Include="WorkerRole1Content\" />
   </ItemGroup>
   <ItemGroup>
-    <PublishProfile Include="Profiles\RaterooStaging.azurePubxml" />
+    <PublishProfile Include="Profiles\R8Rtesting.azurePubxml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="WorkerRole1Content\diagnostics.wadcfg">

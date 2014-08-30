@@ -178,70 +178,6 @@
     <Content Include="Admin\Tester.aspx" />
     <Content Include="bin\AjaxControlToolkit.dll" />
     <Content Include="bin\aspnetforum.dll" />
-    <Content Include="bin\Forum\active.aspx" />
-    <Content Include="bin\Forum\admin.aspx" />
-    <Content Include="bin\Forum\Admin.vb" />
-    <Content Include="bin\Forum\avatars.aspx" />
-    <Content Include="bin\Forum\blogs.aspx" />
-    <Content Include="bin\Forum\blogslist.aspx" />
-    <Content Include="bin\Forum\default.aspx" />
-    <Content Include="bin\Forum\deletecategory.aspx" />
-    <Content Include="bin\Forum\deleteforum.aspx" />
-    <Content Include="bin\Forum\deletepage.aspx" />
-    <Content Include="bin\Forum\deletereply.aspx" />
-    <Content Include="bin\Forum\deletetopic.aspx" />
-    <Content Include="bin\Forum\DMG.vb" />
-    <Content Include="bin\Forum\DMGAdminCode.html" />
-    <Content Include="bin\Forum\DMGCode.html" />
-    <Content Include="bin\Forum\DMGHtmlForms.html" />
-    <Content Include="bin\Forum\DMGMainMenu.html" />
-    <Content Include="bin\Forum\editcategory.aspx" />
-    <Content Include="bin\Forum\editforum.aspx" />
-    <Content Include="bin\Forum\editpageform.aspx" />
-    <Content Include="bin\Forum\editpages.aspx" />
-    <Content Include="bin\Forum\editprofile.aspx" />
-    <Content Include="bin\Forum\editreply.aspx" />
-    <Content Include="bin\Forum\edittopic.aspx" />
-    <Content Include="bin\Forum\forumhome.aspx" />
-    <Content Include="bin\Forum\forums.aspx" />
-    <Content Include="bin\Forum\Forums.vb" />
-    <Content Include="bin\Forum\Global.vb" />
-    <Content Include="bin\Forum\htmlform.aspx" />
-    <Content Include="bin\Forum\htmlformresults.aspx" />
-    <Content Include="bin\Forum\inc_footer.ascx" />
-    <Content Include="bin\Forum\inc_header.ascx" />
-    <Content Include="bin\Forum\inc_login.ascx" />
-    <Content Include="bin\Forum\inc_settings.ascx" />
-    <Content Include="bin\Forum\login.aspx" />
-    <Content Include="bin\Forum\members.aspx" />
-    <Content Include="bin\Forum\Members.vb" />
-    <Content Include="bin\Forum\newcategory.aspx" />
-    <Content Include="bin\Forum\newforum.aspx" />
-    <Content Include="bin\Forum\newpage.aspx" />
-    <Content Include="bin\Forum\newreply.aspx" />
-    <Content Include="bin\Forum\newtopic.aspx" />
-    <Content Include="bin\Forum\newtopic_selectforum.aspx" />
-    <Content Include="bin\Forum\page.aspx" />
-    <Content Include="bin\Forum\pagenewgallery.aspx" />
-    <Content Include="bin\Forum\pm_inbox.aspx" />
-    <Content Include="bin\Forum\pm_selectuser.aspx" />
-    <Content Include="bin\Forum\pm_send.aspx" />
-    <Content Include="bin\Forum\pm_topic.aspx" />
-    <Content Include="bin\Forum\profile.aspx" />
-    <Content Include="bin\Forum\README.html" />
-    <Content Include="bin\Forum\register.aspx" />
-    <Content Include="bin\Forum\rssfeed.aspx" />
-    <Content Include="bin\Forum\search.aspx" />
-    <Content Include="bin\Forum\sendmail.aspx" />
-    <Content Include="bin\Forum\Setup.vb" />
-    <Content Include="bin\Forum\showphoto.aspx" />
-    <Content Include="bin\Forum\subscribe.aspx" />
-    <Content Include="bin\Forum\topics.aspx" />
-    <Content Include="bin\Forum\Topics.vb" />
-    <Content Include="bin\Forum\upload.aspx" />
-    <Content Include="bin\Forum\Upload.vb" />
-    <Content Include="bin\Forum\usercp.aspx" />
-    <Content Include="bin\Forum\validate.aspx" />
     <Content Include="bin\GMapGeocoder.dll" />
     <Content Include="bin\GMaps.dll" />
     <Content Include="bin\Microsoft.Web.GeneratedImage.dll" />
@@ -943,33 +879,6 @@
     <None Include="Microsoft.WindowsAzure.Caching\PerformanceCounters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.ar-SA1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.da-DK1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.de-DE1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.de1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.es-ES1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.es1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.fr-FR1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.fr1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.he-IL1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.he1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.hi-IN1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.it-IT1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.it1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.nb-NO1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.nl-NL1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.nl1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.pl-PL1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.pl1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.pt-pt1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.ru-RU1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.sv-SE1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.sv1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.tr-TR1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.tr1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various.zh-cn1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\App_GlobalResources.various1.designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\Model.R8R1.designer.cs.dll" />
     <Content Include="WebForms\R8RDownload.aspx" />
     <Content Include="WebService.asmx" />
     <Content Include="sourcedata\actors.xml" />
@@ -1896,6 +1805,7 @@
     <Folder Include="Forums\App_LocalResources\sv\" />
     <Folder Include="Forums\App_LocalResources\tr\" />
     <Folder Include="images\spritesource\" />
+    <Folder Include="obj\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -1906,10 +1816,8 @@
     <Content Include="Forums\addpostajax.ashx" />
     <Content Include="Forums\ajaxutils.ashx" />
     <Content Include="Forums\AspNetForumMaster.Master" />
-    <Content Include="Forums\AspNetForumMasterR8RTheme.Master" />
     <Content Include="Forums\captchaimage.ashx" />
     <Content Include="Forums\getattachment.ashx" />
-    <None Include="bin\Forum\Compile.bat" />
     <None Include="Forums\images\rss20.gif.bak" />
     <Content Include="Forums\imgthumbnail.ashx" />
     <Content Include="Forums\IPhone.Master" />
@@ -1928,7 +1836,6 @@
     <None Include="Microsoft.WindowsAzure.Caching\ClientPerfCountersInstaller.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
