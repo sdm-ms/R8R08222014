@@ -33,7 +33,8 @@ namespace ClassLibrary1.Model
         R8RDownload,
         Rules,
         SearchResults,
-        TermsOfService
+        TermsOfService,
+        AccountController
     }
 
     public class RoutingMap
@@ -41,7 +42,9 @@ namespace ClassLibrary1.Model
         public RouteID RouteID;
         public string Name;
         public string Pattern;
-        public string PhysicalFile;
+        public bool IsWebForms = true;
+        public string PhysicalFileForWebForms;
+        public object DefaultsForMVC;
         public IRouteConstraint Constraint;
         public Func<RouteData, IR8RDataContext, RoutingInfo> Incoming;
         public RoutingMap(RouteID routeID, string physicalFile) // for a routing with no routedata
@@ -49,15 +52,25 @@ namespace ClassLibrary1.Model
             RouteID = routeID;
             Name = routeID.ToString();
             Pattern = routeID.ToString();
-            PhysicalFile = physicalFile;
+            PhysicalFileForWebForms = physicalFile;
             Incoming = Routing.IncomingNoParameters;
         }
+
+        public RoutingMap(RouteID routeID, string name, string pattern, object mvcDefaults) // for a basic MVC controller routing
+        {
+            IsWebForms = false;
+            RouteID = routeID;
+            Name = name;
+            Pattern = pattern;
+            DefaultsForMVC = mvcDefaults;
+        }
+
         public RoutingMap(RouteID routeID, string name, string pattern, string physicalFile, IRouteConstraint theConstraint, Func<RouteData, IR8RDataContext, RoutingInfo> incomingFunction)
         {
             RouteID = routeID;
             Name = name;
             Pattern = pattern;
-            PhysicalFile = physicalFile;
+            PhysicalFileForWebForms = physicalFile;
             Constraint = theConstraint;
             Incoming = incomingFunction;
         }
@@ -438,6 +451,7 @@ namespace ClassLibrary1.Model
     {
         public static List<RoutingMap> routingMaps = new List<RoutingMap> {
         new RoutingMap(RouteID.HomePage, "HomePage", "", "WebForms/HomePage.aspx", null, IncomingNoParameters),
+        new RoutingMap(RouteID.AccountController, "Account", "account/{action}", new { controller = "Account", action = "Login" }), 
         new RoutingMap(RouteID.ChangePwd, "WebForms/ChangePwd.aspx"),
         new RoutingMap(RouteID.Error, "WebForms/Error.aspx"),
         new RoutingMap(RouteID.ForgotPwd, "WebForms/ForgotPwd.aspx"),
@@ -484,15 +498,16 @@ namespace ClassLibrary1.Model
             routes.Ignore("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.Ignore("{Forums*}", new { Forums = @"Forums(/.*)?" });
 
-            Route myRoute = new Route("{controller}/{action}", new MvcRouteHandler());
-            routes.Add("NewRoute", myRoute);
-
             foreach (RoutingMap theRoutingMap in routingMaps)
             {
                 RouteValueDictionary constraints = new RouteValueDictionary();
                 if (theRoutingMap.Constraint != null)
                     constraints.Add("hierarchy", theRoutingMap.Constraint);
-                Route route = routes.MapPageRoute(theRoutingMap.Name, theRoutingMap.Pattern, "~/" + theRoutingMap.PhysicalFile, false, null, constraints);
+                Route route;
+                if (theRoutingMap.IsWebForms)
+                    route = routes.MapPageRoute(theRoutingMap.Name, theRoutingMap.Pattern, "~/" + theRoutingMap.PhysicalFileForWebForms, false, null, constraints);
+                else
+                    route = routes.MapRoute(theRoutingMap.Name, theRoutingMap.Pattern, theRoutingMap.DefaultsForMVC);
                 /* store the route name in the DataTokens of the route so that we can access it later */
                 route.DataTokens = new RouteValueDictionary();
                 route.DataTokens.Add("RouteName", theRoutingMap.Name);
