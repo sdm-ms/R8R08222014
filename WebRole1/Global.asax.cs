@@ -55,6 +55,12 @@ namespace WebRole1
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
+            AreaRegistration.RegisterAllAreas();
+
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
