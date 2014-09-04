@@ -43,14 +43,6 @@
     <ServiceConfiguration Include="ServiceConfiguration.CloudTesting.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MvcWebRole1\MvcWebRole1.csproj">
-      <Name>MvcWebRole1</Name>
-      <Project>{56199a84-e9cb-4c10-a2e9-1c643b46e373}</Project>
-      <Private>True</Private>
-      <RoleType>Web</RoleType>
-      <RoleName>MvcWebRole1</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
-    </ProjectReference>
     <ProjectReference Include="..\WebRole1\WebRole1.csproj">
       <Name>WebRole1</Name>
       <Project>{bcc42af5-e05c-41c9-88e1-2a59bc11c6e2}</Project>
@@ -68,7 +60,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MvcWebRole1Content\" />
     <Folder Include="Profiles" />
     <Folder Include="WorkerRole1Content\" />
   </ItemGroup>
@@ -76,9 +67,6 @@
     <PublishProfile Include="Profiles\R8Rtesting.azurePubxml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MvcWebRole1Content\diagnostics.wadcfg">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="WorkerRole1Content\diagnostics.wadcfg">
       <SubType>Content</SubType>
     </Content>
