@@ -34,7 +34,7 @@ namespace WebRole1
                 return;
             // DEBUG: Add breakpoint here to see whether the route is being matched.
             // Comment out the following line when not needed for debugging routes.
-            var routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(context)); 
+            var routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(context));
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -55,6 +55,12 @@ namespace WebRole1
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
+            AreaRegistration.RegisterAllAreas();
+
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -98,9 +104,9 @@ namespace WebRole1
 
         void Session_End(object sender, EventArgs e)
         {
-            // Code that runs when a session ends. 
+            // Code that runs when a session ends.
             // Note: The Session_End event is raised only when the sessionstate mode
-            // is set to InProc in the Web.config file. If session mode is set to StateServer 
+            // is set to InProc in the Web.config file. If session mode is set to StateServer
             // or SQLServer, the event is not raised.
 
         }
@@ -132,3 +138,4 @@ namespace WebRole1
 
     }
 }
+
