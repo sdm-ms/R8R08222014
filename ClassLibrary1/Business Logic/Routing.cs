@@ -451,7 +451,8 @@ namespace ClassLibrary1.Model
     {
         public static List<RoutingMap> routingMaps = new List<RoutingMap> {
         new RoutingMap(RouteID.HomePage, "HomePage", "", "WebForms/HomePage.aspx", null, IncomingNoParameters),
-        new RoutingMap(RouteID.AccountController, "Account", "account/{action}", new { controller = "Account", action = "Login" }), 
+        // DEBUG new RoutingMap(RouteID.AccountController, "Account", "Account/{action}", new { controller = "Account", action = "Login" }), 
+        // DEBUG new RoutingMap(RouteID.AccountController, "Account2", "DEBUG", new { controller = "Account", action = "Register" }), 
         new RoutingMap(RouteID.ChangePwd, "WebForms/ChangePwd.aspx"),
         new RoutingMap(RouteID.Error, "WebForms/Error.aspx"),
         new RoutingMap(RouteID.ForgotPwd, "WebForms/ForgotPwd.aspx"),
@@ -497,6 +498,10 @@ namespace ClassLibrary1.Model
             routes.Ignore("{*allpng}", new { allpng = @".*\.png(/.*)?" });
             routes.Ignore("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.Ignore("{Forums*}", new { Forums = @"Forums(/.*)?" });
+
+            // DEBUG -- this is not how we should handle it
+            Route myRoute = new Route("{controller}/{action}", new MvcRouteHandler());
+            routes.Add("NewRoute", myRoute);
 
             foreach (RoutingMap theRoutingMap in routingMaps)
             {

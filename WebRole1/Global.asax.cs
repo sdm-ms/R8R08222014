@@ -20,6 +20,20 @@ namespace WebRole1
 {
     public class Global : System.Web.HttpApplication
     {
+        public override void Init()
+        {
+            base.Init();
+            this.AcquireRequestState += showRouteValues;
+        }
+
+
+        protected void showRouteValues(object sender, EventArgs e)
+        {
+            var context = HttpContext.Current;
+            if (context == null)
+                return;
+            var routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(context)); 
+        }
 
         public static void RegisterRoutes(RouteCollection routes)
         {
