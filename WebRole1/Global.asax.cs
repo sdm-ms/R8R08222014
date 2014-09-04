@@ -32,6 +32,8 @@ namespace WebRole1
             var context = HttpContext.Current;
             if (context == null)
                 return;
+            // DEBUG: Add breakpoint here to see whether the route is being matched.
+            // Comment out the following line when not needed for debugging routes.
             var routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(context)); 
         }
 
