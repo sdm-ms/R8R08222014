@@ -75,6 +75,15 @@ public partial class CommonControl_RoundedCornerPageTop {
     protected global::System.Web.UI.WebControls.ImageButton DoSearch;
     
     /// <summary>
+    /// UcLogin control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::LoginInfoStatus UcLogin;
+    
+    /// <summary>
     /// menuButton5 control.
     /// </summary>
     /// <remarks>

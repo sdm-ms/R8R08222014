@@ -37,6 +37,7 @@
   <ItemGroup>
     <ServiceConfiguration Include="ServiceConfiguration.CloudProduction.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.Local-Abramowicz.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.Local-Vishu.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.ShardDev.cscfg" />
     <ServiceDefinition Include="ServiceDefinition.csdef" />
     <ServiceConfiguration Include="ServiceConfiguration.CloudTesting.cscfg" />
@@ -64,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <PublishProfile Include="Profiles\R8Rtesting.azurePubxml" />
-    <PublishProfile Include="Profiles\R8Rproduction.azurePubxml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="WorkerRole1Content\diagnostics.wadcfg">

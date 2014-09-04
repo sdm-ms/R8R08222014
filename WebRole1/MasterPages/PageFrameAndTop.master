@@ -40,6 +40,7 @@
                 <asp:ScriptReference Path="~/js/jquery.hoverIntent.js" />
                 <asp:ScriptReference Path="~/js/jquery.cluetip.js" />
                 <asp:ScriptReference Path="~/js/jquery.form.js" />
+                <asp:ScriptReference Path="~/js/jquery.tools.min.js" />
                 <asp:ScriptReference Path="~/js/jquery.json-2.2.min.js" />
                 <asp:ScriptReference Path="~/js/jquery.timers-1.2.js" />
                 <asp:ScriptReference Path="~/js/jquery.contextMenu.js" />

@@ -21,26 +21,43 @@ public partial class LoginInfoStatus : System.Web.UI.UserControl
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        UserAccessInfo accessInfo = null;
-        if (Request.IsAuthenticated)
+       // UserAccessInfo accessInfo = null;
+        //if (Request.IsAuthenticated)
+        //{
+        //    LoginLink.Visible = false;
+        //    CreateNewUserLink.Visible = false;
+        //    loginSep2.Visible = false;
+        //    accessInfo = R8RDataManipulation.GetUserAccessInfoForCurrentUser();
+
+        //}
+        //else
+        //{
+        //    R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
+        //    LoginLink.NavigateUrl = Routing.Outgoing(new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, theDataAccessModule.DataContext)));
+        //    LogoutLink.Visible = false;
+        //    CreateNewUserLink.Visible = true;
+        //    loginSep2.Visible = true;
+        //    accessInfo = new UserAccessInfo() { userName = "", passwordForWebService = "" };
+        //}
+
+        if (Session["name"] != null)
         {
             LoginLink.Visible = false;
             CreateNewUserLink.Visible = false;
             loginSep2.Visible = false;
-            accessInfo = R8RDataManipulation.GetUserAccessInfoForCurrentUser();
-            
+            loggedInUser.Visible = true;
+            loggedInUser.Text = "Welcome, " + Session["name"] + "! | ";
+            //accessInfo.userName = Convert.ToString(Session["name"]);
+          //  accessInfo.passwordForWebService = Convert.ToString(Session["name"]);
         }
-        else
-        {
-            R8RDataManipulation theDataAccessModule = new R8RDataManipulation();
-            LoginLink.NavigateUrl = Routing.Outgoing(new RoutingInfoLoginRedirect(Routing.OutgoingToCurrentRoute(Page.RouteData, theDataAccessModule.DataContext)));
+        else{
             LogoutLink.Visible = false;
             CreateNewUserLink.Visible = true;
             loginSep2.Visible = true;
-            accessInfo = new UserAccessInfo() { userName = "", passwordForWebService = "" };
+            loggedInUser.Visible = false;
+          //  accessInfo = new UserAccessInfo() { userName = "", passwordForWebService = "" };
         }
-
-        TheUserAccessInfo.Text = String.Format("<div id=\"userAccessInfo\" style=\"display: none;\"><div id=\"userName\">{0}</div><div id=\"passwordForWebService\">{1}</div></div>", accessInfo.userName, accessInfo.passwordForWebService); 
+       // TheUserAccessInfo.Text = String.Format("<div id=\"userAccessInfo\" style=\"display: none;\"><div id=\"userName\">{0}</div><div id=\"passwordForWebService\">{1}</div></div>", accessInfo.userName, accessInfo.passwordForWebService); 
 
     }
    

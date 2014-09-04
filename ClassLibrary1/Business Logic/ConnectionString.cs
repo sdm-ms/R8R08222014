@@ -22,7 +22,7 @@ namespace ClassLibrary1.Model
         {
             CheckHardCodedAppropriate();
 
-            const string hardCoded = @"Data Source=PC2012;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=300";
+            const string hardCoded = @"Data Source=SDDMS-82\SQLEXPRESS;Initial Catalog=R8R;Integrated Security=False;User ID=sa;Password=testtest;Connect Timeout=300";
             return hardCoded;
         }
 
@@ -36,7 +36,7 @@ namespace ClassLibrary1.Model
         {
             CheckHardCodedAppropriate();
 
-            const string hardCoded = @"Data Source=PC2012;Initial Catalog=Norm0006;Integrated Security=True;Connect Timeout=300";
+            const string hardCoded = @"Data Source=SDDMS-82\SQLEXPRESS;Initial Catalog=R8R;Integrated Security=False;User ID=sa;Password=testtest;Connect Timeout=300";
             return hardCoded;
         }
 

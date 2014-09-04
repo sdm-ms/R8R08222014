@@ -13,6 +13,8 @@ using System.Web.Configuration;
 using System.Configuration;
 using System.Reflection;
 using System.Web.Profile;
+using System.Web.Mvc;
+using System.Web.Optimization;
 
 namespace WebRole1
 {
@@ -38,7 +40,8 @@ namespace WebRole1
         {
             // Code that runs on application startup
             RegisterRoutes(RouteTable.Routes);
-
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             // Set the connection strings for user profile information from the azure setting
             //var configuration = WebConfigurationManager.OpenWebConfiguration("~");
             //var section = (ConnectionStringsSection)configuration.GetSection("connectionStrings");

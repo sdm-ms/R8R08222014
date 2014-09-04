@@ -47,8 +47,8 @@
         </asp:Panel>
     </div>
     <div class="pageTopWelcomeArea">
-        <% Response.WriteSubstitution(new HttpResponseSubstitutionCallback(ClassLibrary1.Model.CacheSubstitution.LoginInfoStatus)); %>
-        <%--<Uc:LoginInfoStatus runat="server" ID="UcLogin" />--%>
+       <%-- <% Response.WriteSubstitution(new HttpResponseSubstitutionCallback(ClassLibrary1.Model.CacheSubstitution.LoginInfoStatus)); %>--%>
+        <Uc:LoginInfoStatus runat="server" ID="UcLogin" />
     </div>
     <div class="pageTopMenuLinks">
         <table>

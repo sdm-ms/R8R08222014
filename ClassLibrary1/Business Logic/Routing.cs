@@ -9,6 +9,7 @@ using MoreStrings;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 using ClassLibrary1.Nonmodel_Code;
+using System.Web.Mvc;
 
 namespace ClassLibrary1.Model
 {
@@ -482,6 +483,10 @@ namespace ClassLibrary1.Model
             routes.Ignore("{*allpng}", new { allpng = @".*\.png(/.*)?" });
             routes.Ignore("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.Ignore("{Forums*}", new { Forums = @"Forums(/.*)?" });
+
+            Route myRoute = new Route("{controller}/{action}", new MvcRouteHandler());
+            routes.Add("NewRoute", myRoute);
+
             foreach (RoutingMap theRoutingMap in routingMaps)
             {
                 RouteValueDictionary constraints = new RouteValueDictionary();

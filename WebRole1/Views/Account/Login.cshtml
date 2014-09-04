@@ -1,0 +1,91 @@
+﻿@model WebRole1.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<div class="headTxt headTxtEffect">
+    Log In
+</div>
+
+<div class="afterHeadTxtEffect">
+    @if (ViewBag.InvalidUser != "")
+    {
+    <div class="form-group" style="color:red;font-weight:bold;">
+        @ViewBag.InvalidUser
+    </div>
+    }
+    <table class="borderless" style="width:200px;">
+        <tr>
+            <td style="height:13px;">
+                <div>
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        <table cellspacing="0" cellpadding="1" style="background-color:White;border-color:Black;border-width:0px;border-style:None;border-collapse:collapse;">
+                            <tr>
+                                <td>
+
+                                    <table cellpadding="0" style="color:Black;font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:16pt;">
+
+                                        <tr>
+                                            <td align="right" valign="top" style="font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:16px;font-weight:bold;">
+                                                <label>Username:</label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.UserName, new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:16px;" })
+
+                                            </td>
+                                            <td>@Html.ValidationMessageFor(m => m.UserName)</td>
+                                        </tr>
+                                        <tr><td colspan="3">&nbsp;</td></tr>
+                                        <tr>
+                                            <td align="right" valign="top" style="font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:16px;font-weight:bold;">
+                                                <label>Password:</label>
+                                            </td>
+                                            <td>
+                                                @Html.PasswordFor(m => m.Password, new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:16px;" })
+                                            </td>
+                                            <td>@Html.ValidationMessageFor(m => m.Password)</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:12px;">
+                                                @Html.CheckBoxFor(m => m.RememberMe)
+                                                <label>Remember me on this computer</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <input type="submit" value="Log In" class="BtnBig" />
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        </table>
+                    }
+                </div>
+            </td>
+        </tr>
+        <tr><td>@Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })</td></tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Create a new user...", "Register", "", new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:14px;" })
+                <br />
+                @Html.ActionLink("Recover lost password...", "ResetPassword", "", new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:14px;" })
+            </td>
+        </tr>
+        <tr style="height:20px;"></tr>
+        <tr>
+            <td style="font-size:12px;">
+                <i>By using R8R, you agree to be bound by the <a href="../TermsOfService" id="ctl00_ctl00_ctl00_AllContentBelowHeader_MainPageContentPlaceHolder_ContentMain_TermsAndCond">Terms of Service</a>. </i>
+            </td>
+        </tr>
+    </table>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MasterPages/SlideshowPage.master" AutoEventWireup="true"
     Inherits="_Default" Title="R8R" Codebehind="HomePage.aspx.cs" %>
-<%@ OutputCache Duration="1200" VaryByParam="none" VaryByCustom="noPostbackDefault" %>
+<%--<%@ OutputCache Duration="1200" VaryByParam="none" VaryByCustom="noPostbackDefault" %>--%>
 <%@ Register Src="~/CommonControl/Slideshow.ascx" TagName="Slideshow" TagPrefix="Uc" %>
 <asp:Content ID="Content5" ContentPlaceHolderID="ContentHeadTextAndMain" runat="Server">
     <Uc:Slideshow ID="MainSlideshow" runat="server" />
