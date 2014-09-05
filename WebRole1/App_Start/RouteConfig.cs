@@ -12,7 +12,7 @@ namespace WebRole1
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            Routing.RegisterRoutes(routes);
+           // Routing.RegisterRoutes(routes);
         }
     }
 }

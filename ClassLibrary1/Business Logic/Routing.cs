@@ -34,7 +34,14 @@ namespace ClassLibrary1.Model
         Rules,
         SearchResults,
         TermsOfService,
-        AccountController
+        AccountLogin,
+        AccountRegister,
+        AccountLogOff,
+        AccountResetPassword,
+        AccountChangePassword,
+        AccountExternalLogin,
+        AccountExternalLoginConfirmation,
+        AccountExternalLoginCallback
     }
 
     public class RoutingMap
@@ -56,7 +63,7 @@ namespace ClassLibrary1.Model
             Incoming = Routing.IncomingNoParameters;
         }
 
-        public RoutingMap(RouteID routeID, string name, string pattern, object mvcDefaults) // for a basic MVC controller routing
+        public RoutingMap(RouteID routeID, string name, string pattern, object mvcDefaults) // for a basic MVC controller routing 
         {
             IsWebForms = false;
             RouteID = routeID;
@@ -451,7 +458,14 @@ namespace ClassLibrary1.Model
     {
         public static List<RoutingMap> routingMaps = new List<RoutingMap> {
         new RoutingMap(RouteID.HomePage, "HomePage", "", "WebForms/HomePage.aspx", null, IncomingNoParameters),
-        new RoutingMap(RouteID.AccountController, "Account", "Account/{action}", new { controller = "Account", action = "Login" }), 
+        new RoutingMap(RouteID.AccountLogin,"AccountLogin", "AccountLogin", new { controller = "Account", action = "Login"}), 
+        new RoutingMap(RouteID.AccountRegister, "AccountRegister", "AccountRegister", new { controller = "Account", action = "Register" }), 
+        new RoutingMap(RouteID.AccountLogOff, "AccountLogOff", "AccountLogOff", new { controller = "Account", action = "LogOff" }), 
+        new RoutingMap(RouteID.AccountResetPassword, "AccountResetPassword", "AccountResetPassword", new { controller = "Account", action = "ResetPassword" }),
+        new RoutingMap(RouteID.AccountChangePassword, "AccountChangePassword", "AccountChangePassword", new { controller = "Account", action = "ChangePassword" }),
+        new RoutingMap(RouteID.AccountExternalLogin, "AccountExternalLogin", "AccountExternalLogin", new { controller = "Account", action = "ExternalLogin" }),
+        new RoutingMap(RouteID.AccountExternalLoginConfirmation, "AccountExternalLoginConfirmation", "AccountExternalLoginConfirmation", new { controller = "Account", action = "ExternalLoginConfirmation" }),
+        new RoutingMap(RouteID.AccountExternalLoginCallback, "AccountExternalLoginCallback", "AccountExternalLoginCallback", new { controller = "Account", action = "ExternalLoginCallback" }),
         new RoutingMap(RouteID.ChangePwd, "WebForms/ChangePwd.aspx"),
         new RoutingMap(RouteID.Error, "WebForms/Error.aspx"),
         new RoutingMap(RouteID.ForgotPwd, "WebForms/ForgotPwd.aspx"),
@@ -507,7 +521,7 @@ namespace ClassLibrary1.Model
                 if (theRoutingMap.IsWebForms)
                     route = routes.MapPageRoute(theRoutingMap.Name, theRoutingMap.Pattern, "~/" + theRoutingMap.PhysicalFileForWebForms, false, null, constraints);
                 else
-                    route = routes.MapRoute(theRoutingMap.Name, theRoutingMap.Pattern, theRoutingMap.DefaultsForMVC);
+                  route = routes.MapRoute(theRoutingMap.Name, theRoutingMap.Pattern, theRoutingMap.DefaultsForMVC);                
                 /* store the route name in the DataTokens of the route so that we can access it later */
                 route.DataTokens = new RouteValueDictionary();
                 route.DataTokens.Add("RouteName", theRoutingMap.Name);

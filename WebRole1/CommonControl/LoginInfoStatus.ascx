@@ -12,11 +12,12 @@
 </asp:LoginView>--%>
 <%--<a href="Account/Login" id="Loginbtn">Login</a>
 <a href="Account/LogOff" id="Logoutbtn" style="display:none;">Logout</a>--%>
-<asp:HyperLink ID="LoginLink" runat="server" NavigateUrl="~/Account/Login">Login</asp:HyperLink>
-<asp:HyperLink ID="LogoutLink" runat="server" NavigateUrl="~/Account/LogOff">Logout</asp:HyperLink>
+<asp:HyperLink ID="LoginLink" runat="server" NavigateUrl="/AccountLogin">Login</asp:HyperLink>
+
+<asp:HyperLink ID="LogoutLink" runat="server" NavigateUrl="/AccountLogOff">Logout</asp:HyperLink>
 <div id="loginSep2" runat="server" style="display:inline;" >
 &nbsp; | &nbsp;
 </div>
 <%--<a href="Account/Register" id="CreateNewUserbtn">Create Free Account</a>--%>
-<asp:HyperLink ID="CreateNewUserLink" runat="server" NavigateUrl="~/Account/Register">Create Free Account</asp:HyperLink>
+<asp:HyperLink ID="CreateNewUserLink" runat="server" NavigateUrl="/AccountRegister">Create Free Account</asp:HyperLink>
 <asp:Literal ID="TheUserAccessInfo" runat="server"></asp:Literal>

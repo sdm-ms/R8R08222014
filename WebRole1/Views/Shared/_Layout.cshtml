@@ -74,12 +74,12 @@
                       @Html.ActionLink("Logout", "LogOff", "Account");
                     }
                     else
-                  {*@
-                      @Html.ActionLink("Login", "Login", "Account")
+                  {*@       
+                    @Html.RouteLink("Login", "AccountLogin")
                       <div id="loginSep2" style="display:inline;">
                         &nbsp; | &nbsp;
                     </div>
-                      @Html.ActionLink("Create Free Account", "Register", "Account")
+                    @Html.RouteLink("Create Free Account", "AccountRegister")
                   @*}*@
                     @*@Html.ActionLink("Login", "Login", "Account")
                     <div id="loginSep2" style="display:inline;">

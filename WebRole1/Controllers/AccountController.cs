@@ -58,9 +58,9 @@ namespace WebRole1.Controllers
             //{
             //    return View();
             //}
-           // var result1 = AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+            // var result1 = AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
 
-          //  var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+            //  var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
             //if (result == null || result.Result.Identity == null)
             //{
             //    return RedirectToAction("Login");
@@ -96,7 +96,7 @@ namespace WebRole1.Controllers
 
 
 
-           // ViewBag.ReturnUrl = returnUrl;
+            // ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -115,61 +115,60 @@ namespace WebRole1.Controllers
                     await SignInAsync(user, model.RememberMe);
                     Session["name"] = model.UserName;
 
-                   // Routing.Redirect(HttpContext.ApplicationInstance.Response, new RoutingInfo(RouteID.NewUser));
-                   // return View();
+                    // Routing.Redirect(HttpContext.ApplicationInstance.Response, new RoutingInfo(RouteID.NewUser));
+                    // return View();
                     return RedirectToLocal(returnUrl);
-                   // Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(theLocation)));
+                    // Routing.Redirect(Response, new RoutingInfoLoginRedirect(Routing.Outgoing(theLocation)));
                 }
                 else
                 {
-                   ViewBag.InvalidUser = "Invalid username or password.";
-                   return View();
+                    ViewBag.InvalidUser = "Invalid username or password.";
+                    return View();
                 }
             }
-            
+
             // If we got this far, something failed, redisplay form
-              return View(model);
+            return View(model);
         }
         // GET: /Account/Reset Password
         [HttpGet]
-         [AllowAnonymous]
+        [AllowAnonymous]
         public ActionResult ResetPassword()
         {
             return View();
         }
-         // POST: /Account/Reset Password
+        // POST: /Account/Reset Password
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-         {
-             if (ModelState.IsValid)
-             {
-                 var user = await UserManager.FindByNameAsync(model.UserName);
-                 if (user == null )//|| !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                 {
-                     // Don't reveal that the user does not exist or is not confirmed
-                     ViewBag.UserNotExist = "User doesn't exist! Please fill correct User.";
-                     return View("ResetPassword");
-                 }
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByNameAsync(model.UserName);
+                if (user == null)//|| !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    ViewBag.UserNotExist = "User doesn't exist! Please fill correct User.";
+                    return View("ResetPassword");
+                }
 
-                 // var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);, code = code
-                 var callbackUrl = Url.Action("ChangePassword", "Account",
-                 new { UserId = user.Id }, protocol: Request.Url.Scheme);
-               //  await UserManager.SendEmailAsync(user.Id, "Reset Password",
-               //  "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
-                 Email.SendMessage(user.Email, "Reset Password", "Please reset your password: <a href=\"" + callbackUrl + "\">click here</a>");
-              //  bool status = EmailService.SendMailMessage("Reset Password", "Please reset your password: <a href=\"" + callbackUrl + "\">click here</a>",user.Email);
+                // var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);, code = code
+                var callbackUrl = Url.RouteUrl("AccountChangePassword", new { UserId = user.Id }, protocol: Request.Url.Scheme);
+                //  await UserManager.SendEmailAsync(user.Id, "Reset Password",
+                //  "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                Email.SendMessage(user.Email, "Reset Password", "Please reset your password: <a href=\"" + callbackUrl + "\">click here</a>");
+                //  bool status = EmailService.SendMailMessage("Reset Password", "Please reset your password: <a href=\"" + callbackUrl + "\">click here</a>",user.Email);
                 //if (status == true)
                 //{
-                    ViewBag.SendEmail = "Please check your email for reset password!";
-               // }
+                ViewBag.SendEmail = "Please check your email for reset password!";
+                // }
 
-                 return View();
-             }
+                return View();
+            }
 
-             // If we got this far, something failed, redisplay form
-             return View(model);
-         }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
         [HttpGet]
         [AllowAnonymous]
         public ActionResult ChangePassword()
@@ -185,29 +184,32 @@ namespace WebRole1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var UserId = TempData["UserId"].ToString();
-                //var result = await UserManager.ResetPasswordAsync((UserId, "", model.NewPassword);
-                 UserManager.RemovePassword(UserId);
+                if (TempData["UserId"].ToString() != "")
+                {
+                    var UserId = TempData["UserId"].ToString();
+                    //var result = await UserManager.ResetPasswordAsync((UserId, "", model.NewPassword);
+                    UserManager.RemovePassword(UserId);
 
-                var result =  UserManager.AddPassword(UserId, model.NewPassword);
-                //var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
-               // var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    ViewBag.ChangePassword = "Your password has been changed successfully.";
-                    //await SignInAsync(user, isPersistent: false);
-                    return View();
-                }
-                else
-                {
-                    AddErrors(result);
+                    var result = UserManager.AddPassword(UserId, model.NewPassword);
+                    //var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
+                    // var result = await UserManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        ViewBag.ChangePassword = "Your password has been changed successfully.";
+                        //await SignInAsync(user, isPersistent: false);
+                        return View();
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
                 }
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-    
+
 
         //
         // GET: /Account/Register
@@ -216,7 +218,7 @@ namespace WebRole1.Controllers
         {
             return View();
         }
-       
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -225,19 +227,19 @@ namespace WebRole1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName,Email=model.Email };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                   
+
                     ViewBag.CreatedUser = "You have been successfully registered.";
-                   // await SignInAsync(user, isPersistent: false);
-                  //  return RedirectToAction("Index", "Home");
+                    // await SignInAsync(user, isPersistent: false);
+                    //  return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                  //  IEnumerable<string> msg = result.Errors;
-                   // ViewBag.CreatedUser = msg;
+                    //  IEnumerable<string> msg = result.Errors;
+                    // ViewBag.CreatedUser = msg;
                     foreach (var error in result.Errors)
                     {
                         ViewBag.ErrorMsg = error;
@@ -344,7 +346,7 @@ namespace WebRole1.Controllers
         {
             // Request a redirect to the external login provider
             ControllerContext.HttpContext.Session.RemoveAll();
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider, Url.RouteUrl("AccountExternalLoginCallback", new { ReturnUrl = returnUrl }));
         }
 
         //
@@ -371,10 +373,10 @@ namespace WebRole1.Controllers
             var user = await UserManager.FindAsync(login);
             if (user != null)
             {
-               
+
                 //await SignInAsync(user, isPersistent: false);
                 //return RedirectToLocal(returnUrl);
-               // await FbAuthenticationToken(user);
+                // await FbAuthenticationToken(user);
                 await SignInAsync(user, isPersistent: false);
                 Session["name"] = user.UserName;
                 return RedirectToLocal(returnUrl);
@@ -386,7 +388,7 @@ namespace WebRole1.Controllers
                 ViewBag.LoginProvider = login.LoginProvider;
                 return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = name });
             }
-           
+
         }
 
         //
@@ -447,8 +449,8 @@ namespace WebRole1.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                       
-                       // await FbAuthenticationToken(user);
+
+                        // await FbAuthenticationToken(user);
                         await SignInAsync(user, isPersistent: false);
                         Session["name"] = model.UserName;
                         return RedirectToLocal(returnUrl);
@@ -463,14 +465,15 @@ namespace WebRole1.Controllers
 
         //
         // POST: /Account/LogOff
-       
+
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalCookie);
-           
+
             //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             Session["name"] = null;
-            return RedirectToAction("Login", "Account");
+            // return RedirectToAction("Login", "Account");
+            return RedirectToRoute("HomePage");
         }
 
         //
@@ -513,7 +516,7 @@ namespace WebRole1.Controllers
 
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,DefaultAuthenticationTypes.ExternalCookie);
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
@@ -552,7 +555,7 @@ namespace WebRole1.Controllers
             }
             else
             {
-               // return RedirectToAction("Index", "Home");
+                // return RedirectToAction("Index", "Home");
                 return Redirect("/");
                 //return Redirect("WebForms/HomePage.aspx");
             }
@@ -560,11 +563,11 @@ namespace WebRole1.Controllers
         //public async Task<ActionResult> FacebookFriends()
         //{
         //    var UserClaim = await UserManager.GetClaimsAsync(User.Identity.GetUserId());
- 
+
         //    var token = UserClaim.FirstOrDefault(fb => fb.Type == "FacebookAccessToken").Value;
- 
+
         //    var FbClient = new Facebook.FacebookClient(token);
- 
+
         //    dynamic FacebookFriends = FbClient.Get("/me/friends");
         //    var FbFriends=new List<FacebookViewModel>();
         //    foreach (dynamic MyFriend in FacebookFriends.data)
@@ -575,7 +578,7 @@ namespace WebRole1.Controllers
         //            Image= @"https://graph.facebook.com/" + MyFriend.id + "/picture?type=large"
         //        });
         //    }
- 
+
         //   return View(FbFriends);
         //}
         //private async Task FbAuthenticationToken(ApplicationUser User)

@@ -7,7 +7,7 @@
 </div>
 
 <div class="afterHeadTxtEffect">
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    @using (Html.BeginRouteForm("AccountRegister", FormMethod.Post))
     { 
         if (ViewBag.CreatedUser != "")
         {

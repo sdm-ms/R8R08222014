@@ -19,7 +19,7 @@
         <tr>
             <td style="height:13px;">
                 <div>
-                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    @using (Html.BeginRouteForm("AccountLogin", FormMethod.Post))
                     {
                         <table cellspacing="0" cellpadding="1" style="background-color:White;border-color:Black;border-width:0px;border-style:None;border-collapse:collapse;">
                             <tr>
@@ -70,9 +70,9 @@
         <tr><td>@Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })</td></tr>
         <tr>
             <td>
-                @Html.ActionLink("Create a new user...", "Register", "", new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:14px;" })
+                @Html.RouteLink("Create a new user...", "AccountRegister", "", new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:14px;" })
                 <br />
-                @Html.ActionLink("Recover lost password...", "ResetPassword", "", new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:14px;" })
+                @Html.RouteLink("Recover lost password...", "AccountResetPassword", "",new { style = "font-family:Trebuchet MS,Arial,Helvetica,Sans-Serif;font-size:14px;" })
             </td>
         </tr>
         <tr style="height:20px;"></tr>
