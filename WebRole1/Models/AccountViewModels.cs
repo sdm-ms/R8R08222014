@@ -24,7 +24,7 @@ namespace WebRole1.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password don't match.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -50,28 +50,19 @@ namespace WebRole1.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "*")]
-        [StringLength(100, ErrorMessage = "{0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
          [Required(ErrorMessage = "*")]
         [DataType(DataType.Password)]
-        [Compare("Password")]
+        [Compare("Password", ErrorMessage = "The new password and confirmation password don't match.")]
         [Display(Name = "Confirm password")]
         public string ConfirmPassword { get; set; }
         [Required(ErrorMessage = "*")]
         [EmailAddress(ErrorMessage="Email Id is not valid.")]
         public string Email { get; set; }
-    }
-    public class FacebookViewModel
-    {
-        [Required]
-        [Display(Name = "Friend's name")]
- 
-        public string Name { get;set; }
- 
-        public string Image { get;set; }
     }
     public class ResetPasswordViewModel
     {
@@ -81,6 +72,7 @@ namespace WebRole1.Models
     public class ChangePasswordViewModel
     {
         [Required]
+        [StringLength(100, ErrorMessage = "{0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
         public string NewPassword { get; set; }
@@ -88,7 +80,7 @@ namespace WebRole1.Models
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password don't match.")]
         public string ConfirmPassword { get; set; }
 
     }

@@ -1,9 +1,7 @@
 ﻿
-
 <html>
 <head id="Head1Main">
     <title>
-
     </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -13,17 +11,13 @@
     <script src="@Url.Content("~/Content/js/jquery-1.3.2.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/js/cycleinvoke.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/js/jquery.cycle.all.min.js")" type="text/javascript"></script>
-
-
-
-    @*<asp:ContentPlaceHolder ID="head1" runat="server">
-        </asp:ContentPlaceHolder>*@
-    @*<meta http-equiv="X-UA-Compatible" content="IE=8" />*@
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Site.css")" type="text/css" rel="stylesheet" />
 </head>
 <body class="bggradient">
     <div id="allPageContent" style="width: 950px; margin: auto; position: relative;">
         <div id="roundedCornerAtTop">
-            <div id="topOfRoundedCorner" class="">@*pageTopRoundedCorner*@
+            <div id="topOfRoundedCorner" class="">
                 <table id="backbox" class="borderless pageTopBackBox">
                     <tr id="backbox-top">
                         <td style="width: 15px; height: 15px; background-image: url(../../images/backbox-top-left.gif)"></td>
@@ -51,42 +45,17 @@
                     </a>
                 </div>
                 <div class="pageTopSearchBox">
-                    @*<asp:Panel ID="PanelAroundSearchBox" runat="server" DefaultButton="DoSearch">
-                            <asp:TextBox ID="SearchBox" runat="server" ClientIDMode="Static" CssClass="pageTopSearchTextBox"></asp:TextBox>
-                            <asp:ImageButton ID="DoSearch" runat="server" CssClass="pageTopSearchButton reppng"
-                                             ImageUrl="~/images/go-normal.png" OnClick="DoSearch_Click" AlternateText="Search" />
-                        </asp:Panel>*@
                     <div id="PanelAroundSearchBox">
                         <input type="text" id="SearchBox" class="pageTopSearchTextBox">
                         <img id="DoSearch" class="pageTopSearchButton reppng" src="@Url.Content("~/images/go-normal.png")">
                     </div>
                 </div>
                 <div class="pageTopWelcomeArea">
-                    @*Response.WriteSubstitution(new HttpResponseSubstitutionCallback(ClassLibrary1.Model.CacheSubstitution.LoginInfoStatus));
-                        <Uc:LoginInfoStatus runat="server" ID="UcLogin" />*@
-
-                  @*@if (Session["name"] != null)
-                    {
-                   <text>Welcome</text> @Session["name"]
-                       <div id="loginSep2" style="display:inline;">
-                        &nbsp; | &nbsp;
-                    </div>
-                      @Html.ActionLink("Logout", "LogOff", "Account");
-                    }
-                    else
-                  {*@       
                     @Html.RouteLink("Login", "AccountLogin")
-                      <div id="loginSep2" style="display:inline;">
-                        &nbsp; | &nbsp;
-                    </div>
-                    @Html.RouteLink("Create Free Account", "AccountRegister")
-                  @*}*@
-                    @*@Html.ActionLink("Login", "Login", "Account")
                     <div id="loginSep2" style="display:inline;">
                         &nbsp; | &nbsp;
                     </div>
-                    @Html.ActionLink("Create Free Account", "Register", "Account")*@
-
+                    @Html.RouteLink("Create Free Account", "AccountRegister")
                 </div>
                 <div class="pageTopMenuLinks">
                     <table>
@@ -132,19 +101,15 @@
             </div>
         </div>
         <div id="allContentBelowHeaderDiv" class="allContentBelowPageTop">
-
             <div id="mainPartOfPage" style="position: relative; width: 941px; height: auto;
         background-color: White; border-width: 1px; border-style: solid; border-color: Gray; ">
-
                 <div id="leftPageColumn" class="possibleBottom" style="float: left; overflow: hidden;
             display: inline; position: relative; width: 268px; margin: 10px 5px 10px 10px;
             padding: 0px 0px 0px 0px;">
                     @Html.Partial("_LeftPageContentPartial")
                 </div>
-
                 <div id="rightPageColumn" class="possibleBottom" style="float: left; position: relative;
             width: 640px; margin: 10px 10px 10px 5px; padding: 0px 0px 0px 0px;">
-
                     <div id="AllContentBelowHeader">
                         <div id="mydiv" style="position: absolute; width: 100%; overflow:hidden;">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -175,9 +140,7 @@
                     </div>
                     <div id="AllContentBelowHeader">
                     </div>
-
                 </div>
-
                 <div id="belowBothColumns" style="clear: both;">
                     <table>
                         <tr>
@@ -197,8 +160,7 @@
             <div id="spaceAtVeryBottomOfPage" style="position: relative; height: 25px;">
             </div>
             @*end spaceAtVeryBottomOfPage*@
-</div>
-
+        </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

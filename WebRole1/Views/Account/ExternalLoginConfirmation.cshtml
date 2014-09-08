@@ -10,7 +10,7 @@
     @ViewBag.Title
 </div>
 <div class="afterHeadTxtEffect">
-    @using (Html.BeginForm("AccountExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+    @using (Html.BeginRouteForm("AccountExternalLoginConfirmation", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
     {
        @Html.AntiForgeryToken()
 

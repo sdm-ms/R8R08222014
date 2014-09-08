@@ -29,16 +29,26 @@ namespace WebRole1
                 clientId: "0000000044126351",
                 clientSecret: "jAZpCRiJKg5gQRxFxvYBtpy5rdopTlnW");
 
-            app.UseYahooAuthentication(
-  consumerKey: "dj0yJmk9T2NDVnZ0cU0yUnVSJmQ9WVdrOWN6aFNUV3BXTTJNbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD01Mw--",
-  consumerSecret: "197e780574ff379dfb3d39de15b8c63b3372609e");
+            //app.UseMicrosoftAccountAuthentication(
+            //   clientId: "0000000048128D31",
+            //   clientSecret: "vUmQPTbhTIctdtAhjWN-kDWodsNuJcNo");
 
+            app.UseYahooAuthentication(
+  consumerKey: "dj0yJmk9N3Q1SkZVUjZJY29LJmQ9WVdrOVRXVldTR3BTTm5NbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD04Zg--",
+  consumerSecret: "ff86ea149040af9b0c1052b8e9d3d0ceabd0faf7");
+
+ //           app.UseYahooAuthentication(
+ //consumerKey: "dj0yJmk9OEp2RlhPSkVMOE80JmQ9WVdrOVR6WjNZVTFJTXpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD04NA--",
+ //consumerSecret: "f317e16a47112d7ac2831b0c43cac572e1e7916f");
             //var FbFriends = new FacebookAuthenticationOptions();
 
             //FbFriends.SignInAsAuthenticationType = DefaultAuthenticationTypes.ExternalCookie;
             app.UseFacebookAuthentication(
                appId: "1526133034266985",
                appSecret: "1bbb93665abf17446745e9a1f1e5faa3");
+            //app.UseFacebookAuthentication(
+            //  appId: "271092676424493",
+            //  appSecret: "6257d28e03a066d87fa527774d854b87");
             app.UseGoogleAuthentication();
 
         }

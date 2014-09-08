@@ -151,16 +151,23 @@ namespace WebRole1.Controllers
                     ViewBag.UserNotExist = "User doesn't exist! Please fill correct User.";
                     return View("ResetPassword");
                 }
-
-                // var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);, code = code
-                var callbackUrl = Url.RouteUrl("AccountChangePassword", new { UserId = user.Id }, protocol: Request.Url.Scheme);
-                //  await UserManager.SendEmailAsync(user.Id, "Reset Password",
-                //  "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
-                Email.SendMessage(user.Email, "Reset Password", "Please reset your password: <a href=\"" + callbackUrl + "\">click here</a>");
+                if (user.Email != null)
+                {
+                    // var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);, code = code
+                    var callbackUrl = Url.RouteUrl("AccountChangePassword", new { UserId = user.Id }, protocol: Request.Url.Scheme);
+                    //  await UserManager.SendEmailAsync(user.Id, "Reset Password",
+                    //  "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                    Email.SendMessage(user.Email, "Reset Password", "Please reset your password: <a href=\"" + callbackUrl + "\">click here</a>");
+                     ViewBag.SendEmail = "Please check your email for reset password!";
+                }
+                else
+                {
+                    ViewBag.SendEmailError = "Reset password not allowed.";
+                }
                 //  bool status = EmailService.SendMailMessage("Reset Password", "Please reset your password: <a href=\"" + callbackUrl + "\">click here</a>",user.Email);
                 //if (status == true)
                 //{
-                ViewBag.SendEmail = "Please check your email for reset password!";
+               
                 // }
 
                 return View();

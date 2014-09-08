@@ -15,14 +15,16 @@
         {
             @Html.AntiForgeryToken()
             <div id="socialLoginList">
-                @{int count = 0;}
+                <div class="headTxt headTxtEffect">Sign In with</div>
                 @foreach (AuthenticationDescription p in loginProviders)
                 {
-                 if(count==3)  {
-                    <br/><br/>
-                }
-                    <button type="submit" class="BtnBig" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
-               count = count+1;
+                 string _ImageName = @p.AuthenticationType + ".png";
+                 <div class="facebook">
+                     <button type="submit" id="@p.AuthenticationType" name="provider" title="Log in using your @p.Caption account" value="@p.AuthenticationType">
+                         <img src="images/@_ImageName"/>
+                     </button>
+                     <span>@p.AuthenticationType</span>   
+                 </div>
                 }
 
             </div>
