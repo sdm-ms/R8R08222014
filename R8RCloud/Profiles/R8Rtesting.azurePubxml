@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AzureCredentials>{"ServiceManagementEndpoint":"https:\/\/management.core.windows.net\/","SubscriptionId":"8d4130ab-bc81-4dbd-9e9d-50f870a671a6"}</AzureCredentials>
     <AzureDeploymentLabel>R8RCloud</AzureDeploymentLabel>
-    <AzureSlot>Staging</AzureSlot>
+    <AzureSlot>Production</AzureSlot>
     <AzureHostedServiceName>r8rwiki</AzureHostedServiceName>
     <AzureHostedServiceLabel>r8rwiki</AzureHostedServiceLabel>
     <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
@@ -15,8 +15,8 @@
     <AzureEnableWebDeploy>False</AzureEnableWebDeploy>
     <AzureFallbackToDeleteAndRecreateIfUpgradeFails>False</AzureFallbackToDeleteAndRecreateIfUpgradeFails>
     <AzureEnableProfiling>False</AzureEnableProfiling>
-    <AzureServiceConfiguration>CloudTesting</AzureServiceConfiguration>
-    <AzureSolutionConfiguration>Release</AzureSolutionConfiguration>
+    <AzureServiceConfiguration>CloudProduction</AzureServiceConfiguration>
+    <AzureSolutionConfiguration>Debug</AzureSolutionConfiguration>
     <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
   </PropertyGroup>
 </Project>

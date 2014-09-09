@@ -3,12 +3,13 @@
   <Role name="WebRole1">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="ApplicationServices" value="mustupdate" />
-      <Setting name="R8RConnectionString" value="mustupdate" />
-      <Setting name="Denorm0001ConnectionString" value="mustupdate" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=r8rtesting;AccountKey=nQ7vpYQcqmN4bSnN1D1WzZAtAHk+yPdekkTNmXEW2UjbpRWh0bPjc9sxZQcR1bE8ejs8Pwy7VpxZjexkYjjsCw==" />
+      <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=r8rtesting;AccountKey=nQ7vpYQcqmN4bSnN1D1WzZAtAHk+yPdekkTNmXEW2UjbpRWh0bPjc9sxZQcR1bE8ejs8Pwy7VpxZjexkYjjsCw==" />
+      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=r8rtesting;AccountKey=nQ7vpYQcqmN4bSnN1D1WzZAtAHk+yPdekkTNmXEW2UjbpRWh0bPjc9sxZQcR1bE8ejs8Pwy7VpxZjexkYjjsCw==" />
+      <Setting name="ApplicationServices" value="Server=tcp:hpeh1dh9vd.database.windows.net,1433;Database=r8rtest;User ID=r8radmin@hpeh1dh9vd;Password=Finchlives86;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="R8RConnectionString" value="Server=tcp:hpeh1dh9vd.database.windows.net,1433;Database=r8rtest;User ID=r8radmin@hpeh1dh9vd;Password=Finchlives86;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <!--should change following to separate database-->
+      <Setting name="Denorm0001ConnectionString" value="Server=tcp:hpeh1dh9vd.database.windows.net,1433;Database=r8rtest;User ID=r8radmin@hpeh1dh9vd;Password=Finchlives86;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ClientDiagnosticLevel" value="1" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="r8rrdc" />
@@ -22,12 +23,13 @@
   <Role name="WorkerRole1">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=old_development_account;AccountKey=xyA1kSz7XdrVsXDjk0dNOmrlq7ae3X8pM6wYGS9kdkhuYA5mmUUoKIBm2XXdnAXNKB/nb+RuGT1h4Nt34K+ZmA==" />
-      <Setting name="ApplicationServices" value="mustupdate" />
-      <Setting name="R8RConnectionString" value="mustupdate" />
-      <Setting name="Denorm0001ConnectionString" value="mustupdate" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=r8rtesting;AccountKey=nQ7vpYQcqmN4bSnN1D1WzZAtAHk+yPdekkTNmXEW2UjbpRWh0bPjc9sxZQcR1bE8ejs8Pwy7VpxZjexkYjjsCw==" />
+      <Setting name="BlobConnectionString" value="DefaultEndpointsProtocol=http;AccountName=r8rtesting;AccountKey=nQ7vpYQcqmN4bSnN1D1WzZAtAHk+yPdekkTNmXEW2UjbpRWh0bPjc9sxZQcR1bE8ejs8Pwy7VpxZjexkYjjsCw==" />
+      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=r8rtesting;AccountKey=nQ7vpYQcqmN4bSnN1D1WzZAtAHk+yPdekkTNmXEW2UjbpRWh0bPjc9sxZQcR1bE8ejs8Pwy7VpxZjexkYjjsCw==" />
+      <Setting name="ApplicationServices" value="Server=tcp:hpeh1dh9vd.database.windows.net,1433;Database=r8rtest;User ID=r8radmin@hpeh1dh9vd;Password=Finchlives86;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="R8RConnectionString" value="Server=tcp:hpeh1dh9vd.database.windows.net,1433;Database=r8rtest;User ID=r8radmin@hpeh1dh9vd;Password=Finchlives86;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <!--should change following to separate database-->
+      <Setting name="Denorm0001ConnectionString" value="Server=tcp:hpeh1dh9vd.database.windows.net,1433;Database=r8rtest;User ID=r8radmin@hpeh1dh9vd;Password=Finchlives86;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ClientDiagnosticLevel" value="1" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="r8rrdc" />
@@ -39,4 +41,11 @@
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="7B219715CF6D4D45E2B465DD6C3EFD2B07928EAD" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
+<NetworkConfiguration>
+  <AddressAssignments>
+    <ReservedIPs>
+      <ReservedIP name="R8RMain"/>
+    </ReservedIPs>
+  </AddressAssignments>
+</NetworkConfiguration>
 </ServiceConfiguration>
