@@ -18,5 +18,7 @@
     <AzureServiceConfiguration>CloudProduction</AzureServiceConfiguration>
     <AzureSolutionConfiguration>Debug</AzureSolutionConfiguration>
     <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
+    <EnableRemoteDebugger>True</EnableRemoteDebugger>
+    <RemoteDebuggerConnectorCertificateThumbprint>7D260004B7EDC2E41CF50C811784BFE47CD1D367</RemoteDebuggerConnectorCertificateThumbprint>
   </PropertyGroup>
 </Project>
