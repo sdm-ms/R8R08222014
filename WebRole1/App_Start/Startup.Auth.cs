@@ -25,17 +25,19 @@ namespace WebRole1
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            app.UseMicrosoftAccountAuthentication(
-                clientId: "0000000044126351",
-                clientSecret: "jAZpCRiJKg5gQRxFxvYBtpy5rdopTlnW");
+            app.UseGoogleAuthentication(clientId: "1072934350544-dl5fr7svaedmn33tms38a89kppbvdse4.apps.googleusercontent.com", clientSecret: "didI13YDMmcMhsGmOJgIK9W_");
 
             //app.UseMicrosoftAccountAuthentication(
-            //   clientId: "0000000048128D31",
-            //   clientSecret: "vUmQPTbhTIctdtAhjWN-kDWodsNuJcNo");
+            //    clientId: "0000000044126351",
+            //    clientSecret: "jAZpCRiJKg5gQRxFxvYBtpy5rdopTlnW");
+
+            app.UseMicrosoftAccountAuthentication(
+               clientId: "0000000048128D31",
+               clientSecret: "vUmQPTbhTIctdtAhjWN-kDWodsNuJcNo");
 
             app.UseYahooAuthentication(
   consumerKey: "dj0yJmk9N3Q1SkZVUjZJY29LJmQ9WVdrOVRXVldTR3BTTm5NbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD04Zg--",
-  consumerSecret: "ff86ea149040af9b0c1052b8e9d3d0ceabd0faf7");
+  consumerSecret: "f317e16a47112d7ac2831b0c43cac572e1e7916f");
 
  //           app.UseYahooAuthentication(
  //consumerKey: "dj0yJmk9OEp2RlhPSkVMOE80JmQ9WVdrOVR6WjNZVTFJTXpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD04NA--",
@@ -43,13 +45,14 @@ namespace WebRole1
             //var FbFriends = new FacebookAuthenticationOptions();
 
             //FbFriends.SignInAsAuthenticationType = DefaultAuthenticationTypes.ExternalCookie;
-            app.UseFacebookAuthentication(
-               appId: "1526133034266985",
-               appSecret: "1bbb93665abf17446745e9a1f1e5faa3");
             //app.UseFacebookAuthentication(
-            //  appId: "271092676424493",
-            //  appSecret: "6257d28e03a066d87fa527774d854b87");
-            app.UseGoogleAuthentication();
+            //   appId: "1526133034266985",
+            //   appSecret: "1bbb93665abf17446745e9a1f1e5faa3");
+            app.UseFacebookAuthentication(
+              appId: "271092676424493",
+              appSecret: "6257d28e03a066d87fa527774d854b87");
+            
+            //app.UseGoogleAuthentication();
 
         }
     }
