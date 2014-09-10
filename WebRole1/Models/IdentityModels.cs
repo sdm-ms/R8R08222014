@@ -12,7 +12,7 @@ namespace WebRole1.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base(ConnectionString.GetUserProfileDatabaseConnectionString())
+            : base(ConnectionString.GetUserProfileDatabaseConnectionString(), throwIfV1Schema: false)
         {
         }
     }
