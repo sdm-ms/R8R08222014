@@ -240,6 +240,7 @@ namespace WebRole1.Controllers
                 {
 
                     ViewBag.CreatedUser = "You have been successfully registered.";
+                    return Redirect("/"); 
                     // await SignInAsync(user, isPersistent: false);
                     //  return RedirectToAction("Index", "Home");
                 }
@@ -361,26 +362,32 @@ namespace WebRole1.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
-            if (result == null || result.Identity == null)
+            var externalIdentity = HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+            //var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+            //if (result == null || result.Identity == null)
+            //{
+            //    return RedirectToRoute("AccountLogin");
+            //}
+
+            //var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
+            //if (idClaim == null)
+            //{
+            //    return RedirectToRoute("AccountLogin");
+            //}
+
+            //var login = new UserLoginInfo(idClaim.Issuer, idClaim.Value);
+            //var name = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", "");
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            if (loginInfo == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToRoute("AccountLogin");
+
             }
-
-            var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
-            if (idClaim == null)
-            {
-                return RedirectToAction("Login");
-            }
-
-            var login = new UserLoginInfo(idClaim.Issuer, idClaim.Value);
-            var name = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", "");
-
             // Sign in the user with this external login provider if the user already has a login
-            var user = await UserManager.FindAsync(login);
+            var user = await UserManager.FindAsync(loginInfo.Login);
+           
             if (user != null)
             {
-
                 //await SignInAsync(user, isPersistent: false);
                 //return RedirectToLocal(returnUrl);
                 // await FbAuthenticationToken(user);
@@ -392,8 +399,8 @@ namespace WebRole1.Controllers
             {
                 // If the user does not have an account, then prompt the user to create an account
                 ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = login.LoginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = name });
+                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
             }
 
         }
