@@ -35,11 +35,11 @@ public partial class CommonControl_Menu : System.Web.UI.UserControl
         myDataAccess = new R8RDataAccess();
         try
         {
-            theLocation = Routing.IncomingMainContent(Page.RouteData, myDataAccess.R8RDB);
+            theLocation = Routing.IncomingMainContent(Page.RouteData, myDataAccess.R8RDB); // Find out what page we're on -- e.g., Consumer/Restaurants
         }
         catch
         {
-            theLocation = new RoutingInfoMainContent();
+            theLocation = new RoutingInfoMainContent(); // We're not on a page with a table
         }
         cacheString = "CachedTopicsMenu" + theLocation.GetHashCode();
         object cachedObject = (string)CacheManagement.GetItemFromCache(cacheString);
