@@ -109,7 +109,7 @@ namespace ClassLibrary1.Model
         public string GetPathToLocalFile()
         {
             bool ok = RoleEnvironment.IsAvailable;
-            LocalResource localCache = RoleEnvironment.GetLocalResource("raterooLocal");
+            LocalResource localCache = RoleEnvironment.GetLocalResource("r8rLocal");
             string containerPath = Path.Combine(localCache.RootPath, ContainerName);
             Directory.CreateDirectory(containerPath); // create if necessary
             string pathToFile = Path.Combine(localCache.RootPath, ContainerName, FileName);

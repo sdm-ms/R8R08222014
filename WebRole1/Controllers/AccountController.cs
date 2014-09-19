@@ -15,7 +15,7 @@ using System.Net.Mail;
 using System.Configuration;
 using WebRole1.Models;
 using ClassLibrary1.Model;
-
+using ClassLibrary1.EFModel;
 
 
 namespace WebRole1.Controllers
@@ -24,79 +24,22 @@ namespace WebRole1.Controllers
     public class AccountController : Controller
     {
         public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+            : this(new UserManager<IdentityUser>(new UserStore<IdentityUser>(new ApplicationDbContext())))
         {
         }
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<IdentityUser> userManager)
         {
             UserManager = userManager;
         }
 
-        public UserManager<ApplicationUser> UserManager { get; private set; }
+        public UserManager<IdentityUser> UserManager { get; private set; }
 
         //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            //var result = AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
-            //if (result != null)
-            //{
-            //    if (result.Result != null)
-            //    {
-            //        var name = result.Result.Identity.Name;
-            //        Session["name"] = name;
-            //       return RedirectToAction("SuccessLogin", "Account");
-            //    }
-            //    else
-            //    {
-            //        return View();
-            //    }
-            //}
-            //else
-            //{
-            //    return View();
-            //}
-            // var result1 = AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
-
-            //  var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
-            //if (result == null || result.Result.Identity == null)
-            //{
-            //    return RedirectToAction("Login");
-            //}
-
-            //var idClaim = result.Result.Identity.FindFirst(ClaimTypes.NameIdentifier);
-            //if (idClaim == null)
-            //{
-            //    return RedirectToAction("Login");
-            //}
-
-            //var login = new UserLoginInfo(idClaim.Issuer, idClaim.Value);
-            //var name = result.Result.Identity.Name == null ? "" : result.Result.Identity.Name.Replace(" ", "");
-
-            //// Sign in the user with this external login provider if the user already has a login
-            //var user =  UserManager.FindAsync(login);
-            //if (user != null)
-            //{
-            //    //await SignInAsync(user, isPersistent: false);
-            //    //return RedirectToLocal(returnUrl);
-            //    // await FbAuthenticationToken(user);
-            //    // SignInAsync(user, isPersistent: false);
-            //   // return RedirectToLocal(returnUrl);
-            //}
-            //else
-            //{
-            //    // If the user does not have an account, then prompt the user to create an account
-            //    ViewBag.ReturnUrl = returnUrl;
-            //    ViewBag.LoginProvider = login.LoginProvider;
-            //    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = name });
-            //}
-
-
-
-
-            // ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -198,7 +141,7 @@ namespace WebRole1.Controllers
                     UserManager.RemovePassword(UserId);
 
                     var result = UserManager.AddPassword(UserId, model.NewPassword);
-                    //var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
+                    //var user = new IdentityUser() { UserName = model.UserName, Email = model.Email };
                     // var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
@@ -234,7 +177,7 @@ namespace WebRole1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
+                var user = new IdentityUser() { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -456,7 +399,7 @@ namespace WebRole1.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new IdentityUser() { UserName = model.UserName };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -528,7 +471,7 @@ namespace WebRole1.Controllers
             }
         }
 
-        private async Task SignInAsync(ApplicationUser user, bool isPersistent)
+        private async Task SignInAsync(IdentityUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
@@ -595,7 +538,7 @@ namespace WebRole1.Controllers
 
         //   return View(FbFriends);
         //}
-        //private async Task FbAuthenticationToken(ApplicationUser User)
+        //private async Task FbAuthenticationToken(IdentityUser User)
         //{
         //    var claims = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
         //    if (claims != null)

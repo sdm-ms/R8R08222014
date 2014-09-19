@@ -6,15 +6,23 @@ namespace ClassLibrary1.EFModel
     using System.Linq;
     using System.Data.Entity.Core.Objects;
     using System.Collections.Generic;
-using System.Data.Common;
+    using System.Data.Common;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using ClassLibrary1.Model;
 
+    public class ApplicationDbContext : IdentityDbContext
+    {
+        public ApplicationDbContext()
+            : base(ConnectionString.GetUserProfileDatabaseConnectionString())
+        {
+        }
+    }
 
-
-
-    public partial class R8RContext : DbContext
+    public partial class R8RContext : DbContext 
     {
         public R8RContext()
             : base()
+            
         {
             // we could re-enable this to get rid of lazy loading, but right now we rely on it a lot
             // this.Configuration.ProxyCreationEnabled = false; 

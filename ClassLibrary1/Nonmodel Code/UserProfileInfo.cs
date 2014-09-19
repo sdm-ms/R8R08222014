@@ -8,6 +8,8 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using ClassLibrary1.Model;
 using ClassLibrary1.EFModel;
 using System.Reflection;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ClassLibrary1.Nonmodel_Code
 {
@@ -123,7 +125,14 @@ namespace ClassLibrary1.Nonmodel_Code
             else
                 return new RealUserProfileInfo().LoadByUsername(username);
         }
-
+        //Created by smartdata
+        public static IUserProfileInfo LoadByUsername(IdentityUser user)
+        {
+            if (UseFakeUserProfileInfo.UseFake)
+                return new FakeUserProfileInfo().LoadByUsername(user.UserName);
+            else
+                return new RealUserProfileInfo().LoadByUsername(user);
+        }
         public static IUserProfileInfo CreateUser(string username, string password, string email)
         {
             if (UseFakeUserProfileInfo.UseFake)
@@ -234,10 +243,26 @@ namespace ClassLibrary1.Nonmodel_Code
 
         public static IUserProfileInfo GetCurrentUser()
         {
-            MembershipUser theUser = Membership.GetUser();
+           // MembershipUser theUser = Membership.GetUser();
+            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(new ApplicationDbContext()));
+            IdentityUser theUser = null;
+            if(System.Web.HttpContext.Current.Session["name"] != null)
+            {
+                if (System.Web.HttpContext.Current.Session["UserInfo"] == null)
+                {
+                    theUser = userManager.FindByName(System.Web.HttpContext.Current.Session["name"].ToString());
+                    System.Web.HttpContext.Current.Session["UserInfo"] = theUser;
+                }
+                else
+                {
+                    theUser = (IdentityUser)System.Web.HttpContext.Current.Session["UserInfo"];
+                }
+            }
+            
             if (theUser == null)
                 return new AnonymousUser();
-            return UserProfileCollection.LoadByUsername(theUser.UserName);
+            //return UserProfileCollection.LoadByUsername(theUser.UserName);
+            return UserProfileCollection.LoadByUsername(theUser);
         }
 
         public static void DeleteAllUsers()
@@ -261,8 +286,23 @@ namespace ClassLibrary1.Nonmodel_Code
         public IUserProfileInfo LoadByUsername(string username)
         {
             Username = username;
+
             if (Profile == null && GetUser() != null)
                 Profile = ProfileBase.Create(Username);
+            return this;
+        }
+        public IUserProfileInfo LoadByUsername(IdentityUser user)
+        {
+            Username = user.UserName;
+
+            if (Profile == null && Username != null)
+            {
+                Profile = ProfileBase.Create(Username);
+                
+                Profile.SetPropertyValue("UserID", new Guid(user.Id));
+                Profile.Save();
+            }
+
             return this;
         }
 
